@@ -1,3 +1,42 @@
+main {
+    @include desktop {
+        height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
+    @include mobile {
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+    }
+}
+
 .dw-dashboard {
     height: 100%;
+}
+
+@keyframes triggerAnimation {
+    10% {
+        transform: rotate(10deg);
+    }
+    20% {
+        transform: rotate(-10deg);
+    }
+    30% {
+        transform: rotate(10deg);
+    }
+    40% {
+        transform: rotate(-10deg);
+    }
+    50% {
+        transform: rotate(10deg);
+    }
+    60% {
+        transform: rotate(-10deg);
+    }
+    70% {
+        transform: rotate(10deg);
+    }
+    80% {
+        transform: rotate(-10deg);
+    }
+    90% {
+        transform: rotate(10deg);
+    }
 }

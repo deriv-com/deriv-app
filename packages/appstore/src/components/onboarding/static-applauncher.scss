@@ -1,0 +1,48 @@
+.static-applauncher {
+    display: flex;
+    width: 22rem;
+    margin-left: 1rem;
+    align-items: center;
+    justify-content: space-between;
+
+    &--grey {
+        background: var(--general-section-1);
+        width: 30%;
+        height: 100%;
+        margin-left: 0;
+
+        @include mobile {
+            width: 70%;
+            margin-left: 1.5rem;
+        }
+    }
+
+    &__icon {
+        margin-right: 0.5rem;
+        &--blurry {
+            opacity: 0.2;
+        }
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__buttons {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-left: 1rem;
+        margin-right: 0.5rem;
+        width: auto;
+
+        &--animated {
+            animation: triggerAnimation 2s linear infinite;
+        }
+
+        &-topup {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -13,6 +13,8 @@ import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
+import { BinaryLink } from 'App/Components/Routes';
+import { Localize } from '@deriv/translations';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -91,6 +93,32 @@ const DefaultHeader = ({
             }
             return true;
         });
+
+    const Divider = () => {
+        return <div className='header__menu--separator' />;
+    };
+
+    const ExploreTradingHub = () => {
+        const platform_store = React.useContext(PlatformContext);
+        const EnablePreAppstore = () => {
+            platform_store.setIsPreAppStore(true);
+        };
+        return (
+            <div className='header__menu__redirect'>
+                <BinaryLink
+                    to={routes.trading_hub}
+                    className='header__menu__redirect--link'
+                    onClick={EnablePreAppstore}
+                >
+                    <Text as='p' size='xs'>
+                        <Localize i18n_default_text='Explore Trading hub' />
+                    </Text>
+                    <Icon icon='IcArrowRight' size={18} color='red' />
+                </BinaryLink>
+            </div>
+        );
+    };
+
     return (
         <header
             className={classNames('header', {
@@ -143,6 +171,12 @@ const DefaultHeader = ({
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
+                {is_logged_in && (
+                    <DesktopWrapper>
+                        <ExploreTradingHub />
+                        <Divider />
+                    </DesktopWrapper>
+                )}
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
@@ -159,6 +193,7 @@ const DefaultHeader = ({
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
+
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -217,9 +252,6 @@ DefaultHeader.propTypes = {
     is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_account_transfer_visible: PropTypes.bool,
-    // is_p2p_enabled: PropTypes.bool,
-    // is_payment_agent_transfer_visible: PropTypes.bool,
-    // is_payment_agent_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,

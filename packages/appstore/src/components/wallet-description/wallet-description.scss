@@ -1,0 +1,33 @@
+.wallet-details {
+    max-width: 26.4rem;
+    margin: 2.4rem;
+    padding: 0;
+
+    &__title {
+        margin-bottom: 0.8rem;
+        line-height: 2rem;
+    }
+
+    &__description {
+        width: 100%;
+        height: 12rem;
+        overflow-y: scroll;
+        color: #999999;
+        @include mobile {
+            height: auto;
+            margin-bottom: 2.4rem;
+        }
+    }
+
+    &__information {
+        width: 100%;
+        line-height: 1.8rem;
+    }
+
+    &__horizontal-line {
+        width: 100%;
+        border-top: 0.1rem solid #d6dadb;
+        height: 0;
+        margin: 0.8rem 0;
+    }
+}

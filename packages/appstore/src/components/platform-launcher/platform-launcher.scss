@@ -1,0 +1,114 @@
+.platform-launcher {
+    @include mobile {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0;
+        height: 5.6rem;
+    }
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+        gap: 1.6rem;
+        width: 18.32rem;
+        height: 5.4rem;
+        margin-bottom: 1.6rem;
+        &--icon {
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+        &--title-desc-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0;
+            width: 13.52rem;
+            height: 5.4rem;
+            &--title {
+                width: 13.52rem;
+                height: 1.8rem;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+            }
+            &--description {
+                width: 16rem;
+                height: 3.6rem;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+            }
+            @include mobile {
+                width: 18.3rem;
+                height: 2.8rem;
+                left: 0;
+                top: 0;
+                &--title {
+                    width: 16.4rem;
+                    height: 1.4rem;
+                    font-size: 1rem;
+                }
+                &--description {
+                    width: 18.3rem;
+                    height: 1.4rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 0.96rem;
+                    line-height: 1.4rem;
+                    color: $color-black-1;
+                }
+            }
+        }
+        @include mobile {
+            justify-content: center;
+            padding: 0 0 0 0.8rem;
+            gap: 1.2rem;
+            width: 27.8rem;
+            height: 3.2rem;
+        }
+    }
+    &__trade-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0.6rem 1.6rem;
+
+        width: 18.32rem;
+        height: 3.2rem;
+        /* brand/coral */
+
+        background: #ff444f;
+        border-radius: 0.4rem;
+
+        &--label {
+            width: 3.8rem;
+            height: 2rem;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.4rem;
+            line-height: 2rem;
+            text-align: center;
+            color: $color-white;
+        }
+
+        @include mobile {
+            padding: 0.3rem 0.8rem;
+            width: 4.9rem;
+            height: 2.4rem;
+            left: 21.9rem;
+            top: 0.2rem;
+            border-radius: 0.4rem;
+            &--label {
+                width: 3.3rem;
+                height: 1.8rem;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+            }
+        }
+    }
+}

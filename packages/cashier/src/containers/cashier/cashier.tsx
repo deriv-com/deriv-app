@@ -43,6 +43,7 @@ type TCashierProps = RouteComponentProps & {
     setTabIndex: (index: number) => void;
     routeBackInApp: TCommonStore['routeBackInApp'];
     toggleCashier: TUiStore['toggleCashier'];
+    resetLastLocation: () => void;
 };
 
 type TCashierOptions = {
@@ -71,11 +72,11 @@ const Cashier = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
-    // is_virtual,
     is_visible,
     location,
     onMount,
     p2p_notification_count,
+    resetLastLocation,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -88,8 +89,10 @@ const Cashier = ({
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
+            resetLastLocation();
         };
     }, [toggleCashier]);
+
     React.useEffect(() => {
         (async () => {
             await WS?.wait('authorize');
@@ -235,6 +238,7 @@ export default connect(({ client, common, modules, ui }: TRootStore) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.general_store.onMountCommon,
     p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
+    resetLastLocation: modules.cashier.account_prompt_dialog.resetLastLocation,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,

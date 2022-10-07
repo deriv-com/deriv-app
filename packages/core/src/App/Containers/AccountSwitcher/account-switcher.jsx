@@ -41,13 +41,26 @@ const AccountSwitcher = props => {
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
-    const [exchanged_rate, setExchangedRate] = React.useState('');
+    const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
+    const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
+    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
+
+    const account_total_balance_currency = props.obj_total_balance.currency;
+    const cfd_real_currency =
+        props.mt5_login_list.find(account => !isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => !isDemo(account))?.currency;
+
+    const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
+    const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
+    const cfd_demo_currency =
+        props.mt5_login_list.find(account => isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -56,11 +69,19 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
-        if (vrtc_loginid) {
-            getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
-                setExchangedRate(res)
-            );
+        const getCurrentExchangeRate = (currency, setExchangeRate) => {
+            getExchangeRate(currency, account_total_balance_currency).then(res => {
+                setExchangeRate(res);
+            });
+        };
+        if (cfd_real_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
+        }
+        if (vrtc_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
+        }
+        if (cfd_demo_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
     }, []);
 
@@ -366,17 +387,12 @@ const AccountSwitcher = props => {
         return !!(props.is_virtual && props.can_upgrade_to);
     };
 
-    const getTotalBalance = (accounts, is_demo = true) => {
+    const getTotalBalanceCfd = (accounts, is_demo, exchange_rate) => {
         return accounts
             .filter(account => (is_demo ? isDemo(account) : !isDemo(account)))
             .reduce(
                 (total, account) => {
-                    const real_account_loginid = props.account_list?.find(acc => !acc.is_virtual)?.loginid;
-                    if (!is_demo && props.accounts[real_account_loginid]?.currency !== account.currency) {
-                        total.balance += account.balance * exchanged_rate;
-                    } else {
-                        total.balance += account.balance;
-                    }
+                    total.balance += account.balance * exchange_rate;
                     return total;
                 },
                 { balance: 0 }
@@ -384,20 +400,14 @@ const AccountSwitcher = props => {
     };
 
     const getTotalDemoAssets = () => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
-        const mt5_demo_total = getTotalBalance(props.mt5_login_list);
-        const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
+        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
+        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
 
-        let total = vrtc_currency !== props.obj_total_balance.currency ? vrtc_balance * exchanged_rate : vrtc_balance;
-
-        if (Array.isArray(props.mt5_login_list)) {
-            total += mt5_demo_total.balance;
-        }
-        if (Array.isArray(props.dxtrade_accounts_list)) {
-            total += dxtrade_demo_total.balance;
-        }
+        const total =
+            (vrtc_currency !== account_total_balance_currency ? vrtc_balance * exchanged_rate_demo : vrtc_balance) +
+            mt5_demo_total.balance +
+            dxtrade_demo_total.balance;
 
         return total;
     };
@@ -406,8 +416,8 @@ const AccountSwitcher = props => {
         // props.obj_total_balance.amount_mt5 is returning 0 regarding performance issues so we have to calculate
         // the total MT5 accounts balance from props.mt5_login_list.
         // You can remove this part if WS sends obj_total_balance.amount_mt5 correctly.
-        const mt5_total = getTotalBalance(props.mt5_login_list, false);
-        const dxtrade_total = getTotalBalance(props.dxtrade_accounts_list, false);
+        const mt5_total = getTotalBalanceCfd(props.mt5_login_list, false, exchanged_rate_cfd_real);
+        const dxtrade_total = getTotalBalanceCfd(props.dxtrade_accounts_list, false, exchanged_rate_cfd_real);
 
         let total = props.obj_total_balance.amount_real;
 
@@ -491,7 +501,7 @@ const AccountSwitcher = props => {
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance < account_init_balance;
+        return account.is_virtual && account.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -892,7 +902,10 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {/* TODO: Remove the below condition once Deriv X update is released */}
+                                            {account.title === localize('Derived')
+                                                ? localize('Synthetic')
+                                                : account.title}
                                         </Text>
                                         <Button
                                             onClick={() => openDXTradeRealAccount(account.type)}
@@ -959,9 +972,9 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={props.obj_total_balance.currency}
+                        currency={account_total_balance_currency}
                         amount={formatMoney(
-                            props.obj_total_balance.currency,
+                            account_total_balance_currency,
                             isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}

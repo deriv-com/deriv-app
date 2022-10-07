@@ -1,0 +1,37 @@
+.add-options--desktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 240px;
+    padding: 1rem;
+    border-radius: $BORDER_RADIUS;
+    border: 2px dashed $color-red-7;
+    cursor: pointer;
+    &_title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > p {
+            color: $color-red;
+            margin-left: 0.8rem;
+        }
+    }
+    &_description {
+        & > p {
+            color: $color-grey-1;
+        }
+    }
+}
+
+.add-options--mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: $BORDER_RADIUS;
+    background-color: $color-red-7;
+    cursor: pointer;
+}

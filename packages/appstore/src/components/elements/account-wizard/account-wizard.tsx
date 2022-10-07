@@ -18,7 +18,6 @@ import {
 import { useIsMounted, isMobile, getLocation, toMoment, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
-import NewWalletModal from 'Components/modals/new-wallet-modal';
 import { getItems } from './items';
 import { TWizardItemConfig, TAccountWizard } from './types';
 
@@ -360,7 +359,6 @@ const AccountWizardWrapper: React.FC = () => {
     } = client;
     const { real_account_signup_target } = ui;
     const [is_cancel_visible, setIsCancelVisisible] = React.useState(false);
-    const [is_new_wallet_modal_visible, setIsNewWalletModalVisible] = React.useState(false);
 
     return (
         <React.Fragment>
@@ -387,11 +385,6 @@ const AccountWizardWrapper: React.FC = () => {
                 is_visible={is_cancel_visible}
                 onClose={() => setIsCancelVisisible(false)}
                 onConfirm={() => setIsCancelVisisible(true)}
-            />
-            <NewWalletModal
-                is_open={is_new_wallet_modal_visible}
-                onClose={() => setIsNewWalletModalVisible(false)}
-                onConfirm={() => setIsNewWalletModalVisible(true)}
             />
         </React.Fragment>
     );

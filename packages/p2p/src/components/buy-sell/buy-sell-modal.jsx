@@ -90,7 +90,7 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
 };
 
 const MarketRateChangeErrorModal = ({ is_open, closeModal, setShouldShowPopup }) => (
-    <Modal is_open={is_open} small className='rate-changed-modal' onExited={() => setShouldShowPopup(true)}>
+    <Modal className='rate-changed-modal' is_open={is_open} onExited={() => setShouldShowPopup(true)} small>
         <Modal.Body>
             <Text
                 as='p'

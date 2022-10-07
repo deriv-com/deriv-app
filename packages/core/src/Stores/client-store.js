@@ -2030,7 +2030,7 @@ export default class ClientStore extends BaseStore {
                         !this.country_standpoint.is_belgium &&
                         residence !== 'im'
                     ) {
-                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                        // this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                     }
                 }
             }

@@ -210,13 +210,18 @@ const getModules = (_params, is_social_signup, is_pre_appstore) => {
         {
             path: routes.appstore,
             component: AppStore,
-            is_authenticated: true,
             getTitle: () => localize('Appstore'),
             routes: [
                 {
                     path: routes.trading_hub,
                     component: AppStore,
                     getTitle: () => localize('Trading hub'),
+                },
+                {
+                    path: routes.onboarding,
+                    component: AppStore,
+                    is_authenticated: false,
+                    getTitle: () => localize('Onboarding'),
                 },
             ],
         },

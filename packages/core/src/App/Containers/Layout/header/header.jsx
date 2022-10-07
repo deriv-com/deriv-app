@@ -11,6 +11,11 @@ import { useLocation } from 'react-router-dom';
 const Header = ({ is_logged_in }) => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
+    const trading_hub_routes =
+        pathname === routes.trading_hub ||
+        pathname.startsWith(routes.cashier) ||
+        pathname.startsWith(routes.account) ||
+        pathname.startsWith(routes.onboarding);
 
     if (is_appstore) {
         /**
@@ -20,11 +25,7 @@ const Header = ({ is_logged_in }) => {
         return <DashboardHeader />;
     } else if (is_logged_in && is_pre_appstore) {
         let result;
-        if (
-            pathname === routes.trading_hub ||
-            pathname.startsWith(routes.cashier) ||
-            pathname.startsWith(routes.account)
-        ) {
+        if (trading_hub_routes) {
             result = <TradingHubHeader />;
         } else {
             result = <DTraderHeader />;

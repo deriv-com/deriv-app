@@ -42,7 +42,7 @@ const Redirect = ({
                 // redirected_to_route = true;
             } else {
                 history.push({
-                    pathname: routes.trading_hub,
+                    pathname: routes.onboarding,
                     search: url_query_string,
                 });
                 redirected_to_route = true;

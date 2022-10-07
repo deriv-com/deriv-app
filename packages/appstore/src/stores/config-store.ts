@@ -5,6 +5,7 @@ export default class ConfigStore extends BaseStore {
     public has_router = false;
     public routes = {
         trading_hub: '/appstore/trading-hub',
+        onboarding: '/appstore/onboarding',
     };
 
     public setConfig(config: TConfigProps): void {

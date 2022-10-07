@@ -1,8 +1,12 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop, routes, PlatformContext } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import WalletIcon from 'Assets/svgs/wallet';
+import { trading_hub_contents } from 'Constants/trading-hub-content';
+import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 
 type TOnboardingProps = {
     contents: Record<
@@ -15,11 +19,16 @@ type TOnboardingProps = {
             has_next_content: boolean;
         }
     >;
-    setIsTourOpen: (is_tour_open: boolean) => void;
 };
 
-const Onboarding = ({ contents, setIsTourOpen }: TOnboardingProps) => {
+const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
+    const history = useHistory();
     const number_of_steps = Object.keys(contents);
+    const { ui } = useStores();
+    const { toggleIsTourOpen } = ui;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
+    const { setIsPreAppStore } = React.useContext(PlatformContext);
 
     const [step, setStep] = React.useState<number>(1);
 
@@ -30,7 +39,9 @@ const Onboarding = ({ contents, setIsTourOpen }: TOnboardingProps) => {
     const nextStep = () => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
-            setIsTourOpen(true);
+            setIsPreAppStore(true);
+            history.push(routes.trading_hub);
+            toggleIsTourOpen();
         }
     };
 
@@ -111,4 +122,4 @@ const Onboarding = ({ contents, setIsTourOpen }: TOnboardingProps) => {
     );
 };
 
-export default Onboarding;
+export default observer(Onboarding);

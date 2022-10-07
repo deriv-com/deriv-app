@@ -1252,6 +1252,9 @@
                 }
                 &-links {
                     display: flex;
+                    a {
+                        margin: 0.4rem;
+                    }
                     @include mobile {
                         flex-direction: column;
                     }

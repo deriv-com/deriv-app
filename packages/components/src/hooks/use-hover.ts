@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
-export const useHover = (refSetter, should_prevent_bubbling) => {
+export const useHover = (refSetter: RefObject<HTMLElement>, should_prevent_bubbling: boolean) => {
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
-    const ref = refSetter || default_ref;
+    const ref = refSetter ?? default_ref;
 
     const handleHoverBegin = () => setValue(true);
     const handleHoverFinish = () => setValue(false);
@@ -40,10 +40,10 @@ export const useHoverCallback = () => {
 
     const handleMouseOver = React.useCallback(() => setValue(true), []);
     const handleMouseOut = React.useCallback(() => setValue(false), []);
-    const ref = React.useRef();
+    const ref: React.MutableRefObject<HTMLElement | null> = React.useRef(null);
 
     const callbackRef = React.useCallback(
-        node => {
+        (node: HTMLElement) => {
             if (ref.current) {
                 ref.current.removeEventListener('mouseover', handleMouseOver);
                 ref.current.removeEventListener('mouseout', handleMouseOut);

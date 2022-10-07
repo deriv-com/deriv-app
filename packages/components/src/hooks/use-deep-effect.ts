@@ -3,7 +3,7 @@ import { isDeepEqual } from '@deriv/shared';
 
 // Note: Do not use this effect on huge objects or objects with
 // circular references as performance may suffer.
-export const useDeepEffect = (callback, dependencies) => {
+export const useDeepEffect = (callback: () => void, dependencies: any) => {
     const prev_dependencies = React.useRef(null);
 
     if (!isDeepEqual(prev_dependencies, dependencies)) {

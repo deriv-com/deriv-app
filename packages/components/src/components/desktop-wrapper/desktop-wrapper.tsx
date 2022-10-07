@@ -1,6 +1,10 @@
 import { isDesktop } from '@deriv/shared';
 
-const Desktop = ({ children }) => {
+type TDesktopProps = {
+    children: React.ReactNode;
+};
+
+const Desktop = ({ children }: TDesktopProps) => {
     if (!isDesktop()) return null;
     return children;
 };

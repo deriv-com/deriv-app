@@ -17,12 +17,15 @@ type TResponseTradingPlatformAccountsList = {
     trading_platform_accounts: Array<TMT5LoginAccount>;
 };
 
+type TAuthenticationStatus = { document_status: string; identity_status: string };
+
 export type TClientStore = {
     account_limits: { daily_transfers?: { [k: string]: { allowed: boolean; available: boolean } } };
     account_list: TAccountsList[];
     account_status: GetAccountStatus;
     accounts: { [k: string]: TAccount };
     active_accounts: Array<TActiveAccounts>;
+    authentication_status: TAuthenticationStatus;
     available_crypto_currencies: string[];
     balance?: string;
     can_change_fiat_currency: boolean;
@@ -30,9 +33,9 @@ export type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     email: string;
+    getLimits: () => { get_limits?: GetLimits };
     has_active_real_account: boolean;
     has_logged_out: boolean;
-    getLimits: () => { get_limits?: GetLimits };
     has_maltainvest_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
@@ -48,7 +51,6 @@ export type TClientStore = {
     is_logging_in: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
-    is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
@@ -57,6 +59,7 @@ export type TClientStore = {
     mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     pre_switch_broadcast: boolean;
     residence: string;
+    setVerificationCode: (code: string, action: string) => void;
     responseMt5LoginList: ({ mt5_login_list }: TResponseMt5LoginList) => Array<DetailsOfEachMT5Loginid>;
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
@@ -66,7 +69,6 @@ export type TClientStore = {
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setPreSwitchAccount: (status?: boolean) => void;
-    setVerificationCode: (code: string, action: string) => void;
     switch_broadcast: boolean;
     switched: boolean;
     switchEndSignal: () => void;

@@ -44,18 +44,18 @@
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "loadjs": "^4.2.0",
-        "mobx": "^5.15.7",
         "mobx-react": "6.3.1",
+        "mobx": "^5.15.7",
         "moment": "^2.29.2",
         "prop-types": "^15.7.2",
         "qrcode.react": "^1.0.0",
-        "react": "^16.14.0",
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.14.0",
         "react-loadable": "^5.5.0",
         "react-pose": "^4.0.10",
+        "react-router-dom": "^5.2.0",
         "react-router": "^5.2.0",
-        "react-router-dom": "^5.2.0"
+        "react": "^16.14.0"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
@@ -71,10 +71,11 @@
         "@babel/preset-env": "^7.12.11",
         "@babel/preset-react": "^7.16.7",
         "@testing-library/react": "^12.0.0",
+        "@testing-library/user-event": "^13.2.1",
         "@types/loadjs": "^4.0.1",
         "@types/qrcode.react": "^1.0.2",
-        "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
+        "@types/react": "^18.0.7",
         "babel-loader": "^8.1.0",
         "clean-webpack-plugin": "^3.0.0",
         "copy-webpack-plugin": "^9.0.1",
@@ -91,9 +92,9 @@
         "sass-loader": "^12.6.0",
         "sass-resources-loader": "^2.1.1",
         "typescript": "^4.6.3",
-        "webpack": "^5.46.0",
         "webpack-cli": "^4.7.2",
         "webpack-manifest-plugin": "^4.0.2",
-        "webpack-node-externals": "^2.5.2"
+        "webpack-node-externals": "^2.5.2",
+        "webpack": "^5.46.0"
     }
 }

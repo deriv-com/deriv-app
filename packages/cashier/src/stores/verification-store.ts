@@ -14,6 +14,8 @@ export default class VerificationStore {
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
 
+    resend_interval?: ReturnType<typeof setTimeout> = undefined;
+
     @action.bound
     setIsButtonClicked(value: boolean): void {
         this.is_button_clicked = value;
@@ -113,10 +115,10 @@ export default class VerificationStore {
 
     setCountDownResendVerification() {
         this.setResendTimeout(this.resend_timeout - 1);
-        const resend_interval = setInterval(() => {
+        this.resend_interval = setInterval(() => {
             if (this.resend_timeout === 1) {
                 this.setResendTimeout(60);
-                clearInterval(resend_interval);
+                clearInterval(this.resend_interval);
             } else {
                 this.setResendTimeout(this.resend_timeout - 1);
             }

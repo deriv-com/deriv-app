@@ -189,7 +189,9 @@
                 align-items: center;
                 justify-content: center;
                 flex-wrap: wrap;
-
+                &--column {
+                    flex-direction: column;
+                }
                 & > a {
                     display: inline-block;
                     margin: 0.4rem;

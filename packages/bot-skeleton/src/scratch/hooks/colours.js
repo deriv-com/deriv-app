@@ -7,7 +7,7 @@ const isDarkModeEnabled = () => {
     return false;
 };
 
-export function setColors() {
+export const setColors = () => {
     if (isDarkModeEnabled()) {
         Blockly.Colours.RootBlock = {
             colour: '#183046',
@@ -68,6 +68,6 @@ export function setColors() {
             colourTertiary: '#6d7278',
         };
     }
-}
+};
 
 setColors();

@@ -107,11 +107,17 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'trustpilot',
                   'close_uk_account',
-                  'onfido_failed',
-                  'poa_poi_verified',
-                  'poi_name_mismatch',
                   'document_needs_action',
                   'identity',
+                  'poi_name_mismatch',
+                  'poi_expired',
+                  'poi_failed',
+                  'poi_verified',
+                  'poa_expired',
+                  'resticted_mt5_with_pending_poa',
+                  'poa_verified',
+                  'poa_failed',
+                  'resticted_mt5_with_failed_poa',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
         return is_not_marked_notification && is_non_hidden_notification;

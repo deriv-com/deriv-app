@@ -237,7 +237,7 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     loadMoreItems({ startIndex }) {
-        const { general_store } = this.root_store;
+        const { general_store, my_profile_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
         this.setApiErrorMessage('');
         return new Promise(resolve => {
@@ -267,6 +267,16 @@ export default class BuySellStore extends BaseStore {
 
                             list.forEach(new_item => {
                                 const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
+
+                                //Get all payment methods supported in the country
+                                if (new_item.payment_method_names) {
+                                    new_item.payment_method_names = new_item.payment_method_names.filter(
+                                        payment_method_name =>
+                                            Object.entries(my_profile_store.available_payment_methods).findIndex(
+                                                payment_method => payment_method[1].display_name === payment_method_name
+                                            ) !== -1
+                                    );
+                                }
 
                                 if (old_item_idx > -1) {
                                     old_items[old_item_idx] = new_item;

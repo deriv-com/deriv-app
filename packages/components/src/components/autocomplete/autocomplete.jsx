@@ -83,6 +83,14 @@ const Autocomplete = React.memo(props => {
     }, [list_items, has_updating_list, historyValue]);
 
     React.useEffect(() => {
+        if (is_list_visible) {
+            const index = filtered_items.findIndex(item => item.text === historyValue);
+            setActiveIndex(index);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filtered_items]);
+
+    React.useEffect(() => {
         if (should_show_list && list_item_ref.current) {
             const item = list_item_ref.current.offsetTop;
             dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
@@ -207,11 +215,7 @@ const Autocomplete = React.memo(props => {
         e.preventDefault();
         hideDropdownList();
 
-        const new_filtered_items = is_list_visible
-            ? getFilteredItems(value.toLowerCase(), list_items, should_filter_by_char)
-            : list_items;
-
-        setFilteredItems(new_filtered_items);
+        if (!is_list_visible) setFilteredItems(list_items);
 
         if (input_value === '' && typeof props.onItemSelection === 'function') {
             props.onItemSelection({

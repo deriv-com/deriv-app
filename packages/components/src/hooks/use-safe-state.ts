@@ -1,10 +1,6 @@
 import * as React from 'react';
 
-type TUseSafeStateProps<T> = {
-    initial_state: T;
-};
-
-export const useSafeState = <T>({ initial_state }: TUseSafeStateProps<T>, optIsMountedFunc: () => void) => {
+export const useSafeState = <T>(initial_state: T, optIsMountedFunc: () => void) => {
     const [state, setState] = React.useState(initial_state);
     const is_mounted = React.useRef(false);
 

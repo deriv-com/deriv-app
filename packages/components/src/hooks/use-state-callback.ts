@@ -1,11 +1,7 @@
 import React from 'react';
 
-type TUseStateCallbackProps<T> = {
-    initial_state: T;
-};
-
 // this hook mimics this.setState({ state: value, ... }, () => callbackFunc());
-export const useStateCallback = <T>({ initial_state }: TUseStateCallbackProps<T>) => {
+export const useStateCallback = <T>(initial_state: T) => {
     const [state, setState] = React.useState(initial_state);
     const callbackRef: React.MutableRefObject<any> = React.useRef(null); // a mutable ref to store existing callback
 

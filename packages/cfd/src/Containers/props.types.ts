@@ -1,6 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
+    GetAccountStatus,
     GetSettings,
     LandingCompany,
     ResidenceList,
@@ -8,6 +9,7 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
@@ -156,4 +158,87 @@ export type TCFDPasswordManagerModal = {
     selected_account_group: 'real' | 'demo';
     selected_server: string;
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
+};
+
+export type TJurisdictionCardProps = {
+    jurisdiction_selected_shortcode: string;
+    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
+    financial_available_accounts: TTradingPlatformAvailableAccount[];
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    account_type: string;
+    type_of_card: string;
+    disabled: boolean;
+};
+
+export type TVerificationStatusBannerProps = {
+    account_status: GetAccountStatus;
+    account_type: string;
+    card_classname: string;
+    disabled: boolean;
+    is_virtual: boolean;
+    type_of_card: string;
+    should_restrict_bvi_account_creation: boolean;
+};
+
+export type TJurisdictionCheckBoxProps = {
+    account_status: GetAccountStatus;
+    class_name: string;
+    is_checked: boolean;
+    jurisdiction_selected_shortcode: string;
+    onCheck: () => void;
+    should_restrict_bvi_account_creation: boolean;
+};
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
+export type TJurisdictionModalProps = {
+    account_type: {
+        type: string;
+        category: string;
+    };
+    account_settings: GetSettings;
+    account_status: GetAccountStatus;
+    disableApp: () => void;
+    enableApp: () => void;
+    is_eu: boolean;
+    is_jurisdiction_modal_visible: boolean;
+    is_virtual: boolean;
+    jurisdiction_selected_shortcode: string;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    should_restrict_bvi_account_creation: boolean;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    toggleCFDPersonalDetailsModal: () => void;
+    toggleJurisdictionModal: () => void;
+    toggleCFDVerificationModal: () => void;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
+    updateAccountStatus: () => void;
+};
+
+export type TJurisdictionModalContentProps = {
+    account_status: GetAccountStatus;
+    account_type: string;
+    jurisdiction_selected_shortcode: string;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
+    financial_available_accounts: TTradingPlatformAvailableAccount[];
+    checked: boolean;
+    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
+    should_restrict_bvi_account_creation: boolean;
+    is_virtual: boolean;
+};
+
+export type TJurisdictionModalFootNoteProps = {
+    account_status: GetAccountStatus;
+    card_classname: string;
+    account_type: string;
+    jurisdiction_selected_shortcode: string;
+    should_restrict_bvi_account_creation: boolean;
 };

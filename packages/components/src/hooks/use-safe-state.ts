@@ -19,7 +19,7 @@ export const useSafeState = <T>(initial_state: T, optIsMountedFunc: () => void) 
         return is_mounted.current === true;
     };
 
-    const wrappedSetState = (value: any) => {
+    const wrappedSetState = (value: T) => {
         if (isMounted()) {
             setState(value);
         }

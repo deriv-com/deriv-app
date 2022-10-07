@@ -19,7 +19,7 @@ const TradingHub: React.FC = () => {
 
     return (
         <React.Fragment>
-            {/* <div className='trading-hub'>
+            <div className='trading-hub'>
                 Trading Hub
                 <CFDAccounts account_type='real' />
             </div>
@@ -38,7 +38,7 @@ const TradingHub: React.FC = () => {
                 }}
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
-            <AddOptionsAccount /> */}
+            <AddOptionsAccount />
             <Options platformlauncherprops={platform_config} />
         </React.Fragment>
     );

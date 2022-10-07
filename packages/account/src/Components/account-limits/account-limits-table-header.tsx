@@ -3,7 +3,13 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
-const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }) => {
+type TAccountLimitsTableHeader = {
+    align?: 'left' | 'right';
+    children?: React.ReactNode;
+    renderExtraInfo?: () => React.ReactNode;
+};
+
+const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }: TAccountLimitsTableHeader) => {
     return (
         <th
             className={classNames('da-account-limits__table-header', {

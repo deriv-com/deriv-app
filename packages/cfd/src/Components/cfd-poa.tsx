@@ -97,7 +97,6 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_state, setFormState] = useStateCallback({
         poa_status: 'none',
-        resubmit_poa: false,
         has_poi: false,
         form_error: '',
     });
@@ -278,9 +277,9 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
     } = props;
-    const { form_error, poa_status, resubmit_poa } = form_state;
+    const { form_error, poa_status } = form_state;
 
-    const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
+    const is_form_visible = !is_loading && poa_status !== PoaStatusCodes.verified;
 
     return (
         <Formik

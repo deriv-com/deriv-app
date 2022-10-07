@@ -57,6 +57,7 @@ const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
     is_eu,
+    is_resubmit,
     fetchResidenceList,
     fetchStatesList,
     onSubmit,
@@ -282,6 +283,13 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
+                                {is_resubmit && (
+                                    <Text size='xs' align='left' color='loss-danger'>
+                                        {localize(
+                                            'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.'
+                                        )}
+                                    </Text>
+                                )}
                                 <FormSubHeader
                                     title={localize('1. Address')}
                                     subtitle={localize('(All fields are required)')}
@@ -458,6 +466,7 @@ ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     is_eu: PropTypes.bool,
+    is_resubmit: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,

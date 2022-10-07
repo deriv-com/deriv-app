@@ -27,7 +27,7 @@ export const general_messages = {
                     'Trade CFDs on forex, stocks, stock indices, synthetic indices, and commodities with leverage.'
                 );
             }
-            return localize('Trade CFDs on forex, stocks & stock indices, commodities, basket indices, and crypto.');
+            return localize('Trade CFDs on forex, stocks & stock indices, commodities, and crypto.');
         }
         return '';
     },

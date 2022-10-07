@@ -1,16 +1,16 @@
-import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
 import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { P2PAdvertInfo } from '@deriv/api-types';
 import Constants from 'Constants/constants';
-import CashierNotifications from 'Components/cashier-notifications';
+import CashierNotifications from 'Components/cashier-notifications/';
 import BaseStore from './base-store';
+import PaymentAgentStore from './payment-agent-store';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class GeneralStore extends BaseStore {
-    constructor({ root_store, WS }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
-        this.WS = WS;
-        this.root_store = root_store;
 
         when(
             () => this.root_store.client.is_logged_in,
@@ -45,19 +45,20 @@ export default class GeneralStore extends BaseStore {
     @observable is_cashier_onboarding = true;
     @observable deposit_target = '';
     @observable should_set_currency_modal_title_change = false;
-    @observable p2p_advertiser_error = undefined;
+    @observable p2p_advertiser_error?: string = undefined;
     @observable has_set_currency = false;
     @observable should_percentage_reset = false;
     @observable percentage = 0;
+    @observable payment_agent: PaymentAgentStore | null = null;
     @observable show_p2p_in_cashier_onboarding = false;
-    @observable onRemount = () => {};
-    @observable p2p_completed_orders = null;
+    @observable onRemount: () => void = () => this;
+    @observable p2p_completed_orders: P2PAdvertInfo[] | null = null;
 
     active_container = Constants.containers.deposit;
     is_populating_values = false;
 
     @action.bound
-    setOnRemount(func) {
+    setOnRemount(func: () => void): void {
         this.onRemount = func;
     }
 
@@ -99,7 +100,7 @@ export default class GeneralStore extends BaseStore {
 
         menu.attach({
             id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
             text: () => localize('Cashier'),
             link_to: this.has_set_currency && routes.cashier,
             onClick: !this.has_set_currency && ui.toggleSetCurrencyModal,
@@ -116,7 +117,7 @@ export default class GeneralStore extends BaseStore {
         menu.update(
             {
                 id: 'dt_cashier_tab',
-                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
                 text: () => localize('Cashier'),
                 link_to: this.has_set_currency && routes.cashier,
                 onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
@@ -164,9 +165,9 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = +((amount / +account_transfer.selected_from.balance) * 100).toFixed(0);
+            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
         } else {
-            this.percentage = +((amount / +client.balance) * 100).toFixed(0);
+            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;
@@ -174,7 +175,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    percentageSelectorSelectionStatus(should_percentage_reset) {
+    percentageSelectorSelectionStatus(should_percentage_reset: boolean): void {
         this.should_percentage_reset = should_percentage_reset;
 
         if (should_percentage_reset) {
@@ -183,32 +184,32 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setIsDeposit(is_deposit) {
+    setIsDeposit(is_deposit: boolean): void {
         this.is_deposit = is_deposit;
     }
 
     @action.bound
-    setShouldShowAllAvailableCurrencies(value) {
+    setShouldShowAllAvailableCurrencies(value: boolean): void {
         this.should_show_all_available_currencies = value;
     }
 
     @action.bound
-    setIsCashierOnboarding(is_cashier_onboarding) {
+    setIsCashierOnboarding(is_cashier_onboarding: boolean): void {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
     @action.bound
-    setDepositTarget(target) {
+    setDepositTarget(target: string): void {
         this.deposit_target = target;
     }
 
     @action.bound
-    continueRoute() {
+    continueRoute(): void {
         this.root_store.common.routeTo(this.deposit_target);
     }
 
     @action.bound
-    setAccountSwitchListener() {
+    setAccountSwitchListener(): void {
         // cashier inits once and tries to stay active until switching account
         // since cashier calls take a long time to respond or display in iframe
         // so we don't have any unmount function here and everything gets reset on switch instead
@@ -216,7 +217,7 @@ export default class GeneralStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    // Initialise P2P attributes on app load without mounting the entire cashier
+    // Initialize P2P attributes on app load without mounting the entire cashier
     @action.bound
     async init() {
         if (this.root_store.modules.cashier) {
@@ -227,7 +228,7 @@ export default class GeneralStore extends BaseStore {
             const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
-            await this.WS.wait('get_settings');
+            await this.WS.wait?.('get_settings');
 
             if (is_logged_in) {
                 await this.getAdvertizerError();
@@ -247,12 +248,12 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     async getAdvertizerError() {
-        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
+        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo?.();
         this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
     }
 
     @action.bound
-    setP2pAdvertiserError(value) {
+    setP2pAdvertiserError(value: string): void {
         this.p2p_advertiser_error = value;
     }
 
@@ -264,13 +265,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setP2pCompletedOrders(p2p_completed_orders) {
+    setP2pCompletedOrders(p2p_completed_orders: P2PAdvertInfo[]): void {
         this.p2p_completed_orders = p2p_completed_orders;
     }
 
     @action.bound
     async getP2pCompletedOrders() {
-        await this.WS.authorized.send({ p2p_order_list: 1, active: 0 }).then(response => {
+        await this.WS.authorized.send?.({ p2p_order_list: 1, active: 0 }).then(response => {
             if (!response?.error) {
                 const { p2p_order_list } = response;
                 this.setP2pCompletedOrders(p2p_order_list.list);
@@ -279,7 +280,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    async onMountCommon(should_remount) {
+    async onMountCommon(should_remount?: boolean): Promise<void> {
         const { client, common, modules } = this.root_store;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
@@ -328,17 +329,17 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setCashierTabIndex(index) {
+    setCashierTabIndex(index: number): void {
         this.cashier_route_tab_index = index;
     }
 
     @action.bound
-    setNotificationCount(notification_count) {
+    setNotificationCount(notification_count: number): void {
         this.p2p_notification_count = notification_count;
     }
 
     @action.bound
-    setIsP2pVisible(is_p2p_visible) {
+    setIsP2pVisible(is_p2p_visible: boolean): void {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(
@@ -364,12 +365,12 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setLoading(is_loading) {
+    setLoading(is_loading: boolean): void {
         this.is_loading = is_loading;
     }
 
     @action.bound
-    setActiveTab(container) {
+    setActiveTab(container: string): void {
         this.active_container = container;
     }
 
@@ -383,7 +384,7 @@ export default class GeneralStore extends BaseStore {
         this.payment_agent = payment_agent;
         this.is_populating_values = false;
 
-        this.onRemount();
+        this.onRemount?.();
 
         return Promise.resolve();
     }

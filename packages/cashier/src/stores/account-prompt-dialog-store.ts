@@ -1,18 +1,18 @@
 import { observable, action } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
+import { TRootStore } from 'Types';
 
 export default class AccountPromptDialogStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
+    // eslint-disable-next-line no-useless-constructor
+    constructor(public root_store: TRootStore) {}
 
     @observable should_show = false;
     @observable is_confirmed = false;
-    @observable last_location = null;
-    @observable current_location = null;
+    @observable last_location: string | null = null;
+    @observable current_location: string | null = null;
 
     @action.bound
-    shouldNavigateAfterPrompt(next_location, current_location) {
+    shouldNavigateAfterPrompt(next_location: string, current_location: string) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
             this.should_show = true;

@@ -48,6 +48,7 @@ type TCashierOnboardingProps = {
 };
 
 const CashierOnboarding = ({
+    // eslint-disable-next-line react/prop-types
     accounts,
     available_crypto_currencies,
     can_change_fiat_currency,

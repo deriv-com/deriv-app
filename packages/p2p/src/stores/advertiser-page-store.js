@@ -76,6 +76,13 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setErrorMessage(response.error);
                 } else {
                     const { list } = response.p2p_advert_list;
+
+                    list.forEach(item => {
+                        item.payment_method_names = buy_sell_store.getSupportedPaymentMethods(
+                            item.payment_method_names
+                        );
+                    });
+
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }

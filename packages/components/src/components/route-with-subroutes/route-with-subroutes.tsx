@@ -90,7 +90,7 @@ const RouteWithSubRoutes = ({
             );
         }
 
-        const title = getTitle?.() ?? '';
+        const title = getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
 
         alternateLinkTagChange();

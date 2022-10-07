@@ -100,8 +100,8 @@ export const getCFDAccountDisplay = ({
     sub_account_type,
     platform,
     is_eu,
-    shortcode,
-    is_mt5_trade_modal,
+    shortcode = '',
+    is_mt5_trade_modal = false,
 }) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;

@@ -3,16 +3,7 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
 import BaseStore from './base-store';
-import { TRootStore, TWebSocket, TProviderDetails, TProviderDetailsWithoutFrom } from 'Types';
-
-type TGetDepositAddressResponse = {
-    error: string;
-    cashier: {
-        deposit: {
-            address: string;
-        };
-    };
-};
+import { TRootStore, TWebSocket, TServerError, TProviderDetails, TProviderDetailsWithoutFrom } from 'Types';
 
 export default class OnRampStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -27,7 +18,7 @@ export default class OnRampStore extends BaseStore {
         });
     }
 
-    @observable api_error: string | null = null;
+    @observable api_error: TServerError | null = null;
     @observable deposit_address = '';
     @observable is_deposit_address_loading = true;
     @observable is_deposit_address_popover_open = false;
@@ -196,28 +187,26 @@ export default class OnRampStore extends BaseStore {
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
         const getDepositAddressFromApi = () => {
-            this.WS.authorized
-                .cashier('deposit', { provider: 'crypto', type: 'api' })
-                .then((response: TGetDepositAddressResponse) => {
-                    let should_clear_interval = false;
+            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+                let should_clear_interval = false;
 
-                    if (response.error) {
-                        this.setApiError(response.error);
+                if (response.error) {
+                    this.setApiError(response.error);
+                    should_clear_interval = true;
+                } else {
+                    const { address } = response.cashier?.deposit;
+
+                    if (address || should_allow_empty_address) {
+                        this.setDepositAddress(address);
                         should_clear_interval = true;
-                    } else {
-                        const { address } = response.cashier.deposit;
-
-                        if (address || should_allow_empty_address) {
-                            this.setDepositAddress(address);
-                            should_clear_interval = true;
-                        }
                     }
+                }
 
-                    if (should_clear_interval) {
-                        clearInterval(deposit_address_interval);
-                        this.setIsDepositAddressLoading(false);
-                    }
-                });
+                if (should_clear_interval) {
+                    clearInterval(deposit_address_interval);
+                    this.setIsDepositAddressLoading(false);
+                }
+            });
         };
 
         getDepositAddressFromApi();
@@ -240,7 +229,7 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    setApiError(api_error: string | null): void {
+    setApiError(api_error: TServerError | null): void {
         this.api_error = api_error;
     }
 

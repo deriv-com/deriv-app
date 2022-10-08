@@ -10,7 +10,13 @@ jest.mock('@deriv/shared');
 
 const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
 
-const Example = <T extends TSocketEndpointNames>({ name, request }: { name: T; request?: TSocketRequestProps<T> }) => {
+const UseWSExample = <T extends TSocketEndpointNames>({
+    name,
+    request,
+}: {
+    name: T;
+    request?: TSocketRequestProps<T>;
+}) => {
     const WS = useWS(name);
 
     return (
@@ -27,7 +33,7 @@ const Example = <T extends TSocketEndpointNames>({ name, request }: { name: T; r
 
 describe('useWS', () => {
     test('should have initial error and data of undefined and is_loading of false', async () => {
-        render(<Example name={'ping'} />);
+        render(<UseWSExample name={'ping'} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');
@@ -49,7 +55,7 @@ describe('useWS', () => {
             ),
         });
 
-        render(<Example name={'ping'} />);
+        render(<UseWSExample name={'ping'} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');
@@ -77,7 +83,9 @@ describe('useWS', () => {
             ),
         });
 
-        render(<Example name={'verify_email'} request={{ verify_email: 'test@test.com', type: 'reset_password' }} />);
+        render(
+            <UseWSExample name={'verify_email'} request={{ verify_email: 'test@test.com', type: 'reset_password' }} />
+        );
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');
@@ -108,7 +116,7 @@ describe('useWS', () => {
             ),
         });
 
-        render(<Example name={'cashier'} request={{ cashier: 'deposit' }} />);
+        render(<UseWSExample name={'cashier'} request={{ cashier: 'deposit' }} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');

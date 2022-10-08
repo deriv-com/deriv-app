@@ -6,7 +6,7 @@ import useCountdown, { TCountdownOptions } from '../useCountdown';
 
 jest.setTimeout(10000);
 
-const Example = (props: TCountdownOptions) => {
+const UseCountdownExample = (props: TCountdownOptions) => {
     const counter = useCountdown(props);
 
     return (
@@ -31,7 +31,7 @@ const Example = (props: TCountdownOptions) => {
 
 describe('useCountdown', () => {
     test('should have initial count of 10 and is_running of false', () => {
-        render(<Example from={10} />);
+        render(<UseCountdownExample from={10} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -41,7 +41,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 5 to 0 after start is called and stop once finished', async () => {
-        render(<Example from={5} />);
+        render(<UseCountdownExample from={5} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -60,7 +60,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 2 to -2 after start is called and stop once finished', async () => {
-        render(<Example from={2} to={-2} />);
+        render(<UseCountdownExample from={2} to={-2} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -78,7 +78,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from -2 to 2 after start is called and stop once finished', async () => {
-        render(<Example from={-2} to={2} increment />);
+        render(<UseCountdownExample from={-2} to={2} increment />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -96,7 +96,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 3 to 0 after start is called and reset the counter at 1 and stop once finished', async () => {
-        render(<Example from={3} />);
+        render(<UseCountdownExample from={3} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -118,7 +118,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 3 to 0 after start is called and pause the counter at 1', async () => {
-        render(<Example from={3} />);
+        render(<UseCountdownExample from={3} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');
@@ -137,7 +137,7 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 3 to 0 after start is called and stop the counter at 1', async () => {
-        render(<Example from={3} />);
+        render(<UseCountdownExample from={3} />);
 
         const count = screen.getByTestId('dt_count');
         const is_running = screen.getByTestId('dt_is_running');

@@ -5,7 +5,7 @@ import { StoreProvider } from '../useStore';
 import useRealSTPAccount from '../useRealSTPAccount';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseRealSTPAccountExample = () => {
     const has_real_stp_account = useRealSTPAccount();
 
     return (
@@ -32,7 +32,7 @@ describe('useRealSTPAccount', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseRealSTPAccountExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -56,7 +56,7 @@ describe('useRealSTPAccount', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseRealSTPAccountExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

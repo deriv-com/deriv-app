@@ -5,7 +5,7 @@ import { StoreProvider } from '../useStore';
 import useNeedAuthentication from '../useNeedAuthentication';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseNeedAuthenticationExample = () => {
     const is_need_authentication = useNeedAuthentication();
 
     return (
@@ -24,7 +24,7 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedAuthenticationExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -40,7 +40,7 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedAuthenticationExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -56,7 +56,7 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedAuthenticationExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -72,7 +72,7 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedAuthenticationExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

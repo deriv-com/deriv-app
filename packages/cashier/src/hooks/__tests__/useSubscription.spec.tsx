@@ -10,7 +10,7 @@ jest.mock('@deriv/shared');
 
 const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
 
-const Example = <T extends TSocketSubscribableEndpointNames>({
+const UseSubscriptionExample = <T extends TSocketSubscribableEndpointNames>({
     name,
     request,
 }: {
@@ -65,7 +65,7 @@ describe('useSubscription', () => {
             }),
         });
 
-        render(<Example name={'p2p_order_info'} request={{ id: '2' }} />);
+        render(<UseSubscriptionExample name={'p2p_order_info'} request={{ id: '2' }} />);
 
         const is_loading = screen.getByTestId('dt_is_loading');
         const error = screen.getByTestId('dt_error');

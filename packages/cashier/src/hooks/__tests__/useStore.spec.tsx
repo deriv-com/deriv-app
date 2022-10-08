@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, useStore } from '../useStore';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseStoreExample = () => {
     const store = useStore();
 
     return (
@@ -17,7 +17,7 @@ const Example = () => {
 
 describe('useStore', () => {
     test('should throw an error if StoreContext has not been provided', async () => {
-        expect(() => render(<Example />)).toThrowError('useStore must be used within StoreContext');
+        expect(() => render(<UseStoreExample />)).toThrowError('useStore must be used within StoreContext');
     });
 
     test('should be able to access store data if StoreContext has been provided', async () => {
@@ -30,7 +30,7 @@ describe('useStore', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseStoreExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

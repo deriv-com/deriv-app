@@ -5,7 +5,7 @@ import { StoreProvider } from '../useStore';
 import useDepositLocked from '../useDepositLocked';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseDepositLockedExample = () => {
     const is_deposit_locked = useDepositLocked();
 
     return (
@@ -35,7 +35,7 @@ describe('useDepositLocked', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseDepositLockedExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -62,7 +62,7 @@ describe('useDepositLocked', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseDepositLockedExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -89,7 +89,7 @@ describe('useDepositLocked', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseDepositLockedExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -116,7 +116,7 @@ describe('useDepositLocked', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseDepositLockedExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -143,7 +143,7 @@ describe('useDepositLocked', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseDepositLockedExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

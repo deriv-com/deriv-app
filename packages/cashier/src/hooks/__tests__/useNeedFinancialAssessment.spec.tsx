@@ -5,7 +5,7 @@ import { StoreProvider } from '../useStore';
 import useNeedFinancialAssessment from '../useNeedFinancialAssessment';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseNeedFinancialAssessmentExample = () => {
     const is_need_financial_assessment = useNeedFinancialAssessment();
 
     return (
@@ -25,7 +25,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -42,7 +42,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -59,7 +59,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -76,7 +76,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -93,7 +93,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -110,7 +110,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -127,7 +127,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -144,7 +144,7 @@ describe('useNeedFinancialAssessment', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedFinancialAssessmentExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

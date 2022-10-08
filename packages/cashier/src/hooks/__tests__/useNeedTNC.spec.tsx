@@ -5,7 +5,7 @@ import { StoreProvider } from '../useStore';
 import useNeedTNC from '../useNeedTNC';
 import { TRootStore, DeepPartial } from '../../types';
 
-const Example = () => {
+const UseNeedTNCExample = () => {
     const is_need_tnc = useNeedTNC();
 
     return (
@@ -30,7 +30,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -52,7 +52,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -74,7 +74,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -96,7 +96,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -118,7 +118,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
@@ -140,7 +140,7 @@ describe('useNeedTNC', () => {
             },
         };
 
-        render(<Example />, {
+        render(<UseNeedTNCExample />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 

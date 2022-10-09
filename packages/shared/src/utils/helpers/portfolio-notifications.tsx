@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
-export const contractSold = (currency, sold_for, Money) => ({
+export const contractSold = (currency: string, sold_for: number | string, Money: React.ElementType) => ({
     key: 'contract_sold',
     header: localize('Contract sold'),
     message: (

@@ -1,41 +1,18 @@
 import { localize } from '@deriv/translations';
 
+type TJurisdictionCardItems = {
+    header: string;
+    over_header?: string;
+    synthetic_contents: Array<string>;
+    financial_contents: Array<string>;
+    is_over_header_available: boolean;
+};
 type TJurisdictionContent = {
-    svg: {
-        header: string;
-        over_header?: string;
-        synthetic_contents: Array<string>;
-        financial_contents: Array<string>;
-        is_over_header_available: boolean;
-    };
-    vanuatu: {
-        header: string;
-        over_header: string;
-        synthetic_contents: Array<string>;
-        financial_contents: Array<string>;
-        is_over_header_available: boolean;
-    };
-    labuan: {
-        header: string;
-        over_header: string;
-        synthetic_contents: Array<string>;
-        financial_contents: Array<string>;
-        is_over_header_available: boolean;
-    };
-    maltainvest: {
-        header: string;
-        over_header: string;
-        synthetic_contents: Array<string>;
-        financial_contents: Array<string>;
-        is_over_header_available: boolean;
-    };
-    bvi: {
-        header: string;
-        over_header: string;
-        synthetic_contents: Array<string>;
-        financial_contents: Array<string>;
-        is_over_header_available: boolean;
-    };
+    svg: TJurisdictionCardItems;
+    vanuatu: TJurisdictionCardItems;
+    labuan: TJurisdictionCardItems;
+    maltainvest: TJurisdictionCardItems;
+    bvi: TJurisdictionCardItems;
 };
 
 export const jurisdiction_contents: TJurisdictionContent = {

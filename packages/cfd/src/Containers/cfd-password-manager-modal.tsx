@@ -24,11 +24,11 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { FormikErrors } from 'formik';
-import { connect } from 'Stores/connect';
-import CFDStore from 'Stores/Modules/CFD/cfd-store';
+import { connect } from '../Stores/connect';
+import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
 import InvestorPasswordManager from './investor-password-manager';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import {
     TCountdownComponent,
     TCFDPasswordReset,

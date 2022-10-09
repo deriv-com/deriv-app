@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction, runInAction } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
-import BaseStore from 'Stores/base-store';
+import BaseStore from '../../base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {

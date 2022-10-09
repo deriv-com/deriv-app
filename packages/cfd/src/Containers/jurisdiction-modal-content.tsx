@@ -3,10 +3,10 @@ import { Icon, Text, Checkbox, Popover, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
-import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
-import { TExistingData } from 'Components/props.types';
+import { jurisdiction_contents } from '../Constants/jurisdiction-contents';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
+import { TExistingData } from '../Components/props.types';
 
 type TAvailableAccountAPI = [
     {

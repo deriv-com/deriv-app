@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper, Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { TCFDPersonalDetailsModalProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';

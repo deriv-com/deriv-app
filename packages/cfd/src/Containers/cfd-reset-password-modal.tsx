@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
@@ -14,8 +14,8 @@ import {
     redirectToLogin,
 } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { connect } from '../Stores/connect';
+import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {

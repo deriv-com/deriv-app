@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop, WS, getIdentityStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse, GetAccountStatus } from '@deriv/api-types';
 

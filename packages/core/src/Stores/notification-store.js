@@ -252,7 +252,12 @@ export default class NotificationStore extends BaseStore {
                 personal_details_locked,
                 poi_name_mismatch,
                 withdrawal_locked,
+                poa_address_mismatch,
             } = getStatusValidations(status || []);
+
+            if (poa_address_mismatch) {
+                this.addNotificationMessage(this.client_notifications.poa_address_mismatch_warning);
+            }
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);

@@ -82,6 +82,51 @@ const DxtradeCompareAccountContent = ({
     );
 };
 
+type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
+    is_demo_tab: boolean;
+    show_eu_related: boolean;
+    residence: string;
+    is_eu: boolean;
+};
+
+// TODO: Remove this component and use one component for both when real released.
+const DxtradeCompareAccountContent = ({
+    is_demo_tab,
+    is_logged_in,
+    landing_companies,
+    platform,
+    show_eu_related,
+    residence,
+    is_eu,
+    is_uk,
+}: TDxtradeCompareAccountContent) => {
+    if (is_demo_tab) {
+        return (
+            <CfdDxtradeCompareContent
+                is_logged_in={is_logged_in}
+                landing_companies={landing_companies}
+                platform={platform}
+                show_eu_related={show_eu_related}
+                residence={residence}
+                is_eu={is_eu}
+                is_uk={is_uk}
+            />
+        );
+    }
+
+    return (
+        <ModalContent
+            is_logged_in={is_logged_in}
+            landing_companies={landing_companies}
+            platform={platform}
+            show_eu_related={show_eu_related}
+            residence={residence}
+            is_eu={is_eu}
+            is_uk={is_uk}
+        />
+    );
+};
+
 const CompareAccountsModal = ({
     disableApp,
     enableApp,

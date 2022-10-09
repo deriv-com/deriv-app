@@ -101,7 +101,7 @@ const CompareAccountsModal = ({
     openDerivRealAccountNeededModal,
     context,
 }: TCompareAccountsModalProps) => {
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const { is_pre_appstore } = React.useContext<any>(PlatformContext);
     const location = window.location.pathname;
     const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/trading-hub');
 

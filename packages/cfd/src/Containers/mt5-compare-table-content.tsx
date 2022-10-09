@@ -415,20 +415,27 @@ const DMT5CompareModalContent = ({
         return isDesktop() ? 'xxxs' : 'xxxxs';
     };
 
-    const isAccountAdded = (item: TFooterButtonData) =>
+    const isMt5AccountAdded = (item: TFooterButtonData) =>
         Object.entries(current_list).some(([key, value]) => {
             const [market, type] = item.action.split('_');
+            const current_account_type = is_demo_tab ? 'demo' : 'real';
             return (
                 value.market_type === market &&
                 value.landing_company_short === type &&
-                value.account_type === 'real' &&
+                value.account_type === current_account_type &&
                 key.includes(CFD_PLATFORMS.MT5)
             );
         });
 
+    const isDxtradeAccountAdded = (item: TFooterButtonData) =>
+        Object.entries(current_list).some(([key, value]) => {
+            const current_account_type = is_demo_tab ? 'demo' : 'real';
+            return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
+        });
+
     const shouldShowPendingStatus = (item: TFooterButtonData) => {
         const type = item.action.split('_')[1];
-        if (isAccountAdded(item)) {
+        if (isMt5AccountAdded(item) || isDxtradeAccountAdded(item)) {
             return false;
         } else if (type === 'svg') {
             return false;
@@ -623,7 +630,11 @@ const DMT5CompareModalContent = ({
                                         ) : (
                                             <Button
                                                 className='cfd-real-compare-accounts__table-footer__button'
-                                                disabled={isAccountAdded(item)}
+                                                disabled={
+                                                    item.action === 'derivx'
+                                                        ? isDxtradeAccountAdded(item)
+                                                        : isMt5AccountAdded(item)
+                                                }
                                                 type='button'
                                                 primary_light
                                                 onClick={() => onButtonClick(item)}

@@ -19,13 +19,13 @@ export type TEmptyStateProps = {
 
 const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
     <div className='cashier-empty-state'>
-        {icon && <Icon icon={icon} data_testid='empty-state-icon' className='cashier-empty-state__icon' />}
+        {icon && <Icon icon={icon} data_testid='dt_empty_state_icon' className='cashier-empty-state__icon' />}
         {title && (
             <Text
                 as='h2'
                 weight='bold'
                 align='center'
-                data-testid='empty-state-title'
+                data-testid='dt_empty_state_title'
                 className='cashier-empty-state__title'
             >
                 {title}
@@ -36,7 +36,7 @@ const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
                 as='p'
                 size='xs'
                 align='center'
-                data-testid='empty-state-description'
+                data-testid='dt_empty_state_description'
                 className='cashier-empty-state__desc'
             >
                 {description}
@@ -51,7 +51,7 @@ const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
                 tertiary={action.tertiary}
                 is_disabled={action.disabled}
                 large
-                data-testid='empty-state-action'
+                data-testid='dt_empty_state_action'
                 className='cashier-empty-state__action'
             />
         )}

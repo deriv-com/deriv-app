@@ -16,11 +16,11 @@ describe('EmailVerificationEmptyState', () => {
             wrapper: ({ children }) => <StoreProvider store={mock_store}>{children}</StoreProvider>,
         });
 
-        expect(screen.queryByTestId('empty-state-action')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeInTheDocument();
 
-        screen.queryByTestId('empty-state-action')?.click();
+        screen.queryByTestId('dt_empty_state_action')?.click();
 
-        expect(screen.queryByTestId('empty-state-action')).toBeDisabled();
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeDisabled();
     });
 
     // TODO: Add more test cases.

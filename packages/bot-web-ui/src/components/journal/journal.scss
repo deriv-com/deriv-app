@@ -41,7 +41,7 @@
     &__data-list {
         .ReactVirtualized__Grid__innerScrollContainer {
             > div:nth-child(even) {
-                background: var(--status-default);
+                background: var(--general-section-2);
             }
         }
     }
@@ -70,6 +70,7 @@
         font-size: var(--text-size-xxs);
         line-height: 1.5;
         display: inline;
+        color: var(--text-general);
 
         &-time,
         &-date {

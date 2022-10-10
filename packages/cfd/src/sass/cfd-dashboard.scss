@@ -159,7 +159,7 @@
             &--is-mt5 {
                 display: flex;
                 align-items: baseline;
-                justify-content: space-between;
+                justify-content: center;
 
                 #{$parent}--desktop {
                     margin-right: 6.4rem;
@@ -499,8 +499,11 @@
 
     &__verification-status,
     &__verification-status--pending,
-    &__verification-status--POA_POI,
-    &__verification-status--verified {
+    &__verification-status--failed,
+    &__verification-status--account_added,
+    &__verification-status--poi_verified,
+    &__verification-status--not_submitted,
+    &__verification-status--hint {
         width: 100%;
         min-height: 2.4rem;
         display: flex;
@@ -511,58 +514,39 @@
 
         &--pending {
             background-color: #ffad3a;
-            color: #333333;
             border-radius: 0.5rem;
         }
 
-        &--verified {
+        &--poi_verified {
+            background: var(--text-status-info-blue);
+            border-radius: 0.5rem;
+        }
+        &--account_added {
             background-color: #4bb4b3;
             border-radius: 0.5rem;
-            &-text {
-                color: #fff;
-            }
         }
 
-        &--POA_POI {
+        &--failed {
             background-color: #ec3f3f;
-            color: #fff;
+            border-radius: 0.5rem;
+        }
+        &--not_submitted {
+            background-color: var(--general-section-1);
+            padding: 0.3rem;
             border-radius: 0.5rem;
         }
     }
-
     &__h2-header {
         margin: 1.4rem 0 2.4rem;
     }
-
-    &__footer {
-        font-weight: 400;
-        font-size: 10px;
-        line-height: 14px;
-        color: #333333;
-        padding: 0.5rem 0.8rem;
-        margin-top: auto;
-        text-align: center;
-        &--none {
-            background-color: #f2f3f4;
-        }
-    }
-
-    &__footer--none {
-        background-color: var(--general-section-1);
-        color: #333333;
-        margin-top: auto;
-        padding: 0.3rem;
-    }
-
     &__footnote {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 2.4rem auto 0;
+        margin: 1.6rem auto 0;
         @include desktop {
             width: 99.2rem;
         }
-
         @include mobile {
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
@@ -570,7 +554,6 @@
 
         &--pending {
             color: #ffad3a;
-            margin-top: 2.4rem;
         }
     }
 
@@ -1450,6 +1433,9 @@
 
             &-details {
                 margin: auto;
+                @include mobile {
+                    overflow-y: scroll;
+                }
 
                 &__form {
                     display: flex;
@@ -1463,7 +1449,7 @@
                 }
 
                 &__field {
-                    margin-bottom: 0.5rem;
+                    margin-bottom: 3.5rem;
                 }
 
                 &__fields-content {
@@ -2141,6 +2127,7 @@
                 opacity: 0.32;
                 border-radius: 4px;
                 width: 100%;
+                cursor: not-allowed;
                 .dc-text {
                     font-style: normal;
                     font-weight: 700;

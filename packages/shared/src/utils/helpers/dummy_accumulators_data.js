@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1665073384; // should be an epoch of some real tick!
+const dummy_current_time = 1665130804; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 7;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6598.9;
-const low_barrier = 6596;
+const high_barrier = 6569.9;
+const low_barrier = 6567;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;

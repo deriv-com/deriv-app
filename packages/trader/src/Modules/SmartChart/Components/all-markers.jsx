@@ -422,7 +422,7 @@ const TickContract = RawMarkerMaker(
                     {
                         text: `${sign}${profit_percentage}%`,
                         font: '12px IBM Plex Sans',
-                        left: current_spot_time.left + 29,
+                        left: current_spot_time.left + 58,
                         top: current_spot_time.top + 16,
                     },
                 ].forEach(({ text, font, left, top }) => {
@@ -454,17 +454,6 @@ const TickContract = RawMarkerMaker(
                         is_between_shade: true,
                         scale,
                     });
-                } else {
-                    // TODO: maryia - draw an interactive label for a won/lost Stay in contract with text and close icon
-                    draw_path(ctx, {
-                        top: exit.top * scale,
-                        left: exit.left + 1 * scale,
-                        zoom: start.zoom,
-                        icon: ICONS[profit > 0 ? 'WON_TOOLTIP' : 'LOST_TOOLTIP'].with_color(
-                            color,
-                            getColor({ status: profit > 0 ? 'won' : 'lost', is_dark_theme })
-                        ),
-                    });
                 }
             } else if (status === 'open') {
                 // draw 2 barriers with a shade outside them for an open Break out contract
@@ -481,17 +470,6 @@ const TickContract = RawMarkerMaker(
                         is_bottom_shade,
                         scale,
                     });
-                });
-            } else {
-                // TODO: maryia - draw an interactive label for a won/lost Break out contract with text and close icon
-                draw_path(ctx, {
-                    top: exit.top * scale,
-                    left: exit.left + 1 * scale,
-                    zoom: start.zoom,
-                    icon: ICONS[profit > 0 ? 'WON_TOOLTIP' : 'LOST_TOOLTIP'].with_color(
-                        color,
-                        getColor({ status: profit > 0 ? 'won' : 'lost', is_dark_theme })
-                    ),
                 });
             }
         }

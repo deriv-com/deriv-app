@@ -1,0 +1,39 @@
+.transfer-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &__wallets {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    &__received-to {
+        position: absolute;
+        left: 12rem;
+        top: 5.6rem;
+    }
+
+    &__icon {
+        position: absolute;
+        left: 6.4rem;
+        top: 100%;
+    }
+
+    &__success-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        top: 7.6rem;
+    }
+
+    &__button {
+        display: flex;
+        margin-top: 2rem;
+        gap: 0.8rem;
+    }
+}

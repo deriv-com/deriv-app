@@ -19,6 +19,7 @@ import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';
+import './appstore/ic-appstore-transfer-arrow-line.svg';
 import './appstore/ic-appstore-wallet-aud-light.svg';
 import './appstore/ic-appstore-wallet-bitcoin-light.svg';
 import './appstore/ic-appstore-wallet-card-placeholder-dark-red-line.svg';

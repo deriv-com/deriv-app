@@ -13,6 +13,7 @@ import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
+import Tutorial from './tutorial-tab';
 
 interface DashboardProps {
     active_tab: number;
@@ -62,7 +63,9 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                         </div>
                     </Tab>
                     <Tab icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
-                        <div>{localize('Under Developments')}</div>
+                        <div className='tutorials-wrapper'>
+                            <Tutorial />
+                        </div>
                     </Tab>
                 </Tabs>
             </div>
@@ -80,9 +83,9 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
     );
 };
 
-export default connect(({ dashbaord, quick_strategy, run_panel }: RootStore) => ({
-    active_tab: dashbaord.active_tab,
-    setActiveTab: dashbaord.setActiveTab,
+export default connect(({ dashboard, quick_strategy, run_panel }: RootStore) => ({
+    active_tab: dashboard.active_tab,
+    setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

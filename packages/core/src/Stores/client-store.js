@@ -2255,12 +2255,12 @@ export default class ClientStore extends BaseStore {
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
-        smartTrader.origin = getUrlSmartTrader();
+        smartTrader.origin = 'https://deriv-binary-static-5y9s2psj6.binary.sx';
         binaryBot.origin = getUrlBinaryBot();
 
         [smartTrader, binaryBot].forEach(platform => {
             /* eslint-disable no-console */
-            console.log(platform.iframe.contentWindow, 'platform.iframe.contentWindow');
+            console.log(platform.iframe, 'platform.iframe');
             console.log(platform.origin, 'platform.origin');
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).

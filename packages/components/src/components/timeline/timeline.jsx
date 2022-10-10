@@ -25,7 +25,7 @@ const Timeline = ({ children, disabled_items, ...props }) => {
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
-                        <Text as='h2' color='prominent' size='xs' className='dc-timeline__title'>
+                        <Text as='h2' color='prominent' line_height='xxl' className='dc-timeline__title'>
                             {child.props.item_title}
                         </Text>
                         <div className='dc-timeline__content'>{child}</div>

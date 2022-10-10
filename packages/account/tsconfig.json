@@ -8,13 +8,15 @@
             "Containers/*": ["src/Containers/*"],
             "Constants/*": ["src/Constants/*"],
             "Configs/*": ["src/Configs/*"],
+            "Duplicated/*": ["src/Duplicated/*"],
             "Helpers/*": ["src/Helpers/*"],
+            "Layout/*": ["src/Layout/*"],
             "Modules/*": ["src/Modules/*"],
             "Sections/*": ["src/Sections/*"],
             "Stores/*": ["src/Stores/*"],
-            "Types": ["src/Types"],
-            "@deriv/*": ["../*/src"],
+            "Styles/*": ["src/Styles/*"],
+            "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src","globals.d.ts"]
+    "include": ["src"]
 }

@@ -2,13 +2,12 @@ import React, { RefObject } from 'react';
 
 export const useOnClickOutside = (
     ref: RefObject<HTMLElement>,
-    handler: (event: any) => void,
-    validationFn: (event: any) => any
+    handler: (event: MouseEvent) => void,
+    validationFn: (event: MouseEvent) => boolean
 ) => {
     React.useEffect(() => {
         const listener = (event: MouseEvent) => {
-            const path = event.composedPath?.()[0] ?? (event as any).path; //event.path is non-standard and will be deprecated
-
+            const path = event.composedPath?.()[0] ?? (event as MouseEvent & { path: HTMLElement }).path; //event.path is non-standard and will be deprecated
             // When component is isolated (e.g, iframe, shadow DOM) event.target refers to whole container not the component. path[0] is the node that the event originated from, it does not need to walk the array
             if (
                 ref &&

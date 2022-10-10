@@ -2,13 +2,17 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import EmptyState from 'Components/empty-state';
 
-type TProps = {
+type TEmailVerificationResendEmptyStateProps = {
     isCounterRunning: boolean;
     counter: number;
     resend: () => void;
 };
 
-const EmailVerificationResendEmptyState = ({ isCounterRunning, counter, resend }: TProps) => {
+const EmailVerificationResendEmptyState = ({
+    isCounterRunning,
+    counter,
+    resend,
+}: TEmailVerificationResendEmptyStateProps) => {
     return (
         <EmptyState
             title={localize("Didn't receive the email?")}

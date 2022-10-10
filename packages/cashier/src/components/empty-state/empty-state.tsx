@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Text, Button } from '@deriv/components';
+import { TReactChildren } from 'Types';
 import './empty-state.scss';
 
 type TAction = {
@@ -12,10 +13,10 @@ type TAction = {
 
 export type TEmptyStateProps = {
     icon?: string;
-    title?: string | React.ReactNode;
-    description?: string | React.ReactNode;
+    title?: string | TReactChildren;
+    description?: string | TReactChildren;
     action?: TAction;
-} & ({ title: string | React.ReactNode } | { description: string | React.ReactNode });
+} & ({ title: string | TReactChildren } | { description: string | TReactChildren });
 
 const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
     <div className='cashier-empty-state'>

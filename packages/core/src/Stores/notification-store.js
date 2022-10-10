@@ -255,6 +255,7 @@ export default class NotificationStore extends BaseStore {
                 poa_address_mismatch,
             } = getStatusValidations(status || []);
 
+            this.removeNotificationByKey({ key: this.client_notifications.poa_address_mismatch_warning.key });
             if (poa_address_mismatch) {
                 this.addNotificationMessage(this.client_notifications.poa_address_mismatch_warning);
             }
@@ -1130,17 +1131,20 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to Personal details'),
                 },
                 type: 'warning',
+                should_show_again: true,
             },
             poa_address_mismatch_success: {
                 key: 'poa_address_mismatch_success',
                 header: localize('Your proof of address has been verified'),
                 type: 'announce',
+                should_show_again: true,
             },
             poa_address_mismatch_error: {
                 key: 'poa_address_mismatch_error',
                 header: localize('Your address doesn’t match your profile'),
                 message: localize('Update the address in your profile.'),
                 type: 'danger',
+                should_show_again: true,
             },
         };
         this.client_notifications = notifications;

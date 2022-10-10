@@ -108,6 +108,8 @@ export const PersonalDetailsForm = ({
     states_list,
     current_landing_company,
     refreshNotifications,
+    addNotificationMessageByKey,
+    Notifications,
     fetchResidenceList,
     fetchStatesList,
     has_residence,
@@ -239,11 +241,15 @@ export const PersonalDetailsForm = ({
             setStatus({ msg: data.error.message });
             setIsBtnLoading(false);
             setSubmitting(false);
+
+            addNotificationMessageByKey('poa_address_mismatch_error');
         } else {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
                 setRestState({ ...rest_state, api_error: response.error.message });
+
+                addNotificationMessageByKey('poa_address_mismatch_error');
                 return;
             }
             // Fetches the status of the account after update
@@ -259,6 +265,9 @@ export const PersonalDetailsForm = ({
                     setSubmitting(false);
                 },
             });
+
+            addNotificationMessageByKey('poa_address_mismatch_success');
+
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -545,6 +554,7 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <>
+                    <Notifications />
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form
@@ -1228,6 +1238,8 @@ PersonalDetailsForm.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
     states_list: PropTypes.array,
     refreshNotifications: PropTypes.func,
+    addNotificationMessageByKey: PropTypes.func,
+    Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_residence: PropTypes.bool,
@@ -1240,7 +1252,7 @@ PersonalDetailsForm.propTypes = {
     has_poa_address_mismatch: PropTypes.bool,
 };
 
-export default connect(({ client, notifications }) => ({
+export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
@@ -1256,6 +1268,8 @@ export default connect(({ client, notifications }) => ({
     fetchStatesList: client.fetchStatesList,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
+    addNotificationMessageByKey: notifications.addNotificationMessageByKey,
+    Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
 }))(withRouter(PersonalDetailsForm));

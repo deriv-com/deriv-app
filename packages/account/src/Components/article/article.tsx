@@ -1,12 +1,22 @@
-import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import './article.scss';
 
-const Article = ({ title, descriptions, onClickLearnMore }) => {
-    const has_descriptions = descriptions?.length > 0;
-    const has_single_description = descriptions?.length === 1;
+type TDescriptionsItem = {
+    key: string;
+    component: React.ReactElement;
+};
+
+export type TArticle = {
+    title: string;
+    descriptions: Array<TDescriptionsItem | React.ReactElement>;
+    onClickLearnMore?: () => void;
+};
+
+const Article = ({ title, descriptions, onClickLearnMore }: TArticle) => {
+    const has_descriptions: boolean = descriptions?.length > 0;
+    const has_single_description: boolean = descriptions?.length === 1;
 
     return (
         <article className='da-article'>
@@ -24,7 +34,7 @@ const Article = ({ title, descriptions, onClickLearnMore }) => {
                             {descriptions.map((description, idx) => (
                                 <li key={idx}>
                                     <Text size='xxs' line_height='xs'>
-                                        {description.component || description}
+                                        {'component' in description ? description.component : description}
                                     </Text>
                                 </li>
                             ))}
@@ -42,12 +52,6 @@ const Article = ({ title, descriptions, onClickLearnMore }) => {
             )}
         </article>
     );
-};
-
-Article.propTypes = {
-    descriptions: PropTypes.array.isRequired,
-    onClickLearnMore: PropTypes.func,
-    title: PropTypes.string.isRequired,
 };
 
 export default Article;

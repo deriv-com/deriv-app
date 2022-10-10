@@ -27,7 +27,7 @@ import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(() => {
-    const { general_store, order_store, sendbird_store } = useStores();
+    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
 
     const {
         account_currency,
@@ -80,6 +80,7 @@ const OrderDetails = observer(() => {
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
+        my_profile_store.getPaymentMethodsList();
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -276,16 +277,31 @@ const OrderDetails = observer(() => {
                                             className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
-                                            list={order_store?.order_payment_method_details?.map(payment_method => ({
-                                                header: (
-                                                    <PaymentMethodAccordionHeader payment_method={payment_method} />
-                                                ),
-                                                content: (
-                                                    <PaymentMethodAccordionContent payment_method={payment_method} />
-                                                ),
-                                            }))}
+                                            list={order_store?.order_payment_method_details
+                                                ?.filter(
+                                                    payment_method =>
+                                                        Object.entries(
+                                                            my_profile_store.available_payment_methods
+                                                        )?.findIndex(
+                                                            available_payment_method =>
+                                                                available_payment_method[1].display_name ===
+                                                                payment_method.display_name
+                                                        ) !== -1
+                                                )
+                                                .map(payment_method => ({
+                                                    header: (
+                                                        <PaymentMethodAccordionHeader payment_method={payment_method} />
+                                                    ),
+                                                    content: (
+                                                        <PaymentMethodAccordionContent
+                                                            payment_method={payment_method}
+                                                        />
+                                                    ),
+                                                }))}
                                             is_expand_all={should_expand_all}
-                                            onChange={setShouldExpandAll}
+                                            onChange={value => {
+                                                setShouldExpandAll(value);
+                                            }}
                                         />
                                     </div>
                                 ) : (

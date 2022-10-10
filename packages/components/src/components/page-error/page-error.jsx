@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import ButtonLink from '../button-link/button-link.jsx';
-import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
-import MobileWrapper from '../mobile-wrapper/mobile-wrapper';
+import DesktopWrapper from '../desktop-wrapper';
+import MobileWrapper from '../mobile-wrapper';
 import Text from '../text/text.jsx';
 
 const PageError = ({

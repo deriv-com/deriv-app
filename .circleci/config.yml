@@ -82,16 +82,6 @@ commands:
           name: "Build all packages"
           command: npm run build:all
 
-  build_storybook:
-    description: "Build storybook"
-    steps:
-      - run:
-          name: "Bootstrap for deriv storybook"
-          command: npm run build:travis
-      - run:
-          name: "Build all packages for deriv storybook"
-          command: npm run build:storybook
-
   notify_slack:
     description: "Notify slack"
     steps:
@@ -191,26 +181,6 @@ jobs:
       - npm_install_from_cache
       - build
 
-  release_storybook:
-    docker:
-      - image: cimg/node:16.16.0
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_storybook
-      - versioning:
-          version_name: storybook
-      - docker_build_push:
-          docker_image_latest_tag: latest
-          docker_image_name: "deriv-app-storybook"
-          docker_file: "Dockerfile-storybook"
-      - k8s_deploy:
-          k8s_namespace: "deriv-app-storybook-production"
-          k8s_service: "deriv-app-storybook"
-      - notify_slack
-    environment:
-      NODE_ENV: staging
-
   release_staging:
     docker:
       - image: cimg/node:16.16.0
@@ -284,16 +254,6 @@ jobs:
           command: npm test
 
 workflows:
-  release_storybook:
-    jobs:
-      - release_storybook:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^storybook.*/
-
   release_staging:
     jobs:
       - release_staging:

@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { Loading, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { website_name } from '@deriv/shared';
+import { useStore } from '@deriv/hooks';
 import PaymentAgentDeposit from '../payment-agent-deposit';
-import { useStore } from '../../../hooks';
 
 const DepositTab = () => {
     const { modules } = useStore();

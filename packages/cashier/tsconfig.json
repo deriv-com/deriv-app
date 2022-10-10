@@ -10,6 +10,7 @@
             "Stores/*": ["src/stores/*"],
             "Types": ["src/types"],
             "Utils/*": ["src/utils/*"],
+            "@deriv/hooks": ["src/hooks"],
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",

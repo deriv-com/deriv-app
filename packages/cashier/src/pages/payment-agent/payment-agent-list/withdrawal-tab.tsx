@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useStore, useVerifyEmail } from '@deriv/hooks';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
-import { useStore, useVerifyEmail } from '../../../hooks';
 
 const WithdrawalTab = () => {
     const verify = useVerifyEmail('paymentagent_withdraw');

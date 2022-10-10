@@ -93,8 +93,6 @@ describe('WithdrawStore', () => {
         withdraw_store.setIsWithdrawConfirmed(true);
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
-
-        withdraw_store.setIsWithdrawConfirmed(false);
     });
 
     it('should set withdraw_amount', () => {

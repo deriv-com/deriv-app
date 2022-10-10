@@ -110,10 +110,6 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.active_tab_index).toBe(1);
     });
 
-    it('should set active_tab_index then send verification email if it is equal to 1', () => {
-        payment_agent_store.setActiveTab(1);
-    });
-
     it('should get is_payment_agent_visible', async () => {
         expect(payment_agent_store.is_payment_agent_visible).toBe(false);
 

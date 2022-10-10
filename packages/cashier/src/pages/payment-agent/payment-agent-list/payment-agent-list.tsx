@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { Tabs, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/hooks';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
-import { useStore } from '../../../hooks';
 import './payment-agent-list.scss';
 
 const PaymentAgentList = () => {

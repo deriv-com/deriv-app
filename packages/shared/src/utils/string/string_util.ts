@@ -1,12 +1,12 @@
-export const toTitleCase = str =>
+export const toTitleCase = (str: string) =>
     (str || '').replace(/\w[^\s/\\]*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
-export const padLeft = (txt, len, char) => {
+export const padLeft = (txt: string, len: number, char: string) => {
     const text = String(txt || '');
     return text.length >= len ? text : `${Array(len - text.length + 1).join(char)}${text}`;
 };
 
-export const compareBigUnsignedInt = (a, b) => {
+export const compareBigUnsignedInt = (a: number, b: number) => {
     let first_num = numberToString(a);
     let second_num = numberToString(b);
     if (!first_num || !second_num) {
@@ -25,15 +25,15 @@ export const compareBigUnsignedInt = (a, b) => {
     return order;
 };
 
-export const matchStringByChar = (s, p) => {
+export const matchStringByChar = (s: string, p: string) => {
     if (p?.length < 1) return true;
     const z = p.split('').reduce((a, b) => `${a}[^${b}]*${b}`);
     return RegExp(z, 'i').test(s);
 };
 
-export const numberToString = n => (typeof n === 'number' ? String(n) : n);
+export const numberToString = (n: number) => (typeof n === 'number' ? String(n) : n);
 
-export const getKebabCase = str => {
+export const getKebabCase = (str: string) => {
     if (!str) return str;
     return str
         .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // get all lowercase letters that are near to uppercase ones
@@ -42,7 +42,7 @@ export const getKebabCase = str => {
 };
 
 // Automatically formats input string with separators based on example format argument.
-export const formatInput = (example_format, input_string, separator) => {
+export const formatInput = (example_format: string, input_string: string, separator: string) => {
     const separator_index = example_format.indexOf(separator);
     const format_count = getCharCount(example_format, separator);
     const input_count = getCharCount(input_string, separator);
@@ -54,4 +54,5 @@ export const formatInput = (example_format, input_string, separator) => {
     return input_string;
 };
 
-export const getCharCount = (target_string, char) => target_string.match(new RegExp(char, 'g'))?.length || 0;
+export const getCharCount = (target_string: string, char: string | RegExp) =>
+    target_string.match(new RegExp(char, 'g'))?.length || 0;

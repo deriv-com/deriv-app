@@ -1,8 +1,17 @@
 import { addComma } from '../currency';
 import { cloneObject } from '../object';
 import { compareBigUnsignedInt } from '../string';
+import { TFormErrorMessagesTypes } from './form-error-messages-types';
 
-const validRequired = (value /* , options, field */) => {
+export type TOptions = {
+    min: number;
+    max: number;
+    type?: string;
+    decimals?: string | number;
+    regex?: RegExp;
+};
+
+const validRequired = (value?: number /* , options, field */) => {
     if (value === undefined || value === null) {
         return false;
     }
@@ -10,28 +19,28 @@ const validRequired = (value /* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
-export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
-export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
-export const validPhone = value => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
-export const validLetterSymbol = value => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
-export const validLength = (value = '', options) =>
+export const validAddress = (value: string) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
+export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
+export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
+export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
+export const validLength = (value = '', options: TOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
-export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-export const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
-const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
-const validRegular = (value, options) => options.regex.test(value);
-const confirmRequired = value => value === true;
-const checkPOBox = value => !/p[.\s]+o[.\s]+box/i.test(value);
-const validEmailToken = value => value.trim().length === 8;
+export const validPassword = (value: string) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
+const validGeneral = (value: string) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
+const validRegular = (value: string, options: TOptions) => options.regex?.test(value);
+const confirmRequired = (value: boolean) => value === true;
+const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
+const validEmailToken = (value: string) => value.trim().length === 8;
 
-let pre_build_dvrs, form_error_messages;
+let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 
-const isMoreThanMax = (value, options) =>
+const isMoreThanMax = (value: number, options: TOptions) =>
     options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1;
 
-export const validNumber = (value, opts) => {
+export const validNumber = (value: string, opts: TOptions) => {
     const options = cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {
@@ -46,7 +55,7 @@ export const validNumber = (value, opts) => {
         options.max = options.max();
     }
 
-    if (!(options.type === 'float' ? /^\d*(\.\d+)?$/ : /^\d+$/).test(value) || isNaN(value)) {
+    if (!(options.type === 'float' ? /^\d*(\.\d+)?$/ : /^\d+$/).test(value) || isNaN(+value)) {
         is_ok = false;
         message = form_error_messages.number();
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
@@ -56,7 +65,7 @@ export const validNumber = (value, opts) => {
         'min' in options &&
         'max' in options &&
         options.min > 0 &&
-        (+value < +options.min || isMoreThanMax(value, options))
+        (+value < +options.min || isMoreThanMax(+value, options))
     ) {
         is_ok = false;
         const min_value = addComma(options.min);
@@ -73,7 +82,7 @@ export const validNumber = (value, opts) => {
         is_ok = false;
         const min_value = addComma(options.min);
         message = form_error_messages.minNumber(min_value);
-    } else if ('max' in options && isMoreThanMax(value, options)) {
+    } else if ('max' in options && isMoreThanMax(+value, options)) {
         is_ok = false;
         const max_value = addComma(options.max);
         message = form_error_messages.maxNumber(max_value);
@@ -81,6 +90,7 @@ export const validNumber = (value, opts) => {
     return { is_ok, message };
 };
 
+export type TInitPreBuildDVRs = ReturnType<typeof initPreBuildDVRs>;
 const initPreBuildDVRs = () => ({
     address: {
         func: validAddress,
@@ -101,7 +111,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.letter_symbol,
     },
     number: {
-        func: (...args) => validNumber(...args),
+        func: (value: string, opts: TOptions) => validNumber(value, opts),
         message: form_error_messages.number,
     },
     password: {
@@ -121,7 +131,7 @@ const initPreBuildDVRs = () => ({
     },
 });
 
-export const initFormErrorMessages = all_form_error_messages => {
+export const initFormErrorMessages = (all_form_error_messages: TFormErrorMessagesTypes) => {
     if (!pre_build_dvrs) {
         form_error_messages = all_form_error_messages;
         pre_build_dvrs = initPreBuildDVRs();

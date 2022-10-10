@@ -104,7 +104,9 @@ const OnRamp = ({
 
         return () => {
             onUnmountOnramp();
-            setSideNotes([]);
+            if (typeof setSideNotes === 'function') {
+                setSideNotes([]);
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, tab_index]);

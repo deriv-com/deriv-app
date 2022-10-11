@@ -11,15 +11,13 @@ type TInfoPanel = {
 const InfoPanel = ({ setInfoPanelVisibility }: TInfoPanel) => {
     return (
         <div className='db-info-panel'>
-            <div className='db-info-panel__close-action'>
-                <Icon
-                    width='1rem'
-                    height='1rem'
-                    icon='IcCloseIconDbot'
-                    onClick={() => {
-                        setInfoPanelVisibility(false);
-                    }}
-                />
+            <div
+                className='db-info-panel__close-action'
+                onClick={() => {
+                    setInfoPanelVisibility(false);
+                }}
+            >
+                <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
             </div>
             {SIDEBAR_INTRO.map((sidebar_item, index) => {
                 const { label, content } = sidebar_item;

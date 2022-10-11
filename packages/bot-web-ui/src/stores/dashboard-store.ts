@@ -8,8 +8,13 @@ export interface IDashboardStore {
     faq_search_value: string;
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
+    is_info_panel_visible: boolean;
     onCloseDialog: () => void;
+    setActiveTab: (active_tab: number) => void;
+    setActiveTabTutorial: (active_tab_tutotials: number) => void;
+    setFAQSearchValue: (faq_search_value: string) => void;
     showVideoDialog: (url: string, component: HTMLVideoElement) => boolean;
+    setInfoPanelVisibility: (visibility: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -24,6 +29,7 @@ export default class DashboardStore implements IDashboardStore {
     @observable faq_search_value = null || '';
     @observable dialog_options = {};
     @observable is_dialog_open = false;
+    @observable is_info_panel_visible = true;
 
     @action.bound
     onCloseDialog(): void {
@@ -51,5 +57,10 @@ export default class DashboardStore implements IDashboardStore {
             return (this.is_dialog_open = true);
         }
         return (this.is_dialog_open = false);
+    }
+
+    @action.bound
+    setInfoPanelVisibility(is_info_panel_visible: boolean) {
+        this.is_info_panel_visible = is_info_panel_visible;
     }
 }

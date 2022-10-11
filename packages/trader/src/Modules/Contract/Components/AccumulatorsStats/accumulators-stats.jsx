@@ -70,18 +70,18 @@ const AccumulatorsStats = ({ break_out_history, is_expandable = true, stay_in_hi
                         is_manual_open={is_manual_open}
                         toggleManual={() => setIsManualOpen(!is_manual_open)}
                     />
-                    <Text weight='bold' size='xxs'>
+                    <Text weight='bold' size={isMobile() ? 'xxxs' : 'xxs'} className='accumulators-stats__title-text'>
                         {widget_title}
                     </Text>
-                </div>
-                <div
-                    data-testid='dt_accu_stats_switcher'
-                    className='accumulators-stats__switcher'
-                    onClick={handleSwitchBetweenContracts}
-                >
-                    {['IcChevronUpNormal', 'IcChevronDown'].map(icon => (
-                        <Icon key={icon} icon={icon} />
-                    ))}
+                    <div
+                        data-testid='dt_accu_stats_switcher'
+                        className='accumulators-stats__switcher'
+                        onClick={handleSwitchBetweenContracts}
+                    >
+                        {['IcChevronUpNormal', 'IcChevronDown'].map(icon => (
+                            <Icon key={icon} icon={icon} />
+                        ))}
+                    </div>
                 </div>
                 <Text size={history_text_size} className='accumulators-stats__history'>
                     {!is_collapsed ? (

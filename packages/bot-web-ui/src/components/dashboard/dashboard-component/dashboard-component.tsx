@@ -22,7 +22,7 @@ const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => {
                         </Text>
                     </div>
                     <div className='tab__dashboard__description'>
-                        <Text color='prominent' line_height='s' size='s'>
+                        <Text color='prominent' line_height='s'>
                             {localize(
                                 'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
                             )}

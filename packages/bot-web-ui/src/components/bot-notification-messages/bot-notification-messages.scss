@@ -8,7 +8,7 @@
     .notification-messages {
         transition: transform 0.3s ease, opacity 0.25s linear;
     }
-    &--is-panel-open {
+    &--panel-open {
         .notification-messages {
             transform: translate3d(calc(-368px), 0, 0);
         }

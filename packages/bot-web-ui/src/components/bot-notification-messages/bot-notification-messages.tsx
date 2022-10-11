@@ -18,7 +18,7 @@ const BotNotificationMessages = ({
 }: TBotNotificationMessagesProps) => (
     <div
         className={classNames('notifications-container', {
-            'notifications-container--is-panel-open':
+            'notifications-container--panel-open':
                 active_tab === 0 ? is_info_panel_visible : (active_tab === 1 || active_tab === 2) && is_drawer_open,
         })}
     >

@@ -4,7 +4,7 @@ import { Text } from '@deriv/components';
 
 type TAccountLimitsTableCell = {
     align?: 'right' | 'left';
-    children?: any;
+    children?: React.ReactElement | DocumentFragment | React.ReactNode;
     is_hint?: boolean;
     renderExtraInfo?: () => React.ReactElement;
 };

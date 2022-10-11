@@ -1,9 +1,9 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';

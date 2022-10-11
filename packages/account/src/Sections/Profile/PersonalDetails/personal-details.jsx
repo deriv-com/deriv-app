@@ -43,7 +43,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
-import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
+import POAAddressMismatchChecker from 'Components/poa-address-mismatch-hint-box/poa-address-mismatch-checker';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -108,7 +108,6 @@ export const PersonalDetailsForm = ({
     states_list,
     current_landing_company,
     refreshNotifications,
-    addNotificationMessageByKey,
     Notifications,
     fetchResidenceList,
     fetchStatesList,
@@ -118,7 +117,6 @@ export const PersonalDetailsForm = ({
     history,
     is_social_signup,
     updateAccountStatus,
-    has_poa_address_mismatch,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -241,15 +239,11 @@ export const PersonalDetailsForm = ({
             setStatus({ msg: data.error.message });
             setIsBtnLoading(false);
             setSubmitting(false);
-
-            addNotificationMessageByKey('poa_address_mismatch_error');
         } else {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
                 setRestState({ ...rest_state, api_error: response.error.message });
-
-                addNotificationMessageByKey('poa_address_mismatch_error');
                 return;
             }
             // Fetches the status of the account after update
@@ -265,9 +259,6 @@ export const PersonalDetailsForm = ({
                     setSubmitting(false);
                 },
             });
-
-            addNotificationMessageByKey('poa_address_mismatch_success');
-
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -951,7 +942,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                     {!is_appstore && !is_virtual && (
                                         <React.Fragment>
-                                            {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
+                                            <POAAddressMismatchChecker />
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
@@ -1238,7 +1229,6 @@ PersonalDetailsForm.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
     states_list: PropTypes.array,
     refreshNotifications: PropTypes.func,
-    addNotificationMessageByKey: PropTypes.func,
     Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
@@ -1249,7 +1239,6 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
-    has_poa_address_mismatch: PropTypes.bool,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -1268,8 +1257,6 @@ export default connect(({ client, notifications, ui }) => ({
     fetchStatesList: client.fetchStatesList,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
-    addNotificationMessageByKey: notifications.addNotificationMessageByKey,
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
-    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
 }))(withRouter(PersonalDetailsForm));

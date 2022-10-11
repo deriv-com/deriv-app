@@ -22,7 +22,6 @@ describe('start_date', () => {
                 underlying_symbol: 'frxAUDJPY',
                 forward_starting_options: [],
             };
-            /* eslint-disable no-unused-expressions */
             expect(buildForwardStartingConfig(contract, [])).to.be.empty('');
         });
     });

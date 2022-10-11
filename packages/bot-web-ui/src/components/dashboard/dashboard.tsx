@@ -11,6 +11,7 @@ import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
 import classNames from 'classnames';
+import Tutorial from './tutorial-tab';
 
 type TDashboard = {
     active_tab: number;
@@ -58,7 +59,9 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                             </div>
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
-                            <div>{localize('Under Developments')}</div>
+                            <div className='tutorials-wrapper'>
+                                <Tutorial />
+                            </div>
                         </div>
                     </Tabs>
                 </div>

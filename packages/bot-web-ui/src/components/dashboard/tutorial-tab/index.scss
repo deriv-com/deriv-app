@@ -1,0 +1,37 @@
+@import './sidebar.scss';
+@import './dialog.scss';
+
+.tutorials-wrap {
+    &__group {
+        display: flex;
+        margin-top: 2.4rem;
+        &__cards {
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            width: 27rem;
+            margin-right: 2.4rem;
+        }
+    }
+
+    &__placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--checkbox-disabled-grey);
+        margin-bottom: 0.8rem;
+        margin-right: 2.4rem;
+        height: 16rem;
+        width: 28rem;
+
+        &__button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20rem;
+            height: 7rem;
+            border-radius: 1rem;
+            cursor: pointer;
+        }
+    }
+}

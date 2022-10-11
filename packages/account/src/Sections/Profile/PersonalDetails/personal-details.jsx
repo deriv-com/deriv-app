@@ -43,7 +43,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
-import POAAddressMismatchChecker from 'Components/poa-address-mismatch-hint-box/poa-address-mismatch-checker';
+import POAAddressMismatchChecker from 'Components/poa-address-mismatch-checker';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {

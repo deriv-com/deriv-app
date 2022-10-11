@@ -2,7 +2,7 @@ import React from 'react';
 import { usePrevious } from '@deriv/components';
 import { GetAccountStatus } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
-import POAAddressMismatchHintBox from './poa-address-mismatch-hint-box';
+import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 
 type TRootStore = {
     client: {

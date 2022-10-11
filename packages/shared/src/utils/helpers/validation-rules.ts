@@ -9,6 +9,12 @@ type TContractStore = {
     contract_update_take_profit?: string;
 };
 
+type TOptions = {
+    message?: string;
+    min?: number;
+    max?: number;
+};
+
 export const getContractValidationRules = () => ({
     has_contract_update_stop_loss: {
         trigger: 'contract_update_stop_loss',
@@ -25,7 +31,7 @@ export const getContractValidationRules = () => ({
             [
                 'custom',
                 {
-                    func: (value: number, contract_store: TContractStore) => {
+                    func: (value: number, options: TOptions, contract_store: TContractStore) => {
                         const profit = getTotalProfit(contract_store.contract_info);
                         return !(profit < 0 && -value > profit);
                     },
@@ -35,7 +41,7 @@ export const getContractValidationRules = () => ({
             [
                 'custom',
                 {
-                    func: (value: number, contract_store: TContractStore) => {
+                    func: (value: number, options: TOptions, contract_store: TContractStore) => {
                         const stake = getBuyPrice(contract_store);
                         return value < stake + 1;
                     },
@@ -59,7 +65,7 @@ export const getContractValidationRules = () => ({
             [
                 'custom',
                 {
-                    func: (value: string | number, contract_store: TContractStore) => {
+                    func: (value: string | number, options: TOptions, contract_store: TContractStore) => {
                         const profit = getTotalProfit(contract_store.contract_info);
                         return !(profit > 0 && +value < profit);
                     },

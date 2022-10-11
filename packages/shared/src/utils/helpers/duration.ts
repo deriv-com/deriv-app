@@ -124,7 +124,11 @@ export const getExpiryType = (store: any) => {
     const duration_is_day = expiry_type === 'duration' && duration_unit === 'd';
     const expiry_is_after_today =
         expiry_type === 'endtime' &&
-        (toMoment(expiry_date).isAfter(toMoment(server_time), 'day') || !hasIntradayDurationUnit(duration_units_list));
+        ((toMoment(expiry_date) as unknown as moment.Moment).isAfter(
+            toMoment(server_time) as unknown as moment.MomentInput,
+            'day'
+        ) ||
+            !hasIntradayDurationUnit(duration_units_list));
 
     let contract_expiry_type = 'daily';
     if (!duration_is_day && !expiry_is_after_today) {

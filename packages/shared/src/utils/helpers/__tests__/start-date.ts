@@ -23,7 +23,7 @@ describe('start_date', () => {
                 forward_starting_options: [],
             };
             /* eslint-disable no-unused-expressions */
-            expect(buildForwardStartingConfig(contract, [])).to.be.empty;
+            expect(buildForwardStartingConfig(contract, [])).to.be.empty();
         });
     });
 });

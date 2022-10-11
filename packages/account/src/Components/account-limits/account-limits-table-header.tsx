@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
-const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }) => {
+type TAccountLimitsTableHeader = {
+    align?: 'right' | 'left';
+    children?: any;
+    renderExtraInfo?: () => React.ReactElement;
+};
+
+const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }: TAccountLimitsTableHeader) => {
     return (
         <th
             className={classNames('da-account-limits__table-header', {
@@ -28,12 +33,6 @@ const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }) => {
             {renderExtraInfo && renderExtraInfo()}
         </th>
     );
-};
-
-AccountLimitsTableHeader.propTypes = {
-    align: PropTypes.oneOf(['right', 'left']),
-    children: PropTypes.any,
-    renderExtraInfo: PropTypes.func,
 };
 
 export default AccountLimitsTableHeader;

@@ -205,6 +205,10 @@ export const getSupportedContracts = is_high_low => ({
         name: <Localize i18n_default_text='Stay in' />,
         position: 'top',
     },
+    DECCU: {
+        name: <Localize i18n_default_text='Break out' />,
+        position: 'bottom',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

@@ -171,6 +171,10 @@ export const getSupportedContracts = is_high_low => ({
         name: localize('Stay in'),
         position: 'top',
     },
+    DECCU: {
+        name: localize('Break out'),
+        position: 'bottom',
+    },
     CALL: {
         name: is_high_low ? localize('Higher') : localize('Rise'),
         position: 'top',

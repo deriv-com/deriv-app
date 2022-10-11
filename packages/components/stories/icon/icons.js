@@ -603,6 +603,7 @@ export const icons =
         'IcTradetypeCall',
         'IcTradetypeCalleLight',
         'IcTradetypeCallspread',
+        'IcTradetypeDeccu',
         'IcTradetypeDigitdiff',
         'IcTradetypeDigiteven',
         'IcTradetypeDigitmatch',

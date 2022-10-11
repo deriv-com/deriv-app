@@ -579,6 +579,7 @@ import './tradetype/ic-tradetype-call-barrier.svg';
 import './tradetype/ic-tradetype-call.svg';
 import './tradetype/ic-tradetype-calle-light.svg';
 import './tradetype/ic-tradetype-callspread.svg';
+import './tradetype/ic-tradetype-deccu.svg';
 import './tradetype/ic-tradetype-digitdiff.svg';
 import './tradetype/ic-tradetype-digiteven.svg';
 import './tradetype/ic-tradetype-digitmatch.svg';

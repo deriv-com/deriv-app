@@ -958,6 +958,7 @@ export default class TradeStore extends BaseStore {
         this.proposal_info = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, proposal_response, obj_prev_contract_basis),
+            DECCU: getProposalInfo(this, proposal_response, obj_prev_contract_basis), //delete this, made for enable DECCU button
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {

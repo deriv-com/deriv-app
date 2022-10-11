@@ -39,7 +39,7 @@ const ContractCardHeader = ({
         tick_count,
     } = contract_info;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
-    const is_accumulator = contract_type === 'ACCU';
+    const is_accumulator = contract_type === 'ACCU' || contract_type === 'DECCU';
     const displayed_accumulator = growth_rate && `${getGrowthRatePercentage(growth_rate)}%`;
     const displayed_multiplier = multiplier && `x${multiplier}`;
     const displayed_trade_param = is_accumulator ? displayed_accumulator : displayed_multiplier;

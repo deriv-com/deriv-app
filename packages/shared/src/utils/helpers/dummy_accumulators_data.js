@@ -77,7 +77,7 @@ let is_sold = 0; // 0 || 1
 const tick_size_barrier = 0.000409;
 const longcode = `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in ${symbol_display_name}`;
 const stake = '10.00';
-const contract_type = 'ACCU'; // 'ACCU'
+const contract_type = 'ACCU'; // 'ACCU' or 'DECCU'
 const shortcode = `ACCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`; // `DECCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`
 
 export const dummy_break_out_history = [
@@ -400,6 +400,25 @@ export const dummy_accu_in_contracts_for_available = {
     underlying_symbol: symbol,
 };
 
+export const dummy_deccu_in_contracts_for_available = {
+    accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
+    barrier_category: 'american',
+    barriers: 2,
+    contract_category: 'accumulator',
+    contract_category_display: 'Stay in/Break out',
+    contract_display: 'Break out',
+    contract_type: 'DECCU',
+    exchange_name,
+    expiry_type: 'tick',
+    market,
+    max_contract_duration: '1d',
+    min_contract_duration: '1s',
+    sentiment: 'inside',
+    start_type: 'spot',
+    submarket,
+    underlying_symbol: symbol,
+};
+
 export const dummy_accumulators_proposals = {
     ACCU: {
         proposal: 1,
@@ -407,6 +426,16 @@ export const dummy_accumulators_proposals = {
         amount: 10,
         basis: 'stake',
         contract_type: 'ACCU',
+        currency: 'USD',
+        symbol,
+        growth_rate: 0.01,
+    },
+    DECCU: {
+        proposal: 1,
+        subscribe: 1,
+        amount: 10,
+        basis: 'stake',
+        contract_type: 'DECCU',
         currency: 'USD',
         symbol,
         growth_rate: 0.01,

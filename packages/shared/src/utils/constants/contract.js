@@ -106,8 +106,8 @@ export const getContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Stay in'),
-        trade_types: ['ACCU'],
+        title: localize('Stay in/Break out'),
+        trade_types: ['ACCU', 'DECCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],
         barrier_count: 2,
@@ -354,6 +354,10 @@ export const getSupportedContracts = is_high_low => ({
     ACCU: {
         name: <Localize i18n_default_text='Stay in' />,
         position: 'top',
+    },
+    DECCU: {
+        name: <Localize i18n_default_text='Break out' />,
+        position: 'bottom',
     },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,

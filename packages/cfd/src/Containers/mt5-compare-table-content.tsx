@@ -249,7 +249,8 @@ const DMT5CompareModalContent = ({
     const mt5_platforms = trading_platform_available_accounts.map(
         account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
     );
-    const available_accounts_keys = [...mt5_platforms, ...(should_show_derivx ? ['derivx'] : [])];
+    const has_synthetic = trading_platform_available_accounts.some(account => account.market_type === 'gaming');
+    const available_accounts_keys = [...mt5_platforms, ...(should_show_derivx && has_synthetic ? ['derivx'] : [])];
 
     const logged_out_available_accounts_count = show_eu_related ? 1 : 6;
     const available_accounts_count = is_logged_in

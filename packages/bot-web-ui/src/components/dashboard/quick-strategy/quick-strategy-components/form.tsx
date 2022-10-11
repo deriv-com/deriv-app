@@ -79,7 +79,7 @@ const QuickStrategyForm = ({
                             'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                         })}
                     >
-                        <ThemedScrollbars height='535px' autohide is_bypassed={is_mobile}>
+                        <ThemedScrollbars height='calc(100vh - 23.9rem)' autohide is_bypassed={is_mobile}>
                             <div
                                 className={classNames('quick-strategy__form-content', {
                                     'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,

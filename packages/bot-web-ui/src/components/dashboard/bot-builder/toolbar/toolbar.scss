@@ -3,7 +3,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: inset 0 1px 0 0 var(--general-section-1), inset 0 -1px 0 0 var(--general-section-1);
     padding: 5px 6px;
 
     &__btn {
@@ -34,7 +33,6 @@
 
         > * {
             align-self: center;
-            margin: 0 4px;
         }
     }
 
@@ -44,6 +42,7 @@
         margin: auto 12px;
         height: 16px;
         width: 16px;
+        fill: var(--text-prominent);
     }
 
     &__group {
@@ -61,11 +60,9 @@
             }
         }
     }
-
     &__animation {
         margin-right: 0.5rem;
     }
-
     &__dialog {
         &-text--second {
             margin-top: 2.4rem;

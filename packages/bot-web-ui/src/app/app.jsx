@@ -12,6 +12,7 @@ import {
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
+import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
 
 const App = ({ passthrough }) => {
@@ -75,11 +76,12 @@ const App = ({ passthrough }) => {
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className='bot-dashboard'>
+            <div className='bot-dashboard bot'>
                 <BotFooterExtensions />
                 <BotNotificationMessages />
                 <Dashboard />
                 <NetworkToastPopup />
+                <BotBuilder />
                 <RoutePromptDialog />
             </div>
         </MobxContentProvider>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, RedirectProps, Route, RouteComponentProps, RouteProps } from 'react-router-dom';
 import {
     alternateLinkTagChange,
     canonicalLinkTagChange,
@@ -9,6 +9,22 @@ import {
     isEmptyObject,
     default_title,
 } from '@deriv/shared';
+
+type TRoute = RouteProps & { default: boolean };
+
+type TRoutesWithSubRoutesProps = {
+    component: React.ElementType | typeof Redirect;
+    exact?: boolean;
+    getTitle?: () => string;
+    is_authenticated?: boolean;
+    is_logged_in?: boolean;
+    path: string;
+    routes: TRoute[];
+    to: RedirectProps['to'];
+    language: string;
+    Component404: React.ElementType;
+    should_redirect_login: boolean;
+};
 
 const RouteWithSubRoutes = ({
     component: Component,
@@ -22,8 +38,8 @@ const RouteWithSubRoutes = ({
     language,
     Component404,
     should_redirect_login,
-}) => {
-    const validateRoute = pathname => {
+}: TRoutesWithSubRoutesProps) => {
+    const validateRoute = (pathname: string) => {
         if (pathname === '') return true;
 
         if (path?.includes(':')) {
@@ -34,7 +50,7 @@ const RouteWithSubRoutes = ({
         return path === pathname || !!(routes && routes.find(route => pathname === route.path));
     };
 
-    const renderFactory = props => {
+    const renderFactory = (props: RouteComponentProps<{ [key: string]: string | undefined }>) => {
         let result = null;
 
         if (Component === Redirect) {
@@ -42,6 +58,7 @@ const RouteWithSubRoutes = ({
 
             // This if clause has been added just to remove '/index' from url in localhost env.
             if (path === shared_routes.index) {
+                /* eslint-disable react/prop-types */
                 const { location } = props;
                 redirect_to = location.pathname.toLowerCase().replace(path, '');
             }
@@ -54,15 +71,14 @@ const RouteWithSubRoutes = ({
                 result = <Redirect to={shared_routes.root} />;
             }
         } else {
-            const default_subroute = routes ? routes.find(r => r.default) : {};
-            const has_default_subroute = !isEmptyObject(default_subroute);
+            const default_subroute = routes.find(r => r.default);
             const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
             const is_valid_route = validateRoute(pathname);
             const should_redirect = !Component404;
 
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === path && <Redirect to={default_subroute.path} />}
+                    {default_subroute && pathname === path && <Redirect to={default_subroute.path} />}
                     {is_valid_route ? (
                         <Component {...props} routes={routes} />
                     ) : (

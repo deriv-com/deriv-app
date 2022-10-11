@@ -1,6 +1,21 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { RefObject, UIEventHandler } from 'react';
 import { useHover } from '../../hooks/use-hover';
+
+type TThemedScrollbars = {
+    autohide?: boolean;
+    className?: string;
+    has_horizontal?: boolean;
+    height?: string;
+    is_bypassed?: boolean;
+    is_only_horizontal?: boolean;
+    is_only_horizontal_overlay?: boolean;
+    is_scrollbar_hidden?: boolean;
+    onScroll: UIEventHandler<HTMLDivElement>;
+    refSetter: RefObject<HTMLDivElement>;
+    style?: React.CSSProperties;
+    width?: string;
+};
 
 const ThemedScrollbars = ({
     autohide = true,
@@ -16,7 +31,7 @@ const ThemedScrollbars = ({
     refSetter,
     style = {},
     width,
-}) => {
+}: React.PropsWithChildren<TThemedScrollbars>) => {
     const [hoverRef, isHovered] = useHover(refSetter);
 
     if (is_bypassed) return children;

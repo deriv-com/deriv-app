@@ -8,7 +8,6 @@ import LoadModalStore from 'Stores/load-modal-store';
 
 type TCard = {
     load_modal: LoadModalStore;
-    active_tab: number;
     setActiveTab: (active_tab: number) => void;
 };
 
@@ -59,6 +58,5 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
 
 export default connect(({ load_modal, dashboard }: RootStore) => ({
     load_modal,
-    active_tab: dashboard.active_tab,
     setActiveTab: dashboard.setActiveTab,
 }))(Cards);

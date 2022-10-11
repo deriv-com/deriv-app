@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { use100vh } from 'react-div-100vh';
+import Div100vh from 'react-div-100vh';
 
 type TDiv100vhContainerProps = {
     id?: string;
@@ -20,19 +20,16 @@ const Div100vhContainer = ({
     height_offset,
     max_autoheight_offset,
 }: PropsWithChildren<TDiv100vhContainerProps>) => {
-    const screen_vertical_height = use100vh();
-    const height = screen_vertical_height ? `${screen_vertical_height}px` : '100vh';
-    const height_rule = height_offset ? `calc(${height} - ${height_offset})` : `calc(${height})`;
-
-    const height_style = max_autoheight_offset
-        ? { maxHeight: `calc(100vh - ${max_autoheight_offset})` }
-        : { height: height_rule };
-
+    const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
+    const height_style: any = {
+        height: max_autoheight_offset ? null : height_rule,
+        maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : null,
+    };
     if (is_bypassed) return children;
     return (
-        <div id={id} className={className} style={is_disabled ? {} : height_style}>
+        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}
-        </div>
+        </Div100vh>
     );
 };
 

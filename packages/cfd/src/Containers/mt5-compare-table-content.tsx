@@ -314,7 +314,7 @@ const DMT5CompareModalContent = ({
                     'financial_bvi',
                     'financial_vanuatu',
                     'financial_labuan',
-                    ...(should_show_derivx ? ['derivx'] : []),
+                    ...(should_show_derivx && synthetic_accounts_count > 0 ? ['derivx'] : []),
                 ];
                 content_data.values = sorted_values.reduce(
                     (acc, el) => (available_accounts_keys.includes(el) ? { ...acc, [el]: undefined } : acc),
@@ -599,7 +599,7 @@ const DMT5CompareModalContent = ({
                                         {show_eu_related ? localize('CFDs') : localize('Financial')}
                                     </Table.Head>
                                 )}
-                                {should_show_derivx && (
+                                {should_show_derivx && synthetic_accounts_count > 0 && (
                                     <Table.Head className='cfd-real-compare-accounts__table-header-item'>
                                         {localize('Deriv X')}
                                     </Table.Head>

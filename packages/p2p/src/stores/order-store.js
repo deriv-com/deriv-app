@@ -36,6 +36,7 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getAdvertiserInfo: action.bound,
+            getP2POrderList: action.bound,
             getSettings: action.bound,
             getWebsiteStatus: action.bound,
             handleRating: action.bound,
@@ -204,6 +205,22 @@ export default class OrderStore {
         this.getWebsiteStatus(setShouldShowCancelModal);
     }
 
+    getP2POrderList() {
+        requestWS({ p2p_order_list: 1 }).then(response => {
+            if (response) {
+                if (response.error) {
+                    this.setErrorMessage(response.error.message);
+                } else {
+                    const { p2p_order_list } = response;
+
+                    this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
+                    p2p_order_list.list.forEach(order => this.syncOrder(order));
+                    this.setOrders(p2p_order_list.list);
+                }
+            }
+        });
+    }
+
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
             if (response && !response.error) {
@@ -345,7 +362,9 @@ export default class OrderStore {
                 if (response.error) {
                     this.setErrorMessage(response.error.message);
                 }
+                this.getP2POrderList();
                 this.setIsRatingModalOpen(false);
+                this.setRatingValue(0);
             }
         });
     }

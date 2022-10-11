@@ -70,11 +70,13 @@ export default class IframeStore {
         }
     }
 
-    setTimeoutCashierUrl(): void {
+    setTimeoutCashierUrl(is_withdrawal?: boolean): void {
         this.clearTimeoutCashierUrl();
-        this.timeout_session = setTimeout(() => {
-            this.setSessionTimeout(true);
-        }, 60000);
+        if (is_withdrawal) {
+            this.timeout_session = setTimeout(() => {
+                this.setSessionTimeout(true);
+            }, 60000);
+        }
     }
 
     setIframeUrl(url: string): void {

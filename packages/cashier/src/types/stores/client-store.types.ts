@@ -1,6 +1,8 @@
-import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { GetAccountStatus, Authorize } from '@deriv/api-types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
+
+type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 export type TClientStore = {
     accounts: { [k: string]: TAccount };
@@ -39,7 +41,6 @@ export type TClientStore = {
         decimal_places?: number;
     };
     loginid?: string;
-    mt5_login_list: Array<DetailsOfEachMT5Loginid>;
     residence: string;
     standpoint: {
         iom: string;
@@ -55,7 +56,9 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
+    authentication_status: TAuthenticationStatus;
 };

@@ -110,6 +110,7 @@ const OrderDetails = observer(() => {
     const display_payment_amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
+    const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
 
     const is_recommended_by_user =
         general_store.client?.loginid === client_details?.loginid
@@ -122,9 +123,7 @@ const OrderDetails = observer(() => {
                 <RatingModal
                     is_buy_order_for_user={is_buy_order_for_user}
                     is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_rated_previously={
-                        is_buy_order_for_user ? advertiser_details?.is_recommended : client_details?.is_recommended
-                    }
+                    is_user_recommended_previously={is_recommended_by_user}
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => {
                         order_store.setOrderRating(id);
@@ -138,9 +137,6 @@ const OrderDetails = observer(() => {
                         order_store.setIsRatingModalOpen(false);
                     }}
                     onClickStar={order_store.handleRating}
-                    previous_recommendation={
-                        is_buy_order_for_user ? advertiser_details.is_recommended : client_details.is_recommended
-                    }
                     rating_value={order_store.rating_value}
                 />
             )}
@@ -242,7 +238,7 @@ const OrderDetails = observer(() => {
                                 />
                                 <OrderInfoBlock
                                     label={localize('Rate (1 {{ account_currency }})', { account_currency })}
-                                    value={removeTrailingZeros(formatMoney(local_currency, rate, true, 6))}
+                                    value={`${rate_amount} ${local_currency}`}
                                 />
                             </div>
                             <div className='order-details-card__info--right'>
@@ -324,7 +320,7 @@ const OrderDetails = observer(() => {
                                 <RatingModal
                                     is_buy_order_for_user={is_buy_order_for_user}
                                     is_rating_modal_open={order_store.is_rating_modal_open}
-                                    is_user_rated_previously={is_recommended_by_user}
+                                    is_user_recommended_previously={is_recommended_by_user}
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => {
                                         order_store.setOrderRating(id);
@@ -338,7 +334,6 @@ const OrderDetails = observer(() => {
                                         order_store.setIsRatingModalOpen(false);
                                     }}
                                     onClickStar={order_store.handleRating}
-                                    previous_recommendation={is_recommended_by_user}
                                     rating_value={order_store.rating_value}
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />

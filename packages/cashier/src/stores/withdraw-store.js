@@ -196,7 +196,7 @@ export default class WithdrawStore {
             setLoading(false);
             setIframeUrl(response_cashier.cashier);
             setSessionTimeout(false);
-            setTimeoutCashierUrl();
+            setTimeoutCashierUrl(true);
         }
     }
 

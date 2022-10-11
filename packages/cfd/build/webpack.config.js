@@ -8,8 +8,9 @@ module.exports = function (env) {
         context: path.resolve(__dirname, '../'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            CFDStore: 'Stores/Modules/CFD/cfd-store',
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
+            CFDStore: 'Stores/Modules/CFD/cfd-store',
+            CompareAccountsModal: 'Containers/compare-accounts-modal.tsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

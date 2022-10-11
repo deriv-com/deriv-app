@@ -1,8 +1,0 @@
-version: "3.7"
-services:
-  storybook:
-    build:
-      context: ../
-      dockerfile: storybook.Dockerfile
-    ports: 
-      - '3000:80'

@@ -15,8 +15,9 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client }: TRootStore = useStores();
+    const { client, modules }: TRootStore = useStores();
     const { isEligibleForMoreRealMt5 } = client;
+    const { toggleJurisdictionModal } = modules.cfd;
 
     const available_real_accounts: Array<TStaticAccountProps> = [
         {
@@ -116,7 +117,7 @@ const CFDRealAccounts = ({
                                           platform={account.platform}
                                           disabled={account.disabled}
                                           //   TODO will pass the click functions when flows are updated
-                                          onClickGet={() => null}
+                                          onClickGet={() => toggleJurisdictionModal()}
                                           description={account.description}
                                       />
                                   </div>

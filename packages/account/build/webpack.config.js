@@ -58,7 +58,7 @@ module.exports = function (env) {
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
             'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
-            'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
+            'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

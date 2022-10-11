@@ -16,6 +16,11 @@ type TShowError = {
     should_clear_error_on_click: boolean;
 };
 
+type TAccounts = {
+    residence?: string;
+    landing_company_shortcode?: string;
+};
+
 export const showDigitalOptionsUnavailableError = (showError: (t: TShowError) => void, message: TMessage) => {
     const { title, text, link } = message;
     showError({
@@ -27,11 +32,6 @@ export const showDigitalOptionsUnavailableError = (showError: (t: TShowError) =>
         redirect_to: '/mt5',
         should_clear_error_on_click: true,
     });
-};
-
-type TAccounts = {
-    residence?: string;
-    landing_company_shortcode?: string;
 };
 
 export const isEuResidenceWithOnlyVRTC = (accounts: TAccounts[]) => {

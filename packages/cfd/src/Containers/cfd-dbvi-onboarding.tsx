@@ -16,11 +16,13 @@ type TVerificationModalProps = {
     jurisdiction_selected_shortcode: string;
     updateAccountStatus: () => void;
     account_status: GetAccountStatus;
+    context: RootStore;
 };
 
 const CFDDbViOnBoarding = ({
     disableApp,
     enableApp,
+    context,
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
     jurisdiction_selected_shortcode,

@@ -57,6 +57,7 @@ const CFDResetPasswordModal = ({
     email,
     is_cfd_reset_password_modal_enabled,
     is_eu,
+    context,
     is_logged_in,
     platform,
     setCFDPasswordResetModal,
@@ -289,6 +290,7 @@ CFDResetPasswordModal.propTypes = {
     platform: PropTypes.string,
     setCFDPasswordResetModal: PropTypes.func,
     history: PropTypes.object,
+    context: PropTypes.object,
 };
 
 export default React.memo(

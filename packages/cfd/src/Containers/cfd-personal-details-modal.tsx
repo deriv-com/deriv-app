@@ -15,6 +15,7 @@ const CFDPersonalDetailsModal = ({
     account_settings,
     disableApp,
     enableApp,
+    context,
     getChangeableFields,
     is_fully_authenticated,
     is_open,

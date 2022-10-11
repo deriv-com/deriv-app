@@ -10,6 +10,7 @@ import {
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
+import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
@@ -17,6 +18,7 @@ export type TCFDPersonalDetailsModalProps = {
     disableApp: () => void;
     getChangeableFields: () => string[];
     is_open: boolean;
+    context: RootStore;
     openPasswordModal: () => void;
     toggleCFDPersonalDetailsModal: () => void;
     toggleJurisdictionModal: () => void;
@@ -84,6 +86,7 @@ export type TError = {
 export type TCFDResetPasswordModal = RouteComponentProps & {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
+    context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
     is_logged_in: boolean;
@@ -125,6 +128,7 @@ export type TCFDPasswordReset = {
     account_type: string;
     account_group: 'real' | 'demo';
     server: string;
+    context: RootStore;
     password_type: string;
 };
 
@@ -137,6 +141,7 @@ export type TCFDPasswordManagerTabContent = {
     toggleModal: () => void;
     selected_login: string;
     email: string;
+    context: RootStore;
     setPasswordType: (value: string) => void;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: CFD_Platform;
@@ -148,6 +153,7 @@ export type TCFDPasswordManagerModal = {
     enableApp: () => void;
     email: string;
     is_eu: boolean;
+    context: RootStore;
     disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;

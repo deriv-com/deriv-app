@@ -24,6 +24,7 @@ type TCFDTopUpDemoModalProps = {
     is_top_up_virtual_open: boolean;
     is_top_up_virtual_in_progress: boolean;
     is_top_up_virtual_success: boolean;
+    context: RootStore;
     platform: string;
     topUpVirtual: (platform: string) => void;
 };
@@ -38,6 +39,7 @@ const CFDTopUpDemoModal = ({
     is_top_up_virtual_in_progress,
     is_top_up_virtual_success,
     platform,
+    context,
     topUpVirtual,
 }: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {

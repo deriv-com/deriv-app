@@ -6,7 +6,7 @@ import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { JurisdictionModal } from '@deriv/cfd';
+import { JurisdictionModal, PasswordModal } from '@deriv/cfd';
 import CFDAccounts from 'Components/CFDs';
 import { TAccountCategory } from 'Types';
 
@@ -44,6 +44,7 @@ const TradingHub: React.FC = () => {
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
             <JurisdictionModal context={store} />
+            <PasswordModal context={store} />
         </React.Fragment>
     );
 };

@@ -354,3 +354,147 @@
         }
     }
 }
+
+.cfd-jurisdiction-card {
+    border: solid 1px var(--border-normal);
+    border-radius: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    min-height: 38rem;
+    width: 27.6em;
+    position: relative;
+    padding: 1.6rem;
+    @include mobile {
+        margin-bottom: 2rem;
+    }
+
+    &:hover {
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
+    }
+
+    &--disabled {
+        border: solid 1px var(--border-disabled);
+    }
+
+    @include desktop {
+        height: 100%;
+        margin: 0 0.8rem;
+    }
+
+    &__wrapper {
+        padding: 0;
+        margin-top: 2.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+    &--selected {
+        border: solid 1px #377cfc;
+        border-radius: 4px;
+    }
+
+    &__verification-status,
+    &__verification-status--pending,
+    &__verification-status--failed,
+    &__verification-status--account_added,
+    &__verification-status--poi_verified,
+    &__verification-status--not_submitted,
+    &__verification-status--hint {
+        width: 100%;
+        min-height: 2.4rem;
+        display: flex;
+
+        * {
+            margin: auto;
+        }
+
+        &--pending {
+            background-color: #ffad3a;
+            border-radius: 0.5rem;
+        }
+
+        &--poi_verified {
+            background: var(--text-status-info-blue);
+            border-radius: 0.5rem;
+        }
+        &--account_added {
+            background-color: #4bb4b3;
+            border-radius: 0.5rem;
+        }
+
+        &--failed {
+            background-color: #ec3f3f;
+            border-radius: 0.5rem;
+        }
+        &--not_submitted {
+            background-color: var(--general-section-1);
+            padding: 0.3rem;
+            border-radius: 0.5rem;
+        }
+    }
+    &__h2-header {
+        margin: 1.4rem 0 2.4rem;
+    }
+    &__footnote {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 1.6rem auto 0;
+        @include desktop {
+            width: 99.2rem;
+        }
+        @include mobile {
+            padding: 1.6rem 0.8rem;
+            box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        &--pending {
+            color: #ffad3a;
+        }
+    }
+
+    &__jurisdiction-checkbox {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.6rem;
+    }
+
+    &__over-header {
+        background-color: #dfeaff;
+        top: -1rem;
+        left: 1.4rem;
+        z-index: 10;
+        width: 90%;
+        height: 4rem;
+        position: absolute;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+
+        & > p {
+            font-size: 16px;
+            text-align: center;
+        }
+    }
+
+    &__bullet-wrapper {
+        display: flex;
+        margin-bottom: 1rem;
+
+        &--checkmark {
+            margin-right: 1rem;
+        }
+    }
+}
+
+// .cfd-jurisdiction-card--synthetic {
+//     padding: 2.4rem;
+// }
+
+.cfd-modal--custom-exit {
+    display: none;
+}

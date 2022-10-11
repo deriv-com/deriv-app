@@ -4,6 +4,7 @@ import { GetAccountStatus } from '@deriv/api-types';
 import { connect } from 'Stores/connect';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 
+// Todo: move this TRootStore type into a shared folder.
 type TRootStore = {
     client: {
         account_status: GetAccountStatus;

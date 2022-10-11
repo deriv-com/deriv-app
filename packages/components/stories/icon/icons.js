@@ -1,7 +1,8 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons = {
-    appstore: [
+export const icons =
+{
+    'appstore': [
         'IcAppstoreAppCardDefaultBackgroundSmall',
         'IcAppstoreAppCardDefaultBackground',
         'IcAppstoreCfdsTradeType',
@@ -43,7 +44,7 @@ export const icons = {
         'IcAppstoreWalletUsdtLight',
         'IcAppstoreWarning',
     ],
-    brand: [
+    'brand': [
         'IcBrandBinarybot',
         'IcBrandDbot',
         'IcBrandDerivApps',
@@ -57,7 +58,7 @@ export const icons = {
         'IcBrandDxtrade',
         'IcBrandSmarttrader',
     ],
-    cashier: [
+    'cashier': [
         'IcCashierAdd',
         'IcCashierAirTmDark',
         'IcCashierAirTmLight',
@@ -185,15 +186,19 @@ export const icons = {
         'IcCashierXanpoolSmallLight',
         'IcCashier',
     ],
-    common: [
+    'common': [
+        'IcAccountCross',
+        'IcAccountDontGetScam',
         'IcAccountError',
         'IcAccountLimits',
         'IcAccountMissingDetailsDashboard',
         'IcAccountMissingDetails',
+        'IcAccountTick',
         'IcAccountTransferColored',
         'IcAccountTransfer',
         'IcAccountTrashCanDashboard',
         'IcAccountTrashCan',
+        'IcAccountWebsite',
         'IcAddAccount',
         'IcAddBold',
         'IcAddCircle',
@@ -225,6 +230,8 @@ export const icons = {
         'IcBank',
         'IcBell',
         'IcBlackWarning',
+        'IcBlock',
+        'IcBlockedAdvertisersBarred',
         'IcBox',
         'IcButtonBack',
         'IcCalendarDatefrom',
@@ -287,11 +294,16 @@ export const icons = {
         'IcEmailFirewall',
         'IcEmailOutline',
         'IcEmailSentDashboard',
+        'IcEmailSentP2p',
         'IcEmailSent',
         'IcEmailSpam',
         'IcEmailTypo',
+        'IcEmailVerificationLinkBlocked',
+        'IcEmailVerificationLinkInvalid',
+        'IcEmailVerificationLinkValid',
         'IcEmailVerified',
         'IcEmail',
+        'IcEmptyBlockedAdvertisers',
         'IcEmptyFolder',
         'IcEmptyStar',
         'IcEye',
@@ -337,6 +349,7 @@ export const icons = {
         'IcLoss',
         'IcMacosLogo',
         'IcMacos',
+        'IcMenuDots',
         'IcMessageDelivered',
         'IcMessageErrored',
         'IcMessagePending',
@@ -443,6 +456,7 @@ export const icons = {
         'IcUnsavedChanges',
         'IcUpDownSolid',
         'IcUpsDowns',
+        'IcUserBlockedOutline',
         'IcUserOutline',
         'IcUser',
         'IcUtility',
@@ -455,7 +469,7 @@ export const icons = {
         'IcZoomIn',
         'IcZoomOut',
     ],
-    contract: [
+    'contract': [
         'IcContractBarrier',
         'IcContractBuyPrice',
         'IcContractCommission',
@@ -471,7 +485,7 @@ export const icons = {
         'IcContractStartTime',
         'IcContractTarget',
     ],
-    currency: [
+    'currency': [
         'IcCurrencyAud',
         'IcCurrencyBch',
         'IcCurrencyBtc',
@@ -494,7 +508,10 @@ export const icons = {
         'IcCurrencyUst',
         'IcCurrencyVirtual',
     ],
-    dxtrade: [
+    'dxtrade': [
+        'IcDxtradeDerivX',
+        'IcDxtradeDerived',
+        'IcDxtradeDerivxPlatform',
         'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
         'IcDxtradeDeviceLaptopLight',
@@ -507,9 +524,8 @@ export const icons = {
         'IcDxtradeFinancial',
         'IcDxtradeOnePassword',
         'IcDxtradeSyntheticPlatform',
-        'IcDxtradeSynthetic',
     ],
-    flag: [
+    'flag': [
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',
@@ -525,9 +541,10 @@ export const icons = {
         'IcFlagZhCn',
         'IcFlagZhTw',
     ],
-    mt5: [
+    'mt5': [
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
+        'IcMt5Derived',
         'IcMt5DeviceDesktop',
         'IcMt5DeviceLaptop',
         'IcMt5DevicePhone',
@@ -549,10 +566,9 @@ export const icons = {
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
-        'IcMt5Synthetic',
         'IcMt5TradeTypes',
     ],
-    option: [
+    'option': [
         'IcOptionCallPutReset',
         'IcOptionCallPutSpread',
         'IcOptionCloseToLow',
@@ -570,7 +586,7 @@ export const icons = {
         'IcOptionTouchNotouch',
         'IcOptionUpDownAsian',
     ],
-    stock: [
+    'stock': [
         'IcStockAdidasSalomon',
         'IcStockAlibaba',
         'IcStockAlphabet',
@@ -620,7 +636,7 @@ export const icons = {
         'IcStockWaltDisney',
         'IcStockZoom',
     ],
-    tradetype: [
+    'tradetype': [
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',
@@ -655,7 +671,7 @@ export const icons = {
         'IcTradetypeTicklow',
         'IcTradetypeUpordown',
     ],
-    underlying: [
+    'underlying': [
         'IcUnderlying1HZ100V',
         'IcUnderlying1HZ10V',
         'IcUnderlying1HZ200V',
@@ -812,7 +828,7 @@ export const icons = {
         'IcUnderlyingWLDUSD',
         'IcUnderlyingWLDXAU',
     ],
-    wallet: [
+    'wallet': [
         'IcWalletClearFunds',
         'IcWalletCreditDebitDark',
         'IcWalletCreditDebitLight',

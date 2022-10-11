@@ -29,7 +29,7 @@ const TransactionFieldLoader = () => (
         height={10}
         width={80}
         speed={3}
-        primaryColor={'var(--general-section-1)'}
+        primaryColor={'var(--general-section-2)'}
         secondaryColor={'var(--general-hover)'}
     >
         <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />

@@ -8,6 +8,7 @@
     width: 24rem;
     height: 7.2rem;
     border-radius: 0.6rem 0.6rem 0 0;
+    flex-shrink: 0;
     cursor: pointer;
     @include mobile {
         gap: 0.4rem;

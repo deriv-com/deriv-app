@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
-    width: 115.2rem;
+    width: 110.2rem;
     height: 30.3rem;
     @include mobile {
         display: flex;
@@ -49,6 +49,8 @@
         flex-direction: column;
         height: 21.9rem;
         border-radius: 1.6rem;
+        width: 100%;
+        position: relative;
         @include mobile {
             display: flex;
             flex-direction: column;
@@ -63,6 +65,10 @@
             flex-direction: row;
             align-items: flex-start;
             height: 7.2rem;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            overflow-y: hidden;
             @include mobile {
                 display: flex;
                 flex-direction: row;
@@ -72,15 +78,20 @@
                 width: 80%;
                 height: 6.2rem;
                 border-radius: 0.4rem 0.4rem 0rem 0rem;
+                overflow: visible;
             }
         }
+        // &--accounts:hover {
+        //     overflow: auto;
+        // }
         &--account-launcher {
             padding: 1.6rem 2.3rem 1.6rem 2.4rem;
             @include mobile {
                 padding: 1.6rem 1.3rem 1.6rem 1rem;
             }
         }
-        &--add-options {
+        &--add-options,
+        &--add-options-scroller {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -93,6 +104,13 @@
             @include mobile {
                 width: 4rem;
             }
+        }
+        &--add-options-scroller {
+            position: absolute;
+            right: 0;
+            z-index: 999;
+            opacity: 0.9;
+            padding: 1.6rem;
         }
         &--platform {
             display: flex;

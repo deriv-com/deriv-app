@@ -3,7 +3,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-const Toast = ({ children, className, is_open = true, onClose, onClick, type = 'info', timeout = 0 }) => {
+type TToast = {
+    className?: string;
+    is_open?: boolean;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
+    onClose?: () => void;
+    type?: 'error' | 'info';
+    timeout?: number;
+};
+
+const Toast = ({
+    children,
+    className,
+    is_open = true,
+    onClose,
+    onClick,
+    type = 'info',
+    timeout = 0,
+}: React.PropsWithChildren<TToast>) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -42,7 +59,7 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
                     [`dc-toast__${type}`]: type,
                 })}
                 onMouseDown={e => {
-                    // To prevent clickoutside for modal
+                    // To prevent click outside for modal
                     e.nativeEvent.preventDefault();
                     e.nativeEvent.stopPropagation();
                     e.nativeEvent.stopImmediatePropagation();
@@ -54,16 +71,6 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
             </div>
         </CSSTransition>
     );
-};
-
-Toast.propTypes = {
-    className: PropTypes.string,
-    is_open: PropTypes.bool,
-    onClick: PropTypes.func,
-    onClose: PropTypes.func,
-    type: PropTypes.oneOf(['error', 'info']),
-    timeout: PropTypes.number,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
 export default Toast;

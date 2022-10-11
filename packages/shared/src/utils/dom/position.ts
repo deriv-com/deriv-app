@@ -1,21 +1,12 @@
-type RectResult = {
-    bottom: number;
-    height: number;
-    left: number;
-    right: number;
-    top: number;
-    width: number;
-};
+type RectResult = Record<'bottom' | 'height' | 'left' | 'right' | 'top' | 'width', number>;
 
 type TGetMaxHeightByAligning = {
     parent_rect: RectResult;
     child_height: number;
 };
 
-type TGetPosition = {
+type TGetPosition = Record<'child_el' | 'parent_el', HTMLElement> & {
     preferred_alignment: string;
-    child_el: HTMLElement;
-    parent_el: HTMLElement;
     should_consider_parent_height: boolean;
 };
 

@@ -144,7 +144,11 @@ export const getCFDAccountDisplay = ({
         else cfd_account_key = 'cfd';
     }
 
-    return CFD_text_translated[cfd_account_key]();
+    const cfd_account_display = CFD_text_translated[cfd_account_key]();
+
+    if (cfd_account_display === 'Derived' && platform === CFD_PLATFORMS.DXTRADE) return 'Synthetic';
+
+    return cfd_account_display;
 };
 
 type TGetCFDAccount = TGetAccount & {

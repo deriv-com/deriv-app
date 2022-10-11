@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Text } from '@deriv/components';
 import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
 import {
@@ -195,8 +196,10 @@ const QuickStrategyFields = React.memo(
                                     />
                                 </div>
                                 {id.endsWith('types-strategies') && (
-                                    <div key='description' className='quick-strategy__description'>
-                                        {description}
+                                    <div key='description' className='quick-strategy__text'>
+                                        <Text text='sm' weight='normal' line_height='m'>
+                                            {description}
+                                        </Text>
                                     </div>
                                 )}
                             </div>

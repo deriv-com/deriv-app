@@ -60,12 +60,12 @@ const VerificationStatusBanner = ({
                 return '';
         }
     };
-    if (is_virtual && is_svg) {
+    if (is_virtual && !is_svg) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxxs' align='center' color='prominent'>
                     <Localize
-                        i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
+                        i18n_default_text='Switch to your real account to create a Derived MT5 {{account_title}} {{type_title}} account.'
                         values={{
                             account_title: getAccountTitle(),
                             type_title: getTypeTitle(),
@@ -75,7 +75,7 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (disabled) {
-        // account not added
+        // account added
         return (
             <div className={`${card_classname}__verification-status--account_added`}>
                 <Text size='xxs' weight='bold' color='colored-background'>

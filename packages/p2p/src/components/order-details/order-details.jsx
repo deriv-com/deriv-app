@@ -277,31 +277,17 @@ const OrderDetails = observer(() => {
                                             className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
-                                            list={order_store?.order_payment_method_details
-                                                ?.filter(
-                                                    payment_method =>
-                                                        Object.entries(
-                                                            my_profile_store.available_payment_methods
-                                                        )?.findIndex(
-                                                            available_payment_method =>
-                                                                available_payment_method[1].display_name ===
-                                                                payment_method.display_name
-                                                        ) !== -1
-                                                )
-                                                .map(payment_method => ({
-                                                    header: (
-                                                        <PaymentMethodAccordionHeader payment_method={payment_method} />
-                                                    ),
-                                                    content: (
-                                                        <PaymentMethodAccordionContent
-                                                            payment_method={payment_method}
-                                                        />
-                                                    ),
-                                                }))}
+                                            list={order_store?.order_payment_method_details?.map(payment_method => ({
+                                                header: (
+                                                    <PaymentMethodAccordionHeader payment_method={payment_method} />
+                                                ),
+                                                content: (
+                                                    <PaymentMethodAccordionContent payment_method={payment_method} />
+                                                ),
+                                                payment_method,
+                                            }))}
                                             is_expand_all={should_expand_all}
-                                            onChange={value => {
-                                                setShouldExpandAll(value);
-                                            }}
+                                            onChange={setShouldExpandAll}
                                         />
                                     </div>
                                 ) : (

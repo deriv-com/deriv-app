@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+
+type TNewsTickerChildren = {
+    animation_duration: number;
+    is_exceeding_parent?: boolean;
+    is_second_container?: boolean;
+    react_children: React.ReactNode;
+};
 
 const NewsTickerChildren = ({
     animation_duration,
     is_exceeding_parent,
     is_second_container,
     react_children: children,
-}) => (
+}: TNewsTickerChildren) => (
     <div
         className='dc-news-ticker__children'
         style={
@@ -27,11 +33,5 @@ const NewsTickerChildren = ({
 );
 
 NewsTickerChildren.displayName = 'NewsTickerChildren';
-NewsTickerChildren.propTypes = {
-    animation_duration: PropTypes.number.isRequired,
-    is_exceeding_parent: PropTypes.bool.isRequired,
-    is_second_container: PropTypes.bool,
-    react_children: PropTypes.any.isRequired,
-};
 
 export default NewsTickerChildren;

@@ -14,7 +14,8 @@
             "Types": ["src/types"],
             "Utils": ["src/utils"],
             "@deriv/*": ["../*/src"]
-        }
+        },
+        "experimentalDecorators": true
     },
     "include": ["src"]
 }

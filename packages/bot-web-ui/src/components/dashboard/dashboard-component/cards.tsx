@@ -16,43 +16,46 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
     const actions = [
         {
             icon: 'IcMyComputer',
-            content: localize('My computer'),
+            label: localize('My computer'),
         },
         {
             icon: 'IcGoogleDriveDbot',
-            content: localize('Google Drive'),
+            label: localize('Google Drive'),
             method: onDriveConnect,
         },
         {
             icon: 'IcBotBuilder',
-            content: localize('Bot Builder'),
+            label: localize('Bot Builder'),
             method: () => setActiveTab(1),
         },
         {
             icon: 'IcQuickStrategy',
-            content: localize('Quick Strategy'),
+            label: localize('Quick Strategy'),
             method: () => setActiveTab(2),
         },
     ];
 
-    return (
-        <div className='dc-tabs__dashboard-cards-wrapper' id='db-dashboard-cards'>
-            {actions.map(({ icon, content, method }, index) => (
-                <div key={index} className='dc-tabs__dashboard-card'>
-                    <Icon
-                        className='dc-tabs__dashboard-card__image'
-                        width='8rem'
-                        height='8rem'
-                        icon={icon}
-                        id={icon}
-                        onClick={method}
-                    />
-                    <Text size='xxs' line_height='s' color='prominent'>
-                        {localize(content)}
-                    </Text>
-                </div>
-            ))}
-        </div>
+    return React.useMemo(
+        () => (
+            <div className='dc-tabs__dashboard-cards-wrapper' id='db-dashboard-cards'>
+                {actions.map(({ icon, label, method }) => (
+                    <div key={label} className='dc-tabs__dashboard-card'>
+                        <Icon
+                            className='dc-tabs__dashboard-card__image'
+                            width='8rem'
+                            height='8rem'
+                            icon={icon}
+                            id={icon}
+                            onClick={method}
+                        />
+                        <Text size='xxs' line_height='s' color='prominent'>
+                            {label}
+                        </Text>
+                    </div>
+                ))}
+            </div>
+        ),
+        []
     );
 };
 

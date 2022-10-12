@@ -14,7 +14,7 @@ type TBotFooterExtentionsProps = {
 };
 
 const BotFooterExtensions = ({ populateFooterExtensions }: TBotFooterExtentionsProps) => {
-    React.useEffect(() => populateFooter());
+    React.useEffect(() => populateFooter(), []);
     React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
 
     const populateFooter = () => {

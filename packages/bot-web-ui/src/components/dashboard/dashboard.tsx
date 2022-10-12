@@ -12,6 +12,7 @@ import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
 import classNames from 'classnames';
 import Tutorial from './tutorial-tab';
+import { isMobile } from '@deriv/shared';
 
 type TDashboard = {
     active_tab: number;
@@ -29,12 +30,12 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
     };
 
     return (
-        <>
+        <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
                     <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
-                        {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
+                        {/* TODO: needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponent />
                         </div>
@@ -66,16 +67,18 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     </Tabs>
                 </div>
             </div>
-            <div className='dashboard__run-strategy-wrapper'>
-                <RunStrategy />
-                {/*
+            {!isMobile() && (
+                <div className='dashboard__run-strategy-wrapper'>
+                    <RunStrategy />
+                    {/*
                     1. Bot-Builder
                     2. Quick Strategy
                     3. Charts
                 */}
-                {[1, 2, 3].includes(active_tab) && <RunPanel />}
-            </div>
-        </>
+                    {[1, 2, 3].includes(active_tab) && <RunPanel />}
+                </div>
+            )}
+        </React.Fragment>
     );
 };
 

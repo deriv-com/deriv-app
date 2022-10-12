@@ -1,12 +1,10 @@
 import React from 'react';
-import { Icon, Dialog } from '@deriv/components';
+import { Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
-import { tabs_title } from 'Constants/bot-contents';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 type TToolbar = {
@@ -34,62 +32,26 @@ type TToolbar = {
 };
 
 const Toolbar = (props: TToolbar) => {
-    const {
-        is_mobile,
-        is_running,
-        active_tab,
-        is_dialog_open,
-        onOkButtonClick,
-        closeResetDialog,
-        toggleStrategyModal,
-        toggleLoadModal,
-        toggleSaveModal,
-    } = props;
+    const { is_running, is_dialog_open, onOkButtonClick, closeResetDialog } = props;
+    const confirm_button_text = is_running ? localize('Yes') : localize('OK');
+    const cancel_button_text = is_running ? localize('No') : localize('Cancel');
 
     return (
         <React.Fragment>
-            {is_mobile ? (
-                <div className='toolbar'>
-                    <div className='toolbar__section'>
-                        <ToolbarButton
-                            button_id='db-toolbar__import-button--mobile'
-                            button_classname='toolbar__btn--icon'
-                            buttonOnClick={toggleLoadModal}
-                            icon={<Icon icon='IcFolderOpenFilled' color='active' />}
-                            button_text={localize('Load')}
-                        />
-                        <ToolbarButton
-                            button_id='db-toolbar__quick-strategy-button--mobile'
-                            button_classname='toolbar__btn--icon'
-                            buttonOnClick={toggleStrategyModal}
-                            icon={<Icon icon='IcPuzzle' color='active' />}
-                            button_text={localize('Quick')}
-                        />
-                        <ToolbarButton
-                            button_id='db-toolbar__save-button--mobile'
-                            button_classname='toolbar__btn--icon'
-                            buttonOnClick={toggleSaveModal}
-                            icon={<Icon icon='IcSaveFilled' color='active' />}
-                            button_text={localize('Save')}
-                        />
-                    </div>
+            <div className='toolbar dashboard__toolbar'>
+                <div className='toolbar__section'>
+                    <WorkspaceGroup {...props} />
                 </div>
-            ) : (
-                <div className='toolbar dashboard__toolbar'>
-                    <div className='toolbar__section'>
-                        {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
-                    </div>
-                </div>
-            )}
+            </div>
             <SaveModal />
             <LoadModal />
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}
                 is_visible={is_dialog_open}
-                confirm_button_text={is_running ? localize('Yes') : localize('OK')}
+                confirm_button_text={confirm_button_text}
                 onConfirm={onOkButtonClick}
-                cancel_button_text={is_running ? localize('No') : localize('Cancel')}
+                cancel_button_text={cancel_button_text}
                 onCancel={closeResetDialog}
                 is_mobile_full_width={false}
                 className={'toolbar__dialog dc-dialog__wrapper--fixed'}

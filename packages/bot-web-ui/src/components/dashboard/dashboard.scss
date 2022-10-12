@@ -57,12 +57,6 @@
             }
         }
     }
-    &__toolbar {
-        position: absolute;
-        top: 0;
-        left: 232px;
-        background-color: var(--general-main-1);
-    }
     &__run-strategy-wrapper {
         position: absolute;
         right: 1.6rem;
@@ -98,5 +92,8 @@
     height: calc(100vh - 16.6rem);
     &--active {
         z-index: 1;
+    }
+    @include mobile {
+        width: auto;
     }
 }

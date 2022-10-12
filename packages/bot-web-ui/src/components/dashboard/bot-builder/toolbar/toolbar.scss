@@ -4,7 +4,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 5px 6px;
-
+    position: absolute;
+    top: 0;
+    left: 232px;
+    background-color: var(--general-main-1);
+    @include mobile {
+        left: 0;
+    }
     &__btn {
         background-color: var(--button-primary-default) !important;
 
@@ -40,8 +46,8 @@
         cursor: pointer;
         border: none;
         margin: auto 12px;
-        height: 16px;
-        width: 16px;
+        height: 1.6rem;
+        width: 1.6rem;
         fill: var(--text-prominent);
     }
 
@@ -49,11 +55,19 @@
         display: flex;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        height: 40px;
+        height: 4rem;
 
         &-btn {
-            padding: 0px 12px;
-            height: 40px;
+            padding: 0 1.2rem;
+            height: 4rem;
+            @include mobile {
+                padding: 0;
+                .dc-popover {
+                    &__target {
+                        width: 4rem;
+                    }
+                }
+            }
 
             > * {
                 align-self: center;

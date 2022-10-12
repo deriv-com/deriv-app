@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
 
 type TStep = {
-    label: string | boolean;
+    label: string;
     content: string;
 };
 

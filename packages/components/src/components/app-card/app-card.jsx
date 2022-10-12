@@ -7,7 +7,7 @@ import AppCardHeader from './app-card-items/app-card-header.jsx';
 import AppCardBody from './app-card-items/app-card-body.jsx';
 import AppCardActions from './app-card-items/app-card-actions.jsx';
 import AppCardFooter from './app-card-items/app-card-footer.jsx';
-import { useHover } from '../../hooks/use-hover';
+import { useHover } from '../../hooks';
 
 const AppCard = ({
     amount,

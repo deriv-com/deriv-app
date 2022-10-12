@@ -24,7 +24,7 @@ import { TAccountCategory } from 'Types';
 const TradingHub: React.FC = () => {
     const store = useStores();
     const { ui, modules } = useStores();
-    const { setAccountType, openPasswordModal } = modules.cfd;
+    const { setAccountType, enableCFDPasswordModal } = modules.cfd;
     const { is_dark_mode_on } = ui;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [is_tour_open, setIsTourOpen] = React.useState(false);
@@ -39,7 +39,7 @@ const TradingHub: React.FC = () => {
         account_type: TOpenAccountTransferMeta = { category: 'real', type: 'financial' }
     ) => {
         setAccountType(account_type);
-        openPasswordModal();
+        enableCFDPasswordModal();
     };
 
     const accountTypeChange = (event: any) => {

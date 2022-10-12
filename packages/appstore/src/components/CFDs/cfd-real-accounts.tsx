@@ -9,6 +9,11 @@ import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
 const CFDRealAccounts = ({
     isDerivedVisible,
     isFinancialVisible,
@@ -22,9 +27,9 @@ const CFDRealAccounts = ({
         account_type,
         setAccountType,
         poi_poa_verified,
-        openPasswordModal,
         need_poi_for_vanuatu,
         toggleJurisdictionModal,
+        enableCFDPasswordModal,
         need_poi_for_bvi_labuan,
         toggleCFDVerificationModal,
         toggleCFDPersonalDetailsModal,
@@ -65,6 +70,13 @@ const CFDRealAccounts = ({
             // type: 'all'
         },
     ];
+
+    const openPasswordModal = (
+        modal_account_type: TOpenAccountTransferMeta = { category: 'real', type: 'financial' }
+    ) => {
+        setAccountType(modal_account_type);
+        enableCFDPasswordModal();
+    };
 
     const onSelectRealAccount = () => {
         const type_of_account = {
@@ -214,7 +226,6 @@ const CFDRealAccounts = ({
                                           onClickGet={() => {
                                               toggleJurisdictionModal();
                                               setAccountType({ category: 'real', type: account.type });
-                                              openPasswordModal({ category: 'real', type: account.type });
                                           }}
                                           description={account.description}
                                       />

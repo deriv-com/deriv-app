@@ -107,7 +107,7 @@ const JurisdictionCard = ({
     need_poi_for_bvi_labuan,
     poi_acknowledged_for_vanuatu,
 }: TJurisdictionCard) => {
-    const card_classname = `cfd-jurisdiction-card`;
+    const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
 
@@ -393,7 +393,7 @@ const JurisdictionModalContent = ({
     need_poi_for_bvi_labuan,
     poi_acknowledged_for_vanuatu,
 }: TJurisdictionModalContent) => {
-    const card_classname = `cfd-jurisdiction-card`;
+    const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
     const poa_none = poa_status === StatusCodes.none;
     const poi_none = poi_status === StatusCodes.none;

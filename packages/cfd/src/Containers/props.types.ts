@@ -36,7 +36,7 @@ export type TCFDChangePasswordConfirmationProps = {
     className?: string;
     onConfirm: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
     onCancel: () => void;
-    context: RootStore;
+    context?: RootStore;
 };
 
 export type TCFDDashboardContainer = {

@@ -19,11 +19,11 @@ const TradingHub = () => {
 
     return (
         <React.Fragment>
+            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
             <div className='trading-hub'>
                 Trading Hub
                 <CFDAccounts account_type={account_type} />
             </div>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
             <Joyride
                 run={is_tour_open}
                 continuous

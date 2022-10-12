@@ -35,6 +35,7 @@
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-env": "^7.12.11",
         "@babel/preset-react": "^7.16.7",
+        "ts-jest": "^26.4.2",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
         "eslint-config-prettier": "^7.2.0",

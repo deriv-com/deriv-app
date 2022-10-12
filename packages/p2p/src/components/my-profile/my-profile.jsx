@@ -1,6 +1,5 @@
 import React from 'react';
-import { AutoSizer, DesktopWrapper, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -14,7 +13,11 @@ const MyProfile = () => {
     React.useEffect(() => {
         my_profile_store.getSettings();
         my_profile_store.getAdvertiserInfo();
-        my_profile_store.setActiveTab(my_profile_tabs.MY_STATS);
+
+        return () => {
+            // leave this in the return otherwise the default isn't set to my stats
+            my_profile_store.setActiveTab(my_profile_tabs.MY_STATS);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -31,15 +34,13 @@ const MyProfile = () => {
     return (
         <AutoSizer>
             {({ height, width }) => (
-                <div className='my-profile' height={height} style={{ width }}>
+                <div className='my-profile' style={{ height, width }}>
                     <div className='my-profile__content'>
-                        <ThemedScrollbars height={height} is_scrollbar_hidden={isMobile()}>
-                            <MyProfileDetailsContainer />
-                            <DesktopWrapper>
-                                <MyProfileHeader />
-                            </DesktopWrapper>
-                            <MyProfileContent />
-                        </ThemedScrollbars>
+                        <MyProfileDetailsContainer />
+                        <DesktopWrapper>
+                            <MyProfileHeader />
+                        </DesktopWrapper>
+                        <MyProfileContent />
                     </div>
                 </div>
             )}

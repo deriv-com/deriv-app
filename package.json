@@ -61,7 +61,7 @@
         "@nrwl/nx-cloud": "latest"
     },
     "scripts": {
-        "build:all": "nx build @deriv/components && nx run-many --target=build",
+        "build:all": "nx build @deriv/components --skip-nx-cache && nx run-many --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",
         "test:eslint-all": "nx run-many --target=test:eslint",

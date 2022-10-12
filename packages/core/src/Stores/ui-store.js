@@ -146,6 +146,8 @@ export default class UIStore extends BaseStore {
 
     @observable is_deriv_account_needed_modal_visible = false;
 
+    @observable is_switch_to_deriv_account_modal_visible = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -693,5 +695,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    @action.bound
+    openSwitchToRealAccountModal() {
+        this.is_switch_to_deriv_account_modal_visible = !this.is_switch_to_deriv_account_modal_visible;
     }
 }

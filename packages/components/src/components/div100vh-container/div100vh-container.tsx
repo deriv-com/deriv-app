@@ -21,7 +21,7 @@ const Div100vhContainer = ({
     max_autoheight_offset,
 }: PropsWithChildren<TDiv100vhContainerProps>) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
-    const height_style: any = {
+    const height_style = {
         height: max_autoheight_offset ? null : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : null,
     };

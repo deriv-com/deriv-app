@@ -5,6 +5,7 @@ import DashboardPlatformHeader from './dashboard-platform-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 
 const Header = () => {
+    console.log("hader")
     const { is_appstore } = React.useContext(PlatformContext);
     if (is_appstore) {
         /**

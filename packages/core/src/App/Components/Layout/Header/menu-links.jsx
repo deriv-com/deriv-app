@@ -9,7 +9,7 @@ const MenuLinks = ({ is_logged_in, items }) => (
             <div className='header__menu-links'>
                 {items.map((item, idx) => {
                     const item_text = item.text();
-
+                    if(item.id == "dt_cashier_tab")  console.log(item)
                     return item.login_only && item.login_only !== is_logged_in ? null : (
                         <BinaryLink
                             id={item.id}

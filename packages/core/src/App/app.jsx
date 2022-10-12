@@ -100,21 +100,6 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <PlatformContainer>
                             <Header />
-                            <ErrorBoundary>
-                                <AppContents>
-                                    {/* TODO: [trader-remove-client-base] */}
-                                    <Routes passthrough={platform_passthrough} />
-                                </AppContents>
-                            </ErrorBoundary>
-                            <DesktopWrapper>
-                                <Footer />
-                            </DesktopWrapper>
-                            <ErrorBoundary>
-                                <AppModals />
-                            </ErrorBoundary>
-                            <SmartTraderIFrame />
-                            <BinaryBotIFrame />
-                            <AppToastMessages />
                         </PlatformContainer>
                     </MobxContentProvider>
                 </Router>

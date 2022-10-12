@@ -1,6 +1,16 @@
-import PropTypes from 'prop-types';
+/* eslint @typescript-eslint/no-var-requires: "off" */
 import React from 'react';
-import Div100vh from 'react-div-100vh';
+
+const Div100vh: (
+    props: React.PropsWithChildren<{
+        className: string | undefined;
+        id: string | undefined;
+        style: {
+            height?: string | null;
+            maxHeight?: string | null;
+        };
+    }>
+) => JSX.Element = require('react-div-100vh');
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,
     because using normal css vh is not returning correct screen height */
@@ -12,6 +22,17 @@ import Div100vh from 'react-div-100vh';
 */
 /* To manually remove rvh calculation and revert to default browser calculation use is_disabled */
 /* To bypass usage of component altogether, use is_bypassed */
+
+type TDiv100vhContainerProps = {
+    id?: string;
+    height_offset?: string;
+    is_bypassed: boolean;
+    is_disabled: boolean;
+    max_height_offset?: string;
+    className?: string;
+    max_autoheight_offset?: string;
+};
+
 const Div100vhContainer = ({
     children,
     className,
@@ -20,7 +41,7 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}) => {
+}: React.PropsWithChildren<TDiv100vhContainerProps>) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
     const height_style = {
         height: max_autoheight_offset ? null : height_rule,
@@ -32,17 +53,6 @@ const Div100vhContainer = ({
             {children}
         </Div100vh>
     );
-};
-
-Div100vhContainer.propTypes = {
-    id: PropTypes.string,
-    children: PropTypes.any,
-    height_offset: PropTypes.string,
-    is_bypassed: PropTypes.bool,
-    is_disabled: PropTypes.bool,
-    max_height_offset: PropTypes.string,
-    className: PropTypes.string,
-    max_autoheight_offset: PropTypes.string,
 };
 
 export default Div100vhContainer;

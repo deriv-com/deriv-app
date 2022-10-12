@@ -82,7 +82,7 @@ const VerificationStatusBanner = ({
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxxs' align='center' color='prominent'>
                     <Localize
-                        i18n_default_text='Switch to your real account to create a Derived MT5 {{account_title}} {{type_title}} account.'
+                        i18n_default_text='Switch to your real account to create a Deriv MT5 {{account_title}} {{type_title}} account.'
                         values={{
                             account_title: getAccountTitle(),
                             type_title: getTypeTitle(),

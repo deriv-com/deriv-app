@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
-import { connect } from '../../../../stores/connect';
-import RootStore from 'Stores/index.js';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import SearchBox from './search-box';
 
 type TToolbox = {

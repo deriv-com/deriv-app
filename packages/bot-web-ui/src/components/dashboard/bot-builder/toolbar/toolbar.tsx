@@ -47,7 +47,7 @@ const Toolbar = (props: TToolbar) => {
     } = props;
 
     return (
-        <>
+        <React.Fragment>
             {is_mobile ? (
                 <div className='toolbar'>
                     <div className='toolbar__section'>
@@ -104,7 +104,7 @@ const Toolbar = (props: TToolbar) => {
                     localize('Any unsaved changes will be lost.')
                 )}
             </Dialog>
-        </>
+        </React.Fragment>
     );
 };
 

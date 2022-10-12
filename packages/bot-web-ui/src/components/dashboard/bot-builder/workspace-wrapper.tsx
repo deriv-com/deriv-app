@@ -23,15 +23,15 @@ const WorkspaceWrapper = ({ onMount, onUnmount, is_loading }: TWorkspaceWrapper)
     if (is_loading) return null;
 
     return (
-        <>
+        <React.Fragment>
             {Blockly?.derivWorkspace && (
-                <>
+                <React.Fragment>
                     <Toolbox />
                     <Toolbar />
                     <Flyout />
-                </>
+                </React.Fragment>
             )}
-        </>
+        </React.Fragment>
     );
 };
 

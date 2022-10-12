@@ -7,9 +7,7 @@ type TSearchBox = {
     is_search_loading: boolean;
     onSearch: () => void;
     onSearchBlur: () => void;
-    onSearchClear: (
-        param: (field: string, value: number | string, shouldValidate?: boolean | undefined) => void
-    ) => void;
+    onSearchClear: (param: (field: string, value: number | string, shouldValidate?: boolean) => void) => void;
     onSearchKeyUp: (param: () => void) => void;
 };
 

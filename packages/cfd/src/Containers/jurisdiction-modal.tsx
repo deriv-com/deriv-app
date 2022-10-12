@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import {
     GetAccountSettingsResponse,
     GetSettings,
@@ -11,7 +11,7 @@ import {
     DetailsOfEachMT5Loginid,
 } from '@deriv/api-types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { WS, getIdentityStatusInfo } from '@deriv/shared';
+import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCompareAccountsReusedProps = {
@@ -95,7 +95,7 @@ const JurisdictionModal = ({
         poa_verified,
         poi_acknowledged_for_bvi_labuan,
         poi_acknowledged_for_vanuatu,
-    } = getIdentityStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status);
 
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';

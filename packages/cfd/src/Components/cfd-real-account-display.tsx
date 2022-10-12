@@ -8,7 +8,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from './props.types';
-import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
+import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -49,7 +49,7 @@ type TCFDRealAccountDisplayProps = {
     ) => void;
     platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
@@ -111,7 +111,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) => {
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,

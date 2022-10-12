@@ -68,6 +68,13 @@
             }
         }
 
+        &-label {
+            &--focused {
+                color: var(--text-prominent);
+                background-color: var(--general-main-1);
+            }
+        }
+
         &-payment-methods {
             &--empty {
                 max-width: 67.2rem;

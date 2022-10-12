@@ -8,8 +8,8 @@ type TAccountTypeProps = {
 
 const ToggleAccountType = ({ accountTypeChange, value }: TAccountTypeProps) => {
     const toggle_options = [
-        { text: 'Real Account', value: 'Real' },
-        { text: 'Demo Account', value: 'Demo' },
+        { text: 'Real Account', value: 'real' },
+        { text: 'Demo Account', value: 'demo' },
     ];
 
     return (

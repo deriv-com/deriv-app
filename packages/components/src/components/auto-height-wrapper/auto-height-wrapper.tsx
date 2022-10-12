@@ -1,8 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { usePrevious } from '../../hooks';
 
-const AutoHeightWrapper = props => {
+type TAutoHeightWrapperChildProps = {
+    height: number | string;
+    setRef: (ref: HTMLElement) => void;
+};
+
+type TAutoHeightWrapperProps = {
+    default_height: number | string;
+    children: (props: TAutoHeightWrapperChildProps) => React.ReactElement;
+    height_offset: number | null;
+};
+
+const AutoHeightWrapper = (props: TAutoHeightWrapperProps) => {
     const [height, setHeight] = React.useState(props.default_height);
     const child_client_height_ref = React.useRef(0);
 
@@ -21,7 +31,7 @@ const AutoHeightWrapper = props => {
                 : props.default_height
         );
 
-    const setRef = ref => {
+    const setRef = (ref: HTMLElement) => {
         if (Number.isInteger(ref?.clientHeight) && ref.clientHeight !== prev_child_client_height) {
             child_client_height_ref.current = ref.clientHeight;
             setTimeout(updateHeight, 0);
@@ -33,12 +43,6 @@ const AutoHeightWrapper = props => {
         height,
         setRef,
     });
-};
-
-AutoHeightWrapper.propTypes = {
-    default_height: PropTypes.any.isRequired,
-    children: PropTypes.any,
-    height_offset: PropTypes.number,
 };
 
 export default AutoHeightWrapper;

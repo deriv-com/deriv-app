@@ -24,6 +24,10 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    // Accumulators data:
+    @observable accumulators_high_barrier = '';
+    @observable accumulators_low_barrier = '';
+
     constructor(root_store) {
         super({
             root_store,
@@ -96,11 +100,7 @@ export default class ContractTradeStore extends BaseStore {
     @computed
     get markers_array() {
         let markers = [];
-        const {
-            barrier_1,
-            barrier_2,
-            contract_type: trade_type,
-        } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
@@ -113,7 +113,7 @@ export default class ContractTradeStore extends BaseStore {
                 type: 'TickContract',
                 contract_info: { is_accumulators_trade_without_contract: true },
                 key: 'accumulators_barriers_without_contract',
-                price_array: [barrier_1, barrier_2],
+                price_array: [this.accumulators_high_barrier, this.accumulators_low_barrier],
                 epoch_array: [this.current_spot_time, this.current_spot_time],
             });
         }

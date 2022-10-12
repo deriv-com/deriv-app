@@ -8,11 +8,11 @@ import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage } from '@deriv/shared';
 import classNames from 'classnames';
 
-const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
-    // splitting accumulator_rates_list into rows containing 5 values each:
-    const arr_arr_numbers = accumulator_rates_list.reduce((acc, _el, index) => {
+const Accumulator = ({ accumulator_range_list, growth_rate, onChange }) => {
+    // splitting accumulator_range_list into rows containing 5 values each:
+    const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
         if (index % 5 === 0) {
-            acc.push(accumulator_rates_list.slice(index, index + 5));
+            acc.push(accumulator_range_list.slice(index, index + 5));
         }
         return acc;
     }, []);
@@ -39,13 +39,13 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
 };
 
 Accumulator.propTypes = {
-    accumulator_rates_list: MobxPropTypes.arrayOrObservableArray,
+    accumulator_range_list: MobxPropTypes.arrayOrObservableArray,
     growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    accumulator_rates_list: modules.trade.accumulator_rates_list,
+    accumulator_range_list: modules.trade.accumulator_range_list,
     growth_rate: modules.trade.growth_rate,
     onChange: modules.trade.onChange,
 }))(Accumulator);

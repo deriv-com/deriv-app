@@ -406,6 +406,7 @@ const TickContract = RawMarkerMaker(
             ctx.save();
             if (current_spot_time.visible && !is_sold) {
                 // draw 3 text items with different font size and weight:
+                let profit_text_width = 0;
                 [
                     {
                         text: profit_text,
@@ -422,7 +423,7 @@ const TickContract = RawMarkerMaker(
                     {
                         text: `${sign}${profit_percentage}%`,
                         font: '12px IBM Plex Sans',
-                        left: current_spot_time.left + 58,
+                        left: current_spot_time.left + 32,
                         top: current_spot_time.top + 16,
                     },
                 ].forEach(({ text, font, left, top }) => {
@@ -434,9 +435,11 @@ const TickContract = RawMarkerMaker(
                         font,
                         text_align: 'start',
                         color: getColor({ status: 'open', profit }),
-                        left: text === profit_text ? left : left + ctx.measureText(profit_text).width,
+                        left: text === profit_text ? left : left + profit_text_width,
                         top,
                     });
+                    profit_text_width =
+                        text === profit_text ? ctx.measureText(profit_text).actualBoundingBoxRight : profit_text_width;
                 });
                 ctx.restore();
             }

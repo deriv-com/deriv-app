@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1665130804; // should be an epoch of some real tick!
+const dummy_current_time = 1665570506; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 7;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6569.9;
-const low_barrier = 6567;
+const high_barrier = 6534;
+const low_barrier = 6532;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
@@ -36,7 +36,7 @@ const break_out_history_stats = [
     ...new Array(33).fill(5554),
     1114,
 ];
-const current_ticks_count = 4;
+const tick_passed = 4;
 const tick_count = 1000;
 const symbol = 'R_10';
 const symbol_display_name = 'Volatility 10 Index';
@@ -51,6 +51,12 @@ let profit = +0.15;
 let profit_percentage = +1.5;
 let is_sold = 0; // 0 || 1
 
+//losing:
+// contract_status = 'open'; // 'lost', 'won' or 'open'
+// profit = -10;
+// profit_percentage = -100;
+// is_sold = 0; // 0 || 1
+
 // let first_time;
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
@@ -63,12 +69,12 @@ let is_sold = 0; // 0 || 1
 // is_sold = 1; // 0 || 1
 //         }, ms1);
 //         setTimeout(() => {
-//             contract_status = 'lost'; // 'lost', 'won' or 'open'
-//             position_status = 'loss'; // 'profit' or 'loss'
-//             result = 'lost'; // 'won' or 'lost'
-//             profit = -10;
-//             profit_percentage = -100;
-//             is_sold = 1; // 0 || 1
+// contract_status = 'lost'; // 'lost', 'won' or 'open'
+// position_status = 'loss'; // 'profit' or 'loss'
+// result = 'lost'; // 'won' or 'lost'
+// profit = -100;
+// profit_percentage = -100;
+// is_sold = 1; // 0 || 1
 //         }, ms2);
 //         setTimeout(() => {
 //             contract_status = 'open'; // 'lost', 'won' or 'open'
@@ -127,7 +133,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             is_valid_to_cancel: 0,
             is_valid_to_sell: 1,
             limit_order,
-            current_ticks_count,
+            tick_passed,
             longcode,
             growth_rate: 0.01,
             profit,
@@ -186,7 +192,7 @@ export const getDummyPortfolioContractsForACCU = time_now => {
             currency: 'USD',
             date_start: dummy_start_time,
             expiry_time: dummy_end_time,
-            current_ticks_count,
+            tick_passed,
             longcode,
             payout: 27.45,
             purchase_time: dummy_start_time,
@@ -289,7 +295,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 is_valid_to_cancel: 0,
                 is_valid_to_sell: 1,
                 limit_order,
-                current_ticks_count,
+                tick_passed,
                 longcode,
                 growth_rate: 0.01,
                 payout: 27.45,
@@ -411,7 +417,7 @@ export const getDummyProposalInfoForDECCU = (growth_rate, response) => {
 };
 
 export const dummy_accu_in_contracts_for_available = {
-    accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
+    growth_rate_range: [0.01, 0.02, 0.03, 0.04, 0.05],
     barrier_category: 'american',
     barriers: 2,
     contract_category: 'accumulator',
@@ -430,7 +436,7 @@ export const dummy_accu_in_contracts_for_available = {
 };
 
 export const dummy_deccu_in_contracts_for_available = {
-    accumulator_growth_rates: [0.01, 0.02, 0.03, 0.04, 0.05],
+    growth_rate_range: [0.01, 0.02, 0.03, 0.04, 0.05],
     barrier_category: 'american',
     barriers: 2,
     contract_category: 'accumulator',

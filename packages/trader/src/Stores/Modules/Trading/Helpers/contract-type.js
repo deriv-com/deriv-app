@@ -129,7 +129,7 @@ export const ContractType = (() => {
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
-                config.accumulator_growth_rates = contract.accumulator_growth_rates;
+                config.growth_rate_range = contract.growth_rate_range;
                 config.multiplier_range = contract.multiplier_range;
                 config.cancellation_range = contract.cancellation_range;
 
@@ -180,7 +180,7 @@ export const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
-        const obj_accumulator_rates_list = getAccumulatorRates(contract_type, growth_rate);
+        const obj_accumulator_range_list = getAccumulatorRange(contract_type, growth_rate);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -197,7 +197,7 @@ export const ContractType = (() => {
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
-            ...obj_accumulator_rates_list,
+            ...obj_accumulator_range_list,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
             ...obj_equal,
@@ -545,12 +545,12 @@ export const ContractType = (() => {
         };
     };
 
-    const getAccumulatorRates = (contract_type, growth_rate) => {
+    const getAccumulatorRange = (contract_type, growth_rate) => {
         const arr_growth_rates =
-            getPropertyValue(available_contract_types, [contract_type, 'config', 'accumulator_growth_rates']) || [];
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [];
 
         return {
-            accumulator_rates_list: arr_growth_rates,
+            accumulator_range_list: arr_growth_rates,
             growth_rate: getArrayDefaultValue(arr_growth_rates, growth_rate),
         };
     };

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Accumulator from '../accumulator';
 
 const mock_connect_props = {
-    accumulator_rates_list: [0.01, 0.02, 0.03, 0.04, 0.05],
+    accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
     onChange: jest.fn(),
     growth_rate: 0.01,
 };

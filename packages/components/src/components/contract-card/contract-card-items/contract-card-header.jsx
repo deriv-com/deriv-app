@@ -30,13 +30,13 @@ const ContractCardHeader = ({
     const {
         growth_rate,
         underlying,
-        current_ticks_count,
         multiplier,
         contract_type,
         shortcode,
         purchase_time,
         date_expiry,
         tick_count,
+        tick_passed,
     } = contract_info;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = contract_type === 'ACCU' || contract_type === 'DECCU';
@@ -100,7 +100,7 @@ const ContractCardHeader = ({
                 </MobileWrapper>
             </div>
             {!is_sold && is_accumulator && (
-                <TickCounterBar current_tick={current_ticks_count} max_ticks_duration={tick_count} />
+                <TickCounterBar current_tick={tick_passed} max_ticks_duration={tick_count} />
             )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />

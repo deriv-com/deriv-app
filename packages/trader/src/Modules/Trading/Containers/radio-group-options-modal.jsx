@@ -7,7 +7,7 @@ import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 
 const RadioGroupOptionsModal = ({
-    accumulator_rates_list,
+    accumulator_range_list,
     enableApp,
     disableApp,
     growth_rate,
@@ -45,7 +45,7 @@ const RadioGroupOptionsModal = ({
                                 'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed the barriers of the previous tick.',
                                 { growth_rate: getGrowthRatePercentage(growth_rate) }
                             )}
-                            items_list={accumulator_rates_list.map(value => ({
+                            items_list={accumulator_range_list.map(value => ({
                                 text: `${getGrowthRatePercentage(value)}%`,
                                 value,
                             }))}
@@ -60,7 +60,7 @@ const RadioGroupOptionsModal = ({
 };
 
 export default connect(({ modules, ui }) => ({
-    accumulator_rates_list: modules.trade.accumulator_rates_list,
+    accumulator_range_list: modules.trade.accumulator_range_list,
     growth_rate: modules.trade.growth_rate,
     onChange: modules.trade.onChange,
     enableApp: ui.enableApp,

@@ -24,11 +24,17 @@ const limit_order = {
         value: `${take_profit_price}`,
     },
 };
-const ticks_history_stats = [
-    ...new Array(33).fill({ counter_value: 1573, epoch: 120120120 }),
-    ...new Array(33).fill({ counter_value: 4033, epoch: 120120121 }),
-    ...new Array(33).fill({ counter_value: 2853, epoch: 120120122 }),
-    { counter_value: 2913, epoch: 120120123 },
+const stay_in_history_stats = [
+    ...new Array(33).fill(1573),
+    ...new Array(33).fill(4033),
+    ...new Array(33).fill(2853),
+    2913,
+];
+const break_out_history_stats = [
+    ...new Array(33).fill(8884),
+    ...new Array(33).fill(4444),
+    ...new Array(33).fill(5554),
+    1114,
 ];
 const current_ticks_count = 4;
 const tick_count = 1000;
@@ -75,17 +81,10 @@ let is_sold = 0; // 0 || 1
 //     }, ms3);
 // };
 const tick_size_barrier = 0.000409;
-const longcode = `Win payout when every tick of your contract is within ± ${tick_size_barrier} % of the previous tick in ${symbol_display_name}`;
+const longcode = `Win payout when every tick of your contract is within the barriers of the previous tick in ${symbol_display_name}.`;
 const stake = '10.00';
 const contract_type = 'ACCU'; // 'ACCU' or 'DECCU'
 const shortcode = `ACCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`; // `DECCU_${symbol}_10.00_6_0.01_1_0.000409_1653292620`
-
-export const dummy_break_out_history = [
-    ...new Array(33).fill({ counter_value: 8884, epoch: 120120124 }),
-    ...new Array(33).fill({ counter_value: 4444, epoch: 120120125 }),
-    ...new Array(33).fill({ counter_value: 5554, epoch: 120120126 }),
-    { counter_value: 1114, epoch: 120120127 },
-];
 
 export const getDummyPOCResponseForACCU = time_now => {
     return {
@@ -354,12 +353,13 @@ export const getDummyAllPositionsForACCU = time_now => {
 };
 export const getDummyProposalInfoForACCU = (growth_rate, response) => {
     return {
-        ticks_history_stats: response.proposal.ticks_history_stats,
-        tick_size_barrier: response.proposal.tick_size_barrier,
-        max_payout: response.proposal.max_payout,
-        tick_count: response.proposal.tick_count,
-        high_barrier: response.proposal.high_barrier,
-        low_barrier: response.proposal.low_barrier,
+        ticks_stayed_in: response.proposal.contract_details.ticks_stayed_in,
+        tick_size_barrier: response.proposal.contract_details.tick_size_barrier,
+        maximum_payout: response.proposal.contract_details.maximum_payout,
+        maximum_ticks: response.proposal.contract_details.maximum_ticks,
+        high_barrier: response.proposal.contract_details.high_barrier,
+        last_tick_epoch: response.proposal.contract_details.last_tick_epoch,
+        low_barrier: response.proposal.contract_details.low_barrier,
         error_code: undefined,
         error_field: undefined,
         growth_rate,
@@ -367,6 +367,35 @@ export const getDummyProposalInfoForACCU = (growth_rate, response) => {
         has_error_details: false,
         has_increased: null,
         id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+        limit_order,
+        message: longcode,
+        obj_contract_basis: {
+            text: '',
+            value: '',
+        },
+        payout: 27.45,
+        profit: `${profit}`,
+        returns: '-100.00%',
+        spot_time: response.proposal.spot_time,
+        stake,
+    };
+};
+export const getDummyProposalInfoForDECCU = (growth_rate, response) => {
+    return {
+        ticks_stayed_in: response.proposal.contract_details.ticks_stayed_in,
+        tick_size_barrier: response.proposal.contract_details.tick_size_barrier,
+        maximum_payout: response.proposal.contract_details.maximum_payout,
+        maximum_ticks: response.proposal.contract_details.maximum_ticks,
+        high_barrier: response.proposal.contract_details.high_barrier,
+        last_tick_epoch: response.proposal.contract_details.last_tick_epoch,
+        low_barrier: response.proposal.contract_details.low_barrier,
+        error_code: undefined,
+        error_field: undefined,
+        growth_rate,
+        has_error: false,
+        has_error_details: false,
+        has_increased: null,
+        id: '2b88e20f-f976-a380-904d-04db08e10eec',
         limit_order,
         message: longcode,
         obj_contract_basis: {
@@ -462,12 +491,15 @@ export const getDummyProposalResponseForACCU = time_now => {
         },
         msg_type: 'proposal',
         proposal: {
-            ticks_history_stats,
-            tick_size_barrier,
-            tick_count,
-            max_payout: 20000,
-            high_barrier,
-            low_barrier,
+            contract_details: {
+                high_barrier,
+                last_tick_epoch: dummy_current_time,
+                low_barrier,
+                maximum_payout: 20000,
+                maximum_ticks: tick_count,
+                tick_size_barrier,
+                ticks_stayed_in: stay_in_history_stats,
+            },
             ask_price: 10,
             date_expiry: dummy_end_time,
             date_start: dummy_start_time,
@@ -475,7 +507,6 @@ export const getDummyProposalResponseForACCU = time_now => {
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
             limit_order,
             longcode,
-            growth_rate: 0.01,
             payout: 27.45,
             spot: current_spot,
             spot_time: dummy_current_time,
@@ -483,6 +514,53 @@ export const getDummyProposalResponseForACCU = time_now => {
         req_id: 32,
         subscription: {
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
+        },
+    };
+};
+
+export const getDummyProposalResponseForDECCU = time_now => {
+    return {
+        echo_req: {
+            amount: 10,
+            basis: 'stake',
+            contract_type: 'DECCU',
+            currency: 'USD',
+            duration_unit: 's',
+            limit_order: {
+                take_profit: 150,
+            },
+            growth_rate: 0.01,
+            product_type: 'basic',
+            proposal: 1,
+            req_id: 32,
+            subscribe: 1,
+            symbol,
+        },
+        msg_type: 'proposal',
+        proposal: {
+            contract_details: {
+                high_barrier,
+                last_tick_epoch: dummy_current_time,
+                low_barrier,
+                maximum_payout: 20000,
+                maximum_ticks: tick_count,
+                tick_size_barrier,
+                ticks_stayed_in: break_out_history_stats,
+            },
+            ask_price: 10,
+            date_expiry: dummy_end_time,
+            date_start: dummy_start_time,
+            display_value: '10.00',
+            id: '2b88e20f-f976-a380-904d-04db08e10eec',
+            limit_order,
+            longcode,
+            payout: 27.45,
+            spot: current_spot,
+            spot_time: dummy_current_time,
+        },
+        req_id: 32,
+        subscription: {
+            id: '2b88e20f-f976-a380-904d-04db08e10eec',
         },
     };
 };

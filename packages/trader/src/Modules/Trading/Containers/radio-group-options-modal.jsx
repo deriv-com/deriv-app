@@ -2,7 +2,7 @@ import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getGrowthRatePercentage, getRoundedTickSizeBarrier } from '@deriv/shared';
+import { getGrowthRatePercentage } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 
@@ -14,7 +14,6 @@ const RadioGroupOptionsModal = ({
     is_open,
     modal_title,
     onChange,
-    tick_size_barrier,
     toggleModal,
 }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
@@ -43,11 +42,8 @@ const RadioGroupOptionsModal = ({
                             contract_name={'accumulator'}
                             current_value_object={{ name: 'growth_rate', value: growth_rate }}
                             info={localize(
-                                'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed ± {{tick_size_barrier}}% of the previous tick.',
-                                {
-                                    growth_rate: getGrowthRatePercentage(growth_rate),
-                                    tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier),
-                                }
+                                'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed the barriers of the previous tick.',
+                                { growth_rate: getGrowthRatePercentage(growth_rate) }
                             )}
                             items_list={accumulator_rates_list.map(value => ({
                                 text: `${getGrowthRatePercentage(value)}%`,
@@ -69,5 +65,4 @@ export default connect(({ modules, ui }) => ({
     onChange: modules.trade.onChange,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
-    tick_size_barrier: modules.trade.tick_size_barrier,
 }))(RadioGroupOptionsModal);

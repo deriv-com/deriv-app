@@ -2,7 +2,6 @@ import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
     cloneObject,
-    dummy_break_out_history,
     extractInfoFromShortcode,
     getMinPayout,
     getPlatformSettings,
@@ -24,6 +23,7 @@ import {
     isBarrierSupported,
     removeBarrier,
     getDummyProposalResponseForACCU,
+    getDummyProposalResponseForDECCU,
     isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -121,11 +121,10 @@ export default class TradeStore extends BaseStore {
     // Accumulator trade params
     @observable accumulator_rates_list = [];
     @observable growth_rate;
-    @observable max_payout = 0;
-    @observable max_ticks_number = 0;
-    @observable break_out_history = [];
-    @observable stay_in_history = [];
-    @observable tick_size_barrier = 0;
+    @observable maximum_payout = 0;
+    @observable maximum_ticks = 0;
+    @observable ticks_history_stats = {};
+    @observable tick_size_barrier = 0; // TODO: maryia - remove if still unused before Accumulators release
 
     // Multiplier trade params
     @observable multiplier;
@@ -958,7 +957,7 @@ export default class TradeStore extends BaseStore {
         this.proposal_info = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, proposal_response, obj_prev_contract_basis),
-            DECCU: getProposalInfo(this, proposal_response, obj_prev_contract_basis), //delete this, made for enable DECCU button
+            DECCU: getProposalInfo(this, getDummyProposalResponseForDECCU(), obj_prev_contract_basis), //delete this, made for enable DECCU button
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
@@ -974,22 +973,27 @@ export default class TradeStore extends BaseStore {
         }
         if (this.is_accumulator && this.proposal_info && (this.proposal_info.ACCU || this.proposal_info.DECCU)) {
             const {
-                tick_count,
-                ticks_history_stats: stay_in_history,
+                maximum_ticks,
+                ticks_stayed_in: stay_in_history,
                 tick_size_barrier,
-                max_payout,
+                last_tick_epoch: last_tick_epoch_accu,
+                maximum_payout,
                 high_barrier,
                 low_barrier,
                 spot_time,
             } = this.proposal_info.ACCU;
-            if (this.proposal_info.DECCU) {
-                this.break_out_history = getUpdatedTicksHistoryStats(this.break_out_history, dummy_break_out_history);
-            }
+            const { ticks_stayed_in: break_out_history, last_tick_epoch: last_tick_epoch_deccu } =
+                this.proposal_info.DECCU;
             this.root_store.contract_trade.current_spot_time = spot_time;
-            this.stay_in_history = getUpdatedTicksHistoryStats(this.stay_in_history, stay_in_history);
+            this.ticks_history_stats = getUpdatedTicksHistoryStats({
+                contract_type,
+                previous_ticks_history_stats: this.ticks_history_stats,
+                new_ticks_stayed_in: contract_type === 'ACCU' ? stay_in_history : break_out_history,
+                last_tick_epoch: contract_type === 'ACCU' ? last_tick_epoch_accu : last_tick_epoch_deccu,
+            });
             this.tick_size_barrier = tick_size_barrier;
-            this.max_ticks_number = tick_count;
-            this.max_payout = max_payout;
+            this.maximum_ticks = maximum_ticks;
+            this.maximum_payout = maximum_payout;
             this.barrier_1 = high_barrier;
             this.barrier_2 = low_barrier;
         }

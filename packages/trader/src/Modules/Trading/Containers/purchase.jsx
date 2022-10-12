@@ -91,11 +91,7 @@ const Purchase = ({
     });
     if (is_accumulator && last_contract_status === 'open') {
         components.unshift(
-            <PurchaseButtonsOverlay
-                key='overlay'
-                message={localize('You can only purchase one contract at a time')}
-                is_to_cover_one_button
-            />
+            <PurchaseButtonsOverlay key='overlay' message={localize('You can only purchase one contract at a time')} />
         );
     }
     return components;

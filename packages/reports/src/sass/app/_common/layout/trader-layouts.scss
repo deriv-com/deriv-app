@@ -431,6 +431,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
         // charts width is 100% - sidebar width - sidebar margin - .trade-container padding
         width: calc(100% - 240px - 1.6rem - 2.4rem);
         height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+
+        .trade-container--accumulators & {
+            .sc-navigation-widget {
+                bottom: 92px;
+            }
+        }
     }
     &__loader {
         position: absolute;

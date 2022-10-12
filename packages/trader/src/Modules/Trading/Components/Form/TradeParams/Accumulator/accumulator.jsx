@@ -5,10 +5,10 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { getGrowthRatePercentage, getRoundedTickSizeBarrier } from '@deriv/shared';
+import { getGrowthRatePercentage } from '@deriv/shared';
 import classNames from 'classnames';
 
-const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_barrier }) => {
+const Accumulator = ({ accumulator_rates_list, growth_rate, onChange }) => {
     // splitting accumulator_rates_list into rows containing 5 values each:
     const arr_arr_numbers = accumulator_rates_list.reduce((acc, _el, index) => {
         if (index % 5 === 0) {
@@ -23,11 +23,8 @@ const Accumulator = ({ accumulator_rates_list, growth_rate, onChange, tick_size_
             header={localize('Accumulator')}
             is_center
             header_tooltip={localize(
-                'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed ± {{tick_size_barrier}}% of the previous tick.',
-                {
-                    growth_rate: getGrowthRatePercentage(growth_rate),
-                    tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier),
-                }
+                'Your payout will grow by {{growth_rate}}% at every tick, as long as the price change doesn’t exceed the barriers of the previous tick.',
+                { growth_rate: getGrowthRatePercentage(growth_rate) }
             )}
         >
             <NumberSelector
@@ -45,12 +42,10 @@ Accumulator.propTypes = {
     accumulator_rates_list: MobxPropTypes.arrayOrObservableArray,
     growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
-    tick_size_barrier: PropTypes.number,
 };
 
 export default connect(({ modules }) => ({
     accumulator_rates_list: modules.trade.accumulator_rates_list,
     growth_rate: modules.trade.growth_rate,
     onChange: modules.trade.onChange,
-    tick_size_barrier: modules.trade.tick_size_barrier,
 }))(Accumulator);

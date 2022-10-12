@@ -20,15 +20,15 @@ export const ROW_SIZES = {
     MOBILE_EXPANDED: 5,
 };
 
-const AccumulatorsStats = ({ break_out_history, is_expandable = true, stay_in_history }) => {
+const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) => {
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const [displayed_contract_name, setDisplayedContractName] = React.useState(CONTRACT_TYPES.STAY_IN);
     const widget_title = localize('{{displayed_contract_name}} history', { displayed_contract_name });
     const ticks_history =
-        displayed_contract_name === CONTRACT_TYPES.STAY_IN
-            ? stay_in_history.map(counter => counter.counter_value)
-            : break_out_history.map(counter => counter.counter_value);
+        (displayed_contract_name === CONTRACT_TYPES.STAY_IN
+            ? ticks_history_stats.ACCU?.ticks_stayed_in
+            : ticks_history_stats.DECCU?.ticks_stayed_in) || [];
     const history_text_size = isDesktop() || !is_collapsed ? 'xxs' : 'xxxs';
 
     const rows = ticks_history.reduce((acc, _el, index) => {
@@ -120,12 +120,10 @@ const AccumulatorsStats = ({ break_out_history, is_expandable = true, stay_in_hi
 };
 
 AccumulatorsStats.propTypes = {
-    break_out_history: PropTypes.array,
     is_expandable: PropTypes.bool,
-    stay_in_history: PropTypes.array,
+    ticks_history_stats: PropTypes.object,
 };
 
 export default connect(({ modules }) => ({
-    break_out_history: modules.trade.break_out_history,
-    stay_in_history: modules.trade.stay_in_history,
+    ticks_history_stats: modules.trade.ticks_history_stats,
 }))(AccumulatorsStats);

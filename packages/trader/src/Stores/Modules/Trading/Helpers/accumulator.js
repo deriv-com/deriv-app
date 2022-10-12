@@ -1,20 +1,33 @@
 /**
  *
- * @param {Object[]} ticks_history_stats - array of 100 objects of type: { counter_value: number, epoch: number }
- * @param {Object|Object[]} new_ticks_history_stats - array of 100 objects or a single object of type: { counter_value: number, epoch: number }
- * @returns an array of 100 objects of type: { counter_value: number, epoch: number } starting with the latest counter.
+ * @param {string} contract_type - contract type: 'ACCU' or 'DECCU';
+ * @param {Object} previous_ticks_history_stats - an array of type: {
+ *                              ACCU: { ticks_stayed_in: number[], last_tick_epoch: number },
+ *                              DECCU: { ticks_stayed_in: [], last_tick_epoch: 1624223234 }
+ *                            } with ticks_stayed_in starting with the latest counter value;
+ * @param {number[]} new_ticks_stayed_in - an array of ticks counters containing 100 last values at first, and then only 1 latest updated counter value;
+ * @param {number} last_tick_epoch - an epoch of the latest tick counted by the latest (last) ticks counter in new_ticks_stayed_in array;
+ * @returns an array of the same type as previous_ticks_history_stats.
  */
-export const getUpdatedTicksHistoryStats = (ticks_history_stats = [], new_ticks_history_stats = []) => {
-    // we anticipate that the latest counter object will be the last one in the received new_ticks_history_stats array:
-    if (Array.isArray(new_ticks_history_stats))
-        return new_ticks_history_stats.length ? [...new_ticks_history_stats].reverse() : ticks_history_stats;
-    else if (
-        new_ticks_history_stats.counter_value <= ticks_history_stats[0].counter_value &&
-        new_ticks_history_stats.epoch > ticks_history_stats[0].epoch
-    ) {
-        return [new_ticks_history_stats, ...ticks_history_stats.slice(0, ticks_history_stats.length - 1)];
-    } else if (new_ticks_history_stats.epoch === ticks_history_stats[0].epoch) {
-        return ticks_history_stats;
+export const getUpdatedTicksHistoryStats = ({
+    contract_type = '',
+    previous_ticks_history_stats = {},
+    new_ticks_stayed_in = [],
+    last_tick_epoch,
+}) => {
+    // we anticipate that the latest counter value will be the last one in the received new_ticks_stayed_in array:
+    let ticks_stayed_in = [];
+    const previous_history = previous_ticks_history_stats[contract_type]?.ticks_stayed_in || [];
+    const previous_epoch = previous_ticks_history_stats[contract_type]?.last_tick_epoch;
+    if (!new_ticks_stayed_in.length || !last_tick_epoch) return previous_ticks_history_stats;
+    if (new_ticks_stayed_in.length > 1) {
+        ticks_stayed_in = [...new_ticks_stayed_in].reverse();
+    } else if (new_ticks_stayed_in[0] <= previous_history[0] && last_tick_epoch > previous_epoch) {
+        ticks_stayed_in = [new_ticks_stayed_in[0], ...previous_history.slice(0, previous_history.length - 1)];
+    } else if (last_tick_epoch === previous_epoch) {
+        ticks_stayed_in = previous_history;
+    } else {
+        ticks_stayed_in = [new_ticks_stayed_in[0], ...previous_history.slice(1)];
     }
-    return [new_ticks_history_stats, ...ticks_history_stats.slice(1)];
+    return { ...previous_ticks_history_stats, [contract_type]: { ticks_stayed_in, last_tick_epoch } };
 };

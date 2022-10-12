@@ -1,13 +1,132 @@
-import React from 'react';
-import { Icon, Dialog } from '@deriv/components';
+import { Button, Icon, Popover, Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import React from 'react';
 import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
 import { tabs_title } from 'Constants/bot-contents';
+import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import ToolbarButton from './toolbar-button';
-import WorkspaceGroup from './workspace-group';
+
+type TIconButton = {
+    popover_message: string;
+    icon: string;
+    icon_id: string;
+    iconOnClick: () => void;
+    icon_color?: string;
+};
+
+const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }: TIconButton) => (
+    <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
+        <Icon
+            icon={icon}
+            id={icon_id}
+            className='toolbar__icon'
+            onClick={iconOnClick}
+            {...(icon_color ? { color: icon_color } : null)}
+        />
+    </Popover>
+);
+
+type TToolbarButton = {
+    popover_message?: string;
+    button_id: string;
+    button_classname: string;
+    buttonOnClick: () => void;
+    icon: React.ReactElement;
+    button_text: string;
+};
+
+const ToolbarButton = ({
+    popover_message,
+    button_id,
+    button_classname,
+    buttonOnClick,
+    icon,
+    button_text,
+}: TToolbarButton) => (
+    <Popover alignment='bottom' message={popover_message} should_disable_pointer_events>
+        <Button id={button_id} className={button_classname} has_effect onClick={buttonOnClick} icon={icon} green>
+            {button_text}
+        </Button>
+    </Popover>
+);
+
+type TWorkspaceGroup = {
+    has_redo_stack: boolean;
+    has_undo_stack: boolean;
+    onResetClick: () => void;
+    onSortClick: () => void;
+    onUndoClick: (param?: boolean) => void;
+    onZoomInOutClick: (param?: boolean) => void;
+    toggleLoadModal: () => void;
+    toggleSaveModal: () => void;
+};
+
+const WorkspaceGroup = ({
+    has_redo_stack,
+    has_undo_stack,
+    onResetClick,
+    onSortClick,
+    onUndoClick,
+    onZoomInOutClick,
+    toggleLoadModal,
+    toggleSaveModal,
+}: TWorkspaceGroup) => (
+    <div className='toolbar__group toolbar__group-btn'>
+        <IconButton
+            popover_message={localize('Reset')}
+            icon='IcReset'
+            icon_id='db-toolbar__reset-button'
+            iconOnClick={onResetClick}
+        />
+        <IconButton
+            popover_message={localize('Import')}
+            icon='IcFolderOpen'
+            icon_id='db-toolbar__import-button'
+            iconOnClick={toggleLoadModal}
+        />
+        <IconButton
+            popover_message={localize('Save')}
+            icon='IcSave'
+            icon_id='db-toolbar__save-button'
+            iconOnClick={toggleSaveModal}
+        />
+        <div className='vertical-divider' />
+        <IconButton
+            popover_message={localize('Undo')}
+            icon='IcUndo'
+            icon_id='db-toolbar__undo-button'
+            icon_color={has_undo_stack ? undefined : 'disabled'}
+            iconOnClick={() => onUndoClick(/* redo */ false)}
+        />
+        <IconButton
+            popover_message={localize('Redo')}
+            icon='IcRedo'
+            icon_id='db-toolbar__redo-button'
+            icon_color={has_redo_stack ? undefined : 'disabled'}
+            iconOnClick={() => onUndoClick(/* redo */ true)}
+        />
+        <IconButton
+            popover_message={localize('Sort')}
+            icon='IcSort'
+            icon_id='db-toolbar__sort-button'
+            iconOnClick={onSortClick}
+        />
+        <IconButton
+            popover_message={localize('Zoom in')}
+            icon='IcZoomIn'
+            icon_id='db-toolbar__zoom-in-button'
+            iconOnClick={() => onZoomInOutClick(/* in */ true)}
+        />
+        <IconButton
+            popover_message={localize('Zoom out')}
+            icon='IcZoomOut'
+            icon_id='db-toolbar__zoom-out'
+            iconOnClick={() => onZoomInOutClick(/* in */ false)}
+        />
+    </div>
+);
 
 type TToolbar = {
     active_tab: string;

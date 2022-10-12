@@ -4,10 +4,12 @@
     &__container {
         position: relative;
     }
+
     &__chart-wrapper {
         position: relative;
         height: calc(100vh - 150px);
     }
+
     &__toolbox {
         position: absolute;
         top: 0;
@@ -15,63 +17,76 @@
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
+
         .db-toolbox {
             &__title {
                 height: 2.6rem;
                 line-height: 2.6rem;
                 position: relative;
                 cursor: pointer;
+
                 &__chevron {
                     position: absolute;
                     right: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
+
                     &--active {
                         transform: rotate(180deg);
                         top: -0.2rem;
                     }
                 }
             }
+
             &__content {
                 border: solid 1px var(--general-section-1);
             }
+
             &__category-menu {
                 height: calc(100vh - 258px);
             }
+
             &__search {
                 padding: 1.3rem 0.8rem;
                 height: 6rem;
             }
+
             &__content-wrapper {
                 height: 0;
                 transition: height 0.4s ease;
-                &--active {
-                    height: auto;
-                }
+            }
+
+            &__content-wrapper.active {
+                height: 100%;
             }
         }
     }
+
     &__toolbar {
         position: absolute;
         top: 0;
         left: 232px;
         background-color: var(--general-main-1);
     }
+
     &__run-strategy-wrapper {
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
             }
+
             &__container {
                 background-color: var(--general-main-1);
             }
         }
     }
+
     &__sidebar-wrapper {
         &--active {
             position: fixed;
             right: 0;
         }
+
         &--hidden {
             display: none;
         }

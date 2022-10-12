@@ -4,32 +4,52 @@ import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponents from './dashboard-components';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING } from './joyride-config';
+import { DBOT_ONBOARDING, handleJoyrideCallback, getJoyrideToken } from './joyride-config';
 import BotBuilder from './bot-builder';
 import classNames from 'classnames';
 import RunStrategy from './dashboard-components/run-strategy';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 interface DashboardProps {
     active_tab: number;
     setActiveTab: (active_tab: number) => void;
+    onEntered: () => void;
+    has_file_loaded: boolean;
     toggleStrategyModal: () => void;
     is_drawer_open: boolean;
 }
 
-const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: DashboardProps) => {
+const Dashboard = ({
+    active_tab,
+    setActiveTab,
+    toggleStrategyModal,
+    onEntered,
+    has_file_loaded,
+    is_drawer_open,
+}: DashboardProps) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [tour_run, setTourRun] = React.useState<boolean>(true);
+
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
         toggleStrategyModal();
     };
 
+    const [getJoyrideTokenData, setJoyrideTokenData] = React.useState<string>('');
+    React.useEffect(() => {
+        setJoyrideTokenData(getJoyrideToken());
+    }, [handleJoyrideCallback]);
+
+    React.useEffect(() => {
+        if (active_tab === 0 && has_file_loaded) {
+            onEntered();
+        }
+    }, [active_tab]);
     return (
         <div className='dashboard__main'>
             <div className={classNames('dashboard__container', { 'w-100': !show_side_bar })}>
@@ -39,7 +59,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     <Tab icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                         <DashboardComponents />
                     </Tab>
-                    <Tab icon='IcBotbuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder'>
+                    <Tab icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder'>
                         <BotBuilder />
                     </Tab>
                     <Tab
@@ -62,7 +82,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                         </div>
                     </Tab>
                     <Tab icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
-                        <div>{localize('Under Developments')}</div>
+                        <div>Under Development</div>
                     </Tab>
                 </Tabs>
             </div>
@@ -80,9 +100,9 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
     );
 };
 
-export default connect(({ dashbaord, quick_strategy, run_panel }: RootStore) => ({
-    active_tab: dashbaord.active_tab,
-    setActiveTab: dashbaord.setActiveTab,
-    toggleStrategyModal: quick_strategy.toggleStrategyModal,
-    is_drawer_open: run_panel.is_drawer_open,
+export default connect(({ dashboard, load_modal }: RootStore) => ({
+    active_tab: dashboard.active_tab,
+    setActiveTab: dashboard.setActiveTab,
+    onEntered: load_modal.onEntered,
+    has_file_loaded: dashboard.has_file_loaded,
 }))(Dashboard);

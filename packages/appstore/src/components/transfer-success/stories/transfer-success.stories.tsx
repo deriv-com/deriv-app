@@ -15,10 +15,21 @@ const app_card_details = {
     app_icon: 'icDxtradeSynthetic',
 };
 
+const handleTradeClick = () => null;
+
+const handleCloseButtonClick = () => null;
+
 export default {
     title: 'TransferSuccess',
     parameters: { controls: { sort: 'alpha' } },
-    argTypes: {},
+    argTypes: {
+        handleTradeClick: {
+            defaultValue: handleTradeClick,
+        },
+        handleCloseButtonClick: {
+            defaultValue: handleCloseButtonClick,
+        },
+    },
 } as Meta<TransferSuccessProps>;
 
 const Template: Story<TransferSuccessProps> = args => <TransferSuccess {...args} />;

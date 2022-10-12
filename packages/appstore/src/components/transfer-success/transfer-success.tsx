@@ -9,6 +9,9 @@ type TTransferSuccessProps = {
     currency: string;
     amount: number;
     trading_platform?: string;
+    // TODO will remove this props and handle login inside this component, when working on 71485
+    handleTradeClick: () => void;
+    handleCloseButtonClick: () => void;
 };
 
 const TransferSuccess = ({
@@ -17,6 +20,8 @@ const TransferSuccess = ({
     currency,
     amount,
     trading_platform,
+    handleTradeClick,
+    handleCloseButtonClick,
 }: TTransferSuccessProps) => {
     return (
         <>
@@ -41,11 +46,17 @@ const TransferSuccess = ({
                     <div className='transfer-success__button'>
                         {!trading_platform ? (
                             <>
-                                <Button color='primary'>{localize('Trade')}</Button>
-                                <Button color='secondary'>{localize('Close')}</Button>
+                                <Button color='primary' onClick={handleTradeClick}>
+                                    {localize('Trade')}
+                                </Button>
+                                <Button color='secondary' onClick={handleCloseButtonClick}>
+                                    {localize('Close')}
+                                </Button>
                             </>
                         ) : (
-                            <Button color='primary'>{localize(`Trade with ${trading_platform}`)}</Button>
+                            <Button color='primary' onClick={handleTradeClick}>
+                                {localize(`Trade with ${trading_platform}`)}
+                            </Button>
                         )}
                     </div>
                 </div>

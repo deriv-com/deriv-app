@@ -1,9 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TRootStore } from 'Types';
+
+type TAccountPromptDialogProps = {
+    accounts: TRootStore['client']['accounts'];
+    continueRoute: TRootStore['modules']['cashier']['account_prompt_dialog']['continueRoute'];
+    is_confirmed: TRootStore['modules']['cashier']['account_prompt_dialog']['is_confirmed'];
+    last_location: TRootStore['modules']['cashier']['account_prompt_dialog']['last_location'];
+    onCancel: TRootStore['modules']['cashier']['account_prompt_dialog']['onCancel'];
+    onConfirm: TRootStore['modules']['cashier']['account_prompt_dialog']['onConfirm'];
+    should_show: TRootStore['modules']['cashier']['account_prompt_dialog']['should_show'];
+};
 
 const AccountPromptDialog = ({
     accounts,
@@ -13,7 +23,7 @@ const AccountPromptDialog = ({
     onCancel,
     onConfirm,
     should_show,
-}) => {
+}: TAccountPromptDialogProps) => {
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     const non_crypto_account_loginid = React.useMemo(
@@ -46,17 +56,7 @@ const AccountPromptDialog = ({
     );
 };
 
-AccountPromptDialog.propTypes = {
-    accounts: PropTypes.object,
-    continueRoute: PropTypes.func,
-    is_confirmed: PropTypes.bool,
-    last_location: PropTypes.string,
-    onCancel: PropTypes.func,
-    onConfirm: PropTypes.func,
-    should_show: PropTypes.bool,
-};
-
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client }: TRootStore) => ({
     accounts: client.accounts,
     continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
     is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,

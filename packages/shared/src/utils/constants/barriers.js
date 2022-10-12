@@ -13,8 +13,8 @@ export const CONTRACT_SHADES = {
     ASIAND: 'BELOW',
     MULTUP: 'ABOVE',
     MULTDOWN: 'BELOW',
-    ACCU: 'BETWEEN',
-    DECCU: 'OUTSIDE',
+    ACCU: 'NONE_DOUBLE',
+    DECCU: 'NONE_DOUBLE',
 };
 
 // Default non-shade according to number of barriers

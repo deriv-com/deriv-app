@@ -12,6 +12,7 @@ import {
     getContractValidationRules,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
+    DEFAULT_SHADES,
     isBarrierSupported,
     getEndTime,
 } from '@deriv/shared';
@@ -167,8 +168,10 @@ export default class ContractStore extends BaseStore {
                 // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(barrier || high_barrier || entry_spot, low_barrier, null, {
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                    line_style: BARRIER_LINE_STYLES.SOLID,
+                    line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
                     not_draggable: true,
+                    hideBarrierLine: isAccumulatorContract(contract_type),
+                    shade: isAccumulatorContract(contract_type) && DEFAULT_SHADES['2'],
                 });
 
                 main_barrier.updateBarrierShade(true, contract_type);

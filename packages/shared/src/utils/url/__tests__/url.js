@@ -20,8 +20,8 @@ describe('Url', () => {
             beforeAll(() => {
                 mockLocation(url);
 
-                /*
-                Pre-defined values
+                /**
+                 * Pre-defined values
                  */
                 website_url = websiteUrl();
                 home_url = `${website_url}home.html`;

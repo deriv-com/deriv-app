@@ -8,14 +8,14 @@ type TCookieStorageThis = {
     domain: string;
     path: string;
     expires: Date;
-    value: any;
+    value: unknown;
 };
 
 const getObject = function (this: { getItem: (key: string) => string | null }, key: string) {
     return JSON.parse(this.getItem(key) || '{}');
 };
 
-const setObject = function (this: { setItem: (key: string, value: string) => void }, key: string, value: any) {
+const setObject = function (this: { setItem: (key: string, value: string) => void }, key: string, value: unknown) {
     if (value && value instanceof Object) {
         try {
             this.setItem(key, JSON.stringify(value));
@@ -65,7 +65,7 @@ Store.prototype = {
             ? this.storage.getObject(key)
             : JSON.parse(this.storage.getItem(key) || '{}');
     },
-    setObject(key: string, value: any) {
+    setObject(key: string, value: unknown) {
         if (typeof this.storage.setObject === 'function') {
             // Prevent runtime error in IE
             this.storage.setObject(key, value);
@@ -81,7 +81,7 @@ Store.prototype = {
     },
 };
 
-const InScriptStore = function (this: { store: any }, object?: any) {
+const InScriptStore = function (this: { store: unknown }, object?: unknown) {
     this.store = typeof object !== 'undefined' ? object : {};
 };
 
@@ -107,7 +107,7 @@ InScriptStore.prototype = {
     getObject(key: string) {
         return JSON.parse(this.get(key) || '{}');
     },
-    setObject(key: string, value: any) {
+    setObject(key: string, value: unknown) {
         this.set(key, JSON.stringify(value));
     },
     remove(...keys: string[]) {

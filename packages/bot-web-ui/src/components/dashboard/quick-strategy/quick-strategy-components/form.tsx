@@ -87,12 +87,12 @@ const QuickStrategyForm = ({
                                 })}
                             >
                                 <div className='quick-strategy__text'>
-                                    <Text text='sm' weight='bold' line_height='s'>
+                                    <Text size='sm' weight='bold' line_height='s'>
                                         {localize('Quick strategy')}
                                     </Text>
                                 </div>
                                 <div className='quick-strategy__text'>
-                                    <Text text='sm' weight='normal' line_height='m'>
+                                    <Text size='sm' weight='normal' line_height='m'>
                                         {localize('Choose a template and set your trade parameters.')}
                                     </Text>
                                 </div>

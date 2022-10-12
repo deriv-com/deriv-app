@@ -197,7 +197,7 @@ const QuickStrategyFields = React.memo(
                                         selected_symbol={selected_symbol}
                                     />
                                 </div>
-                                {id.endsWith('type-strategy') && (
+                                {id === 'type-strategy' && (
                                     <div key='description' className='quick-strategy__text'>
                                         <Text text='sm' weight='normal' line_height='m'>
                                             {description}

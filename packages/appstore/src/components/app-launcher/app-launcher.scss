@@ -13,20 +13,8 @@
     }
 
     &__button {
+        height: fit-content;
         margin-left: auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 6px 16px;
-
-        width: 56px;
-        height: 32px;
-
-        /* button/primary-light/default */
-
-        background: rgba(255, 68, 79, 0.16);
-        border-radius: 4px;
     }
 
     &__balance {

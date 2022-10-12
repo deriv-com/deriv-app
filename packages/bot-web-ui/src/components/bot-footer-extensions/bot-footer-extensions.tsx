@@ -19,7 +19,7 @@ const BotFooterExtensions = ({ populateFooterExtensions }: TBotFooterExtentionsP
 
     const populateFooter = () => {
         populateFooterExtensions([
-            //TODO need to import an icon on the left side of this footer extension
+            // TODO: need to import an icon on the left side of this footer extension
             {
                 position: 'right',
                 Component: SecurityAndPrivacy,

@@ -17,7 +17,7 @@ const ToolbarIcon = ({ popover_message, icon, icon_id, icon_color, action }: TTo
             id={icon_id}
             className='toolbar__icon'
             onClick={action}
-            {...(icon_color ? { color: icon_color } : null)}
+            {...(icon_color && { color: icon_color })}
         />
     </Popover>
 );

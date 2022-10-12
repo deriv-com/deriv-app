@@ -12,7 +12,11 @@
     }
     &__chart-wrapper {
         position: relative;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 16.5rem);
+
+        &--expanded {
+            width: calc(100vw - 39.8rem);
+        }
     }
     &__toolbox {
         position: absolute;

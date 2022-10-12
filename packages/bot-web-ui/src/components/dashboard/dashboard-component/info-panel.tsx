@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { SIDEBAR_INTRO } from './constants';
+import { sidebar_intro } from './constants';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 
@@ -19,7 +19,7 @@ const InfoPanel = ({ setInfoPanelVisibility }: TInfoPanel) => {
             >
                 <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
             </div>
-            {SIDEBAR_INTRO.map((sidebar_item, index) => {
+            {sidebar_intro.map((sidebar_item, index) => {
                 const { label, content } = sidebar_item;
                 return (
                     <div className='db-info-panel__card' key={index}>

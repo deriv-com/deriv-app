@@ -46,7 +46,7 @@ const Toolbox = ({
     React.useEffect(() => {
         onMount(toolbox_ref);
         return () => onUnmount();
-    }, [onMount, onUnmount]);
+    }, []);
 
     if (is_mobile) {
         return null;
@@ -128,7 +128,7 @@ const Toolbox = ({
                                                                 onToolboxItemClick(subCategory);
                                                             }}
                                                         >
-                                                            <Text size='xxs' line_height='m'>
+                                                            <Text size='xxs'>
                                                                 {localize(subCategory.getAttribute('name'))}
                                                             </Text>
                                                         </div>

@@ -3,6 +3,7 @@ import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets';
+import classNames from 'classnames';
 
 interface TChartProps {
     chart_type: string;
@@ -21,6 +22,7 @@ interface TChartProps {
     wsSendRequest: (req) => void;
     wsSubscribe: (req, callback) => void;
     getMarketsOrder: (active_symbols) => void;
+    is_drawer_open: boolean;
 }
 
 const Chart = ({
@@ -40,36 +42,43 @@ const Chart = ({
     wsSendRequest,
     wsSubscribe,
     getMarketsOrder,
+    is_drawer_open,
 }: TChartProps) => {
     const barriers = [];
     return (
-        <SmartChart
-            id='dbot'
-            barriers={barriers}
-            showLastDigitStats={show_digits_stats}
-            chartControlsWidgets={null}
-            enabledChartFooter={false}
-            chartStatusListener={v => setChartStatus(!v)}
-            toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-            )}
-            chartType={chart_type}
-            isMobile={is_mobile}
-            granularity={granularity}
-            requestAPI={wsSendRequest}
-            requestForget={wsForget}
-            requestForgetStream={wsForgetStream}
-            requestSubscribe={wsSubscribe}
-            settings={settings}
-            symbol={symbol}
-            topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
-            isConnectionOpened={is_socket_opened}
-            getMarketsOrder={getMarketsOrder}
-        />
+        <div
+            className={classNames('dashboard__chart-wrapper', {
+                'dashboard__chart-wrapper--expanded': is_drawer_open,
+            })}
+        >
+            <SmartChart
+                id='dbot'
+                barriers={barriers}
+                showLastDigitStats={show_digits_stats}
+                chartControlsWidgets={null}
+                enabledChartFooter={false}
+                chartStatusListener={v => setChartStatus(!v)}
+                toolbarWidget={() => (
+                    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                )}
+                chartType={chart_type}
+                isMobile={is_mobile}
+                granularity={granularity}
+                requestAPI={wsSendRequest}
+                requestForget={wsForget}
+                requestForgetStream={wsForgetStream}
+                requestSubscribe={wsSubscribe}
+                settings={settings}
+                symbol={symbol}
+                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
+                isConnectionOpened={is_socket_opened}
+                getMarketsOrder={getMarketsOrder}
+            />
+        </div>
     );
 };
 
-export default connect(({ chart_store, common, ui }: RootStore) => ({
+export default connect(({ chart_store, common, ui, run_panel }: RootStore) => ({
     is_mobile: ui.is_mobile,
     is_socket_opened: common.is_socket_opened,
     updateChartType: chart_store.updateChartType,
@@ -95,4 +104,5 @@ export default connect(({ chart_store, common, ui }: RootStore) => ({
     wsSendRequest: chart_store.wsSendRequest,
     wsSubscribe: chart_store.wsSubscribe,
     getMarketsOrder: chart_store.getMarketsOrder,
+    is_drawer_open: run_panel.is_drawer_open,
 }))(Chart);

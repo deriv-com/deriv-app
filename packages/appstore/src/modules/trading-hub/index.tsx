@@ -9,7 +9,7 @@ import { useStores } from 'Stores';
 import { ResetTradingPasswordModal } from '@deriv/account';
 import {
     JurisdictionModal,
-    PasswordModal,
+    CFDPasswordModal,
     CFDDbviOnBoarding,
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
@@ -23,23 +23,36 @@ import { TAccountCategory } from 'Types';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui } = useStores();
+    const { ui, modules } = useStores();
+    const { setAccountType, openPasswordModal } = modules.cfd;
     const { is_dark_mode_on } = ui;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [is_tour_open, setIsTourOpen] = React.useState(false);
-    const [account_type, setAccountType] = React.useState<TAccountCategory>('demo');
+    const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
+
+    type TOpenAccountTransferMeta = {
+        category: string;
+        type?: string;
+    };
+
+    const openRealPasswordModal = (
+        account_type: TOpenAccountTransferMeta = { category: 'real', type: 'financial' }
+    ) => {
+        setAccountType(account_type);
+        openPasswordModal();
+    };
 
     const accountTypeChange = (event: any) => {
-        setAccountType(event.target.value);
+        setTabAccountType(event.target.value);
     };
 
     return (
         <React.Fragment>
             <div className='trading-hub'>
                 Trading Hub
-                <CFDAccounts account_type={account_type} />
+                <CFDAccounts account_type={tab_account_type} />
             </div>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
+            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={tab_account_type} />
             <Joyride
                 run={is_tour_open}
                 continuous
@@ -54,8 +67,8 @@ const TradingHub: React.FC = () => {
                 }}
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
-            <JurisdictionModal context={store} />
-            <PasswordModal context={store} />
+            <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
+            <CFDPasswordModal context={store} />
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} />

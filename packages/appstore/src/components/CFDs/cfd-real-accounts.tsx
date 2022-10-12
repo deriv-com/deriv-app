@@ -7,6 +7,7 @@ import AddDerived from 'Components/add-derived';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
+import { useHistory } from 'react-router-dom';
 
 const CFDRealAccounts = ({
     isDerivedVisible,
@@ -15,9 +16,24 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client, modules }: TRootStore = useStores();
-    const { isEligibleForMoreRealMt5 } = client;
-    const { toggleJurisdictionModal, is_jurisdiction_modal_visible } = modules.cfd;
+    const { client, modules, ui }: TRootStore = useStores();
+    const { openDerivRealAccountNeededModal, openTopUpModal } = ui;
+    const {
+        account_type,
+        setAccountType,
+        poi_poa_verified,
+        openPasswordModal,
+        need_poi_for_vanuatu,
+        toggleJurisdictionModal,
+        need_poi_for_bvi_labuan,
+        toggleCFDVerificationModal,
+        toggleCFDPersonalDetailsModal,
+        is_cfd_password_modal_enabled,
+        has_submitted_personal_details,
+        jurisdiction_selected_shortcode,
+    } = modules.cfd;
+    const { isEligibleForMoreRealMt5, is_eu } = client;
+    const history = useHistory();
 
     const available_real_accounts: Array<TStaticAccountProps> = [
         {
@@ -50,19 +66,45 @@ const CFDRealAccounts = ({
         },
     ];
 
-    // const { client, modules, ui }: TRootStore = useStores();
-    // const { openDerivRealAccountNeededModal, openTopUpModal } = ui;
-    // const {
-    //     is_jurisdiction_modal_visible,
-    //     createCFDAccount,
-    //     disableCFDPasswordModal,
-    //     setCurrentAccount,
-    //     toggleMT5TradeModal,
-    //     setMT5TradeAccount,
-    //     toggleJurisdictionModal,
-    // } = modules.cfd;
-    // const { isEligibleForMoreRealMt5 } = client;
-    // const history = useHistory();
+    const onSelectRealAccount = () => {
+        const type_of_account = {
+            category: account_type.category,
+            type: account_type.type,
+        };
+
+        if (is_eu && jurisdiction_selected_shortcode === 'maltainvest') {
+            if (poi_poa_verified) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (jurisdiction_selected_shortcode === 'svg') {
+            openPasswordModal(type_of_account);
+        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+            if (need_poi_for_vanuatu) {
+                toggleCFDVerificationModal();
+            } else if (poi_poa_verified) {
+                // for bvi, labuan & vanuatu:
+                if (!has_submitted_personal_details) {
+                    toggleCFDPersonalDetailsModal();
+                } else {
+                    openPasswordModal(type_of_account);
+                }
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (need_poi_for_bvi_labuan) {
+            toggleCFDVerificationModal();
+        } else if (poi_poa_verified) {
+            if (!has_submitted_personal_details) {
+                toggleCFDPersonalDetailsModal();
+            } else {
+                openPasswordModal(type_of_account);
+            }
+        } else {
+            toggleCFDVerificationModal();
+        }
+    };
 
     // const openAccountTransfer = (
     //     data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
@@ -171,6 +213,8 @@ const CFDRealAccounts = ({
                                           disabled={account.disabled}
                                           onClickGet={() => {
                                               toggleJurisdictionModal();
+                                              setAccountType({ category: 'real', type: account.type });
+                                              openPasswordModal({ category: 'real', type: account.type });
                                           }}
                                           description={account.description}
                                       />

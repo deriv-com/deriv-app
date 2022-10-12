@@ -2,7 +2,9 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
-import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps } from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
+import { useStores } from 'Stores/index';
+import { useHistory } from 'react-router-dom';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const available_demo_accounts: Array<TStaticAccountProps> = [
@@ -35,6 +37,25 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             // type: 'all'
         },
     ];
+
+    const { client, modules, ui }: TRootStore = useStores();
+    const { openDerivRealAccountNeededModal, openTopUpModal } = ui;
+    const {
+        account_type,
+        setAccountType,
+        poi_poa_verified,
+        openPasswordModal,
+        need_poi_for_vanuatu,
+        toggleJurisdictionModal,
+        need_poi_for_bvi_labuan,
+        toggleCFDVerificationModal,
+        toggleCFDPersonalDetailsModal,
+        is_cfd_password_modal_enabled,
+        has_submitted_personal_details,
+        jurisdiction_selected_shortcode,
+    } = modules.cfd;
+    const { isEligibleForMoreRealMt5, is_eu } = client;
+    const history = useHistory();
 
     const existingDemoAccounts = (platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${market_type}`))
@@ -94,7 +115,10 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           platform={account.platform}
                                           disabled={account.disabled}
                                           //   TODO will pass the click functions when flows are updated
-                                          onClickGet={() => null}
+                                          onClickGet={() => {
+                                              toggleJurisdictionModal();
+                                              setAccountType({ category: 'demo', type: account.type });
+                                          }}
                                           description={account.description}
                                       />
                                   </div>

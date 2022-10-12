@@ -90,6 +90,7 @@ const CFDDbViOnBoarding = ({
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
+                    context={context}
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
@@ -103,6 +104,7 @@ const CFDDbViOnBoarding = ({
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
+                    context={context}
                 >
                     {getModalContent()}
                 </MobileDialog>

@@ -317,6 +317,7 @@ const CreatePassword = ({
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
+                                context={context}
                                 has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
@@ -353,6 +354,7 @@ const CreatePassword = ({
                                 platform: getCFDPlatformLabel(platform),
                             })}
                             is_center={true}
+                            context={context}
                         />
                     </div>
                 </form>
@@ -405,6 +407,7 @@ const CFDCreatePasswordForm = ({
                         submitPassword({ password }, actions)
                     }
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
+                    context={context}
                 />
             ),
         },
@@ -452,6 +455,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
                                     onCancel={handleCancel}
+                                    context={props.context}
                                     is_absolute={isMobile()}
                                     label={button_label}
                                 />
@@ -573,6 +577,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
                         label={button_label}
+                        context={props.context}
                         is_center={props.should_set_trading_password}
                         form_error={props.form_error}
                     />

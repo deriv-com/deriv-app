@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
@@ -23,7 +24,14 @@ const SwitchToRealAccountModal = ({ is_open, onClose, disableApp, enableApp }: T
             is_visible={is_open}
         >
             <Icon icon={'IcPoaLock'} size={60} />
-            <Text className='da-icon-with-message__text' as='p' color='general' line_height='m'>
+            <Text
+                className='da-icon-with-message__text'
+                as='p'
+                size={isMobile() ? 'xxs' : 'xs'}
+                color='general'
+                line_height='m'
+                align='center'
+            >
                 {localize('Switch to your real account to create a Deriv MT5 account')}
             </Text>
         </Dialog>

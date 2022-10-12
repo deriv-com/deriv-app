@@ -47,7 +47,7 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this);
         this.self_exclusion = new SelfExclusionStore(this);
-        this.dashbaord = new DashboardStore(this);
+        this.dashboard = new DashboardStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

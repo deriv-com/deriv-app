@@ -1,15 +1,36 @@
 import { localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
 
-export type TTutorialItem = {
+export type TFaqContent = {
     title: string;
     description: { [key: string]: string }[];
     image?: string;
 };
 
+export type TGuideContent = {
+    id: number;
+    type: string;
+    content: string;
+    url?: string;
+};
+
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-export const faq_questions: TTutorialItem[] = [
+export const guide_content: TGuideContent[] = [
+    {
+        id: 1,
+        type: 'DBotVideo',
+        content: localize('DBot -- your automated trading partner'),
+        url: 'https://www.youtube.com/embed/Bb0HnaYNUx4',
+    },
+    {
+        id: 2,
+        type: 'DBotTour',
+        content: localize('How to build your bot from scratch using a simple strategy.'),
+    },
+];
+
+export const faq_content: TFaqContent[] = [
     {
         title: localize('What is DBot?'),
         description: [

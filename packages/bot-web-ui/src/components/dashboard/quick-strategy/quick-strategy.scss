@@ -1,5 +1,7 @@
 .quick-strategy {
     $quick-strategy: &;
+    height: calc(100vh - 16.6rem);
+    background: var(--content-bg-color);
 
     &__notifications-container--open {
         display: flex;
@@ -120,7 +122,7 @@
             padding: 1.6rem 2.4rem;
             bottom: 0px;
             left: 0px;
-            background: var(--general-main-1);
+            background: var(--general-main-2);
             width: 100%;
 
             &--active-keyboard {

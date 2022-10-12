@@ -1,11 +1,15 @@
 .bot-dashboard {
+    position: relative;
+    height: calc(100vh - 8.4rem);
+    overflow: hidden;
     .toolbar__section {
         justify-content: end;
     }
     .run-panel__container {
-        height: calc(100vh - 5rem) !important;
+        height: calc(100vh - 16.6rem) !important;
         position: unset !important;
-        transform: translateX(calc(350px));
+        // TODO: need to set global variables for translation
+        transform: translateX(calc(367px));
         transition: all 0.4s;
         margin-top: 1rem;
     }
@@ -21,7 +25,6 @@
     &__container {
         border: none;
         max-width: 100%;
-        background: var(--general-main-1);
         width: 100%;
 
         .dc-tabs {
@@ -98,23 +101,6 @@
                     margin-bottom: 0.8rem;
                 }
             }
-
-            &__content-group {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: calc(100vh - 20rem);
-                margin-top: 1rem;
-
-                &__header {
-                    margin-bottom: 1.3rem;
-                }
-                &__description {
-                    max-width: 44rem;
-                    text-align: center;
-                }
-            }
         }
     }
 }
@@ -127,27 +113,19 @@
     margin-top: -48px;
 }
 
-.db-sidebar {
-    position: relative;
-    background-color: var(--general-main-1);
-    padding: 2.4rem;
-    margin-left: 1rem;
-    margin-top: 1rem;
-    height: 100vh;
-    &--block {
-        display: block;
-    }
-    display: none;
-    &__images {
-        background: var(--general-section-1);
-    }
+.db-info-panel {
     &__close-action {
         position: absolute;
-        right: 2.7rem;
-        top: 1.9rem;
-
-        svg {
+        right: 1.4rem;
+        top: 1.4rem;
+        height: 2rem;
+        width: 2rem;
+        line-height: 2.3rem;
+        text-align: center;
+        border-radius: 1rem;
+        &:hover {
             cursor: pointer;
+            background: var(--general-section-1);
         }
     }
     &__card {
@@ -170,4 +148,44 @@
 
 .db-tour {
     text-align: left;
+}
+
+.tab {
+    &__dashboard {
+        display: flex;
+        &__content {
+            min-width: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 16.6rem);
+            flex-grow: 1;
+            background: var(--general-main-1);
+        }
+        &__centered {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        &__header {
+            margin-bottom: 1.3rem;
+        }
+
+        &__description {
+            max-width: 44rem;
+            text-align: center;
+        }
+        &__info-panel {
+            position: relative;
+            background-color: var(--general-main-1);
+            padding: 2.4rem;
+            margin-left: 1.6rem;
+            display: none;
+            &--active {
+                display: block;
+                width: 35rem;
+            }
+        }
+    }
 }

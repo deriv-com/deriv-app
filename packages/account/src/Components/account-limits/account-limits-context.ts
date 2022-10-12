@@ -3,11 +3,7 @@ import * as React from 'react';
 export type TContextValue = {
     currency?: string;
     footer_ref?: React.ReactElement | DocumentFragment | object;
-    overlay_ref?:
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
+    overlay_ref?: React.RefObject<HTMLElement>;
     toggleOverlay?: () => boolean;
 };
 

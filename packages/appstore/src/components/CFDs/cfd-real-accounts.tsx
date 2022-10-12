@@ -50,6 +50,59 @@ const CFDRealAccounts = ({
         },
     ];
 
+    // const { client, modules, ui }: TRootStore = useStores();
+    // const { openDerivRealAccountNeededModal, openTopUpModal } = ui;
+    // const {
+    //     is_jurisdiction_modal_visible,
+    //     createCFDAccount,
+    //     disableCFDPasswordModal,
+    //     setCurrentAccount,
+    //     toggleMT5TradeModal,
+    //     setMT5TradeAccount,
+    //     toggleJurisdictionModal,
+    // } = modules.cfd;
+    // const { isEligibleForMoreRealMt5 } = client;
+    // const history = useHistory();
+
+    // const openAccountTransfer = (
+    //     data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
+    //     meta: { category: string; type?: string }
+    // ) => {
+    //     if (meta.category === 'real') {
+    //         if (data.platform === CFD_PLATFORMS.DXTRADE)
+    //             sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+    //         else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+
+    //         disableCFDPasswordModal();
+    //         history.push(routes.cashier_acc_transfer);
+    //     } else {
+    //         setCurrentAccount(data, meta);
+    //         openTopUpModal();
+    //     }
+    // };
+
+    // const onClickFundRealDerivX = (account: TExistingData) => {
+    //     return openAccountTransfer(current_list[getAccountListKey(account, CFD_PLATFORMS.DXTRADE)], {
+    //         category: account.account_type as keyof TOpenAccountTransferMeta,
+    //         type: getCFDAccountKey({
+    //             market_type: account.market_type,
+    //             sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+    //             platform: 'dxtrade',
+    //         }),
+    //     });
+    // };
+
+    // const onClickFundRealMT5 = (account: TExistingData) => {
+    //     return openAccountTransfer(account, {
+    //         category: account.account_type as keyof TOpenAccountTransferMeta,
+    //         type: getCFDAccountKey({
+    //             market_type: account.market_type,
+    //             sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+    //             platform: 'mt5',
+    //         }),
+    //     });
+    // };
+
     const existingRealAccounts = (platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${market_type}`))
             ? Object.keys(current_list)

@@ -181,6 +181,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     index={state_index}
                     onSubmit={nextStep}
                     height={height}
+                    context={props.context}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}

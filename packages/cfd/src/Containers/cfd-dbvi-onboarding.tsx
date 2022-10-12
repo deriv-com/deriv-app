@@ -64,6 +64,7 @@ const CFDDbViOnBoarding = ({
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
+                context={context}
                 is_vanuatu_selected={is_vanuatu_selected}
             />
         ) : (
@@ -71,6 +72,7 @@ const CFDDbViOnBoarding = ({
                 onFinish={() => {
                     setShowSubmittedModal(true);
                 }}
+                context={context}
             />
         );
 

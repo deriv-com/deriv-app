@@ -30,6 +30,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
+    context: RootStore;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     refreshNotifications: () => void;

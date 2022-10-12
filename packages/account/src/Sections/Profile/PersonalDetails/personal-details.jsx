@@ -545,7 +545,9 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <>
-                    <Notifications />
+                    <Notifications
+                        allowed_notification_keys={['poa_address_mismatch_success', 'poa_address_mismatch_error']}
+                    />
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form

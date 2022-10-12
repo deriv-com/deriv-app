@@ -14,21 +14,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        & > p {
+        & > span {
             color: $color-red;
             margin-left: 0.8rem;
-            font-weight: 700;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
         }
     }
     &_description {
-        & > p {
+        & > span {
             color: var(--text-less-prominent);
-            font-weight: 400;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-            text-align: center;
         }
     }
 }

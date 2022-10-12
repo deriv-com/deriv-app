@@ -60,17 +60,21 @@ const PlatformLauncher = ({ icon, title, description, link_to, href, has_real_ac
                 </MobileWrapper>
             </div>
             {has_real_account && (
-                <div className='platform-launcher__trade-link'>
+                <>
                     {link_to ? (
                         <Link to={link_to}>
-                            <Localize i18n_default_text='Trade' />
+                            <Button primary className='platform-launcher__trade-button'>
+                                <Localize i18n_default_text='Trade' />
+                            </Button>
                         </Link>
                     ) : (
                         <a href={href}>
-                            <Localize i18n_default_text='Trade' />
+                            <Button primary className='platform-launcher__trade-button'>
+                                <Localize i18n_default_text='Trade' />
+                            </Button>
                         </a>
                     )}
-                </div>
+                </>
             )}
         </div>
     );

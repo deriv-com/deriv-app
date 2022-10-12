@@ -221,7 +221,11 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                     sortedAccountList.length >= 4 ? '-scroller' : ''
                                 }`}
                             >
-                                <AddOptions numberofAccounts={sortedAccountList.length} />
+                                <AddOptions
+                                    number_of_accounts={sortedAccountList.length}
+                                    title={'More Options accounts'}
+                                    description={'Including cryptocurrencies'}
+                                />
                             </div>
                         )}
                     </div>
@@ -303,7 +307,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                         activeAccount={loginid}
                         onClickDeposit={onClickDeposit}
                         switchAccountModal={openSwitchAccountModal}
-                        isModal={true}
+                        is_modal={true}
                     />
                 ))}
             </MobileDialog>

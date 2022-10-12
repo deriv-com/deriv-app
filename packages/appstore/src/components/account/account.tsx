@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, Button, Icon, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
@@ -57,7 +57,7 @@ type TOptionsAccountprops = RouteComponentProps & {
     activeAccount?: string;
     onClickDeposit?: () => void;
     switchAccountModal?: () => void;
-    isModal?: boolean;
+    is_modal?: boolean;
 };
 
 type TCurrentDisplay = {
@@ -200,7 +200,7 @@ const OptionsAccount = ({
     activeAccount,
     onClickDeposit,
     switchAccountModal,
-    isModal,
+    is_modal,
 }: TOptionsAccountprops) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -208,7 +208,7 @@ const OptionsAccount = ({
             className={classNames('account-container', {
                 'account-container-active': activeAccount === loginid_text,
                 'account-container-disabled': activeAccount !== loginid_text,
-                'account-container-modal': isModal,
+                'account-container-modal': is_modal,
             })}
             onClick={activeAccount !== loginid_text ? redirectAccount : undefined}
         >
@@ -224,7 +224,7 @@ const OptionsAccount = ({
                     size={isMobile() ? 'xxxs' : 'xxs'}
                     line_height={isMobile() ? 's' : 'l'}
                     className='account-container__details-wrapper--name'
-                    weight={isModal ? '' : 'bold'}
+                    weight={is_modal ? '' : 'bold'}
                 >
                     {display_type === 'currency' ? (
                         <CurrencyDisplay
@@ -247,7 +247,7 @@ const OptionsAccount = ({
                         />
                     )}
                 </Text>
-                {!isModal && (
+                {!is_modal && (
                     <Text
                         size={isMobile() ? 'xxxxs' : 'xxxs'}
                         line_height={isMobile() ? 'xs' : 's'}
@@ -274,7 +274,7 @@ const OptionsAccount = ({
                     )}
                 </Text>
             </div>
-            {!isModal && (
+            {!is_modal && (
                 <div className='account-container__button-wrapper'>
                     {has_reset_balance ? (
                         <Button
@@ -297,7 +297,7 @@ const OptionsAccount = ({
                     )}
                 </div>
             )}
-            {!isModal && isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
+            {!is_modal && isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
                 <div className='account-container__dropdown'>
                     <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />
                 </div>

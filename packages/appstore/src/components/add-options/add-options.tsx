@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text } from '@deriv/ui';
-import classNames from 'classnames';
-import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Text, Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
-interface TAddOptionsProps {
-    numberofAccounts: number;
-}
+type TAddOptionsProps = {
+    number_of_accounts: number;
+    title: string;
+    description: string;
+};
 
-const AddOptions = ({ numberofAccounts }: TAddOptionsProps) => {
+const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps) => {
     const { ui } = useStores();
     const getHeightWidthOfIcon = () => {
         return isMobile()
@@ -23,33 +23,32 @@ const AddOptions = ({ numberofAccounts }: TAddOptionsProps) => {
                   height: 16,
               };
     };
-    const class_names = '';
     const onClickHandler = () => {
         return ui.openRealAccountSignup('manage');
     };
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {numberofAccounts < 4 ? (
-                    <div className={classNames('add-options--desktop', class_names)} onClick={onClickHandler}>
+                {number_of_accounts < 4 ? (
+                    <div className={'add-options--desktop'} onClick={onClickHandler}>
                         <div className='add-options--desktop_title'>
                             <Icon
                                 icon='IcAppstoreAdd'
                                 width={getHeightWidthOfIcon().width}
                                 height={getHeightWidthOfIcon().height}
                             />
-                            <Text type='paragraph-2' bold>
-                                <Localize i18n_default_text={'More Options accounts'} />
+                            <Text weight='bold' size={'xxs'} line_height='l'>
+                                <Localize i18n_default_text={title} />
                             </Text>
                         </div>
                         <div className='add-options--desktop_description'>
-                            <Text type='paragraph-2'>
-                                <Localize i18n_default_text={'Including cryptocurrencies'} />
+                            <Text size={'xxs'} line_height='l' weight='lighter'>
+                                <Localize i18n_default_text={description} />
                             </Text>
                         </div>
                     </div>
                 ) : (
-                    <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>
+                    <div className={'add-options--mobile'} onClick={onClickHandler}>
                         <Icon
                             icon='IcAppstoreAdd'
                             width={getHeightWidthOfIcon().width}
@@ -59,7 +58,7 @@ const AddOptions = ({ numberofAccounts }: TAddOptionsProps) => {
                 )}
             </DesktopWrapper>
             <MobileWrapper>
-                <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>
+                <div className={'add-options--mobile'} onClick={onClickHandler}>
                     <Icon
                         icon='IcAppstoreAdd'
                         width={getHeightWidthOfIcon().width}

@@ -3,7 +3,6 @@ import Onboarding from 'Components/onboarding';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
 import Options from 'Components/options';
 import platform_config from 'Constants/platform-config';
-import AddOptionsAccount from 'Components/add-options-account';
 import Joyride from 'react-joyride';
 import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
@@ -38,7 +37,6 @@ const TradingHub: React.FC = () => {
                 }}
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
-            <AddOptionsAccount />
             <Options platformlauncherprops={platform_config} />
         </React.Fragment>
     );

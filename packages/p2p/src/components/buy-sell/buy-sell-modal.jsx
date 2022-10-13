@@ -92,13 +92,7 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
 const MarketRateChangeErrorModal = ({ is_open, closeModal, setShouldShowPopup }) => (
     <Modal className='rate-changed-modal' is_open={is_open} onExited={() => setShouldShowPopup(true)} small>
         <Modal.Body>
-            <Text
-                as='p'
-                align='left'
-                className='rate-changed-modal__message'
-                size={isMobile() ? 'xxs' : 'xs'}
-                line_height='s'
-            >
+            <Text as='p' className='rate-changed-modal__message' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
                 <Localize i18n_default_text={'The advertiser changed the rate before you confirmed the order.'} />
             </Text>
         </Modal.Body>
@@ -127,7 +121,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 1000;
 
     React.useEffect(() => {
-        const disposer = reaction(
+        const disposeHasRateChangedReaction = reaction(
             () => buy_sell_store?.advert?.rate,
             () => {
                 setHasRateChangedRecently(true);
@@ -136,7 +130,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
             }
         );
-        return disposer;
+        return disposeHasRateChangedReaction;
     }, []);
 
     const onSubmitWhenRateChanged = () => {

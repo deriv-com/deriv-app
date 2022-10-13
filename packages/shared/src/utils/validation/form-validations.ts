@@ -4,7 +4,7 @@ import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from './declarative-vali
 type TConfig = {
     default_value: string;
     supported_in: string[];
-    rules: Array<string[]>;
+    rules: Array<(TOptions & string)[]>;
 };
 type TSchema = { [key: string]: TConfig };
 
@@ -33,7 +33,7 @@ export const filterByLandingCompany = (landing_company: string, schema: TSchema)
  */
 export const generateValidationFunction = (landing_company: string, schema: TSchema) => {
     const rules_schema = filterByLandingCompany(landing_company, schema);
-    const rules: { [key: string]: any } = {};
+    const rules: { [key: string]: TConfig['rules'] } = {};
     Object.entries(rules_schema).forEach(([key, opts]) => {
         rules[key] = opts.rules;
     });
@@ -43,7 +43,7 @@ export const generateValidationFunction = (landing_company: string, schema: TSch
 
         Object.entries(values).forEach(([field_name, value]) => {
             if (field_name in rules) {
-                rules[field_name].some(([rule, message, options]: any) => {
+                rules[field_name].some(([rule, message, options]) => {
                     if (
                         checkForErrors({
                             value,

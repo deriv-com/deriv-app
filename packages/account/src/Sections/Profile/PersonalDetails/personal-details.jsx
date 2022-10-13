@@ -545,7 +545,7 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <>
-                    <Notifications />
+                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form

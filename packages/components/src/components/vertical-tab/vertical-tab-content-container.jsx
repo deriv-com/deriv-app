@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const SideNotes = ({ class_name, side_notes }) => {
     return (

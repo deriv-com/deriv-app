@@ -290,7 +290,7 @@ describe('<AccountTransferForm />', () => {
 
         expect(
             screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts. Please bear in mind that some transfers may not be possible.'
+                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
     });

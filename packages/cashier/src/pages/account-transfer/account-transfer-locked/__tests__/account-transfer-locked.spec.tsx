@@ -41,10 +41,12 @@ describe('AccountTransferLocked', () => {
             {
                 content: 'Complete the financial assessment form',
                 status: 'action',
+                is_disabled: false,
+                button_text: 'sample text',
                 onClick,
             },
         ];
-        render(<Checklist className='cashier-locked__checklist' items={items} />);
+        render(<Checklist className='cashier-locked__checklist' itemClassName='sample_class_name' items={items} />);
         const btn = screen.getByTestId('dt_checklist_item_status_action');
 
         fireEvent.click(btn);

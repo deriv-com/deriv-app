@@ -17,6 +17,8 @@ type TResponseTradingPlatformAccountsList = {
     trading_platform_accounts: Array<TMT5LoginAccount>;
 };
 
+type TAuthenticationStatus = { document_status: string; identity_status: string };
+
 export type TClientStore = {
     account_limits: { daily_transfers?: { [k: string]: { allowed: boolean; available: boolean } } };
     account_list: TAccountsList[];
@@ -24,6 +26,7 @@ export type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: Array<TActiveAccounts>;
     available_crypto_currencies: string[];
+    authentication_status: TAuthenticationStatus;
     balance?: string;
     can_change_fiat_currency: boolean;
     currency: string;
@@ -48,7 +51,6 @@ export type TClientStore = {
     is_logging_in: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
-    is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;

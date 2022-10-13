@@ -185,7 +185,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
-        const disposer = reaction(
+        const disposeFormErrorCodeReaction = reaction(
             () => buy_sell_store.form_error_code,
             () => {
                 if (buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE) {
@@ -201,7 +201,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             }
         );
 
-        return disposer;
+        return disposeFormErrorCodeReaction;
     }, []);
 
     React.useEffect(() => {

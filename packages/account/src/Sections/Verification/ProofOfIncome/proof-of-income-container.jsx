@@ -54,7 +54,9 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
     const { allow_document_upload, income_status, needs_poinc, is_age_verified } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!allow_document_upload || !needs_poinc || (!is_age_verified && income_status === 'none'))
+    if (!allow_document_upload && needs_poinc && is_age_verified && income_status === income_status_codes.locked)
+        return <ProofOfIncomeForm onSubmit={handleSubmit} poinc_documents_list={poinc_documents_list} />;
+    if (!allow_document_upload || !needs_poinc || (!is_age_verified && income_status === income_status_codes.none))
         return <PoincNotRequired />;
 
     switch (income_status) {

@@ -182,6 +182,10 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'P2P'
             );
+        } else if (window.location.pathname === routes.personal_details) {
+            this.notification_messages = this.notification_messages.filter(
+                notification => notification.platform === 'Account'
+            );
         } else {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
@@ -255,9 +259,8 @@ export default class NotificationStore extends BaseStore {
                 poa_address_mismatch,
             } = getStatusValidations(status || []);
 
-            this.removeNotificationByKey({ key: this.client_notifications.poa_address_mismatch_warning.key });
             if (poa_address_mismatch) {
-                this.addNotificationMessage(this.client_notifications.poa_address_mismatch_warning);
+                this.showPOAAddressMismatchWarningNotification();
             }
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
@@ -1120,32 +1123,6 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
-            poa_address_mismatch_warning: {
-                key: 'poa_address_mismatch_warning',
-                header: localize('Please update your address'),
-                message: localize(
-                    'It appears that the address in your document doesn’t match the address in your Deriv profile. Please update your personal details now with the correct address.'
-                ),
-                action: {
-                    route: routes.personal_details,
-                    text: localize('Go to Personal details'),
-                },
-                type: 'warning',
-                should_show_again: true,
-            },
-            poa_address_mismatch_success: {
-                key: 'poa_address_mismatch_success',
-                header: localize('Your proof of address has been verified'),
-                type: 'announce',
-                should_show_again: true,
-            },
-            poa_address_mismatch_error: {
-                key: 'poa_address_mismatch_error',
-                header: localize('Your address doesn’t match your profile'),
-                message: localize('Update the address in your profile.'),
-                type: 'danger',
-                should_show_again: true,
-            },
         };
         this.client_notifications = notifications;
     }
@@ -1168,5 +1145,42 @@ export default class NotificationStore extends BaseStore {
     @action.bound
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
+    }
+
+    showPOAAddressMismatchWarningNotification() {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_warning',
+            header: localize('Please update your address'),
+            message: localize(
+                'It appears that the address in your document doesn’t match the address in your Deriv profile. Please update your personal details now with the correct address.'
+            ),
+            action: {
+                route: routes.personal_details,
+                text: localize('Go to Personal details'),
+            },
+            type: 'warning',
+            should_show_again: true,
+        });
+    }
+
+    showPOAAddressMismatchSuccessNotification() {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_success',
+            header: localize('Your proof of address has been verified'),
+            type: 'announce',
+            should_show_again: true,
+            platform: 'Account',
+        });
+    }
+
+    showPOAAddressMismatchFailureNotification() {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_failure',
+            header: localize('Your address doesn’t match your profile'),
+            message: localize('Update the address in your profile.'),
+            type: 'danger',
+            should_show_again: true,
+            platform: 'Account',
+        });
     }
 }

@@ -77,7 +77,6 @@ const AppNotificationMessages = ({
     has_malta_account,
     is_logged_in,
     should_show_popups,
-    allowed_notification_keys,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -96,11 +95,6 @@ const AppNotificationMessages = ({
     }, [is_mt5, notifications_ref]);
 
     const notifications = notification_messages.filter(message => {
-        if (allowed_notification_keys && !allowed_notification_keys.includes(message.key)) {
-            // if the notifications key is not allowed to show then we will remove it from the list.
-            return false;
-        }
-
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
@@ -188,7 +182,6 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
-    allowed_notification_keys: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default connect(({ client, notifications }) => ({

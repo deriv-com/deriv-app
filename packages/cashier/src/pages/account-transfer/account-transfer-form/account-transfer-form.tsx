@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
+import { observer } from 'mobx-react-lite';
 import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
@@ -29,6 +30,7 @@ import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
 import './account-transfer-form.scss';
+import { useStore } from '../../../hooks';
 
 type TSelect = {
     currency: string;
@@ -42,44 +44,8 @@ type TSelect = {
 };
 
 type TAccountTransferFormProps = {
-    account_limits: TClientStore['account_limits'];
-    account_transfer_amount: string;
-    accounts_list: Array<TAccount>;
-    authentication_status: TClientStore['authentication_status'];
-    converter_from_amount: string;
-    converter_from_error: string;
-    converter_to_amount: string;
-    converter_to_error: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
     error: object;
-    is_crypto: boolean;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
-    minimum_fee: string;
-    mt5_login_list: TClientStore['mt5_login_list'];
-    onChangeConverterFromAmount: () => void;
-    onChangeConverterToAmount: () => void;
-    onChangeTransferFrom: (event: TReactChangeEvent) => void;
-    onChangeTransferTo: (event: TReactChangeEvent) => void;
-    onMount: TClientStore['getLimits'];
-    percentage: number;
-    recentTransactionOnMount: () => void;
-    requestTransferBetweenAccounts: ({ amount }: { amount: number }) => void;
-    resetConverter: () => void;
-    selected_from: TSelect;
-    selected_to: TSelect;
-    setAccountTransferAmount: (amount: string) => void;
-    setErrorMessage: (message: string) => void;
     setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
-    setTransferPercentageSelectorResult: () => void;
-    should_percentage_reset: boolean;
-    transfer_fee: number;
-    transfer_limit: {
-        min: number;
-        max: number;
-    };
-    validateTransferFromAmount: () => void;
-    validateTransferToAmount: () => void;
 };
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountsList) => {
@@ -136,43 +102,46 @@ let accounts_to: Array<TAccount> = [];
 let mt_accounts_to: Array<TAccount> = [];
 let dxtrade_accounts_to: Array<TAccount> = [];
 
-const AccountTransferForm = ({
-    account_limits,
-    accounts_list,
-    account_transfer_amount,
-    authentication_status,
-    converter_from_amount,
-    converter_from_error,
-    converter_to_amount,
-    converter_to_error,
-    crypto_transactions,
-    error,
-    is_crypto,
-    is_dxtrade_allowed,
-    is_dark_mode_on,
-    minimum_fee,
-    mt5_login_list,
-    onChangeConverterFromAmount,
-    onChangeConverterToAmount,
-    onChangeTransferFrom,
-    onChangeTransferTo,
-    onMount,
-    percentage,
-    resetConverter,
-    recentTransactionOnMount,
-    requestTransferBetweenAccounts,
-    setErrorMessage,
-    setTransferPercentageSelectorResult,
-    selected_from,
-    selected_to,
-    setAccountTransferAmount,
-    setSideNotes,
-    should_percentage_reset,
-    transfer_fee,
-    transfer_limit,
-    validateTransferFromAmount,
-    validateTransferToAmount,
-}: TAccountTransferFormProps) => {
+const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps) => {
+    const {
+        client,
+        modules: { cashier },
+        ui,
+    } = useStore();
+
+    const { account_limits, authentication_status, is_dxtrade_allowed, mt5_login_list, getLimits: onMount } = client;
+    const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = cashier;
+    const { is_dark_mode_on } = ui;
+
+    const {
+        account_transfer_amount,
+        accounts_list,
+        minimum_fee,
+        onChangeTransferFrom,
+        onChangeTransferTo,
+        requestTransferBetweenAccounts,
+        selected_from,
+        selected_to,
+        setAccountTransferAmount,
+        error: { setErrorMessage },
+        setTransferPercentageSelectorResult,
+        transfer_fee,
+        transfer_limit,
+        validateTransferFromAmount,
+        validateTransferToAmount,
+    } = account_transfer;
+    const { is_crypto, percentage, should_percentage_reset } = general_store;
+    const {
+        converter_from_amount,
+        converter_from_error,
+        converter_to_amount,
+        converter_to_error,
+        onChangeConverterFromAmount,
+        onChangeConverterToAmount,
+        resetConverter,
+    } = crypto_fiat_converter;
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState<string>();
@@ -626,38 +595,4 @@ const AccountTransferForm = ({
     );
 };
 
-export default connect(({ client, modules, ui }: TRootStore) => ({
-    account_limits: client.account_limits,
-    account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
-    accounts_list: modules.cashier.account_transfer.accounts_list,
-    authentication_status: client.authentication_status,
-    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
-    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
-    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
-    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    is_crypto: modules.cashier.general_store.is_crypto,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
-    minimum_fee: modules.cashier.account_transfer.minimum_fee,
-    mt5_login_list: client.mt5_login_list,
-    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
-    onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,
-    onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
-    onMount: client.getLimits,
-    percentage: modules.cashier.general_store.percentage,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    requestTransferBetweenAccounts: modules.cashier.account_transfer.requestTransferBetweenAccounts,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
-    selected_from: modules.cashier.account_transfer.selected_from,
-    selected_to: modules.cashier.account_transfer.selected_to,
-    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
-    setErrorMessage: modules.cashier.account_transfer.error.setErrorMessage,
-    setTransferPercentageSelectorResult: modules.cashier.account_transfer.setTransferPercentageSelectorResult,
-    should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
-    transfer_fee: modules.cashier.account_transfer.transfer_fee,
-    transfer_limit: modules.cashier.account_transfer.transfer_limit,
-    validateTransferFromAmount: modules.cashier.account_transfer.validateTransferFromAmount,
-    validateTransferToAmount: modules.cashier.account_transfer.validateTransferToAmount,
-}))(AccountTransferForm);
+export default observer(AccountTransferForm);

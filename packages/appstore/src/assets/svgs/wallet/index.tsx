@@ -1,6 +1,3 @@
-import React from 'react';
-import OneforyouDark from 'Assets/svgs/wallet/1foryou-dark.svg';
-import OneforyouLight from 'Assets/svgs/wallet/1foryou-light.svg';
 import AdvcashDark from 'Assets/svgs/wallet/advcash-dark.svg';
 import AdvcashLight from 'Assets/svgs/wallet/advcash-light.svg';
 import AirtmDark from 'Assets/svgs/wallet/airtm-dark.svg';
@@ -15,6 +12,8 @@ import BanxaDark from 'Assets/svgs/wallet/banxa-dark.svg';
 import BanxaLight from 'Assets/svgs/wallet/banxa-light.svg';
 import BeyonicDark from 'Assets/svgs/wallet/beyonic-dark.svg';
 import BeyonicLight from 'Assets/svgs/wallet/beyonic-light.svg';
+import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
+import BinaryBotBlue from 'Assets/svgs/wallet/ic-appstore-binarybot-blue.svg';
 import BitcoinDark from 'Assets/svgs/wallet/bitcoin-dark.svg';
 import BitcoinLight from 'Assets/svgs/wallet/bitcoin-light.svg';
 import BoletoDark from 'Assets/svgs/wallet/boleto-dark.svg';
@@ -25,19 +24,30 @@ import CimbniagaDark from 'Assets/svgs/wallet/cimbniaga-dark.svg';
 import CreditCardLight from 'Assets/svgs/wallet/credit-card-light.svg';
 import CreditCardsDark from 'Assets/svgs/wallet/credit-cards-dark.svg';
 import CreditCardsLight from 'Assets/svgs/wallet/credit-cards-light.svg';
+import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
+import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
+import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
 import DemoDark from 'Assets/svgs/wallet/demo-dark.svg';
 import DemoLight from 'Assets/svgs/wallet/demo-light.svg';
+import DemoMobile from 'Assets/svgs/wallet/account-demo-mobile.svg';
+import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
+import DerivGo from 'Assets/svgs/wallet/ic-brand-derivgo.svg';
+import DerivGoBlack from 'Assets/svgs/wallet/ic-appstore-derivgo-black.svg';
+import DerivLogo from 'Assets/svgs/wallet/ic-appstore-deriv-logo.svg';
 import DerivP2pDark from 'Assets/svgs/wallet/deriv-p2p-dark.svg';
 import DerivP2pLight from 'Assets/svgs/wallet/deriv-p2p-light.svg';
-import DerivLogo from 'Assets/svgs/wallet/ic-appstore-deriv-logo.svg';
+import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
 import DinersClubDark from 'Assets/svgs/wallet/diners-club-dark.svg';
 import DinersClubLight from 'Assets/svgs/wallet/diners-club-light.svg';
+import DropDown from 'Assets/svgs/wallet/drop-down.svg';
+import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
 import EthereumDark from 'Assets/svgs/wallet/ethereum-dark.svg';
 import EthereumLight from 'Assets/svgs/wallet/ethereum-light.svg';
 import EurDark from 'Assets/svgs/wallet/eur-dark.svg';
 import EurLight from 'Assets/svgs/wallet/eur-light.svg';
 import FasapayDark from 'Assets/svgs/wallet/fasapay-dark.svg';
 import FasapayLight from 'Assets/svgs/wallet/fasapay-light.svg';
+import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
 import GbpDark from 'Assets/svgs/wallet/gbp-dark.svg';
 import GbpLight from 'Assets/svgs/wallet/gbp-light.svg';
 import Help2payDark from 'Assets/svgs/wallet/help2pay-dark.svg';
@@ -58,8 +68,11 @@ import NetellerDark from 'Assets/svgs/wallet/neteller-dark.svg';
 import NetellerLight from 'Assets/svgs/wallet/neteller-light.svg';
 import NganluongDark from 'Assets/svgs/wallet/nganluong-dark.svg';
 import NganluongLight from 'Assets/svgs/wallet/nganluong-light.svg';
+import OneforyouDark from 'Assets/svgs/wallet/1foryou-dark.svg';
+import OneforyouLight from 'Assets/svgs/wallet/1foryou-light.svg';
 import OnlinenairaDark from 'Assets/svgs/wallet/onlinenaira-dark.svg';
 import OnlinenairaLight from 'Assets/svgs/wallet/onlinenaira-light.svg';
+import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
 import OxxoDark from 'Assets/svgs/wallet/oxxo-dark.svg';
 import OxxoLight from 'Assets/svgs/wallet/oxxo-light.svg';
 import PayLivreDark from 'Assets/svgs/wallet/pay-livre-dark.svg';
@@ -72,8 +85,11 @@ import Paytrust88Dark from 'Assets/svgs/wallet/paytrust88-dark.svg';
 import Paytrust88Light from 'Assets/svgs/wallet/paytrust88-light.svg';
 import PerfectMoneyDark from 'Assets/svgs/wallet/perfect-money-dark.svg';
 import PerfectMoneyLight from 'Assets/svgs/wallet/perfect-money-light.svg';
+import React from 'react';
 import SkrillDark from 'Assets/svgs/wallet/skrill-dark.svg';
 import SkrillLight from 'Assets/svgs/wallet/skrill-light.svg';
+import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
+import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
 import SpeiDark from 'Assets/svgs/wallet/spei-dark.svg';
 import SpeiLight from 'Assets/svgs/wallet/spei-light.svg';
 import SticpayDark from 'Assets/svgs/wallet/sticpay-dark.svg';
@@ -96,22 +112,6 @@ import WechatPayDark from 'Assets/svgs/wallet/wechat-pay-dark.svg';
 import WechatPayLight from 'Assets/svgs/wallet/wechat-pay-light.svg';
 import ZingpayDark from 'Assets/svgs/wallet/zingpay-dark.svg';
 import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
-import CurrencyUSD from 'Assets/svgs/wallet/currency-usd.svg';
-import Demo from 'Assets/svgs/wallet/ic-brand-demo.svg';
-import DropDown from 'Assets/svgs/wallet/drop-down.svg';
-import DerivGo from 'Assets/svgs/wallet/ic-brand-derivgo.svg';
-import DerivGoBlack from 'Assets/svgs/wallet/ic-appstore-derivgo-black.svg';
-import BinaryBot from 'Assets/svgs/wallet/ic-brand-binarybot.svg';
-import DBot from 'Assets/svgs/wallet/ic-brand-dbot.svg';
-import BinaryBotBlue from 'Assets/svgs/wallet/ic-appstore-binarybot-blue.svg';
-import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
-import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
-import DemoMobile from 'Assets/svgs/wallet/account-demo-mobile.svg';
-import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
-import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
-import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
-import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
-import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
 
 const Icons = {
     '1foryouDark': OneforyouDark,
@@ -130,6 +130,8 @@ const Icons = {
     BanxaLight,
     BeyonicDark,
     BeyonicLight,
+    BinaryBot,
+    BinaryBotBlue,
     BitcoinDark,
     BitcoinLight,
     BoletoDark,
@@ -140,19 +142,30 @@ const Icons = {
     CreditCardLight,
     CreditCardsDark,
     CreditCardsLight,
+    CurrencyUSD,
+    DBot,
+    Demo,
     DemoDark,
     DemoLight,
+    DemoMobile,
+    Derived,
+    DerivGo,
+    DerivGoBlack,
+    DerivLogo,
     DerivP2pDark,
     DerivP2pLight,
-    DerivLogo,
+    DerivX,
     DinersClubDark,
     DinersClubLight,
+    DropDown,
+    DTrader,
     EthereumDark,
     EthereumLight,
     EurDark,
     EurLight,
     FasapayDark,
     FasapayLight,
+    Financial,
     GbpDark,
     GbpLight,
     Help2payDark,
@@ -175,6 +188,7 @@ const Icons = {
     NganluongLight,
     OnlinenairaDark,
     OnlinenairaLight,
+    Options,
     OxxoDark,
     OxxoLight,
     PayLivreDark,
@@ -189,6 +203,8 @@ const Icons = {
     PerfectMoneyLight,
     SkrillDark,
     SkrillLight,
+    SmartTrader,
+    SmartTraderBlue,
     SpeiDark,
     SpeiLight,
     SticpayDark,
@@ -211,22 +227,6 @@ const Icons = {
     WechatPayLight,
     ZingpayDark,
     ZingpayLight,
-    CurrencyUSD,
-    Demo,
-    DropDown,
-    DerivGo,
-    DerivGoBlack,
-    BinaryBot,
-    DBot,
-    BinaryBotBlue,
-    DTrader,
-    SmartTrader,
-    DemoMobile,
-    Derived,
-    Financial,
-    DerivX,
-    Options,
-    SmartTraderBlue,
 };
 
 const WalletIcon = ({

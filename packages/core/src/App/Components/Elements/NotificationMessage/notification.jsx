@@ -11,6 +11,7 @@ import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
 import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 import NotificationOrder from './notification-order.jsx';
+import NotificationAdTypeChanged from './notification-ad-type.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
@@ -81,6 +82,8 @@ const Notification = ({ data, removeNotificationMessage }) => {
             return (
                 <NotificationOrder action={data.action} header={data.header} message={data.message} onClose={destroy} />
             );
+        case 'p2p_ad_type_changed':
+            return <NotificationAdTypeChanged header={data.header} message={data.message} onClose={destroy} />;
         default:
             return (
                 <div

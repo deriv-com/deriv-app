@@ -20,7 +20,7 @@ import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
 
-//TODO: need to write types for the root store
+// TODO: need to write types for the root store
 export default class RootStore {
     constructor(core, ws, dbot) {
         this.core = core;

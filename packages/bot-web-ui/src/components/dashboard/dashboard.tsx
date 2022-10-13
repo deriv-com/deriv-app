@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from '@deriv/components';
+import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponent from './dashboard-component';
@@ -12,13 +12,12 @@ import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
 import classNames from 'classnames';
 import Tutorial from './tutorial-tab';
-import { isMobile } from '@deriv/shared';
 
 type TDashboard = {
     active_tab: number;
+    is_drawer_open: boolean;
     setActiveTab: (active_tab: number) => void;
     toggleStrategyModal: () => void;
-    is_drawer_open: boolean;
 };
 
 const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: TDashboard) => {
@@ -65,24 +64,24 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     </Tabs>
                 </div>
             </div>
-            {!isMobile() && (
+            <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
                     <RunStrategy />
                     {/*
-                    1. Bot-Builder
-                    2. Quick Strategy
-                    3. Charts
-                */}
+                        1. Bot-Builder
+                        2. Quick Strategy
+                        3. Charts
+                    */}
                     {[1, 2, 3].includes(active_tab) && <RunPanel />}
                 </div>
-            )}
+            </DesktopWrapper>
         </React.Fragment>
     );
 };
 
 export default connect(({ dashboard, quick_strategy, run_panel }: RootStore) => ({
     active_tab: dashboard.active_tab,
+    is_drawer_open: run_panel.is_drawer_open,
     setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
-    is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

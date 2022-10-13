@@ -7,7 +7,9 @@ import classNames from 'classnames';
 
 interface TChartProps {
     chart_type: string;
+    getMarketsOrder: (active_symbols) => void;
     granularity: number;
+    is_drawer_open: boolean;
     is_mobile: boolean;
     is_socket_opened: boolean;
     onSymbolChange: (symbol: string) => void;
@@ -21,13 +23,13 @@ interface TChartProps {
     wsForgetStream: (stream_id: string) => void;
     wsSendRequest: (req) => void;
     wsSubscribe: (req, callback) => void;
-    getMarketsOrder: (active_symbols) => void;
-    is_drawer_open: boolean;
 }
 
 const Chart = ({
     chart_type,
+    getMarketsOrder,
     granularity,
+    is_drawer_open,
     is_mobile,
     is_socket_opened,
     onSymbolChange,
@@ -41,8 +43,6 @@ const Chart = ({
     wsForgetStream,
     wsSendRequest,
     wsSubscribe,
-    getMarketsOrder,
-    is_drawer_open,
 }: TChartProps) => {
     const barriers = [];
     return (
@@ -79,13 +79,17 @@ const Chart = ({
 };
 
 export default connect(({ chart_store, common, ui, run_panel }: RootStore) => ({
+    chart_type: chart_store.chart_type,
+    getMarketsOrder: chart_store.getMarketsOrder,
+    granularity: chart_store.granularity,
+    last_contract: {
+        is_digit_contract: false,
+    },
+    is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,
     is_socket_opened: common.is_socket_opened,
-    updateChartType: chart_store.updateChartType,
-    updateGranularity: chart_store.updateGranularity,
-    granularity: chart_store.granularity,
-    chart_type: chart_store.chart_type,
     onSymbolChange: chart_store.onSymbolChange,
+    setChartStatus: chart_store.setChartStatus,
     settings: {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: true,
@@ -94,15 +98,11 @@ export default connect(({ chart_store, common, ui, run_panel }: RootStore) => ({
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
-    last_contract: {
-        is_digit_contract: false,
-    },
     symbol: chart_store.symbol,
-    setChartStatus: chart_store.setChartStatus,
+    updateChartType: chart_store.updateChartType,
+    updateGranularity: chart_store.updateGranularity,
     wsForget: chart_store.wsForget,
     wsForgetStream: chart_store.wsForgetStream,
     wsSendRequest: chart_store.wsSendRequest,
     wsSubscribe: chart_store.wsSubscribe,
-    getMarketsOrder: chart_store.getMarketsOrder,
-    is_drawer_open: run_panel.is_drawer_open,
 }))(Chart);

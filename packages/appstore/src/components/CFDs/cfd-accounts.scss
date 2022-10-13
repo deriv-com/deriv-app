@@ -24,11 +24,15 @@
         &__accounts {
             display: flex;
             justify-content: start;
-            gap: 2.4rem;
             margin-top: 4rem;
+            & > div {
+                margin-right: 2.4rem;
+            }
             @include mobile {
                 flex-direction: column;
-                gap: 3.6rem;
+                & > div {
+                    margin-bottom: 3.6rem;
+                }
             }
             &--item {
                 &__add-derived {

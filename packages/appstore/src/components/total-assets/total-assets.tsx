@@ -8,11 +8,12 @@ type TTotalAssets = {
     amount: string;
     currency: string;
     category: TAccountCategory;
+    className?: string;
 };
 
-const TotalAssets = ({ amount, currency, category }: TTotalAssets) => {
+const TotalAssets = ({ amount, currency, category, className }: TTotalAssets) => {
     return (
-        <div className='total-assets'>
+        <div className={`total-assets ${className}`}>
             <Text weight='bold' className='total-assets-amount'>
                 {formatMoney(currency, amount, true)}
             </Text>

@@ -1,0 +1,53 @@
+.trading-hub {
+    width: 100%;
+    height: 100%;
+    padding: 4rem;
+
+    @include mobile {
+        padding: 0;
+    }
+
+    &_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include mobile {
+            flex-direction: column;
+            padding: 2.4rem;
+        }
+        &--account {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.6rem;
+            &_assets {
+                & > span {
+                    color: var(--text-profit-success);
+                }
+            }
+            .toggle-account-type {
+                &--parent {
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    &_body {
+        height: -webkit-fill-available;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS * 4;
+        margin: 2.4rem 0;
+        padding: 2.4rem;
+
+        &--divider {
+            margin: 3.6rem 0;
+            height: 2px;
+        }
+
+        @include mobile {
+            border: none;
+            margin: 0;
+        }
+    }
+}

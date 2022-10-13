@@ -6,6 +6,7 @@ import BaseStore from './base-store';
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
+    @observable is_tour_open = false;
     @observable is_account_settings_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
@@ -197,6 +198,11 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    @action.bound
+    toggleIsTourOpen(is_tour_open) {
+        this.is_tour_open = is_tour_open;
     }
 
     @action.bound

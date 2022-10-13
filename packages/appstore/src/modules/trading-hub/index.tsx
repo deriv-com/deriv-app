@@ -1,29 +1,53 @@
 import * as React from 'react';
+import { observer } from 'mobx-react-lite';
 import Joyride from 'react-joyride';
-import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { useHistory } from 'react-router-dom';
+import { Text, Button } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
-import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import CFDAccounts from 'Components/CFDs';
-import { TAccountCategory } from 'Types';
 import TotalAssets from 'Components/total-assets';
-import { WS } from '@deriv/shared';
 import Divider from 'Components/elements/divider';
+import { TAccountCategory } from 'Types';
 import './trading-hub.scss';
 
-const TradingHub: React.FC = () => {
+const TradingHub = () => {
     const { ui, client } = useStores();
-    const { is_dark_mode_on } = ui;
+    const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
     const { obj_total_balance } = client;
+
+    const history = useHistory();
     /*TODO: We need to show this component whenever user click on tour guide button*/
-    const [is_tour_open, setIsTourOpen] = React.useState(false);
     const [account_type, setAccountType] = React.useState<TAccountCategory>('demo');
 
     const accountTypeChange = (event: any) => {
         setAccountType(event.target.value);
     };
+
+    tour_step_locale.last = (
+        <Localize
+            i18n_default_text='OK'
+            onClick={() => {
+                toggleIsTourOpen();
+            }}
+        />
+    );
+
+    tour_step_locale.back = (
+        <Button
+            has_effect
+            text={localize('Repeat tour')}
+            secondary
+            medium
+            onClick={() => {
+                history.push(routes.onboarding);
+                toggleIsTourOpen();
+            }}
+        />
+    );
 
     return (
         <div id='trading-hub' className='trading-hub'>

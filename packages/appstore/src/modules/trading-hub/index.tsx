@@ -10,6 +10,7 @@ import { Localize, localize } from '@deriv/translations';
 import { Button, Text } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import TotalAssets from 'Components/total-assets';
 import './index.scss';
 
 const TradingHub = () => {
@@ -53,11 +54,14 @@ const TradingHub = () => {
                         <Localize i18n_default_text='Welcome to Deriv Trading Hub' />
                     </Text>
                 </div>
-                <div className='trading-hub__header--account-toggle'>
-                    <ToggleAccountType
-                        accountTypeChange={(event: any) => accountTypeChange(event)}
-                        value={account_type}
-                    />
+                <div className='trading-hub__header--right'>
+                    <div className='trading-hub__header-right--account-toggle'>
+                        <TotalAssets amount='100000' currency='USD' category={account_type} />
+                        <ToggleAccountType
+                            accountTypeChange={(event: any) => accountTypeChange(event)}
+                            value={account_type}
+                        />
+                    </div>
                 </div>
             </div>
 

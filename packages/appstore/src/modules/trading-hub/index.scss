@@ -8,10 +8,13 @@
             justify-content: flex-start;
             align-items: flex-start;
         }
-        &--account-toggle {
-            padding-top: 0.5rem;
-            align-items: flex-end;
-            justify-content: flex-end;
+        &--right {
+            &--account-toggle {
+                display: flex;
+                padding-top: 0.5rem;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
         }
     }
 }

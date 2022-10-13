@@ -1,8 +1,13 @@
 .total-assets {
     display: flex;
 
+    &-amount {
+        color: var(--text-profit-success);
+    }
+
     &-currency {
         margin-left: 0.4rem;
+        color: var(--text-profit-success);
     }
 
     &-tooltip {

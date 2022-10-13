@@ -3,9 +3,20 @@
     height: calc(100vh - 16.6rem);
     background: var(--content-bg-color);
 
-    &__notifications-container--open {
+    @mixin position-center {
         display: flex;
         justify-content: center;
+    }
+
+    &__notifications-container {
+        &--open {
+            @include position-center;
+            width: calc(100% - 36.6rem); //35rem right bar + 1.6rem left padding of the right bar
+        }
+
+        &--closed {
+            @include position-center;
+        }
     }
 
     &__container {

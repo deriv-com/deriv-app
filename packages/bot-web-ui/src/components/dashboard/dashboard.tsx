@@ -47,7 +47,8 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                         >
                             <div
                                 className={classNames('quick-strategy', {
-                                    'quick-strategy__notifications-container--open': !is_drawer_open,
+                                    'quick-strategy__notifications-container--open': is_drawer_open,
+                                    'quick-strategy__notifications-container--closed': !is_drawer_open,
                                 })}
                             >
                                 <QuickStrategy />

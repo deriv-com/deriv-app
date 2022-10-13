@@ -1,11 +1,11 @@
 declare module 'react-div-100vh' {
     export default function Div100vh(
         props: React.PropsWithChildren<{
-            className: string | undefined;
-            id: string | undefined;
+            className?: string;
+            id?: string;
             style: {
-                height?: string | null;
-                maxHeight?: string | null;
+                height?: string;
+                maxHeight?: string;
             };
         }>
     ): JSX.Element;

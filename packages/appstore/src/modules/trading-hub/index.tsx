@@ -7,9 +7,10 @@ import { useStores } from 'Stores';
 import CFDAccounts from 'Components/CFDs';
 import { TAccountCategory } from 'Types';
 import { Localize, localize } from '@deriv/translations';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import './index.scss';
 
 const TradingHub = () => {
     const { ui } = useStores();
@@ -46,8 +47,21 @@ const TradingHub = () => {
 
     return (
         <React.Fragment>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
-            <div className='trading-hub'>
+            <div className='trading-hub__header'>
+                <div className='trading-hub__header--title'>
+                    <Text as='h5' size='m' color='general' line_height='xs' weight='bold'>
+                        <Localize i18n_default_text='Welcome to Deriv Trading Hub' />
+                    </Text>
+                </div>
+                <div className='trading-hub__header--account-toggle'>
+                    <ToggleAccountType
+                        accountTypeChange={(event: any) => accountTypeChange(event)}
+                        value={account_type}
+                    />
+                </div>
+            </div>
+
+            <div className='trading-hub__body'>
                 <CFDAccounts account_type={account_type} />
             </div>
             <Joyride

@@ -1,0 +1,17 @@
+.trading-hub {
+    &__header {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        &--title {
+            padding: 4rem 0 0 5rem;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        &--account-toggle {
+            padding-top: 0.5rem;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+    }
+}

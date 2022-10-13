@@ -1,16 +1,19 @@
 import { localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
 
-export type TFaqContent = {
-    title: string;
-    description: { [key: string]: string }[];
-    image?: string;
-};
+export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
 
-export type TGuideContent = {
+export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src'>;
+
+export type TGuideContent = Omit<TContent, 'title' | 'description' | 'src'>;
+
+export type TContent = {
+    description: TDescription[];
+    content?: string;
+    src?: string;
+    title: string;
     id: number;
     type: string;
-    content: string;
     url?: string;
 };
 

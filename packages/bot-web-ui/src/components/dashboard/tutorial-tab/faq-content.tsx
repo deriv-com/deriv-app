@@ -3,56 +3,45 @@ import { Text, Accordion } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-
-type TFAQItem = {
-    type: string;
-    content: string;
-    index: number;
-    src?: string;
-};
-
-type TFAQ = {
-    item: TFAQItem;
-};
+import { TDescription } from './tutorial-content';
 
 type TFAQContent = {
-    faq_list: string[];
+    faq_list: TFAQList[];
     faq_search_value: string;
 };
 
 type TFAQList = {
     title: string;
-    description: { [key: string]: string }[];
+    description: TDescription[];
 };
 
-const FAQ = ({ item }: TFAQ) => {
-    const { type, content, index } = item;
-    if (type === 'image') {
-        return <img src={item.src} />;
-    }
+const FAQ = ({ type, content, src }: TDescription) => {
+    if (type === 'image') return <img src={src} />;
+
     return (
         <Text
             as='p'
             line_height='xxl'
             className='faq__description'
             weight='normal'
-            key={index}
+            key={content}
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );
 };
 
 const FAQContent = ({ faq_list, faq_search_value }: TFAQContent) => {
-    const faqList = ({ title, description }: TFAQList) => {
-        return {
+    const getList = () => {
+        return faq_list.map(({ title, description }: TFAQList) => ({
             header: (
                 <Text as='p' line_height='xl' className='faq__title' weight='bold' key={title}>
                     {title}
                 </Text>
             ),
-            content: description.map(item => <FAQ item={item} key={title} />),
-        };
+            content: description.map((item, index) => <FAQ {...item} key={`faq-description-item-${index}`} />),
+        }));
     };
+
     return (
         <div>
             <div className='faq__wrapper'>
@@ -60,12 +49,7 @@ const FAQContent = ({ faq_list, faq_search_value }: TFAQContent) => {
                     {localize('FAQ')}
                 </Text>
                 {faq_list?.length ? (
-                    <Accordion
-                        className='faq__wrapper__content'
-                        list={faq_list.map(faqList)}
-                        icon_close=''
-                        icon_open=''
-                    />
+                    <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                 ) : (
                     <Text as='h1' weight='bold' line_height='xxs'>
                         {localize('No results found "{{ faq_search_value }}"', {

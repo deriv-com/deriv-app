@@ -66,7 +66,7 @@
             align-items: flex-start;
             height: 7.2rem;
             width: 100%;
-            max-width: 100%;
+            max-width: 94%;
             overflow: hidden;
             overflow-y: hidden;
             @include mobile {
@@ -113,7 +113,7 @@
             right: 0;
             z-index: 999;
             opacity: 0.9;
-            padding: 1.6rem;
+            padding: 1.9rem;
         }
         &--platform {
             display: flex;

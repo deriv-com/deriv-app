@@ -29,7 +29,7 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {number_of_accounts < 4 ? (
+                {number_of_accounts < 5 ? (
                     <div className={'add-options--desktop'} onClick={onClickHandler}>
                         <div className='add-options--desktop_title'>
                             <Icon

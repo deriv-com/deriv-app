@@ -85,7 +85,6 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         setIsloading(false);
     };
 
-    if (is_loading) return <Loading className='options-accounts-container__loader' is_fullscreen={false} />;
     return (
         <div className={`options-container${!has_any_real_account ? '-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
@@ -125,53 +124,19 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                     </Text>
                 </MobileWrapper>
             </div>
-            <div className='options-container__accounts-platform-container'>
-                {has_any_real_account ? (
-                    <div
-                        className={classNames('options-container__accounts-platform-container--accounts', {
-                            'options-container__accounts-platform-container--scroller':
-                                !isMobile() && sortedAccountList.length >= 4,
-                        })}
-                    >
-                        {props.accountType === 'demo'
-                            ? getSortedAccountList(account_list, accounts)
-                                  .filter(account => account.is_virtual)
-                                  .map(account => (
-                                      <OptionsAccount
-                                          key={account.loginid}
-                                          balance={accounts[account.loginid].balance}
-                                          currency={accounts[account.loginid].currency}
-                                          currency_icon={`IcCurrency-${account.icon}`}
-                                          display_type={'currency'}
-                                          has_balance={'balance' in accounts[account.loginid]}
-                                          has_reset_balance={accounts[account.loginid].is_virtual}
-                                          is_disabled={account.is_disabled}
-                                          is_virtual={account.is_virtual}
-                                          loginid_text={account.loginid}
-                                          country_standpoint={country_standpoint}
-                                          is_eu={is_eu}
-                                          market_type={market_type}
-                                          server={server}
-                                          sub_account_type={sub_account_type}
-                                          has_error={has_error}
-                                          platform={platform}
-                                          is_dark_mode_on={is_dark_mode_on}
-                                          shortcode={shortcode}
-                                          should_show_server_name={should_show_server_name}
-                                          redirectAccount={() =>
-                                              account.is_disabled ? undefined : () => doSwitch(account.loginid)
-                                          }
-                                          onClickResetVirtualBalance={resetBalance}
-                                          selected_loginid={account.loginid}
-                                          history={props.history}
-                                          location={props.location}
-                                          match={props.match}
-                                          activeAccount={account.loginid}
-                                      />
-                                  ))
-                            : sortedAccountList.map(account =>
-                                  isMobile() ? (
-                                      account.loginid === loginid && (
+            {!is_loading ? (
+                <div className='options-container__accounts-platform-container'>
+                    {has_any_real_account ? (
+                        <div
+                            className={classNames('options-container__accounts-platform-container--accounts', {
+                                'options-container__accounts-platform-container--scroller':
+                                    !isMobile() && sortedAccountList.length >= 5 && props.accountType !== 'demo',
+                            })}
+                        >
+                            {props.accountType === 'demo'
+                                ? getSortedAccountList(account_list, accounts)
+                                      .filter(account => account.is_virtual)
+                                      .map(account => (
                                           <OptionsAccount
                                               key={account.loginid}
                                               balance={accounts[account.loginid].balance}
@@ -193,95 +158,139 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                               is_dark_mode_on={is_dark_mode_on}
                                               shortcode={shortcode}
                                               should_show_server_name={should_show_server_name}
+                                              redirectAccount={() =>
+                                                  account.is_disabled ? undefined : () => doSwitch(account.loginid)
+                                              }
                                               onClickResetVirtualBalance={resetBalance}
                                               selected_loginid={account.loginid}
                                               history={props.history}
                                               location={props.location}
                                               match={props.match}
+                                              activeAccount={account.loginid}
+                                          />
+                                      ))
+                                : sortedAccountList.map(account =>
+                                      isMobile() ? (
+                                          account.loginid === loginid && (
+                                              <OptionsAccount
+                                                  key={account.loginid}
+                                                  balance={accounts[account.loginid].balance}
+                                                  currency={accounts[account.loginid].currency}
+                                                  currency_icon={`IcCurrency-${account.icon}`}
+                                                  display_type={'currency'}
+                                                  has_balance={'balance' in accounts[account.loginid]}
+                                                  has_reset_balance={accounts[account.loginid].is_virtual}
+                                                  is_disabled={account.is_disabled}
+                                                  is_virtual={account.is_virtual}
+                                                  loginid_text={account.loginid}
+                                                  country_standpoint={country_standpoint}
+                                                  is_eu={is_eu}
+                                                  market_type={market_type}
+                                                  server={server}
+                                                  sub_account_type={sub_account_type}
+                                                  has_error={has_error}
+                                                  platform={platform}
+                                                  is_dark_mode_on={is_dark_mode_on}
+                                                  shortcode={shortcode}
+                                                  should_show_server_name={should_show_server_name}
+                                                  onClickResetVirtualBalance={resetBalance}
+                                                  selected_loginid={account.loginid}
+                                                  history={props.history}
+                                                  location={props.location}
+                                                  match={props.match}
+                                                  activeAccount={loginid}
+                                                  onClickDeposit={onClickDeposit}
+                                                  switchAccountModal={openSwitchAccountModal}
+                                              />
+                                          )
+                                      ) : (
+                                          <OptionsAccount
+                                              key={account.loginid}
+                                              balance={accounts[account.loginid].balance}
+                                              currency={accounts[account.loginid].currency}
+                                              currency_icon={`IcCurrency-${account.icon}`}
+                                              display_type={'currency'}
+                                              has_balance={'balance' in accounts[account.loginid]}
+                                              has_reset_balance={accounts[account.loginid].is_virtual}
+                                              is_disabled={account.is_disabled}
+                                              is_virtual={account.is_virtual}
+                                              loginid_text={account.loginid}
+                                              country_standpoint={country_standpoint}
+                                              is_eu={is_eu}
+                                              market_type={market_type}
+                                              server={server}
+                                              sub_account_type={sub_account_type}
+                                              has_error={has_error}
+                                              platform={platform}
+                                              is_dark_mode_on={is_dark_mode_on}
+                                              shortcode={shortcode}
+                                              should_show_server_name={should_show_server_name}
+                                              redirectAccount={() => {
+                                                  return !account.is_disabled && doSwitch(account.loginid);
+                                              }}
+                                              onClickResetVirtualBalance={resetBalance}
+                                              selected_loginid={loginid}
+                                              history={props.history}
+                                              location={props.location}
+                                              match={props.match}
                                               activeAccount={loginid}
                                               onClickDeposit={onClickDeposit}
-                                              switchAccountModal={openSwitchAccountModal}
                                           />
                                       )
-                                  ) : (
-                                      <OptionsAccount
-                                          key={account.loginid}
-                                          balance={accounts[account.loginid].balance}
-                                          currency={accounts[account.loginid].currency}
-                                          currency_icon={`IcCurrency-${account.icon}`}
-                                          display_type={'currency'}
-                                          has_balance={'balance' in accounts[account.loginid]}
-                                          has_reset_balance={accounts[account.loginid].is_virtual}
-                                          is_disabled={account.is_disabled}
-                                          is_virtual={account.is_virtual}
-                                          loginid_text={account.loginid}
-                                          country_standpoint={country_standpoint}
-                                          is_eu={is_eu}
-                                          market_type={market_type}
-                                          server={server}
-                                          sub_account_type={sub_account_type}
-                                          has_error={has_error}
-                                          platform={platform}
-                                          is_dark_mode_on={is_dark_mode_on}
-                                          shortcode={shortcode}
-                                          should_show_server_name={should_show_server_name}
-                                          redirectAccount={() => {
-                                              return !account.is_disabled && doSwitch(account.loginid);
-                                          }}
-                                          onClickResetVirtualBalance={resetBalance}
-                                          selected_loginid={loginid}
-                                          history={props.history}
-                                          location={props.location}
-                                          match={props.match}
-                                          activeAccount={loginid}
-                                          onClickDeposit={onClickDeposit}
-                                      />
-                                  )
-                              )}
-                        {props.accountType !== 'demo' && (
-                            <div
-                                className={`options-container__accounts-platform-container--add-options${
-                                    sortedAccountList.length >= 4 ? '-scroller' : ''
-                                }`}
-                            >
-                                <AddOptions
-                                    number_of_accounts={sortedAccountList.length}
-                                    title={'More Options accounts'}
-                                    description={'Including cryptocurrencies'}
-                                />
-                            </div>
-                        )}
+                                  )}
+                            {props.accountType !== 'demo' && (
+                                <div
+                                    className={`options-container__accounts-platform-container--add-options${
+                                        sortedAccountList.length >= 5 ? '-scroller' : ''
+                                    }`}
+                                >
+                                    <AddOptions
+                                        number_of_accounts={sortedAccountList.length}
+                                        title={'More Options accounts'}
+                                        description={'Including cryptocurrencies'}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className='options-container__accounts-platform-container--account-launcher'>
+                            <AccountManager
+                                has_account={false}
+                                type={'Options'}
+                                appname={`Options account`}
+                                disabled={false}
+                                onClickGet={() => ui.openRealAccountSignup()}
+                                description={'Get a real Options account, start trading and manage your funds.'}
+                            />
+                        </div>
+                    )}
+                    {!has_any_real_account && (
+                        <span className='options-container__accounts-platform-container--divider' />
+                    )}
+                    <div
+                        className={`options-container__accounts-platform-container--${
+                            !has_any_real_account ? 'platform-with-applauncher' : 'platform'
+                        }`}
+                    >
+                        {props.platformlauncherprops.map((item, index) => {
+                            return (
+                                <>
+                                    <PlatformLauncher
+                                        key={item.title}
+                                        {...item}
+                                        has_real_account={has_any_real_account}
+                                    />
+                                    {!isMobile() && props.platformlauncherprops.length - 1 !== index && (
+                                        <span className='options-container__accounts-platform-container--platform--divider' />
+                                    )}
+                                </>
+                            );
+                        })}
                     </div>
-                ) : (
-                    <div className='options-container__accounts-platform-container--account-launcher'>
-                        <AccountManager
-                            has_account={false}
-                            type={'Options'}
-                            appname={`Options account`}
-                            disabled={false}
-                            onClickGet={() => ui.openRealAccountSignup()}
-                            description={'Get a real Options account, start trading and manage your funds.'}
-                        />
-                    </div>
-                )}
-                {!has_any_real_account && <span className='options-container__accounts-platform-container--divider' />}
-                <div
-                    className={`options-container__accounts-platform-container--${
-                        !has_any_real_account ? 'platform-with-applauncher' : 'platform'
-                    }`}
-                >
-                    {props.platformlauncherprops.map((item, index) => {
-                        return (
-                            <>
-                                <PlatformLauncher key={item.title} {...item} has_real_account={has_any_real_account} />
-                                {!isMobile() && props.platformlauncherprops.length - 1 !== index && (
-                                    <span className='options-container__accounts-platform-container--platform--divider' />
-                                )}
-                            </>
-                        );
-                    })}
                 </div>
-            </div>
+            ) : (
+                <Loading className='options-accounts-container__loader' is_fullscreen={false} />
+            )}
             <MobileDialog
                 title={localize('Switch your account')}
                 visible={is_modal_open}

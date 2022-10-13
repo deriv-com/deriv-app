@@ -629,7 +629,7 @@
     width: 30.4em;
     position: relative;
     @include desktop {
-        height: fit-content;
+        height: 100%;
     }
 
     &__balance {
@@ -698,6 +698,7 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
+        height: 100%;
 
         @include mobile {
             grid-template-rows: 1fr;

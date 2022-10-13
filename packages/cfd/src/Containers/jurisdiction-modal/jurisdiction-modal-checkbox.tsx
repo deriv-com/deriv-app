@@ -21,27 +21,27 @@ const JurisdictionCheckBox = ({
 
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
-                return false;
-            } else if (
-                jurisdiction_selected_shortcode === 'vanuatu' &&
-                poi_verified_for_vanuatu &&
-                !poa_not_submitted
-            ) {
-                return true;
-            } else if (
-                jurisdiction_selected_shortcode === 'bvi' &&
-                !should_restrict_bvi_account_creation &&
-                poi_verified_for_bvi_labuan_maltainvest &&
-                !poa_not_submitted
-            ) {
-                return true;
-            } else if (
-                ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
-                poi_poa_verified_for_bvi_labuan_maltainvest
-            ) {
-                return true;
-            }
+            // if (jurisdiction_selected_shortcode === 'svg') {
+            //     return false;
+            // } else if (
+            //     jurisdiction_selected_shortcode === 'vanuatu' &&
+            //     poi_verified_for_vanuatu &&
+            //     !poa_not_submitted
+            // ) {
+            //     return true;
+            // } else if (
+            //     jurisdiction_selected_shortcode === 'bvi' &&
+            //     !should_restrict_bvi_account_creation &&
+            //     poi_verified_for_bvi_labuan_maltainvest &&
+            //     !poa_not_submitted
+            // ) {
+            //     return true;
+            // } else if (
+            //     ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
+            //     poi_poa_verified_for_bvi_labuan_maltainvest
+            // ) {
+            return true;
+            // }
         }
         return false;
     };

@@ -82,7 +82,7 @@ const CFDDbViOnBoarding = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
-                    title={localize('Submit your proof of identity and address')}
+                    title={localize('Add a real MT5 account')}
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
@@ -95,7 +95,7 @@ const CFDDbViOnBoarding = ({
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={localize('Submit your proof of identity and address')}
+                    title={localize('Add a real MT5 account')}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}

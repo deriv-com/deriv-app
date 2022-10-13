@@ -110,24 +110,10 @@ const JurisdictionModal = ({
                       );
 
             if (!is_account_created) {
-                if (is_svg_selected || poi_or_poa_not_submitted) {
+                if (is_svg_selected) {
                     return false;
-                } else if (is_vanuatu_selected) {
-                    return poi_pending_for_vanuatu || (poi_verified_for_vanuatu && !checked);
-                } else if (is_bvi_selected) {
-                    return (
-                        (should_restrict_bvi_account_creation && poa_pending) ||
-                        poi_pending_for_bvi_labuan_maltainvest ||
-                        (poi_verified_for_bvi_labuan_maltainvest && !checked && !should_restrict_bvi_account_creation)
-                    );
-                } else if (is_labuan_selected || is_maltainvest_selected) {
-                    return (
-                        (poi_acknowledged_for_bvi_labuan_maltainvest &&
-                            poa_acknowledged &&
-                            !poi_poa_verified_for_bvi_labuan_maltainvest) ||
-                        (poi_poa_verified_for_bvi_labuan_maltainvest && !checked)
-                    );
                 }
+                return !checked;
             }
             return true;
         }
@@ -181,32 +167,6 @@ const JurisdictionModal = ({
         }
     };
 
-    const getButtonText = () => {
-        if (
-            // need to resubmit both poi and poa
-            (is_labuan_selected || is_maltainvest_selected) &&
-            poi_resubmit_for_bvi_labuan_maltainvest &&
-            need_poa_resubmission
-        ) {
-            return <Localize i18n_default_text='Resubmit' />;
-        } else if (
-            //need to resubmit poi
-            ((is_vanuatu_selected && poi_resubmit_for_vanuatu) ||
-                ((is_bvi_selected || is_labuan_selected || is_maltainvest_selected) &&
-                    poi_resubmit_for_bvi_labuan_maltainvest)) &&
-            !poi_or_poa_not_submitted
-        ) {
-            return <Localize i18n_default_text='Resubmit proof of identity' />;
-        } else if (
-            ((is_labuan_selected || is_maltainvest_selected) && need_poa_resubmission) ||
-            (is_bvi_selected && should_restrict_bvi_account_creation && !poa_acknowledged)
-        ) {
-            //need to resubmit poa
-            return <Localize i18n_default_text='Resubmit proof of address' />;
-        }
-        return <Localize i18n_default_text='Next' />;
-    };
-
     const ModalContent = () => (
         <React.Fragment>
             <JurisdictionModalContent
@@ -233,7 +193,7 @@ const JurisdictionModal = ({
                         onSelectRealAccount();
                     }}
                 >
-                    {getButtonText()}
+                    {localize('Next')}
                 </Button>
             </Modal.Footer>
         </React.Fragment>

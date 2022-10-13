@@ -1,12 +1,12 @@
+@mixin position-center {
+    display: flex;
+    justify-content: center;
+}
+
 .quick-strategy {
     $quick-strategy: &;
     height: calc(100vh - 16.6rem);
     background: var(--content-bg-color);
-
-    @mixin position-center {
-        display: flex;
-        justify-content: center;
-    }
 
     &__notifications-container {
         &--open {

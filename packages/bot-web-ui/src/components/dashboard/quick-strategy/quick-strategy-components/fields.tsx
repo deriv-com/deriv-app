@@ -199,7 +199,7 @@ const QuickStrategyFields = React.memo(
                                 </div>
                                 {id === 'type-strategy' && (
                                     <div key='description' className='quick-strategy__text'>
-                                        <Text text='sm' weight='normal' line_height='m'>
+                                        <Text text='sm' weight='normal'>
                                             {description}
                                         </Text>
                                     </div>

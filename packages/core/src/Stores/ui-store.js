@@ -201,8 +201,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleIsTourOpen() {
-        this.is_tour_open = !this.is_tour_open;
+    toggleIsTourOpen(is_tour_open) {
+        this.is_tour_open = is_tour_open;
     }
 
     @action.bound

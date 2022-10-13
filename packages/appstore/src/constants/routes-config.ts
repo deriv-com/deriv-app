@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import TradingHub from 'Modules/trading-hub';
 import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
-import Onboarding from 'Components/onboarding';
+import Onboarding from 'Modules/onboarding';
 
 type TRoutesConfig = {
     consumer_routes: ConfigStore['routes'];

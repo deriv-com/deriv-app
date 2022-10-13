@@ -39,8 +39,8 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
             history.push(routes.trading_hub);
-            toggleIsTourOpen();
             setIsPreAppStore(true);
+            toggleIsTourOpen();
         }
     };
 
@@ -55,6 +55,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     custom_color='var(--general-main-1)'
                     className='onboarding-header__cross-icon'
                     onClick={() => {
+                        toggleIsTourOpen(false);
                         history.push(routes.trading_hub);
                     }}
                 />

@@ -1,3 +1,13 @@
+@mixin popoverIcons($background-color, $height, $width) {
+    align-items: center;
+    background-color: $background-color;
+    cursor: pointer;
+    display: flex;
+    height: $height;
+    justify-content: center;
+    width: $width;
+}
+
 .p2p-my-ads {
     flex: 1;
     display: flex;
@@ -284,7 +294,7 @@
             top: 0;
 
             &--disable {
-                cursor: not-allowed;
+                cursor: not-allowed !important;
 
                 @include mobile {
                     background-color: var(--checkbox-disabled-grey) !important;
@@ -301,12 +311,7 @@
             }
 
             &__activate {
-                align-items: center;
-                cursor: pointer;
-                display: flex;
-                height: 3.2rem;
-                justify-content: center;
-                width: 3.2rem;
+                @include popoverIcons(none, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -315,22 +320,12 @@
                 }
 
                 @include mobile {
-                    align-items: center;
-                    background-color: var(--status-warning);
-                    display: flex;
-                    height: 100%;
-                    justify-content: center;
-                    width: 6rem;
+                    @include popoverIcons(var(--status-warning), 100%, 6rem);
                 }
             }
 
             &__deactivate {
-                align-items: center;
-                cursor: pointer;
-                display: flex;
-                height: 3.2rem;
-                justify-content: center;
-                width: 3.2rem;
+                @include popoverIcons(none, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -339,22 +334,12 @@
                 }
 
                 @include mobile {
-                    align-items: center;
-                    background-color: #85acb0;
-                    display: flex;
-                    height: 100%;
-                    justify-content: center;
-                    width: 6rem;
+                    @include popoverIcons(#85acb0, 100%, 6rem);
                 }
             }
 
             &__delete {
-                align-items: center;
-                cursor: pointer;
-                display: flex;
-                height: 3.2rem;
-                justify-content: center;
-                width: 3.2rem;
+                @include popoverIcons(none, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -363,22 +348,12 @@
                 }
 
                 @include mobile {
-                    align-items: center;
-                    background-color: var(--brand-red-coral);
-                    display: flex;
-                    height: 100%;
-                    justify-content: center;
-                    width: 6rem;
+                    @include popoverIcons(var(--brand-red-coral), 100%, 6rem);
                 }
             }
 
             &__edit {
-                align-items: center;
-                cursor: pointer;
-                display: flex;
-                height: 3.2rem;
-                justify-content: center;
-                width: 3.2rem;
+                @include popoverIcons(none, 3.2rem, 3.2rem);
 
                 @include desktop {
                     &:hover {
@@ -387,12 +362,7 @@
                 }
 
                 @include mobile {
-                    align-items: center;
-                    background-color: var(--status-info);
-                    display: flex;
-                    height: 100%;
-                    justify-content: center;
-                    width: 6rem;
+                    @include popoverIcons(var(--status-info), 100%, 6rem);
                 }
             }
         }

@@ -313,7 +313,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div onClick={handleOnEdit}>
                             <Popover
                                 alignment='bottom'
-                                className='p2p-my-ads__table-popovers__deactivate'
+                                className={classNames('p2p-my-ads__table-popovers__deactivate', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
                                 message={localize('Edit')}
                             >
                                 <Icon icon='IcEdit' color={general_store.is_barred && 'disabled'} />
@@ -322,7 +325,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div onClick={onClickDelete}>
                             <Popover
                                 alignment='bottom'
-                                className='p2p-my-ads__table-popovers__delete'
+                                className={classNames('p2p-my-ads__table-popovers__delete', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
                                 message={localize('Delete')}
                             >
                                 <Icon

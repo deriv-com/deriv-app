@@ -30,6 +30,8 @@ const Header = ({ is_logged_in }) => {
             result = <DTraderHeader />;
         }
         return result;
+    } else if (pathname === routes.onboarding) {
+        return null;
     }
 
     return <DefaultHeader />;

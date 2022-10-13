@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 import React from 'react';
 import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, redirectToSignUp, routes, PlatformContext } from '@deriv/shared';
+import { getErrorMessages, redirectToSignUp, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
 import 'Sass/app/modules/account-signup.scss';
@@ -21,7 +21,6 @@ const PasswordSelectionModal = ({
     updatePassword,
     values,
 }) => {
-    const { setIsPreAppStore } = React.useContext(PlatformContext);
     return (
         <div className='account-signup__password-selection'>
             <Text as='p' weight='bold' className='account-signup__heading' align='center'>
@@ -101,7 +100,6 @@ const PasswordSelectionModal = ({
                     primary
                     onClick={() => {
                         history.push(routes.onboarding);
-                        setIsPreAppStore(true);
                     }}
                 />
             )}

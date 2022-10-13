@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop, routes } from '@deriv/shared';
+import { isMobile, isDesktop, routes, PlatformContext } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import WalletIcon from 'Assets/svgs/wallet';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
@@ -28,7 +28,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const { toggleIsTourOpen } = ui;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
-
+    const { setIsPreAppStore } = React.useContext(PlatformContext);
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -40,6 +40,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step === number_of_steps.length) {
             history.push(routes.trading_hub);
             toggleIsTourOpen();
+            setIsPreAppStore(true);
         }
     };
 

@@ -8,7 +8,6 @@ export default class OnRampStore extends BaseStore {
     @observable api_error = null;
     @observable deposit_address = null;
     @observable is_deposit_address_loading = true;
-    @observable is_deposit_address_popover_open = false;
     @observable is_onramp_modal_open = false;
     @observable is_requesting_widget_html = false;
     @observable.shallow onramp_providers = [];
@@ -16,8 +15,6 @@ export default class OnRampStore extends BaseStore {
     @observable should_show_widget = false;
     @observable widget_error = null;
     @observable widget_html = null;
-
-    deposit_address_ref = null;
 
     constructor({ WS, root_store }) {
         super({ root_store });
@@ -150,21 +147,6 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    onClickCopyDepositAddress() {
-        const range = document.createRange();
-        range.selectNodeContents(this.deposit_address_ref);
-
-        const selections = window.getSelection();
-        selections.removeAllRanges();
-        selections.addRange(range);
-
-        navigator.clipboard.writeText(this.deposit_address).then(() => {
-            this.setIsDepositAddressPopoverOpen(true);
-            setTimeout(() => this.setIsDepositAddressPopoverOpen(false), 500);
-        });
-    }
-
-    @action.bound
     onClickDisclaimerContinue() {
         this.setShouldShowWidget(true);
     }
@@ -220,7 +202,6 @@ export default class OnRampStore extends BaseStore {
     resetPopup() {
         this.setApiError(null);
         this.setDepositAddress(null);
-        this.setDepositAddressRef(null);
         this.setIsDepositAddressLoading(true);
         this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
@@ -244,18 +225,8 @@ export default class OnRampStore extends BaseStore {
     }
 
     @action.bound
-    setDepositAddressRef(ref) {
-        this.deposit_address_ref = ref;
-    }
-
-    @action.bound
     setIsDepositAddressLoading(is_loading) {
         this.is_deposit_address_loading = is_loading;
-    }
-
-    @action.bound
-    setIsDepositAddressPopoverOpen(is_open) {
-        this.is_deposit_address_popover_open = is_open;
     }
 
     @action.bound

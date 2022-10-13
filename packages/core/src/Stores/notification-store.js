@@ -256,12 +256,9 @@ export default class NotificationStore extends BaseStore {
                 personal_details_locked,
                 poi_name_mismatch,
                 withdrawal_locked,
-                poa_address_mismatch,
             } = getStatusValidations(status || []);
 
-            if (poa_address_mismatch) {
-                this.showPOAAddressMismatchWarningNotification();
-            }
+            this.handlePOAAddressMismatchNotifications();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1145,6 +1142,24 @@ export default class NotificationStore extends BaseStore {
     @action.bound
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
+    }
+
+    handlePOAAddressMismatchNotifications() {
+        const { account_status, previous_account_status } = this.root_store.client;
+        const { status } = account_status;
+        const { status: previous_status } = previous_account_status;
+        const { poa_address_mismatch } = getStatusValidations(status || []);
+        const { poa_address_mismatch: previous_poa_address_mismatch } = getStatusValidations(previous_status || []);
+
+        if (poa_address_mismatch) {
+            this.showPOAAddressMismatchWarningNotification();
+        }
+
+        if (previous_poa_address_mismatch === true && previous_poa_address_mismatch === poa_address_mismatch) {
+            this.showPOAAddressMismatchFailureNotification();
+        } else if (previous_poa_address_mismatch === true && previous_poa_address_mismatch !== poa_address_mismatch) {
+            this.showPOAAddressMismatchSuccessNotification();
+        }
     }
 
     showPOAAddressMismatchWarningNotification() {

@@ -17,7 +17,7 @@ import {
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import { action, computed, observable, observe, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -62,6 +62,7 @@ export default class ClientStore extends BaseStore {
     @observable website_status = {};
     @observable account_settings = {};
     @observable account_status = {};
+    @observable previous_account_status = {};
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
@@ -136,6 +137,10 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        observe(this, 'account_status', change => {
+            this.previous_account_status = change.oldValue;
+        });
 
         reaction(
             () => [

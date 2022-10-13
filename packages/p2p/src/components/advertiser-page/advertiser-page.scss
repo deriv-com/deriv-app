@@ -82,6 +82,8 @@
             display: flex;
 
             @include mobile {
+                display: inline-grid;
+                grid-template-columns: auto auto;
                 margin: 0 0 1rem;
 
                 .dp2p-avatar {
@@ -95,8 +97,13 @@
         &-name {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
             height: fit-content;
             width: fit-content;
+
+             > span {
+                padding-right: 0.8rem;
+            }
 
             &--column {
                 display: flex;
@@ -108,7 +115,6 @@
         &-real-name {
             margin-top: 0.4rem;
             max-width: 500px;
-            padding-left: 0.8rem;
         }
         &-verification {
             align-items: center;

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import SearchBox from './search-box';
+import SearchBox from './search-box/search-box';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;

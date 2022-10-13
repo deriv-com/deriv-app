@@ -256,7 +256,7 @@ describe('<AddressDetails/>', () => {
         render(<AddressDetails {...mock_props} />);
 
         const address_state_input = screen.getByRole('textbox', { name: 'State/Province' });
-        expect(address_state_input.value).toBe('Default test state');
+        expect(address_state_input).toHaveValue('Default test state');
         fireEvent.change(address_state_input, { target: { value: 'State 1' } });
         await waitFor(() => {
             expect(address_state_input.value).toBe('State 1');

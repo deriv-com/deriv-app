@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { formatMoney } from '@deriv/shared';
 import AccountLimitsTableCell from './account-limits-table-cell';
-import AccountLimitsContext, { TContextValue } from './account-limits-context';
+import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 type TAccountLimitsTurnoverLimitRow = {
     collection: Array<{
@@ -14,7 +14,7 @@ type TAccountLimitsTurnoverLimitRow = {
 };
 
 const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurnoverLimitRow) => {
-    const { currency } = React.useContext<TContextValue>(AccountLimitsContext);
+    const { currency } = React.useContext<TAccountLimitsContext>(AccountLimitsContext);
 
     return (
         <React.Fragment>

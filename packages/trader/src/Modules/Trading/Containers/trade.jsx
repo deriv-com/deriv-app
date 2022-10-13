@@ -11,6 +11,7 @@ import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
+import AccumulatorsProfitLossTooltip from '../../SmartChart/Components/Markers/accumulators-profit-loss-tooltip.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
@@ -276,7 +277,7 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }
         );
     });
 
-const ChartMarkers = connect(({ ui, client, contract_trade, modules }) => ({
+const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
     markers_array: contract_trade.markers_array,
     is_digit_contract: contract_trade.is_digit_contract,
     granularity: contract_trade.granularity,
@@ -402,6 +403,9 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
+            {show_accumulators_stats && props.last_contract.is_ended && (
+                <AccumulatorsProfitLossTooltip {...props.last_contract} />
+            )}
         </SmartChartWithRef>
     );
 };
@@ -447,8 +451,12 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
     last_contract: {
+        currency: contract_trade.last_contract.contract_info?.currency,
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
+        exit_tick: contract_trade.last_contract.contract_info?.exit_tick,
+        exit_tick_time: contract_trade.last_contract.contract_info?.exit_tick_time,
+        profit: contract_trade.last_contract.contract_info?.profit,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,

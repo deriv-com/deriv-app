@@ -245,3 +245,80 @@
         display: inline;
     }
 }
+
+.sc-accumulators-profit-loss-tooltip {
+    $self: &;
+    width: 17.2rem;
+    height: 6.55rem;
+
+    &__spot-circle {
+        position: absolute;
+        border-radius: 100%;
+        width: 0.5rem;
+        height: 0.5rem;
+        top: -2.5px;
+        left: -2.5px;
+        cursor: pointer;
+
+        &.lost {
+            background-color: var(--text-loss-danger);
+        }
+        &.won {
+            background-color: var(--text-profit-success);
+        }
+    }
+    &__content {
+        position: absolute;
+        width: 16.4rem;
+        height: 5.8rem;
+        border-radius: $BORDER_RADIUS;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.8rem;
+        background-color: var(--text-profit-success);
+        // TODO: implement different colors for profit/loss
+
+        &:after,
+        &:before {
+            content: '';
+            position: absolute;
+            top: calc(50% - 4px);
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            display: none;
+        }
+        &:after {
+            left: -4px;
+            border-right: 4px solid var(--text-profit-success);
+            // TODO: implement different colors for profit/loss
+        }
+        &:before {
+            left: 100%;
+            border-left: 4px solid var(--text-profit-success);
+            // TODO: implement different colors for profit/loss
+        }
+        &.arrow-left {
+            transform: translateX(7.5px) translateY(-50%);
+        }
+        &.arrow-right {
+            transform: translateX(calc(-100% - 7.5px)) translateY(-50%);
+        }
+        &.arrow-right:before,
+        &.arrow-left:after {
+            display: block;
+        }
+
+        #{$self}__text {
+            color: var(--text-colored-background);
+        }
+        #{$self}__close-icon {
+            position: absolute;
+            right: 0.8rem;
+            top: 0.8rem;
+            cursor: pointer;
+        }
+    }
+}

@@ -991,6 +991,11 @@ export default class TradeStore extends BaseStore {
                 new_ticks_stayed_in: contract_type === 'ACCU' ? stay_in_history : break_out_history,
                 last_tick_epoch: contract_type === 'ACCU' ? last_tick_epoch_accu : last_tick_epoch_deccu,
             });
+            // TODO: maryia - remove, temporary value:
+            this.ticks_history_stats = {
+                ...this.ticks_history_stats,
+                DECCU: { ticks_stayed_in: break_out_history, last_tick_epoch: last_tick_epoch_deccu },
+            };
             this.tick_size_barrier = tick_size_barrier;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;

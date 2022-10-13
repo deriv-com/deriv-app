@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1665585812; // should be an epoch of some real tick!
+const dummy_current_time = 1665675860; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 7;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6528;
-const low_barrier = 6527;
+const high_barrier = 6509;
+const low_barrier = 6508;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
 const tick_4_price = low_barrier + 0.25;
 const tick_5_price = low_barrier + 0.5;
 const entry_spot = low_barrier + 0.33;
+let exit_tick, exit_tick_display_value, exit_tick_time;
 const tick_8_price = low_barrier + 0.75;
 const previous_tick_price = low_barrier + 0.19;
 const current_spot = low_barrier + 0.45;
@@ -61,12 +62,15 @@ let is_sold = 0; // 0 || 1
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
 //         setTimeout(() => {
-// contract_status = 'won'; // 'lost', 'won' or 'open'
-// position_status = 'profit'; // 'profit' or 'loss'
-// result = 'won'; // 'won' or 'lost'
-// profit = +0.15;
-// profit_percentage = +1.5;
-// is_sold = 1; // 0 || 1
+contract_status = 'won'; // 'lost', 'won' or 'open'
+position_status = 'profit'; // 'profit' or 'loss'
+result = 'won'; // 'won' or 'lost'
+profit = +0.15;
+profit_percentage = +1.5;
+is_sold = 1; // 0 || 1
+exit_tick = current_spot;
+exit_tick_display_value = `${current_spot}`;
+exit_tick_time = dummy_current_time;
 //         }, ms1);
 //         setTimeout(() => {
 // contract_status = 'lost'; // 'lost', 'won' or 'open'
@@ -75,6 +79,9 @@ let is_sold = 0; // 0 || 1
 // profit = -100;
 // profit_percentage = -100;
 // is_sold = 1; // 0 || 1
+// exit_tick = low_barrier + 0.49;
+// exit_tick_display_value = `${exit_tick}`;
+// exit_tick_time = dummy_end_time;
 //         }, ms2);
 //         setTimeout(() => {
 //             contract_status = 'open'; // 'lost', 'won' or 'open'
@@ -122,6 +129,9 @@ export const getDummyPOCResponseForACCU = time_now => {
             entry_tick: entry_spot,
             entry_tick_display_value: `${entry_spot}`,
             entry_tick_time: dummy_start_time + 1,
+            exit_tick,
+            exit_tick_display_value,
+            exit_tick_time,
             expiry_time: dummy_end_time,
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
             is_expired: 0,
@@ -284,6 +294,9 @@ export const getDummyAllPositionsForACCU = time_now => {
                 entry_tick: entry_spot,
                 entry_tick_display_value: `${entry_spot}`,
                 entry_tick_time: dummy_start_time + 1,
+                exit_tick,
+                exit_tick_display_value,
+                exit_tick_time,
                 expiry_time: dummy_end_time,
                 id: '2b88e20f-f976-a380-904d-04db08e10eeb',
                 is_expired: 0,

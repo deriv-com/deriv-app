@@ -120,7 +120,7 @@ const AppNotificationMessages = ({
                   'resticted_mt5_with_failed_poa',
                   'poa_address_mismatch_warning',
                   'poa_address_mismatch_success',
-                  'poa_address_mismatch_error',
+                  'poa_address_mismatch_failure',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
         return is_not_marked_notification && is_non_hidden_notification;

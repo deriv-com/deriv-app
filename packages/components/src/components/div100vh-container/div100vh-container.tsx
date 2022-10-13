@@ -1,7 +1,6 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
 /// <reference path="../../../@types/react-div-100vh/react-div-100vh-config.d.ts" />
 import React from 'react';
-
 import Div100vh from 'react-div-100vh';
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,

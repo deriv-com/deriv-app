@@ -20,7 +20,7 @@ const PasswordSelectionModal = ({
     setFieldTouched,
     updatePassword,
     values,
-}) => {
+}) => (
     <div className='account-signup__password-selection'>
         <Text as='p' weight='bold' className='account-signup__heading' align='center'>
             <Localize i18n_default_text='Keep your account secure with a password' />
@@ -57,7 +57,6 @@ const PasswordSelectionModal = ({
             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
         </Text>
         <SignupSeparatorContainer />
-
         {api_error ? (
             <React.Fragment>
                 <Text
@@ -99,7 +98,7 @@ const PasswordSelectionModal = ({
                 primary
             />
         )}
-    </div>;
-};
+    </div>
+);
 
 export default PasswordSelectionModal;

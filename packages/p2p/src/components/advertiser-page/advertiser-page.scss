@@ -403,6 +403,10 @@
     &__data-list {
         flex: 1;
 
+        @media (max-height: 580px) {
+            height: 11rem !important;
+        }
+
         &__data-list-body {
             flex: 1;
         }
@@ -429,7 +433,7 @@
         margin-top: 4rem;
 
         @media (max-height: 525px) {
-            height: 8rem;
+            height: 16rem;
         }
 
         @media (min-height: 526px) and (max-height: 580px) {

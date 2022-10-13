@@ -295,7 +295,7 @@ const AccountTransferForm = ({
         });
 
         setFromAccounts({
-            ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
+            ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
             ...(dxtrade_accounts_from.length && {
                 [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
             }),
@@ -303,7 +303,7 @@ const AccountTransferForm = ({
         });
 
         setToAccounts({
-            ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
+            ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
             ...(dxtrade_accounts_to.length && {
                 [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
             }),

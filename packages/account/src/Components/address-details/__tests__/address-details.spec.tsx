@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AddressDetails from '../address-details';
+import AddressDetails, { TAddressDetails } from '../address-details';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => ({
@@ -34,7 +34,7 @@ describe('<AddressDetails/>', () => {
 
     let modal_root_el;
 
-    const mock_props = {
+    const mock_props: TAddressDetails = {
         fetchStatesList: jest.fn(() => []),
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
@@ -73,8 +73,8 @@ describe('<AddressDetails/>', () => {
     };
 
     beforeEach(() => {
-        isDesktop.mockReturnValue(true);
-        isMobile.mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(false);
         jest.clearAllMocks();
     });
 
@@ -89,8 +89,8 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component for mobile', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
         render(<AddressDetails {...mock_props} />);
 
@@ -227,8 +227,8 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component with states_list for mobile', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
         mock_props.states_list = [
             { text: 'State 1', value: 'State 1' },

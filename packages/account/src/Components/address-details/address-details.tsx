@@ -35,7 +35,7 @@ export type TAddressDetails = {
     is_svg: boolean;
     is_gb_residence: boolean | string;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
-    selected_step_ref?: RefObject<FormikProps<FormikValues>>;
+    selected_step_ref?: React.Ref<FormikProps<FormikValues>> | { current: { isSubmitting: false } };
     fetchStatesList: () => void;
     value: FormikValues;
 };

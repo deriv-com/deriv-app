@@ -190,6 +190,10 @@
                 justify-content: center;
                 flex-wrap: wrap;
 
+                &--column {
+                    flex-direction: column;
+                }
+
                 & > a {
                     display: inline-block;
                     margin: 0.4rem;
@@ -1250,6 +1254,11 @@
                 }
                 &-links {
                     display: flex;
+
+                    a {
+                        margin: 0.4rem;
+                    }
+
                     @include mobile {
                         flex-direction: column;
                     }

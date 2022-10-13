@@ -81,9 +81,11 @@
                 overflow: visible;
             }
         }
-        // &--accounts:hover {
-        //     overflow: auto;
-        // }
+        &--scroller:hover {
+            overflow: auto;
+            overflow-y: hidden;
+            height: 10rem;
+        }
         &--account-launcher {
             padding: 1.6rem 2.3rem 1.6rem 2.4rem;
             @include mobile {
@@ -103,6 +105,7 @@
             margin-left: 1rem;
             @include mobile {
                 width: 4rem;
+                padding: 0.3rem;
             }
         }
         &--add-options-scroller {
@@ -195,4 +198,8 @@
         bottom: 0px;
         width: 100%;
     }
+}
+.options-accounts-container__loader {
+    width: 110.2rem;
+    height: 30.3rem;
 }

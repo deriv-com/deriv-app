@@ -43,7 +43,7 @@ const TradingHub: React.FC = () => {
                 }}
             />
             <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
-            <Options platformlauncherprops={platform_config} />
+            <Options platformlauncherprops={platform_config} accountType={account_type} />
         </React.Fragment>
     );
 };

@@ -1,6 +1,15 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import { Text, StaticUrl, DesktopWrapper, MobileWrapper, MobileDialog, Modal, Button } from '@deriv/components';
+import {
+    Text,
+    StaticUrl,
+    DesktopWrapper,
+    MobileWrapper,
+    MobileDialog,
+    Modal,
+    Button,
+    Loading,
+} from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher';
 import OptionsAccount from '../account';
@@ -10,6 +19,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { getSortedAccountList } from '../../helpers';
 import AccountManager from '../account-manager';
+import classNames from 'classnames';
+import { when } from 'mobx';
 
 type TPlatformLauncherPropsArray = {
     icon: string;
@@ -20,11 +31,13 @@ type TPlatformLauncherPropsArray = {
 }[];
 type TOptionsProps = {
     platformlauncherprops: TPlatformLauncherPropsArray;
+    accountType: string;
 };
 
 const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = props => {
     const { client, ui } = useStores();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
+    const [is_loading, setIsloading] = React.useState(false);
     const {
         account_list,
         accounts,
@@ -66,8 +79,13 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         setIsModalOpen(false);
         closeAccountsDialog();
         if (loginid === loginid_selected) return;
+        setIsloading(true);
         await switchAccount(loginid_selected);
+        await when(() => loginid_selected === client.loginid);
+        setIsloading(false);
     };
+
+    if (is_loading) return <Loading className='options-accounts-container__loader' is_fullscreen={false} />;
     return (
         <div className={`options-container${!has_any_real_account ? '-app-launcher' : ''}`}>
             <div className='options-container__title-description-container'>
@@ -109,8 +127,13 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
             </div>
             <div className='options-container__accounts-platform-container'>
                 {has_any_real_account ? (
-                    <div className='options-container__accounts-platform-container--accounts'>
-                        {false
+                    <div
+                        className={classNames('options-container__accounts-platform-container--accounts', {
+                            'options-container__accounts-platform-container--scroller':
+                                !isMobile() && sortedAccountList.length >= 4,
+                        })}
+                    >
+                        {props.accountType === 'demo'
                             ? getSortedAccountList(account_list, accounts)
                                   .filter(account => account.is_virtual)
                                   .map(account => (
@@ -215,7 +238,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                                       />
                                   )
                               )}
-                        {client.getClientAccountType !== 'virtual' && (
+                        {props.accountType !== 'demo' && (
                             <div
                                 className={`options-container__accounts-platform-container--add-options${
                                     sortedAccountList.length >= 4 ? '-scroller' : ''

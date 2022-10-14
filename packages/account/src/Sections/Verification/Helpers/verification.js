@@ -10,6 +10,7 @@ export const populateVerificationStatus = account_status => {
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
     const allow_poi_resubmission = account_status.status.some(status => status === 'allow_poi_resubmission');
     const allow_poa_resubmission = account_status.status.some(status => status === 'allow_poa_resubmission');
+    const allow_poinc_resubmission = account_status.status.some(status => status === 'allow_poinc_resubmission');
     const is_age_verified = account_status.status.some(status => status === 'age_verification');
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
@@ -25,6 +26,7 @@ export const populateVerificationStatus = account_status => {
         allow_document_upload,
         allow_poa_resubmission,
         allow_poi_resubmission,
+        allow_poinc_resubmission,
         has_attempted_idv,
         has_poa,
         has_poi,

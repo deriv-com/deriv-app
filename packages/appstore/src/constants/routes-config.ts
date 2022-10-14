@@ -1,30 +1,36 @@
 import { localize } from '@deriv/translations';
 import TradingHub from 'Modules/trading-hub';
-import { routes, moduleLoader } from '@deriv/shared';
-import React from 'react';
-import { TRouteConfig, TRoute } from 'Types';
+import ConfigStore from 'Stores/config-store';
+import { TRoute } from 'Types';
+import Onboarding from 'Modules/onboarding';
 
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
-export type TPage404 = typeof Page404;
+type TRoutesConfig = {
+    consumer_routes: ConfigStore['routes'];
+};
 
 // 1. Order matters! Put more specific consumer_routes at the top.
 // 2. Don't use `Localize` component since native html tag like `option` cannot render them
-const initRoutesConfig = () => [
+const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
-        path: routes.trading_hub,
+        path: consumer_routes.trading_hub,
         component: TradingHub,
-        getTitle: () => localize('Trading Hub'),
+        getTitle: () => localize('Tradinghub'),
+    },
+    {
+        path: consumer_routes.onboarding,
+        component: Onboarding,
+        getTitle: () => localize('Onboarding'),
     },
 ];
 
-let routes_config: undefined | TRouteConfig[];
+let routes_config: Array<TRoute>;
 
-// For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
-
-const getRoutesConfig = (): TRouteConfig[] => {
+const getRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => {
+    // For default page route if page/path is not found, must be kept at the end of routes_config array.
     if (!routes_config) {
-        routes_config = initRoutesConfig();
+        const route_default = { getTitle: () => localize('Error 404') };
+
+        routes_config = initRoutesConfig({ consumer_routes });
         routes_config.push(route_default);
     }
 

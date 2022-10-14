@@ -4,9 +4,11 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 import { Localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import getRoutesConfig from 'Constants/routes-config';
+import { useStores } from 'Stores';
 import { TRoute } from 'Types';
 
 const Routes: React.FC = () => {
+    const { config } = useStores();
     return (
         <React.Suspense
             fallback={
@@ -16,7 +18,9 @@ const Routes: React.FC = () => {
             }
         >
             <Switch>
-                {getRoutesConfig().map((route: TRoute, idx: number) => (
+                {getRoutesConfig({
+                    consumer_routes: config.routes,
+                }).map((route: TRoute, idx: number) => (
                     <RouteWithSubroutes key={idx} {...route} />
                 ))}
             </Switch>

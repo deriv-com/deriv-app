@@ -45,13 +45,25 @@ const RedirectToOldInterface = () => {
 };
 
 const TradingHubOnboarding = ({ is_dark_mode }) => {
+    const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
             <div className='trading-hub-header__tradinghub--onboarding--logo'>
-                <Icon
-                    icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
-                    size={20}
-                />
+                <Popover
+                    classNameBubble='account-settings-toggle__tooltip'
+                    alignment='bottom'
+                    message={<Localize i18n_default_text='View onboarding' />}
+                    should_disable_pointer_events
+                    zIndex={9999}
+                >
+                    <Icon
+                        icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
+                        size={20}
+                        onClick={() => {
+                            history.push(routes.onboarding);
+                        }}
+                    />
+                </Popover>
             </div>
         </div>
     );

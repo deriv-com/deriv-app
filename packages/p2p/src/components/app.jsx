@@ -10,7 +10,7 @@ import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ad_type } from 'Constants/floating-rate';
 import './app.scss';
-import IntroducingFloatingRatesModal from './introducing-floating-rates-modal/introducing-floating-rates-modal.jsx';
+import IntroducingFloatingRatesModal from 'Components/introducing-floating-rates-modal/';
 
 const App = props => {
     const { general_store, floating_rate_store, order_store } = useStores();

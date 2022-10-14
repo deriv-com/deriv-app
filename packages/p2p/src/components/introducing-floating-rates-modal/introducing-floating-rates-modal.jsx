@@ -4,7 +4,6 @@ import { Button, Checkbox, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { getUrlBase } from '@deriv/shared';
 import { useStores } from 'Stores';
-import './introducing-floating-rate-modal.scss';
 
 const IntroducingFloatingRatesModal = () => {
     const { floating_rate_store } = useStores();

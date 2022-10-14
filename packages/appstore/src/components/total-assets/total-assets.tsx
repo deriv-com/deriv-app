@@ -5,7 +5,7 @@ import { formatMoney } from '@deriv/shared';
 import { TAccountCategory } from 'Types';
 
 type TTotalAssets = {
-    amount: string;
+    amount: number;
     currency: string;
     category: TAccountCategory;
 };

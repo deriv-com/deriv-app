@@ -28,7 +28,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
             />
             {verify.has_been_sent && (
                 <EmailVerificationResendEmptyState
-                    isCounterRunning={verify.is_counter_running}
+                    is_counter_running={verify.is_counter_running}
                     counter={verify.counter}
                     resend={verify.send}
                 />

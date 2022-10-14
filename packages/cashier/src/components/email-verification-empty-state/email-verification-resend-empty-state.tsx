@@ -3,13 +3,13 @@ import { localize } from '@deriv/translations';
 import EmptyState from 'Components/empty-state';
 
 type TEmailVerificationResendEmptyStateProps = {
-    isCounterRunning: boolean;
+    is_counter_running: boolean;
     counter: number;
     resend: () => void;
 };
 
 const EmailVerificationResendEmptyState = ({
-    isCounterRunning,
+    is_counter_running,
     counter,
     resend,
 }: TEmailVerificationResendEmptyStateProps) => {
@@ -18,11 +18,11 @@ const EmailVerificationResendEmptyState = ({
             title={localize("Didn't receive the email?")}
             description={localize("Check your spam or junk folder. If it's not there, try resending the email.")}
             action={{
-                label: isCounterRunning
+                label: is_counter_running
                     ? localize('Resend email in {{seconds}}s', { seconds: counter })
                     : localize('Resend email'),
                 onClick: resend,
-                disabled: isCounterRunning,
+                disabled: is_counter_running,
             }}
         />
     );

@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx';
-import React from 'react';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

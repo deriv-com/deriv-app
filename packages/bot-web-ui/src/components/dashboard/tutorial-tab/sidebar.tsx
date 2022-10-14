@@ -1,7 +1,7 @@
 import React from 'react';
+import RootStore from 'Stores/index';
 import { Tabs, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import GuideContent from './guide-content';
 import FAQContent from './faq-content';

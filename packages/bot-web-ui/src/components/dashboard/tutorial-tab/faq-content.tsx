@@ -1,8 +1,8 @@
 import React from 'react';
+import RootStore from 'Stores/index';
 import { Text, Accordion } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import { TDescription } from './tutorial-content';
 
 type TFAQContent = {

@@ -234,7 +234,7 @@ export default class BuySellStore extends BaseStore {
         ];
     }
 
-    fetchAdvertiserAdverts() {
+    setBuySellAdverts() {
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
@@ -609,7 +609,7 @@ export default class BuySellStore extends BaseStore {
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
         if (!this.should_show_popup) {
-            this.fetchAdvertiserAdverts();
+            this.setBuySellAdverts();
         }
     }
 

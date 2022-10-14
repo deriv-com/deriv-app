@@ -32,11 +32,20 @@ const BuySellTable = ({ onScroll }) => {
     React.useEffect(
         () => {
             my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+
             reaction(
                 () => buy_sell_store.is_buy,
-                () => buy_sell_store.fetchAdvertiserAdverts(),
+                () => buy_sell_store.setBuySellAdverts(),
                 { fireImmediately: true }
             );
+
+            // TODO: Remove once the api call is subscribable
+            // Updates the ads every 1 minute
+            const adverts = setInterval(() => buy_sell_store.loadMoreItems({ startIndex: 0 }), 60000);
+
+            return () => {
+                clearInterval(adverts);
+            };
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []

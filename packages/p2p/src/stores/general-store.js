@@ -13,10 +13,14 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable block_unblock_user_error = '';
     @observable balance;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_advertiser_blocked = null;
     @observable is_blocked = false;
+    @observable is_block_unblock_user_loading = false;
+    @observable is_block_user_modal_open = false;
     @observable is_listed = false;
     @observable is_loading = false;
     @observable is_p2p_blocked_for_pa = false;
@@ -32,6 +36,7 @@ export default class GeneralStore extends BaseStore {
     @observable review_period;
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
+    @observable user_blocked_count = 0;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
     @observable is_modal_open = false;
@@ -84,6 +89,31 @@ export default class GeneralStore extends BaseStore {
     @computed
     get should_show_dp2p_blocked() {
         return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+    }
+
+    @action.bound
+    blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
+        const { advertiser_page_store } = this.root_store;
+        this.setIsBlockUnblockUserLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+            [should_block ? 'add_blocked' : 'remove_blocked']: [advertiser_id],
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setIsBlockUserModalOpen(false);
+                    if (should_set_is_counterparty_blocked) {
+                        const { p2p_advertiser_relations } = response;
+                        advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
+                            p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
+                        );
+                    }
+                } else {
+                    this.setBlockUnblockUserError(response.error.message);
+                }
+            }
+            this.setIsBlockUnblockUserLoading(false);
+        });
     }
 
     @action.bound
@@ -203,6 +233,9 @@ export default class GeneralStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
+
+        // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
+        this.props.refreshNotifications();
 
         this.props.addNotificationMessage({
             action: {
@@ -401,6 +434,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -411,8 +449,23 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsAdvertiserBlocked(is_advertiser_blocked) {
+        this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsBlockUserModalOpen(is_block_user_modal_open) {
+        this.is_block_user_modal_open = is_block_user_modal_open;
+    }
+
+    @action.bound
+    setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
+        this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
     @action.bound
@@ -544,6 +597,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setUserBlockedCount(user_blocked_count) {
+        this.user_blocked_count = user_blocked_count;
+    }
+
+    @action.bound
     setUserBlockedUntil(user_blocked_until) {
         this.user_blocked_until = user_blocked_until;
     }
@@ -561,13 +619,17 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
+            response?.p2p_advertiser_info || {};
+
         if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsListed(!!p2p_advertiser_info.is_listed);
-            this.setNickname(p2p_advertiser_info.name);
-            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setAdvertiserId(id);
+            this.setIsAdvertiser(!!is_approved);
+            this.setIsAdvertiserBlocked(!!is_blocked);
+            this.setIsListed(!!is_listed);
+            this.setNickname(name);
+            this.setUserBlockedUntil(blocked_until);
+            this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
             if (response.error.code === 'RestrictedCountry') {
@@ -628,10 +690,7 @@ export default class GeneralStore extends BaseStore {
                 v => v.length <= 24,
                 v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
                 v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v =>
-                    Array.from(v).every(
-                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
-                    ),
+                v => !/([a-zA-Z0-9\\.@_-])\1{4}/.test(v),
             ],
         };
 
@@ -641,7 +700,7 @@ export default class GeneralStore extends BaseStore {
             localize('Nickname is too long'),
             localize('Can only contain letters, numbers, and special characters .- _ @.'),
             localize('Cannot start, end with, or repeat special characters.'),
-            localize('Cannot repeat a character more than 5 times.'),
+            localize('Cannot repeat a character more than 4 times.'),
         ];
 
         const errors = {};

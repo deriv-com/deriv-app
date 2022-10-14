@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import DashboardComponent from './dashboard-component';
 import ReactJoyride from 'react-joyride';
-import { dbot_onboarding } from './joyride-config';
+import { DBOT_ONBOARDING } from './joyride-config';
 import RunStrategy from './dashboard-component/run-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -32,7 +32,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    <ReactJoyride steps={dbot_onboarding} run={tour_run} continuous={true} showProgress={true} />
+                    <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                         {/* TODO: needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>

@@ -31,7 +31,7 @@ const joyride_config: TJoyrideConfig = {
     disableBeacon: true,
 };
 
-export const dbot_onboarding = [
+export const DBOT_ONBOARDING = [
     {
         target: 'body',
         content: (

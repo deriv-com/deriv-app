@@ -5,7 +5,7 @@ export type TSidebarItem = {
     content: string[];
 };
 
-export const sidebar_intro: TSidebarItem[] = [
+export const SIDEBAR_INTRO: TSidebarItem[] = [
     {
         label: localize('Welcome to DBot, [name]!'),
         content: [

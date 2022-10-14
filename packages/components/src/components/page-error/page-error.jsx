@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
-import ButtonLink from '../button-link/button-link.jsx';
+import ButtonLink from '../button-link/button-link';
 import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
 import MobileWrapper from '../mobile-wrapper/mobile-wrapper.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const PageError = ({
     buttonOnClick,

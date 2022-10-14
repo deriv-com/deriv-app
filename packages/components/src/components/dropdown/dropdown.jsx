@@ -7,10 +7,10 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {

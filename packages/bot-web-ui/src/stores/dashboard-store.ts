@@ -13,7 +13,7 @@ export interface IDashboardStore {
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutotials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
-    showVideoDialog: (url: string, component: HTMLVideoElement) => boolean;
+    showVideoDialog: (url: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
 }
 
@@ -49,14 +49,15 @@ export default class DashboardStore implements IDashboardStore {
     }
 
     @action.bound
-    showVideoDialog(type: string, component: HTMLVideoElement): boolean {
-        if (type === 'DBotVideo') {
+    showVideoDialog(url: string) {
+        if (url) {
             this.dialog_options = {
-                message: component,
+                url,
             };
-            return (this.is_dialog_open = true);
+            this.is_dialog_open = true;
+        } else {
+            this.is_dialog_open = false;
         }
-        return (this.is_dialog_open = false);
     }
 
     @action.bound

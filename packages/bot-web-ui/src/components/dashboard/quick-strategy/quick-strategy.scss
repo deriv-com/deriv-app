@@ -1,11 +1,22 @@
+@mixin position-center {
+    display: flex;
+    justify-content: center;
+}
+
 .quick-strategy {
     $quick-strategy: &;
     height: calc(100vh - 16.6rem);
     background: var(--content-bg-color);
 
-    &__notifications-container--open {
-        display: flex;
-        justify-content: center;
+    &__notifications-container {
+        &--open {
+            @include position-center;
+            width: calc(100% - 36.6rem); //35rem right bar + 1.6rem left padding of the right bar
+        }
+
+        &--closed {
+            @include position-center;
+        }
     }
 
     &__container {
@@ -13,23 +24,12 @@
         transform: translateY(0);
     }
 
-    &__title {
-        margin: 15px 0;
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 1.43;
-        color: var(--text-general);
+    &__text {
+        margin: 1.5rem 0;
     }
 
-    &__description {
-        margin: 15px 0;
-        font-size: 16px;
-        font-weight: normal;
-        line-height: 1.5;
-        color: var(--text-general);
-    }
     &__tab-content {
-        height: calc(100vh - 330px);
+        height: calc(100vh - 3.3rem);
         overflow: auto;
     }
     &__form {
@@ -120,8 +120,8 @@
         &-footer {
             border-top: 1px solid var(--general-section-1);
             padding: 1.6rem 2.4rem;
-            bottom: 0px;
-            left: 0px;
+            bottom: 0;
+            left: 0;
             background: var(--general-main-2);
             width: 100%;
 
@@ -149,17 +149,17 @@
             align-self: center;
         }
         .icons-underlying {
-            margin-top: 5px;
+            margin-top: 0.5rem;
         }
     }
     &__symbol {
-        margin-left: 8px;
+        margin-left: 0.8rem;
     }
     &__icon {
-        width: 24px;
-        height: 24px;
-        padding: 3px;
-        margin: 2px;
+        width: 2.4rem;
+        height: 2.4rem;
+        padding: 0.3rem;
+        margin: 0.2rem;
         background-color: var(--general-section-1);
     }
     &__duration {
@@ -182,7 +182,7 @@
     }
     &__wrapper {
         position: absolute;
-        top: 40px;
+        top: 4rem;
         height: 100%;
 
         @include mobile {

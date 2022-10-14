@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Text } from '@deriv/components';
 import { SelectField, InputField, data_fields, data_uniq_input_obj } from '.';
 import { TDataFields } from './data/data-fields';
 import {
@@ -9,7 +10,7 @@ import {
     TDropdowns,
     TSelectedValuesSelect,
 } from '../quick-strategy.types';
-import { TQuickStrategyFields } from './components.types';
+import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
 
 const QuickStrategyFields = React.memo(
     ({
@@ -36,7 +37,7 @@ const QuickStrategyFields = React.memo(
         const is_double_idx_ref: React.MutableRefObject<number | undefined> = React.useRef();
 
         const uniq_selected_input = React.useMemo(
-            () => data_uniq_input_obj.filter(elem => elem.index === selected_type_strategy.index)[0],
+            () => data_uniq_input_obj.filter((_elem, index) => index === selected_type_strategy.index)[0],
             [selected_type_strategy]
         );
 
@@ -62,25 +63,27 @@ const QuickStrategyFields = React.memo(
                     const is_uniq_strategy_field = Array.isArray(item);
                     const is_input_field = is_uniq_strategy_field || input_value;
 
-                    //dropdowns
-                    const types_strategies_options = id === 'types-strategies' && types_strategies_dropdown;
-                    const symbol_options = id === 'symbol' && symbol_dropdown;
-                    const trade_type_options = id === 'trade-type' && trade_type_dropdown;
-                    const duration_unit_options = id === 'duration-unit' && duration_unit_dropdown;
+                    const dropdown_lists: TDropdownLists = {
+                        symbol: symbol_dropdown,
+                        'trade-type': trade_type_dropdown,
+                        'duration-unit': duration_unit_dropdown,
+                        'type-strategy': types_strategies_dropdown,
+                    };
 
-                    const dropdowns: TDropdowns =
-                        types_strategies_options || symbol_options || trade_type_options || duration_unit_options || [];
-                    const dropdown_list: TDropdowns = !is_uniq_strategy_field ? dropdowns : [];
+                    const dropdown_list: TDropdowns = !is_uniq_strategy_field
+                        ? dropdown_lists[id as TDropdownItems]
+                        : [];
 
-                    //selected_items
-                    const type_strategy_pick = id === 'types-strategies' && selected_type_strategy;
-                    const symbol_pick = id === 'symbol' && selected_symbol;
-                    const trade_type_pick = id === 'trade-type' && selected_trade_type;
-                    const duration_unit_pick = id === 'duration-unit' && selected_duration_unit;
+                    const selected_values: TSelectedValues = {
+                        symbol: selected_symbol,
+                        'trade-type': selected_trade_type,
+                        'duration-unit': selected_duration_unit,
+                        'type-strategy': selected_type_strategy,
+                    };
 
-                    const selected_item =
-                        type_strategy_pick || symbol_pick || trade_type_pick || duration_unit_pick || {};
-                    const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field ? selected_item : {};
+                    const selected_value: Partial<TSelectedValuesSelect> = !is_uniq_strategy_field
+                        ? selected_values[id as TDropdownItems]
+                        : {};
 
                     const is_base_field = !is_uniq_strategy_field && is_basic_field;
                     const is_current_strategy_fields = is_base_field || is_uniq_strategy_field;
@@ -194,9 +197,11 @@ const QuickStrategyFields = React.memo(
                                         selected_symbol={selected_symbol}
                                     />
                                 </div>
-                                {id.endsWith('types-strategies') && (
-                                    <div key='description' className='quick-strategy__description'>
-                                        {description}
+                                {id === 'type-strategy' && (
+                                    <div key='description' className='quick-strategy__text'>
+                                        <Text text='sm' weight='normal'>
+                                            {description}
+                                        </Text>
                                     </div>
                                 )}
                             </div>

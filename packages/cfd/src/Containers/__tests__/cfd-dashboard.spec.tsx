@@ -437,10 +437,10 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: derivx_welcome_header })).not.toBeInTheDocument();
     });
-    it('Should show PageError when is_logged_in to DMT5 & mt5 in not allowed', () => {
+    it('Should show PageError when is_logged_in to Deriv MT5 & mt5 in not allowed', () => {
         renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.MT5, is_mt5_allowed: false });
 
-        expect(screen.getByRole('heading', { name: /dmt5 is not available in indonesia/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /deriv mt5 is not available in indonesia/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: dmt5_welcome_header })).not.toBeInTheDocument();
     });
     it('Should ask to open a real Deriv account when is_logged_in && !has_real_account && upgradeable_landing_companies.length > 0 in DMT5', () => {

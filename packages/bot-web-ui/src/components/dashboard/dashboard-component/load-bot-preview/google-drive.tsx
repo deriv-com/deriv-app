@@ -31,12 +31,7 @@ const GoogleDrive = ({
                     size={is_mobile ? 96 : 128}
                 />
 
-                <div
-                    className='load-strategy__google-drive-text'
-                    style={{
-                        marginBottom: '3.4rem',
-                    }}
-                >
+                <div className='load-strategy__google-drive-text'>
                     {is_authorised ? (
                         <Localize i18n_default_text='You are connected to Google Drive' />
                     ) : (

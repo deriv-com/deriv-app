@@ -8,6 +8,7 @@ import RootStore from 'Stores/index';
 import SaveModal from './save-modal';
 import DeleteDialog from './delete-dialog';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
+import './index.scss';
 
 type TRecentComponent = {
     is_explanation_expand: boolean;
@@ -24,8 +25,6 @@ const RecentComponent = ({
     recent_strategies,
     toggleExplanationExpand,
     toggleStrategies,
-    is_strategy_removed,
-    setRecentStrategies,
 }: TRecentComponent) => {
     const [getdata, setGetdata] = React.useState([recent_strategies]);
 
@@ -40,34 +39,17 @@ const RecentComponent = ({
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__recent'>
-                    <div
-                        className='load-strategy__recent-files'
-                        style={{
-                            flexBasis: '100%',
-                        }}
-                    >
+                    <div className='load-strategy__recent-files'>
                         <div className='load-strategy__title'>
                             <Localize i18n_default_text='Your Bots' />
                         </div>
                         <div className='load-strategy__recent-files-list'>
-                            <div
-                                style={{
-                                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                                    height: 'auto',
-                                    padding: '0.8rem',
-                                }}
-                            >
-                                <strong>Bot name</strong>
-                                <strong>Bot name</strong>
-                                <strong>Bot name</strong>
-                                <strong>Bot name</strong>
-                            </div>
                             {recent_strategies.map((workspace, index) => (
                                 <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />
                             ))}
                         </div>
-                        <SaveModal />
-                        <DeleteDialog />
+                        {/* <SaveModal />
+                        <DeleteDialog /> */}
                     </div>
                 </div>
             </div>

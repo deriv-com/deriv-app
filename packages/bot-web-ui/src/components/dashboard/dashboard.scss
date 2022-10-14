@@ -1,6 +1,12 @@
-@import './dashboard-component//index.scss';
+@import './dashboard-component/index.scss';
 
 .dashboard {
+    &__main {
+        width: 100%;
+        height: calc(100vh - 90px);
+        padding: 1.6rem;
+    }
+
     &__container {
         position: relative;
     }
@@ -43,7 +49,7 @@
             }
 
             &__category-menu {
-                height: calc(100vh - 258px);
+                height: calc(100vh - 28.4rem);
             }
 
             &__search {
@@ -70,6 +76,11 @@
     }
 
     &__run-strategy-wrapper {
+        position: absolute;
+        right: 1.6rem;
+        top: 1.6rem;
+        z-index: 2;
+
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
@@ -90,5 +101,25 @@
         &--hidden {
             display: none;
         }
+    }
+}
+
+.bot-builder {
+    position: absolute;
+    top: 6.6rem;
+    left: 1.6rem;
+    z-index: -1;
+    background: var(--general-main-1);
+    width: calc(100vw - 4.6rem);
+    height: calc(100vh - 16.6rem);
+
+    &--active {
+        z-index: 1;
+    }
+}
+
+.dbot-onboarding__container {
+    img {
+        width: 100%;
     }
 }

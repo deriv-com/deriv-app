@@ -1,4 +1,3 @@
-import Dashboard from './dashboard';
-import './index.scss';
+import DashboardComponent from './dashboard-component';
 
-export default Dashboard;
+export default DashboardComponent;

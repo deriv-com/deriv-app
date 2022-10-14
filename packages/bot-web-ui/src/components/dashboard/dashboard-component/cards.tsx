@@ -9,7 +9,6 @@ import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
 import GoogleDrive from './load-bot-preview/google-drive';
 
-type Nullable<T> = T | null;
 type CardsProps = {
     load_modal: LoadModalStore;
     active_tab: number;
@@ -27,7 +26,7 @@ type CardsProps = {
     is_running: boolean;
     closeResetDialog: () => void;
     onOkButtonClick: () => void;
-    showVideoDialog: (type: string, url?: string, component?: React.ReactNode) => void;
+    showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
     dialog_options: { [key: string]: string };
 };
 
@@ -52,7 +51,11 @@ const Cards = ({
         disable: string | '';
     };
     const openGoogleDriveDialog = () => {
-        showVideoDialog('', 'google', <GoogleDrive />);
+        showVideoDialog({
+            type: 'google',
+            component: <GoogleDrive />,
+            url: '',
+        });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
@@ -93,35 +96,22 @@ const Cards = ({
     }, [has_file_loaded]);
 
     return (
-        <div>
+        <div className='tab__dashboard__table'>
             <div
-                className='dc-tabs__content_group_tiles'
+                className='dc-tabs__content_group_tiles tab__dashboard__table__tiles'
                 id='dc-tabs__content_group_tiles'
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
             >
                 {icon_array.map((icons, index) => {
                     const { icon, content, method, disable } = icons;
                     return (
                         <div
                             key={index}
-                            className={`dc-tabs__content_group_tiles_block ${disable}`}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                flexDirection: 'column',
-                                marginRight: '1rem',
-                            }}
+                            className={`dc-tabs__content_group_tiles_block ${disable} tab__dashboard__table__block`}
                         >
                             <Icon
-                                className={'dc-tabs__content_group_tiles_images'}
+                                className={'dc-tabs__content_group_tiles_images tab__dashboard__table__images'}
                                 width='8rem'
                                 height='8rem'
-                                style={{ backgroundColor: `#F2F3F4` }}
                                 icon={icon}
                                 id={icon}
                                 onClick={method}

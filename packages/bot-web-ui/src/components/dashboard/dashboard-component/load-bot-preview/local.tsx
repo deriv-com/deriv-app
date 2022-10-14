@@ -4,6 +4,7 @@ import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
+import './index.scss';
 
 type Nullable<T> = T | null;
 type TLocalComponent = {
@@ -35,13 +36,13 @@ const LocalComponent = ({
     const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const loadedLocalFileLocation = () => {
-        return loaded_local_file
-            ? setTimeout(() => {
-                  loadFileFromLocal();
-              }, 3000)
-            : setTimeout(() => {
-                  loadFileFromRecent();
-              }, 3000);
+        return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
+    };
+    const clearInjectionDiv = () => {
+        const element = document.getElementById('load-strategy__blockly-container');
+        if (element?.getElementsByClassName('injectionDiv').length) {
+            element.removeChild(element.getElementsByClassName('injectionDiv')[0]);
+        }
     };
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -63,9 +64,10 @@ const LocalComponent = ({
                             ref={clear_preview_ref}
                             className='load-strategy__button-group--clear'
                             onClick={() => {
-                                setLoadedLocalFile(null);
-                                Blockly.mainWorkspace.clear();
+                                clearInjectionDiv();
                                 setFileLoaded(false);
+                                //setLoadedLocalFile(null);
+                                //Blockly.mainWorkspace.clear(); THIS METHOOD DOES NOT CLEAT THE INJECTION DIV
                             }}
                         >
                             clear

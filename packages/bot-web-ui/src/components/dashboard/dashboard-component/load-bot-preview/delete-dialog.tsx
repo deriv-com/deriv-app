@@ -44,7 +44,7 @@ const DeleteDialog = ({
     );
 };
 
-export default connect(({ toolbar, run_panel, dashboard, load_modal }) => ({
+export default connect(({ toolbar, load_modal }) => ({
     is_dialog_open: toolbar.is_dialog_open,
     is_delete_modal_open: load_modal.is_delete_modal_open,
     onConfirmDeleteDialog: load_modal.onConfirmDeleteDialog,

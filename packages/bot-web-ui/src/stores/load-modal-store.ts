@@ -168,7 +168,7 @@ export default class LoadModalStore implements ILoadModalStore {
             workspace: Blockly.derivWorkspace,
         });
         this.is_open_button_loading = false;
-        this.toggleLoadModal();
+        //this.toggleLoadModal();
     };
 
     @action.bound
@@ -176,7 +176,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_open_button_loading = true;
         this.readFile(false, {}, this.loaded_local_file);
         this.is_open_button_loading = false;
-        this.toggleLoadModal();
+        //this.toggleLoadModal();
     };
 
     @action.bound
@@ -242,7 +242,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
-        this.toggleLoadModal();
+        //this.toggleLoadModal();
     }
 
     @action.bound
@@ -290,7 +290,7 @@ export default class LoadModalStore implements ILoadModalStore {
             console.warn('Could not find preview workspace element.');
             return;
         }
-
+        clearInjectionDiv();
         this.recent_workspace = Blockly.inject(ref, {
             media: `${__webpack_public_path__}media/`,
             zoom: {
@@ -304,8 +304,8 @@ export default class LoadModalStore implements ILoadModalStore {
             //load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
             //return false;
         } else {
+            //clearInjectionDiv();
             load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
-            clearInjectionDiv();
         }
     };
 

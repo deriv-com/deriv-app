@@ -5,6 +5,7 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import './index.scss';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -47,11 +48,6 @@ const RecentWorkspace = ({
                 className={classnames('load-strategy__recent-item', {
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                 })}
-                style={{
-                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                    height: 'auto',
-                    padding: '0.8rem',
-                }}
                 ref={trigger_div_ref}
                 key={workspace.id}
                 onClick={
@@ -77,28 +73,32 @@ const RecentWorkspace = ({
                     />
                     <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
                 </div>
-                <div className='load-strategy__recent-button'>
-                    <Icon
-                        icon='IcEdit'
+                <div className='load-strategy__recent-item__button'>
+                    <div
+                        className='load-strategy__recent-item__button__edit'
                         onClick={() => {
                             setActiveTab(1);
-                            setTimeout(() => {
-                                loadFileFromRecent();
-                            }, 3000);
+                            loadFileFromRecent();
                         }}
-                    />
-                    <Icon
-                        icon='IcSave'
+                    >
+                        <Icon icon='IcEdit' />
+                    </div>
+                    <div
+                        className='load-strategy__recent-item__button__save'
                         onClick={() => {
                             toggleSaveModal();
                         }}
-                    />
-                    <Icon
-                        icon='IcDelete'
+                    >
+                        <Icon icon='IcSave' />
+                    </div>
+                    <div
+                        className='load-strategy__recent-item__button__delete'
                         onClick={() => {
                             toggleDeleteDialog();
                         }}
-                    />
+                    >
+                        <Icon icon='IcDelete' />
+                    </div>
                 </div>
             </div>
         </>

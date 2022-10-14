@@ -203,6 +203,7 @@ const Toolbar = (props: TToolbar) => {
             <SaveModal />
             <LoadModal />
             <Dialog
+                portal_element_id='modal_root'
                 title={localize('Are you sure?')}
                 is_visible={is_dialog_open}
                 confirm_button_text={is_running ? localize('Yes') : localize('OK')}

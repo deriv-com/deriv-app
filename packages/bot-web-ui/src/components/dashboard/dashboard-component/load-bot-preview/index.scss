@@ -70,258 +70,274 @@
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        height: calc(100% - 3.7rem); // TODO: What is 37px?
+        height: calc(100% - 30rem); // TODO: What is 37px?
         position: relative;
+        overflow: hidden;
         margin-bottom: 1.6rem;
+        margin-right: 1.6rem;
 
-        &-container {
-            height: 100%;
+        &-controls {
+            padding: 0.7rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 1.6rem;
+            bottom: 1.6rem;
+            border-radius: 3rem;
+            background-color: $color-grey-2;
+            box-shadow: 0.2rem 0.2rem 0.5rem var(--shadow-menu);
+            z-index: 99;
+        }
+
+        &-icon {
+            margin: 0.5rem;
+            cursor: pointer;
         }
     }
 
-    &-controls {
-        padding: 0.7rem 0.5rem;
+    &__recent {
         display: flex;
-        flex-direction: column;
-        position: absolute;
-        right: 1.6rem;
-        bottom: 1.6rem;
-        border-radius: 3rem;
-        background-color: $color-grey-2;
-        box-shadow: 0.2rem 0.2rem 0.5rem var(--shadow-menu);
-        z-index: 99;
-    }
+        flex-direction: row;
+        gap: 1.6rem;
 
-    &-icon {
-        margin: 0.5rem;
-        cursor: pointer;
-    }
-}
+        &-files {
+            flex-basis: 100%;
 
-&__recent {
-    display: flex;
-    flex-direction: row;
-    gap: 1.6rem;
+            &-list {
+                overflow: auto;
+                /* TODO: ThemedScrollbars! */
+                height: calc(100% - 52px); // 100% - Title height
+            }
+        }
 
-    &-files {
-        flex-basis: 100%;
+        &-preview {
+            flex-basis: 65%;
+            display: flex;
+            flex-direction: column;
 
-        &-list {
-            overflow: auto;
-            /* TODO: ThemedScrollbars! */
-            height: calc(100% - 52px); // 100% - Title height
+            &-title {
+                margin-left: 0;
+            }
+        }
+
+        &-empty {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+
+            &-icon {
+                margin-bottom: 1.6rem;
+            }
+
+            &-title {
+                margin-bottom: 0.8rem;
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                line-height: 2.4rem;
+            }
+
+            &-description {
+                margin-bottom: 1.6rem;
+                font-size: var(--text-size-xs);
+                line-height: 2rem;
+            }
+
+            &-expand {
+                margin-bottom: 0.8rem;
+                color: var(--brand-red-coral);
+                font-size: var(--text-size-xs);
+                font-weight: bold;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            &-explanation {
+                font-size: var(--text-size-xxs);
+                text-align: left;
+                opacity: 0;
+
+                &-list {
+                    margin-top: 0.8rem;
+                }
+
+                &--show {
+                    opacity: 1;
+                    width: fit-content;
+                }
+            }
+        }
+
+        &-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-areas: ('text location');
+            padding: 0.8rem;
+            align-items: center;
+            text-align: center;
+
+            &:not(.load-strategy__recent-item--selected):hover {
+                background-color: var(--state-hover);
+                cursor: pointer;
+            }
+
+            &:not(:last-child) {
+                border-bottom: solid 0.1rem var(--border-normal);
+            }
+
+            &--selected {
+                background-color: var(--state-active);
+            }
+
+            &-text {
+                flex-direction: column;
+                display: flex;
+                justify-content: center;
+            }
+
+            &-title {
+                font-size: var(--text-size-s);
+            }
+
+            &-time {
+                font-size: var(--text-size-xxs);
+            }
+
+            &-location {
+                flex-direction: row;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &-saved {
+                margin-left: 1rem;
+                font-size: var(--text-size-s);
+                line-height: 1.43;
+            }
+
+            &__button {
+                display: flex;
+
+                &__edit {
+                    margin-right: 0.8rem;
+                }
+
+                &__save {
+                    margin-right: 0.8rem;
+                }
+            }
         }
     }
 
-    &-preview {
-        flex-basis: 65%;
-        display: flex;
-        flex-direction: column;
-    }
+    &__local {
+        &-dropzone {
+            @include desktop {
+                padding-top: 1.6rem;
+            }
 
-    &-empty {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
+            @include mobile {
+                height: 100%;
+                padding: 1.6rem;
+            }
+
+            &-area {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border: dashed 0.2rem var(--border-normal);
+                border-radius: $BORDER_RADIUS;
+                height: 100%;
+                padding: 1.6rem;
+            }
+        }
 
         &-icon {
             margin-bottom: 1.6rem;
         }
 
         &-title {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.6rem;
             font-size: var(--text-size-s);
-            font-weight: bold;
-            line-height: 2.4rem;
         }
 
         &-description {
             margin-bottom: 1.6rem;
             font-size: var(--text-size-xs);
-            line-height: 2rem;
         }
 
-        &-expand {
-            margin-bottom: 0.8rem;
-            color: var(--brand-red-coral);
-            font-size: var(--text-size-xs);
-            font-weight: bold;
-            cursor: pointer;
+        &-preview {
+            display: flex;
+            flex-direction: column;
+            position: relative;
 
-            &:hover {
-                text-decoration: underline;
+            @include mobile {
+                padding: 1.6rem;
+                height: calc(100% - 7.4rem); // - footer height
+            }
+
+            &-close {
+                // TODO : Dark Theme
+                background-image: radial-gradient(at right top);
+                position: absolute;
+                padding: 25px;
+                border-bottom-left-radius: 50%;
+                right: 0;
+                top: 0;
+                z-index: 99;
+                cursor: pointer;
             }
         }
 
-        &-explanation {
-            font-size: var(--text-size-xxs);
-            text-align: left;
-            opacity: 0;
-
-            &-list {
-                margin-top: 0.8rem;
-            }
-
-            &--show {
-                opacity: 1;
-                width: fit-content;
-            }
+        &-footer {
+            padding: 1.6rem;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid var(--general-section-1);
         }
     }
 
-    &-item {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-areas: ('text location');
-        padding: 1.6rem;
-        height: 100px;
+    &__google-drive {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-        &:not(.load-strategy__recent-item--selected):hover {
-            background-color: var(--state-hover);
-            cursor: pointer;
+        @include mobile {
+            border: dashed 0.2rem var(--border-normal);
+            border-radius: $BORDER_RADIUS;
+            margin: 1.6rem;
+            padding: 1.6rem;
+            height: calc(100% - 3.2rem); // - 2x margin.
         }
 
-        &:not(:last-child) {
-            border-bottom: solid 0.1rem var(--border-normal);
-        }
+        &-icon {
+            margin-bottom: 1.6rem;
 
-        &--selected {
-            background-color: var(--state-active);
+            &--disabled {
+                opacity: 0.32;
+            }
         }
 
         &-text {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        &-title {
+            margin-bottom: 1.6rem;
             font-size: var(--text-size-s);
+            font-weight: bold;
+            line-height: 2.4rem;
         }
 
-        &-time {
-            font-size: var(--text-size-xxs);
+        &-terms {
+            font-size: var(--text-size-xs);
+            line-height: 2rem;
+            margin-top: 1.6rem;
+            text-align: center;
+            color: var(--text-general);
         }
-
-        &-location {
-            flex-direction: row;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        &-saved {
-            margin-left: 1rem;
-            font-size: var(--text-size-s);
-            line-height: 1.43;
-        }
-    }
-}
-
-&__local {
-    &-dropzone {
-        @include desktop {
-            padding-top: 1.6rem;
-        }
-
-        @include mobile {
-            height: 100%;
-            padding: 1.6rem;
-        }
-
-        &-area {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border: dashed 0.2rem var(--border-normal);
-            border-radius: $BORDER_RADIUS;
-            height: 100%;
-            padding: 1.6rem;
-        }
-    }
-
-    &-icon {
-        margin-bottom: 1.6rem;
-    }
-
-    &-title {
-        margin-bottom: 1.6rem;
-        font-size: var(--text-size-s);
-    }
-
-    &-description {
-        margin-bottom: 1.6rem;
-        font-size: var(--text-size-xs);
-    }
-
-    &-preview {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        @include mobile {
-            padding: 1.6rem;
-            height: calc(100% - 7.4rem); // - footer height
-        }
-
-        &-close {
-            // TODO : Dark Theme
-            background-image: radial-gradient(at right top);
-            position: absolute;
-            padding: 25px;
-            border-bottom-left-radius: 50%;
-            right: 0;
-            top: 0;
-            z-index: 99;
-            cursor: pointer;
-        }
-    }
-
-    &-footer {
-        padding: 1.6rem;
-        display: flex;
-        justify-content: flex-end;
-        border-top: 1px solid var(--general-section-1);
-    }
-}
-
-&__google-drive {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    @include mobile {
-        border: dashed 0.2rem var(--border-normal);
-        border-radius: $BORDER_RADIUS;
-        margin: 1.6rem;
-        padding: 1.6rem;
-        height: calc(100% - 3.2rem); // - 2x margin.
-    }
-
-    &-icon {
-        margin-bottom: 1.6rem;
-
-        &--disabled {
-            opacity: 0.32;
-        }
-    }
-
-    &-text {
-        margin-bottom: 1.6rem;
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 2.4rem;
-    }
-
-    &-terms {
-        font-size: var(--text-size-xs);
-        line-height: 2rem;
-        margin-top: 1.6rem;
-        text-align: center;
     }
 }
 
@@ -345,17 +361,5 @@
 .dc-modal__container_load-strategy {
     @include tablet {
         width: calc(100vw - 4.8rem) !important;
-    }
-}
-
-.load-strategy__google-drive {
-    .load-strategy__google-drive-text-content {
-        font-size: 2rem;
-        font-weight: 700;
-        line-height: 2rem;
-
-        &:last-child {
-            margin-bottom: 2.4rem;
-        }
     }
 }

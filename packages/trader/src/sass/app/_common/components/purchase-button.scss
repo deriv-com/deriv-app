@@ -325,6 +325,11 @@
         }
     }
     &--accumulator {
+        .trade-container__price-info {
+            @include mobile {
+                justify-content: center;
+            }
+        }
         .btn-purchase {
             &__info {
                 padding-left: 1.6rem;
@@ -342,18 +347,6 @@
                     left: 9.2rem;
                     top: 8px;
                     border-top-right-radius: 0.4rem;
-                }
-            }
-        }
-
-        @include mobile {
-            .btn-purchase {
-                &__bottom,
-                &__top {
-                    width: unset;
-                }
-                &__icon_wrapper {
-                    height: 1.6rem;
                 }
             }
         }

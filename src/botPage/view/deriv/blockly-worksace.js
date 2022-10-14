@@ -1,36 +1,36 @@
-import config, { updateConfigCurrencies } from "../../../botPage/common/const";
-import logHandler from "../../view/logger";
-import { updateTokenList } from "./utils";
+import config, { updateConfigCurrencies } from '../../../botPage/common/const';
+import logHandler from '../../view/logger';
+import { updateTokenList } from './utils';
 import {
   getTokenList,
   set as setStorage,
   syncWithDerivApp,
   getToken,
   removeAllTokens,
-} from "../../../common/utils/storageManager";
-import { observer as globalObserver } from "../../../common/utils/observer";
-import { translate } from "../../../common/i18n";
-import { logoutAllTokens, AppConstants } from "../../../common/appId";
-import IntegrationsDialog from "../Dialogs/IntegrationsDialog";
-import Chart from "../Dialogs/Chart";
-import TradingView from "../Dialogs/TradingView";
-import Limits from "../Dialogs/Limits";
+} from '../../../common/utils/storageManager';
+import { observer as globalObserver } from '../../../common/utils/observer';
+import { translate } from '../../../common/i18n';
+import { logoutAllTokens, AppConstants } from '../../../common/appId';
+import IntegrationsDialog from '../Dialogs/IntegrationsDialog';
+import Chart from '../Dialogs/Chart';
+import TradingView from '../Dialogs/TradingView';
+import Limits from '../Dialogs/Limits';
 import {
   saveBeforeUnload,
   getMissingBlocksTypes,
   getDisabledMandatoryBlocks,
   getUnattachedMandatoryPairs,
-} from "../blockly/utils";
-import GTM from "../../../common/gtm";
-import google_drive_util from "../../../common/integrations/GoogleDrive";
-import { load } from "../../view/blockly";
-import api from "./api";
+} from '../blockly/utils';
+import GTM from '../../../common/gtm';
+import google_drive_util from '../../../common/integrations/GoogleDrive';
+import { load } from '../../view/blockly';
+import api from './api';
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
 let chart;
 
-const addEvent = (id, fn, event = "click", options = false) => {
+const addEvent = (id, fn, event = 'click', options = false) => {
   const dom = document.getElementById(id);
   if (dom) {
     dom.addEventListener(event, fn, options);
@@ -40,7 +40,7 @@ const addEvent = (id, fn, event = "click", options = false) => {
 const checkForRequiredBlocks = () => {
   const displayError = errorMessage => {
     const error = new Error(errorMessage);
-    globalObserver.emit("Error", error);
+    globalObserver.emit('Error', error);
   };
 
   const blockLabels = { ...config.blockLabels };
@@ -50,14 +50,14 @@ const checkForRequiredBlocks = () => {
 
   if (missingBlocksTypes.length) {
     missingBlocksTypes.forEach(blockType =>
-      displayError(`"${blockLabels[blockType]}" ${translate("block should be added to the workspace")}.`)
+      displayError(`'${blockLabels[blockType]}' ${translate('block should be added to the workspace')}.`)
     );
     return false;
   }
 
   if (disabledBlocksTypes.length) {
     disabledBlocksTypes.forEach(blockType =>
-      displayError(`"${blockLabels[blockType]}" ${translate("block should be enabled")}.`)
+      displayError(`'${blockLabels[blockType]}' ${translate('block should be enabled')}.`)
     );
     return false;
   }
@@ -65,7 +65,7 @@ const checkForRequiredBlocks = () => {
   if (unattachedPairs.length) {
     unattachedPairs.forEach(pair =>
       displayError(
-        `"${blockLabels[pair.childBlock]}" ${translate("must be added inside:")} "${blockLabels[pair.parentBlock]}"`
+        `'${blockLabels[pair.childBlock]}' ${translate('must be added inside:')} '${blockLabels[pair.parentBlock]}'`
       )
     );
     return false;
@@ -75,10 +75,10 @@ const checkForRequiredBlocks = () => {
 };
 
 export function applyToolboxPermissions() {
-  const fn = getTokenList().length ? "show" : "hide";
-  $("#runButton")
+  const fn = getTokenList().length ? 'show' : 'hide';
+  $('#runButton')
     [fn]()
-    .prevAll(".toolbox-separator:first")
+    .prevAll('.toolbox-separator:first')
     [fn]();
 };
 
@@ -92,7 +92,7 @@ const setFileBrowser = () => {
   const handleFileSelect = e => {
     let files;
     let dropEvent;
-    if (e.type === "drop") {
+    if (e.type === 'drop') {
       e.stopPropagation();
       e.preventDefault();
       ({ files } = e.dataTransfer);
@@ -102,48 +102,48 @@ const setFileBrowser = () => {
     }
     files = Array.from(files);
     files.forEach(file => {
-      if (file.type.match("text/xml")) {
+      if (file.type.match('text/xml')) {
         readFile(file, dropEvent);
       } else {
-        globalObserver.emit("ui.log.info", `${translate("File is not supported:")} ${file.name}`);
+        globalObserver.emit('ui.log.info', `${translate('File is not supported:')} ${file.name}`);
       }
     });
-    $("#files").val("");
+    $('#files').val('');
   };
 
   const handleDragOver = e => {
     e.stopPropagation();
     e.preventDefault();
-    e.dataTransfer.dropEffect = "copy"; // eslint-disable-line no-param-reassign
+    e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
   };
 
   const dropZone = document.body;
 
-  dropZone.addEventListener("dragover", handleDragOver, false);
-  dropZone.addEventListener("drop", handleFileSelect, false);
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
 
-  $("#files").on("change", handleFileSelect);
+  $('#files').on('change', handleFileSelect);
 
-  $("#open_btn")
-    .on("click", () => {
+  $('#open_btn')
+    .on('click', () => {
       $.FileDialog({
         // eslint-disable-line new-cap
-        accept: ".xml",
-        cancelButton: "Close",
-        dragMessage: "Drop files here",
+        accept: '.xml',
+        cancelButton: 'Close',
+        dragMessage: 'Drop files here',
         dropheight: 400,
-        errorMessage: "An error occured while loading file",
+        errorMessage: 'An error occured while loading file',
         multiple: false,
-        okButton: "OK",
-        readAs: "DataURL",
-        removeMessage: "Remove&nbsp;file",
-        title: "Load file",
+        okButton: 'OK',
+        readAs: 'DataURL',
+        removeMessage: 'Remove&nbsp;file',
+        title: 'Load file',
       });
     })
-    .on("files.bs.filedialog", ev => {
+    .on('files.bs.filedialog', ev => {
       handleFileSelect(ev.files);
     })
-    .on("cancel.bs.filedialog", ev => {
+    .on('cancel.bs.filedialog', ev => {
       handleFileSelect(ev);
     });
 };
@@ -165,7 +165,7 @@ const addBindings = blockly => {
   const removeTokens = () => {
     logoutAllTokens().then(() => {
       updateTokenList();
-      globalObserver.emit("ui.log.info", translate("Logged you out!"));
+      globalObserver.emit('ui.log.info', translate('Logged you out!'));
       clearActiveTokens();
 
       // Todo: Need to remove this reload, and add logic to clear redux state.
@@ -175,31 +175,31 @@ const addBindings = blockly => {
   };
 
   const clearActiveTokens = () => {
-    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, "");
-    setStorage("active_loginid", null);
+    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+    setStorage('active_loginid', null);
     syncWithDerivApp();
   };
 
-  $(".panelExitButton").click(function onClick() {
+  $('.panelExitButton').click(function onClick() {
     $(this)
       .parent()
       .hide();
   });
 
-  $(".draggable-dialog")
+  $('.draggable-dialog')
     .hide()
     .dialog({
       resizable: false,
       autoOpen: false,
       width: Math.min(document.body.offsetWidth, 770),
       height: Math.min(document.body.offsetHeight, 600),
-      closeText: "",
-      classes: { "ui-dialog-titlebar-close": "icon-close" },
+      closeText: '',
+      classes: { 'ui-dialog-titlebar-close': 'icon-close' },
     });
 
-  $("#integrations").click(() => integrationsDialog.open());
+  $('#integrations').click(() => integrationsDialog.open());
 
-  $("#chartButton").click(() => {
+  $('#chartButton').click(() => {
     if (!chart) {
       chart = new Chart(api);
     }
@@ -207,17 +207,17 @@ const addBindings = blockly => {
     chart.open();
   });
 
-  $("#tradingViewButton").click(() => {
+  $('#tradingViewButton').click(() => {
     tradingView.open();
   });
 
   const exportContent = {};
   exportContent.summaryPanel = () => {
-    globalObserver.emit("summary.export");
+    globalObserver.emit('summary.export');
   };
 
   exportContent.logPanel = () => {
-    globalObserver.emit("log.export");
+    globalObserver.emit('log.export');
   };
 
   const addExportButtonToPanel = panelId => {
@@ -235,17 +235,19 @@ const addBindings = blockly => {
   };
 
   const showSummary = () => {
-    $("#summaryPanel").dialog("option", "minWidth", 770).dialog("open");
+    $('#summaryPanel').dialog('option', 'minWidth', 770).dialog('open');
+    addExportButtonToPanel('summaryPanel');
   };
 
-  addEvent("showSummary",showSummary);
-    addEvent("logButton", () => {
-    $("#logPanel").dialog("open");
+  addEvent('showSummary',showSummary);
+    addEvent('logButton', () => {
+    $('#logPanel').dialog('open');
+    addExportButtonToPanel('logPanel');
   });
 
-  globalObserver.register("ui.logout", () => {
+  globalObserver.register('ui.logout', () => {
     saveBeforeUnload();
-    $(".barspinner").show();
+    $('.barspinner').show();
     stopBlockly(blockly);
     google_drive_util.logout();
     GTM.setVisitorId();
@@ -253,31 +255,31 @@ const addBindings = blockly => {
   });
 
   const startBot = limitations => {
-    const elRunButtons = document.querySelectorAll("#runButton, #summaryRunButton");
-    const elStopButtons = document.querySelectorAll("#stopButton, #summaryStopButton");
+    const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
+    const elStopButtons = document.querySelectorAll('#stopButton, #summaryStopButton');
 
     elRunButtons.forEach(el => {
       const elRunButton = el;
-      elRunButton.style.display = "none";
-      elRunButton.setAttributeNode(document.createAttribute("disabled"));
+      elRunButton.style.display = 'none';
+      elRunButton.setAttributeNode(document.createAttribute('disabled'));
     });
     elStopButtons.forEach(el => {
       const elStopButton = el;
-      elStopButton.style.display = "inline-block";
+      elStopButton.style.display = 'inline-block';
     });
 
     showSummary();
     blockly.run(limitations);
   };
 
-  $("#runButton").click(() => {
+  $('#runButton').click(() => {
     // setTimeout is needed to ensure correct event sequence
     if (!checkForRequiredBlocks()) {
-      setTimeout(() => $("#stopButton").triggerHandler("click"));
+      setTimeout(() => $('#stopButton').triggerHandler('click'));
       return;
     }
 
-    const token = document.getElementById("active-token").value;
+    const token = document.getElementById('active-token').value;
     const tokenObj = getToken(token);
 
     if (tokenObj && tokenObj.hasTradeLimitation) {
@@ -291,24 +293,24 @@ const addBindings = blockly => {
     }
   });
 
-  $("#stopButton")
+  $('#stopButton')
     .click(e => stop(e))
     .hide();
 
-  $('[aria-describedby="summaryPanel"]').on("click", "#summaryRunButton", () => {
-    $("#runButton").trigger("click");
+  $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+    $('#runButton').trigger('click');
   });
 
-  $('[aria-describedby="summaryPanel"]').on("click", "#summaryStopButton", () => {
-    $("#stopButton").trigger("click");
+  $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+    $('#stopButton').trigger('click');
   });
 
-  globalObserver.register("ui.switch_account", () => {
+  globalObserver.register('ui.switch_account', () => {
     stopBlockly(blockly);
     GTM.setVisitorId();
   });
 
-  globalObserver.register("bot.reload", () => {
+  globalObserver.register('bot.reload', () => {
     blockly.initPromise.then(() => {
       updateConfigCurrencies().then(() => {
         blockly.resetAccount();
@@ -319,61 +321,61 @@ const addBindings = blockly => {
 const stopBlockly = blockly => blockly.stop();
 
 const addEventHandlers = blockly => {
-  const getRunButtonElements = () => document.querySelectorAll("#runButton, #summaryRunButton");
-  const getStopButtonElements = () => document.querySelectorAll("#stopButton, #summaryStopButton");
+  const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
+  const getStopButtonElements = () => document.querySelectorAll('#stopButton, #summaryStopButton');
 
-  window.addEventListener("storage", e => {
+  window.addEventListener('storage', e => {
     window.onbeforeunload = null;
-    if (["activeToken", "active_loginid"].includes(e.key) && e.newValue !== e.oldValue) {
+    if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
       window.location.reload();
     }
   });
 
-  globalObserver.register("Error", error => {
+  globalObserver.register('Error', error => {
     getRunButtonElements().forEach(el => {
       const elRunButton = el;
-      elRunButton.removeAttribute("disabled");
+      elRunButton.removeAttribute('disabled');
     });
-    if (error?.error?.code === "InvalidToken") {
+    if (error?.error?.code === 'InvalidToken') {
       removeAllTokens();
       updateTokenList();
       stopBlockly(blockly);
     }
   });
 
-  globalObserver.register("bot.running", () => {
+  globalObserver.register('bot.running', () => {
     getRunButtonElements().forEach(el => {
       const elRunButton = el;
-      elRunButton.style.display = "none";
-      elRunButton.setAttributeNode(document.createAttribute("disabled"));
+      elRunButton.style.display = 'none';
+      elRunButton.setAttributeNode(document.createAttribute('disabled'));
     });
     getStopButtonElements().forEach(el => {
       const elStopButton = el;
-      elStopButton.style.display = "inline-block";
-      elStopButton.removeAttribute("disabled");
+      elStopButton.style.display = 'inline-block';
+      elStopButton.removeAttribute('disabled');
     });
   });
 
-  globalObserver.register("bot.stop", () => {
+  globalObserver.register('bot.stop', () => {
     // Enable run button, this event is emitted after the interpreter
     // killed the API connection.
     getStopButtonElements().forEach(el => {
       const elStopButton = el;
       elStopButton.style.display = null;
-      elStopButton.removeAttribute("disabled");
+      elStopButton.removeAttribute('disabled');
     });
     getRunButtonElements().forEach(el => {
       const elRunButton = el;
       elRunButton.style.display = null;
-      elRunButton.removeAttribute("disabled");
+      elRunButton.removeAttribute('disabled');
     });
   });
 
-  globalObserver.register("bot.info", info => {
-    if ("profit" in info) {
-      const token = document.getElementById("active-token").value;
+  globalObserver.register('bot.info', info => {
+    if ('profit' in info) {
+      const token = document.getElementById('active-token').value;
       const user = getToken(token);
-      globalObserver.emit("log.revenue", {
+      globalObserver.emit('log.revenue', {
         user,
         profit: info.profit,
         contract: info.contract,

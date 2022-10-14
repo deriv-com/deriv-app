@@ -44,7 +44,7 @@ const ToolboxButton = ({
   );
 };
 
-const ToolBox = ({ blockly }) => {
+const ToolBox = ({ blockly, is_workspace_rendered }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
   const [is_loading_balance, setIsLoadingBalance] = React.useState(true);
@@ -200,7 +200,7 @@ const ToolBox = ({ blockly }) => {
         tooltip={translate("Run the bot")} 
         position="bottom"
         onClick={() => globalObserver.emit("blockly.start")}
-        classes={classNames("toolbox-button icon-run",{"toolbox-hide": is_loading_balance})}
+        classes={classNames("toolbox-button icon-run",{"toolbox-hide": is_loading_balance || !is_workspace_rendered})}
         is_bot_running={is_bot_running}
       />
       <ToolboxButton 

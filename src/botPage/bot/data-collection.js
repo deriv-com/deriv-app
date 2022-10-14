@@ -13,6 +13,8 @@ export default class DataCollection {
             observer.register('bot.contract', contract => this.trackTransaction(contract));
             observer.register('bot.running', () => this.trackRun());
         }
+
+        DataCollection.prototype.rendered = workspace.rendered;
     }
 
     IS_PENDING = false;

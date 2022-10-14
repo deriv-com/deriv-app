@@ -30,6 +30,7 @@ import { translate } from '../../../../../common/utils/tools';
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
+	const [is_workspace_rendered, setIsWorkspaceRendered] = React.useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { should_reload_workspace } = useSelector(state => state.ui);
@@ -40,9 +41,9 @@ const Main = () => {
 			const _blockly = new _Blockly();
 			setBlockly(_blockly);
 			init(_blockly);
-			loginCheck().then(() => {
-				initializeBlockly(_blockly);
-			})
+			loginCheck()
+				.then(() => initializeBlockly(_blockly))
+				.then(() => setIsWorkspaceRendered(_blockly?.is_workspace_rendered))
 			dispatch(setShouldReloadWorkspace(false));
 		}
 	}, []);
@@ -113,7 +114,7 @@ const Main = () => {
 	}
 
 	const initializeBlockly = (_blockly) => {
-		initialize(_blockly)
+		return initialize(_blockly)
 			.then(() => {
 				$(".show-on-load").show();
 				$(".barspinner").hide();
@@ -121,6 +122,7 @@ const Main = () => {
 				TrackJS.configure({
 					userId: document.getElementById("active-account-name")?.value,
 				});
+				return _blockly.initPromise;
 			})
 	}
 
@@ -138,10 +140,10 @@ const Main = () => {
 						content: translate('Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.'),
 					},
 				]}
-        	/>
+			/>
 			<BotUnavailableMessage />
 			<div id="bot-blockly">
-				{blockly && <ToolBox blockly={blockly} />}
+				{blockly && <ToolBox blockly={blockly} is_workspace_rendered={is_workspace_rendered} />}
 				{/* Blockly workspace will be injected here */}
 				<div id="blocklyArea">
 					<div id="blocklyDiv" style={{ position: 'absolute' }}></div>

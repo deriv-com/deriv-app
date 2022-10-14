@@ -33,6 +33,7 @@ import config from '../../common/const';
 import { getActiveAccount } from '../../../common/utils/storageManager';
 import { getRelatedDeriveOrigin } from '../deriv/utils';
 import { trackJSTrack } from "../../../common/integrations/trackJSTrack";
+import DataCollection from '../../bot/data-collection';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -383,6 +384,7 @@ export default class _Blockly {
                 });
 
                 createDataStore(workspace);
+                this.is_workspace_rendered = DataCollection?.prototype?.rendered;
             });
         });
     }

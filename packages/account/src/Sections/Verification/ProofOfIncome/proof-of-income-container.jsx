@@ -15,6 +15,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_document_upload: false,
+        allow_poinc_resubmission: false,
         needs_poinc: false,
         income_status: null,
         is_age_verified: false,
@@ -24,7 +25,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
         if (!is_switching) {
             WS.authorized.getAccountStatus().then(response => {
                 const { get_account_status } = response;
-                const { allow_document_upload, income_status, needs_poinc, is_age_verified } =
+                const { allow_document_upload, allow_poinc_resubmission, income_status, needs_poinc, is_age_verified } =
                     populateVerificationStatus(get_account_status);
 
                 setAuthenticationStatus(
@@ -32,6 +33,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }) => {
                         ...authentication_status,
                         ...{
                             allow_document_upload,
+                            allow_poinc_resubmission,
                             needs_poinc,
                             income_status,
                             is_age_verified,

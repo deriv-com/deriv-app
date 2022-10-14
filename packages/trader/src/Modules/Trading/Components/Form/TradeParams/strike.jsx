@@ -1,18 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
-import { DesktopWrapper, InputField, MobileWrapper, Numpad, Money, Popover } from '@deriv/components';
+import { DesktopWrapper, InputField, MobileWrapper, Money } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
+import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 
-const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrentFocus, currency }) => {
-    const user_currency_decimal_places = getDecimalPlaces(currency);
+const Strike = ({
+    strike,
+    current_focus,
+    onChange,
+    validation_errors,
+    setCurrentFocus,
+    currency,
+    duration_unit,
+    duration,
+}) => {
+    const [is_open, setIsOpen] = React.useState(false);
+
+    // const user_currency_decimal_places = getDecimalPlaces(currency);
     const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
-    const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
-    const formatAmount = value =>
-        !isNaN(value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
+    // const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
+
+    const toggleWidget = () => setIsOpen(!is_open);
 
     return (
         <React.Fragment>
@@ -42,35 +54,23 @@ const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrent
                     />
                 </Fieldset>
             </DesktopWrapper>
-            {/* <MobileWrapper>
-                <div className='trade-params__amount-keypad'>
-                    <Numpad
-                        value={strike}
-                        format={formatAmount}
-                        onSubmit={setBasisAndAmount}
+            <MobileWrapper>
+                <div className='mobile-widget__wrapper'>
+                    <div className='strike-widget' onClick={toggleWidget}>
+                        <div className='mobile-widget__amount'>
+                            <Money amount={strike} currency={currency} />
+                        </div>
+                        <div className='mobile-widget__type'>{localize('Strike')}</div>
+                    </div>
+                    <StrikeParamModal
+                        is_open={is_open}
+                        toggleModal={toggleWidget}
+                        strike={strike}
                         currency={currency}
-                        min={min_amount}
-                        is_currency
-                        render={({ value: v, className }) => {
-                            return (
-                                <div className={className}>
-                                    {parseFloat(v) > 0 ? (
-                                        <Money currency={currency} amount={v} should_format={false} />
-                                    ) : (
-                                        v
-                                    )}
-                                </div>
-                            );
-                        }}
-                        reset_press_interval={450}
-                        reset_value=''
-                        pip_size={user_currency_decimal_places}
-                        // onValidate={validateAmount}
-                        submit_label={localize('OK')}
-                        // onValueChange={onNumberChange}
+                        onChange={onChange}
                     />
                 </div>
-            </MobileWrapper> */}
+            </MobileWrapper>
         </React.Fragment>
     );
 };
@@ -81,4 +81,6 @@ export default connect(({ client, modules, ui }) => ({
     setCurrentFocus: ui.setCurrentFocus,
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
+    duration_unit: modules.trade.duration_unit,
+    duration: modules.trade.duration,
 }))(Strike);

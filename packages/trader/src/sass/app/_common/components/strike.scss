@@ -1,0 +1,22 @@
+.strike-widget {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: '. amount unit';
+    border-radius: 4px;
+    padding: 1rem 0.8rem;
+    height: 4rem;
+    background-color: var(--general-main-1);
+    margin: 0 0 0.8rem;
+    flex: 1;
+    align-items: center;
+
+    .mobile-widget {
+        &__amount {
+            grid-area: amount;
+        }
+        &__type {
+            grid-area: unit;
+            justify-self: end;
+        }
+    }
+}

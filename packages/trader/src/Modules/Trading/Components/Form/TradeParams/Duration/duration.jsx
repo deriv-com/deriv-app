@@ -188,7 +188,7 @@ const Duration = ({
                             simple_duration_unit={simple_duration_unit}
                         />
                     )}
-                    {contract_type !== 'high_low' && (
+                    {contract_type !== 'vanilla' && (
                         <DurationToggle
                             name={'is_advanced_duration'}
                             onChange={onToggleDurationType}

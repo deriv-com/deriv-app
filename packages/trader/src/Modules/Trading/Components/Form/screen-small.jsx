@@ -16,6 +16,7 @@ import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -43,6 +44,8 @@ const CollapsibleTradeParams = ({
 
     const isVisible = component => form_components.includes(component);
 
+    console.log('form_components: ', form_components);
+
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
             <div className='trade-params__contract-type-container'>
@@ -57,6 +60,11 @@ const CollapsibleTradeParams = ({
             {isVisible('barrier') && (
                 <div collapsible={'true'}>
                     <BarrierMobile />
+                </div>
+            )}
+            {isVisible('strike') && (
+                <div collapsible={'true'}>
+                    <Strike />
                 </div>
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />

@@ -18,7 +18,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration: boolean };
+    config?: { hide_duration?: boolean; should_override?: boolean };
 };
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
@@ -28,7 +28,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         title: localize('Rise/Fall'),
         trade_types: ['CALL', 'PUT'],
         basis: ['stake', 'payout'],
-        components: [],
+        components: ['start_date'],
         barrier_count: 0,
     },
     rise_fall_equal: {
@@ -41,10 +41,8 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     high_low: {
         title: localize('Higher/Lower'),
         trade_types: ['CALL', 'PUT'],
-        basis: ['stake'],
-        components: ['duration', 'strike', 'amount'],
-        barrier_count: 1,
-        config: { should_override: true },
+        basis: ['stake', 'payout'],
+        components: ['barrier'],
     },
     touch: {
         title: localize('Touch/No Touch'),
@@ -128,7 +126,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
-    v_call_put: {
+    vanilla: {
         title: localize('Call/Put'),
         trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
         basis: ['stake'],

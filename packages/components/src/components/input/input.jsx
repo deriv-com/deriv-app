@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Field from '../field';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 
 const InputWrapper = ({ children, has_footer }) =>
     has_footer ? <div className='dc-input__wrapper'>{children}</div> : children;

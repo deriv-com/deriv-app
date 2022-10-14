@@ -1,7 +1,7 @@
 import {
     getPropertyValue,
     getUrlBinaryBot,
-    getUrlSmartTrader,
+    // getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -2255,13 +2255,10 @@ export default class ClientStore extends BaseStore {
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
-        smartTrader.origin = 'https://deriv-binary-static-5y9s2psj6.binary.sx';
+        smartTrader.origin = 'https://localhost.binary.sx:3000';
         binaryBot.origin = getUrlBinaryBot();
 
         [smartTrader, binaryBot].forEach(platform => {
-            /* eslint-disable no-console */
-            console.log(platform.iframe, 'platform.iframe');
-            console.log(platform.origin, 'platform.origin');
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

@@ -118,7 +118,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const formik_ref = React.useRef();
-    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 1000;
+    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -245,7 +245,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={!has_rate_changed_recently ? submitForm.current : onSubmitWhenRateChanged}
+                                onSubmit={has_rate_changed_recently ? onSubmitWhenRateChanged : submitForm.current}
                             />
                         )
                     }
@@ -309,7 +309,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                                 <BuySellModalFooter
                                     is_submit_disabled={is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={!has_rate_changed_recently ? submitForm.current : onSubmitWhenRateChanged}
+                                    onSubmit={has_rate_changed_recently ? onSubmitWhenRateChanged : submitForm.current}
                                 />
                             )}
                         </Modal.Footer>

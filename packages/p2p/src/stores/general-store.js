@@ -234,6 +234,9 @@ export default class GeneralStore extends BaseStore {
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
 
+        // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
+        this.props.refreshNotifications();
+
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {
@@ -687,10 +690,7 @@ export default class GeneralStore extends BaseStore {
                 v => v.length <= 24,
                 v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
                 v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v =>
-                    Array.from(v).every(
-                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
-                    ),
+                v => !/([a-zA-Z0-9\\.@_-])\1{4}/.test(v),
             ],
         };
 
@@ -700,7 +700,7 @@ export default class GeneralStore extends BaseStore {
             localize('Nickname is too long'),
             localize('Can only contain letters, numbers, and special characters .- _ @.'),
             localize('Cannot start, end with, or repeat special characters.'),
-            localize('Cannot repeat a character more than 5 times.'),
+            localize('Cannot repeat a character more than 4 times.'),
         ];
 
         const errors = {};

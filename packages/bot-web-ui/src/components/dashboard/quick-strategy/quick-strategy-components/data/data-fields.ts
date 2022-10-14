@@ -20,7 +20,7 @@ export type TDataFields = {
 
 const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = [
     {
-        id: 'types-strategies',
+        id: 'type-strategy',
         field_name: 'quick-strategy__type-strategy',
         className: '',
         select_value: 'type-strategy',

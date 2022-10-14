@@ -90,9 +90,7 @@ export default class QuickStrategyStore {
     @action.bound
     setDescription(type_strategy: TTypeStrategy): void {
         this.description =
-            (this.types_strategies_dropdown as TTypeStrategiesDropdown)?.find(
-                strategy => strategy.value === type_strategy.value
-            )?.description || '';
+            this.types_strategies_dropdown?.find(strategy => strategy.value === type_strategy.value)?.description || '';
     }
 
     @action.bound
@@ -190,7 +188,7 @@ export default class QuickStrategyStore {
 
             if (typeStrategy) {
                 this.setSelectedTypeStrategy(typeStrategy);
-                this.setActiveTypeStrategyIndex((typeStrategy as TTypeStrategy).index);
+                this.setActiveTypeStrategyIndex(typeStrategy.index);
                 setFieldValue(field_map?.field_name, typeStrategy.text);
             }
         }

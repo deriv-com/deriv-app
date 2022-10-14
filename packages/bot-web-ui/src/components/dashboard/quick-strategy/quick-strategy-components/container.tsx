@@ -31,8 +31,8 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
     const symbol_dropdown_options = React.useMemo(
         () =>
             symbol_dropdown
-                .map((symbol: TSymbolItem, idx) => ({
-                    component: <MarketOption key={idx} symbol={symbol} />,
+                .map((symbol: TSymbolItem) => ({
+                    component: <MarketOption key={symbol.text} symbol={symbol} />,
                     ...symbol,
                 }))
                 .filter(option => option.group !== 'Cryptocurrencies'), // Until Crypto enabled for Dbot
@@ -41,8 +41,8 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
 
     const trade_type_dropdown_options = React.useMemo(
         () =>
-            trade_type_dropdown.map((trade_type, idx) => ({
-                component: <TradeTypeOption key={idx} trade_type={trade_type} />,
+            trade_type_dropdown.map(trade_type => ({
+                component: <TradeTypeOption key={trade_type.text} trade_type={trade_type} />,
                 ...trade_type,
             })),
         [trade_type_dropdown]

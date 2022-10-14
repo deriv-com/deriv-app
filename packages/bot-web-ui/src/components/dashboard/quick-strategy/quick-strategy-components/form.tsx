@@ -1,4 +1,4 @@
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars, Text } from '@deriv/components';
 import { isSafari } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -86,9 +86,15 @@ const QuickStrategyForm = ({
                                     'quick-strategy__form-content--safari-fix': isSafari(),
                                 })}
                             >
-                                <div className='quick-strategy__title'>{localize('Quick strategy')}</div>
-                                <div className='quick-strategy__description'>
-                                    {localize('Choose a template and set your trade parameters.')}
+                                <div className='quick-strategy__text'>
+                                    <Text size='sm' weight='bold' line_height='s'>
+                                        {localize('Quick strategy')}
+                                    </Text>
+                                </div>
+                                <div className='quick-strategy__text'>
+                                    <Text size='sm' weight='normal'>
+                                        {localize('Choose a template and set your trade parameters.')}
+                                    </Text>
                                 </div>
 
                                 <QuickStrategyFields

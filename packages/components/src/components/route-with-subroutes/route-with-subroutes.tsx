@@ -31,7 +31,7 @@ const RouteWithSubRoutes = ({
     exact,
     getTitle,
     is_authenticated,
-    is_logged_in,
+    is_logged_in = false,
     path,
     routes,
     to,

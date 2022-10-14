@@ -8,10 +8,12 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ad_type } from 'Constants/floating-rate';
 import './app.scss';
+import IntroducingFloatingRatesModal from './introducing-floating-rates-modal/introducing-floating-rates-modal.jsx';
 
 const App = props => {
-    const { general_store, order_store } = useStores();
+    const { general_store, floating_rate_store, order_store } = useStores();
     const {
         balance,
         className,
@@ -95,6 +97,7 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
+            {floating_rate_store.rate_type === ad_type.FLOAT && <IntroducingFloatingRatesModal />}
             <Notifications />
             <AppContent />
         </main>

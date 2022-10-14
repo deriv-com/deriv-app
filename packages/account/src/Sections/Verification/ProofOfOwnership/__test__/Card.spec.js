@@ -21,11 +21,10 @@ describe('Card.jsx', () => {
                 card={card}
                 handleChange={jest.fn()}
                 handleBlur={jest.fn()}
-                identifier={card.payment_method_identifier}
                 values={values}
                 setFieldValue={jest.fn()}
                 index={0}
-                error={{ files: [{ file: null }] }}
+                error={{ files: [null] }}
             />
         );
         const button = screen.getByTestId('proof-of-ownership-button', { exact: true });

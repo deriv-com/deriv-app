@@ -1,8 +1,8 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-
+// Because we compare the keys here with values from BE, all keys inserted here must be in lowercase! :(
 const paymentMethodConfig = {
-    AdvCash: {
+    advcash: {
         icon_light: 'IcAdvcashLight',
         icon_dark: 'IcAdvcashDark',
         instructions: [
@@ -14,7 +14,7 @@ const paymentMethodConfig = {
         title: 'AdvCash',
         documents_required: 1,
     },
-    AstroPay: {
+    astropay: {
         icon_light: 'IcAstroPayLight',
         icon_dark: 'IcAstroPayDark',
         instructions: [
@@ -36,7 +36,7 @@ const paymentMethodConfig = {
         title: 'AstroPay',
         documents_required: 2,
     },
-    Beyonic: {
+    beyonic: {
         icon_light: 'IcBeyonic',
         icon_dark: 'IcBeyonic',
         instructions: [
@@ -48,7 +48,7 @@ const paymentMethodConfig = {
         title: 'Beyonic',
         documents_required: 1,
     },
-    'Boleto (D24 Voucher)': {
+    'boleto (d24 voucher)': {
         icon_light: 'IcBoletoD24VoucherLight',
         icon_dark: 'IcBoletoD24VoucherDark',
         instructions: [
@@ -58,7 +58,7 @@ const paymentMethodConfig = {
         title: 'Boleto (D24 Voucher)',
         documents_required: 1,
     },
-    VISA: {
+    visa: {
         icon_light: 'IcVisaLight',
         icon_dark: 'IcVisaDark',
         instructions: [
@@ -70,7 +70,7 @@ const paymentMethodConfig = {
         title: 'VISA',
         documents_required: 1,
     },
-    MasterCard: {
+    mastercard: {
         icon_light: 'IcMasterCardLight',
         icon_dark: 'IcMasterCardDark',
         instructions: [
@@ -82,7 +82,7 @@ const paymentMethodConfig = {
         title: 'MasterCard',
         documents_required: 1,
     },
-    PIX: {
+    pix: {
         icon_light: 'IcPixLight',
         icon_dark: 'IcPixDark',
         instructions: [
@@ -94,7 +94,7 @@ const paymentMethodConfig = {
         title: 'PIX',
         documents_required: 1,
     },
-    Skrill: {
+    skrill: {
         icon_light: 'IcSkrillLight',
         icon_dark: 'IcSkrillDark',
         instructions: [
@@ -106,7 +106,7 @@ const paymentMethodConfig = {
         title: 'Skrill',
         documents_required: 1,
     },
-    NETeller: {
+    neteller: {
         icon_light: 'IcNetellerLight',
         icon_dark: 'IcNetellerDark',
         instructions: [
@@ -118,7 +118,7 @@ const paymentMethodConfig = {
         title: 'Neteller',
         documents_required: 1,
     },
-    OnlineNaira: {
+    onlinenaira: {
         icon_light: 'IcOnlineNaira',
         icon_dark: 'IcOnlineNaira',
         instructions: [
@@ -154,7 +154,7 @@ const paymentMethodConfig = {
         title: 'OnlineNaira',
         documents_required: 2,
     },
-    WebMoney: {
+    webmoney: {
         icon_light: 'IcWebMoneyLight',
         icon_dark: 'IcWebMoneyDark',
         instructions: [
@@ -166,7 +166,7 @@ const paymentMethodConfig = {
         title: 'WebMoney',
         documents_required: 1,
     },
-    ZingPay: {
+    zingpay: {
         icon_light: 'IcZingpay',
         icon_dark: 'IcZingpay',
         instructions: [localize('Upload your Zingpay bank statement showing your name and bank account number.')],
@@ -174,7 +174,7 @@ const paymentMethodConfig = {
         title: 'ZingPay',
         documents_required: 1,
     },
-    SticPay: {
+    sticpay: {
         icon_light: 'IcSticpayLight',
         icon_dark: 'IcSticpayDark',
         instructions: [localize('Upload a screenshot of your "Personal details". It should show your name and email')],
@@ -182,7 +182,7 @@ const paymentMethodConfig = {
         title: 'SticPay',
         documents_required: 1,
     },
-    Jeton: {
+    jeton: {
         icon_light: 'IcJetonLight',
         icon_dark: 'IcJetonDark',
         instructions: [

@@ -21,7 +21,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
     const initial_values = {};
     const [is_disabled, setIsDisabled] = React.useState(true);
     initial_values.data = cards?.map(item => {
-        return { id: item.id, files: [], identifier: item.payment_method_identifier, files_required: 1 };
+        return { id: item.id, files: [], payment_method_identifier: '', files_required: 1, is_generic_pm: false };
     });
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const form_ref = useRef();
@@ -38,31 +38,33 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
         errors.data = [...document_upload_errors];
         let is_file_uploaded;
         values.data.map((element, index) => {
+            const is_pm_identifier_provided = element?.is_generic_pm || element?.payment_method_identifier?.length > 0;
             is_file_uploaded = false;
             element.files.forEach((file, i) => {
-                is_file_uploaded = file?.file !== '';
-                if (file?.file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.file?.type)) {
+                if (file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.type)) {
                     errors.data[index] = {};
                     errors.data[index].files = [];
-                    errors.data[index].files[i] = {
-                        file: localize(
-                            "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
-                        ),
-                    };
+                    errors.data[index].files[i] = localize(
+                        "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+                    );
                 }
-                if (file?.file?.size / 1024 > 8000) {
+                if (file?.size / 1024 > 8000) {
                     errors.data[index] = {};
                     errors.data[index].files = [];
-                    errors.data[index].files[i] = {
-                        file: localize('That file is too big (only up to 8MB allowed). Please upload another file.'),
-                    };
+                    errors.data[index].files[i] = localize(
+                        'That file is too big (only up to 8MB allowed). Please upload another file.'
+                    );
                 }
             });
-            if (is_file_uploaded && element.files_required === element.files.filter(Boolean).length) {
+            if (element.files_required === element.files.filter(Boolean).length) {
+                if (!is_pm_identifier_provided) {
+                    errors.data[index] = typeof errors.data[index] === 'object' ? errors.data[index] : {};
+                    errors.data[index].payment_method_identifier = localize('Please complete this field.');
+                }
                 checked_indices.push(index);
             }
         });
-        is_file_uploaded = checked_indices.length === values.data.length;
+        is_file_uploaded = checked_indices.length === values?.data?.length;
         if (errors?.data?.every(element => element === undefined)) {
             errors.data = [];
             setDocumentUploadErrors(errors?.data);
@@ -75,7 +77,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
         errors.data = [...document_upload_errors];
         if (typeof errors.data[index] === 'object') {
             errors.data[index].files[sub_index] = undefined;
-            const other_files = errors.data[index].files.some(file => file !== undefined);
+            const other_files = errors?.data[index]?.files?.some(file => file !== undefined);
             if (!other_files) {
                 errors.data[index] = undefined;
             }
@@ -97,9 +99,8 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                 return;
             }
             formValues.forEach(async (values, index) => {
-                const files = values.files.flatMap(f => f.file).filter(f => f !== null && f !== '');
-                if (files.length > 0) {
-                    const files_to_process = await compressImageFiles(files);
+                if (values.files.length > 0) {
+                    const files_to_process = await compressImageFiles(values.files);
                     const processed_files = await readFiles(files_to_process, fileReadErrorMessage);
                     if (typeof processed_files === 'string') {
                         // eslint-disable-next-line no-console
@@ -110,7 +111,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                         files_to_send.proof_of_ownership = {
                             details: {
                                 email: get_settings.email,
-                                identifier: values.identifier,
+                                payment_method_identifier: values.payment_method_identifier,
                             },
                             id: values.id,
                         };
@@ -126,9 +127,7 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                                 form_errors[index].files = Array.isArray(form_errors[index].files)
                                     ? form_errors[index].files
                                     : [];
-                                form_errors[index].files[sub_index] = {
-                                    file: localize(response.message), // Document already uploaded
-                                };
+                                form_errors[index].files[sub_index] = localize(response.message); // Document already uploaded
                                 setDocumentUploadErrors(form_errors);
                                 form_ref.current.setErrors(form_errors);
                                 form_ref.current.validateForm();
@@ -146,9 +145,9 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                 }
             });
         } catch (err) {
+            setFormState({ ...form_state, ...{ is_btn_loading: false } });
             // eslint-disable-next-line no-console
             console.warn(err);
-            setFormState({ ...form_state, ...{ is_btn_loading: false } });
         }
     };
     return (

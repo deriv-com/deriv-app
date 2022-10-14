@@ -10,7 +10,7 @@ describe('ExpandedCard.jsx', () => {
         card_details = {
             icon: 'IcVisaLight',
             id: '1',
-            payment_method: 'VISA',
+            payment_method: 'visa',
             payment_method_identifier: '12345678910111213',
             title: 'VISA',
             instructions: [
@@ -44,12 +44,20 @@ describe('ExpandedCard.jsx', () => {
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();
     });
-    it('should format identifier', () => {
+    it('should render identifier input', () => {
         render(
             <ExpandedCard
                 card_details={card_details}
-                identifier={card_details.payment_method_identifier}
+                index={0}
+                values={{
+                    data: [
+                        {
+                            payment_method_identifier: '1234 56XX XXXX 1121 3',
+                        },
+                    ],
+                }}
                 show_browse_button={[]}
+                setFieldValue={jest.fn(() => {})}
             />
         );
         const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', {

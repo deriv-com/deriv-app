@@ -7,20 +7,21 @@ import paymentMethodConfig from './payment-method-config';
 
 const Card = ({
     card,
-    handleChange,
-    handleBlur,
-    values,
-    setFieldValue,
-    index,
     error,
-    validateField,
-    updateErrors,
+    handleBlur,
+    handleChange,
+    index,
     is_dark_mode,
+    setFieldValue,
+    updateErrors,
+    validateField,
+    values,
 }) => {
     const [show_browse_button, setShowBrowseButton] = React.useState([]);
-    const card_details = paymentMethodConfig[card.payment_method] ?? paymentMethodConfig.other;
+    const card_details = paymentMethodConfig[card?.payment_method?.toLowerCase()] ?? paymentMethodConfig.other;
     card_details.icon = is_dark_mode ? card_details?.icon_dark : card_details?.icon_light;
     values.data[index].files_required = card_details?.documents_required;
+    values.data[index].is_generic_pm = !card_details?.input_label;
     const updateShowBrowseButton = (sub_index, value) => {
         const show_browse_button_state = [...show_browse_button];
         show_browse_button_state[sub_index] = value;
@@ -64,7 +65,6 @@ const Card = ({
             {is_open && (
                 <ExpandedCard
                     card_details={card_details}
-                    identifier={card?.payment_method_identifier}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     values={values}

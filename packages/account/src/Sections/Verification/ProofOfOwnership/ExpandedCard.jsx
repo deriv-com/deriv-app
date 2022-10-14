@@ -8,9 +8,6 @@ import classNames from 'classnames';
 
 const ExpandedCard = ({
     card_details,
-    handleChange,
-    handleBlur,
-    identifier,
     values,
     setFieldValue,
     index,
@@ -25,9 +22,14 @@ const ExpandedCard = ({
     const handleUploadedFile = (name, file) => {
         setFieldValue(name, file);
     };
-
+    const handleBlur = (name, payment_method_identifier) => {
+        handleIdentifierChange(name, formatIdentifier(payment_method_identifier, card_details?.icon));
+    };
+    const handleIdentifierChange = (name, payment_method_identifier) => {
+        setFieldValue(name, payment_method_identifier);
+    };
     const exampleLink = () =>
-        ['IcCreditCard', 'IcVisaLight', 'IcMasterCardLight', 'IcVisaDark', 'IcMasterCardDark'].some(
+        ['IcVisaLight', 'IcMasterCardLight', 'IcVisaDark', 'IcMasterCardDark'].some(
             icon => icon === card_details?.icon
         ) ? (
             <span
@@ -45,6 +47,7 @@ const ExpandedCard = ({
     const formatIdentifier = (id, type) => {
         let formatted_id = id;
         if (
+            id &&
             ['IcCreditCard', 'IcVisaLight', 'IcMasterCardLight', 'IcVisaDark', 'IcMasterCardDark'].some(s => s === type)
         )
             formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
@@ -67,40 +70,33 @@ const ExpandedCard = ({
                 ))}
                 <fieldset>
                     <div className='proof-of-ownership__card-open-inputs'>
-                        {card_details?.input_label && card_details?.icon !== 'IcCreditCard' && (
+                        {card_details?.input_label && (
                             <div className='proof-of-ownership__card-open-inputs-field'>
                                 <Input
                                     label={card_details?.input_label}
                                     data-lpignore='true'
                                     className='proof-of-ownership__card-open-inputs-cardnumber text-white'
                                     type='text'
-                                    onChange={handleChange}
-                                    disabled
-                                    value={formatIdentifier(identifier, card_details?.icon)}
-                                    onBlur={handleBlur}
+                                    onChange={e => {
+                                        handleIdentifierChange(
+                                            `data[${index}].payment_method_identifier`,
+                                            e.currentTarget.value
+                                        );
+                                    }}
+                                    value={values?.data?.[index]?.payment_method_identifier}
+                                    onBlur={e => {
+                                        handleBlur(`data[${index}].payment_method_identifier`, e.currentTarget.value);
+                                    }}
                                     maxLength='19'
+                                    data-testid='payment_method_identifier'
+                                    error={error?.payment_method_identifier}
                                 />
                             </div>
                         )}
-                        {controls_to_show.map(i => (
-                            <React.Fragment key={i}>
+                        {controls_to_show.map((i, control_index) => (
+                            // Using control_index Headers, because I have no unique value to use as a key
+                            <React.Fragment key={`${i}${control_index}`}>
                                 {/* Used React.Fragment instead of the <></> to resolve devtools console errors/warnings of missing key prop. */}
-                                {card_details?.icon === 'IcCreditCard' && (
-                                    <div className='proof-of-ownership__card-open-inputs-field' key={i}>
-                                        <Input
-                                            label={card_details?.input_label}
-                                            data-lpignore='true'
-                                            className='proof-of-ownership__card-open-inputs-cardnumber'
-                                            type='text'
-                                            onChange={handleChange}
-                                            disabled
-                                            value={formatIdentifier(identifier, card_details?.icon)}
-                                            onBlur={handleBlur}
-                                            maxLength='19'
-                                            data-datatestid='identifier'
-                                        />
-                                    </div>
-                                )}
                                 <div
                                     className={classNames('proof-of-ownership__card-open-inputs-upload', {
                                         expand: !card_details?.input_label,
@@ -109,11 +105,11 @@ const ExpandedCard = ({
                                 >
                                     <FileUploader
                                         handleFile={handleUploadedFile}
-                                        file_name={values?.data?.[index]?.files[i]?.file?.name || ''}
-                                        data_test_id={`uploader-${values?.data?.[index]?.files[i]?.id}`}
+                                        file_name={values?.data?.[index]?.files?.[i]?.name || ''}
+                                        data_test_id={`uploader-${values?.data?.[index]?.files?.[i]?.id}`}
                                         class_name='proof-of-ownership__card-open-inputs-photo'
-                                        name={`data[${index}].files[${i}].file`}
-                                        error={error?.files[i]?.file}
+                                        name={`data[${index}].files[${i}]`}
+                                        error={error?.files?.[i]}
                                         validateField={validateField}
                                         index={index}
                                         sub_index={i}
@@ -141,9 +137,6 @@ const ExpandedCard = ({
 
 ExpandedCard.propTypes = {
     card_details: PropTypes.object,
-    handleChange: PropTypes.func,
-    handleBlur: PropTypes.func,
-    identifier: PropTypes.string,
     values: PropTypes.object,
     setFieldValue: PropTypes.func,
     index: PropTypes.number,

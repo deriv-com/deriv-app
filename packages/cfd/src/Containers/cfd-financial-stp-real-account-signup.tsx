@@ -1,11 +1,10 @@
 import React from 'react';
-import { Div100vhContainer } from '@deriv/components';
+import { Div100vhContainer, Loading } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
+import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
-import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
+import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import {
     LandingCompany,
     ResidenceList,
@@ -33,6 +32,12 @@ type TGetSettings = GetSettings & {
     poi_state?: string;
 };
 
+type TIndexLookupObject = {
+    CFDPOI: number;
+    CFDPOA: number;
+    CFDPersonalDetailsContainer: number;
+};
+
 type TCFDFinancialStpRealAccountSignupProps = {
     addNotificationByKey: (key: string) => void;
     authentication_status: TAuthenticationStatus;
@@ -56,14 +61,17 @@ type TCFDFinancialStpRealAccountSignupProps = {
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
 
 type TItemsState = {
-    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsForm;
+    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof TCFDFinancialStpRealAccountSignupProps>>;
 };
+const index_lookup: TIndexLookupObject = {
+    CFDPOI: 0,
+    CFDPOA: 1,
+    CFDPersonalDetailsContainer: 2,
+};
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    console.log(props);
-
     const {
         account_status,
         authentication_status,
@@ -71,11 +79,13 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         get_settings,
         refreshNotifications,
         setAccountSettings,
+        residence_list,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
     const state_index = step;
+    const [is_loading, setIsLoading] = React.useState(false);
     let is_mounted = React.useRef(true).current;
 
     const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(account_status);
@@ -109,9 +119,10 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const personal_details_config: TItemsState = {
-        body: CFDPersonalDetailsForm,
+        body: CFDPersonalDetailsContainer,
         form_value: {
             citizen: '',
+            place_of_birth: '',
             tax_residence: '',
             tax_identification_number: '',
             account_opening_reason: '',
@@ -129,10 +140,28 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
     );
 
+    const should_show_personal_details = () => {
+        let get_settings_response: GetSettings = {};
+        if (!get_settings) {
+            WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
+                get_settings_response = response.get_settings as GetSettings;
+                setAccountSettings(response.get_settings as GetSettings);
+            });
+        } else {
+            get_settings_response = get_settings;
+        }
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            get_settings_response;
+        if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
+            return false;
+        }
+        return true;
+    };
+
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),
         ...(should_show_poa ? [poa_config] : []),
-        ...(!has_submitted_personal_details ? [personal_details_config] : []),
+        ...(should_show_personal_details() ? [personal_details_config] : []),
     ];
 
     const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
@@ -146,24 +175,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     }, [items, refreshNotifications]);
 
     React.useEffect(() => {
+        setIsLoading(true);
         fetchStatesList();
-        if (!has_submitted_personal_details) {
-            let get_settings_response: GetSettings = {};
-            if (!get_settings) {
-                WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
-                    get_settings_response = response.get_settings as GetSettings;
-                    setAccountSettings(response.get_settings as GetSettings);
-                });
-            } else {
-                get_settings_response = get_settings;
-            }
-            const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-                get_settings_response;
-            if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
-                setHasSubmittedPersonalDetails(true);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setIsLoading(false);
     }, []);
 
     const unmount = () => {
@@ -197,7 +211,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsForm;
+    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
     const form_value = getCurrent('form_value');
 
     const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
@@ -217,16 +231,20 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             height_offset='40px'
         >
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
-                <BodyComponent
-                    value={form_value}
-                    index={state_index}
-                    onSubmit={nextStep}
-                    height='auto'
-                    onCancel={prevStep}
-                    onSave={saveFormData}
-                    form_error={form_error}
-                    {...passthrough}
-                />
+                {is_loading ? (
+                    <Loading />
+                ) : (
+                    <BodyComponent
+                        value={form_value}
+                        index={state_index}
+                        onSubmit={nextStep}
+                        height='auto'
+                        onCancel={prevStep}
+                        onSave={saveFormData}
+                        form_error={form_error}
+                        {...passthrough}
+                    />
+                )}
             </div>
         </Div100vhContainer>
     );

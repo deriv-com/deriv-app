@@ -133,38 +133,40 @@ const JurisdictionModal = ({
             category: account_type.category,
             type: account_type.type,
         };
+        console.log('aami');
 
-        if (is_eu && is_maltainvest_selected) {
-            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
-                openPasswordModal(type_of_account);
-            } else {
-                toggleCFDVerificationModal();
-            }
-        } else if (is_svg_selected) {
-            openPasswordModal(type_of_account);
-        } else if (is_vanuatu_selected) {
-            if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
-                openPersonalDetailsFormOrPasswordForm(type_of_account);
-            } else {
-                toggleCFDVerificationModal();
-            }
-        } else if (is_bvi_selected) {
-            if (
-                poi_verified_for_bvi_labuan_maltainvest &&
-                !poi_or_poa_not_submitted &&
-                !should_restrict_bvi_account_creation
-            ) {
-                openPersonalDetailsFormOrPasswordForm(type_of_account);
-            } else {
-                toggleCFDVerificationModal();
-            }
-        } else if (is_labuan_selected) {
-            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
-                openPersonalDetailsFormOrPasswordForm(type_of_account);
-            } else {
-                toggleCFDVerificationModal();
-            }
-        }
+        toggleCFDVerificationModal();
+        // if (is_eu && is_maltainvest_selected) {
+        //     if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+        //         openPasswordModal(type_of_account);
+        //     } else {
+        //         toggleCFDVerificationModal();
+        //     }
+        // } else if (is_svg_selected) {
+        //     openPasswordModal(type_of_account);
+        // } else if (is_vanuatu_selected) {
+        //     if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
+        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
+        //     } else {
+        //         toggleCFDVerificationModal();
+        //     }
+        // } else if (is_bvi_selected) {
+        //     if (
+        //         poi_verified_for_bvi_labuan_maltainvest &&
+        //         !poi_or_poa_not_submitted &&
+        //         !should_restrict_bvi_account_creation
+        //     ) {
+        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
+        //     } else {
+        //         toggleCFDVerificationModal();
+        //     }
+        // } else if (is_labuan_selected) {
+        //     if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
+        //     } else {
+        //         toggleCFDVerificationModal();
+        //     }
+        // }
     };
 
     const ModalContent = () => (

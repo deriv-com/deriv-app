@@ -60,6 +60,17 @@ export default class CFDStore extends BaseStore {
     }
 
     @computed
+    get hasCreatedAccountForSelectedJurisdiction() {
+        return this.account_type.type === 'synthetic'
+            ? this.real_synthetic_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              )
+            : this.real_financial_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              );
+    }
+
+    @computed
     get current_list() {
         const list = {};
 
@@ -592,10 +603,12 @@ export default class CFDStore extends BaseStore {
     @action.bound
     setJurisdictionSelectedShortcode(shortcode) {
         this.jurisdiction_selected_shortcode = shortcode;
+        console.log(this.jurisdiction_selected_shortcode);
     }
 
     @action.bound
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
+        console.log(this.is_cfd_verification_modal_visible);
     }
 }

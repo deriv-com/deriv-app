@@ -11,16 +11,12 @@ import { GetSettings } from '@deriv/api-types';
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
-const CFDPersonalDetailsModal = ({
+const CFDPersonalDetailsContainer = ({
     account_settings,
-    disableApp,
-    enableApp,
     getChangeableFields,
     is_fully_authenticated,
-    is_open,
     landing_company,
     openPasswordModal,
-    toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     residence_list,
     setAccountSettings,
@@ -67,14 +63,13 @@ const CFDPersonalDetailsModal = ({
     };
 
     React.useEffect(() => {
-        if (is_open) {
-            setIsLoading(true);
-            initiatePersonalDetails().then(() => {
-                setIsLoading(false);
-            });
-        }
+        // if (is_open) {
+        setIsLoading(true);
+        initiatePersonalDetails().then(() => {
+            setIsLoading(false);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_open]);
+    }, []);
 
     const transform = (value: unknown) => {
         const [result] = residence_list.filter(item => item.value === value);
@@ -90,12 +85,6 @@ const CFDPersonalDetailsModal = ({
         });
     };
 
-    const prevStep = () => {
-        setFormError('');
-        toggleCFDPersonalDetailsModal();
-        toggleJurisdictionModal();
-    };
-
     const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmitting, is_dirty = true) => {
         if (is_dirty) {
             // Set account settings
@@ -108,7 +97,6 @@ const CFDPersonalDetailsModal = ({
             initiatePersonalDetails(setSubmitting);
         }
         saveFormData(index, value);
-        toggleCFDPersonalDetailsModal();
         setAccountSettings({ ...account_settings, ...value });
         openPasswordModal();
     };
@@ -129,13 +117,11 @@ const CFDPersonalDetailsModal = ({
                 <CFDPersonalDetailsForm
                     changeable_fields={getChangeableFields()}
                     form_error={form_error}
-                    has_previous_button
                     index={0}
                     is_fully_authenticated={is_fully_authenticated}
                     is_in_personal_details_modal
                     is_loading={is_loading}
                     landing_company={landing_company}
-                    onCancel={prevStep}
                     onSave={saveFormData}
                     onSubmit={updateValue}
                     residence_list={residence_list}
@@ -148,7 +134,7 @@ const CFDPersonalDetailsModal = ({
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <Modal
+                {/* <Modal
                     className='real-account-signup-modal'
                     disableApp={disableApp}
                     enableApp={enableApp}
@@ -160,20 +146,20 @@ const CFDPersonalDetailsModal = ({
                     toggleModal={toggleCFDPersonalDetailsModal}
                     width='904px'
                     exit_classname='cfd-modal--custom-exit'
-                >
-                    {getPersonalDetailsForm()}
-                </Modal>
+                > */}
+                {getPersonalDetailsForm()}
+                {/* </Modal> */}
             </DesktopWrapper>
             <MobileWrapper>
-                <MobileDialog
+                {/* <MobileDialog
                     onClose={toggleCFDPersonalDetailsModal}
                     portal_element_id='modal_root'
                     title={localize('Add a real MT5 account')}
                     visible={is_open}
                     wrapper_classname='account-signup-mobile-dialog'
-                >
-                    {getPersonalDetailsForm()}
-                </MobileDialog>
+                > */}
+                {getPersonalDetailsForm()}
+                {/* </MobileDialog> */}
             </MobileWrapper>
         </React.Fragment>
     );
@@ -185,11 +171,10 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
     is_fully_authenticated: client.is_fully_authenticated,
-    is_open: modules.cfd.is_cfd_personal_details_modal_visible,
+    // is_open: modules.cfd.is_cfd_personal_details_modal_visible,
     landing_company: client.landing_company,
     openPasswordModal: modules.cfd.enableCFDPasswordModal,
-    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,
-}))(CFDPersonalDetailsModal);
+}))(CFDPersonalDetailsContainer);

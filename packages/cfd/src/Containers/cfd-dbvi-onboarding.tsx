@@ -16,6 +16,8 @@ type TVerificationModalProps = {
     jurisdiction_selected_shortcode: string;
     updateAccountStatus: () => void;
     account_status: GetAccountStatus;
+    hasCreatedAccountForSelectedJurisdiction: () => boolean;
+    openPasswordModal: () => void;
 };
 
 const CFDDbViOnBoarding = ({
@@ -26,18 +28,20 @@ const CFDDbViOnBoarding = ({
     jurisdiction_selected_shortcode,
     updateAccountStatus,
     account_status,
+    hasCreatedAccountForSelectedJurisdiction,
+    openPasswordModal,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
-    const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
 
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
+
             if (get_account_status?.authentication) {
                 const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
-                if (is_vanuatu_selected && need_poi_for_vanuatu) {
+                if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
                     setShowSubmittedModal(false);
                 } else if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
                     setShowSubmittedModal(true);
@@ -51,6 +55,7 @@ const CFDDbViOnBoarding = ({
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
             setIsLoading(true);
+            console.log('is_cfd_verification_modal_visible');
             getAccountStatusFromAPI();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +67,9 @@ const CFDDbViOnBoarding = ({
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
-                is_vanuatu_selected={is_vanuatu_selected}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                hasCreatedAccountForSelectedJurisdiction={hasCreatedAccountForSelectedJurisdiction}
+                openPasswordModal={openPasswordModal}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup
@@ -70,6 +77,7 @@ const CFDDbViOnBoarding = ({
                     setShowSubmittedModal(true);
                 }}
             />
+            // <div> Amn</div>
         );
 
     return is_loading ? (
@@ -115,4 +123,6 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     updateAccountStatus: client.updateAccountStatus,
     account_status: client.account_status,
+    hasCreatedAccountForSelectedJurisdiction: modules.cfd.hasCreatedAccountForSelectedJurisdiction,
+    openPasswordModal: modules.cfd.enableCFDPasswordModal,
 }))(CFDDbViOnBoarding);

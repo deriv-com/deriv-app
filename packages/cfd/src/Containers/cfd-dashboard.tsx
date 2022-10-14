@@ -16,7 +16,7 @@ import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
-import CFDPersonalDetailsModal from './cfd-personal-details-modal';
+import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
 import MT5TradeModal from './mt5-trade-modal';
@@ -616,8 +616,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         <CFDServerErrorDialog />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
                             <>
-                                <CFDDbViOnBoarding />
-                                <CFDPersonalDetailsModal />
+                                <CFDDbViOnBoarding openPasswordModal={openRealPasswordModal} />
+                                <CFDPersonalDetailsContainer />
                             </>
                         )}
                         <CFDResetPasswordModal platform={platform} />

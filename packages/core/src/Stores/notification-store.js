@@ -178,15 +178,11 @@ export default class NotificationStore extends BaseStore {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
 
-        if (window.location.pathname === routes.cashier_p2p) {
-            this.notification_messages = this.notification_messages.filter(
-                notification => notification.platform === 'P2P'
-            );
-        } else if (window.location.pathname === routes.personal_details) {
+        if (window.location.pathname === routes.personal_details) {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
-        } else {
+        } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;

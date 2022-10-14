@@ -40,7 +40,7 @@ const BuySellTable = ({ onScroll }) => {
             );
 
             // TODO: Remove once the api call is subscribable
-            // Updates the ads every 1 second
+            // Updates the ads every 1 minute
             const adverts = setInterval(() => buy_sell_store.loadMoreItems({ startIndex: 0 }), 60000);
 
             return () => {

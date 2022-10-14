@@ -9,9 +9,11 @@ import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/c
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import { connect } from 'Stores/connect';
 
 const TradeParams = ({ form_components, is_minimized }) => {
+    console.log('form_components: ', form_components, is_minimized);
     const isVisible = component_key => {
         return form_components.includes(component_key);
     };
@@ -20,6 +22,7 @@ const TradeParams = ({ form_components, is_minimized }) => {
             {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
+            {isVisible('strike') && <Strike key={'strike'} />}
             {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}

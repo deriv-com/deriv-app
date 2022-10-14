@@ -92,10 +92,12 @@ const Amount = ({
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
+    console.log('contract_type: ', contract_type);
+
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
-            header={is_multiplier ? localize('Stake') : undefined}
+            header={is_multiplier || contract_type === 'high_low' ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
                     <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />

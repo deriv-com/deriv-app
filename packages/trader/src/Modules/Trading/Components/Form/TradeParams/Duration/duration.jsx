@@ -34,8 +34,11 @@ const Duration = ({
     server_time,
     start_date,
     market_open_times,
+    contract_type,
 }) => {
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
+
+    console.log('In duration: ', contract_type);
 
     const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');
     if (duration_units_list.length === 1 && duration_unit === 't') {
@@ -185,11 +188,13 @@ const Duration = ({
                             simple_duration_unit={simple_duration_unit}
                         />
                     )}
-                    <DurationToggle
-                        name={'is_advanced_duration'}
-                        onChange={onToggleDurationType}
-                        value={is_advanced_duration}
-                    />
+                    {contract_type !== 'high_low' && (
+                        <DurationToggle
+                            name={'is_advanced_duration'}
+                            onChange={onToggleDurationType}
+                            value={is_advanced_duration}
+                        />
+                    )}
                 </>
             )}
         </Fieldset>
@@ -199,6 +204,7 @@ const Duration = ({
 Duration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type: PropTypes.string,
+    contract_type: PropTypes.string,
     duration: PropTypes.number,
     duration_t: PropTypes.number,
     duration_unit: PropTypes.string,

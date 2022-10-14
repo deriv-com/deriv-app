@@ -17,7 +17,7 @@ export const getContractTypesConfig = symbol => ({
         title: localize('Rise/Fall'),
         trade_types: ['CALL', 'PUT'],
         basis: ['stake', 'payout'],
-        components: ['start_date'],
+        components: [],
         barrier_count: 0,
     },
     rise_fall_equal: {
@@ -30,9 +30,10 @@ export const getContractTypesConfig = symbol => ({
     high_low: {
         title: localize('Higher/Lower'),
         trade_types: ['CALL', 'PUT'],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount'],
         barrier_count: 1,
+        config: { should_override: true },
     },
     touch: {
         title: localize('Touch/No Touch'),
@@ -116,10 +117,19 @@ export const getContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
+    v_call_put: {
+        title: localize('Call/Put'),
+        trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount'],
+        barrier_count: 1,
+        config: { should_override: true },
+    },
 });
 
 export const getContractCategoriesConfig = () => ({
     [localize('Multipliers')]: ['multiplier'],
+    [localize('Vanillas')]: ['v_call_put'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
     [localize('Ins & Outs')]: ['end', 'stay'],

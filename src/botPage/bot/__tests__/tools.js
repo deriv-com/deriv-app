@@ -25,9 +25,9 @@ export const parts = {
       (function (){
         var result = {};
   `,
-    init          : init(),
-    timeTrade     : `${init()}; ${start('duration: 2, duration_unit: "h"')};`,
-    tickTrade     : `${init()}; ${start('duration: 5, duration_unit: "t"')};`,
+    init: init(),
+    timeTrade: `${init()}; ${start('duration: 2, duration_unit: "h"')};`,
+    tickTrade: `${init()}; ${start('duration: 5, duration_unit: "t"')};`,
     waitToPurchase: `
         watch('before');
         Bot.purchase('CALL');

@@ -10,10 +10,10 @@ export default Interface =>
             const onError = () => notify('warn', translate('The Telegram notification could not be sent'));
 
             fetch(url, {
-                method : 'POST',
-                mode   : 'cors',
+                method: 'POST',
+                mode: 'cors',
                 headers: { 'Content-Type': 'application/json' },
-                body   : JSON.stringify({ chat_id: chatId, text }),
+                body: JSON.stringify({ chat_id: chatId, text }),
             })
                 .then(response => {
                     if (!response.ok) {
@@ -25,10 +25,10 @@ export default Interface =>
 
         getMiscInterface() {
             return {
-                notify        : args => globalObserver.emit('Notify', args),
+                notify: args => globalObserver.emit('Notify', args),
                 notifyTelegram: this.notifyTelegram,
-                getTotalRuns  : () => this.tradeEngine.getTotalRuns(),
-                getBalance    : type => this.tradeEngine.getBalance(type),
+                getTotalRuns: () => this.tradeEngine.getTotalRuns(),
+                getBalance: type => this.tradeEngine.getBalance(type),
                 getTotalProfit: toString =>
                     this.tradeEngine.getTotalProfit(toString, this.tradeEngine.tradeOptions.currency),
             };

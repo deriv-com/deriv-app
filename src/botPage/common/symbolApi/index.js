@@ -2,7 +2,7 @@ import ActiveSymbols from './activeSymbols';
 import config from '../../common/const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
-import { observer as globalObserver } from "../../../common/utils/observer";
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 let parsed_asset_index;
 
@@ -44,17 +44,23 @@ export default class _Symbol {
         this.api = api;
         this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                this.api.send({ active_symbols: 'brief' }).then(r => {
-                    this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                    this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
-                        parsed_asset_index = parseAssetIndex(asset_index);
-                        resolve();
-                    }).catch(error => {
-                        globalObserver.emit("Error", error);
+                this.api
+                    .send({ active_symbols: 'brief' })
+                    .then(r => {
+                        this.activeSymbols = new ActiveSymbols(r.active_symbols);
+                        this.api
+                            .send({ asset_index: 1 })
+                            .then(({ asset_index }) => {
+                                parsed_asset_index = parseAssetIndex(asset_index);
+                                resolve();
+                            })
+                            .catch(error => {
+                                globalObserver.emit('Error', error);
+                            });
+                    })
+                    .catch(error => {
+                        globalObserver.emit('Error', error);
                     });
-                }).catch(error => {
-                    globalObserver.emit("Error", error);
-                });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const token_list = getTokenList();
@@ -62,7 +68,7 @@ export default class _Symbol {
                 this.api
                     .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
-                    .catch((e) => {
+                    .catch(e => {
                         globalObserver.emit('Error', e);
                         removeAllTokens();
                         getActiveSymbolsLogic();

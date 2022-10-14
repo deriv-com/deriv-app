@@ -5,7 +5,7 @@ import * as style from '../style';
 import { translate } from '../../../common/i18n';
 
 const IntegrationsContent = () => (
-    <div id="integrations-dialog" className="dialog-content" style={style.content}>
+    <div id='integrations-dialog' className='dialog-content' style={style.content}>
         <GoogleDriveIntegration />
     </div>
 );
@@ -20,7 +20,7 @@ export default class IntegrationsDialog extends Dialog {
             translate('Google Drive Integration'),
             <IntegrationsContent closeDialog={closeDialog} />,
             {
-                width : 500,
+                width: 500,
                 height: 'auto',
             }
         );

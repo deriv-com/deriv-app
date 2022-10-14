@@ -5,19 +5,19 @@ import { AppConstants, logoutAllTokens } from '../appId';
 import { set, syncWithDerivApp } from '../utils/storageManager';
 
 const useLogout = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const logout = () => {
-    logoutAllTokens().then(() => {
-      updateTokenList();
-      set(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-      set('active_loginid', null);
-      syncWithDerivApp();
-      dispatch(resetClient());
-    })
-  }
+    const logout = () => {
+        logoutAllTokens().then(() => {
+            updateTokenList();
+            set(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+            set('active_loginid', null);
+            syncWithDerivApp();
+            dispatch(resetClient());
+        });
+    };
 
-  return logout
-}
+    return logout;
+};
 
 export default useLogout;

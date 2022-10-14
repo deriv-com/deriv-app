@@ -1,0 +1,9 @@
+www/*
+xml-tests/*
+templates/*
+static/*
+examples/*
+docs/*
+cli-examples/*
+node_modules/*
+lib/*

@@ -9,19 +9,19 @@ import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
 import { setIsBotRunning } from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { isMobile } from "../../../../../common/utils/tools";
-import Popover from "../../components/popover/index";
-import config from "../../../../../app.config";
+import { isMobile } from '../../../../../common/utils/tools';
+import Popover from '../../components/popover/index';
+import config from '../../../../../app.config';
 
 const ShowModal = ({ modal, onClose, class_name }) => {
-  if (!modal) return;
-  const { component: Component, props, title } = modal;
-  // eslint-disable-next-line consistent-return
-  return (
-    <Modal onClose={onClose} title={title} class_name={class_name}>
-      <Component {...props} />
-    </Modal>
-  );
+    if (!modal) return;
+    const { component: Component, props, title } = modal;
+    // eslint-disable-next-line consistent-return
+    return (
+        <Modal onClose={onClose} title={title} class_name={class_name}>
+            <Component {...props} />
+        </Modal>
+    );
 };
 
 const ToolboxButton = ({
@@ -54,27 +54,27 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
   const { is_gd_ready, is_bot_running, account_switcher_loader } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
 
-  React.useEffect(() => {
-    globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
-    globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
+    React.useEffect(() => {
+        globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
+        globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
 
-    const Keys = Object.freeze({ zoomIn: "=", zoomOut: "-" });
-    document.body.addEventListener("keydown", (e) => {
-      if (e.key === Keys.zoomOut && e.ctrlKey) {
-        // Ctrl + -
-        e.preventDefault();
-        // eslint-disable-next-line no-unused-expressions
-        blockly?.zoomOnPlusMinus(false);
-        return;
-      }
-      if (e.key === Keys.zoomIn && e.ctrlKey) {
-        // Ctrl + +
-        e.preventDefault();
-        // eslint-disable-next-line no-unused-expressions
-        blockly?.zoomOnPlusMinus(true);
-      }
-    });
-  }, []);
+        const Keys = Object.freeze({ zoomIn: '=', zoomOut: '-' });
+        document.body.addEventListener('keydown', e => {
+            if (e.key === Keys.zoomOut && e.ctrlKey) {
+                // Ctrl + -
+                e.preventDefault();
+                // eslint-disable-next-line no-unused-expressions
+                blockly?.zoomOnPlusMinus(false);
+                return;
+            }
+            if (e.key === Keys.zoomIn && e.ctrlKey) {
+                // Ctrl + +
+                e.preventDefault();
+                // eslint-disable-next-line no-unused-expressions
+                blockly?.zoomOnPlusMinus(true);
+            }
+        });
+    }, []);
 
   React.useEffect(() => {
     setIsLoadingBalance(true);
@@ -243,7 +243,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
 };
 
 ToolBox.propTypes = {
-  blockly: PropTypes.object.isRequired,
+    blockly: PropTypes.object.isRequired,
 };
 
 export default ToolBox;

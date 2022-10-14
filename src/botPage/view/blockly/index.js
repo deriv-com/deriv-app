@@ -32,7 +32,7 @@ import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
 import { getActiveAccount } from '../../../common/utils/storageManager';
 import { getRelatedDeriveOrigin } from '../deriv/utils';
-import { trackJSTrack } from "../../../common/integrations/trackJSTrack";
+import { trackJSTrack } from '../../../common/integrations/trackJSTrack';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -74,8 +74,8 @@ const marketsWereRemoved = xml => {
                 },
             ],
         })
-            .then(() => { })
-            .catch(() => { });
+            .then(() => {})
+            .catch(() => {});
         return true;
     }
     return false;
@@ -182,11 +182,7 @@ export const load = (blockStr, dropEvent = {}) => {
     const blocklyXml = xml.querySelectorAll('block');
 
     if (!blocklyXml.length) {
-        const error = new TrackJSError(
-            'FileLoad',
-            translate('XML file contains unsupported elements. Please check or modify file.')
-        );
-        globalObserver.emit('Error', error);
+        globalObserver.emit('Error', translate('XML file contains unsupported elements. Please check or modify file.'));
         return;
     }
 
@@ -212,23 +208,18 @@ export const load = (blockStr, dropEvent = {}) => {
                 },
             ],
         })
-            .then(() => { })
-            .catch(() => { });
+            .then(() => {})
+            .catch(() => {});
         return;
     }
 
-    blocklyXml.forEach(block => {
-        const blockType = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            const error = new TrackJSError(
-                'FileLoad',
-                translate('XML file contains unsupported elements. Please check or modify file.')
-            );
-            globalObserver.emit('Error', error);
-            throw error;
-        }
-    });
+    const blockWithError = Array.from(blocklyXml).find(
+        block => !Object.keys(Blockly.Blocks).includes(block.getAttribute('type'))
+    );
+    if (blockWithError) {
+        globalObserver.emit('Error', translate('XML file contains unsupported elements. Please check or modify file.'));
+        return;
+    }
 
     removeParam('strategy');
 
@@ -303,7 +294,7 @@ export default class _Blockly {
     constructor() {
         this.generatedJs = '';
         // eslint-disable-next-line no-underscore-dangle
-        Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => { }; // https://github.com/google/blockly/issues/299
+        Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
             $.get('xml/toolbox.xml', toolboxXml => {
                 blocks();

@@ -24,10 +24,10 @@ CookieStorage.prototype = {
         this.value = val;
         if (expireDate) this.expires = expireDate;
         Cookies.set(this.cookieName, this.value, {
-            expires : this.expires,
-            path    : this.path,
-            domain  : this.domain,
-            secure  : !!isSecure,
+            expires: this.expires,
+            path: this.path,
+            domain: this.domain,
+            secure: !!isSecure,
             sameSite: sameSite || 'strict',
         });
     },
@@ -40,14 +40,14 @@ CookieStorage.prototype = {
         this.value[key] = val;
         Cookies.set(this.cookieName, this.value, {
             expires: new Date(this.expires),
-            path   : this.path,
-            domain : this.domain,
+            path: this.path,
+            domain: this.domain,
             ...options,
         });
     },
     remove() {
         Cookies.remove(this.cookieName, {
-            path  : this.path,
+            path: this.path,
             domain: this.domain,
         });
     },

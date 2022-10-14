@@ -4,10 +4,11 @@ import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets';
 import classNames from 'classnames';
+import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
 
 interface TChartProps {
     chart_type: string;
-    getMarketsOrder: (active_symbols) => void;
+    getMarketsOrder: (active_symbols: ActiveSymbols) => string[];
     granularity: number;
     is_drawer_open: boolean;
     is_mobile: boolean;
@@ -19,10 +20,10 @@ interface TChartProps {
     symbol: object;
     updateChartType: (chart_type: string) => void;
     updateGranularity: (granularity: number) => void;
-    wsForget: (request) => void;
+    wsForget: (request: ForgetRequest) => void;
     wsForgetStream: (stream_id: string) => void;
-    wsSendRequest: (req) => void;
-    wsSubscribe: (req, callback) => void;
+    wsSendRequest: (req: { [k: string]: unknown }) => void;
+    wsSubscribe: (req: { [k: string]: unknown }, callback: () => void) => void;
 }
 
 const Chart = ({

@@ -32,7 +32,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
+                    <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous showProgress />
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                         {/* TODO: needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>

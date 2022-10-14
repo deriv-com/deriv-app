@@ -60,8 +60,7 @@ const GuideContent = ({
             </Text>
             <div className='tutorials-wrap__group'>
                 {finalContentArray.length > 0 ? (
-                    finalContentArray.map(items => {
-                        const { id, content, url = '' } = items;
+                    finalContentArray.map(({ id, content, url = '' }) => {
                         return (
                             <div className='tutorials-wrap__group__cards' key={id}>
                                 <div
@@ -104,9 +103,7 @@ const GuideContent = ({
                     has_close_icon
                     onClose={onOkButtonClick}
                 >
-                    <React.Fragment>
-                        <iframe width='100%' height='100%' src={dialog_options.url} frameBorder='0' allowFullScreen />
-                    </React.Fragment>
+                    <iframe width='100%' height='100%' src={dialog_options.url} frameBorder='0' allowFullScreen />
                 </Dialog>
             </div>
         </div>

@@ -10,6 +10,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
     disabled?: boolean;
     greyDisabled?: boolean;
     id?: string;
+    is_checkbox_hidden?: boolean;
     label: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;

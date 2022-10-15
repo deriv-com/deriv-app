@@ -18,6 +18,10 @@ export const extractInfoFromShortcode = (shortcode: string) => {
         barrier_1: '',
         multiplier: '',
         start_time: '',
+        payout_tick: '',
+        growth_rate: '',
+        growth_frequency: '',
+        tick_size_barrier: '',
     };
 
     const is_accumulators = /^ACCU/i.test(shortcode);

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Onboarding from 'Components/onboarding';
-import { trading_hub_contents } from 'Constants/trading-hub-content';
 import Joyride from 'react-joyride';
 import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
@@ -20,15 +18,19 @@ import {
 } from '@deriv/cfd';
 import CFDAccounts from 'Components/CFDs';
 import { TAccountCategory } from 'Types';
+import { Localize, localize } from '@deriv/translations';
+import { Button } from '@deriv/components';
+import { useHistory } from 'react-router-dom';
+import { routes } from '@deriv/shared';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
     const { ui, modules } = useStores();
     const { setAccountType, enableCFDPasswordModal } = modules.cfd;
-    const { is_dark_mode_on } = ui;
+    const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
     /*TODO: We need to show this component whenever user click on tour guide button*/
-    const [is_tour_open, setIsTourOpen] = React.useState(false);
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
+    const history = useHistory();
 
     type TOpenAccountTransferMeta = {
         category: string;
@@ -46,13 +48,34 @@ const TradingHub: React.FC = () => {
         setTabAccountType(event.target.value);
     };
 
+    tour_step_locale.last = (
+        <Localize
+            i18n_default_text='OK'
+            onClick={() => {
+                toggleIsTourOpen();
+            }}
+        />
+    );
+
+    tour_step_locale.back = (
+        <Button
+            has_effect
+            text={localize('Repeat tour')}
+            secondary
+            medium
+            onClick={() => {
+                history.push(routes.onboarding);
+                toggleIsTourOpen();
+            }}
+        />
+    );
+
     return (
         <React.Fragment>
+            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={tab_account_type} />
             <div className='trading-hub'>
-                Trading Hub
                 <CFDAccounts account_type={tab_account_type} />
             </div>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={tab_account_type} />
             <Joyride
                 run={is_tour_open}
                 continuous
@@ -66,7 +89,7 @@ const TradingHub: React.FC = () => {
                     disableAnimation: true,
                 }}
             />
-            <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} />
+            {/* <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} /> */}
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} />
             <CFDDbviOnBoarding context={store} />

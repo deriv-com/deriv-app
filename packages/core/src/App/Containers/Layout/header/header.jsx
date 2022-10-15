@@ -11,26 +11,29 @@ import { useLocation } from 'react-router-dom';
 const Header = ({ is_logged_in }) => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
+    const trading_hub_routes =
+        pathname === routes.trading_hub || pathname.startsWith(routes.cashier) || pathname.startsWith(routes.account);
 
     if (is_appstore) {
         /**
          * The below line will implement when the new domain myapps.deriv.com added.
          */
-        if (/myapps.deriv/.test(window.location.pathname)) return <DashboardPlatformHeader />;
+        if (/myapps.deriv/.test(pathname)) return <DashboardPlatformHeader />;
         return <DashboardHeader />;
     } else if (is_logged_in && is_pre_appstore) {
         let result;
-        if (
-            pathname === routes.trading_hub ||
-            pathname.startsWith(routes.cashier) ||
-            pathname.startsWith(routes.account)
-        ) {
+        if (trading_hub_routes) {
             result = <TradingHubHeader />;
+        } else if (pathname === routes.onboarding) {
+            result = null;
         } else {
             result = <DTraderHeader />;
         }
         return result;
+    } else if (pathname === routes.onboarding) {
+        return null;
     }
+
     return <DefaultHeader />;
 };
 

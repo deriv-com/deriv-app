@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from '@deriv/translations';
-import { getDXTradeWebTerminalLink } from '@deriv/cfd';
 import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
@@ -68,6 +67,19 @@ const CFDRealAccounts = ({
             // type: 'all'
         },
     ];
+
+    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+    const getDXTradeWebTerminalLink = (category: string, token?: string) => {
+        let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+        if (token) {
+            url += `?token=${token}`;
+        }
+
+        return url;
+    };
 
     const openAccountTransfer = (
         data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
@@ -145,27 +157,11 @@ const CFDRealAccounts = ({
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
                                               onClickTopUp={() => onClickFundReal(existing_account)}
-                                              onClickTrade={
-                                                  account.platform === CFD_PLATFORMS.MT5
-                                                      ? () => {
-                                                            toggleMT5TradeModal();
-                                                            setMT5TradeAccount(existing_account);
-                                                        }
-                                                      : () => {
-                                                            <a
-                                                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                                                type='button'
-                                                                href={getDXTradeWebTerminalLink(
-                                                                    'real',
-                                                                    dxtrade_tokens.real
-                                                                )}
-                                                                target='_blank'
-                                                                rel='noopener noreferrer'
-                                                            >
-                                                                <Localize i18n_default_text='Trade on web terminal' />
-                                                            </a>;
-                                                        }
-                                              }
+                                              onClickTrade={() => {
+                                                  toggleMT5TradeModal();
+                                                  setMT5TradeAccount(existing_account);
+                                              }}
+                                              dxtrade_link={getDXTradeWebTerminalLink('real', dxtrade_tokens.real)}
                                               description={account.description}
                                           />
                                           {isEligibleForMoreRealMt5(existing_account.market_type) &&

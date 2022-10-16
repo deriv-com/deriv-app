@@ -41,6 +41,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const { client, modules, common, ui }: TRootStore = useStores();
     const {
         standpoint,
+        dxtrade_tokens,
         createCFDAccount,
         setCurrentAccount,
         setMT5TradeAccount,
@@ -59,6 +60,19 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     ) => {
         setCurrentAccount(data, meta);
         openTopUpModal();
+    };
+
+    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+    const getDXTradeWebTerminalLink = (category: string, token?: string) => {
+        let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+        if (token) {
+            url += `?token=${token}`;
+        }
+
+        return url;
     };
 
     const openCFDAccount = (account_type: string) => {
@@ -115,6 +129,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                               loginid={existing_account.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
+                                              dxtrade_link={getDXTradeWebTerminalLink('demo', dxtrade_tokens.demo)}
                                               onClickTopUp={() =>
                                                   openAccountTransfer(
                                                       current_list[

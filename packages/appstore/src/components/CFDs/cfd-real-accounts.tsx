@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
+import { getDXTradeWebTerminalLink } from '@deriv/cfd';
 import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
@@ -22,10 +23,12 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client, modules, ui, common }: TRootStore = useStores();
+    const { client, modules, common }: TRootStore = useStores();
     const {
+        dxtrade_tokens,
         setAccountType,
-        setCurrentAccount,
+        createCFDAccount,
+        enableCFDPasswordModal,
         toggleJurisdictionModal,
         disableCFDPasswordModal,
         toggleMT5TradeModal,
@@ -142,10 +145,27 @@ const CFDRealAccounts = ({
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
                                               onClickTopUp={() => onClickFundReal(existing_account)}
-                                              onClickTrade={() => {
-                                                  toggleMT5TradeModal();
-                                                  setMT5TradeAccount(existing_account);
-                                              }}
+                                              onClickTrade={
+                                                  account.platform === CFD_PLATFORMS.MT5
+                                                      ? () => {
+                                                            toggleMT5TradeModal();
+                                                            setMT5TradeAccount(existing_account);
+                                                        }
+                                                      : () => {
+                                                            <a
+                                                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                                                type='button'
+                                                                href={getDXTradeWebTerminalLink(
+                                                                    'real',
+                                                                    dxtrade_tokens.real
+                                                                )}
+                                                                target='_blank'
+                                                                rel='noopener noreferrer'
+                                                            >
+                                                                <Localize i18n_default_text='Trade on web terminal' />
+                                                            </a>;
+                                                        }
+                                              }
                                               description={account.description}
                                           />
                                           {isEligibleForMoreRealMt5(existing_account.market_type) &&
@@ -167,14 +187,29 @@ const CFDRealAccounts = ({
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
-                                          onClickGet={() => {
-                                              toggleJurisdictionModal();
-                                              setAccountType({
-                                                  category: 'real',
-                                                  type: account.type,
-                                              });
-                                              setAppstorePlatform(account.platform);
-                                          }}
+                                          onClickGet={
+                                              account.platform === CFD_PLATFORMS.MT5
+                                                  ? () => {
+                                                        toggleJurisdictionModal();
+                                                        setAccountType({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        setAppstorePlatform(account.platform);
+                                                    }
+                                                  : () => {
+                                                        setAccountType({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        setAppstorePlatform(account.platform);
+                                                        createCFDAccount({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        enableCFDPasswordModal();
+                                                    }
+                                          }
                                           description={account.description}
                                       />
                                   </div>

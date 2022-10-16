@@ -132,7 +132,7 @@ const CFDPersonalDetailsModal = ({
                     has_previous_button
                     index={0}
                     context={context}
-                    changeable_fields={getChangeableFields()}
+                    // changeable_fields={getChangeableFields()}
                     is_fully_authenticated={is_fully_authenticated}
                     is_in_personal_details_modal
                     is_loading={is_loading}

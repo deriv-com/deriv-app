@@ -18,7 +18,7 @@ import { connect } from '../Stores/connect';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 
-const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
+const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
@@ -154,6 +154,7 @@ const CFDResetPasswordModal = ({
     return (
         <Modal
             className='cfd-reset-password-modal'
+            context={context}
             is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={
@@ -166,7 +167,7 @@ const CFDResetPasswordModal = ({
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}
             {getIsListFetched() && !state.has_error && !state.is_finished && (
-                <ResetPasswordIntent current_list={current_list} is_eu={is_eu}>
+                <ResetPasswordIntent context={context} current_list={current_list} is_eu={is_eu}>
                     {({ type, login }) => (
                         <Formik
                             initialValues={{ new_password: '' }}

@@ -73,6 +73,11 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
+    setAppstorePlatform(platform) {
+        this.platform = platform;
+    }
+
+    @action.bound
     setPlatform() {
         const search = window.location.search;
         if (search) {

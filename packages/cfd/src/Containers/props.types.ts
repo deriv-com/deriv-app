@@ -75,6 +75,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 
 export type TResetPasswordIntent = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
+    context?: RootStore;
     children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };

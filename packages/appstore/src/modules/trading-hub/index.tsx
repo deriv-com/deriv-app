@@ -25,8 +25,17 @@ import { routes } from '@deriv/shared';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules } = useStores();
-    const { setAccountType, enableCFDPasswordModal } = modules.cfd;
+    const { ui, modules, common, client } = useStores();
+    const { is_logged_in, is_eu, is_eu_country } = client;
+    const {
+        setAccountType,
+        enableCFDPasswordModal,
+        current_list,
+        is_mt5_trade_modal_visible,
+        togglePasswordManagerModal,
+        toggleMT5TradeModal,
+    } = modules.cfd;
+    const { platform } = common;
     const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
@@ -37,9 +46,7 @@ const TradingHub: React.FC = () => {
         type?: string;
     };
 
-    const openRealPasswordModal = (
-        account_type: TOpenAccountTransferMeta = { category: 'real', type: 'financial' }
-    ) => {
+    const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         setAccountType(account_type);
         enableCFDPasswordModal();
     };
@@ -91,15 +98,22 @@ const TradingHub: React.FC = () => {
             />
             {/* <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} /> */}
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
-            <CFDPasswordModal context={store} />
+            <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
-            <CFDResetPasswordModal context={store} />
+            <CFDResetPasswordModal context={store} platform={platform} />
             <CFDTopUpDemoModal context={store} />
-            <MT5TradeModal context={store} />
-            <CFDPasswordManagerModal context={store} />
+            <MT5TradeModal
+                context={store}
+                current_list={current_list}
+                is_open={is_mt5_trade_modal_visible}
+                onPasswordManager={togglePasswordManagerModal}
+                toggleModal={toggleMT5TradeModal}
+                is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+            />
+            <CFDPasswordManagerModal context={store} platform={platform} />
             <ResetTradingPasswordModal context={store} />
-            <CFDFinancialStpRealAccountSignup context={store} />
+            {/* <CFDFinancialStpRealAccountSignup context={store} /> */}
         </React.Fragment>
     );
 };

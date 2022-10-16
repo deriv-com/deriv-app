@@ -12,7 +12,6 @@ import {
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
     CFDTopUpDemoModal,
-    CFDFinancialStpRealAccountSignup,
     MT5TradeModal,
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
@@ -113,7 +112,6 @@ const TradingHub: React.FC = () => {
             />
             <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
             <ResetTradingPasswordModal context={store} />
-            {/* <CFDFinancialStpRealAccountSignup context={store} /> */}
         </React.Fragment>
     );
 };

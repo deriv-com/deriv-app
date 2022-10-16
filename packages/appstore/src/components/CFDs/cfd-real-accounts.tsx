@@ -23,7 +23,6 @@ const CFDRealAccounts = ({
     has_real_account,
 }: TCFDAccountsProps) => {
     const { client, modules, ui, common }: TRootStore = useStores();
-    const { openTopUpModal } = ui;
     const {
         setAccountType,
         setCurrentAccount,
@@ -71,17 +70,12 @@ const CFDRealAccounts = ({
         data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
         meta: { category: string; type?: string }
     ) => {
-        if (meta.category === 'real') {
-            if (data.platform === CFD_PLATFORMS.DXTRADE)
-                sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
-            else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+        if (data.platform === CFD_PLATFORMS.DXTRADE)
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+        else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
 
-            disableCFDPasswordModal();
-            history.push(routes.cashier_acc_transfer);
-        } else {
-            setCurrentAccount(data, meta);
-            openTopUpModal();
-        }
+        disableCFDPasswordModal();
+        history.push(routes.cashier_acc_transfer);
     };
 
     const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {

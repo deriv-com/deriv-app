@@ -64,6 +64,7 @@ const CFDTopUpDemoModal = ({
             <Modal
                 toggleModal={closeTopUpModal}
                 is_open={is_top_up_virtual_open}
+                context={context}
                 className='top-up-virtual'
                 title={localize('Fund top up')}
                 width='384px'

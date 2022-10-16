@@ -4,6 +4,7 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const available_demo_accounts: Array<TStaticAccountProps> = [
@@ -37,19 +38,28 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
     ];
 
-    const { client, modules, common }: TRootStore = useStores();
+    const { client, modules, common, ui }: TRootStore = useStores();
     const {
         standpoint,
         createCFDAccount,
+        setCurrentAccount,
         setMT5TradeAccount,
-        openAccountTransfer,
         toggleMT5TradeModal,
         enableCFDPasswordModal,
         openAccountNeededModal,
         has_maltainvest_account,
     } = modules.cfd;
     const { platform, setAppstorePlatform } = common;
+    const { openTopUpModal } = ui;
     const { is_eu } = client;
+
+    const openAccountTransfer = (
+        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
+        meta: { category: string; type?: string }
+    ) => {
+        setCurrentAccount(data, meta);
+        openTopUpModal();
+    };
 
     const openCFDAccount = (account_type: string) => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {

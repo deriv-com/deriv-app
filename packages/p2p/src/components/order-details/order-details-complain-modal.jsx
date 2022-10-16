@@ -126,8 +126,11 @@ const OrderDetailsComplainModal = ({
 
 OrderDetailsComplainModal.propTypes = {
     dispute_reason: PropTypes.string,
+    hideComplainOrderModal: PropTypes.func,
+    id: PropTypes.string,
     is_buy_order_for_user: PropTypes.bool,
     onCheckboxChange: PropTypes.func,
+    should_show_complain_modal: PropTypes.bool,
 };
 
 export default OrderDetailsComplainModal;

@@ -76,6 +76,7 @@ export { default as PageError } from './components/page-error';
 export { default as PageOverlay } from './components/page-overlay';
 export { default as PasswordInput } from './components/password-input';
 export { default as PasswordMeter } from './components/password-meter';
+export { default as PositionsDrawerCard } from './components/positions-drawer-card';
 export { default as Popover } from './components/popover';
 export { default as PopoverMobile } from './components/popover-mobile';
 export { default as Popup } from './components/popup';

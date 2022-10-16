@@ -1,1 +1,3 @@
-export default from './unsupported-contract-modal.jsx';
+import UnsupportedContractModal from './unsupported-contract-modal.jsx';
+
+export default UnsupportedContractModal;

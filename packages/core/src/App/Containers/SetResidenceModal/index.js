@@ -1,1 +1,3 @@
-export default from './set-residence-modal.jsx';
+import SetResidenceModal from './set-residence-modal.jsx';
+
+export default SetResidenceModal;

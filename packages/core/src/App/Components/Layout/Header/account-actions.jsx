@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext } from '@deriv/shared';
+import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -10,7 +10,11 @@ import { BinaryLink } from '../../Routes';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() =>
-    import(/* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx')
+    moduleLoader(() =>
+        import(
+            /* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx'
+        )
+    )
 );
 
 const AccountActions = React.memo(
@@ -135,11 +139,12 @@ const AccountActions = React.memo(
 AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
-    acc_switcher_disabled_message: PropTypes.any,
+    acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.any,
+    is_eu: PropTypes.bool,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
     country_standpoint: PropTypes.object,

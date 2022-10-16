@@ -1,1 +1,3 @@
-export default from './range-slider.jsx';
+import RangeSlider from './range-slider.jsx';
+
+export default RangeSlider;

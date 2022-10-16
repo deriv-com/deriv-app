@@ -6,11 +6,13 @@ const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?
 
 const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
     const messages = [];
+    let result = i18n_marker.exec(input);
 
-    while ((result = i18n_marker.exec(input)) !== null) {
+    while (result !== null) {
         const extracted = result[3];
         // Replace escape characters.
         messages.push(extracted.replace(/\\/g, ''));
+        result = i18n_marker.exec(input);
     }
 
     return messages;
@@ -43,6 +45,8 @@ const getTranslatableFiles = () => {
         'cfd',
         'trader',
         'bot-skeleton',
+        'reports',
+        'shared',
     ];
     const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/xml/*.xml'];
     const file_paths = [];

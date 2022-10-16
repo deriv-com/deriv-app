@@ -25,18 +25,22 @@ storiesOf('RealWalletCard', module)
                         is_selected={boolean('is_selected', false)}
                         is_temporarily_unavailable={boolean('is_temporarily_unavailable', false)}
                         onClickDeposit={() => {
+                            /* eslint-disable no-console */
                             console.log('Deposit clicked!');
                         }}
                         onClickSettings={() => {
+                            /* eslint-disable no-console */
                             console.log('Settings clicked!');
                         }}
                         onClickTransactions={() => {
+                            /* eslint-disable no-console */
                             console.log('Transactions clicked!');
                         }}
                         onClickTransfer={() => {
                             console.log('Transfer clicked!');
                         }}
                         onClickWithdrawal={() => {
+                            /* eslint-disable no-console */
                             console.log('Withdrawal clicked!');
                         }}
                         wallet_name='Credit/Debit USD Wallet'

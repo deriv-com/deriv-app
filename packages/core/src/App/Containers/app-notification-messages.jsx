@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
@@ -29,7 +29,7 @@ const NotificationsContent = ({
     React.useEffect(() => {
         if ((has_iom_account || has_malta_account) && is_logged_in) {
             const get_close_mx_mlt_notification = notifications.find(item => item.key === 'close_mx_mlt_account');
-            const is_dtrader = getPathname() === 'DTrader';
+            const is_dtrader = getPathname() === getPlatformSettings('trader').name;
             const malta_account = landing_company_shortcode === 'malta';
             const iom_account = landing_company_shortcode === 'iom';
             if ((!is_dtrader && get_close_mx_mlt_notification) || malta_account || iom_account) {
@@ -107,9 +107,23 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'trustpilot',
                   'close_uk_account',
-              ].includes(message.key)
+                  'document_needs_action',
+                  'identity',
+                  'poi_name_mismatch',
+                  'poi_expired',
+                  'poi_failed',
+                  'poi_verified',
+                  'poa_expired',
+                  'resticted_mt5_with_pending_poa',
+                  'poa_verified',
+                  'poa_failed',
+                  'resticted_mt5_with_failed_poa',
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
-        return is_not_marked_notification && is_non_hidden_notification;
+
+        const is_only_for_p2p_notification =
+            window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
+        return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
@@ -137,7 +151,14 @@ const AppNotificationMessages = ({
 };
 
 AppNotificationMessages.propTypes = {
+    has_iom_account: PropTypes.bool,
+    has_malta_account: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_mt5: PropTypes.bool,
+    is_notification_loaded: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     marked_notifications: PropTypes.array,
+    markNotificationMessage: PropTypes.func,
     notification_messages: PropTypes.arrayOf(
         PropTypes.shape({
             closeOnClick: PropTypes.func,
@@ -159,6 +180,8 @@ AppNotificationMessages.propTypes = {
         })
     ),
     removeNotificationMessage: PropTypes.func,
+    should_show_popups: PropTypes.bool,
+    stopNotificationLoading: PropTypes.func,
 };
 
 export default connect(({ client, notifications }) => ({

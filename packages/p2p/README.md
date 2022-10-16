@@ -1,85 +1,62 @@
-<h1 align="center">
-  @deriv/p2p
-</h1>
+# `@deriv/p2p`
 
-**In this document**
+P2P platform serves as the facilitator of the trade by providing a platform for buyers and sellers to broadcast their offers. At the same time, the escrow services of online digital asset ensure the safety and timely delivery of digital asset during trade execution.
+This repository is a workspace of [deriv-app](../../README.md) monorepo and is responsible for components and logics of [p2p](https://app.deriv.com/cashier/p2p) from cashier menu in app.deriv.com .
 
--   [Pre-installation](#pre-installation)
--   [Editor helpers](#editor-helpers)
--   [Quick start](#quick-start)
+> **Note**: to access the p2p section you need to login and switch to your real account.
 
-## Pre-installation
-
--   node
--   npm
-
-## Editor helpers
-
--   Prettier setup in your editor https://prettier.io/
--   Stylelint setup in your editor https://stylelint.io/
--   Eslint setup in your editor https://eslint.org/
-
-## Quick start
-
-1.  **Install your dependencies:**
-
-    ```sh
-    npm ci
-    ```
-
-2.  **To build publish file:**
-
-    ```sh
-    npm run build
-    ```
-
-3.  **Libary usage:**
-
-    ```js
-    import P2P from '@deriv/p2p';
-
-    <P2P />;
-    ```
-
-4.  **File Structure**
+**these are the routes used in app.deriv.com for this workspace:**
 
 ```
+    cashier_p2p: '/cashier/p2p',
+    cashier_p2p_verification: '/cashier/p2p/verification',
+```
+
+## How to Install the workspace
+
+You need to follow the instructions [here](../../README.md).
+
+## How To Work With This workspace
+
+To run and work on this workspace you need to run `npm run serve core` , `npm run serve cashier`, and `npm run serve p2p`.
+Webpack will watch changes in `p2p` and `cashier` so that if you made any changes in them, it will automatically rebuild `p2p` and `cashier` and recompile `core`.
+
+**Libary usage:**
+
+```
+import P2P from '@deriv/p2p';
+
+<P2P />;
+```
+
+## Folder Structure
+
+```
+crowdin
+    ├── message.json
+scripts
+    ├── extract-string.js
+    ├── extract-translations.js
+    ├── update-translations.sh
 src
-    ├── components/
-    │   ├── ads/
-    │   │   ├── ads.js
-    │   │   ├── ads.scss
-    │   ├── orders/
-    │   │   ├── orders.js
-    │   │   ├── orders.scss
-    │   ├── ...
-    │   └── app.jsx
-    ├── utils/
-    │   ├── timer.js // TODO
-    │   ├── ...
-    ├── index.js
+    ├── assets
+    ├── components
+    ├── constants
+    ├── stores
+    ├── translations
+    ├── utils
+    │   ├── validations.js
+    │   ├── websocket.js
 
-index.js // publish file
-webpack.config.js
-package.json
 ```
 
-5. **Translations**
+**components:** This folder contains all the reusable components that we need for developing this workspace.
+We have a separate folder for each component.
 
-Update translations in Crowdin and get new translations from Crowdin
+**constants:** We add the static data structures needed for the workspace here.
 
-Requirements:
+**stores:** We use Mobx as state management tool, and this is the place for putting the relevant store files.
 
--   Crowdin CLI: https://support.crowdin.com/cli-tool/#installation
--   `CROWDIN_API_KEY` environment variables to your `~/.bash_profile`
+**utils:** We place all the common and helper methods which are required for the workspace in this folder.
 
-1. Run the script below
-
-```sh
-    sh scripts/update-translations.sh
-```
-
--   Extracts new translations strings and pushes them to Crowdin
--   Fetches new translations strings from Crowdin
-
-2.  Make a PR from the newly created branch `p2p_translations` to dev
+<!-- TODO: explain the purpose of crowdin folder -->

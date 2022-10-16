@@ -47,6 +47,7 @@ const ChartSettings = ({ is_countdown_visible, is_dark_mode, setCountdown }) => 
 ChartSettings.propTypes = {
     is_countdown_visible: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
+    setCountdown: PropTypes.func,
 };
 
 export default connect(({ ui }) => ({

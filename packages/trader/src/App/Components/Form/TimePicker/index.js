@@ -1,1 +1,3 @@
-export default from './time-picker.jsx';
+import TimePicker from './time-picker.jsx';
+
+export default TimePicker;

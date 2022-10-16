@@ -8,8 +8,8 @@ import SubHeader from './mobile-drawer-subheader.jsx';
 import Item from './mobile-drawer-item.jsx';
 import SubMenu from './mobile-drawer-submenu.jsx';
 import SubMenuSection from './mobile-drawer-submenu-section.jsx';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const MobileDrawer = ({
     className,
@@ -93,6 +93,7 @@ MobileDrawer.propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggle: PropTypes.func,
     width: PropTypes.string,
+    livechat: PropTypes.object,
 };
 
 export default MobileDrawer;

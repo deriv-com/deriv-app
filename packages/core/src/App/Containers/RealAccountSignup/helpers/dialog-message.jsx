@@ -92,7 +92,9 @@ export const DialogMessage = ({
 };
 
 DialogMessage.propTypes = {
+    country_standpoint: PropTypes.object,
     currency: PropTypes.string,
+    is_fully_authenticated: PropTypes.bool,
     is_isle_of_man_residence: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     status: PropTypes.number,

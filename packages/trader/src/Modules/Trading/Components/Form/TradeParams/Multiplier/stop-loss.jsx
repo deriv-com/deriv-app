@@ -64,6 +64,7 @@ const StopLoss = ({
 };
 
 StopLoss.propTypes = {
+    addToast: PropTypes.func,
     amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
     current_focus: PropTypes.string,
@@ -71,6 +72,7 @@ StopLoss.propTypes = {
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeMultiple: PropTypes.func,
+    removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     stop_loss: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,

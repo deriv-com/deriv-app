@@ -1,0 +1,50 @@
+.payment-agent-transfer-form {
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+    &__container {
+        padding: 0 15.6rem;
+        display: block !important;
+    }
+    &__input {
+        margin-bottom: 5.1rem;
+
+        &-area {
+            margin-bottom: 1rem;
+
+            .dc-input__counter {
+                top: 9.7rem;
+                right: 0;
+            }
+        }
+    }
+    @include mobile {
+        &__container {
+            width: calc(100% - 3.2rem);
+            margin: 0 1.6rem;
+            padding: 2.4rem 0 0;
+
+            & .dc-input__field[type='textarea'] {
+                height: 11.9rem;
+            }
+        }
+        &__input {
+            &-container {
+                grid-template-columns: 1fr;
+            }
+            &-area {
+                margin-bottom: 3.2rem;
+
+                .dc-input__counter {
+                    top: 11.7rem;
+                }
+            }
+            &:not(:first-child) {
+                margin-left: unset;
+                margin-bottom: 5.3rem;
+            }
+        }
+        &__submit-button {
+            width: auto;
+            padding: 0 1.25rem;
+        }
+    }
+}

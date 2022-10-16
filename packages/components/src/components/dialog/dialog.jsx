@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Button from '../button/button.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
+import Button from '../button/button';
 import Text from '../text';
 import { useOnClickOutside } from '../../hooks';
 
@@ -108,6 +108,7 @@ const Dialog = ({
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                     })}
+                    role='dialog'
                     ref={wrapper_ref}
                 >
                     {(title || has_close_icon) && (

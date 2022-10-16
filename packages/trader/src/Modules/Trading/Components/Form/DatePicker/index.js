@@ -1,1 +1,3 @@
-export default from './trading-date-picker.jsx';
+import TradingDatePicker from './trading-date-picker.jsx';
+
+export default TradingDatePicker;

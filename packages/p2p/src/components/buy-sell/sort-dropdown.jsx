@@ -24,8 +24,12 @@ const SortDropdown = () => {
     }
 
     return (
-        <div className='sort-dropdown--sort' onClick={() => buy_sell_store.setIsSortDropdownOpen(true)}>
-            <Icon icon='IcCashierSort' size={16} />
+        <div
+            data-testid='sort-div'
+            className='sort-dropdown--sort'
+            onClick={() => buy_sell_store.setIsSortDropdownOpen(true)}
+        >
+            <Icon icon='IcCashierSort' size={16} data_testid='mobile-view-sort-icon' />
         </div>
     );
 };

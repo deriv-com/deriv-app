@@ -197,6 +197,7 @@ UnlinkPassword.propTypes = {
     logoutClient: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
+    social_identity_provider: PropTypes.string,
 };
 
 const UnlinkPasswordModal = ({
@@ -236,6 +237,7 @@ UnlinkPasswordModal.propTypes = {
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
+    social_identity_provider: PropTypes.string,
     toggleResetPasswordModal: PropTypes.func,
     reset_verification_code: PropTypes.string,
     unlink_verification_code: PropTypes.string,

@@ -1,0 +1,159 @@
+/** @define mobile-widget */
+.mobile-widget {
+    border-radius: 4px;
+    padding: 1rem 0.8rem;
+    height: 4rem;
+    background-color: var(--general-main-1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0.8rem;
+    flex: 1;
+
+    &__amount {
+        @include typeface(--paragraph-center-bold-black);
+        color: var(--text-prominent);
+    }
+    &__duration {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+    }
+    &__type {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-less-prominent);
+    }
+    &__item {
+        color: var(--text-prominent);
+        line-height: 1.4rem;
+
+        &-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    }
+    &__multiplier {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+
+        &-amount {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.8rem 0;
+
+            .mobile-widget__item-label {
+                margin-right: 0.4rem;
+            }
+        }
+        &-expiration {
+            min-width: 7.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        &-options {
+            flex: none;
+            flex-direction: column;
+            padding: 0.6rem 0.8rem;
+            margin-bottom: 0.6rem;
+            margin-left: 0.8rem;
+            justify-content: center;
+            min-width: 8.8rem;
+
+            .mobile-widget__item-label {
+                color: var(--text-general);
+            }
+        }
+        &-risk-management {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            margin-bottom: 0.6rem;
+            color: var(--text-general);
+            padding: 0.4rem 0.8rem;
+
+            .mobile-widget__item {
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .mobile-widget__item-label {
+                color: var(--text-general);
+            }
+            .mobile-widget__item-label,
+            .mobile-widget__item-value {
+                font-size: 1.4rem;
+                line-height: 1.8rem;
+            }
+        }
+        &-trade-info {
+            display: flex;
+            justify-content: space-evenly;
+            background: var(--general-main-1);
+            flex: 2;
+            margin-left: 0.8rem;
+
+            &--no-stop-out {
+                justify-content: flex-end;
+                margin-right: 1.6rem;
+            }
+            &-tooltip-text {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+
+                span:before {
+                    content: ': ';
+                }
+                &:first-child {
+                    margin-right: 0.8rem;
+                }
+                @media only screen and (max-width: 340px) {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+    &__wrapper {
+        display: flex;
+
+        .mobile-widget:last-child:not(:only-child) {
+            margin-left: 0.8rem;
+            flex: unset;
+        }
+    }
+}
+
+/** @define fieldset-minimized */
+.fieldset-minimized {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5em;
+    white-space: pre-line;
+
+    &__amount {
+        grid-area: c;
+    }
+    &__barrier1 {
+        grid-area: b;
+    }
+    &__barrier2 {
+        grid-area: d;
+    }
+    &__currency:before {
+        margin-right: 0.1em;
+        position: static;
+        display: inline;
+        font-size: 1em;
+    }
+    &__basis {
+        font-weight: bold;
+        color: var(--text-prominent);
+    }
+}

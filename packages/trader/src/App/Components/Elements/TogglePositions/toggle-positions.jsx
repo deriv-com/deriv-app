@@ -22,8 +22,10 @@ const TogglePositions = ({ positions_count, is_open, togglePositions }) => {
 };
 
 TogglePositions.propTypes = {
+    is_open: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     positions_count: PropTypes.number,
+    togglePositions: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
 };
 

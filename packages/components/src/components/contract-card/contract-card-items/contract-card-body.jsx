@@ -299,6 +299,7 @@ ContractCardBody.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
+    has_progress_slider: PropTypes.bool,
 };
 
 export default ContractCardBody;

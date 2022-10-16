@@ -5,12 +5,12 @@ import { connect } from 'Stores/connect';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 
-export const DigitsWidget = connect(({ modules }) => ({
-    contract_info: modules.contract_replay.contract_store.contract_info,
-    digits_info: modules.contract_replay.contract_store.digits_info,
-    display_status: modules.contract_replay.contract_store.display_status,
-    is_digit_contract: modules.contract_replay.contract_store.is_digit_contract,
-    is_ended: modules.contract_replay.contract_store.is_ended,
+export const DigitsWidget = connect(({ contract_replay }) => ({
+    contract_info: contract_replay.contract_store.contract_info,
+    digits_info: contract_replay.contract_store.digits_info,
+    display_status: contract_replay.contract_store.display_status,
+    is_digit_contract: contract_replay.contract_store.is_digit_contract,
+    is_ended: contract_replay.contract_store.is_ended,
 }))(({ is_digit_contract, is_ended, contract_info, digits_info, display_status }) => (
     <Digits
         is_digit_contract={is_digit_contract}
@@ -21,10 +21,10 @@ export const DigitsWidget = connect(({ modules }) => ({
     />
 ));
 
-export const InfoBoxWidget = connect(({ modules }) => ({
-    contract_info: modules.contract_replay.contract_store.contract_info,
-    error_message: modules.contract_replay.error_message,
-    removeError: modules.contract_replay.removeErrorMessage,
+export const InfoBoxWidget = connect(({ contract_replay }) => ({
+    contract_info: contract_replay.contract_store.contract_info,
+    error_message: contract_replay.error_message,
+    removeError: contract_replay.removeErrorMessage,
 }))(({ contract_info, error_message, removeError }) => (
     <InfoBox contract_info={contract_info} error_message={error_message} removeError={removeError} />
 ));

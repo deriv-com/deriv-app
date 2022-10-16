@@ -25,7 +25,7 @@ export const requestWS = async request => {
     // Added a check to proceed only if ws is available
     if (ws) {
         await populateInitialResponses();
-        return ws.send(request);
+        return ws.authorized.send(request);
     }
     return null;
 };

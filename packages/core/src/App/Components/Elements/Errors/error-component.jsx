@@ -86,7 +86,20 @@ const ErrorComponent = ({
 };
 
 ErrorComponent.propTypes = {
+    can_have_mlt_account: PropTypes.bool,
+    country_standpoint: PropTypes.object,
+    has_malta_account: PropTypes.bool,
+    header: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+    redirectOnClick: PropTypes.func,
+    redirect_label: PropTypes.string,
+    setError: PropTypes.func,
+    should_clear_error_on_click: PropTypes.bool,
+    showNotificationMessageByKey: PropTypes.func,
+    showCloseMxMltAccountPopup: PropTypes.func,
+    removeNotificationMessageByKey: PropTypes.func,
+    redirect_to: PropTypes.string,
+    should_show_refresh: PropTypes.bool,
     type: PropTypes.string,
 };
 

@@ -40,7 +40,7 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
             {is_crypto_multiplier && (
                 <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : null}>
                     <div className='mobile-widget__multiplier-expiration'>
-                        <Text size='xxs'>{localize('Expires in')}</Text>
+                        <Text size='xxs'>{localize('Expires on')}</Text>
                         <MultipliersExpiration is_text_only text_size='xxs' />
                     </div>
                     <MultipliersExpirationModal

@@ -44,6 +44,8 @@ const LoggedInPreloader = ({ is_mobile }) => (
 
 AccountsInfoLoader.propTypes = {
     speed: PropTypes.number,
+    is_mobile: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
 };
 
 export { AccountsInfoLoader };

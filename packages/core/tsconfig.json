@@ -1,0 +1,22 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "_common/*": ["src/_common/*"],
+            "App/*": ["src/App/*"],
+            "Assets/*": ["src/Assets/*"],
+            "Components/*": ["src/Components/*"],
+            "Constants/*": ["src/Constants/*"],
+            "Modules/*": ["src/Modules/*"],
+            "Services/*": ["src/Services/*"],
+            "Stores/*": ["src/Stores/*"],
+            "Templates/*": ["src/templates/*"],
+            "Utils/*": ["src/utils/*"],
+            "@deriv/*": ["../*/src"]
+        },
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "experimentalDecorators": true
+    },
+    "include": ["src"]
+}

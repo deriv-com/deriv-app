@@ -39,6 +39,7 @@ const NetworkStatus = ({ is_mobile, status }) => {
 };
 
 NetworkStatus.propTypes = {
+    is_mobile: PropTypes.bool,
     status: PropTypes.object,
 };
 

@@ -22,7 +22,7 @@ const MultipliersExpirationModal = ({ is_open, enableApp, disableApp, toggleModa
                     <div style={{ minHeight: '120px', padding: '1.6rem' }}>
                         <Text size='xs' color='general'>
                             <Localize
-                                i18n_default_text='Your contract will be closed automatically at the next available asset price when the duration exceeds <0></0>.'
+                                i18n_default_text='Your contract will be closed automatically at the next available asset price on <0></0>.'
                                 components={[<Expiration key={0} is_text_only text_size='xs' />]}
                             />
                         </Text>

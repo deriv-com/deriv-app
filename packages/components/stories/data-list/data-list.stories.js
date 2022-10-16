@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import DataList from 'Components/data-list';
 import 'Components/data-list/data-list.scss';
 import notes from './README.md';
@@ -10,8 +10,8 @@ const mock_data = [];
 for (let i = 1; i < 30; i++)
     mock_data.push({
         id: i,
-        name: 'Test name ' + i,
-        family: 'Test family ' + i,
+        name: `Test name ${i}`,
+        family: `Test family ${i}`,
     });
 
 const mock_columns = [
@@ -48,10 +48,14 @@ const rowRenderer = ({ row }) => {
         </>
     );
 };
-const handleRowAction = row_obj => console.log(row_obj);
+const handleRowAction = row_obj => {
+    /* eslint-disable no-console */
+    console.log(row_obj);
+};
 
 const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
+    /* eslint-disable no-console */
     console.log(scrollTop, scrollHeight, clientHeight);
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Popover from '../../src/components/popover/popover';
+import Popover from 'Components/popover';
 import notes from './README.md';
 
 const portal_container = 'root';

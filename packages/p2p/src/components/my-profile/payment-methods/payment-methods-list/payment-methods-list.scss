@@ -12,7 +12,13 @@
 
         &--footer {
             bottom: 0;
-            position: fixed;
+            width: 100%;
+            background-color: var(--general-main-1);
+        }
+
+        &-wrapper {
+            display: flex;
+            word-break: break-all;
         }
     }
     &__button {
@@ -50,10 +56,12 @@
         &-body {
             display: flex;
             flex-wrap: wrap;
+            margin-bottom: 5rem;
 
             .payment-method-card {
                 &--large {
                     margin-right: 1.6rem;
+                    margin-bottom: unset;
                 }
             }
         }
@@ -61,6 +69,15 @@
         &-horizontal {
             display: flex;
             max-width: 96vw !important;
+            margin-bottom: 3rem;
+
+            // select the first .payment-method-card only and unset its margin-left
+            & > .payment-method-card {
+                margin-left: unset;
+            }
+            & > .payment-method-card ~ .payment-method-card {
+                margin-left: 1rem;
+            }
         }
     }
 }

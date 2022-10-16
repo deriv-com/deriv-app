@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, getLegalEntityName } from '@deriv/shared';
 import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
 const MLTRegulatoryInformation = () => (
@@ -11,7 +11,7 @@ const MLTRegulatoryInformation = () => (
         </div>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the EU are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>) and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
+                i18n_default_text='Synthetic indices in the EU are offered by {{legal_entity_name}}, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>) and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
                     <StaticUrl
                         href='/regulatory/Deriv_(Europe)_Limited.pdf'
@@ -32,6 +32,9 @@ const MLTRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                 ]}
+                values={{
+                    legal_entity_name: getLegalEntityName('malta'),
+                }}
             />
         </p>
     </div>
@@ -41,7 +44,7 @@ const MXRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Virtual events based bets in the UK and the Isle of Man are offered by Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
+                i18n_default_text='Virtual events based bets in the UK and the Isle of Man are offered by {{legal_entity_name}}, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
                 components={[
                     <a
                         href='https://www.gamblingcommission.gov.uk/public-register/business/detail/39172'
@@ -58,6 +61,9 @@ const MXRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                 ]}
+                values={{
+                    legal_entity_name: getLegalEntityName('mx'),
+                }}
             />
         </p>
     </div>
@@ -67,7 +73,7 @@ const MFRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Financial products in the EU are offered by Deriv Investments (Europe) Limited, licensed as a Category 3 Investment Services provider by the Malta Financial Services Authority (<0>licence no. IS/70156</0>).'
+                i18n_default_text='Financial products in the EU are offered by {{legal_entity_name}}, licensed as a Category 3 Investment Services provider by the Malta Financial Services Authority (<0>Licence no. IS/70156</0>).'
                 components={[
                     <a
                         href={`https://${deriv_urls.DERIV_HOST_NAME}/regulatory/Deriv_Investments_(Europe)_Limited.pdf`}
@@ -77,6 +83,9 @@ const MFRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                 ]}
+                values={{
+                    legal_entity_name: getLegalEntityName('maltainvest'),
+                }}
             />
         </p>
     </div>

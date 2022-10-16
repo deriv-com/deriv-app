@@ -1,1 +1,3 @@
-export default from './close-uk-account-modal.jsx';
+import CloseUKAccountModal from './close-uk-account-modal.jsx';
+
+export default CloseUKAccountModal;

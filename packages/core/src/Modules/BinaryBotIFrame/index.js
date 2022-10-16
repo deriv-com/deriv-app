@@ -1,1 +1,3 @@
-export default from './BinaryBotIFrame.jsx';
+import BinaryBotIFrame from './BinaryBotIFrame.jsx';
+
+export default BinaryBotIFrame;

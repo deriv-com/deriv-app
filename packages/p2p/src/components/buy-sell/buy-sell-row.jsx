@@ -8,11 +8,13 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
+import StarRating from 'Components/star-rating';
+import TradeBadge from 'Components/trade-badge';
+import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
-import TradeBadge from '../trade-badge';
 
 const BuySellRow = ({ row: advert }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store } = useStores();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -41,11 +43,21 @@ const BuySellRow = ({ row: advert }) => {
         min_order_amount_limit_display,
         payment_method_names,
         price_display,
+        rate_type,
+        rate,
     } = advert;
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const { name: advertiser_name } = advert.advertiser_details;
+    const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
+    const rating_average_decimal = rating_average ? Number(rating_average.toFixed(1)) : null;
+    const { display_effective_rate } = generateEffectiveRate({
+        price: price_display,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate: floating_rate_store.exchange_rate,
+    });
 
     if (isMobile()) {
         return (
@@ -72,14 +84,25 @@ const BuySellRow = ({ row: advert }) => {
                             </Text>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
-                        {advert.advertiser_details.total_completion_rate ? (
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize
-                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
-                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                        <div className='buy-sell-row__rating'>
+                            {!!rating_count && !!rating_average ? (
+                                <StarRating
+                                    empty_star_className='buy-sell-row__rating--star'
+                                    empty_star_icon='IcEmptyStar'
+                                    full_star_className='buy-sell-row__rating--star'
+                                    full_star_icon='IcFullStar'
+                                    initial_value={rating_average_decimal}
+                                    is_readonly
+                                    number_of_stars={5}
+                                    should_allow_hover_effect={false}
+                                    star_size={14}
                                 />
-                            </Text>
-                        ) : null}
+                            ) : (
+                                <Text color='less-prominent' size='xxs'>
+                                    <Localize i18n_default_text='Not rated yet' />
+                                </Text>
+                            )}
+                        </div>
                     </div>
                     <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
                 </div>
@@ -92,7 +115,7 @@ const BuySellRow = ({ row: advert }) => {
                             />
                         </Text>
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
-                            {price_display} {local_currency}
+                            {display_effective_rate} {local_currency}
                         </Text>
                         <Text as='div' color='less-prominent' line_height='m' size='xxs'>
                             <Localize
@@ -161,14 +184,25 @@ const BuySellRow = ({ row: advert }) => {
                             </div>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
                         </div>
-                        {!!advert.advertiser_details.total_completion_rate && (
-                            <Text color='less-prominent' size='xxs'>
-                                <Localize
-                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
-                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                        <div className='buy-sell-row__rating'>
+                            {!!rating_count && !!rating_average ? (
+                                <StarRating
+                                    empty_star_className='buy-sell-row__rating--star'
+                                    empty_star_icon='IcEmptyStar'
+                                    full_star_className='buy-sell-row__rating--star'
+                                    full_star_icon='IcFullStar'
+                                    initial_value={rating_average_decimal}
+                                    is_readonly
+                                    number_of_stars={5}
+                                    should_allow_hover_effect={false}
+                                    star_size={14}
                                 />
-                            </Text>
-                        )}
+                            ) : (
+                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                    <Localize i18n_default_text='Not rated yet' />
+                                </Text>
+                            )}
+                        </div>
                     </div>
                 </div>
             </Table.Cell>
@@ -177,7 +211,7 @@ const BuySellRow = ({ row: advert }) => {
             </Table.Cell>
             <Table.Cell>
                 <Text color='profit-success' size='xs' line-height='m' weight='bold'>
-                    {price_display} {local_currency}
+                    {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>
@@ -224,6 +258,7 @@ const BuySellRow = ({ row: advert }) => {
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
+    row: PropTypes.object,
     setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };

@@ -1,16 +1,18 @@
 import { action, computed, observable, reaction } from 'mobx';
-import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
+    @observable form_error_code = '';
     @observable has_more_items_to_load = false;
     @observable has_payment_methods = false;
     @observable is_filter_modal_loading = false;
@@ -32,6 +34,7 @@ export default class BuySellStore extends BaseStore {
     @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
     @observable show_filter_payment_methods = false;
+    @observable show_rate_change_popup = false;
     @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
@@ -44,10 +47,6 @@ export default class BuySellStore extends BaseStore {
     };
     filter_payment_methods = [];
     payment_method_ids = [];
-    sort_list = [
-        { text: localize('Exchange rate (Default)'), value: 'rate' },
-        { text: localize('Completion rate'), value: 'completion' },
-    ];
 
     @computed
     get account_currency() {
@@ -90,6 +89,10 @@ export default class BuySellStore extends BaseStore {
 
     @computed
     get rendered_items() {
+        const filtered_items = this.items.filter(item =>
+            this.table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
+        );
+
         if (isMobile()) {
             if (this.search_term) {
                 if (this.search_results.length) {
@@ -100,7 +103,7 @@ export default class BuySellStore extends BaseStore {
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
-            return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+            return [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
         }
 
         if (this.search_term) {
@@ -109,13 +112,32 @@ export default class BuySellStore extends BaseStore {
             }
             return [{ id: 'NO_MATCH_ROW' }];
         }
-        return this.items;
+
+        return filtered_items;
     }
 
     @computed
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get sort_list() {
+        return [
+            { text: localize('Exchange rate (Default)'), value: 'rate' },
+            { text: localize('User rating'), value: 'rating' },
+        ];
+    }
+
+    @action.bound
+    fetchAdvertiserAdverts() {
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
+        if (!this.is_buy) {
+            this.root_store.my_profile_store.getAdvertiserPaymentMethods();
+        }
     }
 
     @action.bound
@@ -155,7 +177,7 @@ export default class BuySellStore extends BaseStore {
 
         this.form_props.setErrorMessage(null);
 
-        const order = await requestWS({
+        const payload = {
             p2p_order_create: 1,
             advert_id: this.advert.id,
             amount: values.amount,
@@ -167,11 +189,20 @@ export default class BuySellStore extends BaseStore {
                       contact_info: values.contact_info,
                   }
                 : {}),
-        });
+        };
+        if (values.rate !== null) {
+            payload.rate = values.rate;
+        }
+
+        const order = await requestWS({ ...payload });
 
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
         } else {
+            this.form_props.setErrorMessage(null);
+            this.setShowRateChangePopup(false);
+            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();
@@ -331,6 +362,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setFormErrorCode(form_error_code) {
+        this.form_error_code = form_error_code;
+    }
+
+    @action.bound
     setFormProps(props) {
         this.form_props = props;
     }
@@ -381,11 +417,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setInitialReceiveAmount() {
-        this.receive_amount = getRoundedNumber(
-            this.advert.min_order_amount_limit * this.advert.price,
-            this.advert.local_currency
-        );
+    setInitialReceiveAmount(initial_price) {
+        this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
     }
 
     @action.bound
@@ -426,6 +459,9 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setShouldShowPopup(should_show_popup) {
         this.should_show_popup = should_show_popup;
+        if (!this.should_show_popup) {
+            this.fetchAdvertiserAdverts();
+        }
     }
 
     @action.bound
@@ -484,6 +520,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setShowRateChangePopup(show_rate_change_popup) {
+        this.show_rate_change_popup = show_rate_change_popup;
+    }
+
+    @action.bound
     showVerification() {
         this.setShouldShowVerification(true);
     }
@@ -495,6 +536,7 @@ export default class BuySellStore extends BaseStore {
                 v => !!v,
                 v => v >= this.advert.min_order_amount_limit,
                 v => v <= this.advert.max_order_amount_limit,
+                v => (this.root_store.buy_sell_store.is_buy_advert ? true : v <= this.root_store.general_store.balance),
                 v => countDecimalPlaces(v) <= getDecimalPlaces(this.account_currency),
             ],
         };
@@ -518,6 +560,10 @@ export default class BuySellStore extends BaseStore {
             localize('Maximum is {{value}} {{currency}}', {
                 currency: this.account_currency,
                 value: display_max_amount,
+            }),
+            localize('Maximum is {{value}} {{currency}}', {
+                currency: this.account_currency,
+                value: formatMoney(this.account_currency, this.root_store.general_store.balance, true),
             }),
             localize('Enter a valid amount'),
         ];

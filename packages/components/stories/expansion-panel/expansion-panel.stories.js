@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
 import ExpansionPanel from 'Components/expansion-panel';
 import notes from './README.md';

@@ -37,6 +37,7 @@ const Bounce = ({ children, className, is_visible, keyname }) =>
 
 Bounce.propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
     is_visible: PropTypes.bool,
     keyname: PropTypes.string,
 };

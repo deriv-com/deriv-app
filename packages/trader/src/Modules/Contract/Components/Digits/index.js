@@ -1,1 +1,3 @@
-export default from './digits.jsx';
+import Digits from './digits.jsx';
+
+export default Digits;

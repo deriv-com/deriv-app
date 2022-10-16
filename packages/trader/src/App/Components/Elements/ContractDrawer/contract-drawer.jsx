@@ -4,12 +4,17 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { isUserSold, isMobile } from '@deriv/shared';
+import {
+    isUserSold,
+    isMobile,
+    getDurationPeriod,
+    getDurationTime,
+    getDurationUnitText,
+    getEndTime,
+} from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { connect } from 'Stores/connect';
-import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
-import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 
@@ -162,16 +167,21 @@ const ContractDrawer = ({
 
 ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
+    contract_update_history: PropTypes.array,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
     onClickSell: PropTypes.func,
+    server_time: PropTypes.object,
     status: PropTypes.string,
+    toggleHistoryTab: PropTypes.func,
 };
 
 export default withRouter(

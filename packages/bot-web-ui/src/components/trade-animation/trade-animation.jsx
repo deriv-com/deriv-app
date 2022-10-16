@@ -84,8 +84,10 @@ const TradeAnimation = ({
     onStopButtonClick,
     info_direction,
     toggleAnimationInfoModal,
+    cashier_validation,
 }) => {
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
+    const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
     React.useEffect(() => {
         if (is_button_disabled) {
             setTimeout(() => {
@@ -118,7 +120,7 @@ const TradeAnimation = ({
         <div className={classNames('animation__wrapper', className)}>
             {info_direction === 'left' && <AnimationInfo toggleAnimationInfoModal={toggleAnimationInfoModal} />}
             <Button
-                is_disabled={is_stop_button_disabled || is_button_disabled}
+                is_disabled={(is_stop_button_disabled || is_button_disabled) && !is_unavailable_for_payment_agent}
                 className='animation__button'
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
@@ -132,7 +134,7 @@ const TradeAnimation = ({
                     onRunButtonClick();
                 }}
                 has_effect
-                {...(is_stop_button_visible ? { primary: true } : { green: true })}
+                {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
             />
             <div
                 className={classNames('animation__container', className, {
@@ -176,7 +178,7 @@ TradeAnimation.propTypes = {
     should_show_overlay: PropTypes.bool,
 };
 
-export default connect(({ summary_card, run_panel, toolbar, ui }) => ({
+export default connect(({ summary_card, run_panel, toolbar, ui, client }) => ({
     contract_stage: run_panel.contract_stage,
     is_animation_info_modal_open: toolbar.is_animation_info_modal_open,
     is_contract_completed: summary_card.is_contract_completed,
@@ -188,4 +190,5 @@ export default connect(({ summary_card, run_panel, toolbar, ui }) => ({
     profit: summary_card.profit,
     should_show_overlay: run_panel.should_show_overlay,
     toggleAnimationInfoModal: toolbar.toggleAnimationInfoModal,
+    cashier_validation: client.account_status.cashier_validation,
 }))(TradeAnimation);

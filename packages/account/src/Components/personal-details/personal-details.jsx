@@ -20,7 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
+import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -172,6 +172,13 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
+                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                    <Localize
+                                        i18n_default_text={
+                                            'Any information you provide is confidential and will be used for verification purposes only.'
+                                        }
+                                    />
+                                </Text>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>
@@ -545,14 +552,17 @@ const PersonalDetails = ({
                                                         }
                                                         value={values.tax_identification_confirm}
                                                         label={localize(
-                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
+                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                                                            {
+                                                                legal_entity_name: getLegalEntityName('maltainvest'),
+                                                            }
                                                         )}
                                                         renderlabel={title => (
                                                             <Text size='xs' line_height='s'>
                                                                 {title}
                                                             </Text>
                                                         )}
-                                                        withTabIndex='0'
+                                                        withTabIndex={0}
                                                         data-testid='tax_identification_confirm'
                                                     />
                                                 )}

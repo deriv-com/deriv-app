@@ -66,6 +66,9 @@ LinearProgressContainer.propTypes = {
     timeout: PropTypes.number,
     action: PropTypes.func,
     render: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    should_store_in_session: PropTypes.bool,
+    session_id: PropTypes.string,
 };
 
 LinearProgressContainer.displayName = 'LinearProgressContainer';

@@ -14,7 +14,7 @@ storiesOf('AutoHeightWrapper', module).add(
                         <div ref={setRef}>
                             <ThemedScrollbars height={height}>
                                 {Array.from(new Array(15)).map((_, index) => {
-                                    return <p>This is the text number {index}</p>;
+                                    return <p key={index}>This is the text number {index}</p>;
                                 })}
                             </ThemedScrollbars>
                         </div>

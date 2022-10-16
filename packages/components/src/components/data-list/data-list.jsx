@@ -196,6 +196,8 @@ DataList.propTypes = {
     passthrough: PropTypes.object,
     row_gap: PropTypes.number,
     setListRef: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
+    overscanRowCount: PropTypes.number,
 };
 
 export default DataList;

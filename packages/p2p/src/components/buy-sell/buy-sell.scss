@@ -5,6 +5,8 @@
     flex-direction: column;
 
     &__advertiser-page-return {
+        margin-top: unset;
+
         .dc-text {
             align-self: flex-start;
         }
@@ -110,12 +112,6 @@
 
     &__name {
         padding-right: 0.4rem;
-
-        &:hover {
-            color: var(--brand-red-coral);
-            text-decoration: underline;
-            text-decoration-color: var(--brand-red-coral);
-        }
     }
 
     &__button {

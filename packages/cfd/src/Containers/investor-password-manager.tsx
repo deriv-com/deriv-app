@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
@@ -47,7 +48,13 @@ const InvestorPasswordManager = ({
                 <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
             </Text>
             {error_message_investor && (
-                <Text as='p' color='loss-danger' size='xs' className='cfd-password-manager--error-message'>
+                <Text
+                    as='p'
+                    color='loss-danger'
+                    size='xs'
+                    className='cfd-password-manager--error-message'
+                    data-testid='dt_error_message_investor'
+                >
                     {error_message_investor}
                 </Text>
             )}
@@ -126,6 +133,16 @@ const InvestorPasswordManager = ({
             </Formik>
         </div>
     );
+};
+
+InvestorPasswordManager.propTypes = {
+    error_message_investor: PropTypes.string,
+    is_submit_success_investor: PropTypes.bool,
+    multi_step_ref: PropTypes.object,
+    onSubmit: PropTypes.func,
+    setPasswordType: PropTypes.func,
+    toggleModal: PropTypes.func,
+    validatePassword: PropTypes.func,
 };
 
 export default InvestorPasswordManager;

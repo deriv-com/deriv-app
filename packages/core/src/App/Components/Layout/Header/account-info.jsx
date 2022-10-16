@@ -36,7 +36,7 @@ const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
         if (is_eu || country_standpoint.is_belgium) {
             return <Localize i18n_default_text='Options' />;
         }
-        return <Localize i18n_default_text='Synthetic' />;
+        return <Localize i18n_default_text='Derived' />;
     }
     return null;
 };
@@ -142,6 +142,8 @@ AccountInfo.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     country_standpoint: PropTypes.object,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
     is_eu: PropTypes.bool,

@@ -93,9 +93,7 @@ const MyProfileForm = () => {
 
     return (
         <>
-            <DesktopWrapper className='my-profile-form'>
-                {content}
-            </DesktopWrapper>
+            <DesktopWrapper className='my-profile-form'>{content}</DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
                     className='my-profile-form'

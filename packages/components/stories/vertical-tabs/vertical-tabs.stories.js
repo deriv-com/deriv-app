@@ -22,7 +22,9 @@ const TextComponent = props => (
 
 const action_bar_items = [
     {
-        onClick: () => {},
+        onClick: () => {
+            /* TODO document why this method 'onClick' is empty */
+        },
         icon: 'IcCross',
         title: 'Close',
     },
@@ -89,7 +91,7 @@ stories.addDecorator(withKnobs);
 stories.add(
     'Basic usage',
     () => {
-        const [_, setVerticalTabIndex] = React.useState(0);
+        const [, setVerticalTabIndex] = React.useState(0);
 
         return (
             <Wrapper is_dark={boolean('dark theme', false)}>

@@ -1,0 +1,43 @@
+/* @define set-citizenship */
+.set-citizenship {
+    margin: 1.6rem 1.6rem 0;
+
+    &__citizenship-selection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: nowrap column;
+    }
+    &__heading {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__text {
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__subtext {
+        margin: 0 0 2.4rem;
+        max-width: 90%;
+    }
+    &__btn {
+        align-self: flex-end;
+        margin: 0;
+        background-color: var(--button-primary-default);
+        font-weight: bold;
+        color: var(--text-colored-background);
+        margin-bottom: -16px;
+
+        &:hover {
+            background-color: var(--button-primary-hover);
+        }
+        &--disabled {
+            opacity: 0.32;
+            cursor: not-allowed;
+        }
+    }
+    &__citizenship-field {
+        width: 30rem;
+    }
+}

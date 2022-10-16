@@ -128,6 +128,7 @@ SetResidenceModal.propTypes = {
     is_visible: PropTypes.bool,
     onSetResidence: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
+    toggleSetResidenceModal: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({

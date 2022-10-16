@@ -61,6 +61,7 @@ const SlideIn = ({ children, className, keyname, is_visible, type }) => {
 
 SlideIn.propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
     is_visible: PropTypes.bool,
     keyname: PropTypes.string,
     type: PropTypes.string,

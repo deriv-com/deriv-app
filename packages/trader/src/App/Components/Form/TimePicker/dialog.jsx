@@ -118,11 +118,11 @@ const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, cla
 
 Dialog.propTypes = {
     className: PropTypes.string,
-    end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+    end_times: PropTypes.array,
     onChange: PropTypes.func,
     preClass: PropTypes.string,
-    selected_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
-    start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+    selected_time: PropTypes.array,
+    start_times: PropTypes.array,
 };
 
 export default Dialog;

@@ -23,7 +23,7 @@ const OrderTableHeader = observer(({ children }) => {
                     <Table.Head>{localize('Status')}</Table.Head>
                     <Table.Head>{localize('Send')}</Table.Head>
                     <Table.Head>{localize('Receive')}</Table.Head>
-                    <Table.Head>{localize('Time')}</Table.Head>
+                    {general_store.order_table_type === 'active' && <Table.Head>{localize('Time')}</Table.Head>}
                 </Table.Row>
             </Table.Header>
             <Table.Body className='orders__table-body'>{children}</Table.Body>

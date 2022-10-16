@@ -41,6 +41,7 @@ const ExpansionPanel = ({ message, onResize }) => {
 
 ExpansionPanel.propTypes = {
     message: PropTypes.object,
+    onResize: PropTypes.func,
 };
 
 export default ExpansionPanel;

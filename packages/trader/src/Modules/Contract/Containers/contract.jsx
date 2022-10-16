@@ -68,14 +68,14 @@ Contract.propTypes = {
 };
 
 export default withRouter(
-    connect(({ modules, ui }) => ({
-        error_message: modules.contract_replay.error_message,
-        error_code: modules.contract_replay.error_code,
-        has_error: modules.contract_replay.has_error,
-        onMount: modules.contract_replay.setAccountSwitcherListener,
-        onUnmount: modules.contract_replay.removeAccountSwitcherListener,
-        removeErrorMessage: modules.contract_replay.removeErrorMessage,
-        symbol: modules.contract_replay.contract_info.underlying,
+    connect(({ ui, contract_replay }) => ({
+        error_message: contract_replay.error_message,
+        error_code: contract_replay.error_code,
+        has_error: contract_replay.has_error,
+        onMount: contract_replay.setAccountSwitcherListener,
+        onUnmount: contract_replay.removeAccountSwitcherListener,
+        removeErrorMessage: contract_replay.removeErrorMessage,
+        symbol: contract_replay.contract_info.underlying,
         is_mobile: ui.is_mobile,
     }))(Contract)
 );

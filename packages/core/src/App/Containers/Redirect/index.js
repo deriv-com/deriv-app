@@ -1,1 +1,3 @@
-export Redirect from './redirect.jsx';
+import Redirect from './redirect.jsx';
+
+export default Redirect;

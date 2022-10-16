@@ -29,7 +29,7 @@ const initRoutesConfig = () => {
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default = { path: routes.error404, component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = () => {
     if (!routesConfig) {

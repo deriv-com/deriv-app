@@ -10,6 +10,13 @@ $card-width: 456px;
     @include tablet-up {
         min-height: $card-height;
         max-height: $card-height;
+        margin-bottom: 3rem;
+    }
+
+    @include mobile {
+        .dc-mobile-full-page-modal__header--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
     }
 
     &--body {
@@ -40,6 +47,7 @@ $card-width: 456px;
     background-color: var(--general-main-1);
     display: flex;
     flex-direction: column;
+    height: fit-content;
 
     @include tablet-up {
         border-radius: 4px;
@@ -52,8 +60,34 @@ $card-width: 456px;
         width: 100%;
     }
 
+    &--rating {
+        margin: 2.4rem;
+
+        @include mobile {
+            margin: 1.6rem;
+        }
+
+        &__line {
+            margin: 0 0 0.5rem;
+        }
+
+        &__text {
+            margin: 0 2.4rem;
+        }
+    }
+
+    &__title {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &--padding {
         padding: 1rem 2.4rem;
+
+        &:last-of-type {
+            margin-bottom: unset;
+            padding-bottom: unset;
+        }
     }
 
     &__accordion {
@@ -61,6 +95,9 @@ $card-width: 456px;
             display: flex;
             flex-direction: column;
             padding-left: 1.6rem;
+        }
+        &-icon {
+            flex-shrink: 0;
         }
         &-row {
             display: flex;
@@ -72,6 +109,7 @@ $card-width: 456px;
             flex-direction: column;
             align-items: flex-start;
             margin-left: 2rem;
+            word-break: break-word;
         }
 
         .dc-accordion__item {
@@ -92,6 +130,7 @@ $card-width: 456px;
         color: var(--text-general);
         position: relative;
         border-bottom: 1px solid var(--general-section-1);
+        align-items: center;
 
         @include tablet-up {
             padding: 1.6rem 2.4rem;
@@ -175,7 +214,7 @@ $card-width: 456px;
         @include mobile {
             flex: 1;
             min-height: 0;
-            padding: 1.6rem;
+            padding: 1.6rem 0;
         }
 
         &-block {
@@ -212,20 +251,16 @@ $card-width: 456px;
         line-height: 1.43;
         color: var(--text-general);
         padding: 1.6rem 2.4rem;
-        height: 7.2rem;
 
         @include mobile {
             width: 100%;
-            padding: 1.6rem;
+            padding: unset;
         }
         @include tablet-up {
             width: 100%;
-            padding: 1.6rem;
+            padding: 0 1.6rem 1.6rem;
         }
 
-        &--left {
-            margin-right: auto;
-        }
         &--right {
             margin-left: auto;
         }
@@ -242,8 +277,38 @@ $card-width: 456px;
         line-height: 2rem;
         color: var(--text-general);
     }
+
     &__modal-checkbox {
         margin: 2.4rem -0.7rem;
+    }
+
+    &__ratings {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 2.4rem 1.6rem;
+
+        &--icon {
+            align-self: center;
+            display: flex;
+            margin-right: 0.9rem;
+        }
+
+        &--row {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            max-width: 80%;
+        }
+    }
+
+    &__star {
+        pointer-events: none;
+
+        > svg {
+            margin-right: 0.2rem;
+        }
     }
 }
 

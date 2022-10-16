@@ -7,7 +7,7 @@ import { findContractCategory } from '../../../Helpers/contract-type';
 
 const Display = ({ is_open, list, name, onClick, value }) => {
     const getDisplayText = () =>
-        findContractCategory(list, { value })?.contract_types.find(item => item.value === value).text;
+        findContractCategory(list, { value })?.contract_types?.find(item => item.value === value).text;
 
     return (
         <div
@@ -39,6 +39,7 @@ Display.propTypes = {
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     name: PropTypes.string,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     value: PropTypes.string,
 };
 

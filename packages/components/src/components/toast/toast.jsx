@@ -63,6 +63,7 @@ Toast.propTypes = {
     onClose: PropTypes.func,
     type: PropTypes.oneOf(['error', 'info']),
     timeout: PropTypes.number,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 };
 
 export default Toast;

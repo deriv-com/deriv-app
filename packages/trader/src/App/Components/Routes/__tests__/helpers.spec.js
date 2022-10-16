@@ -28,23 +28,6 @@ describe('Helpers', () => {
             expect(result.exact).to.equal(true);
             expect(result.component).to.equal(Trade);
         });
-        it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-            const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys(
-                'path',
-                'component',
-                'is_authenticated',
-                'routes',
-                'icon_component',
-                'getTitle'
-            );
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.be.instanceof(Array);
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(
-                reports_routes_length
-            );
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).is_authenticated).to.be.equal(true);
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).path).to.be.equal(routes.reports);
-        });
     });
 
     describe('isRouteVisible', () => {

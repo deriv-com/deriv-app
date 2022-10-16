@@ -22,9 +22,11 @@ storiesOf('VirtualWalletCard', module)
                         is_actions_footer={boolean('is_actions_footer', true)}
                         is_topup_footer={boolean('is_topup_footer', false)}
                         onClickReset={() => {
+                            /* eslint-disable no-console */
                             console.log('Reset clicked!');
                         }}
                         onClickTransactions={() => {
+                            /* eslint-disable no-console */
                             console.log('Transactions clicked!');
                         }}
                         wallet_name='Virtual USD Wallet'

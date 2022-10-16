@@ -57,6 +57,7 @@ DisplayText.propTypes = {
     name: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    is_align_text_left: PropTypes.bool,
 };
 
 export default DisplayText;

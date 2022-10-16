@@ -13,7 +13,7 @@ jobs:
         id: step1
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
           check-latest: true
           registry-url: "https://registry.npmjs.org"
         env:
@@ -77,24 +77,22 @@ jobs:
 
             # lerna: To allow us to bootstrap the project.
             # json: To manually edit the target package's package.json
-            npm i -g lerna@latest json@latest
+            npm i -g lerna@latest json@latest npm@8
 
             package_name="@deriv/api-types"
             old_version=$(json -f packages/appstore/package.json -a dependencies."$package_name")
             safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')
 
             git checkout -b "$package_name"
+            git reset --hard master
 
             # "Manually" bump the version in package.json to accommodate 
             # Lerna's flexibility (or its lack thereof).
-            json -I -f packages/appstore/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
-            json -I -f packages/cfd/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
-            json -I -f packages/trader/package.json -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4
+            for file in packages/**/package.json; do grep -q $package_name $file && json -I -f $file -e "this.dependencies[\"$package_name\"]=\"$new_version\"" -o json-4 || echo not found in $file ; done;
 
             # We have to run "lerna bootstrap --no-ci" to generate a new 
             # package-lock.json ("npm run bootstrap" requires this).
-            lerna bootstrap --no-ci
-            npm run bootstrap
+            npm run bootstrap:dev
 
             # Identify with Git, these values come from the shared Deriv FE account. https://github.com/DerivFE
             git config --global user.name "DerivFE"
@@ -107,11 +105,12 @@ jobs:
             git push --set-upstream origin "$package_name" -f
 
             # Get the diff and use this as the PRs body.
-            pr_body=$(curl "https://diff.intrinsic.com/$package_name/$safe_old_version/$new_version.diff")
+            diff_url="https://diff.intrinsic.com/$package_name/$safe_old_version/$new_version.diff"
+            pr_body=$(curl $diff_url)
 
             # Use "gh" to create a PR from the CLI.
             sudo apt install gh
-            gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            gh auth login --with-token <<< ${{ github.token }}
             gh pr close "$package_name" || true
-            gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "\`\`\`diff $pr_body \`\`\`" --base "master" --head "binary-com:$package_name"
+            gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "Diff url: $diff_url\n \`\`\`diff ${pr_body:0:5000} \`\`\`" --base "master" --head "binary-com:$package_name"
           fi

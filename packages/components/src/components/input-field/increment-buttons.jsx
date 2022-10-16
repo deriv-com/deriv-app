@@ -11,6 +11,7 @@ const IncrementButtons = ({
     min_is_disabled,
     is_incrementable_on_long_press,
     onLongPressEnd,
+    type,
 }) => {
     const interval_ref = React.useRef();
     const timeout_ref = React.useRef();
@@ -56,6 +57,7 @@ const IncrementButtons = ({
                 onClick={incrementValue}
                 tabIndex='-1'
                 aria-label={'Increment value'}
+                type={type}
                 {...getPressEvents(incrementValue)}
             >
                 <Icon
@@ -71,6 +73,7 @@ const IncrementButtons = ({
                 onClick={decrementValue}
                 tabIndex='-1'
                 aria-label={'Decrement value'}
+                type={type}
                 {...getPressEvents(decrementValue)}
             >
                 <Icon
@@ -91,6 +94,7 @@ IncrementButtons.propTypes = {
     is_incrementable_on_long_press: PropTypes.bool,
     max_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     min_is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    type: PropTypes.string,
 };
 
 export default IncrementButtons;

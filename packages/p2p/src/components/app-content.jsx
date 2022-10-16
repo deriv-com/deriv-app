@@ -3,6 +3,7 @@ import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import BuySell from './buy-sell/buy-sell.jsx';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
@@ -14,13 +15,13 @@ import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
 
 const AppContent = () => {
-    const { general_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_dp2p_blocked) {
+    if (general_store.should_show_dp2p_blocked || general_store.is_p2p_blocked_for_pa) {
         return <Dp2pBlocked />;
     }
 
@@ -30,6 +31,10 @@ const AppContent = () => {
 
     if (general_store.props.should_show_verification) {
         return <Verification should_wrap />;
+    }
+
+    if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
+        return <AdvertiserPage />;
     }
 
     return (

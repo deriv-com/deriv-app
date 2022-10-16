@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, when } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -13,6 +13,7 @@ export default class MyProfileStore extends BaseStore {
     @observable advertiser_payment_methods_error = '';
     @observable available_payment_methods = {};
     @observable balance_available = null;
+    @observable blocked_advertisers_list = [];
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
@@ -23,7 +24,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_cancel_add_payment_method_modal_open = false;
     @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
-    @observable is_delete_error_modal_open = false;
+    @observable is_delete_payment_method_error_modal_open = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
@@ -33,6 +34,7 @@ export default class MyProfileStore extends BaseStore {
     @observable payment_method_to_edit = {};
     @observable search_results = [];
     @observable search_term = '';
+    @observable selected_blocked_user = {};
     @observable selected_payment_method = '';
     @observable selected_payment_method_display_name = '';
     @observable selected_payment_method_fields = [];
@@ -65,13 +67,26 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @computed
+    get payment_method_field_set() {
+        // The fields are rendered dynamically based on the response. This variable will hold a dictionary of field id and its name/required properties
+        return this.selected_payment_method_fields.reduce((dict, field_data) => {
+            return {
+                ...dict,
+                [field_data[0]]: { display_name: field_data[1].display_name, required: field_data[1].required },
+            };
+        }, {});
+    }
+
+    @computed
     get initial_values() {
         const object = {};
 
         Object.values(this.selected_payment_method_fields).forEach(field => {
-            const filter = Object.entries(this.payment_method_info.fields).filter(
-                payment_method_field => payment_method_field[0] === field[0]
-            );
+            const filter = this.payment_method_info
+                ? Object.entries(this.payment_method_info.fields).filter(
+                      payment_method_field => payment_method_field[0] === field[0]
+                  )
+                : {};
 
             if (Object.values(filter).length > 0) {
                 object[field[0]] = Object.values(filter)[0][1].value;
@@ -85,7 +100,7 @@ export default class MyProfileStore extends BaseStore {
 
     @computed
     get payment_method_info() {
-        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit.ID)[0];
+        return this.advertiser_payment_methods_list.filter(method => method.ID === this.payment_method_to_edit?.ID)[0];
     }
 
     @computed
@@ -108,7 +123,7 @@ export default class MyProfileStore extends BaseStore {
                 if (key[1].method === 'other' || key[1].method === 'bank_transfer') {
                     methods.push({ method: key[1].method, display_name: key[1].display_name });
                 } else if (methods.every(e => e.method !== 'e_wallet')) {
-                    methods.push({ method: 'e_wallet', display_name: 'E-wallet' });
+                    methods.push({ method: 'e_wallet', display_name: localize('E-wallet') });
                 }
             }
         });
@@ -123,6 +138,20 @@ export default class MyProfileStore extends BaseStore {
         Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
 
         return list;
+    }
+
+    /**
+     * Evaluates a new blocked_advertiser_list based on if the user has searched a blocked advertiser
+     * By default it returns the blocked_advertisers_list when there are no searches
+     *
+     * @returns {Array} Either the entire blocked advertisers list or filtered advertisers list by search term
+     */
+    @computed
+    get rendered_blocked_advertisers_list() {
+        if (this.search_term) {
+            return this.search_results;
+        }
+        return this.blocked_advertisers_list;
     }
 
     @action.bound
@@ -184,6 +213,24 @@ export default class MyProfileStore extends BaseStore {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
                 this.setErrorMessage(response.error.message);
+            }
+            this.setIsLoading(false);
+        });
+    }
+
+    @action.bound
+    getBlockedAdvertisersList() {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advertiser_relations: 1,
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    this.setBlockedAdvertisersList(response.p2p_advertiser_relations?.blocked_advertisers);
+                    this.loadMoreBlockedAdvertisers();
+                } else {
+                    this.root_store.general_store.setBlockUnblockUserError(response.error.message);
+                }
             }
             this.setIsLoading(false);
         });
@@ -332,20 +379,62 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(false);
     }
 
+    /**
+     * This function loads more blocked advertisers as necessary if the user is searching for a blocked advertiser
+     * It updates the search_results based on the searched advertiser
+     */
+    @action.bound
+    loadMoreBlockedAdvertisers() {
+        if (this.search_term) {
+            const search_results = this.blocked_advertisers_list.filter(blocked_advertiser =>
+                blocked_advertiser.name.toLowerCase().includes(this.search_term.toLowerCase().trim())
+            );
+
+            // if user deletes the last blocked advertiser while searching, display 'You have no blocked advertisers' message condition
+            if (this.search_term && search_results.length === 0 && this.blocked_advertisers_list.length === 0) {
+                this.setSearchTerm('');
+            }
+
+            this.setSearchResults(search_results);
+        }
+        this.setIsLoading(false);
+    }
+
     @action.bound
     onClickDelete() {
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
-        }).then(response => {
+        }).then(async response => {
             this.setIsConfirmDeleteModalOpen(false);
             if (!response.error) {
                 this.getAdvertiserPaymentMethods();
             } else {
                 this.setDeleteErrorMessage(response.error.message);
-                this.setIsDeleteErrorModalOpen(true);
+                await when(
+                    () => !this.root_store.general_store.is_modal_open,
+                    () => this.setIsDeletePaymentMethodErrorModalOpen(true)
+                );
             }
         });
+    }
+
+    @action.bound
+    onClickUnblock(advertiser) {
+        const { general_store } = this.root_store;
+
+        general_store.setIsBlockUserModalOpen(true);
+        this.setSelectedBlockedUser(advertiser);
+    }
+
+    @action.bound
+    onSubmit() {
+        const { general_store } = this.root_store;
+
+        clearTimeout(delay);
+        general_store.setIsBlockUserModalOpen(false);
+        general_store.blockUnblockUser(false, this.selected_blocked_user.id);
+        const delay = setTimeout(() => this.getBlockedAdvertisersList(), 250);
     }
 
     @action.bound
@@ -420,6 +509,37 @@ export default class MyProfileStore extends BaseStore {
     };
 
     @action.bound
+    validatePaymentMethodFields = values => {
+        const errors = {};
+        const no_symbols_regex = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/;
+
+        Object.keys(values).forEach(key => {
+            const value = values[key];
+            const payment_method_field_set = this.payment_method_field_set[key];
+            const { display_name, required } = payment_method_field_set;
+
+            if (required && !value) {
+                errors[key] = localize('This field is required.');
+            } else if (value && !no_symbols_regex.test(value)) {
+                errors[key] = localize(
+                    "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                    {
+                        field_name: display_name,
+                        interpolation: { escapeValue: false },
+                    }
+                );
+            } else if (value.length > 200) {
+                errors[key] = localize('{{field_name}} has exceeded maximum length of 200 characters.', {
+                    field_name: display_name,
+                    interpolation: { escapeValue: false },
+                });
+            }
+        });
+
+        return errors;
+    };
+
+    @action.bound
     setActiveTab(active_tab) {
         this.active_tab = active_tab;
     }
@@ -452,6 +572,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setBalanceAvailable(balance_available) {
         this.balance_available = balance_available;
+    }
+
+    @action.bound
+    setBlockedAdvertisersList(blocked_advertisers_list) {
+        this.blocked_advertisers_list = blocked_advertisers_list;
     }
 
     @action.bound
@@ -500,8 +625,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
-        this.is_delete_error_modal_open = is_delete_error_modal_open;
+    setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
+        this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
     @action.bound
@@ -542,6 +667,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
+    }
+
+    @action.bound
+    setSelectedBlockedUser(selected_blocked_user) {
+        this.selected_blocked_user = selected_blocked_user;
     }
 
     @action.bound

@@ -4,6 +4,7 @@ import {
     cloneObject,
     extractInfoFromShortcode,
     getMinPayout,
+    getPlatformSettings,
     getPropertyValue,
     isCryptocurrency,
     isDesktop,
@@ -11,29 +12,30 @@ import {
     isMobile,
     showDigitalOptionsUnavailableError,
     WS,
-} from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import ServerTime from '_common/base/server_time';
-import { processPurchase } from './Actions/purchase';
-import * as Symbol from './Actions/symbol';
-import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
     findFirstOpenMarket,
     showMxMltUnavailableError,
-} from './Helpers/active-symbols';
-import ContractType from './Helpers/contract-type';
-import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
+    convertDurationLimit,
+    resetEndTimeOnVolatilityIndices,
+    getBarrierPipSize,
+    isBarrierSupported,
+    removeBarrier,
+} from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import ServerTime from '_common/base/server_time';
+import { processPurchase } from './Actions/purchase';
+import * as Symbol from './Actions/symbol';
+
 import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { getBarrierPipSize } from './Helpers/barrier';
-import { setLimitOrderBarriers } from '../Contract/Helpers/limit-orders';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
-import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barriers';
 import BaseStore from '../../base-store';
 
 const store_name = 'trade_store';
@@ -216,6 +218,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => [this.contract_type],
             () => {
+                this.root_store.portfolio.setContractType(this.contract_type);
                 if (this.contract_type === 'multiplier') {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
@@ -259,7 +262,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clearContracts = () => {
-        this.root_store.modules.contract_trade.contracts = [];
+        this.root_store.contract_trade.contracts = [];
     };
 
     @action.bound
@@ -267,6 +270,7 @@ export default class TradeStore extends BaseStore {
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);
@@ -343,8 +347,12 @@ export default class TradeStore extends BaseStore {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),
-                    title: localize('DTrader is not available for this account'),
-                    link: localize('Go to DMT5 dashboard'),
+                    title: localize('{{platform_name_trader}} is not available for this account', {
+                        platform_name_trader: getPlatformSettings('trader').name,
+                    }),
+                    link: localize('Go to {{platform_name_mt5}} dashboard', {
+                        platform_name_mt5: getPlatformSettings('mt5').name,
+                    }),
                 });
                 return;
             }
@@ -366,6 +374,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         this.root_store.common.setSelectedContractType(this.contract_type);
+        this.root_store.portfolio.setContractType(this.contract_type);
     }
 
     @action.bound
@@ -386,7 +395,6 @@ export default class TradeStore extends BaseStore {
                 false
             );
         });
-
         await this.loadActiveSymbols(should_set_default_symbol);
         await this.setContractTypes();
         await this.processNewValuesAsync(
@@ -489,7 +497,7 @@ export default class TradeStore extends BaseStore {
 
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
-            barriers: this.barriers,
+            barriers: this.root_store.portfolio.barriers,
             is_over,
             contract_type,
             contract_info: this.proposal_info[contract_type],
@@ -500,11 +508,11 @@ export default class TradeStore extends BaseStore {
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
         if (!is_over) {
-            removeBarrier(this.barriers, key);
+            removeBarrier(this.root_store.portfolio.barriers, key);
             return;
         }
 
-        let purchase_spot_barrier = this.barriers.find(b => b.key === key);
+        let purchase_spot_barrier = this.root_store.portfolio.barriers.find(b => b.key === key);
         if (purchase_spot_barrier) {
             if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
                 purchase_spot_barrier.onChange({
@@ -519,6 +527,7 @@ export default class TradeStore extends BaseStore {
             purchase_spot_barrier.isSingleBarrier = true;
             purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
+            this.root_store.portfolio.barriers.push(purchase_spot_barrier);
         }
     }
 
@@ -557,7 +566,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get barriers_flattened() {
-        return this.barriers && toJS(this.barriers);
+        return this.root_store.portfolio.barriers && toJS(this.root_store.portfolio.barriers);
     }
 
     setMainBarrier = proposal_info => {
@@ -632,7 +641,7 @@ export default class TradeStore extends BaseStore {
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category.toUpperCase());
                             const contract_type = category.toUpperCase();
-                            this.root_store.modules.contract_trade.addContract({
+                            this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,
                                 longcode,
@@ -641,7 +650,7 @@ export default class TradeStore extends BaseStore {
                                 contract_type,
                                 is_tick_contract,
                             });
-                            this.root_store.modules.portfolio.onBuyResponse({
+                            this.root_store.portfolio.onBuyResponse({
                                 contract_id,
                                 longcode,
                                 contract_type,
@@ -859,8 +868,8 @@ export default class TradeStore extends BaseStore {
                 chart: {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
-                    chart_type: this.root_store.modules.contract_trade.chart_type,
-                    granularity: this.root_store.modules.contract_trade.granularity,
+                    chart_type: this.root_store.contract_trade.chart_type,
+                    granularity: this.root_store.contract_trade.granularity,
                 },
             },
         };
@@ -944,7 +953,7 @@ export default class TradeStore extends BaseStore {
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
             setLimitOrderBarriers({
-                barriers: this.barriers,
+                barriers: this.root_store.portfolio.barriers,
                 contract_info: this.proposal_info[this.hovered_contract_type],
                 contract_type,
                 is_over: true,
@@ -1038,7 +1047,12 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
-        await this.loadActiveSymbols(true, false);
+        if (this.root_store.common.is_language_changing) {
+            await this.loadActiveSymbols(false, false);
+            this.root_store.common.is_language_changing = false;
+        } else {
+            await this.loadActiveSymbols(true, false);
+        }
 
         this.resetErrorServices();
         await this.setContractTypes();
@@ -1065,7 +1079,12 @@ export default class TradeStore extends BaseStore {
         this.clearContracts();
         this.refresh();
         this.resetErrorServices();
-        await this.loadActiveSymbols();
+        if (this.root_store.common.is_language_changing) {
+            await this.loadActiveSymbols(false);
+            this.root_store.common.is_language_changing = false;
+        } else {
+            await this.loadActiveSymbols();
+        }
         await this.setContractTypes();
         this.debouncedProposal();
     }
@@ -1163,7 +1182,7 @@ export default class TradeStore extends BaseStore {
         this.disposeThemeChange();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
-        this.root_store.modules.contract_trade.onUnmount();
+        this.root_store.contract_trade.onUnmount();
         this.refresh();
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {

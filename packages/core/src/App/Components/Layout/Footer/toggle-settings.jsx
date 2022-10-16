@@ -73,6 +73,7 @@ ToggleSettings.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_settings_visible: PropTypes.bool,
+    settings_extension: PropTypes.array,
     toggleSettings: PropTypes.func,
 };
 

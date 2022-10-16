@@ -5,14 +5,19 @@ const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?
 const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
     const messages = [];
 
-    while ((result = i18n_marker.exec(input)) !== null) {
-        const extracted = result[3];
-        // Replace escape characters.
-        messages.push(extracted.replace(/\\/g, ''));
+    let continue_loop = true;
+    while (continue_loop) {
+        const result = i18n_marker.exec(input);
+        if (result == null) continue_loop = false;
+        else {
+            const extracted = result[3];
+            // Replace escape characters.
+            messages.push(extracted.replace(/\\/g, ''));
+        }
     }
 
     return messages;
-}
+};
 
 const getTranslatableFiles = () => {
     const globs = ['**/*.js', '**/*.jsx'];
@@ -25,7 +30,7 @@ const getTranslatableFiles = () => {
     }
 
     return file_paths;
-}
+};
 
 module.exports = {
     getStringsFromInput,

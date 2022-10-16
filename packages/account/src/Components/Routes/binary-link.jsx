@@ -26,6 +26,7 @@ const BinaryLink = ({ active_class, to, children, ...props }) => {
 BinaryLink.propTypes = {
     active_class: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+    is_social_signup: PropTypes.bool,
     to: PropTypes.string,
 };
 

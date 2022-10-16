@@ -10,8 +10,8 @@
     }
 
     &__toggle {
-        display: flex;
         margin-left: 0.8rem;
+        padding-left: 0.3rem;
 
         &-container {
             align-items: center;
@@ -25,22 +25,17 @@
         }
 
         &-button {
-            width: 13px;
-            height: 13px;
-            top: 2px;
-            left: 3px;
-
-            &--active {
-                left: calc(100% - 4px) !important;
-            }
+            width: 1.3rem;
+            height: 1.3rem;
+            border-radius: 1.3rem;
         }
 
-        margin-right: 1.6rem;
-        width: 32px;
-        height: 17px;
+        width: 3.2rem;
+        height: 1.7rem;
+        border-radius: 3.2rem;
     }
 }
 
 .dc-toggle-switch:checked + .dc-toggle-switch__label .my-profile-privacy__toggle-button {
-    left: calc(100% - 3px);
+    transform: translateX(1.35rem);
 }

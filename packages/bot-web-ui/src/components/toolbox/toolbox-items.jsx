@@ -459,7 +459,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='totimestamp'>
                     <Value name='DATETIME'>
                         <Shadow type='text'>
-                            <Field name='TEXT'>yyyy-mm-dd hh:mm:ss</Field>
+                            <Field name='TEXT'>yyyy-mm-dd hh:mm:ss</Field>
                         </Shadow>
                     </Value>
                 </Block>

@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { withRouter } from 'react-router';
-import {
+import NetworkStatus, {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
     GoToDeriv,
     HelpCentre,
-    NetworkStatus,
     RegulatoryInformation,
     ResponsibleTrading,
     ToggleFullScreen,
@@ -98,6 +97,12 @@ Footer.propTypes = {
     landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
+    settings_extension: PropTypes.array,
+    is_virtual: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    footer_extensions: PropTypes.array,
 };
 
 export default withRouter(

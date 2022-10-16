@@ -6,55 +6,74 @@ Reusable UI components for Deriv.
 
 **In this document**
 
--   [Other documents](#other-documents)
 -   [Commands](#commands)
 -   [Storybook](#storybook)
 -   [Usage](#usage)
 
-## Other documents
-
--   [General](docs/README.md) - Contains general philosophy and overview of this package
--   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
-
 ## Commands
 
 Setup:
+The `npm run bootstrap` command should be run in the root of the project, because it does not exist in the components package.js
 
 ```sh
-lerna bootstrap
-```
-
-Serve:
-
-```sh
-npm run serve
+npm run bootstrap
 ```
 
 Build:
+The `npm run build` command is used to build the components package. It can be run both in the root directory (to build the entire project) and in the components directory (to build the components package)
 
 ```sh
 npm run build
 ```
 
+> The following commands should executed inside of the components directory not in the root of the project.
+
+Serve:
+The `npm run serve` command is used to serve the components package
+
+```sh
+npm run serve
+```
+
 Test:
+The `npm run test` command is used to check whether the icon names are valid in the components package
 
 ```sh
 npm run test
+```
+
+Test:
+The `npm run test:eslint` command is used to run eslint on the components package
+
+```sh
+npm run test:eslint
+```
+
+The `eslint .` command is used to run eslint on the components package. It should be used along with `npm run test:eslint`
+
+```sh
+eslint .
 ```
 
 ## Storybook
 
 -   [`Storybook`](https://github.com/binary-com/deriv-app/blob/master/storybook/README.md)
 
+The `npm run storybook` command is used to start storybook within the components package
+
 ```shell script
 npm run storybook
 ```
+
+The `npm run storybook:build` command is used to build storybook within the components package
 
 storybook:build:
 
 ```sh
 npm run storybook:build
 ```
+
+The `npm run storybook:deploy br_storybook` command is used to deploy storybook within the components package to the specified branch. In this case, br_storybook
 
 storybook:deploy:
 

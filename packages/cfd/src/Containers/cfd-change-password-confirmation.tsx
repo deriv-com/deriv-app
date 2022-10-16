@@ -20,7 +20,7 @@ const ChangePasswordConfirmation = ({
         onSubmit={onConfirm}
     >
         {({ isSubmitting, handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} data-testid='dt_cfd_change_password_form'>
                 <div
                     className={classNames('cfd-change-password-confirmation__wrapper', {
                         [`${className}-wrapper`]: className,

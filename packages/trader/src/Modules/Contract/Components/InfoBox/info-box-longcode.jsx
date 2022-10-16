@@ -15,6 +15,7 @@ const InfoBoxLongcode = ({ contract_info }) => {
 };
 
 InfoBoxLongcode.propTypes = {
+    contract_info: PropTypes.object,
     longcode: PropTypes.string,
 };
 

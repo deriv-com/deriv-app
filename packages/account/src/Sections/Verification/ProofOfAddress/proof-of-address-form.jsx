@@ -57,6 +57,7 @@ const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
     is_eu,
+    is_resubmit,
     fetchResidenceList,
     fetchStatesList,
     onSubmit,
@@ -90,7 +91,7 @@ const ProofOfAddressForm = ({
         const errors = {};
         const validateValues = validate(errors, values);
 
-        const required_fields = ['address_line_1', 'address_city', 'address_state', 'address_postcode'];
+        const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
         const permitted_characters = ". , ' : ; ( ) @ # / -";
@@ -282,6 +283,13 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
+                                {is_resubmit && (
+                                    <Text size='xs' align='left' color='loss-danger'>
+                                        {localize(
+                                            'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.'
+                                        )}
+                                    </Text>
+                                )}
                                 <FormSubHeader
                                     title={localize('1. Address')}
                                     subtitle={localize('(All fields are required)')}
@@ -361,7 +369,6 @@ const ProofOfAddressForm = ({
                                                                                 true
                                                                             )
                                                                         }
-                                                                        required
                                                                     />
                                                                 )}
                                                             </Field>
@@ -377,7 +384,6 @@ const ProofOfAddressForm = ({
                                                                 onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
-                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -392,7 +398,6 @@ const ProofOfAddressForm = ({
                                                         error={touched.address_state && errors.address_state}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        required
                                                     />
                                                 )}
                                             </fieldset>
@@ -407,7 +412,6 @@ const ProofOfAddressForm = ({
                                                     error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                         </div>
@@ -462,6 +466,7 @@ ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     is_eu: PropTypes.bool,
+    is_resubmit: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,

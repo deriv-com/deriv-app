@@ -30,7 +30,7 @@ ProgressSliderStream.propTypes = {
     server_time: PropTypes.object,
 };
 
-export default connect(({ common, modules }) => ({
-    is_loading: modules.portfolio.is_loading,
+export default connect(({ common, portfolio }) => ({
+    is_loading: portfolio.is_loading,
     server_time: common.server_time,
 }))(ProgressSliderStream);

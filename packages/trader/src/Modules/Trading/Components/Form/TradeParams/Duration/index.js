@@ -1,1 +1,3 @@
-export default from './duration-wrapper.jsx';
+import DurationWrapper from './duration-wrapper.jsx';
+
+export default DurationWrapper;

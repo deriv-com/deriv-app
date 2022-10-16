@@ -10,10 +10,25 @@
     }
 
     &--input {
-        padding: 0 2rem;
+        padding-bottom: 2rem;
+        & .dc-input__field {
+            padding-left: 3rem;
+        }
+
+        & .dc-input__leading-icon {
+            top: auto;
+        }
+
+        &::placeholder {
+            padding-left: 3rem;
+        }
     }
 
     &--text {
         display: flex;
+    }
+
+    &--message {
+        margin-top: 1rem;
     }
 }

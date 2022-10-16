@@ -34,14 +34,7 @@ const BuySellTable = ({ onScroll }) => {
             my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
             reaction(
                 () => buy_sell_store.is_buy,
-                () => {
-                    buy_sell_store.setItems([]);
-                    buy_sell_store.setIsLoading(true);
-                    buy_sell_store.loadMoreItems({ startIndex: 0 });
-                    if (!buy_sell_store.is_buy) {
-                        my_profile_store.getAdvertiserPaymentMethods();
-                    }
-                },
+                () => buy_sell_store.fetchAdvertiserAdverts(),
                 { fireImmediately: true }
             );
         },
@@ -60,13 +53,14 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal />
+                <CancelAddPaymentMethodModal is_floating />
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'
                         className='sort'
                         is_open={buy_sell_store.is_sort_dropdown_open}
                         height='10rem'
+                        toggleModal={() => buy_sell_store.setIsSortDropdownOpen(false)}
                         width='80vw'
                     >
                         <RadioGroup

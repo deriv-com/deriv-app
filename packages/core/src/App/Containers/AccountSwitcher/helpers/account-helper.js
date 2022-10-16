@@ -51,7 +51,9 @@ export const getCFDConfig = (
     existing_cfd_accounts,
     mt5_trading_servers,
     platform,
-    is_eu
+    is_eu,
+    trading_platform_available_accounts,
+    getIsEligibleForMoreAccounts
 ) => {
     const cfd_config = [];
 
@@ -64,7 +66,7 @@ export const getCFDConfig = (
                 }
                 return account.sub_account_type === company && account_market_type === market_type;
             });
-            if (has_account && platform === CFD_PLATFORMS.MT5) {
+            if (has_account && platform === CFD_PLATFORMS.MT5 && is_eu) {
                 const number_market_type_available = mt5_trading_servers.filter(s => {
                     const server_market_type = s.market_type === 'synthetic' ? 'gaming' : s.market_type;
                     return market_type === server_market_type && !s.disabled;
@@ -73,17 +75,42 @@ export const getCFDConfig = (
                     has_account = false;
                 }
             }
-            if (!has_account) {
+            if (!has_account && (is_eu || platform === CFD_PLATFORMS.DXTRADE)) {
                 const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {
                     cfd_config.push({
                         icon: getCFDAccount({ market_type, sub_account_type: company, platform, is_eu }),
-                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform, is_eu }),
+                        title: getCFDAccountDisplay({
+                            market_type,
+                            sub_account_type: company,
+                            platform,
+                            is_eu,
+                        }),
                         type,
                     });
                 }
             }
         });
     }
+    if (!is_eu && platform === CFD_PLATFORMS.MT5) {
+        // show remaining Synthetic and/or Financial while a client can still open more real accounts or more demo svg
+        ['synthetic', 'financial'].forEach(account_type => {
+            if ((account_type === 'synthetic' ? 'gaming' : 'financial') === market_type) {
+                if (getIsEligibleForMoreAccounts(account_type)) {
+                    cfd_config.push({
+                        icon: getCFDAccount({ market_type, sub_account_type: 'financial', platform, is_eu }),
+                        title: getCFDAccountDisplay({
+                            market_type,
+                            sub_account_type: 'financial',
+                            platform,
+                            is_eu,
+                        }),
+                        type: account_type,
+                    });
+                }
+            }
+        });
+    }
+
     return cfd_config;
 };

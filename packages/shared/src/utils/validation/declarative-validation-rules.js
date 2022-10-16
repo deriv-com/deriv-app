@@ -13,8 +13,8 @@ const validRequired = (value /* , options, field */) => {
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = value => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
-export const validPhone = value => /^\+?((-|\s)*[0-9])*$/.test(value);
-export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
+export const validPhone = value => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
+export const validLetterSymbol = value => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
 export const validLength = (value = '', options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);

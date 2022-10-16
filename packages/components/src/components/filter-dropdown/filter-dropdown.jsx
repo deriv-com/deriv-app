@@ -53,6 +53,7 @@ FilterDropdown.propTypes = {
     filter_list: PropTypes.array.isRequired,
     handleFilterChange: PropTypes.func,
     initial_filter: PropTypes.string,
+    initial_selected_filter: PropTypes.string,
 };
 
 export default FilterDropdown;

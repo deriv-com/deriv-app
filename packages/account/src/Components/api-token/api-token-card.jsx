@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
-const ApiTokenCard = ({ name, value, display_name, description, setFieldValue }) => {
+const ApiTokenCard = ({ name, value, display_name, description, setFieldValue, children }) => {
     return (
         <Field name={name}>
             {({ field }) => (
@@ -15,7 +15,9 @@ const ApiTokenCard = ({ name, value, display_name, description, setFieldValue })
                     defaultChecked={value}
                     label={display_name}
                     description={description}
-                />
+                >
+                    {children}
+                </CompositeCheckbox>
             )}
         </Field>
     );

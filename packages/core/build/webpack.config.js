@@ -22,14 +22,14 @@ module.exports = function (env) {
             },
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: './index.js',
+        entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
             symlinks: true,
         },
         optimization: {
@@ -37,15 +37,17 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
-                minSize: 30000,
-                maxSize: 240000,
+                minSize: 102400,
+                minSizeReduction: 102400,
                 minChunks: 1,
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
+                enforceSizeThreshold: 500000,
                 cacheGroups: {
                     default: {
                         minChunks: 2,
+                        minSize: 102400,
                         priority: -20,
                         reuseExistingChunk: true,
                     },

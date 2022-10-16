@@ -15,6 +15,11 @@
             margin-bottom: 2rem;
         }
     }
+    &__subtext {
+        color: var(--status-danger);
+        position: relative;
+        bottom: 3rem;
+    }
     &__heading {
         margin-bottom: 0.8rem;
     }
@@ -85,5 +90,15 @@
     }
     &__footer {
         justify-content: center;
+    }
+}
+
+.email-confirmation {
+    margin: 0.5rem 2.4rem 1.7rem;
+    word-break: break-word;
+
+    &__currentEmail {
+        color: var(--status-danger);
+        font-style: italic;
     }
 }

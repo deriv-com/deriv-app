@@ -1,11 +1,10 @@
 import React from 'react';
-import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
+import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
@@ -16,7 +15,6 @@ import './buy-sell.scss';
 
 const BuySell = () => {
     const { buy_sell_store } = useStores();
-    const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
@@ -32,11 +30,6 @@ const BuySell = () => {
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {
-            if (event.target.scrollTop !== previous_scroll_top.current) {
-                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-                setIsToggleVisible(!is_scrolling_down);
-            }
-
             previous_scroll_top.current = event.target.scrollTop;
         }
     };
@@ -50,22 +43,10 @@ const BuySell = () => {
         );
     }
 
-    if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return (
-            <React.Fragment>
-                <AdvertiserPage />
-            </React.Fragment>
-        );
-    }
-
     return (
         <div className='buy-sell'>
             <FilterModal />
-            <BuySellHeader
-                is_visible={is_toggle_visible}
-                table_type={buy_sell_store.table_type}
-                setTableType={buy_sell_store.setTableType}
-            />
+            <BuySellHeader table_type={buy_sell_store.table_type} />
             <BuySellTable
                 key={buy_sell_store.table_type}
                 is_buy={buy_sell_store.table_type === buy_sell.BUY}
@@ -79,6 +60,7 @@ const BuySell = () => {
                 setShouldShowPopup={buy_sell_store.setShouldShowPopup}
                 table_type={buy_sell_store.table_type}
             />
+            <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
         </div>
     );
 };

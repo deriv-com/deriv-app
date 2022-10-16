@@ -1,43 +1,60 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes } from '@deriv/shared';
+import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { Redirect } from 'App/Containers/Redirect';
+import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = React.lazy(() => {
+const Trader = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "trader" */ '@deriv/trader');
+    })
+);
+
+const Reports = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "trader" */ '@deriv/trader');
+    return import(/* webpackChunkName: "reports" */ '@deriv/reports');
 });
 
-const CFD = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
-});
+const CFD = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
+    })
+);
 
-const Account = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "account" */ '@deriv/account');
-});
+const Account = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "account" */ '@deriv/account');
+    })
+);
 
-const Cashier = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
-});
+const Cashier = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
+    })
+);
 
-const Bot = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
-});
+const Bot = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
+    })
+);
 
-const AppStore = React.lazy(() => {
-    // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
-});
+const AppStore = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
+    })
+);
 
 const getModules = ({ is_appstore }) => {
     const modules = [
@@ -46,6 +63,34 @@ const getModules = ({ is_appstore }) => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.reports,
+            component: Reports,
+            getTitle: () => localize('Reports'),
+            icon_component: 'IcReports',
+            is_authenticated: true,
+            routes: [
+                {
+                    path: routes.positions,
+                    component: Reports,
+                    getTitle: () => localize('Open positions'),
+                    icon_component: 'IcOpenPositions',
+                    default: true,
+                },
+                {
+                    path: routes.profit,
+                    component: Reports,
+                    getTitle: () => localize('Profit table'),
+                    icon_component: 'IcProfitTable',
+                },
+                {
+                    path: routes.statement,
+                    component: Reports,
+                    getTitle: () => localize('Statement'),
+                    icon_component: 'IcStatement',
+                },
+            ],
         },
         {
             path: routes.dxtrade,
@@ -58,7 +103,7 @@ const getModules = ({ is_appstore }) => {
             getTitle: () => localize('MT5'),
         },
         {
-            path: routes.account_deactivated,
+            path: routes.account_closed,
             component: Account,
             getTitle: () => localize('Account deactivated'),
         },
@@ -143,9 +188,9 @@ const getModules = ({ is_appstore }) => {
                             getTitle: () => localize('Two-factor authentication'),
                         },
                         {
-                            path: routes.deactivate_account,
+                            path: routes.closing_account,
                             component: Account,
-                            getTitle: () => localize('Deactivate account'),
+                            getTitle: () => localize('Close your account'),
                         },
                     ],
                 },
@@ -223,34 +268,6 @@ const getModules = ({ is_appstore }) => {
             getTitle: () => localize('Trader'),
             routes: [
                 {
-                    path: routes.reports,
-                    component: Trader,
-                    getTitle: () => localize('Reports'),
-                    icon_component: 'IcReports',
-                    is_authenticated: true,
-                    routes: [
-                        {
-                            path: routes.positions,
-                            component: Trader,
-                            getTitle: () => localize('Open positions'),
-                            icon_component: 'IcOpenPositions',
-                            default: true,
-                        },
-                        {
-                            path: routes.profit,
-                            component: Trader,
-                            getTitle: () => localize('Profit table'),
-                            icon_component: 'IcProfitTable',
-                        },
-                        {
-                            path: routes.statement,
-                            component: Trader,
-                            getTitle: () => localize('Statement'),
-                            icon_component: 'IcStatement',
-                        },
-                    ],
-                },
-                {
                     path: routes.contract,
                     component: Trader,
                     getTitle: () => localize('Contract Details'),
@@ -273,7 +290,7 @@ const getModules = ({ is_appstore }) => {
 };
 
 const lazyLoadComplaintsPolicy = makeLazyLoader(
-    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    () => moduleLoader(() => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')),
     () => <Loading />
 );
 

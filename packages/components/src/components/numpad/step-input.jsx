@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency } from '@deriv/shared';
 import Input from '../input/input.jsx';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 
 const getDecimals = val => {
     const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
@@ -93,6 +93,8 @@ StepInput.propTypes = {
     onChange: PropTypes.func,
     render: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    pip_size: PropTypes.number,
+    currency: PropTypes.string,
 };
 
 export default StepInput;

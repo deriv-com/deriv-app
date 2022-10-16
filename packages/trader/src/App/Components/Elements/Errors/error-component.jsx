@@ -39,7 +39,12 @@ const ErrorComponent = ({
 };
 
 ErrorComponent.propTypes = {
+    header: PropTypes.string,
+    is_dialog: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
+    redirect_label: PropTypes.string,
+    redirectOnClick: PropTypes.func,
+    should_show_refresh: PropTypes.bool,
     type: PropTypes.string,
 };
 

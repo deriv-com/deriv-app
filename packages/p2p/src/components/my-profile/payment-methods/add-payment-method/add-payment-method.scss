@@ -16,6 +16,14 @@
         display: none;
     }
 
+    &-select {
+        height: 30vh;
+
+        @include mobile {
+            height: 100%;
+        }
+    }
+
     &-hint {
         padding: 0.2rem 0 0 1.6rem;
     }
@@ -36,7 +44,15 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 margin-top: auto;
-                padding-top: 1.6rem;
+                padding: 1.6rem 2.4rem;
+            }
+        }
+
+        &__form-wrapper {
+            padding: 1.4rem 2.4rem;
+
+            .dc-input--error {
+                margin-bottom: 6rem;
             }
         }
 

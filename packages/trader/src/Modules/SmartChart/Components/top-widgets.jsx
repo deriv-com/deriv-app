@@ -23,9 +23,9 @@ const TradeInfo = ({ markers_array, granularity }) => {
     );
 };
 
-const RecentTradeInfo = connect(({ modules }) => ({
-    granularity: modules.contract_trade.granularity,
-    markers_array: modules.contract_trade.markers_array,
+const RecentTradeInfo = connect(({ contract_trade }) => ({
+    granularity: contract_trade.granularity,
+    markers_array: contract_trade.markers_array,
 }))(TradeInfo);
 
 const TopWidgets = ({
@@ -77,9 +77,14 @@ const TopWidgets = ({
 
 TopWidgets.propTypes = {
     InfoBox: PropTypes.node,
+    is_digits_widget_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_title_enabled: PropTypes.bool,
     onSymbolChange: PropTypes.func,
+    open: PropTypes.bool,
+    open_market: PropTypes.object,
+    theme: PropTypes.string,
+    y_axis_width: PropTypes.number,
 };
 
 export default TopWidgets;

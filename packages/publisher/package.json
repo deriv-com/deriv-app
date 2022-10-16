@@ -10,7 +10,7 @@
     "access": "public"
   },
   "engines": {
-    "node": "^14.17.1"
+    "node": "^16.16.0"
   },
   "scripts": {
     "start": "echo \"No start specified\"",
@@ -27,5 +27,9 @@
     "publish_package": "node ./index.js prepublish && npm publish; node ./index.js postpublish"
   },
   "author": "Deriv.com",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.16.7"
+  }
 }

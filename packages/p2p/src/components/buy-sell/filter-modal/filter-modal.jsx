@@ -49,6 +49,36 @@ const FilterModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const FilterModalResult = () => {
+        if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
+        else if (my_profile_store.search_term) {
+            if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
+                return my_profile_store.search_results?.map((payment_method, key) => {
+                    return (
+                        <Checkbox
+                            key={key}
+                            label={payment_method.text}
+                            onChange={() => onChange(payment_method)}
+                            value={selected_methods.includes(payment_method.value)}
+                        />
+                    );
+                });
+            }
+            return <FilterModalNoResults text={my_profile_store.search_term} />;
+        }
+        return my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+            return (
+                <Checkbox
+                    name='checkbox'
+                    key={key}
+                    label={payment_method.text}
+                    onChange={() => onChange(payment_method)}
+                    value={selected_methods.includes(payment_method.value)}
+                />
+            );
+        });
+    };
+
     return (
         <Modal
             className={'payment-methods'}
@@ -65,36 +95,7 @@ const FilterModal = () => {
                         <FilterModalSearch />
                         <div className='filter-modal__checkbox-container'>
                             <ThemedScrollbars is_scrollbar_hidden>
-                                {buy_sell_store.is_filter_modal_loading ? (
-                                    <Loading is_fullscreen={false} />
-                                ) : my_profile_store.search_term ? (
-                                    !my_profile_store.search_results || my_profile_store.search_results.length > 0 ? (
-                                        my_profile_store.search_results?.map((payment_method, key) => {
-                                            return (
-                                                <Checkbox
-                                                    key={key}
-                                                    label={payment_method.text}
-                                                    onChange={() => onChange(payment_method)}
-                                                    value={selected_methods.includes(payment_method.value)}
-                                                />
-                                            );
-                                        })
-                                    ) : (
-                                        <FilterModalNoResults text={my_profile_store.search_term} />
-                                    )
-                                ) : (
-                                    my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-                                        return (
-                                            <Checkbox
-                                                name='checkbox'
-                                                key={key}
-                                                label={payment_method.text}
-                                                onChange={() => onChange(payment_method)}
-                                                value={selected_methods.includes(payment_method.value)}
-                                            />
-                                        );
-                                    })
-                                )}
+                                <FilterModalResult />
                             </ThemedScrollbars>
                         </div>
                     </React.Fragment>
@@ -135,7 +136,6 @@ const FilterModal = () => {
                             </div>
                             <ToggleSwitch
                                 id='toggle-filter-modal'
-                                className='filter-modal__toggle'
                                 classNameButton='filter-modal__toggle-button'
                                 classNameLabel='filter-modal__toggle-label'
                                 handleToggle={() =>

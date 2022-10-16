@@ -90,7 +90,7 @@ const DrawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...pro
                     <Transactions is_drawer_open={is_drawer_open} />
                 </div>
                 <div id='db-run-panel-tab__journal' label={localize('Journal')}>
-                    <Journal is_drawer_open={is_drawer_open} />
+                    <Journal />
                 </div>
             </Tabs>
             {is_drawer_open && active_index !== 2 && <StatisticsSummary {...props} />}

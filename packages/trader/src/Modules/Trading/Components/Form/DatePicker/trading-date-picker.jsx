@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
-import { isTimeValid, setTime, toMoment, useIsMounted } from '@deriv/shared';
+import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
-import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 const TradingDatePicker = ({
     duration: current_duration,
@@ -181,8 +180,10 @@ TradingDatePicker.propTypes = {
     duration_min_max: PropTypes.object,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     expiry_type: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     is_24_hours_contract: PropTypes.bool,
     mode: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func,
     server_time: PropTypes.object,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

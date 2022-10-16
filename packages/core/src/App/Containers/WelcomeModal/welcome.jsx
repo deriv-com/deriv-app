@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Text, MobileWrapper, DesktopWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, StaticUrl, Text } from '@deriv/components';
 import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
 import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
 import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
@@ -105,12 +105,15 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     <WelcomeItem
                         description={
                             <Localize
-                                i18n_default_text='Let us introduce you to trading on Deriv.'
-                                components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
+                                i18n_default_text='Get more info on <0>CFDs</0>, <1>multipliers</1>, and <2>options</2>.'
+                                components={[
+                                    <StaticUrl key={0} className='link' href='/trade-types/cfds/' />,
+                                    <StaticUrl key={1} className='link' href='/trade-types/multiplier/' />,
+                                    <StaticUrl key={2} className='link' href='/trade-types/options/' />,
+                                ]}
                             />
                         }
-                        onClick={() => switchPlatform({ route: routes.trade })}
-                        title={localize('Not sure?')}
+                        title={localize('Not sure where to start?')}
                         icon={<NotSure />}
                         mobileIcon={<NotSureMobile />}
                         small
@@ -122,6 +125,8 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
 };
 
 Welcome.propTypes = {
+    can_have_mf_account: PropTypes.bool,
+    can_have_mlt_account: PropTypes.bool,
     country_standpoint: PropTypes.object,
     is_eu: PropTypes.bool,
     switchPlatform: PropTypes.func.isRequired,

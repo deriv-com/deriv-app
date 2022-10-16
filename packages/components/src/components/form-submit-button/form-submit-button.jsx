@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import Text from '../text';
 
 const FormSubmitButton = ({
@@ -77,6 +77,11 @@ FormSubmitButton.propTypes = {
     is_center: PropTypes.bool,
     is_disabled: PropTypes.bool,
     label: PropTypes.string,
+    cancel_label: PropTypes.string,
+    form_error: PropTypes.string,
+    cancel_icon: PropTypes.node,
+    is_loading: PropTypes.bool,
+    onCancel: PropTypes.func,
 };
 
 export default FormSubmitButton;

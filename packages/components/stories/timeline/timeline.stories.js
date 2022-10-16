@@ -15,7 +15,7 @@ stories.add(
     () => (
         <Wrapper is_dark={boolean('dark theme', true)}>
             <div style={{ display: 'flex' }}>
-                <div style={{ width: '20rem' }}></div>
+                <div style={{ width: '20rem' }} />
                 <Timeline>
                     <Timeline.Item item_title='Title'>
                         <div>test</div>

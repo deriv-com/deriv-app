@@ -1,1 +1,3 @@
-export default from './trade-modals.jsx';
+import TradeModals from './trade-modals.jsx';
+
+export default TradeModals;

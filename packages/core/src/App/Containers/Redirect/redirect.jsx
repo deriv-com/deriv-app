@@ -10,6 +10,7 @@ const Redirect = ({
     history,
     currency,
     setVerificationCode,
+    verification_code,
     hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
@@ -23,13 +24,13 @@ const Redirect = ({
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const { is_appstore } = React.useContext(PlatformContext);
+    const action_param = url_params.get('action');
+    const code_param = url_params.get('code') || verification_code[action_param];
 
-    setVerificationCode(url_params.get('code'), url_params.get('action'));
-    setNewEmail(url_params.get('email'), url_params.get('action'));
+    setVerificationCode(code_param, action_param);
+    setNewEmail(url_params.get('email'), action_param);
 
-    setNewEmail(url_params.get('email'), url_params.get('action'));
-
-    switch (url_params.get('action')) {
+    switch (action_param) {
         case 'signup': {
             if (is_appstore) {
                 // TODO: redirect
@@ -141,9 +142,17 @@ const Redirect = ({
             break;
         }
         case 'trading_platform_investor_password_reset': {
-            localStorage.setItem('cfd_reset_password_code', url_params.get('code'));
+            localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            redirected_to_route = true;
+            break;
+        }
+        case 'p2p_order_confirm': {
+            history.push({
+                pathname: routes.cashier_p2p,
+                search: url_query_string,
+            });
             redirected_to_route = true;
             break;
         }
@@ -163,21 +172,26 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
+    currency: PropTypes.string,
     getServerTime: PropTypes.object,
+    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
+    openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
+    setNewEmail: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
-    setNewEmail: PropTypes.func,
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
+    verification_code: PropTypes.object,
 };
 
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
         setVerificationCode: client.setVerificationCode,
+        verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,

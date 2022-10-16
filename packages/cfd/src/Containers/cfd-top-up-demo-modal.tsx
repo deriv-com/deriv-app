@@ -1,5 +1,5 @@
 import React from 'react';
-import SuccessDialog from 'Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -73,6 +73,7 @@ const CFDTopUpDemoModal = ({
                         size='xxs'
                         line_height='xs'
                         className='dc-modal__container_top-up-virtual__description'
+                        data-testid='dt_top_up_virtual_description'
                     >
                         <Localize
                             i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'

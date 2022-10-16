@@ -36,7 +36,9 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
 
 ContractAuditItem.propTypes = {
     icon: PropTypes.node,
+    id: PropTypes.string,
     label: PropTypes.string,
+    timestamp: PropTypes.string,
     value: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]),
     value2: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

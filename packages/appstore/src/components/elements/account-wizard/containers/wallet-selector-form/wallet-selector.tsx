@@ -13,7 +13,17 @@ import {
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const WalletSelector: React.FC = (props: any) => {
+type TWalletSelectorProps = {
+    onSubmit: any;
+    getCurrentStep: any;
+    goToNextStep: any;
+    validate: any;
+    onSubmitEnabledChange: any;
+    selected_step_ref: any;
+    value: any;
+};
+
+const WalletSelector = (props: TWalletSelectorProps) => {
     const { onSubmit, getCurrentStep, goToNextStep, validate, onSubmitEnabledChange, selected_step_ref } = props;
     const [wallets] = React.useState([
         'IcWalletSkrillLight',

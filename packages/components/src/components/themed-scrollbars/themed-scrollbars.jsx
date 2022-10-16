@@ -22,6 +22,7 @@ const ThemedScrollbars = ({
     if (is_bypassed) return children;
     return (
         <div
+            data-testid='dt_themed_scrollbars'
             ref={hoverRef}
             className={classNames('dc-themed-scrollbars', className, {
                 'dc-themed-scrollbars__autohide': autohide,

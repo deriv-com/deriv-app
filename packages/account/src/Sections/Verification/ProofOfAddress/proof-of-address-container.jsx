@@ -2,17 +2,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading, useStateCallback } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import Expired from 'Components/poa-expired';
-import Unverified from 'Components/poa-unverified';
-import NeedsReview from 'Components/poa-needs-review';
-import Submitted from 'Components/poa-submitted';
-import Verified from 'Components/poa-verified';
-import NotRequired from 'Components/poa-not-required';
-import PoaStatusCodes from 'Components/poa-status-codes';
+import Expired from 'Components/poa/status/expired';
+import Unverified from 'Components/poa/status/unverified';
+import NeedsReview from 'Components/poa/status/needs-review';
+import Submitted from 'Components/poa/status/submitted';
+import Verified from 'Components/poa/status/verified';
+import NotRequired from 'Components/poa/status/not-required';
+import PoaStatusCodes from 'Components/poa/status/status-codes';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications }) => {
+const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_account, refreshNotifications }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_document_upload: false,
@@ -88,8 +88,12 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
     )
         return <NotRequired />;
     if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
-    if (resubmit_poa || allow_poa_resubmission) {
-        return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+    if (
+        resubmit_poa ||
+        allow_poa_resubmission ||
+        (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status))
+    ) {
+        return <ProofOfAddressForm is_resubmit onSubmit={() => onSubmit({ needs_poi })} />;
     }
 
     switch (document_status) {
@@ -102,9 +106,9 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
         case PoaStatusCodes.expired:
             return <Expired onClick={handleResubmit} />;
         case PoaStatusCodes.rejected:
-            return <Unverified />;
+            return <Unverified onClick={handleResubmit} />;
         case PoaStatusCodes.suspected:
-            return <Unverified />;
+            return <Unverified onClick={handleResubmit} />;
         default:
             return null;
     }
@@ -112,6 +116,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, refreshNotifications
 
 ProofOfAddressContainer.propTypes = {
     is_mx_mlt: PropTypes.bool,
+    has_restricted_mt5_account: PropTypes.bool,
     is_switching: PropTypes.bool,
     refreshNotifications: PropTypes.func,
 };

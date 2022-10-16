@@ -76,6 +76,7 @@ PasswordMeter.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),
     has_error: PropTypes.bool,
     input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    custom_feedback_messages: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 export default PasswordMeter;

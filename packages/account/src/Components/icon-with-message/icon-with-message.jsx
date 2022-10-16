@@ -49,8 +49,10 @@ const IconWithMessage = ({
 IconWithMessage.propTypes = {
     icon: PropTypes.string.isRequired,
     has_button: PropTypes.bool,
+    has_real_account: PropTypes.bool,
     message: PropTypes.string.isRequired,
     toggleAccountsDialog: PropTypes.func,
+    toggleShouldShowRealAccountsList: PropTypes.func,
 };
 
 export default connect(({ client, ui }) => ({

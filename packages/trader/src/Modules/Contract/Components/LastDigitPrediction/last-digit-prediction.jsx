@@ -133,12 +133,19 @@ const LastDigitPrediction = ({
 LastDigitPrediction.propTypes = {
     barrier: PropTypes.number,
     contract_type: PropTypes.string,
+    digits: PropTypes.array,
     digits_info: PropTypes.object,
+    dimension: PropTypes.number,
+    has_entry_spot: PropTypes.bool,
+    is_digit_contract: PropTypes.bool,
     is_ended: PropTypes.bool,
+    is_trade_page: PropTypes.bool,
     status: PropTypes.string,
     trade_type: PropTypes.string,
     onDigitChange: PropTypes.func,
+    onLastDigitSpot: PropTypes.func,
     selected_digit: PropTypes.number,
+    tick: PropTypes.object,
 };
 
 export default observer(LastDigitPrediction);

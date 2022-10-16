@@ -195,6 +195,7 @@ InputWithCheckbox.propTypes = {
     tooltip_alignment: PropTypes.string,
     error_message_alignment: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    is_disabled: PropTypes.bool,
 };
 
 export default InputWithCheckbox;

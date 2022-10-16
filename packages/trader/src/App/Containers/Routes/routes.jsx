@@ -109,6 +109,7 @@ Routes.propTypes = {
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    onUnmountPortfolio: PropTypes.func,
     passthrough: PropTypes.object,
     setPromptHandler: PropTypes.func,
     setTradeMountingPolicy: PropTypes.func,
@@ -117,8 +118,8 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common, modules, ui }) => ({
-        onUnmountPortfolio: modules.portfolio.onUnmount,
+    connect(({ client, common, modules, ui, portfolio }) => ({
+        onUnmountPortfolio: portfolio.onUnmount,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

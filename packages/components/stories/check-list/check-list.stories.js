@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import { boolean } from '@storybook/addon-knobs';
 import Wrapper from '../shared/wrapper';
 import Checklist from 'Components/checklist';
 import React from 'react';
@@ -17,17 +16,26 @@ storiesOf('CheckList', module)
                 {
                     content: 'Item with an action',
                     status: 'action',
-                    onClick: () => console.log('clicked'),
+                    onClick: () => {
+                        /* eslint-disable no-console */
+                        console.log('clicked');
+                    },
                 },
                 {
                     content: 'Item with done status ',
                     status: 'done',
-                    onClick: () => console.log('clicked'),
+                    onClick: () => {
+                        /* eslint-disable no-console */
+                        console.log('clicked');
+                    },
                 },
                 {
                     content: 'Item with an action button',
                     status: 'button-action',
-                    onClick: () => console.log('clicked'),
+                    onClick: () => {
+                        /* eslint-disable no-console */
+                        console.log('clicked');
+                    },
                     button_text: 'I accept',
                 },
                 {

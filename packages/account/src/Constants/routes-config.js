@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -12,23 +12,29 @@ import {
     TwoFactorAuthentication,
     SelfExclusion,
     Account,
-    DeactivateAccount,
+    ClosingAccount,
     ConnectedApps,
     LoginHistory,
-    AccountDeactivated,
+    AccountClosed,
+    DeactivateAccount,
 } from 'Sections';
 
 // Error Routes
-const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
+const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
 const initRoutesConfig = ({ is_appstore }) => [
     {
-        path: routes.account_deactivated,
-        component: AccountDeactivated,
+        path: routes.account_closed,
+        component: AccountClosed,
         is_authenticated: false,
         // Don't use `Localize` component since native html tag like `option` cannot render them
-        getTitle: () => localize('Account deactivated'),
+        getTitle: () => localize('Account closed'),
+    },
+    {
+        // TODO: Remove once mobile team has changed this link
+        path: routes.deactivate_account,
+        component: DeactivateAccount,
     },
     {
         path: routes.account,
@@ -114,9 +120,9 @@ const initRoutesConfig = ({ is_appstore }) => [
                         getTitle: () => localize('Two-factor authentication'),
                     },
                     {
-                        path: routes.deactivate_account,
-                        component: DeactivateAccount,
-                        getTitle: () => localize('Deactivate account'),
+                        path: routes.closing_account,
+                        component: ClosingAccount,
+                        getTitle: () => localize('Close your account'),
                     },
                 ],
             },

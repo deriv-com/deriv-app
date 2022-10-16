@@ -41,6 +41,9 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
 BinaryLink.propTypes = {
     active_class: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+    has_error: PropTypes.bool,
+    href: PropTypes.string,
+    setError: PropTypes.func,
     to: PropTypes.string,
 };
 

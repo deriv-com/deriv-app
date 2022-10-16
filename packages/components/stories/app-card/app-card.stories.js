@@ -25,21 +25,27 @@ storiesOf('AppCard', module)
                         linked_wallet='Virtual USD Wallet'
                         login_id='7926972'
                         onAddRealClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Add real clicked');
                         }}
                         onDepositClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Deposit clicked!');
                         }}
                         onPlayClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Play clicked!');
                         }}
                         onSettingsClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Settings clicked!');
                         }}
                         onTransactionsClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Transactions clicked!');
                         }}
                         onWithdrawClick={() => {
+                            /* eslint-disable no-console */
                             console.log('Withdraw clicked!');
                         }}
                         server='Deriv Server'

@@ -2,12 +2,13 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores';
 
 const CreateAdErrorModal = () => {
     const { my_ads_store } = useStores();
 
-    if (my_ads_store.create_ad_error_code === 'DuplicateAdvert') {
+    if (my_ads_store.error_code === api_error_codes.DUPLICATE_ADVERT) {
         return (
             <Modal
                 className='p2p-my-ads__modal-error'
@@ -32,7 +33,7 @@ const CreateAdErrorModal = () => {
                 </Modal.Footer>
             </Modal>
         );
-    } else if (my_ads_store.create_ad_error_code === 'AdvertSameLimits') {
+    } else if (my_ads_store.error_code === api_error_codes.ADVERT_SAME_LIMITS) {
         return (
             <Modal
                 className='p2p-my-ads__modal-error'

@@ -16,6 +16,8 @@ export default class QuickStrategyStore {
     @observable input_duration_value = this.qs_cache.input_duration_value || '';
     @observable input_stake = this.qs_cache.input_stake || '';
     @observable input_size = this.qs_cache.input_size || '';
+    @observable input_alembert_unit = this.qs_cache.input_alembert_unit || '';
+    @observable input_oscar_unit = this.qs_cache.input_oscar_unit || '';
     @observable input_loss = this.qs_cache.input_loss || '';
     @observable input_profit = this.qs_cache.input_profit || '';
 
@@ -35,11 +37,15 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
-            'quick-strategy__size': this.input_size,
+            ...(this.active_index === 0 && { 'quick-strategy__size': this.input_size }),
+            ...(this.active_index === 1 && { 'alembert-unit': this.input_alembert_unit }),
+            ...(this.active_index === 2 && { 'oscar-unit': this.input_oscar_unit }),
+
             'quick-strategy__loss': this.input_loss,
             'quick-strategy__profit': this.input_profit,
         };
         storeSetting('quick_strategy', this.qs_cache);
+
         return init;
     }
 
@@ -180,6 +186,8 @@ export default class QuickStrategyStore {
         const duration_value = this.input_duration_value;
         const stake = this.input_stake;
         const size = this.input_size;
+        const alembert_unit = this.input_alembert_unit;
+        const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
         const profit = this.input_profit;
 
@@ -219,6 +227,8 @@ export default class QuickStrategyStore {
             duration: duration_value,
             stake,
             size,
+            alembert_unit,
+            oscar_unit,
             loss,
             profit,
         };
@@ -423,11 +433,12 @@ export default class QuickStrategyStore {
         const number_fields = [
             'quick-strategy__duration-value',
             'quick-strategy__stake',
-            'quick-strategy__size',
+            ...(this.active_index === 0 ? ['quick-strategy__size'] : []),
+            ...(this.active_index === 1 ? ['alembert-unit'] : []),
+            ...(this.active_index === 2 ? ['oscar-unit'] : []),
             'quick-strategy__profit',
             'quick-strategy__loss',
         ];
-
         Object.keys(values).forEach(key => {
             const value = values[key];
 
@@ -448,6 +459,9 @@ export default class QuickStrategyStore {
             if (value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
+            if (key === 'quick-strategy__size' && values[key] < 2) {
+                errors[key] = localize('Value must be higher than 2');
+            }
         });
 
         const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
@@ -461,7 +475,6 @@ export default class QuickStrategyStore {
                 errors['quick-strategy__duration-value'] = localize('Maximum duration: {{ max }}', { max });
             }
         }
-
         return errors;
     }
 
@@ -472,7 +485,9 @@ export default class QuickStrategyStore {
     getSizeDesc = index => {
         switch (index) {
             case 0:
-                return localize('The multiplier amount used to increase your stake if you’re losing a trade.');
+                return localize(
+                    'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
+                );
             case 1:
                 return localize('The amount that you may add to your stake if you’re losing a trade.');
             case 2:

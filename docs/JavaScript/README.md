@@ -137,6 +137,16 @@ React.useEffect(...);
 -   Use `{condition && <el/> ...</el>}` syntax to conditionally render an element.
 -   Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
 -   Use `localize('...')` or `<Localize i18n_default_text='...'` for translations.
+-   Do NOT use `variables` to `localize()`, this will break the translations, for example:
+
+```JavaScript
+    // Do NOT use this
+    localize(item.title)
+
+    // Use this
+    localize('title')
+```
+
 -   Use `website_name` constant instead of `Deriv`.
 -   Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
 -   Always name your components before default exporting them, for example:

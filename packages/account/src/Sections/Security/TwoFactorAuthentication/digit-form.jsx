@@ -5,7 +5,7 @@ import { Input, Button } from '@deriv/components';
 import { localize, getLanguage } from '@deriv/translations';
 import { getPropertyValue, WS, redirectToLogin } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
+const DigitForm = ({ is_enabled, setTwoFAStatus, logoutClient }) => {
     const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
@@ -49,7 +49,8 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
             const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setSuccess(true);
             resetForm();
-            setEnabled(is_enabled_response);
+            setTwoFAStatus(is_enabled_response);
+            logoutClient().then(() => redirectToLogin(false, getLanguage()));
         }
     };
 
@@ -86,11 +87,6 @@ const DigitForm = ({ is_enabled, setEnabled, logoutClient }) => {
                             text={button_text}
                             large
                             primary
-                            onClick={() => {
-                                if (isValid) {
-                                    logoutClient().then(() => redirectToLogin(false, getLanguage()));
-                                }
-                            }}
                         />
                     </div>
                 </Form>

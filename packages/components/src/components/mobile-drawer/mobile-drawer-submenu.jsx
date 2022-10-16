@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const SubMenu = ({
     children,
@@ -60,6 +60,8 @@ SubMenu.propTypes = {
     submenu_suffix_icon: PropTypes.string,
     submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     submenu_toggle_class: PropTypes.string,
+    onToggle: PropTypes.func,
+    route_config_path: PropTypes.string,
 };
 
 const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (

@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "Components/*": ["src/components/*"],
+            "Config/*": ["src/config/*"],
+            "Constants/*": ["src/constants/*"],
+            "Containers/*": ["src/containers/*"],
+            "Pages/*": ["src/pages/*"],
+            "Stores/*": ["src/stores/*"],
+            "Types": ["src/types"],
+            "Utils/*": ["src/utils/*"],
+            "@deriv/*": ["../*/src"]
+        },
+        "outDir": "./dist",
+        "baseUrl": "./"
+    },
+    "include": ["src"]
+}

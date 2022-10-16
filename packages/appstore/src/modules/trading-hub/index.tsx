@@ -111,7 +111,7 @@ const TradingHub: React.FC = () => {
                 toggleModal={toggleMT5TradeModal}
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
             />
-            <CFDPasswordManagerModal context={store} platform={platform} />
+            <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
             <ResetTradingPasswordModal context={store} />
             {/* <CFDFinancialStpRealAccountSignup context={store} /> */}
         </React.Fragment>

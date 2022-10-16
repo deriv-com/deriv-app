@@ -4,7 +4,6 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
-import { useHistory } from 'react-router-dom';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const available_demo_accounts: Array<TStaticAccountProps> = [
@@ -38,29 +37,37 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
     ];
 
-    const { client, modules, ui }: TRootStore = useStores();
-    const { openDerivRealAccountNeededModal, openTopUpModal } = ui;
+    const { client, modules, common }: TRootStore = useStores();
     const {
-        account_type,
-        setAccountType,
-        poi_poa_verified,
-        openPasswordModal,
-        need_poi_for_vanuatu,
-        toggleJurisdictionModal,
-        need_poi_for_bvi_labuan,
-        toggleCFDVerificationModal,
-        toggleCFDPersonalDetailsModal,
-        is_cfd_password_modal_enabled,
-        has_submitted_personal_details,
-        jurisdiction_selected_shortcode,
+        standpoint,
+        createCFDAccount,
+        setMT5TradeAccount,
+        openAccountTransfer,
+        toggleMT5TradeModal,
+        enableCFDPasswordModal,
+        openAccountNeededModal,
+        has_maltainvest_account,
     } = modules.cfd;
-    const { isEligibleForMoreRealMt5, is_eu } = client;
-    const history = useHistory();
+    const { platform, setAppstorePlatform } = common;
+    const { is_eu } = client;
 
-    const existingDemoAccounts = (platform: TPlatform, market_type?: string) => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${market_type}`))
+    const openCFDAccount = (account_type: string) => {
+        if (is_eu && !has_maltainvest_account && standpoint.iom) {
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+        } else {
+            createCFDAccount({
+                category: 'demo',
+                type: account_type,
+                platform,
+            });
+            enableCFDPasswordModal();
+        }
+    };
+
+    const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.demo.${market_type}`))
+                  .filter(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -98,9 +105,23 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                               loginid={existing_account.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
-                                              //   TODO will pass the click functions when flows are updated
-                                              onClickTopUp={() => null}
-                                              onClickTrade={() => null}
+                                              onClickTopUp={() =>
+                                                  openAccountTransfer(
+                                                      current_list[
+                                                          Object.keys(current_list).find((key: string) =>
+                                                              key.startsWith(`${platform}.demo.${account.type}`)
+                                                          ) || ''
+                                                      ],
+                                                      {
+                                                          category: 'demo',
+                                                          type: account.type,
+                                                      }
+                                                  )
+                                              }
+                                              onClickTrade={() => {
+                                                  toggleMT5TradeModal();
+                                                  setMT5TradeAccount(existing_account);
+                                              }}
                                               description={account.description}
                                           />
                                       </div>
@@ -114,10 +135,9 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
-                                          //   TODO will pass the click functions when flows are updated
                                           onClickGet={() => {
-                                              toggleJurisdictionModal();
-                                              setAccountType({ category: 'demo', type: account.type });
+                                              setAppstorePlatform(account.platform);
+                                              openCFDAccount(account.type);
                                           }}
                                           description={account.description}
                                       />

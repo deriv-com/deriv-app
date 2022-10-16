@@ -31,7 +31,6 @@ const CFDRealAccounts = ({
         disableCFDPasswordModal,
         toggleMT5TradeModal,
         setMT5TradeAccount,
-        is_mt5_trade_modal_visible,
     } = modules.cfd;
     const { setAppstorePlatform, platform } = common;
     const { isEligibleForMoreRealMt5 } = client;

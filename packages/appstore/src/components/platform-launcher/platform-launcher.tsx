@@ -5,20 +5,27 @@ import WalletIcon from 'Assets/svgs/wallet';
 import { Link } from 'react-router-dom';
 
 type TPlatformLauncherProps = {
-    icon: string;
-    title?: string;
-    description?: string;
+    app_icon: string;
+    app_title?: string;
+    app_desc?: string;
     link_to?: string;
     href?: string;
     has_real_account: boolean;
 };
 
-const PlatformLauncher = ({ icon, title, description, link_to, href, has_real_account }: TPlatformLauncherProps) => {
+const PlatformLauncher = ({
+    app_icon,
+    app_title,
+    app_desc,
+    link_to,
+    href,
+    has_real_account,
+}: TPlatformLauncherProps) => {
     return (
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
-                    <WalletIcon icon={icon} />
+                    <WalletIcon icon={app_icon} />
                 </div>
                 <DesktopWrapper>
                     <div className='platform-launcher__container--title-desc-wrapper'>
@@ -28,14 +35,14 @@ const PlatformLauncher = ({ icon, title, description, link_to, href, has_real_ac
                             className='platform-launcher__container--title-desc-wrapper--title'
                             weight='bold'
                         >
-                            <Localize i18n_default_text={title} />
+                            <Localize i18n_default_text={app_title} />
                         </Text>
                         <Text
                             size='xxs'
                             line_height='l'
                             className='platform-launcher__container--title-desc-wrapper--description'
                         >
-                            <Localize i18n_default_text={description} />
+                            <Localize i18n_default_text={app_desc} />
                         </Text>
                     </div>
                 </DesktopWrapper>
@@ -47,14 +54,14 @@ const PlatformLauncher = ({ icon, title, description, link_to, href, has_real_ac
                             className='platform-launcher__container--title-desc-wrapper--title'
                             weight='bold'
                         >
-                            <Localize i18n_default_text={title} />
+                            <Localize i18n_default_text={app_title} />
                         </Text>
                         <Text
                             size='xxxs'
                             line_height='l'
                             className='platform-launcher__container--title-desc-wrapper--description'
                         >
-                            <Localize i18n_default_text={description} />
+                            <Localize i18n_default_text={app_desc} />
                         </Text>
                     </div>
                 </MobileWrapper>

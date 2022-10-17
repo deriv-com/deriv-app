@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, Button, Icon, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';

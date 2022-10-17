@@ -12,31 +12,31 @@ const Template: Story<PlatformLauncherProps> = args => <PlatformLauncher {...arg
 
 export const PlatformLauncherDTrader = Template.bind({});
 PlatformLauncherDTrader.args = {
-    icon: 'DTrader',
-    title: 'DTrader',
-    description: 'Options & multipliers trading platform.',
+    app_icon: 'DTrader',
+    app_title: 'DTrader',
+    app_desc: 'Options & multipliers trading platform.',
 };
 export const PlatformLauncherDBot = Template.bind({});
 PlatformLauncherDBot.args = {
-    icon: 'DBot',
-    title: 'DBot',
-    description: 'Automate your trading, no coding needed.',
+    app_icon: 'DBot',
+    app_title: 'DBot',
+    app_desc: 'Automate your trading, no coding needed.',
 };
 export const PlatformLauncherSmartTrader = Template.bind({});
 PlatformLauncherSmartTrader.args = {
-    icon: 'SmartTrader',
-    title: 'SmartTrader',
-    description: 'Our legacy options trading platform.',
+    app_icon: 'SmartTrader',
+    app_title: 'SmartTrader',
+    app_desc: 'Our legacy options trading platform.',
 };
 export const PlatformLauncherBinaryBot = Template.bind({});
 PlatformLauncherBinaryBot.args = {
-    icon: 'BinaryBot',
-    title: 'Binary Bot',
-    description: 'Our legacy automated trading platform.',
+    app_icon: 'BinaryBot',
+    app_title: 'Binary Bot',
+    app_desc: 'Our legacy automated trading platform.',
 };
 export const PlatformLauncherDerivGo = Template.bind({});
 PlatformLauncherDerivGo.args = {
-    icon: 'DerivGo',
-    title: 'DerivGo',
-    description: 'Trade on the go with our mobile app.',
+    app_icon: 'DerivGo',
+    app_title: 'DerivGo',
+    app_desc: 'Trade on the go with our mobile app.',
 };

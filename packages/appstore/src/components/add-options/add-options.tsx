@@ -29,7 +29,7 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {number_of_accounts < 5 ? (
+                {number_of_accounts < 4 ? (
                     <div className={'add-options--desktop'} onClick={onClickHandler}>
                         <div className='add-options--desktop_title'>
                             <Icon
@@ -48,7 +48,7 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
                         </div>
                     </div>
                 ) : (
-                    <div className={'add-options--mobile'} onClick={onClickHandler}>
+                    <div className='add-options--mobile' onClick={onClickHandler}>
                         <Icon
                             icon='IcAppstoreAdd'
                             width={getHeightWidthOfIcon().width}
@@ -58,7 +58,7 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
                 )}
             </DesktopWrapper>
             <MobileWrapper>
-                <div className={'add-options--mobile'} onClick={onClickHandler}>
+                <div className='add-options--mobile' onClick={onClickHandler}>
                     <Icon
                         icon='IcAppstoreAdd'
                         width={getHeightWidthOfIcon().width}

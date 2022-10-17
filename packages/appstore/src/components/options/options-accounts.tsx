@@ -23,9 +23,9 @@ import classNames from 'classnames';
 import { when } from 'mobx';
 
 type TPlatformLauncherPropsArray = {
-    icon: string;
-    title: string;
-    description: string;
+    app_icon: string;
+    app_title: string;
+    app_desc: string;
     link_to?: string;
     href?: string;
 }[];
@@ -241,7 +241,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                             {props.accountType !== 'demo' && (
                                 <div
                                     className={`options-container__accounts-platform-container--add-options${
-                                        sortedAccountList.length >= 5 ? '-scroller' : ''
+                                        sortedAccountList.length >= 4 ? '-scroller' : ''
                                     }`}
                                 >
                                     <AddOptions
@@ -276,7 +276,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                             return (
                                 <>
                                     <PlatformLauncher
-                                        key={item.title}
+                                        key={item.app_title}
                                         {...item}
                                         has_real_account={has_any_real_account}
                                     />

@@ -6,6 +6,7 @@ export default class VerificationStore {
     constructor({ WS, root_store }) {
         this.root_store = root_store;
         this.WS = WS;
+        this.resend_interval = null;
     }
 
     @observable is_button_clicked = false;
@@ -112,10 +113,10 @@ export default class VerificationStore {
 
     setCountDownResendVerification() {
         this.setResendTimeout(this.resend_timeout - 1);
-        const resend_interval = setInterval(() => {
+        this.resend_interval = setInterval(() => {
             if (this.resend_timeout === 1) {
                 this.setResendTimeout(60);
-                clearInterval(resend_interval);
+                clearInterval(this.resend_interval);
             } else {
                 this.setResendTimeout(this.resend_timeout - 1);
             }

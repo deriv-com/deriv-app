@@ -49,7 +49,7 @@ type TCFDRealAccountDisplayProps = {
     ) => void;
     platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
@@ -111,7 +111,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) => {
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,
@@ -176,7 +176,7 @@ const CFDRealAccountDisplay = ({
         <CFDAccountCard
             key='real.synthetic'
             has_cfd_account_error={has_cfd_account_error}
-            title={localize('Synthetic')}
+            title={platform === 'mt5' ? localize('Derived') : localize('Synthetic')}
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_disabled={isMT5AccountCardDisabled('synthetic')}
@@ -192,7 +192,11 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
+            descriptor={
+                platform === 'mt5'
+                    ? localize('Trade CFDs on our synthetics, basket indices.')
+                    : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
+            }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}

@@ -44,7 +44,7 @@ describe('CFDDownloadContainer', () => {
         expect(screen.getByText(/IcMt5DeviceTablet/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5DevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcInstallationApple/i)).toBeInTheDocument();
+        expect(screen.queryByText(/IcInstallationApple/i)).not.toBeInTheDocument();
         expect(screen.getByText(/IcInstallationHuawei/i)).toBeInTheDocument();
     });
 
@@ -65,10 +65,6 @@ describe('CFDDownloadContainer', () => {
         expect(screen.getByText(/IcInstallationGoogle/i).closest('a')).toHaveAttribute(
             'href',
             'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server'
-        );
-        expect(screen.getByText(/IcInstallationApple/i).closest('a')).toHaveAttribute(
-            'href',
-            'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server'
         );
         expect(screen.getByText(/IcInstallationHuawei/i).closest('a')).toHaveAttribute(
             'href',

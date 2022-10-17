@@ -96,6 +96,9 @@ $card-width: 456px;
             flex-direction: column;
             padding-left: 1.6rem;
         }
+        &-icon {
+            flex-shrink: 0;
+        }
         &-row {
             display: flex;
             flex-direction: row;
@@ -106,6 +109,7 @@ $card-width: 456px;
             flex-direction: column;
             align-items: flex-start;
             margin-left: 2rem;
+            word-break: break-word;
         }
 
         .dc-accordion__item {

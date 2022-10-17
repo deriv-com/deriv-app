@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field as FormField, Formik, Form } from 'formik';
-import { Icon, Input } from '@deriv/components';
+import Icon from '../icon';
+import Input from '../input';
 
 const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
     const onSearchClear = setFieldValue => {

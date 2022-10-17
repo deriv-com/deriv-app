@@ -95,6 +95,7 @@ export { default as SendEmailTemplate } from './components/send-email-template';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';
 export { default as RemainingTime } from './components/remaining-time';
+export { default as SearchBox } from './components/search-box';
 export { default as Table } from './components/table';
 export { default as Tabs } from './components/tabs';
 export { default as Text } from './components/text';

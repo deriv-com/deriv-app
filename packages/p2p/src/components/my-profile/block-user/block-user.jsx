@@ -1,10 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper, SearchBox } from '@deriv/components';
 import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
-import SearchBox from 'Components/search-box';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';

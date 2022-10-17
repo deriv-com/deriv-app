@@ -1,17 +1,16 @@
 import { observable, action } from 'mobx';
-import React from 'react';
 import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;
-    active_tab_tutotials: number;
+    active_tab_tutorials: number;
     faq_search_value: string;
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
     is_info_panel_visible: boolean;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
-    setActiveTabTutorial: (active_tab_tutotials: number) => void;
+    setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
     showVideoDialog: (url: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
@@ -25,7 +24,7 @@ export default class DashboardStore implements IDashboardStore {
     }
 
     @observable active_tab = 0;
-    @observable active_tab_tutotials = 0;
+    @observable active_tab_tutorials = 0;
     @observable faq_search_value = null || '';
     @observable dialog_options = {};
     @observable is_dialog_open = false;
@@ -40,8 +39,8 @@ export default class DashboardStore implements IDashboardStore {
         this.active_tab = active_tab;
     }
     @action.bound
-    setActiveTabTutorial(active_tab_tutotials: number): void {
-        this.active_tab_tutotials = active_tab_tutotials;
+    setActiveTabTutorial(active_tab_tutorials: number): void {
+        this.active_tab_tutorials = active_tab_tutorials;
     }
     @action.bound
     setFAQSearchValue(faq_search_value: string): void {

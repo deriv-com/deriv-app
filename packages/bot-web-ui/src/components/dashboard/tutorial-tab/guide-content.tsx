@@ -11,28 +11,8 @@ type TGuideContent = {
     is_dialog_open: boolean;
     onOkButtonClick: () => void;
     showVideoDialog: (url: string) => void;
+    guide_list: [];
 };
-
-type TContentArray = {
-    id: number;
-    type: string;
-    content: string;
-    url?: string;
-};
-
-const contentArray: TContentArray[] = [
-    {
-        id: 1,
-        type: 'DBotVideo',
-        content: localize('DBot -- your automated trading partner'),
-        url: 'https://www.youtube.com/embed/Bb0HnaYNUx4',
-    },
-    {
-        id: 2,
-        type: 'DBotTour',
-        content: localize('How to build your bot from scratch using a simple strategy.'),
-    },
-];
 
 const GuideContent = ({
     dialog_options,
@@ -40,27 +20,16 @@ const GuideContent = ({
     is_dialog_open,
     onOkButtonClick,
     showVideoDialog,
+    guide_list,
 }: TGuideContent) => {
-    const [finalContentArray, setFinalContentArray] = React.useState<TContentArray[]>(contentArray);
-
-    React.useEffect(() => {
-        if (faq_search_value) {
-            const filteredArray = contentArray.filter(data => {
-                return data.content.toLowerCase().includes(faq_search_value);
-            });
-            return setFinalContentArray(filteredArray);
-        }
-        return setFinalContentArray(contentArray);
-    }, [faq_search_value]);
-
     return (
         <div className='tutorials-wrap'>
             <Text align='center' weight='bold' color='prominent' line_height='s'>
                 Guides
             </Text>
             <div className='tutorials-wrap__group'>
-                {finalContentArray.length > 0 ? (
-                    finalContentArray.map(({ id, content, url = '' }) => {
+                {guide_list?.length ? (
+                    guide_list.map(({ id, content, url }) => {
                         return (
                             <div className='tutorials-wrap__group__cards' key={id}>
                                 <div

@@ -38,3 +38,22 @@
         }
     }
 }
+
+.faq {
+    &__wrapper {
+        .dc-accordion {
+            &__item-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            &__item {
+                border: unset;
+                border-bottom: 0.1rem solid var(--general-section-1);
+            }
+        }
+        &__header {
+            margin: 0 0 1rem 0.5rem;
+        }
+    }
+}

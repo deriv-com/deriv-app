@@ -17,7 +17,6 @@ import './trading-hub.scss';
 const TradingHub = () => {
     const { ui, client } = useStores();
     const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
-    const { obj_total_balance } = client;
 
     const history = useHistory();
     /*TODO: We need to show this component whenever user click on tour guide button*/
@@ -72,12 +71,7 @@ const TradingHub = () => {
                     </Text>
                 </div>
                 <div className='trading-hub_header--account'>
-                    <TotalAssets
-                        amount={account_type === 'demo' ? '100000' : '0'}
-                        currency={obj_total_balance.currency}
-                        category={account_type}
-                        className='trading-hub_header--account_assets'
-                    />
+                    <TotalAssets category={account_type} className='trading-hub_header--account_assets' />
                     <DesktopWrapper>
                         <ToggleAccountType
                             accountTypeChange={(event: any) => accountTypeChange(event)}

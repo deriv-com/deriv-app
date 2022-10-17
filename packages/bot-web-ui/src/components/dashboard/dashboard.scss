@@ -1,4 +1,5 @@
-@import './dashboard-component/index.scss';
+@import '../dashboard/dashboard-component/index.scss';
+@import '../dashboard/tutorial-tab/index.scss';
 
 .dashboard {
     &__main {

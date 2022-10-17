@@ -77,7 +77,8 @@ const Dashboard = ({
                         >
                             <div
                                 className={classNames('quick-strategy', {
-                                    'quick-strategy__notifications-container--open': !is_drawer_open,
+                                    'quick-strategy__notifications-container--open': is_drawer_open,
+                                    'quick-strategy__notifications-container--closed': !is_drawer_open,
                                 })}
                             >
                                 <QuickStrategy />

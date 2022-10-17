@@ -325,8 +325,8 @@ export default class AccountTransferStore {
                     : account.landing_company_short?.toUpperCase();
 
             const cfd_account_text_display =
-                account.account_type === CFD_PLATFORMS.MT5
-                    ? `${cfd_text_display} ${getCFDAccountDisplay({
+                account.account_type === 'mt5'
+                    ? `${getCFDAccountDisplay({
                           market_type: account.market_type,
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,

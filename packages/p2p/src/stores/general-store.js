@@ -291,7 +291,7 @@ export default class GeneralStore extends BaseStore {
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
 
             if (error) {
-                this.isHighRisk(false);
+                this.setIsHighRisk(false);
                 this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Popover, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { formatMoney, isDemo } from '@deriv/shared';
-import { TAccountCategory } from 'Types';
 import { DetailsOfEachMT5Loginid, Mt5LoginList } from '@deriv/api-types';
+import { formatMoney, isDemo } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
+import { Popover, Text } from '@deriv/components';
+import { TAccountCategory } from 'Types';
 import { useStores } from 'Stores';
+import React from 'react';
 
 type TTotalAssets = {
     category: TAccountCategory;
@@ -13,7 +13,7 @@ type TTotalAssets = {
 
 const TotalAssets = ({ category }: TTotalAssets) => {
     const { client, common } = useStores();
-    const { obj_total_balance, dxtrade_accounts_list, mt5_login_list, accounts, account_list } = client;
+    const { account_list, accounts, dxtrade_accounts_list, mt5_login_list, obj_total_balance } = client;
     const { getExchangeRate } = common;
 
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);

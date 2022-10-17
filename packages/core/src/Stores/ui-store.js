@@ -1,4 +1,4 @@
-import { getPlatformInformation, isMobile, isTouchDevice, LocalStore, platform_name, routes } from '@deriv/shared';
+import { isMobile, isTouchDevice, LocalStore, routes, isBot } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { action, autorun, computed, observable } from 'mobx';
 import BaseStore from './base-store';
@@ -180,15 +180,6 @@ export default class UIStore extends BaseStore {
         });
     }
     changeTheme = () => {
-        // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-        const platform = getPlatformInformation(new_app_routing_history).header;
-        if (platform === platform_name.DBot) {
-            document.body.classList.remove('theme--dark');
-            document.body.classList.add('theme--light');
-            return;
-        }
-
         if (this.is_dark_mode_on) {
             document.body.classList.remove('theme--light');
             document.body.classList.add('theme--dark');
@@ -381,6 +372,9 @@ export default class UIStore extends BaseStore {
             this.is_dark_mode_on = is_dark_mode_on;
             // This GTM call is here instead of the GTM store due to frequency of use
             this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
+            if (isBot()) {
+                location.reload();
+            }
         }
 
         return this.is_dark_mode_on;

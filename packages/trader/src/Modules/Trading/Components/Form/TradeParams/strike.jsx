@@ -2,27 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 import { DesktopWrapper, InputField, MobileWrapper, Money } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 
-const Strike = ({
-    strike,
-    current_focus,
-    onChange,
-    validation_errors,
-    setCurrentFocus,
-    currency,
-    duration_unit,
-    duration,
-}) => {
+const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrentFocus, currency }) => {
     const [is_open, setIsOpen] = React.useState(false);
-
-    // const user_currency_decimal_places = getDecimalPlaces(currency);
-    const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
-    // const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
     const toggleWidget = () => setIsOpen(!is_open);
 
@@ -76,11 +62,10 @@ const Strike = ({
 };
 
 export default connect(({ client, modules, ui }) => ({
+    strike: modules.trade.strike,
     current_focus: ui.current_focus,
     currency: client.currency,
     setCurrentFocus: ui.setCurrentFocus,
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
-    duration_unit: modules.trade.duration_unit,
-    duration: modules.trade.duration,
 }))(Strike);

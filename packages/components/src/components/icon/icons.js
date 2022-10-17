@@ -604,6 +604,8 @@ import './tradetype/ic-tradetype-runlow.svg';
 import './tradetype/ic-tradetype-tickhigh.svg';
 import './tradetype/ic-tradetype-ticklow.svg';
 import './tradetype/ic-tradetype-upordown.svg';
+import './tradetype/ic-tradetype-vanilla-long-call.svg';
+import './tradetype/ic-tradetype-vanilla-long-put.svg';
 import './underlying/ic-underlying-1HZ100V.svg';
 import './underlying/ic-underlying-1HZ10V.svg';
 import './underlying/ic-underlying-1HZ200V.svg';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { Div100vhContainer, Money, Modal, ThemedScrollbars, Numpad } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { Div100vhContainer, Money, Modal, Popover, Numpad } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 
 const StrikeParamModal = ({ is_open, toggleModal, strike, currency, onChange }) => {
@@ -19,43 +19,52 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, currency, onChange }) 
         <Modal
             className='trade-params'
             is_open={is_open}
-            is_vertical_top
+            should_header_stick_body={false}
+            is_title_centered
             toggleModal={toggleModal}
             height='auto'
             width='calc(100vw - 32px)'
-            header={localize('Strike')}
+            title={localize('Strike')}
         >
-            <ThemedScrollbars>
-                <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
-                    <div className='trade-params__amount-keypad'>
-                        <Numpad
-                            value={strike}
-                            format={formatAmount}
-                            onSubmit={setBasisAndAmount}
-                            currency={currency}
-                            min={min_amount}
-                            is_currency
-                            render={({ value: v, className }) => {
-                                return (
-                                    <div className={className}>
-                                        {parseFloat(v) > 0 ? (
-                                            <Money currency={currency} amount={v} should_format={false} />
-                                        ) : (
-                                            v
-                                        )}
-                                    </div>
-                                );
-                            }}
-                            reset_press_interval={450}
-                            reset_value=''
-                            pip_size={user_currency_decimal_places}
-                            // onValidate={validateAmount}
-                            submit_label={localize('OK')}
-                            // onValueChange={onNumberChange}
-                        />
-                    </div>
-                </Div100vhContainer>
-            </ThemedScrollbars>
+            <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
+                <div className='trade-params__multiplier-ic-info-wrapper'>
+                    <Popover
+                        alignment='bottom'
+                        icon='info'
+                        id='dt_multiplier-stake__tooltip'
+                        zIndex={9999}
+                        is_bubble_hover_enabled
+                        message={<Localize i18n_default_text='Test message' />}
+                    />
+                </div>
+                <div className='trade-params__amount-keypad'>
+                    <Numpad
+                        value={strike ?? 0}
+                        format={formatAmount}
+                        onSubmit={setBasisAndAmount}
+                        currency={currency}
+                        min={min_amount}
+                        is_currency
+                        render={({ value: v, className }) => {
+                            return (
+                                <div className={className}>
+                                    {parseFloat(v) > 0 ? (
+                                        <Money currency={currency} amount={v} should_format={false} />
+                                    ) : (
+                                        v
+                                    )}
+                                </div>
+                            );
+                        }}
+                        reset_press_interval={450}
+                        reset_value=''
+                        pip_size={user_currency_decimal_places}
+                        onValidate={() => undefined}
+                        submit_label={localize('OK')}
+                        onValueChange={() => undefined}
+                    />
+                </div>
+            </Div100vhContainer>
         </Modal>
     );
 };

@@ -3,6 +3,7 @@ import React from 'react';
 import Icon from '../icon/icon';
 
 const IconTradeTypes = ({ type, className, ...props }) => {
+    console.log('type: ', type);
     switch (type.toLowerCase()) {
         case 'asiand':
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
@@ -71,6 +72,10 @@ const IconTradeTypes = ({ type, className, ...props }) => {
             return <Icon icon='IcTradetypeTicklow' className={className} color='brand' {...props} />;
         case 'upordown':
             return <Icon icon='IcTradetypeUpordown' className={className} color='brand' {...props} />;
+        case 'vanillalongcall':
+            return <Icon icon='IcTradetypeVanillaLongCall' className={className} color='brand' {...props} />;
+        case 'vanillalongput':
+            return <Icon icon='IcTradetypeVanillaLongPut' className={className} color='brand' {...props} />;
         default:
             return <Icon icon='IcUnknown' className={className} {...props} />;
     }

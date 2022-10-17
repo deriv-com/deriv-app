@@ -41,8 +41,10 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     high_low: {
         title: localize('Higher/Lower'),
         trade_types: ['CALL', 'PUT'],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount'],
+        barrier_count: 1,
+        config: { should_override: true },
     },
     touch: {
         title: localize('Touch/No Touch'),
@@ -415,6 +417,14 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
         position: 'bottom',
     },
 });

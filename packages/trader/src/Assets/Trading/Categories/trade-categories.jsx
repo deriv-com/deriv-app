@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 
@@ -420,6 +420,14 @@ const TradeCategories = ({ category }) => {
                         </p>
                         <p>{localize('The exit spot is the market price when the contract is closed.')}</p>
                     </React.Fragment>
+                );
+                break;
+            case 'vanilla':
+                TradeTypeTemplate = (
+                    <Localize
+                        i18n_default_text='Predict the market direction and select either “Call” or “Put” to open a position.<0/><0/> If you select “Call”, you will earn a payout if the market price is higher than the strike price at the expiry time. Your payout is X.XX USD for each point above the strike price. There won’t be a payout if the market price falls below the strike price when your contract ends.<0/><0/>If you select “Put”, you will earn a payout if the market price is lower than the strike price at the expiry time. Your payout is X.XX USD for each point below the strike price. There won’t be a payout if the market price rises above the strike price when your contract ends.<0/><0/>You will earn a profit if the payout is higher than your stake.<0/><0/>You can determine the expiry for your contract by setting the duration or end time.'
+                        components={[<br key={0} />]}
+                    />
                 );
                 break;
             default:

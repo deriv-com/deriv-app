@@ -47,4 +47,5 @@ export type TAccountsList = {
     icon?: string;
     idx: string | number;
     is_dark_mode_on: boolean;
+    title: string;
 };

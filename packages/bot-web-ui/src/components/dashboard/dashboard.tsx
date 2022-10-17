@@ -2,14 +2,14 @@ import React from 'react';
 import { Tabs, Tab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
-import DashboardComponents from './dashboard-components';
+import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
+import classNames from 'classnames';
 import ReactJoyride from 'react-joyride';
+import DashboardComponents from './dashboard-components';
 import { DBOT_ONBOARDING } from './joyride-config';
 import BotBuilder from './bot-builder';
-import classNames from 'classnames';
 import RunStrategy from '../toolbar/run-strategy';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import Sidebar from './dashboard-components/sidebar';
 import RunPanel from '../run-panel';
 

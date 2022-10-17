@@ -74,3 +74,15 @@
         }
     }
 }
+
+.intro-tour {
+    background-color: var(--text-general) !important;
+    p {
+        color: var(--general-main-1) !important;
+    }
+    button {
+        svg {
+            filter: invert(1);
+        }
+    }
+}

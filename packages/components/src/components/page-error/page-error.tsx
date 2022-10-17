@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
+import DesktopWrapper from '../desktop-wrapper';
+import MobileWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
-import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
-import MobileWrapper from '../mobile-wrapper/mobile-wrapper.jsx';
 import Text from '../text/text';
 
 type TMessageObject = { message: string; has_html?: boolean };

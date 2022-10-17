@@ -23,7 +23,7 @@ export default class PaymentAgentStore {
     @observable receipt = {};
     @observable selected_bank = 0;
     @observable supported_banks = [];
-    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
+    @observable verification = new VerificationStore(this.WS, this.root_store);
     @observable active_tab_index = 0;
     @observable all_payment_agent_list = {
         paymentagent_list: {

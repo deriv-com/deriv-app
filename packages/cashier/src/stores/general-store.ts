@@ -58,7 +58,7 @@ export default class GeneralStore extends BaseStore {
     is_populating_values = false;
 
     @action.bound
-    setOnRemount(func: () => void): void {
+    setOnRemount(func: (input_condition?: any) => Promise<void>): void {
         this.onRemount = func;
     }
 

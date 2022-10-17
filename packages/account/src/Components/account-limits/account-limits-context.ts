@@ -7,11 +7,6 @@ export type TAccountLimitsContext = {
     toggleOverlay?: () => boolean;
 };
 
-const AccountLimitsContext = React.createContext<TAccountLimitsContext>({
-    currency: '',
-    footer_ref: undefined,
-    overlay_ref: undefined,
-    toggleOverlay: undefined,
-});
+const AccountLimitsContext = React.createContext<TAccountLimitsContext>({});
 
 export default AccountLimitsContext;

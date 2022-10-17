@@ -48,11 +48,20 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         exchange_rate: floating_rate_store.exchange_rate,
     });
 
+    const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';
+    const icon_disabled_color =
+        (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
 
     const onClickActivateDeactivate = () => {
         if (!is_activate_ad_disabled) {
             my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
+        }
+    };
+    const onClickAdd = () => {
+        if (general_store.is_listed && !general_store.is_barred) {
+            setAdvert(advert);
+            my_ads_store.showQuickAddModal(advert);
         }
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
@@ -89,7 +98,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             )}
                         >
                             <Icon
-                                icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                icon={`${is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'}`}
                                 custom_color={'var(--general-main-1)'}
                             />
                         </div>
@@ -110,7 +119,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             <Localize i18n_default_text='Ad ID {{advert_id}} ' values={{ advert_id: id }} />
                         </Text>
                         <div className='p2p-my-ads__table-row__type-and-status'>
-                            <Text line_height='m' size='s' weight='bold'>
+                            <Text color={ad_pause_color} line_height='m' size='s' weight='bold'>
                                 <Localize
                                     i18n_default_text='{{ad_type}} {{ account_currency }}'
                                     values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
@@ -119,13 +128,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             {enable_action_point ? (
                                 <div className='p2p-my-ads__table-status-warning'>
                                     <div style={{ marginRight: '0.8rem' }}>
-                                        <AdStatus is_active={!!is_advert_active} />
+                                        <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                                     </div>
 
                                     <Icon icon='IcAlertWarning' />
                                 </div>
                             ) : (
-                                <AdStatus is_active={!!is_advert_active} />
+                                <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             )}
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
@@ -154,13 +163,22 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             </Text>
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
-                            <Text color='prominent' line_height='m' size='xxs'>
+                            <Text color={ad_pause_color} line_height='m' size='xxs'>
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
-                            <Text color='profit-success' line_height='m' size='xs' weight='bold'>
+                            <Text
+                                color={
+                                    general_store.is_listed && !general_store.is_barred ? 'profit-success' : 'disabled'
+                                }
+                                line_height='m'
+                                size='xs'
+                                weight='bold'
+                            >
                                 <div className='display-layout'>
                                     {display_effective_rate} {local_currency}
-                                    {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
+                                    {rate_type === ad_type.FLOAT && (
+                                        <AdType ad_pause_color={ad_pause_color} float_rate={rate_display} />
+                                    )}
                                 </div>
                             </Text>
                         </div>
@@ -169,7 +187,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                            <Text color='general' size='xxxs' line-height='l'>
+                                            <Text color={ad_pause_color} size='xxxs' line-height='l'>
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -177,14 +195,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                 })
                             ) : (
                                 <div
-                                    className='p2p-my-ads__table-add'
-                                    onClick={() => {
-                                        setAdvert(advert);
-                                        my_ads_store.showQuickAddModal(advert);
-                                    }}
+                                    className={classNames('p2p-my-ads__table-add', {
+                                        'p2p-my-ads__table-add--disabled': !general_store.is_listed,
+                                    })}
+                                    onClick={() => onClickAdd()}
                                 >
-                                    <Icon icon='IcAdd' />
-                                    <Text color='prominent' size='xxs' weight='bold'>
+                                    <Icon color={icon_disabled_color} icon='IcAdd' />
+                                    <Text color={ad_pause_color} size='xxs' weight='bold'>
                                         <Localize i18n_default_text='Add' />
                                     </Text>
                                 </div>
@@ -215,7 +232,9 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell className='p2p-my-ads__table-price'>
                     <div className='display-layout'>
                         {display_effective_rate} {local_currency}
-                        {rate_type === ad_type.FLOAT && <AdType float_rate={rate_display} />}
+                        {rate_type === ad_type.FLOAT && (
+                            <AdType ad_pause_color={ad_pause_color} float_rate={rate_display} />
+                        )}
                     </div>
                 </Table.Cell>
                 <Table.Cell className='p2p-my-ads__table-available'>
@@ -234,7 +253,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='p2p-my-ads__table__payment-method--label' key={key}>
-                                        <Text color='general' size='xs' line-height='l'>
+                                        <Text color={ad_pause_color} size='xs' line-height='l'>
                                             {payment_method}
                                         </Text>
                                     </div>
@@ -242,14 +261,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                             })
                         ) : (
                             <div
-                                className='p2p-my-ads__table-add'
-                                onClick={() => {
-                                    setAdvert(advert);
-                                    my_ads_store.showQuickAddModal(advert);
-                                }}
+                                className={classNames('p2p-my-ads__table-add', {
+                                    'p2p-my-ads__table-add--disabled': !general_store.is_listed,
+                                })}
+                                onClick={() => onClickAdd()}
                             >
-                                <Icon icon='IcAdd' />
-                                <Text color='prominent' size='xxs' weight='bold'>
+                                <Icon color={icon_disabled_color} icon='IcAdd' />
+                                <Text color={ad_pause_color} size='xxs' weight='bold'>
                                     <Localize i18n_default_text='Add' />
                                 </Text>
                             </div>
@@ -259,12 +277,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                 <Table.Cell>
                     {enable_action_point ? (
                         <div className='p2p-my-ads__table-status-warning'>
-                            <AdStatus is_active={!!is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />
                         </div>
                     ) : (
                         <div className='p2p-my-ads__table-status'>
-                            <AdStatus is_active={!!is_advert_active} />
+                            <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                         </div>
                     )}
                 </Table.Cell>
@@ -281,11 +299,13 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                     }
                                 )}
                                 message={localize('{{status}}', {
-                                    status: is_advert_active ? 'Deactivate' : 'Activate',
+                                    status: is_advert_active && !general_store.is_barred ? 'Deactivate' : 'Activate',
                                 })}
                             >
                                 <Icon
-                                    icon={`${is_advert_active ? 'IcArchive' : 'IcUnarchive'}`}
+                                    icon={`${
+                                        is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'
+                                    }`}
                                     color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
                                 />
                             </Popover>
@@ -293,7 +313,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div onClick={handleOnEdit}>
                             <Popover
                                 alignment='bottom'
-                                className='p2p-my-ads__table-popovers__deactivate'
+                                className={classNames('p2p-my-ads__table-popovers__deactivate', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
                                 message={localize('Edit')}
                             >
                                 <Icon icon='IcEdit' color={general_store.is_barred && 'disabled'} />
@@ -302,7 +325,10 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                         <div onClick={onClickDelete}>
                             <Popover
                                 alignment='bottom'
-                                className='p2p-my-ads__table-popovers__delete'
+                                className={classNames('p2p-my-ads__table-popovers__delete', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
                                 message={localize('Delete')}
                             >
                                 <Icon

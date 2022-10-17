@@ -19,24 +19,20 @@ const Clipboard = ({
     const isMounted = useIsMounted();
     let timeout_clipboard = null;
 
-    const copyToClipboard = text => {
-        const textField = document.createElement('textarea');
-        textField.innerText = text;
-        document.body.appendChild(textField);
-        textField.select();
-        document.execCommand('copy');
-        textField.remove();
+    const copyToClipboard = async text => {
+        await navigator.clipboard.writeText(text);
     };
 
     const onClick = event => {
-        copyToClipboard(text_copy);
-        setIsCopied(true);
-        timeout_clipboard = setTimeout(() => {
-            if (isMounted()) {
-                setIsCopied(false);
-            }
-        }, 2000);
-        event.stopPropagation();
+        copyToClipboard(text_copy).then(() => {
+            setIsCopied(true);
+            timeout_clipboard = setTimeout(() => {
+                if (isMounted()) {
+                    setIsCopied(false);
+                }
+            }, 2000);
+            event.stopPropagation();
+        });
     };
 
     React.useEffect(() => {

@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid, Mt5LoginList } from '@deriv/api-types';
-import { formatMoney, isDemo } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import { Popover, Text } from '@deriv/components';
@@ -20,13 +20,15 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
 
+    const isDemo = (account: DetailsOfEachMT5Loginid) => account.account_type === 'demo';
+
     const cfd_real_currency =
-        mt5_login_list.find((mt5_accounts: Mt5LoginList) => !isDemo(mt5_accounts))?.currency ||
-        dxtrade_accounts_list.find((mt5_accounts: Mt5LoginList) => !isDemo(mt5_accounts))?.currency;
+        mt5_login_list.find((mt5_account: DetailsOfEachMT5Loginid) => !isDemo(mt5_account))?.currency ||
+        dxtrade_accounts_list.find((mt5_accounts: DetailsOfEachMT5Loginid) => !isDemo(mt5_accounts))?.currency;
 
     const cfd_demo_currency =
-        mt5_login_list.find((mt5_accounts: Mt5LoginList) => isDemo(mt5_accounts))?.currency ||
-        dxtrade_accounts_list.find((mt5_accounts: Mt5LoginList) => isDemo(mt5_accounts))?.currency;
+        mt5_login_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency ||
+        dxtrade_accounts_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency;
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (

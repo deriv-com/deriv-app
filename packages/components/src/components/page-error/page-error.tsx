@@ -90,7 +90,7 @@ const PageError = ({
                             'dc-page-error__message--left': !!image_url,
                         })}
                     >
-                        {messages?.map?.((message, index) =>
+                        {messages.map((message, index) =>
                             (message as TMessageObject)?.has_html ? (
                                 <Text
                                     as='p'

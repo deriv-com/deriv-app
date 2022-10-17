@@ -9,7 +9,7 @@ import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
 import GoogleDrive from './load-bot-preview/google-drive';
 
-type CardsProps = {
+type TCardsProps = {
     load_modal: LoadModalStore;
     active_tab: number;
     has_file_loaded: boolean;
@@ -43,7 +43,7 @@ const Cards = ({
     showVideoDialog,
     closeResetDialog,
     dialog_options,
-}: CardsProps) => {
+}: TCardsProps) => {
     type TCardArray = {
         icon: string;
         content: string;

@@ -39,9 +39,9 @@ const LocalComponent = ({
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
     const clearInjectionDiv = () => {
-        const element = document.getElementById('load-strategy__blockly-container');
-        if (element?.getElementsByClassName('injectionDiv').length) {
-            element.removeChild(element.getElementsByClassName('injectionDiv')[0]);
+        const el_ref = document.getElementById('load-strategy__blockly-container');
+        if (el_ref?.getElementsByClassName('injectionDiv').length) {
+            el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
         }
     };
     return (

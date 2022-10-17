@@ -41,9 +41,9 @@ interface ILoadModalStore {
 }
 
 const clearInjectionDiv = () => {
-    const element = document.getElementById('load-strategy__blockly-container');
-    if (element?.getElementsByClassName('injectionDiv').length > 1) {
-        element.removeChild(element.getElementsByClassName('injectionDiv')[0]);
+    const el_ref = document.getElementById('load-strategy__blockly-container');
+    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
+        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
     }
 };
 export default class LoadModalStore implements ILoadModalStore {

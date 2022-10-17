@@ -1,6 +1,6 @@
 /** @define cq-bottom-ui-widgets; weak */
 .cq-bottom-ui-widgets {
-    bottom: 18px !important;
+    bottom: 14px !important;
 }
 
 .accumulators-stats {
@@ -12,7 +12,7 @@
     margin: 0 2.5em 0 1em;
     background-color: var(--general-section-1);
     border-radius: $BORDER_RADIUS * 2;
-    width: 75.3rem;
+    width: 56.3rem;
 
     @include mobile {
         position: absolute;
@@ -38,7 +38,7 @@
         width: 100%;
         height: 5.2rem;
         position: relative;
-        padding: 1.3rem 0.8rem;
+        padding: 0.8rem;
 
         @include mobile {
             width: 100%;
@@ -77,9 +77,13 @@
     &__history {
         display: flex;
         align-items: center;
-        padding: 0 2.2rem 0 1.5rem;
+        padding: 0 3.2rem 0 1.6rem;
         justify-content: space-between;
         flex-grow: 1;
+
+        @include mobile {
+            padding: 0 2.4rem 0 0.8rem;
+        }
 
         &-counter {
             width: 3.8rem;
@@ -165,7 +169,7 @@
     }
     .accordion-toggle-arrow {
         position: absolute;
-        right: 0.4rem;
+        right: 0.8rem;
         top: 0;
         bottom: 0;
         margin: auto;

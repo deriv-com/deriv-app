@@ -14,7 +14,7 @@ export const CONTRACT_TYPES = {
     BREAK_OUT: 'Break out',
 };
 export const ROW_SIZES = {
-    DESKTOP_COLLAPSED: 15,
+    DESKTOP_COLLAPSED: 10,
     DESKTOP_EXPANDED: 10,
     MOBILE_COLLAPSED: 6,
     MOBILE_EXPANDED: 5,

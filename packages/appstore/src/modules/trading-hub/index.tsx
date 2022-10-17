@@ -15,7 +15,6 @@ import TotalAssets from 'Components/total-assets';
 const TradingHub = () => {
     const { ui } = useStores();
     const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
-
     const history = useHistory();
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [account_type, setAccountType] = React.useState<TAccountCategory>('demo');
@@ -49,13 +48,8 @@ const TradingHub = () => {
     return (
         <React.Fragment>
             <div>
-                <div>
-                    <TotalAssets category={account_type} />
-                    <ToggleAccountType
-                        accountTypeChange={(event: any) => accountTypeChange(event)}
-                        value={account_type}
-                    />
-                </div>
+                <TotalAssets category={account_type} />
+                <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
             </div>
 
             <div className='trading-hub__body'>

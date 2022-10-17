@@ -10,6 +10,7 @@ import { Localize, localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
+import TotalAssets from 'Components/total-assets';
 
 const TradingHub = () => {
     const { ui } = useStores();
@@ -46,8 +47,12 @@ const TradingHub = () => {
 
     return (
         <React.Fragment>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
-            <div className='trading-hub'>
+            <div>
+                <TotalAssets category={account_type} />
+                <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
+            </div>
+
+            <div className='trading-hub__body'>
                 <CFDAccounts account_type={account_type} />
             </div>
             <Joyride

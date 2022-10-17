@@ -3,32 +3,24 @@ import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
-    Audio,
-    BlocklyLoading,
     BotFooterExtensions,
     BotNotificationMessages,
-    MainContent,
-    QuickStrategy,
-    RunPanel,
-    RoutePromptDialog,
-    Toolbar,
+    Dashboard,
     NetworkToastPopup,
+    RoutePromptDialog,
 } from 'Components';
-import { LocalStore } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
+import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
-import Dashboard from 'Components/dashboard';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
     const [is_loading, setIsLoading] = React.useState(true);
-    const dbot_dashboard_storage = LocalStore.get('show_dbot_dashboard');
-    const show_dashboard = dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false';
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
-    const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
+    const { showDigitalOptionsMaltainvestError } = app;
 
     React.useEffect(() => {
         /**
@@ -65,17 +57,9 @@ const App = ({ passthrough }) => {
         setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
-            if (!show_dashboard) {
-                onMount();
-            }
         });
-        return () => {
-            if (!show_dashboard) {
-                onUnmount();
-            }
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMount, onUnmount]);
+    }, []);
 
     React.useEffect(() => {
         const onDisconnectFromNetwork = () => {
@@ -85,30 +69,20 @@ const App = ({ passthrough }) => {
         return () => {
             window.removeEventListener('offline', onDisconnectFromNetwork);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return is_loading ? (
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
-            <div className={show_dashboard ? 'bot-dashboard' : 'bot'}>
+            <div className='bot-dashboard bot'>
+                <BotFooterExtensions />
                 <BotNotificationMessages />
+                <Dashboard />
                 <NetworkToastPopup />
-
-                {show_dashboard ? (
-                    <Dashboard />
-                ) : (
-                    <>
-                        <Toolbar />
-                        <MainContent />
-                        <RunPanel />
-                        <QuickStrategy />
-                        <BotFooterExtensions />
-                        <Audio />
-                        <RoutePromptDialog />
-                        <BlocklyLoading />
-                    </>
-                )}
+                <BotBuilder />
+                <RoutePromptDialog />
             </div>
         </MobxContentProvider>
     );

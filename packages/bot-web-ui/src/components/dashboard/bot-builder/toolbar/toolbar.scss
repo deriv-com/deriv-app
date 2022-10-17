@@ -1,0 +1,89 @@
+.toolbar {
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 6px;
+    z-index: 1;
+
+    &__btn {
+        background-color: var(--button-primary-default) !important;
+
+        &--icon {
+            display: flex;
+            justify-content: center;
+            margin: 0 4px;
+            height: calc(56px - 16px) !important;
+
+            & .dc-btn__icon {
+                padding-right: 0.4rem;
+            }
+
+            > * {
+                align-self: center;
+            }
+
+            &-text {
+                @include typeface(--title-center-bold-active, none);
+            }
+        }
+    }
+
+    &__section {
+        display: flex;
+
+        > * {
+            align-self: center;
+        }
+    }
+
+    &__icon {
+        cursor: pointer;
+        border: none;
+        margin: auto 12px;
+        height: 16px;
+        width: 16px;
+        fill: var(--text-prominent);
+    }
+
+    &__group {
+        display: flex;
+        border-radius: $BORDER_RADIUS;
+        border: solid 1px var(--border-normal);
+        height: 40px;
+
+        &-btn {
+            padding: 0px 12px;
+            height: 40px;
+
+            > * {
+                align-self: center;
+            }
+        }
+    }
+    &__animation {
+        margin-right: 0.5rem;
+    }
+    &__dialog {
+        &-text--second {
+            margin-top: 2.4rem;
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 17px;
+    margin: 8px;
+    background-color: var(--border-normal);
+}

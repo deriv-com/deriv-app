@@ -9,7 +9,7 @@ import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
 
 type TFormValues = { [key: string]: string };
-type TSetSubmiting = (isSubmitting: boolean) => void;
+type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsModal = ({
     account_settings,
@@ -35,7 +35,7 @@ const CFDPersonalDetailsModal = ({
         account_opening_reason: '',
     });
 
-    const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
+    const initiatePersonalDetails = async (setSubmitting?: TSetSubmitting) => {
         // force request to update settings cache since settings have been updated
         let get_settings_response: GetSettings;
         if (!account_settings) {
@@ -96,7 +96,7 @@ const CFDPersonalDetailsModal = ({
         toggleJurisdictionModal();
     };
 
-    const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmiting, is_dirty = true) => {
+    const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmitting, is_dirty = true) => {
         if (is_dirty) {
             // Set account settings
             const data = await WS.setSettings(value);

@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import ButtonLink from '../button-link/button-link';
@@ -7,9 +6,25 @@ import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
 import MobileWrapper from '../mobile-wrapper/mobile-wrapper.jsx';
 import Text from '../text/text';
 
+type TMessageObject = { message: string; has_html?: boolean };
+
+type TPageErrorProps = {
+    buttonOnClick?: () => void;
+    buttonSize?: 'small' | 'medium' | 'large';
+    classNameImage?: string;
+    header: React.ReactNode;
+    image_url?: string;
+    messages: Array<TMessageObject | React.ReactNode>;
+    redirect_labels: string[];
+    redirect_urls?: string[];
+    setError?: (has_error: boolean, error: React.ReactNode) => void;
+    should_clear_error_on_click?: boolean;
+    has_malta_account?: boolean;
+};
+
 const PageError = ({
     buttonOnClick,
-    buttonSize,
+    buttonSize = 'large',
     classNameImage,
     has_malta_account,
     header,
@@ -19,12 +34,12 @@ const PageError = ({
     redirect_urls,
     should_clear_error_on_click,
     setError,
-}) => {
+}: TPageErrorProps) => {
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
-            setError(false, null);
-        } else if (typeof buttonOnClick === 'function') {
-            buttonOnClick();
+            setError?.(false, null);
+        } else {
+            buttonOnClick?.();
         }
     };
 
@@ -75,8 +90,8 @@ const PageError = ({
                             'dc-page-error__message--left': !!image_url,
                         })}
                     >
-                        {messages.map((message, index) =>
-                            message.has_html ? (
+                        {messages?.map?.((message, index) =>
+                            (message as TMessageObject)?.has_html ? (
                                 <Text
                                     as='p'
                                     size='s'
@@ -84,7 +99,7 @@ const PageError = ({
                                     line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
-                                    dangerouslySetInnerHTML={{ __html: message.message }}
+                                    dangerouslySetInnerHTML={{ __html: (message as TMessageObject)?.message }}
                                 />
                             ) : (
                                 <Text
@@ -95,20 +110,20 @@ const PageError = ({
                                     key={index}
                                     className='dc-page-error__message-paragraph'
                                 >
-                                    {message}
+                                    {message as React.ReactNode}
                                 </Text>
                             )
                         )}
                     </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
-                    {redirect_urls?.map((url, index) => {
+                    {redirect_urls?.map?.((url, index) => {
                         return (
                             <ButtonLink
                                 className='dc-page-error__btn'
                                 to={url}
                                 onClick={onClickHandler}
-                                size={buttonSize || 'large'}
+                                size={buttonSize}
                                 key={index}
                             >
                                 <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
@@ -121,20 +136,6 @@ const PageError = ({
             </div>
         </div>
     );
-};
-
-PageError.propTypes = {
-    buttonOnClick: PropTypes.func,
-    buttonSize: PropTypes.string,
-    classNameImage: PropTypes.string,
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    image_url: PropTypes.string,
-    messages: PropTypes.array,
-    redirect_labels: PropTypes.array,
-    redirect_urls: PropTypes.array,
-    setError: PropTypes.func,
-    should_clear_error_on_click: PropTypes.bool,
-    has_malta_account: PropTypes.bool,
 };
 
 export default PageError;

@@ -1,30 +1,34 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { storeSetting, getSetting } from '../../utils/settings';
+import { getUrlBase } from '@deriv/shared';
+import TourGuide from './tour-guide';
+import { CallBackProps } from 'react-joyride';
 
-type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
+export const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-type TStep = {
-    label: string | boolean;
-    content: string;
+export const setJoyRideToken = () => {
+    return storeSetting('joyride_trigger', new Date().getTime());
 };
 
-const Step = ({ label, content }: TStep) => (
-    <div className='db-tour'>
-        <Text line_height='s' color='prominent' as='h2' weight='bold'>
-            {label}
-        </Text>
-        <Text line_height='s' color='prominent' as='p'>
-            {content}
-        </Text>
-    </div>
-);
+type TStep = {
+    label: string;
+    content: string;
+};
+export const getJoyrideToken = () => {
+    return getSetting('joyride_trigger');
+};
 
-/**
- * Joyride specifc config
- * It should be in camel casing.
- */
-const joyride_config: TJoyrideConfig = {
+export const handleJoyrideCallback = (data: CallBackProps) => {
+    const { action, index, status, type } = data;
+
+    const getJoyrideTokenSettings = getJoyrideToken();
+    if (!getJoyrideTokenSettings) setJoyRideToken();
+};
+
+type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
+
+const joyride_props: TJoyrideProps = {
     showProgress: true,
     showSkipButton: true,
     spotlightClicks: true,
@@ -33,75 +37,115 @@ const joyride_config: TJoyrideConfig = {
 
 export const DBOT_ONBOARDING = [
     {
-        target: 'body',
+        target: '#db-dashboard-cards',
         content: (
-            <Step
-                label={localize('Start with a template')}
-                content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-                )}
+            <TourGuide
+                Label={localize('Shortcuts')}
+                Content={localize('You can also use these shortcuts to import or build your bot.')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={0}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '#id-bot-builder',
         content: (
-            <Step
-                label={localize('Start with a BotBuilder')}
-                content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-                )}
+            <TourGuide
+                Label={localize('Build from scratch')}
+                Content={[
+                    localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
+                    localize(
+                        'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy .'
+                    ),
+                ]}
+                img={getImageLocation('ic-new-user-step-two.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={1}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '#id-quick-strategy',
         content: (
-            <Step
-                label={localize('Start with a template')}
-                content={localize(
+            <TourGuide
+                Label={localize('Start with a template')}
+                Content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
+                img={getImageLocation('ic-new-user-step-three.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={2}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '#id-charts',
         content: (
-            <Step
-                label={localize('Start with a charts')}
-                content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-                )}
+            <TourGuide
+                Label={localize('Monitor the market')}
+                Content={localize('View the market price of your favourite assets.')}
+                img={getImageLocation('ic-new-user-step-four.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={3}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '#id-tutorials',
         content: (
-            <Step
-                label={localize('Start with a tutorials')}
-                content={localize(
+            <TourGuide
+                Label={localize('Start with a tutorials')}
+                Content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
+                img={getImageLocation('ic-new-user-step-five.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={4}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
     },
     {
-        target: '#db-dashboard-cards',
+        target: '.animation__wrapper',
         content: (
-            <Step
-                label={localize('Start with a tutorials')}
-                content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-                )}
+            <TourGuide
+                Label={localize('Run or stop your bot')}
+                Content={localize('Click Run when you want to start trading, and click Stop when you want to stop.')}
+                img={getImageLocation('ic-new-user-step-seven.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={1}
             />
         ),
-        ...joyride_config,
+        ...joyride_props,
+    },
+    {
+        target: '[data-testid="drawer"]',
+        content: (
+            <TourGuide
+                Label={localize('How is my bot doing?')}
+                Content={localize("See your bot's performance in real-time.")}
+                img={getImageLocation('ic-new-user-step-six.png')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={1}
+            />
+        ),
+        ...joyride_props,
+    },
+
+    {
+        target: 'body',
+        content: (
+            <TourGuide
+                Label={localize('Want to take retake the tour?')}
+                Content={localize('If yes, go to Tutorials.')}
+                className={'dbot-onboarding__container'}
+                setJoyrideStepIndex={0}
+            />
+        ),
+        ...joyride_props,
     },
 ];

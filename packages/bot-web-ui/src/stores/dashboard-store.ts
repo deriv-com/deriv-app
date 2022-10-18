@@ -29,6 +29,18 @@ export default class DashboardStore implements IDashboardStore {
     @observable dialog_options = {};
     @observable is_dialog_open = false;
     @observable is_info_panel_visible = true;
+    @observable has_tour_started = false;
+    @observable is_tour_dialog_visible = true;
+
+    @action.bound
+    setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {
+        this.is_tour_dialog_visible = is_tour_dialog_visible;
+    };
+
+    @action.bound
+    setTourActive = (has_tour_started: boolean): void => {
+        this.has_tour_started = has_tour_started;
+    };
 
     @action.bound
     onCloseDialog(): void {

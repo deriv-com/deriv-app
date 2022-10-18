@@ -40,6 +40,32 @@
             &__list {
                 background: var(--general-section-1);
                 justify-content: start;
+                @include mobile {
+                    overflow-x: auto;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                &--header {
+                    &--dashboard {
+                        &__tabs {
+                            @include mobile {
+                                width: 100%;
+                                overflow-x: auto;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__content {
+                @include mobile {
+                    width: 100%;
+                    overflow-x: auto;
+                }
             }
 
             &__item {
@@ -47,6 +73,7 @@
                 border-top-right-radius: 1rem;
                 height: 4.8rem;
                 width: 14.4rem;
+                min-width: 14.4rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;

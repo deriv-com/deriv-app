@@ -59,7 +59,8 @@
             border-radius: 0rem 0.6rem 0rem 0rem;
             margin-left: 1rem;
         }
-        &--accounts {
+        &--accounts,
+        &--account-demo {
             display: flex;
             flex-direction: row;
             align-items: flex-start;

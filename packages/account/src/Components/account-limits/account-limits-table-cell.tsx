@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
 type TAccountLimitsTableCell = {
-    align?: 'right' | 'left';
-    is_hint?: boolean;
-    renderExtraInfo?: () => React.ReactElement;
+    align: 'right' | 'left';
+    is_hint: boolean;
+    renderExtraInfo: () => React.ReactElement;
 };
 
 const AccountLimitsTableCell = ({

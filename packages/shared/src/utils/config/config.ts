@@ -52,8 +52,6 @@ export const getAppId = () => {
     // Added platform at the top since this should take precedence over the config_app_id
     if (config_app_id) {
         app_id = config_app_id;
-    } else if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
-        app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
@@ -62,6 +60,8 @@ export const getAppId = () => {
         app_id = isBot() ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
+    } else if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
+        app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
     } else {
         window.localStorage.removeItem('config.default_app_id');
         app_id = (isBot() ? 19111 : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16929;

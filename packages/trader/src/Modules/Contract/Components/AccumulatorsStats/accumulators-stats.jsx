@@ -24,11 +24,10 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const [displayed_contract_name, setDisplayedContractName] = React.useState(CONTRACT_TYPES.STAY_IN);
+    const { ACCU, DECCU } = ticks_history_stats;
     const widget_title = localize('{{displayed_contract_name}} history', { displayed_contract_name });
     const ticks_history =
-        (displayed_contract_name === CONTRACT_TYPES.STAY_IN
-            ? ticks_history_stats.ACCU?.ticks_stayed_in
-            : ticks_history_stats.DECCU?.ticks_stayed_in) || [];
+        (displayed_contract_name === CONTRACT_TYPES.STAY_IN ? ACCU?.ticks_stayed_in : DECCU?.ticks_stayed_in) || [];
     const history_text_size = isDesktop() || !is_collapsed ? 'xxs' : 'xxxs';
 
     const rows = ticks_history.reduce((acc, _el, index) => {
@@ -42,6 +41,8 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
     }, []);
 
     const handleSwitchBetweenContracts = () => {
+        // don't switch if ACCU or DECCU history is missing
+        if (!ACCU?.ticks_stayed_in?.length || !DECCU?.ticks_stayed_in?.length) return;
         setDisplayedContractName(Object.values(CONTRACT_TYPES).find(name => name !== displayed_contract_name));
     };
 

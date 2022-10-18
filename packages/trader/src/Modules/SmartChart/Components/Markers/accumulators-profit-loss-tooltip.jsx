@@ -17,12 +17,11 @@ const AccumulatorsProfitLossTooltip = ({
     const won = profit > 0;
     const sign = won ? '+' : '';
 
-    const getOppositeArrowPosition = React.useCallback(() => {
+    const opposite_arrow_position = React.useMemo(() => {
         const horizontal = ['left', 'right'];
-        const vertical = ['top', 'bottom'];
         return horizontal.includes(alignment)
             ? horizontal.find(el => el !== alignment)
-            : vertical.find(el => el !== alignment);
+            : ['top', 'bottom'].find(el => el !== alignment);
     }, [alignment]);
 
     const onRef = ref => {
@@ -45,7 +44,7 @@ const AccumulatorsProfitLossTooltip = ({
                 onMouseEnter={() => !is_tooltip_open && setIsTooltipOpen(true)}
             />
             {is_tooltip_open && (
-                <div className={classNames(`${className}__content`, `arrow-${getOppositeArrowPosition()}`)}>
+                <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
                     <Text size='xxs' className={`${className}__text`}>
                         {localize('Total profit/loss:')}
                     </Text>

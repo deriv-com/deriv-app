@@ -17,7 +17,7 @@ describe('AccumulatorsProfitLossTooltip', () => {
         className: 'profit-loss-tooltip',
     };
 
-    it('should render with an arrow on the left', () => {
+    it('should render the right-side tooltip with an arrow on the left', () => {
         const wrapper = shallow(<AccumulatorsProfitLossTooltip {...props} />);
         expect(wrapper.find('.profit-loss-tooltip').exists()).to.be.true;
         expect(wrapper.find('.profit-loss-tooltip__spot-circle').exists()).to.be.true;

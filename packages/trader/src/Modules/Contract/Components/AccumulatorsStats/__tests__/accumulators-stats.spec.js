@@ -64,6 +64,16 @@ describe('AccumulatorsStats', () => {
         expect(screen.getByText(`${CONTRACT_TYPES.STAY_IN} history`)).toBeInTheDocument();
         expect(screen.getByText(stay_in_history[0])).toBeInTheDocument();
     });
+    it('should not switch to Break out history when DECCU history is missing', () => {
+        mock_connect_props.ticks_history_stats.DECCU = {};
+        render(<AccumulatorsStats />);
+        expect(screen.getByText(`${CONTRACT_TYPES.STAY_IN} history`)).toBeInTheDocument();
+        expect(screen.getByText(stay_in_history[0])).toBeInTheDocument();
+
+        fireEvent.click(screen.getByTestId('dt_accu_stats_switcher'));
+        expect(screen.queryByText(`${CONTRACT_TYPES.BREAK_OUT} history`)).not.toBeInTheDocument();
+        expect(screen.getByText(`${CONTRACT_TYPES.STAY_IN} history`)).toBeInTheDocument();
+    });
     it('should show manual after info icon is clicked', () => {
         const { container } = render(<AccumulatorsStats />);
         fireEvent.click(container.querySelector('.info'));

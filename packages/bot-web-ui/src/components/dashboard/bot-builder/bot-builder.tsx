@@ -2,9 +2,9 @@ import React from 'react';
 import RootStore from 'Stores/index';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
-import WorkspaceWrapper from './workspace-wrapper';
 import ReactJoyride from 'react-joyride';
 import classNames from 'classnames';
+import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR } from '../joyride-config';
 
 type TBotBuilder = {
@@ -41,12 +41,9 @@ const BotBuilder = ({ app, active_tab }: TBotBuilder) => {
                                     arrowColor: 'var(--text-general)',
                                     backgroundColor: 'var(--text-general)',
                                     overlayColor: 'rgba(0, 0, 0, 0.5)',
-                                    primaryColor: '#FF444F',
-                                    textColor: 'white',
+                                    primaryColor: 'var(--brand-red-coral)',
+                                    textColor: 'var(--text-colored-background)',
                                     spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                },
-                                buttonClose: {
-                                    color: 'white',
                                 },
                             }}
                         />

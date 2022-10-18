@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
-import Button from '../button/button.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
+import Button from '../button/button';
 import Text from '../text';
 
 const SendEmailTemplate = ({

@@ -127,4 +127,4 @@ PaymentMethodCard.propTypes = {
     style: PropTypes.object,
 };
 
-export default PaymentMethodCard;
+export default React.memo(PaymentMethodCard);

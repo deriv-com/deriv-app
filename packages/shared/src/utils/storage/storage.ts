@@ -148,7 +148,7 @@ State.prototype.getResponse = function (pathname: string | string[]) {
 State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
-export const CookieStorage = function (this: TCookieStorageThis, cookie_name: string, cookie_domain: string) {
+export const CookieStorage = function (this: TCookieStorageThis, cookie_name: string, cookie_domain?: string) {
     const hostname = window.location.hostname;
 
     this.initialized = false;

@@ -88,7 +88,7 @@ export const urlFor = (
     return new_url;
 };
 
-export const urlForCurrentDomain = (href: string | URL) => {
+export const urlForCurrentDomain = (href: string) => {
     const current_domain = getCurrentProductionDomain();
 
     if (!current_domain) {

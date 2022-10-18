@@ -10,6 +10,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
+import { useModalManagerContext } from '../modal-manager/modal-manager-context.js';
 
 const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();

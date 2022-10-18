@@ -7,6 +7,8 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
+import { useModalManagerContext } from '../components/modal-manager/modal-manager-context';
+import modals from 'Constants/modals';
 
 export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
@@ -501,10 +503,10 @@ export default class BuySellStore extends BaseStore {
         } else if (this.is_sell_advert) {
             this.getAdvertiserInfo();
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            // this.setShouldShowPopup(true);
         } else {
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            // this.setShouldShowPopup(true);
         }
     }
 

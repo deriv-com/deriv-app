@@ -8,7 +8,6 @@ import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
-import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
 import FilterModal from './filter-modal';
 import './buy-sell.scss';
@@ -53,12 +52,6 @@ const BuySell = () => {
                 setSelectedAdvert={buy_sell_store.setSelectedAdvert}
                 showAdvertiserPage={buy_sell_store.showAdvertiserPage}
                 onScroll={onScroll}
-            />
-            <BuySellModal
-                selected_ad={buy_sell_store.selected_ad_state}
-                should_show_popup={buy_sell_store.should_show_popup}
-                setShouldShowPopup={buy_sell_store.setShouldShowPopup}
-                table_type={buy_sell_store.table_type}
             />
             <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
         </div>

@@ -50,10 +50,10 @@ export const getAppId = () => {
     const platform = window.localStorage.getItem('config.platform');
 
     // Added platform at the top since this should take precedence over the config_app_id
-    if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
-        app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
-    } else if (config_app_id) {
+    if (config_app_id) {
         app_id = config_app_id;
+    } else if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
+        app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;

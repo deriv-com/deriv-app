@@ -4,11 +4,14 @@ import { Text } from '@deriv/components';
 
 type TAccountLimitsTableHeader = {
     align?: 'left' | 'right';
-    children?: React.ReactNode;
     renderExtraInfo?: () => React.ReactNode;
 };
 
-const AccountLimitsTableHeader = ({ align, children, renderExtraInfo }: TAccountLimitsTableHeader) => {
+const AccountLimitsTableHeader = ({
+    align,
+    children,
+    renderExtraInfo,
+}: React.PropsWithChildren<Partial<TAccountLimitsTableHeader>>) => {
     return (
         <th
             className={classNames('da-account-limits__table-header', {

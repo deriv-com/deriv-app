@@ -44,7 +44,7 @@
         flex-direction: column;
         align-items: flex-end;
         width: 350px;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
         position: fixed;
         bottom: 5.7rem;
 
@@ -54,10 +54,11 @@
             width: 33%;
             padding: 16px 0px 2px 0;
             cursor: pointer;
+            color: var(--text-general);
 
             &-item {
                 display: inline-block;
-                border-bottom: 1px dotted #4b4b4b;
+                border-bottom: 1px dotted var(--text-general);
             }
         }
         &--tiles {

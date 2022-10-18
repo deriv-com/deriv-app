@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
 type TAccountLimitsTableHeader = {
-    align?: 'left' | 'right';
-    renderExtraInfo?: () => React.ReactNode;
+    align: 'left' | 'right';
+    renderExtraInfo: () => React.ReactNode;
 };
 
 const AccountLimitsTableHeader = ({

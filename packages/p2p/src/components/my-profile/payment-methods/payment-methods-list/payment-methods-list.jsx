@@ -43,42 +43,39 @@ const PaymentMethodsList = () => {
                     >
                         <Localize i18n_default_text='Add new' />
                     </Button>
-                    <ThemedScrollbars className='payment-methods-list__list' height={'60vh'}>
-                        <div className='payment-methods-list__list-container'>
-                            {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                                (payment_methods_list_method, key) => {
-                                    const payment_methods_list =
-                                        my_profile_store.advertiser_payment_methods_list.filter(
-                                            payment_method =>
-                                                payment_method.method === payment_methods_list_method.method ||
-                                                (!independent_categories.includes(payment_method.method) &&
-                                                    payment_methods_list_method.method === 'e_wallet')
-                                        );
+                    <div className='payment-methods-list__list-container'>
+                        {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
+                            (payment_methods_list_method, key) => {
+                                const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
+                                    payment_method =>
+                                        payment_method.method === payment_methods_list_method.method ||
+                                        (!independent_categories.includes(payment_method.method) &&
+                                            payment_methods_list_method.method === 'e_wallet')
+                                );
 
-                                    return (
-                                        <React.Fragment key={key}>
-                                            <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                                {`${payment_methods_list_method.display_name}s`}
-                                            </Text>
+                                return (
+                                    <React.Fragment key={key}>
+                                        <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
+                                            {`${payment_methods_list_method.display_name}s`}
+                                        </Text>
 
-                                            <div className='payment-methods-list__list-body'>
-                                                {payment_methods_list.map(
-                                                    (each_payment_method, each_payment_method_key) => (
-                                                        <PaymentMethodCard
-                                                            key={each_payment_method_key}
-                                                            large={true}
-                                                            payment_method={each_payment_method}
-                                                            show_payment_method_name={false}
-                                                        />
-                                                    )
-                                                )}
-                                            </div>
-                                        </React.Fragment>
-                                    );
-                                }
-                            )}
-                        </div>
-                    </ThemedScrollbars>
+                                        <div className='payment-methods-list__list-body'>
+                                            {payment_methods_list.map(
+                                                (each_payment_method, each_payment_method_key) => (
+                                                    <PaymentMethodCard
+                                                        key={each_payment_method_key}
+                                                        large={true}
+                                                        payment_method={each_payment_method}
+                                                        show_payment_method_name={false}
+                                                    />
+                                                )
+                                            )}
+                                        </div>
+                                    </React.Fragment>
+                                );
+                            }
+                        )}
+                    </div>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>

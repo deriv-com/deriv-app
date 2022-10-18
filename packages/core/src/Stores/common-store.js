@@ -265,6 +265,13 @@ export default class CommonStore extends BaseStore {
     };
 
     @action.bound
+    getExchangeRate = async (from_currency, to_currency) => {
+        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
+
+        return exchange_rates?.rates?.[to_currency];
+    };
+
+    @action.bound
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {

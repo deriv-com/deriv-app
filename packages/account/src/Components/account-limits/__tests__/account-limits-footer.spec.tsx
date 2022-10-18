@@ -37,6 +37,6 @@ describe('<AccountLimitsFooterPortal/>', () => {
 
     it('should render AppSettings.Footer components correctly', () => {
         render(<AccountLimitsFooterPortalComponent />);
-        expect(screen.queryByTestId('dt_app_settings_footer')).toHaveClass('dc-app-settings__footer');
+        expect(screen.queryByTestId('dt_app_settings_footer')).toHaveTextContent('Learn more about account limits');
     });
 });

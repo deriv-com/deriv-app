@@ -9,7 +9,9 @@ const MyProfileDetailsContainer = () => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
-        my_profile_store.getAdvertiserInfo();
+        const advertiser_info_interval = setInterval(() => my_profile_store.getAdvertiserInfo(), 60000);
+
+        return () => clearInterval(advertiser_info_interval);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

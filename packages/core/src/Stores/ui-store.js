@@ -144,6 +144,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
@@ -247,11 +248,13 @@ export default class UIStore extends BaseStore {
             should_show_multipliers_onboarding: observable,
             choose_crypto_currency_target: observable,
             should_show_cancel: observable,
+            app_contents_scroll_ref: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_warning_scam_message_modal_visible: computed,
             setScamMessageLocalStorage: action.bound,
             setIsNewAccount: action.bound,
             init: action.bound,
+            setAppContentsScrollRef: action.bound,
             populateFooterExtensions: action.bound,
             populateHeaderExtensions: action.bound,
             populateSettingsExtensions: action.bound,
@@ -362,6 +365,10 @@ export default class UIStore extends BaseStore {
 
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;
+    }
+
+    setAppContentsScrollRef(value) {
+        this.app_contents_scroll_ref = value;
     }
 
     populateFooterExtensions(footer_extensions) {

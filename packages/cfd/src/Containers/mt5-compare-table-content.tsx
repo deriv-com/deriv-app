@@ -320,7 +320,7 @@ const DMT5CompareModalContent = ({
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
     const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) =>
-        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
+        !has_submitted_personal_details ?? openPasswordModal(type_of_account);
 
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
@@ -612,7 +612,6 @@ export default connect(({ modules, client, ui }: RootStore) => ({
     is_virtual: client.is_virtual,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     account_status: client.account_status,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,

@@ -5,8 +5,8 @@ import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
-    @observable is_cfd_personal_details_modal_visible = false;
     @observable is_jurisdiction_modal_visible = false;
+    @observable is_cfd_personal_details_submitted = false;
     @observable is_mt5_trade_modal_visible = false;
     @observable jurisdiction_selected_shortcode = '';
 
@@ -60,7 +60,7 @@ export default class CFDStore extends BaseStore {
     }
 
     @computed
-    get hasCreatedAccountForSelectedJurisdiction() {
+    get has_created_account_for_selected_jurisdiction() {
         return this.account_type.type === 'synthetic'
             ? this.real_synthetic_accounts_existing_data?.some(
                   account => account.landing_company_short === this.jurisdiction_selected_shortcode
@@ -71,9 +71,20 @@ export default class CFDStore extends BaseStore {
     }
 
     @computed
+    get has_submitted_cfd_personal_details() {
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            this.root_store.client.account_settings;
+
+        if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get current_list() {
         const list = {};
-
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
@@ -573,11 +584,6 @@ export default class CFDStore extends BaseStore {
         });
     }
 
-    @action.bound
-    toggleCFDPersonalDetailsModal() {
-        this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
-    }
-
     static async changePassword({ login, old_password, new_password, password_type }) {
         let response;
 
@@ -603,12 +609,10 @@ export default class CFDStore extends BaseStore {
     @action.bound
     setJurisdictionSelectedShortcode(shortcode) {
         this.jurisdiction_selected_shortcode = shortcode;
-        console.log(this.jurisdiction_selected_shortcode);
     }
 
     @action.bound
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
-        console.log(this.is_cfd_verification_modal_visible);
     }
 }

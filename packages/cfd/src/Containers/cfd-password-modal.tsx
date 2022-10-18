@@ -31,6 +31,7 @@ import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'Components/success-dialog';
 import 'Sass/cfd.scss';
 import { connect } from 'Stores/connect';
+import ReviewMessageForMT5 from '../Components/review-message-for-mt5';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 export type TCFDPasswordFormValues = { password: string };
@@ -128,6 +129,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
         values: TCFDPasswordFormValues & { platform?: string },
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
+    should_restrict_bvi_account_creation: boolean;
 };
 
 const PasswordModalHeader = ({
@@ -163,6 +165,7 @@ const getSubmitText = (
     is_eu: boolean,
     needs_poi: boolean,
     jurisdiction_selected_shortcode: string,
+    should_restrict_bvi_account_creation: boolean,
     type?: string,
     category?: string
 ) => {
@@ -179,17 +182,24 @@ const getSubmitText = (
         }
 
         return (
-            <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
-                values={{
-                    // TODO: remove below condition once deriv x changes are completed
-                    type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                    platform: getCFDPlatformLabel(platform),
-                    category: category_label,
-                    jurisdiction_selected_shortcode: jurisdiction_label,
-                }}
-                components={[<strong className='cfd-account__platform' key={0} />]}
-            />
+            <React.Fragment>
+                <Localize
+                    i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. '
+                    values={{
+                        // TODO: remove below condition once deriv x changes are completed
+                        type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
+                        platform: getCFDPlatformLabel(platform),
+                        category: category_label,
+                        jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
+                    }}
+                    components={[<strong className='cfd-account__platform' key={0} />]}
+                />
+                {platform === CFD_PLATFORMS.DXTRADE ? (
+                    <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+                ) : (
+                    <ReviewMessageForMT5 platform={platform} />
+                )}
+            </React.Fragment>
         );
     }
 
@@ -597,6 +607,7 @@ const CFDPasswordModal = ({
     setMt5Error,
     submitMt5Password,
     submitCFDPassword,
+    should_restrict_bvi_account_creation,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -818,6 +829,7 @@ const CFDPasswordModal = ({
                     is_eu,
                     needs_poi,
                     jurisdiction_selected_shortcode,
+                    should_restrict_bvi_account_creation,
                     account_type.type,
                     account_type.category
                 )}
@@ -865,4 +877,5 @@ export default connect(({ client, modules }: RootStore) => ({
     mt5_trading_servers: client.mt5_trading_servers,
     mt5_login_list: client.mt5_login_list,
     is_fully_authenticated: client.is_fully_authenticated,
+    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
 }))(withRouter(CFDPasswordModal));

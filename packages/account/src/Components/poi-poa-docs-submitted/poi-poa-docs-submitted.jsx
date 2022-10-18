@@ -10,7 +10,7 @@ const PoiPoaDocsSubmitted = ({
     jurisdiction_selected_shortcode,
     onClickOK,
     updateAccountStatus,
-    hasCreatedAccountForSelectedJurisdiction,
+    has_created_account_for_selected_jurisdiction,
     openPasswordModal,
 }) => {
     const [is_loading, setIsLoading] = React.useState(false);
@@ -24,7 +24,7 @@ const PoiPoaDocsSubmitted = ({
     }, []);
 
     const onSubmit = () => {
-        if (hasCreatedAccountForSelectedJurisdiction) {
+        if (has_created_account_for_selected_jurisdiction) {
             onClickOK();
         } else {
             onClickOK();
@@ -45,10 +45,9 @@ const PoiPoaDocsSubmitted = ({
         }
         return localize('We’ll review your documents and notify you of its status within 5 minutes.');
     };
-    if (is_loading) {
-        return <Loading />;
-    }
-    return (
+    return is_loading ? (
+        <Loading is_fullscreen={false} />
+    ) : (
         <IconMessageContent
             message={localize('Your documents were submitted successfully')}
             text={getDescription()}

@@ -16,8 +16,10 @@ type TVerificationModalProps = {
     jurisdiction_selected_shortcode: string;
     updateAccountStatus: () => void;
     account_status: GetAccountStatus;
-    hasCreatedAccountForSelectedJurisdiction: () => boolean;
+    has_created_account_for_selected_jurisdiction: boolean;
     openPasswordModal: () => void;
+    has_submitted_cfd_personal_details: boolean;
+    fetchAccountSettings: () => void;
 };
 
 const CFDDbViOnBoarding = ({
@@ -28,8 +30,10 @@ const CFDDbViOnBoarding = ({
     jurisdiction_selected_shortcode,
     updateAccountStatus,
     account_status,
-    hasCreatedAccountForSelectedJurisdiction,
+    has_created_account_for_selected_jurisdiction,
     openPasswordModal,
+    has_submitted_cfd_personal_details,
+    fetchAccountSettings,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -41,9 +45,17 @@ const CFDDbViOnBoarding = ({
             if (get_account_status?.authentication) {
                 const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
+                if (
+                    jurisdiction_selected_shortcode === 'vanuatu' &&
+                    need_poi_for_vanuatu &&
+                    has_submitted_cfd_personal_details
+                ) {
                     setShowSubmittedModal(false);
-                } else if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged) {
+                } else if (
+                    poi_acknowledged_for_bvi_labuan_maltainvest &&
+                    poa_acknowledged &&
+                    has_submitted_cfd_personal_details
+                ) {
                     setShowSubmittedModal(true);
                 } else {
                     setShowSubmittedModal(false);
@@ -51,37 +63,44 @@ const CFDDbViOnBoarding = ({
             }
             setIsLoading(false);
         });
+        setIsLoading(false);
     };
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
             setIsLoading(true);
-            console.log('is_cfd_verification_modal_visible');
             getAccountStatusFromAPI();
+            fetchAccountSettings();
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
-    const getModalContent = () =>
-        showSubmittedModal ? (
+    const getModalContent = () => {
+        return showSubmittedModal ? (
             <PoiPoaDocsSubmitted
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                hasCreatedAccountForSelectedJurisdiction={hasCreatedAccountForSelectedJurisdiction}
+                has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={openPasswordModal}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup
                 onFinish={() => {
-                    setShowSubmittedModal(true);
+                    toggleCFDVerificationModal();
+                    if (has_created_account_for_selected_jurisdiction) {
+                        setShowSubmittedModal(true);
+                    } else {
+                        openPasswordModal();
+                    }
                 }}
             />
-            // <div> Amn</div>
         );
+    };
 
     return is_loading ? (
-        <Loading />
+        <Loading is_fullscreen={false} />
     ) : (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -123,6 +142,8 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     updateAccountStatus: client.updateAccountStatus,
     account_status: client.account_status,
-    hasCreatedAccountForSelectedJurisdiction: modules.cfd.hasCreatedAccountForSelectedJurisdiction,
+    has_created_account_for_selected_jurisdiction: modules.cfd.has_created_account_for_selected_jurisdiction,
     openPasswordModal: modules.cfd.enableCFDPasswordModal,
+    has_submitted_cfd_personal_details: modules.cfd.has_submitted_cfd_personal_details,
+    fetchAccountSettings: client.fetchAccountSettings,
 }))(CFDDbViOnBoarding);

@@ -56,6 +56,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
     setAccountSettings: (get_settings_response: GetSettings) => void;
+    has_submitted_cfd_personal_details: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
@@ -80,6 +81,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications,
         setAccountSettings,
         residence_list,
+        has_submitted_cfd_personal_details,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
@@ -127,7 +129,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             tax_identification_number: '',
             account_opening_reason: '',
         },
-        forwarded_props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
+        forwarded_props: ['residence_list', 'landing_company'],
     };
 
     const should_show_poi = () => {
@@ -140,28 +142,10 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
     );
 
-    const should_show_personal_details = () => {
-        let get_settings_response: GetSettings = {};
-        if (!get_settings) {
-            WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
-                get_settings_response = response.get_settings as GetSettings;
-                setAccountSettings(response.get_settings as GetSettings);
-            });
-        } else {
-            get_settings_response = get_settings;
-        }
-        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-            get_settings_response;
-        if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
-            return false;
-        }
-        return true;
-    };
-
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),
         ...(should_show_poa ? [poa_config] : []),
-        ...(should_show_personal_details() ? [personal_details_config] : []),
+        ...(!has_submitted_cfd_personal_details ? [personal_details_config] : []),
     ];
 
     const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
@@ -267,4 +251,5 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     storeProofOfAddress: cfd.storeProofOfAddress,
     account_status: client.account_status,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
+    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
 }))(CFDFinancialStpRealAccountSignup);

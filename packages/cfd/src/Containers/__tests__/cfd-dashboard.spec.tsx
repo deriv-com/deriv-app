@@ -191,7 +191,6 @@ describe('<CFDDashboard />', () => {
         toggleAccountsDialog: jest.fn(),
         toggleMT5TradeModal: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
-        toggleCFDPersonalDetailsModal: jest.fn(),
         toggleResetTradingPasswordModal: jest.fn(),
         upgradeable_landing_companies: ['svg'],
     };

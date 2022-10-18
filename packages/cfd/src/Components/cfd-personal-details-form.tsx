@@ -22,12 +22,9 @@ import { Localize, localize } from '@deriv/translations';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
-    has_previous_button?: boolean;
     is_loading: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
-    onCancel: () => void;
-    onSave: (index: number, values: TFormValues) => void;
     onSubmit: TOnSubmit;
     value: TFormValues;
     index: number;
@@ -195,7 +192,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = ({
     return { citizen, place_of_birth, tax_residence };
 };
 
-const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) => {
+const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, residence_list) => {
     const { citizen, place_of_birth, tax_residence } = findDefaultValuesInResidenceList({
         residence_list,
         citizen_text: values.citizen,
@@ -209,7 +206,7 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, res
         place_of_birth: place_of_birth?.value || '',
         tax_residence: tax_residence?.value || '',
     };
-    onSubmitFn(idx, payload, actions.setSubmitting, is_dirty);
+    onSubmit(idx, payload, actions.setSubmitting, is_dirty);
 };
 
 const CFDPersonalDetailsForm = ({
@@ -217,7 +214,6 @@ const CFDPersonalDetailsForm = ({
     is_loading,
     landing_company,
     residence_list,
-    onSave,
     onSubmit,
     value,
     index,

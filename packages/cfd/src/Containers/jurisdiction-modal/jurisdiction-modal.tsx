@@ -22,17 +22,16 @@ const JurisdictionModal = ({
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     trading_platform_available_accounts,
-    toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     setAccountSettings,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
     toggleCFDVerificationModal,
     updateAccountStatus,
+    fetchAccountSettings,
+    has_submitted_cfd_personal_details,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
-    const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
-
     const {
         poi_pending_for_vanuatu,
         poi_verified_for_vanuatu,
@@ -46,28 +45,24 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan_maltainvest,
         poa_acknowledged,
         poa_pending,
+        poi_acknowledged_for_vanuatu,
     } = getAuthenticationStatusInfo(account_status);
+
+    // const hasSubmittedCFDPersonalDetails = () => {
+    //     fetchAccountSettings();
+    //     const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+    //         account_settings;
+    //     if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason)
+    //         setHasSubmittedCFDPersonalDetails(true);
+    //     return setHasSubmittedCFDPersonalDetails(false);
+    // };
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
             updateAccountStatus();
             setJurisdictionSelectedShortcode('');
-            if (!has_submitted_personal_details) {
-                let get_settings_response: GetSettings = {};
-                if (!account_settings) {
-                    WS.authorized.storage.getSettings().then((response: GetAccountSettingsResponse) => {
-                        get_settings_response = response.get_settings as GetSettings;
-                        setAccountSettings(response.get_settings as GetSettings);
-                    });
-                } else {
-                    get_settings_response = account_settings;
-                }
-                const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
-                    get_settings_response;
-                if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
-                    setHasSubmittedPersonalDetails(true);
-                }
-            }
+            fetchAccountSettings();
+            // hasSubmittedCFDPersonalDetails();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_jurisdiction_modal_visible]);
@@ -120,53 +115,44 @@ const JurisdictionModal = ({
         return true;
     };
 
-    const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) => {
-        if (!has_submitted_personal_details) {
-            toggleCFDPersonalDetailsModal();
-        } else {
-            openPasswordModal(type_of_account);
-        }
-    };
-
     const onSelectRealAccount = () => {
         const type_of_account = {
             category: account_type.category,
             type: account_type.type,
         };
-        console.log('aami');
 
-        toggleCFDVerificationModal();
-        // if (is_eu && is_maltainvest_selected) {
-        //     if (poi_poa_verified_for_bvi_labuan_maltainvest) {
-        //         openPasswordModal(type_of_account);
-        //     } else {
-        //         toggleCFDVerificationModal();
-        //     }
-        // } else if (is_svg_selected) {
-        //     openPasswordModal(type_of_account);
-        // } else if (is_vanuatu_selected) {
-        //     if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
-        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
-        //     } else {
-        //         toggleCFDVerificationModal();
-        //     }
-        // } else if (is_bvi_selected) {
-        //     if (
-        //         poi_verified_for_bvi_labuan_maltainvest &&
-        //         !poi_or_poa_not_submitted &&
-        //         !should_restrict_bvi_account_creation
-        //     ) {
-        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
-        //     } else {
-        //         toggleCFDVerificationModal();
-        //     }
-        // } else if (is_labuan_selected) {
-        //     if (poi_poa_verified_for_bvi_labuan_maltainvest) {
-        //         openPersonalDetailsFormOrPasswordForm(type_of_account);
-        //     } else {
-        //         toggleCFDVerificationModal();
-        //     }
-        // }
+        if (is_eu && is_maltainvest_selected) {
+            if (poi_poa_verified_for_bvi_labuan_maltainvest) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (is_svg_selected) {
+            openPasswordModal(type_of_account);
+        } else if (is_vanuatu_selected) {
+            if (poi_acknowledged_for_vanuatu && !poi_or_poa_not_submitted && has_submitted_cfd_personal_details) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (is_bvi_selected) {
+            if (
+                poi_acknowledged_for_bvi_labuan_maltainvest &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_bvi_account_creation &&
+                has_submitted_cfd_personal_details
+            ) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (is_labuan_selected) {
+            if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged && has_submitted_cfd_personal_details) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        }
     };
 
     const ModalContent = () => (
@@ -251,7 +237,8 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
-    toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal: cfd.toggleJurisdictionModal,
     updateAccountStatus: client.updateAccountStatus,
+    fetchAccountSettings: client.fetchAccountSettings,
+    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
 }))(JurisdictionModal);

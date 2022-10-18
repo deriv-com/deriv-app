@@ -24,6 +24,7 @@ export type TCFDPersonalDetailsModalProps = {
     landing_company: LandingCompany;
     residence_list: ResidenceList;
     setAccountSettings: (account_settings: GetSettings) => void;
+    onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
 type CFD_Platform = 'dxtrade' | 'mt5';
@@ -214,12 +215,13 @@ export type TJurisdictionModalProps = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: () => void;
+    fetchAccountSettings: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     updateAccountStatus: () => void;
+    has_submitted_cfd_personal_details: boolean;
 };
 
 export type TJurisdictionModalContentProps = {

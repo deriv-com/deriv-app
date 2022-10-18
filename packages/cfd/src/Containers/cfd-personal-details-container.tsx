@@ -14,12 +14,11 @@ type TSetSubmitting = (isSubmitting: boolean) => void;
 const CFDPersonalDetailsContainer = ({
     account_settings,
     getChangeableFields,
-    is_fully_authenticated,
     landing_company,
     openPasswordModal,
-    toggleJurisdictionModal,
     residence_list,
     setAccountSettings,
+    onSubmit,
 }: TCFDPersonalDetailsModalProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
@@ -98,7 +97,7 @@ const CFDPersonalDetailsContainer = ({
         }
         saveFormData(index, value);
         setAccountSettings({ ...account_settings, ...value });
-        openPasswordModal();
+        onSubmit(index, value);
     };
 
     const getPersonalDetailsForm = () => (
@@ -117,12 +116,9 @@ const CFDPersonalDetailsContainer = ({
                 <CFDPersonalDetailsForm
                     changeable_fields={getChangeableFields()}
                     form_error={form_error}
-                    index={0}
-                    is_fully_authenticated={is_fully_authenticated}
-                    is_in_personal_details_modal
+                    index={2}
                     is_loading={is_loading}
                     landing_company={landing_company}
-                    onSave={saveFormData}
                     onSubmit={updateValue}
                     residence_list={residence_list}
                     value={form_values}
@@ -133,34 +129,8 @@ const CFDPersonalDetailsContainer = ({
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                {/* <Modal
-                    className='real-account-signup-modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    has_close_icon={true}
-                    height='688px'
-                    id='cfd-personal-details-modal'
-                    is_open={is_open}
-                    title={localize('Add a real MT5 account')}
-                    toggleModal={toggleCFDPersonalDetailsModal}
-                    width='904px'
-                    exit_classname='cfd-modal--custom-exit'
-                > */}
-                {getPersonalDetailsForm()}
-                {/* </Modal> */}
-            </DesktopWrapper>
-            <MobileWrapper>
-                {/* <MobileDialog
-                    onClose={toggleCFDPersonalDetailsModal}
-                    portal_element_id='modal_root'
-                    title={localize('Add a real MT5 account')}
-                    visible={is_open}
-                    wrapper_classname='account-signup-mobile-dialog'
-                > */}
-                {getPersonalDetailsForm()}
-                {/* </MobileDialog> */}
-            </MobileWrapper>
+            <DesktopWrapper>{getPersonalDetailsForm()}</DesktopWrapper>
+            <MobileWrapper>{getPersonalDetailsForm()}</MobileWrapper>
         </React.Fragment>
     );
 };
@@ -170,10 +140,8 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
-    is_fully_authenticated: client.is_fully_authenticated,
-    // is_open: modules.cfd.is_cfd_personal_details_modal_visible,
     landing_company: client.landing_company,
-    openPasswordModal: modules.cfd.enableCFDPasswordModal,
+    // openPasswordModal: modules.cfd.enableCFDPasswordModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,

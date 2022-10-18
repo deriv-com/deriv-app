@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import classNames from 'classnames';
 import Text from '../text';
 
-type TItem = React.HTMLAttributes<HTMLDivElement> & { value: string; label: string; disabled: boolean };
+type TItem = React.HTMLAttributes<HTMLDivElement> & { id?: string; value: string; label: string; disabled: boolean };
 type TItemWrapper = {
     should_wrap_items?: boolean;
 };
@@ -19,7 +19,7 @@ const ItemWrapper = ({ children, should_wrap_items }: React.PropsWithChildren<TI
         return <div className='dc-radio-group__item-wrapper'>{children}</div>;
     }
 
-    return <>{children}</>;
+    return <React.Fragment>{children}</React.Fragment>;
 };
 
 const RadioGroup = ({
@@ -41,8 +41,8 @@ const RadioGroup = ({
     return (
         <div className={classNames('dc-radio-group', className)}>
             {Array.isArray(children) &&
-                children.map((item, idx) => (
-                    <ItemWrapper key={idx} should_wrap_items={should_wrap_items}>
+                children.map(item => (
+                    <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
                         <label
                             className={classNames('dc-radio-group__item', className, {
                                 'dc-radio-group__item--selected': selected_option === item.props.value,

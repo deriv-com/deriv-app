@@ -197,6 +197,7 @@ const Trade = ({
                                 topWidgets={topWidgets}
                                 charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                show_accumulators_stats={show_accumulators_stats}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -258,6 +259,7 @@ export default connect(({ client, common, modules, ui }) => ({
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
 import classNames from 'classnames';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper.js';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
@@ -287,6 +289,7 @@ const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
 
 const Chart = props => {
     const {
+        all_positions,
         topWidgets,
         charts_ref,
         updateGranularity,
@@ -351,6 +354,13 @@ const Chart = props => {
 
     if (!symbol || active_symbols.length === 0) return null;
 
+    const accumulators_positions = all_positions.filter(
+        p =>
+            p.contract_info &&
+            symbol === p.contract_info.underlying &&
+            filterByContractType(p.contract_info, 'accumulator')
+    );
+
     return (
         <SmartChartWithRef
             ref={charts_ref}
@@ -403,14 +413,20 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
-            {show_accumulators_stats && props.last_contract.is_ended && (
-                <AccumulatorsProfitLossTooltip {...props.last_contract} />
-            )}
+            {show_accumulators_stats &&
+                accumulators_positions.map(({ contract_info }) => {
+                    return (
+                        contract_info.is_sold && (
+                            <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
+                        )
+                    );
+                })}
         </SmartChartWithRef>
     );
 };
 
 Chart.propTypes = {
+    all_positions: PropTypes.array,
     topWidgets: PropTypes.func,
     charts_ref: PropTypes.object,
     bottomWidgets: PropTypes.func,
@@ -435,7 +451,8 @@ Chart.propTypes = {
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
+const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) => ({
+    all_positions: portfolio.all_positions,
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
@@ -451,12 +468,8 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
     last_contract: {
-        currency: contract_trade.last_contract.contract_info?.currency,
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
-        exit_tick: contract_trade.last_contract.contract_info?.exit_tick,
-        exit_tick_time: contract_trade.last_contract.contract_info?.exit_tick_time,
-        profit: contract_trade.last_contract.contract_info?.profit,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,

@@ -11,7 +11,7 @@ const TakeProfit = ({
     removeToast,
     currency,
     current_focus,
-    has_info,
+    has_info = true,
     has_take_profit,
     is_single_currency,
     onChange,

@@ -397,6 +397,15 @@ const TickContract = RawMarkerMaker(
                 zoom: exit.zoom,
                 icon: ICONS.END.with_color(color, getColor({ status: 'bg', is_dark_theme })),
             });
+            if (is_accumulators_contract) {
+                // draw dashed line from end icon to exit tick:
+                ctx.strokeStyle = color + opacity;
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath();
+                ctx.moveTo(exit.left, entry.top);
+                ctx.lineTo(exit.left, exit.top);
+                ctx.stroke();
+            }
         }
         ctx.restore();
 

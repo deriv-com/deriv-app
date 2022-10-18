@@ -251,6 +251,44 @@
     width: 17.2rem;
     height: 6.55rem;
 
+    &.lost {
+        #{$self}__spot-circle,
+        #{$self}__content {
+            background-color: var(--text-loss-danger);
+
+            &.arrow-top:after {
+                border-bottom: 4px solid var(--text-loss-danger);
+            }
+            &.arrow-bottom:before {
+                border-top: 4px solid var(--text-loss-danger);
+            }
+            &.arrow-left:after {
+                border-right: 4px solid var(--text-loss-danger);
+            }
+            &.arrow-right:before {
+                border-left: 4px solid var(--text-loss-danger);
+            }
+        }
+    }
+    &.won {
+        #{$self}__spot-circle,
+        #{$self}__content {
+            background-color: var(--text-profit-success);
+
+            &.arrow-top:after {
+                border-bottom: 4px solid var(--text-profit-success);
+            }
+            &.arrow-bottom:before {
+                border-top: 4px solid var(--text-profit-success);
+            }
+            &.arrow-left:after {
+                border-right: 4px solid var(--text-profit-success);
+            }
+            &.arrow-right:before {
+                border-left: 4px solid var(--text-profit-success);
+            }
+        }
+    }
     &__spot-circle {
         position: absolute;
         border-radius: 100%;
@@ -259,13 +297,6 @@
         top: -2.5px;
         left: -2.5px;
         cursor: pointer;
-
-        &.lost {
-            background-color: var(--text-loss-danger);
-        }
-        &.won {
-            background-color: var(--text-profit-success);
-        }
     }
     &__content {
         position: absolute;
@@ -276,39 +307,57 @@
         flex-direction: column;
         gap: 0.4rem;
         padding: 0.8rem;
-        background-color: var(--text-profit-success);
-        // TODO: implement different colors for profit/loss
+        opacity: 0.72;
 
         &:after,
         &:before {
             content: '';
             position: absolute;
-            top: calc(50% - 4px);
             width: 0;
             height: 0;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
             display: none;
         }
-        &:after {
-            left: -4px;
-            border-right: 4px solid var(--text-profit-success);
-            // TODO: implement different colors for profit/loss
+        &.arrow-top:after,
+        &.arrow-bottom:before {
+            left: calc(50% - 4px);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            display: block;
         }
-        &:before {
-            left: 100%;
-            border-left: 4px solid var(--text-profit-success);
-            // TODO: implement different colors for profit/loss
+        &.arrow-left:after,
+        &.arrow-right:before {
+            top: calc(50% - 4px);
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            display: block;
+        }
+        &.arrow-top {
+            transform: translateX(-50%) translateY(7.5px);
+
+            &:after {
+                top: -4px;
+            }
+        }
+        &.arrow-bottom {
+            transform: translateX(-50%) translateY(calc(-100% - 7.5px));
+
+            &:before {
+                top: 100%;
+            }
         }
         &.arrow-left {
             transform: translateX(7.5px) translateY(-50%);
+
+            &:after {
+                left: -4px;
+            }
         }
         &.arrow-right {
             transform: translateX(calc(-100% - 7.5px)) translateY(-50%);
-        }
-        &.arrow-right:before,
-        &.arrow-left:after {
-            display: block;
+
+            &:before {
+                left: 100%;
+            }
         }
 
         #{$self}__text {

@@ -8,4 +8,5 @@ export type TRootStore = {
     config: ConfigStore;
     wallet_store: WalletStore;
     modules: Record<string, any>;
+    notifications: Record<string, any>;
 };

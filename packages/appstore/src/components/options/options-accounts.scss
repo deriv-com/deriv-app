@@ -98,13 +98,12 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 0.6rem;
+            padding: 1.9rem;
             gap: 1.6rem;
             background: var(--general-main-1);
             border-radius: 0.4rem;
             margin-left: 1rem;
             @include mobile {
-                width: 4rem;
                 padding: 0.3rem;
             }
         }
@@ -113,7 +112,9 @@
             right: 0;
             z-index: 999;
             opacity: 0.9;
-            padding: 1.9rem;
+            @include mobile {
+                right: 6rem;
+            }
         }
         &--platform {
             display: flex;

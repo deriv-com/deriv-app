@@ -15,11 +15,18 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    getLocation,
+    makeCancellablePromise,
+    PlatformContext,
+    TLocationList,
+} from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export type TAddressDetails = {
-    states_list: Array<object>;
+    states_list: TLocationList[];
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: FormikValues) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
@@ -35,8 +42,8 @@ export type TAddressDetails = {
     is_svg: boolean;
     is_gb_residence: boolean | string;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
-    selected_step_ref?: React.Ref<FormikProps<FormikValues>> | { current: { isSubmitting: false } };
-    fetchStatesList: () => void;
+    selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
+    fetchStatesList: () => Promise<unknown>;
     value: FormikValues;
 };
 
@@ -51,7 +58,7 @@ type TFormValidation = {
 
 type TInputField = {
     name: string;
-    required?: boolean;
+    required?: boolean | string;
     label: string;
     maxLength?: number | string;
     placeholder: string;
@@ -158,7 +165,7 @@ const AddressDetails = ({
                 onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }) => (
+            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement) => void; height: number | string }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>

@@ -15,7 +15,6 @@ const host_map = {
     'bot.binary.com': 'www.binary.bot',
     'developers.binary.com': 'developers.binary.com', // same, shouldn't change
     'academy.binary.com': 'academy.binary.com',
-    'tech.binary.com': 'tech.binary.com',
     'blog.binary.com': 'blog.binary.com',
 };
 

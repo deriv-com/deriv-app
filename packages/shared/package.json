@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "@deriv/translations": "^1.0.0",
+        "@deriv/api-types": "^1.0.54",
         "@types/js-cookie": "^3.0.1",
         "@types/moment": "^2.13.0",
         "@types/react-loadable": "^5.5.6",

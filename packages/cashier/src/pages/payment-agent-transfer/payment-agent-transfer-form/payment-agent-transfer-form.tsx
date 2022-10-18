@@ -1,16 +1,58 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
+import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TRootStore, TReactChangeEvent } from 'Types';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
-const validateTransfer = (values, { balance, currency, transfer_limit }) => {
-    const errors = {};
+type TError = {
+    loginid?: string;
+    amount?: string;
+    description?: string;
+};
+
+type TValidateTransferValueProps = {
+    amount: number;
+    loginid: string;
+    description: string;
+};
+
+type TValidateTransferProps = {
+    balance: string;
+    currency: string;
+    transfer_limit: {
+        min?: string | number;
+        max?: string | number;
+    };
+};
+
+type TPaymentAgentTransferFormProps = {
+    amount: number;
+    balance: string;
+    currency: string;
+    description: string;
+    error: TError;
+    requestTryPaymentAgentTransfer: (arg: PaymentAgentTransferRequest) => {
+        error?: string;
+    };
+    setErrorMessage: (error: string) => void;
+    transfer_limit: {
+        min?: string | number;
+        max?: string | number;
+    };
+    transfer_to: string;
+};
+
+const validateTransfer = (
+    values: TValidateTransferValueProps,
+    { balance, currency, transfer_limit = {} }: TValidateTransferProps
+) => {
+    const errors: TError = {};
 
     if (!values.loginid || !/^[A-Za-z]+[0-9]+$/.test(values.loginid)) {
         errors.loginid = localize('Please enter a valid client login ID.');
@@ -19,10 +61,11 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
-        ...(transfer_limit.min && {
-            min: transfer_limit.min,
-            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
-        }),
+        ...(transfer_limit.min &&
+            transfer_limit.max && {
+                min: transfer_limit.min,
+                max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
+            }),
     });
 
     if (!values.amount) {
@@ -50,19 +93,23 @@ const PaymentAgentTransferForm = ({
     setErrorMessage,
     transfer_limit,
     transfer_to,
-}) => {
-    const validateTransferPassthrough = values =>
+}: TPaymentAgentTransferFormProps) => {
+    const validateTransferPassthrough = (values: TValidateTransferValueProps) =>
         validateTransfer(values, {
             balance,
             currency,
             transfer_limit,
         });
 
-    const onTransferPassthrough = async (values, actions) => {
+    const onTransferPassthrough = async (
+        values: TValidateTransferValueProps,
+        actions: { setSubmitting: (status: boolean) => void }
+    ) => {
         const payment_agent_transfer = await requestTryPaymentAgentTransfer({
             amount: values.amount,
             currency,
             description: values.description.replace(/\n/g, ' '),
+            paymentagent_transfer: 1,
             transfer_to: values.loginid,
         });
         if (payment_agent_transfer.error) {
@@ -71,7 +118,10 @@ const PaymentAgentTransferForm = ({
     };
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer-form__container'>
+        <div
+            className='cashier__wrapper payment-agent-transfer-form__container'
+            data-testid='dt_payment_agent_transfer_form_container'
+        >
             <DesktopWrapper>
                 <Text
                     as='h2'
@@ -87,7 +137,7 @@ const PaymentAgentTransferForm = ({
                 initialValues={{
                     // in case coming back from confirmation screen, populate the recent data to be edited
                     loginid: transfer_to || '',
-                    amount: amount || '',
+                    amount: amount || 0,
                     description: description || '',
                 }}
                 validate={validateTransferPassthrough}
@@ -96,10 +146,10 @@ const PaymentAgentTransferForm = ({
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                     <Form noValidate>
                         <Field name='loginid'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={e => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -107,6 +157,7 @@ const PaymentAgentTransferForm = ({
                                     type='text'
                                     label={localize('Client account number')}
                                     error={touched.loginid && errors.loginid}
+                                    data-testid='dt_payment_agent_transfer_form_input_loginid'
                                     required
                                     autoComplete='off'
                                     maxLength={20}
@@ -114,10 +165,10 @@ const PaymentAgentTransferForm = ({
                             )}
                         </Field>
                         <Field name='amount'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={e => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -136,16 +187,17 @@ const PaymentAgentTransferForm = ({
                                             {getCurrencyDisplayCode(currency)}
                                         </span>
                                     }
+                                    data-testid='dt_payment_agent_transfer_form_input_amount'
                                     autoComplete='off'
                                     maxLength='30'
                                 />
                             )}
                         </Field>
                         <Field name='description'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
-                                    onChange={e => {
+                                    onChange={(e: TReactChangeEvent) => {
                                         setErrorMessage('');
                                         handleChange(e);
                                     }}
@@ -153,6 +205,7 @@ const PaymentAgentTransferForm = ({
                                     type='textarea'
                                     label={localize('Description')}
                                     error={errors.description}
+                                    data-testid='dt_payment_agent_transfer_form_input_description'
                                     required
                                     autoComplete='off'
                                     has_character_counter
@@ -179,22 +232,10 @@ const PaymentAgentTransferForm = ({
     );
 };
 
-PaymentAgentTransferForm.propTypes = {
-    amount: PropTypes.string,
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    requestTryPaymentAgentTransfer: PropTypes.func,
-    setErrorMessage: PropTypes.func,
-    transfer_limit: PropTypes.object,
-    transfer_to: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
+    amount: modules.cashier.payment_agent_transfer.confirm.amount,
     balance: client.balance,
     currency: client.currency,
-    amount: modules.cashier.payment_agent_transfer.confirm.amount,
     description: modules.cashier.payment_agent_transfer.confirm.description,
     error: modules.cashier.payment_agent_transfer.error,
     requestTryPaymentAgentTransfer: modules.cashier.payment_agent_transfer.requestTryPaymentAgentTransfer,

@@ -11,8 +11,8 @@ export default class MyProfileStore extends BaseStore {
     @observable advertiser_info = {};
     @observable advertiser_payment_methods = {};
     @observable advertiser_payment_methods_error = '';
+    @observable available_balance = null;
     @observable available_payment_methods = {};
-    @observable balance_available = null;
     @observable blocked_advertisers_list = [];
     @observable contact_info = '';
     @observable default_advert_description = '';
@@ -205,7 +205,7 @@ export default class MyProfileStore extends BaseStore {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
                 this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setBalanceAvailable(p2p_advertiser_info.balance_available);
+                this.setAvailableBalance(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
@@ -346,7 +346,7 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_update } = response;
-                this.setBalanceAvailable(p2p_advertiser_update.balance_available);
+                this.setAvailableBalance(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                 this.setIsSubmitSuccess(true);
@@ -570,8 +570,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setBalanceAvailable(balance_available) {
-        this.balance_available = balance_available;
+    setAvailableBalance(available_balance) {
+        this.available_balance = available_balance;
     }
 
     @action.bound

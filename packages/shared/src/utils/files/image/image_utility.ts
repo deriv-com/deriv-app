@@ -1,12 +1,29 @@
-require('canvas-toBlob');
+import 'canvas-toBlob';
+import { TFile } from '../file-uploader-utils';
 
-const compressImg = image =>
+declare global {
+    interface Blob {
+        lastModifiedDate: number;
+        name: string;
+    }
+}
+
+export type TImage = {
+    src: string;
+    filename: string;
+};
+
+const compressImg = (image: TImage): Promise<Blob> =>
     new Promise(resolve => {
         const img = new Image();
         img.src = image.src;
         img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
+            const canvas: HTMLCanvasElement = document.createElement('canvas');
+            const canvas_res = canvas.getContext('2d');
+            if (!canvas_res || !(canvas_res instanceof CanvasRenderingContext2D)) {
+                throw new Error('Failed to get 2D context');
+            }
+            const context: CanvasRenderingContext2D = canvas_res;
             if (img.naturalWidth > 2560) {
                 const width = 2560;
                 const scaleFactor = width / img.naturalWidth;
@@ -26,7 +43,7 @@ const compressImg = image =>
             canvas.toBlob(
                 blob => {
                     const filename = image.filename.replace(/\.[^/.]+$/, '.jpg');
-                    const file = new Blob([blob], {
+                    const file = new Blob([blob as BlobPart], {
                         type: 'image/jpeg',
                     });
                     file.lastModifiedDate = Date.now();
@@ -39,7 +56,7 @@ const compressImg = image =>
         };
     });
 
-const convertToBase64 = file =>
+const convertToBase64 = (file: TFile) =>
     new Promise(resolve => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -49,14 +66,9 @@ const convertToBase64 = file =>
         };
     });
 
-const isImageType = filename => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
+const isImageType = (filename: string) => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
 
-const getFormatFromMIME = file =>
+const getFormatFromMIME = (file: TFile) =>
     (file.type.split('/')[1] || (file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
 
-module.exports = {
-    compressImg,
-    convertToBase64,
-    isImageType,
-    getFormatFromMIME,
-};
+export { compressImg, convertToBase64, isImageType, getFormatFromMIME };

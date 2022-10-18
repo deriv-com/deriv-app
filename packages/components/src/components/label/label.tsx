@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const available_modes = [
     'adjustment',
@@ -13,13 +12,19 @@ const available_modes = [
     'default-invert',
     'success-invert',
     'warn-invert',
-];
+] as const;
 
-const available_sizes = ['regular', 'large'];
+const available_sizes = ['regular', 'large'] as const;
 
-const Label = ({ mode, children, size = 'regular', className }) => {
-    const type = available_modes.some(m => m === mode) ? mode : 'default';
-    const scale = available_sizes.some(s => s === size) ? size : 'regular';
+type TLabel = {
+    mode: typeof available_modes[number];
+    size: typeof available_sizes[number];
+    className?: string;
+};
+
+const Label = ({ mode, children, size = 'regular', className }: React.PropsWithChildren<TLabel>) => {
+    const type = available_modes.some((m: string) => m === mode) ? mode : 'default';
+    const scale = available_sizes.some((s: string) => s === size) ? size : 'regular';
 
     return (
         <span
@@ -31,13 +36,6 @@ const Label = ({ mode, children, size = 'regular', className }) => {
             {children}
         </span>
     );
-};
-
-Label.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    mode: PropTypes.oneOf(available_modes),
-    size: PropTypes.string,
-    className: PropTypes.string,
 };
 
 export default Label;

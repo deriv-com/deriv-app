@@ -1,8 +1,16 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }) => {
+type TToggleSwitch = {
+    className?: string;
+    classNameButton?: string;
+    classNameLabel?: string;
+    handleToggle: () => void;
+    id: string;
+    is_enabled: boolean;
+};
+
+const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }: TToggleSwitch) => {
     return (
         <React.Fragment>
             <input
@@ -17,15 +25,6 @@ const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle
             </label>
         </React.Fragment>
     );
-};
-
-ToggleSwitch.propTypes = {
-    className: PropTypes.string,
-    classNameButton: PropTypes.string,
-    classNameLabel: PropTypes.string,
-    handleToggle: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    is_enabled: PropTypes.bool.isRequired,
 };
 
 export default ToggleSwitch;

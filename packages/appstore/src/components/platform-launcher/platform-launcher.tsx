@@ -67,7 +67,7 @@ const PlatformLauncher = ({
                 </MobileWrapper>
             </div>
             {has_real_account && (
-                <>
+                <React.Fragment>
                     {link_to ? (
                         <Link to={link_to}>
                             <Button primary className='platform-launcher__trade-button'>
@@ -81,7 +81,7 @@ const PlatformLauncher = ({
                             </Button>
                         </a>
                     )}
-                </>
+                </React.Fragment>
             )}
         </div>
     );

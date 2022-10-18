@@ -1,3 +1,4 @@
+import React from 'react';
 import AdvcashDark from 'Assets/svgs/wallet/advcash-dark.svg';
 import AdvcashLight from 'Assets/svgs/wallet/advcash-light.svg';
 import AirtmDark from 'Assets/svgs/wallet/airtm-dark.svg';
@@ -85,7 +86,6 @@ import Paytrust88Dark from 'Assets/svgs/wallet/paytrust88-dark.svg';
 import Paytrust88Light from 'Assets/svgs/wallet/paytrust88-light.svg';
 import PerfectMoneyDark from 'Assets/svgs/wallet/perfect-money-dark.svg';
 import PerfectMoneyLight from 'Assets/svgs/wallet/perfect-money-light.svg';
-import React from 'react';
 import SkrillDark from 'Assets/svgs/wallet/skrill-dark.svg';
 import SkrillLight from 'Assets/svgs/wallet/skrill-light.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';

@@ -20,7 +20,6 @@ import { observer } from 'mobx-react-lite';
 import { getSortedAccountList } from '../../helpers';
 import AccountManager from '../account-manager';
 import classNames from 'classnames';
-import { when } from 'mobx';
 
 type TPlatformLauncherPropsArray = {
     app_icon: string;
@@ -37,7 +36,6 @@ type TOptionsProps = {
 const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = props => {
     const { client, ui } = useStores();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const [is_loading, setIsloading] = React.useState(false);
     const {
         account_list,
         accounts,
@@ -55,6 +53,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         has_any_real_account,
         loginid,
         switchAccount,
+        is_logging_in,
     } = client;
     const sortedAccountList = React.useMemo(
         () => getSortedAccountList(account_list, accounts).filter(account => !account.is_virtual),
@@ -79,10 +78,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
         setIsModalOpen(false);
         closeAccountsDialog();
         if (loginid === loginid_selected) return;
-        setIsloading(true);
         await switchAccount(loginid_selected);
-        await when(() => loginid_selected === client.loginid);
-        setIsloading(false);
     };
 
     return (
@@ -124,7 +120,7 @@ const Options: React.FunctionComponent<TOptionsProps & RouteComponentProps> = pr
                     </Text>
                 </MobileWrapper>
             </div>
-            {!is_loading ? (
+            {!is_logging_in ? (
                 <div className='options-container__accounts-platform-container'>
                     {props.accountType === 'demo' && (
                         <div className='options-container__accounts-platform-container--account-demo'>

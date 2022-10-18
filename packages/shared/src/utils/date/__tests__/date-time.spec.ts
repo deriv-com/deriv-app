@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import moment from 'moment';
 import 'moment/min/locales';
-import * as DateTime from '../date-time.js';
+import * as DateTime from '../date-time';
 
 describe('toMoment', () => {
     it('return utc epoch value date based on client epoch value passed', () => {
@@ -64,6 +64,7 @@ describe('formatDate', () => {
     });
 });
 
+/* eslint-disable no-unused-expressions */
 describe('daysFromTodayTo', () => {
     it('return empty string when there is no argument passed', () => {
         expect(DateTime.daysFromTodayTo()).to.be.empty;

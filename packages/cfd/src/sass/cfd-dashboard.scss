@@ -159,7 +159,7 @@
             &--is-mt5 {
                 display: flex;
                 align-items: baseline;
-                justify-content: space-between;
+                justify-content: center;
 
                 #{$parent}--desktop {
                     margin-right: 6.4rem;
@@ -189,6 +189,10 @@
                 align-items: center;
                 justify-content: center;
                 flex-wrap: wrap;
+
+                &--column {
+                    flex-direction: column;
+                }
 
                 & > a {
                     display: inline-block;
@@ -499,8 +503,11 @@
 
     &__verification-status,
     &__verification-status--pending,
-    &__verification-status--POA_POI,
-    &__verification-status--verified {
+    &__verification-status--failed,
+    &__verification-status--account_added,
+    &__verification-status--poi_verified,
+    &__verification-status--not_submitted,
+    &__verification-status--hint {
         width: 100%;
         min-height: 2.4rem;
         display: flex;
@@ -511,58 +518,39 @@
 
         &--pending {
             background-color: #ffad3a;
-            color: #333333;
             border-radius: 0.5rem;
         }
 
-        &--verified {
+        &--poi_verified {
+            background: var(--text-status-info-blue);
+            border-radius: 0.5rem;
+        }
+        &--account_added {
             background-color: #4bb4b3;
             border-radius: 0.5rem;
-            &-text {
-                color: #fff;
-            }
         }
 
-        &--POA_POI {
+        &--failed {
             background-color: #ec3f3f;
-            color: #fff;
+            border-radius: 0.5rem;
+        }
+        &--not_submitted {
+            background-color: var(--general-section-1);
+            padding: 0.3rem;
             border-radius: 0.5rem;
         }
     }
-
     &__h2-header {
         margin: 1.4rem 0 2.4rem;
     }
-
-    &__footer {
-        font-weight: 400;
-        font-size: 10px;
-        line-height: 14px;
-        color: #333333;
-        padding: 0.5rem 0.8rem;
-        margin-top: auto;
-        text-align: center;
-        &--none {
-            background-color: #f2f3f4;
-        }
-    }
-
-    &__footer--none {
-        background-color: var(--general-section-1);
-        color: #333333;
-        margin-top: auto;
-        padding: 0.3rem;
-    }
-
     &__footnote {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 2.4rem auto 0;
+        margin: 1.6rem auto 0;
         @include desktop {
             width: 99.2rem;
         }
-
         @include mobile {
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
@@ -570,7 +558,6 @@
 
         &--pending {
             color: #ffad3a;
-            margin-top: 2.4rem;
         }
     }
 
@@ -638,15 +625,16 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 24rem;
+    min-height: 21rem;
     width: 30.4em;
     position: relative;
     @include desktop {
-        height: fit-content;
+        height: 100%;
     }
 
     &__balance {
         margin-bottom: 0.8rem;
+        padding: 0 0.8rem;
         &--region {
             border: 1px solid #2a3052;
             border-radius: 1rem;
@@ -710,6 +698,7 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
+        height: 100%;
 
         @include mobile {
             grid-template-rows: 1fr;
@@ -722,7 +711,7 @@
     }
 
     &__logged-out {
-        min-height: 12rem;
+        min-height: 15rem;
     }
 
     &__add-server {
@@ -803,9 +792,9 @@
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 13.7rem;
-        left: 19.4rem;
-        top: 2.8rem;
+        width: 11.7rem;
+        left: 21.1rem;
+        top: 2.1rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -840,7 +829,7 @@
         }
         &--has-banner {
             .cfd-account-card--paragraph {
-                width: 15rem;
+                width: 18rem;
             }
         }
     }
@@ -1266,6 +1255,11 @@
                 }
                 &-links {
                     display: flex;
+
+                    a {
+                        margin: 0.4rem;
+                    }
+
                     @include mobile {
                         flex-direction: column;
                     }
@@ -1437,6 +1431,50 @@
         .poi-form-on-signup {
             display: grid;
             grid-template-rows: minmax(20rem, 1fr);
+        }
+
+        .manual-poi {
+            margin: auto;
+            width: max-content;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            &-details {
+                margin: auto;
+                @include mobile {
+                    overflow-y: scroll;
+                }
+
+                &__form {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                &__btns {
+                    height: 7.2rem;
+                    padding-bottom: 0;
+                }
+
+                &__field {
+                    margin-bottom: 3.5rem;
+                }
+
+                &__fields-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .account-management__message-wrapper {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
     }
 
@@ -2099,6 +2137,7 @@
                 opacity: 0.32;
                 border-radius: 4px;
                 width: 100%;
+                cursor: not-allowed;
                 .dc-text {
                     font-style: normal;
                     font-weight: 700;

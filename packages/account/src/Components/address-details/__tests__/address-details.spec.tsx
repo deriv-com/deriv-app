@@ -1,7 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails, { TAddressDetails } from '../address-details';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext, TLocationList } from '@deriv/shared';
+import { FormikProps, FormikValues } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -35,7 +36,7 @@ describe('<AddressDetails/>', () => {
     let modal_root_el;
 
     const mock_props: TAddressDetails = {
-        fetchStatesList: jest.fn(() => []),
+        fetchStatesList: jest.fn(() => Promise.resolve([])),
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
@@ -45,7 +46,7 @@ describe('<AddressDetails/>', () => {
         onSave: jest.fn(),
         onSubmit: jest.fn(),
         onSubmitEnabledChange: jest.fn(),
-        selected_step_ref: { current: { isSubmitting: false } },
+        selected_step_ref: { current: { isSubmitting: false } } as React.RefObject<FormikProps<FormikValues>>,
         states_list: [],
         value: {
             address_city: '',
@@ -99,7 +100,7 @@ describe('<AddressDetails/>', () => {
         });
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
         const required_fields = inputs.filter(input => input.required === true);
         expect(required_fields.length).toBe(2);
@@ -113,7 +114,7 @@ describe('<AddressDetails/>', () => {
         });
         expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
 
         const required_fields = inputs.filter(input => input.required === true);
@@ -125,7 +126,7 @@ describe('<AddressDetails/>', () => {
         expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
         expect(mock_props.onSave).toHaveBeenCalledTimes(1);
 
-        const address_line_1_input = screen.getByPlaceholderText(address_line_1);
+        const address_line_1_input: HTMLInputElement = screen.getByPlaceholderText(address_line_1);
         const first_line_adress_text = 'Test first line address';
         expect(address_line_1_input.value).toBe('');
         fireEvent.change(address_line_1_input, { target: { value: first_line_adress_text } });
@@ -133,7 +134,7 @@ describe('<AddressDetails/>', () => {
             expect(address_line_1_input.value).toBe(first_line_adress_text);
         });
 
-        const address_town_input = screen.getByPlaceholderText(address_town);
+        const address_town_input: HTMLInputElement = screen.getByPlaceholderText(address_town);
         const address_town_text = 'Test city';
         expect(address_town_input.value).toBe('');
         fireEvent.change(address_town_input, { target: { value: address_town_text } });
@@ -141,7 +142,7 @@ describe('<AddressDetails/>', () => {
             expect(address_town_input.value).toBe(address_town_text);
         });
 
-        const address_postcode_input = screen.getByPlaceholderText(address_postcode);
+        const address_postcode_input: HTMLInputElement = screen.getByPlaceholderText(address_postcode);
         const address_postcode_text = 'Test postcode';
         expect(address_postcode_input.value).toBe('');
         fireEvent.change(address_postcode_input, { target: { value: address_postcode_text } });
@@ -149,7 +150,7 @@ describe('<AddressDetails/>', () => {
             expect(address_postcode_input.value).toBe(address_postcode_text);
         });
 
-        const address_state_input = screen.getByPlaceholderText(address_state);
+        const address_state_input: HTMLInputElement = screen.getByPlaceholderText(address_state);
         const address_state_text = 'Test state';
         expect(address_state_input.value).toBe('Default test state');
         fireEvent.change(address_state_input, { target: { value: address_state_text } });
@@ -172,7 +173,7 @@ describe('<AddressDetails/>', () => {
 
         expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
         const required_fields = inputs.filter(input => input.required === true);
         expect(required_fields.length).toBe(0);
@@ -206,7 +207,7 @@ describe('<AddressDetails/>', () => {
         });
         expect(screen.queryByText(use_address_info)).not.toBeInTheDocument();
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs.length).toBe(5);
 
         const required_fields = inputs.filter(input => input.required === true);
@@ -233,13 +234,13 @@ describe('<AddressDetails/>', () => {
         mock_props.states_list = [
             { text: 'State 1', value: 'State 1' },
             { text: 'State 2', value: 'State 2' },
-        ];
+        ] as TLocationList[];
 
         render(<AddressDetails {...mock_props} />);
 
         expect(screen.getByText('Default test state')).toBeInTheDocument();
 
-        const address_state_input = screen.getByRole('combobox');
+        const address_state_input: HTMLInputElement = screen.getByRole('combobox');
         expect(address_state_input.value).toBe('');
         fireEvent.change(address_state_input, { target: { value: 'State 2' } });
         await waitFor(() => {
@@ -251,11 +252,11 @@ describe('<AddressDetails/>', () => {
         mock_props.states_list = [
             { text: 'State 1', value: 'State 1' },
             { text: 'State 2', value: 'State 2' },
-        ];
+        ] as TLocationList[];
 
         render(<AddressDetails {...mock_props} />);
 
-        const address_state_input = screen.getByRole('textbox', { name: 'State/Province' });
+        const address_state_input: HTMLTextAreaElement = screen.getByRole('textbox', { name: 'State/Province' });
         expect(address_state_input).toHaveValue('Default test state');
         fireEvent.change(address_state_input, { target: { value: 'State 1' } });
         await waitFor(() => {

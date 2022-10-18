@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
@@ -120,7 +120,10 @@ const AppNotificationMessages = ({
                   'resticted_mt5_with_failed_poa',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
-        return is_not_marked_notification && is_non_hidden_notification;
+
+        const is_only_for_p2p_notification =
+            window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
+        return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;

@@ -55,6 +55,7 @@ type TJurisdictionModalProps = TCompareAccountsReusedProps & {
     account_status: GetAccountStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
     updateAccountStatus: () => void;
+    context: RootStore;
 };
 
 const JurisdictionModal = ({
@@ -63,6 +64,7 @@ const JurisdictionModal = ({
     authentication_status,
     disableApp,
     enableApp,
+    context,
     is_jurisdiction_modal_visible,
     is_eu,
     jurisdiction_selected_shortcode,
@@ -272,6 +274,7 @@ const JurisdictionModal = ({
                                 poa_status={poa_status}
                                 poi_status={poi_status}
                                 is_eu={is_eu}
+                                context={context}
                                 is_fully_authenticated={is_fully_authenticated}
                                 poi_poa_pending={poi_poa_pending}
                                 checked={checked}
@@ -317,6 +320,7 @@ const JurisdictionModal = ({
                                 poa_status={poa_status}
                                 poi_status={poi_status}
                                 is_eu={is_eu}
+                                context={context}
                                 is_fully_authenticated={is_fully_authenticated}
                                 poi_poa_pending={poi_poa_pending}
                                 checked={checked}

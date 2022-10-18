@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Checkbox from '../checkbox/checkbox.jsx';
+import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
 
 const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, children, ...props }) => {

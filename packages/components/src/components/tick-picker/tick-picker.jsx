@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import Icon from '../icon';
 import Text from '../text';
 

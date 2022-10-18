@@ -25,6 +25,7 @@
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
         "@types/react-router-dom": "^5.1.6",
+        "@types/react-virtualized": "^9.21.21",
         "@typescript-eslint/eslint-plugin": "^5.8.0",
         "@typescript-eslint/parser": "^5.8.0",
         "ts-jest": "^26.4.2",
@@ -61,7 +62,7 @@
         "@nrwl/nx-cloud": "latest"
     },
     "scripts": {
-        "build:all": "nx build @deriv/components && nx run-many --target=build",
+        "build:all": "nx build @deriv/components --skip-nx-cache && nx run-many --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",
         "test:eslint-all": "nx run-many --target=test:eslint",

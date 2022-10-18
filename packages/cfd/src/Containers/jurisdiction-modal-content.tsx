@@ -30,6 +30,7 @@ type TJurisdictionModalContent = {
     poa_status: string;
     poi_status: string;
     is_eu: boolean;
+    context: RootStore;
     is_fully_authenticated: boolean;
     poi_poa_pending: boolean;
     checked: boolean;
@@ -58,6 +59,7 @@ type TJurisdictionCard = {
     poi_poa_none: boolean;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: string;
+    context: RootStore;
     disabled: boolean;
     poa_failed: boolean;
     poi_failed: boolean;
@@ -96,6 +98,7 @@ const JurisdictionCard = ({
     poi_acknowledged,
     is_fully_authenticated,
     is_virtual,
+    context,
     poi_verified_for_vanuatu,
     poi_verified_for_labuan_bvi,
     poa_verified,
@@ -373,6 +376,7 @@ const JurisdictionModalContent = ({
     poa_status,
     poi_status,
     is_eu,
+    context,
     is_fully_authenticated,
     checked,
     setChecked,
@@ -682,6 +686,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('svg')}
                         poa_failed={poa_failed}
@@ -709,6 +714,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('bvi')}
                         poa_failed={poa_failed}
@@ -736,6 +742,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('maltainvest')}
                         poa_failed={poa_failed}
@@ -763,6 +770,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('vanuatu')}
                         poa_failed={poa_failed}
@@ -790,6 +798,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('labuan')}
                         poa_failed={poa_failed}

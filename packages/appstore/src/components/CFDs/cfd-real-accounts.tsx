@@ -1,12 +1,19 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
 import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
+import { useHistory } from 'react-router-dom';
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
 
 const CFDRealAccounts = ({
     isDerivedVisible,
@@ -15,8 +22,20 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client }: TRootStore = useStores();
+    const { client, modules, common }: TRootStore = useStores();
+    const {
+        dxtrade_tokens,
+        setAccountType,
+        createCFDAccount,
+        enableCFDPasswordModal,
+        toggleJurisdictionModal,
+        disableCFDPasswordModal,
+        toggleMT5TradeModal,
+        setMT5TradeAccount,
+    } = modules.cfd;
+    const { setAppstorePlatform, platform } = common;
     const { isEligibleForMoreRealMt5 } = client;
+    const history = useHistory();
 
     const available_real_accounts: Array<TStaticAccountProps> = [
         {
@@ -49,10 +68,56 @@ const CFDRealAccounts = ({
         },
     ];
 
-    const existingRealAccounts = (platform: TPlatform, market_type?: string) => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${market_type}`))
+    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+    const getDXTradeWebTerminalLink = (category: string, token?: string) => {
+        let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+        if (token) {
+            url += `?token=${token}`;
+        }
+
+        return url;
+    };
+
+    const openAccountTransfer = (
+        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
+        meta: { category: string; type?: string }
+    ) => {
+        if (data.platform === CFD_PLATFORMS.DXTRADE)
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+        else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+
+        disableCFDPasswordModal();
+        history.push(routes.cashier_acc_transfer);
+    };
+
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
+        if (platform === 'dxtrade') {
+            return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
+                category: account.account_type as keyof TOpenAccountTransferMeta,
+                type: getCFDAccountKey({
+                    market_type: account.market_type,
+                    sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                    platform,
+                }),
+            });
+        }
+        return openAccountTransfer(account, {
+            category: account.account_type as keyof TOpenAccountTransferMeta,
+            type: getCFDAccountKey({
+                market_type: account.market_type,
+                sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                platform: 'mt5',
+            }),
+        });
+    };
+
+    const existingRealAccounts = (existing_platform: TPlatform, market_type?: string) => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.real.${market_type}`))
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.real.${market_type}`))
+                  .filter(key => key.startsWith(`${existing_platform}.real.${market_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -91,9 +156,12 @@ const CFDRealAccounts = ({
                                               loginid={existing_account?.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
-                                              //   TODO will pass the click functions when flows are updated
-                                              onClickTopUp={() => null}
-                                              onClickTrade={() => null}
+                                              onClickTopUp={() => onClickFundReal(existing_account)}
+                                              onClickTrade={() => {
+                                                  toggleMT5TradeModal();
+                                                  setMT5TradeAccount(existing_account);
+                                              }}
+                                              dxtrade_link={getDXTradeWebTerminalLink('real', dxtrade_tokens.real)}
                                               description={account.description}
                                           />
                                           {isEligibleForMoreRealMt5(existing_account.market_type) &&
@@ -115,8 +183,29 @@ const CFDRealAccounts = ({
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
-                                          //   TODO will pass the click functions when flows are updated
-                                          onClickGet={() => null}
+                                          onClickGet={
+                                              account.platform === CFD_PLATFORMS.MT5
+                                                  ? () => {
+                                                        toggleJurisdictionModal();
+                                                        setAccountType({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        setAppstorePlatform(account.platform);
+                                                    }
+                                                  : () => {
+                                                        setAccountType({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        setAppstorePlatform(account.platform);
+                                                        createCFDAccount({
+                                                            category: 'real',
+                                                            type: account.type,
+                                                        });
+                                                        enableCFDPasswordModal();
+                                                    }
+                                          }
                                           description={account.description}
                                       />
                                   </div>

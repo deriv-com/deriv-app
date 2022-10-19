@@ -59,7 +59,6 @@ const JurisdictionModalContent = ({
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             />
             <JurisdictionCheckBox
-                account_status={account_status}
                 is_checked={checked}
                 onCheck={() => setChecked(!checked)}
                 class_name={`${card_classname}__jurisdiction-checkbox`}

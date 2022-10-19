@@ -184,7 +184,6 @@ export type TVerificationStatusBannerProps = {
 };
 
 export type TJurisdictionCheckBoxProps = {
-    account_status: GetAccountStatus;
     class_name: string;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
@@ -202,7 +201,6 @@ export type TJurisdictionModalProps = {
         type: string;
         category: string;
     };
-    account_settings: GetSettings;
     account_status: GetAccountStatus;
     disableApp: () => void;
     enableApp: () => void;
@@ -211,7 +209,6 @@ export type TJurisdictionModalProps = {
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];

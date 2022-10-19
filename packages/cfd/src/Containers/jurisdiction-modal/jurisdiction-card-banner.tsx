@@ -1,10 +1,10 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import { TVerificationStatusBannerProps } from '../props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { TVerificationStatusBannerProps } from '../props.types';
 
 const VerificationStatusBanner = ({
     account_status,
@@ -20,15 +20,8 @@ const VerificationStatusBanner = ({
     const {
         poi_not_submitted_for_vanuatu,
         poi_or_poa_not_submitted,
-        poi_verified_for_vanuatu,
-        poi_verified_for_bvi_labuan_maltainvest,
-        poi_pending_for_bvi_labuan_maltainvest,
-        poi_pending_for_vanuatu,
         poi_resubmit_for_vanuatu,
         poi_resubmit_for_bvi_labuan_maltainvest,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
-        poa_acknowledged,
         need_poa_resubmission,
         need_poi_for_bvi_labuan_maltainvest,
         poa_pending,

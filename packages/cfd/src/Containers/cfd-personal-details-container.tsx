@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, MobileDialog, DesktopWrapper, MobileWrapper, Div100vhContainer, Text } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -15,7 +15,6 @@ const CFDPersonalDetailsContainer = ({
     account_settings,
     getChangeableFields,
     landing_company,
-    openPasswordModal,
     residence_list,
     setAccountSettings,
     onSubmit,
@@ -62,7 +61,6 @@ const CFDPersonalDetailsContainer = ({
     };
 
     React.useEffect(() => {
-        // if (is_open) {
         setIsLoading(true);
         initiatePersonalDetails().then(() => {
             setIsLoading(false);
@@ -141,7 +139,6 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
     landing_company: client.landing_company,
-    // openPasswordModal: modules.cfd.enableCFDPasswordModal,
     toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,

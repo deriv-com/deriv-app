@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 const PaymentMethodCard = ({
     add_payment_method,
     disabled,
+    icon_method,
     is_add = false,
     is_vertical_ellipsis_visible = true,
     label = undefined,
@@ -63,11 +64,7 @@ const PaymentMethodCard = ({
             style={style}
         >
             <div className='payment-method-card__header'>
-                <Icon
-                    className='payment-method-card__icon'
-                    icon={method === 'BankTransfer' || method === 'Other' ? `IcCashier${method}` : 'IcCashierEwallet'}
-                    size={medium || small ? 16 : 24}
-                />
+                <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
                 {is_vertical_ellipsis_visible && (
                     <Dropdown
                         list={[

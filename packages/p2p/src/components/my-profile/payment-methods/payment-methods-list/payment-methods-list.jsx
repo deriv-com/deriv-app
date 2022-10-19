@@ -61,14 +61,22 @@ const PaymentMethodsList = () => {
 
                                         <div className='payment-methods-list__list-body'>
                                             {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        large={true}
-                                                        payment_method={each_payment_method}
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
+                                                (each_payment_method, each_payment_method_key) => {
+                                                    const ecp = each_payment_method.display_name.replace(/\s|-/gm, '');
+                                                    const method =
+                                                        ecp === 'BankTransfer' || ecp === 'Other'
+                                                            ? `IcCashier${ecp}`
+                                                            : 'IcCashierEwallet';
+                                                    return (
+                                                        <PaymentMethodCard
+                                                            icon_method={method}
+                                                            key={each_payment_method_key}
+                                                            large={true}
+                                                            payment_method={each_payment_method}
+                                                            show_payment_method_name={false}
+                                                        />
+                                                    );
+                                                }
                                             )}
                                         </div>
                                     </React.Fragment>

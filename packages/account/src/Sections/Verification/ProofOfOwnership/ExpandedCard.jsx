@@ -63,7 +63,7 @@ const ExpandedCard = ({
                         as='p'
                         color='general'
                         size='xs'
-                        key={instruction}
+                        key={instruction?.key ?? instruction}
                     >
                         {instruction} {exampleLink()}
                     </Text>
@@ -87,16 +87,14 @@ const ExpandedCard = ({
                                     onBlur={e => {
                                         handleBlur(`data[${index}].payment_method_identifier`, e.currentTarget.value);
                                     }}
-                                    maxLength='19'
                                     data-testid='payment_method_identifier'
                                     error={error?.payment_method_identifier}
                                 />
                             </div>
                         )}
-                        {controls_to_show.map((i, control_index) => (
+                        {controls_to_show.map(i => (
                             // Using control_index Headers, because I have no unique value to use as a key
-                            <React.Fragment key={`${i}${control_index}`}>
-                                {/* Used React.Fragment instead of the <></> to resolve devtools console errors/warnings of missing key prop. */}
+                            <React.Fragment key={`${i}${card_details?.id}}`}>
                                 <div
                                     className={classNames('proof-of-ownership__card-open-inputs-upload', {
                                         expand: !card_details?.input_label,
@@ -105,8 +103,8 @@ const ExpandedCard = ({
                                 >
                                     <FileUploader
                                         handleFile={handleUploadedFile}
-                                        file_name={values?.data?.[index]?.files?.[i]?.name || ''}
-                                        data_test_id={`uploader-${values?.data?.[index]?.files?.[i]?.id}`}
+                                        file_name={values?.data?.[index]?.files?.[i]?.name ?? ''}
+                                        data_test_id={'uploader-field'}
                                         class_name='proof-of-ownership__card-open-inputs-photo'
                                         name={`data[${index}].files[${i}]`}
                                         error={error?.files?.[i]}

@@ -4,15 +4,15 @@ import { Loading, Tabs } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
-import BuySell from './buy-sell/buy-sell.jsx';
-import Dp2pBlocked from './dp2p-blocked';
-import { localize } from './i18next';
-import MyAds from './my-ads/my-ads.jsx';
-import MyProfile from './my-profile';
-import NicknameForm from './nickname-form';
-import Orders from './orders/orders.jsx';
-import TemporarilyBarredHint from './temporarily-barred-hint';
-import Verification from './verification/verification.jsx';
+import BuySell from 'Components/buy-sell/buy-sell.jsx';
+import Dp2pBlocked from 'Components/dp2p-blocked';
+import { localize } from 'Components/i18next';
+import MyAds from 'Components/my-ads/my-ads.jsx';
+import MyProfile from 'Components/my-profile';
+import NicknameForm from 'Components/nickname-form';
+import Orders from 'Components/orders/orders.jsx';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
+import Verification from 'Components/verification/verification.jsx';
 
 const AppContent = () => {
     const { buy_sell_store, general_store } = useStores();

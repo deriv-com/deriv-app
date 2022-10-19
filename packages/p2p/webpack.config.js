@@ -11,7 +11,7 @@ const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 module.exports = function () {
     return {
         entry: {
-            index: path.resolve(__dirname, 'src/components', 'app.jsx'),
+            index: path.resolve(__dirname, 'src', 'app.jsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
@@ -26,9 +26,10 @@ module.exports = function () {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Pages: path.resolve(__dirname, 'src/pages'),
+                Stores: path.resolve(__dirname, 'src/stores'),
                 Translations: path.resolve(__dirname, 'src/translations'),
                 Utils: path.resolve(__dirname, 'src/utils'),
-                Stores: path.resolve(__dirname, 'src/stores'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -66,11 +67,11 @@ module.exports = function () {
                         'style-loader',
                         ...(is_publishing
                             ? [
-                                {
-                                    loader: MiniCssExtractPlugin.loader,
-                                },
-                                '@deriv/publisher/utils/css-unit-loader.js',
-                            ]
+                                  {
+                                      loader: MiniCssExtractPlugin.loader,
+                                  },
+                                  '@deriv/publisher/utils/css-unit-loader.js',
+                              ]
                             : []),
                         'css-loader',
                         {
@@ -123,12 +124,12 @@ module.exports = function () {
             minimize: is_release,
             minimizer: is_release
                 ? [
-                    new TerserPlugin({
-                        test: /\.js$/,
-                        parallel: 2,
-                    }),
-                    new CssMinimizerPlugin(),
-                ]
+                      new TerserPlugin({
+                          test: /\.js$/,
+                          parallel: 2,
+                      }),
+                      new CssMinimizerPlugin(),
+                  ]
                 : [],
         },
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',

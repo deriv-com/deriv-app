@@ -7,7 +7,7 @@ import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
-import { setLanguage } from './i18next';
+import { setLanguage } from 'Components/i18next';
 import './app.scss';
 
 const App = props => {

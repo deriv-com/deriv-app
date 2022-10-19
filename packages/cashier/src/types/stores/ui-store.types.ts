@@ -1,4 +1,5 @@
 export type TUiStore = {
+    app_contents_scroll_ref: React.RefObject<HTMLElement>;
     current_focus: string | null;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;

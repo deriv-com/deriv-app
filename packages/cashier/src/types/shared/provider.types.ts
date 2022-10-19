@@ -1,6 +1,7 @@
 import { MutableRefObject } from 'react';
+import { PaymentagentList } from '@deriv/api-types';
 
-export type TProviderDetails = {
+export type TOnRampProviderDetails = {
     icon: {
         dark: string;
         light: string;
@@ -19,4 +20,10 @@ export type TProviderDetails = {
     getWidgetHtml: () => Promise<void>;
     onMountWidgetContainer: (ref?: MutableRefObject<any>) => void;
     should_show_deposit_address: boolean;
+};
+
+export type TPaymentAgentDetails = PaymentagentList['list'][0] & {
+    supported_banks?: { payment_method: string }[];
+    currency?: string;
+    value?: string;
 };

@@ -20,7 +20,15 @@ export default class PaymentAgentStore {
     @observable is_withdraw = false;
     @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
-    @observable confirm = {};
+    @observable confirm = {
+        amount: 0,
+        client_id: '',
+        client_name: '',
+        currency: '',
+        description: '',
+        loginid: '',
+        payment_agent_name: '',
+    };
     @observable receipt = {};
     @observable selected_bank = 0;
     @observable supported_banks = [];
@@ -123,7 +131,7 @@ export default class PaymentAgentStore {
                     min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
                     paymentagent_loginid: payment_agent.paymentagent_loginid,
-                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                    phone_numbers: payment_agent?.phone_numbers || payment_agent?.telephone,
                     supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
                     withdrawal_commission: payment_agent.withdrawal_commission,
@@ -260,7 +268,7 @@ export default class PaymentAgentStore {
             max_withdrawal: payment_agent.max_withdrawal,
             min_withdrawal: payment_agent.min_withdrawal,
             email: payment_agent.email,
-            phone: payment_agent.phone_numbers,
+            phone_numbers: payment_agent.phone_numbers,
             url: payment_agent.urls,
         });
     }
@@ -371,7 +379,7 @@ export default class PaymentAgentStore {
                     payment_agent_email: selected_agent.email,
                     payment_agent_id: selected_agent.value,
                     payment_agent_name: selected_agent.text,
-                    payment_agent_phone: selected_agent.phone,
+                    payment_agent_phone: selected_agent.phone_numbers,
                     payment_agent_url: selected_agent.url,
                 }),
             });

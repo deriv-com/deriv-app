@@ -34,11 +34,11 @@ const isMoreThanMax = (value, options) =>
 export const validNumber = (value, opts) => {
     const options = cloneObject(opts);
     let message = null;
+    let is_ok = true;
     if (options.allow_empty && value.length === 0) {
-        return true;
+        return { is_ok };
     }
 
-    let is_ok = true;
     if ('min' in options && typeof options.min === 'function') {
         options.min = options.min();
     }

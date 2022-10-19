@@ -18,7 +18,7 @@ type TSideNoteBullet = {
 };
 
 type TSideNoteProps = {
-    children?: TReactChildren[];
+    children?: JSX.Element | JSX.Element[] | TReactChildren[];
     className?: string;
     has_bullets?: boolean;
     has_title?: boolean;
@@ -64,7 +64,7 @@ const SideNote = ({
                         {has_title && (
                             <SideNoteTitle
                                 title={title}
-                                children_length={children?.length}
+                                children_length={Array.isArray(children) ? children?.length : 1}
                                 side_notes_length={side_notes?.length}
                             />
                         )}

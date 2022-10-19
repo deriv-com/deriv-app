@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
+import { TCheckboxEvent } from '../types';
 
 type TCompositeCheckbox = {
     name: string;
     value: boolean;
-    onChange: (event?: boolean) => void;
+    onChange: (e: TCheckboxEvent) => void;
     className?: string;
     label: string;
     id?: string;
@@ -27,7 +28,11 @@ const CompositeCheckbox = ({
     const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         e.preventDefault();
-        onChange(!value);
+        onChange({
+            target: {
+                value: !value,
+            },
+        });
     };
 
     return (

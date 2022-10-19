@@ -472,11 +472,7 @@ export const PersonalDetailsForm = ({
         { text: localize('Miss'), value: 'Miss' },
     ];
 
-    const {
-        form_initial_values: { ...form_initial_values },
-        api_error,
-        show_form,
-    } = rest_state;
+    const { form_initial_values, api_error, show_form } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 

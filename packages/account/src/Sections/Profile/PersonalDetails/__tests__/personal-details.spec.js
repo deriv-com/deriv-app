@@ -18,40 +18,39 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 describe('<PersonalDetailsForm />', () => {
-    // TODO we need to mock other components too
-    // const history = createBrowserHistory();
+    const history = createBrowserHistory();
 
-    // it('should_render_successfully', async () => {
-    //     const promise = Promise.resolve();
-    //     const fetchResidenceList = jest.fn(() => promise);
-    //     const fetchStatesList = jest.fn(() => promise);
-    //     const residence_list = [
-    //         {
-    //             text: 'Text',
-    //             value: 'value',
-    //         },
-    //     ];
-    //     const screen = render(
-    //         <Router history={history}>
-    //             <PersonalDetailsForm
-    //                 fetchResidenceList={fetchResidenceList}
-    //                 fetchStatesList={fetchStatesList}
-    //                 residence_list={residence_list}
-    //                 has_residence={true}
-    //                 account_settings={{
-    //                     email_consent: 1,
-    //                 }}
-    //                 getChangeableFields={() => []}
-    //                 is_virtual={false}
-    //                 states_list={residence_list}
-    //             />
-    //         </Router>
-    //     );
-    //     await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));
-    //     await waitFor(() =>
-    //         screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
-    //     );
-    // });
+    it('should_render_successfully', async () => {
+        const promise = Promise.resolve();
+        const fetchResidenceList = jest.fn(() => promise);
+        const fetchStatesList = jest.fn(() => promise);
+        const residence_list = [
+            {
+                text: 'Text',
+                value: 'value',
+            },
+        ];
+        const screen = render(
+            <Router history={history}>
+                <PersonalDetailsForm
+                    fetchResidenceList={fetchResidenceList}
+                    fetchStatesList={fetchStatesList}
+                    residence_list={residence_list}
+                    has_residence={true}
+                    account_settings={{
+                        email_consent: 1,
+                    }}
+                    getChangeableFields={() => []}
+                    is_virtual={false}
+                    states_list={residence_list}
+                />
+            </Router>
+        );
+        await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));
+        await waitFor(() =>
+            screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
+        );
+    });
 
     test.todo('Personal details component tests for different landing companies');
     test.todo('Personal detail update Profile');

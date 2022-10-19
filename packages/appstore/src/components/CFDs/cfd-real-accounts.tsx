@@ -168,7 +168,29 @@ const CFDRealAccounts = ({
                                               account.platform !== CFD_PLATFORMS.DXTRADE && (
                                                   <AddDerived
                                                       title={localize(`More ${account.name} accounts`)}
-                                                      onClickHandler={() => null}
+                                                      onClickHandler={
+                                                          account.platform === CFD_PLATFORMS.MT5
+                                                              ? () => {
+                                                                    toggleJurisdictionModal();
+                                                                    setAccountType({
+                                                                        category: 'real',
+                                                                        type: account.type,
+                                                                    });
+                                                                    setAppstorePlatform(account.platform);
+                                                                }
+                                                              : () => {
+                                                                    setAccountType({
+                                                                        category: 'real',
+                                                                        type: account.type,
+                                                                    });
+                                                                    setAppstorePlatform(account.platform);
+                                                                    createCFDAccount({
+                                                                        category: 'real',
+                                                                        type: account.type,
+                                                                    });
+                                                                    enableCFDPasswordModal();
+                                                                }
+                                                      }
                                                       class_names='cfd-real-account__accounts--item__add-derived'
                                                   />
                                               )}

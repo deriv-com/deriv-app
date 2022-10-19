@@ -77,7 +77,7 @@ const GuideContent = ({
                     confirm_button_text={localize('OK')}
                     onConfirm={onOkButtonClick}
                     is_mobile_full_width
-                    className={'dc-dialog dc-dialog__wrapper-guide--fixed'}
+                    className={'dc-dialog'}
                     has_close_icon
                     onClose={onOkButtonClick}
                 >

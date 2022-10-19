@@ -1,6 +1,6 @@
-import classnames from 'classnames';
 import React from 'react';
-import { Button, Icon, StaticUrl, Text } from '@deriv/components';
+import classnames from 'classnames';
+import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -12,6 +12,11 @@ type TGoogleDrive = {
     onDriveOpen: () => void;
     is_mobile: boolean;
 };
+
+const google_content = [
+    localize("To import your bot from your Google Drive, you'll need to sign in to your Google account."),
+    localize('To know how Google Drive handles your data, please review Deriv’s Privacy policy.'),
+];
 
 const GoogleDrive = ({
     is_authorised,
@@ -38,24 +43,13 @@ const GoogleDrive = ({
                         'Google Drive'
                     )}
                 </div>
-                <Text
-                    as='p'
-                    align='left'
-                    size='xs'
-                    line_height='l'
-                    className='load-strategy__google-drive-text-content'
-                >
-                    <Localize i18n_default_text="To import your bot from your Google Drive, you'll need to sign in to your Google account." />
-                </Text>
-                <Text
-                    as='p'
-                    align='left'
-                    size='xs'
-                    line_height='l'
-                    className='load-strategy__google-drive-text-content'
-                >
-                    <Localize i18n_default_text=' To know how Google Drive handles your data, please review Deriv’s Privacy policy.' />
-                </Text>
+                {google_content.map(content => {
+                    return (
+                        <Text as='p' size='xs' line_height='l' key={content}>
+                            {content}
+                        </Text>
+                    );
+                })}
                 {is_authorised ? (
                     <Button.Group>
                         <Button text={localize('Disconnect')} onClick={onDriveConnect} has_effect secondary large />

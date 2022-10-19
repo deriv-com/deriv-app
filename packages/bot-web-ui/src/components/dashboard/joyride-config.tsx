@@ -22,8 +22,7 @@ export const getJoyrideToken = () => {
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
 
-    const getJoyrideTokenSettings = getJoyrideToken();
-    if (!getJoyrideTokenSettings) setJoyRideToken();
+    if (!getJoyrideToken()) setJoyRideToken();
 };
 
 type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
@@ -37,25 +36,13 @@ const joyride_props: TJoyrideProps = {
 
 export const DBOT_ONBOARDING = [
     {
-        target: 'body',
+        target: '#tab__dashboard__table__tiles',
         content: (
             <TourGuide
-                Label={localize('Get started on DBot')}
-                Content={localize('Hi [first name]! Hit Start for a quick tour to help you get started.')}
+                label={localize('Shortcuts')}
+                content={localize('You can also use these shortcuts to import or build your bot.')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={0}
-            />
-        ),
-        ...joyride_props,
-    },
-    {
-        target: '#dc-tabs__content_group_tiles',
-        content: (
-            <TourGuide
-                Label={localize('Shortcuts')}
-                Content={localize('You can also use these shortcuts to import or build your bot.')}
-                className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={0}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,
@@ -64,8 +51,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-bot-builder',
         content: (
             <TourGuide
-                Label={localize('Build from scratch')}
-                Content={[
+                label={localize('Build from scratch')}
+                content={[
                     localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
                     localize(
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy .'
@@ -73,7 +60,7 @@ export const DBOT_ONBOARDING = [
                 ]}
                 img={getImageLocation('ic-new-user-step-two.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={1}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -82,13 +69,13 @@ export const DBOT_ONBOARDING = [
         target: '#id-quick-strategy',
         content: (
             <TourGuide
-                Label={localize('Start with a template')}
-                Content={localize(
+                label={localize('Start with a template')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={2}
+                dashboardTabIndex={2}
             />
         ),
         ...joyride_props,
@@ -97,11 +84,11 @@ export const DBOT_ONBOARDING = [
         target: '#id-charts',
         content: (
             <TourGuide
-                Label={localize('Monitor the market')}
-                Content={localize('View the market price of your favourite assets.')}
+                label={localize('Monitor the market')}
+                content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={3}
+                dashboardTabIndex={3}
             />
         ),
         ...joyride_props,
@@ -110,13 +97,13 @@ export const DBOT_ONBOARDING = [
         target: '#id-tutorials',
         content: (
             <TourGuide
-                Label={localize('Start with a tutorials')}
-                Content={localize(
+                label={localize('Start with a tutorials')}
+                content={localize(
                     'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={4}
+                dashboardTabIndex={4}
             />
         ),
         ...joyride_props,
@@ -125,11 +112,11 @@ export const DBOT_ONBOARDING = [
         target: '.animation__wrapper',
         content: (
             <TourGuide
-                Label={localize('Run or stop your bot')}
-                Content={localize('Click Run when you want to start trading, and click Stop when you want to stop.')}
+                label={localize('Run or stop your bot')}
+                content={localize('Click Run when you want to start trading, and click Stop when you want to stop.')}
                 img={getImageLocation('ic-new-user-step-seven.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={1}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -138,11 +125,11 @@ export const DBOT_ONBOARDING = [
         target: '[data-testid="drawer"]',
         content: (
             <TourGuide
-                Label={localize('How is my bot doing?')}
-                Content={localize("See your bot's performance in real-time.")}
+                label={localize('How is my bot doing?')}
+                content={localize("See your bot's performance in real-time.")}
                 img={getImageLocation('ic-new-user-step-six.png')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={1}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -152,10 +139,10 @@ export const DBOT_ONBOARDING = [
         target: 'body',
         content: (
             <TourGuide
-                Label={localize('Want to take retake the tour?')}
-                Content={localize('If yes, go to Tutorials.')}
+                label={localize('Want to take retake the tour?')}
+                content={localize('If yes, go to Tutorials.')}
                 className={'dbot-onboarding__container'}
-                setJoyrideStepIndex={0}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,

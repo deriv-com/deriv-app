@@ -6,37 +6,39 @@ import { connect } from 'Stores/connect';
 type TDeleteDialog = {
     is_running: boolean;
     is_delete_modal_open: boolean;
-    onConfirmDeleteDialog: () => void;
-    onCancelDialogDialog: () => void;
+    onToggleDeleteDialog: (type: string) => void;
 };
 
-const DeleteDialog = ({
-    is_delete_modal_open,
-    is_running,
-    onConfirmDeleteDialog,
-    onCancelDialogDialog,
-}: TDeleteDialog) => {
+const DeleteDialog = ({ is_delete_modal_open, is_running, onToggleDeleteDialog }: TDeleteDialog) => {
+    const onHandleChange = (type: string) => {
+        onToggleDeleteDialog(type);
+    };
     return (
         <div>
             <Dialog
                 title={localize('Delete bot')}
                 is_visible={is_delete_modal_open}
                 confirm_button_text={is_running ? localize('Yes') : localize('Yes, delete')}
-                onConfirm={onConfirmDeleteDialog}
+                onConfirm={() => {
+                    onHandleChange('confirm');
+                }}
                 cancel_button_text={is_running ? localize('No') : localize('Cancel')}
-                onCancel={onCancelDialogDialog}
+                onCancel={() => {
+                    onHandleChange('cancel');
+                }}
                 is_mobile_full_width={false}
-                className={'dc-dialog__delete-strategy--fixed'}
+                className={'dc-dialog__delete-strategy--delete'}
                 has_close_icon
             >
-                <div style={{ marginBottom: '1rem' }}>
+                <div>
                     <Text color='prominent' line_height='s' size='xs'>
-                        Your bot will be permanently deleted when you hit <strong>Yes, delete.</strong>
+                        {localize('Your bot will be permanently deleted when you hit ')}
+                        <strong>{localize('Yes, delete.')}</strong>
                     </Text>
                 </div>
                 <div>
                     <Text color='prominent' line_height='s' size='xs'>
-                        Are you sure you want to delete it?
+                        {localize('Are you sure you want to delete it?')}
                     </Text>
                 </div>
             </Dialog>
@@ -47,6 +49,6 @@ const DeleteDialog = ({
 export default connect(({ toolbar, load_modal }) => ({
     is_dialog_open: toolbar.is_dialog_open,
     is_delete_modal_open: load_modal.is_delete_modal_open,
-    onConfirmDeleteDialog: load_modal.onConfirmDeleteDialog,
+    onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
 }))(DeleteDialog);

@@ -168,7 +168,6 @@ export default class LoadModalStore implements ILoadModalStore {
             workspace: Blockly.derivWorkspace,
         });
         this.is_open_button_loading = false;
-        //this.toggleLoadModal();
     };
 
     @action.bound
@@ -176,7 +175,6 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_open_button_loading = true;
         this.readFile(false, {}, this.loaded_local_file);
         this.is_open_button_loading = false;
-        //this.toggleLoadModal();
     };
 
     @action.bound
@@ -242,16 +240,11 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
-        //this.toggleLoadModal();
     }
 
     @action.bound
     onEntered = (): void => {
-        if (this.tab_name === tabs_title.TAB_RECENT && this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy.id);
-        } else {
-            this.previewRecentStrategy(this.selected_strategy.id);
-        }
+        this.previewRecentStrategy(this.selected_strategy.id);
     };
 
     @action.bound
@@ -277,37 +270,34 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     @action.bound
-    previewRecentStrategy = (workspace_id: string): void => {
+    previewRecentStrategy(workspace_id) {
         this.setSelectedStrategyId(workspace_id);
+
         if (!this.selected_strategy) {
             return;
         }
 
-        const ref = document.getElementById('load-strategy__blockly-container');
+        if (!this.recent_workspace || !this.recent_workspace.rendered) {
+            const ref = document.getElementById('load-strategy__blockly-container');
 
-        if (!ref) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not find preview workspace element.');
-            return;
+            if (!ref) {
+                // eslint-disable-next-line no-console
+                console.warn('Could not find preview workspace element.');
+                return;
+            }
+
+            this.recent_workspace = Blockly.inject(ref, {
+                media: `${__webpack_public_path__}media/`,
+                zoom: {
+                    wheel: true,
+                    startScale: config.workspaces.previewWorkspaceStartScale,
+                },
+                readOnly: true,
+                scrollbars: true,
+            });
         }
-        clearInjectionDiv();
-        this.recent_workspace = Blockly.inject(ref, {
-            media: `${__webpack_public_path__}media/`,
-            zoom: {
-                wheel: true,
-                startScale: config.workspaces.previewWorkspaceStartScale,
-            },
-            readOnly: true,
-            scrollbars: true,
-        });
-        if (this.is_load_modal_open === true) {
-            //load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
-            //return false;
-        } else {
-            //clearInjectionDiv();
-            load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
-        }
-    };
+        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+    }
 
     @action.bound
     setActiveTabIndex = (index: number): void => {
@@ -375,9 +365,13 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     @action.bound
-    onConfirmDeleteDialog = (): void => {
-        this.is_delete_modal_open = false;
-        removeExistingWorkspace(this.selected_strategy.id);
+    onToggleDeleteDialog = (type: string): void => {
+        if (type === 'confirm') {
+            removeExistingWorkspace(this.selected_strategy.id);
+            this.is_delete_modal_open = false;
+        } else {
+            this.is_delete_modal_open = false;
+        }
     };
 
     @action.bound

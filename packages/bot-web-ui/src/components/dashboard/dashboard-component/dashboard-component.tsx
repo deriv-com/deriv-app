@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import Cards from './cards';
+import Card from './cards';
 import { Text } from '@deriv/components';
 import InfoPanel from './info-panel';
 import { connect } from 'Stores/connect';
@@ -29,7 +29,7 @@ const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => {
                             )}
                         </Text>
                     </div>
-                    <Cards />
+                    <Card />
                 </div>
                 <div className='tab__dashboard__preview'>
                     <Local />

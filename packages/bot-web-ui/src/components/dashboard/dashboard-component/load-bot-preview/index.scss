@@ -1,7 +1,9 @@
+@import './google-drive.scss';
+
 .load-strategy {
     &__wrapper {
         position: fixed;
-        top: 40px;
+        top: 4rem;
         z-index: 10;
         width: 100%;
 
@@ -22,7 +24,7 @@
                 flex: 1;
 
                 &__content {
-                    height: calc(100% - 40px);
+                    height: calc(100% - 4rem);
                 }
             }
         }
@@ -66,10 +68,44 @@
         margin: 1.5rem;
     }
 
+    &__button-group {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 1.6rem;
+
+        &--clear {
+            height: 3.4rem;
+            width: 6.7rem;
+            background-color: $color-grey-6;
+            border-radius: 0.4rem;
+            color: $color-white;
+            outline: none;
+            border: none;
+            font-weight: 700;
+            font-size: 1.4rem;
+            cursor: pointer;
+            margin-right: 1.6rem;
+        }
+
+        &--open {
+            height: 3.4rem;
+            width: 6.7rem;
+            background-color: $color-red;
+            border-radius: 0.4rem;
+            color: $color-white;
+            outline: none;
+            border: none;
+            font-weight: 700;
+            font-size: '1.4rem';
+            cursor: pointer;
+        }
+    }
+
     &__preview-workspace {
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
+        min-height: calc(100vh - 30rem);
         height: calc(100% - 30rem); // TODO: What is 37px?
         position: relative;
         overflow: hidden;
@@ -97,25 +133,27 @@
 
     &__recent {
         display: flex;
-        flex-direction: row;
         gap: 1.6rem;
+        &-preview-title {
+            color: var(--text-general);
+        }
 
-        &-files {
+        &__files {
             flex-basis: 100%;
 
-            &-list {
+            &__list {
                 overflow: auto;
                 /* TODO: ThemedScrollbars! */
-                height: calc(100% - 52px); // 100% - Title height
+                height: calc(100% - 5.2rem); // 100% - Title height
             }
         }
 
-        &-preview {
+        &__preview {
             flex-basis: 65%;
             display: flex;
             flex-direction: column;
 
-            &-title {
+            &__title {
                 margin-left: 0;
             }
         }
@@ -201,17 +239,19 @@
 
             &-title {
                 font-size: var(--text-size-s);
+                color: var(--text-general);
             }
 
             &-time {
                 font-size: var(--text-size-xxs);
+                color: var(--text-general);
             }
 
             &-location {
-                flex-direction: row;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                color: var(--text-general);
             }
 
             &-saved {
@@ -282,10 +322,9 @@
             }
 
             &-close {
-                // TODO : Dark Theme
                 background-image: radial-gradient(at right top);
                 position: absolute;
-                padding: 25px;
+                padding: 2.5rem;
                 border-bottom-left-radius: 50%;
                 right: 0;
                 top: 0;

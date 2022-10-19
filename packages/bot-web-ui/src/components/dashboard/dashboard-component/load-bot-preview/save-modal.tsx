@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import {
     Button,
     Checkbox,
@@ -15,6 +15,7 @@ import { Formik, Form, Field } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
+import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
     bot_name: string;
@@ -81,10 +82,7 @@ const SaveModalForm = ({
                                     className='radio-group__save-type'
                                     name='is_local'
                                     selected={(() => {
-                                        if (is_authorised) {
-                                            return is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
-                                        }
-
+                                        if (is_authorised && !is_local) return save_types.GOOGLE_DRIVE;
                                         return save_types.LOCAL;
                                     })()}
                                     onToggle={() => setFieldValue('is_local', !is_local)}
@@ -125,7 +123,7 @@ const SaveModalForm = ({
                                             onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
                                             defaultChecked={save_as_collection}
                                             label={
-                                                <Text color='general' size='xs' line_height='s' weight='bold'>
+                                                <Text size='xs' line_height='s' weight='bold'>
                                                     <Localize i18n_default_text='Save as collection' />
                                                 </Text>
                                             }
@@ -206,8 +204,8 @@ const SaveModal = ({
         <Modal
             title={localize('Save Strategy')}
             className='modal--save'
-            width='328px'
-            height='500px'
+            width='32.8rem'
+            height='50rem'
             is_open={is_save_modal_open}
             toggleModal={toggleSaveModal}
         >
@@ -223,51 +221,6 @@ const SaveModal = ({
             />
         </Modal>
     );
-
-const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TSaveModalForm) => {
-    const is_drive_radio = text === 'Google Drive';
-
-    return (
-        <div className='save-type__container'>
-            <div className='save-type__radio'>
-                {icon &&
-                    React.cloneElement(icon, {
-                        className: classNames(
-                            'save-type__icon',
-                            {
-                                'save-type__icon--active': is_drive_radio && google_drive_connected,
-                                'save-type__icon--disabled': is_drive_radio && !google_drive_connected,
-                            },
-                            icon.props.className
-                        ),
-                    })}
-                <Text
-                    as='p'
-                    align='center'
-                    size='xxs'
-                    color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
-                    line_height='s'
-                    className='save-type__radio-text'
-                >
-                    {localize(text)}
-                </Text>
-            </div>
-            {is_drive_radio && (
-                <Text
-                    as='p'
-                    align='center'
-                    size='xs'
-                    weight='bold'
-                    styles={{ color: 'var(--brand-red-coral)' }}
-                    className='save-type__drive-status'
-                    onClick={onDriveConnect}
-                >
-                    {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
-                </Text>
-            )}
-        </div>
-    );
-};
 
 export default connect(({ save_modal, google_drive, ui }) => ({
     button_status: save_modal.button_status,

@@ -38,11 +38,9 @@ const LocalComponent = ({
     const loadedLocalFileLocation = () => {
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
+    const el_ref = React.useRef<HTMLInputElement | null>(null);
     const clearInjectionDiv = () => {
-        const el_ref = document.getElementById('load-strategy__blockly-container');
-        if (el_ref?.getElementsByClassName('injectionDiv').length) {
-            el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
-        }
+        el_ref?.current?.removeChild(el_ref?.current?.children[1]);
     };
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -55,6 +53,7 @@ const LocalComponent = ({
                         <div
                             className='load-strategy__preview-workspace-container'
                             id='load-strategy__blockly-container'
+                            ref={el_ref}
                         >
                             <WorkspaceControl />
                         </div>
@@ -66,8 +65,6 @@ const LocalComponent = ({
                             onClick={() => {
                                 clearInjectionDiv();
                                 setFileLoaded(false);
-                                //setLoadedLocalFile(null);
-                                //Blockly.mainWorkspace.clear(); THIS METHOOD DOES NOT CLEAT THE INJECTION DIV
                             }}
                         >
                             clear
@@ -78,6 +75,7 @@ const LocalComponent = ({
                             accept='.xml'
                             style={{ display: 'none' }}
                             onChange={e => {
+                                clearInjectionDiv();
                                 onConfirmSave();
                                 setIsFileSupported(handleFileChange(e, false));
                             }}

@@ -12,6 +12,7 @@ import QuickStrategy from './quick-strategy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import Tutorial from './tutorial-tab';
+import TourTriggrerDialog from './tour-trigger-dialog';
 
 type TDashboard = {
     active_tab: number;
@@ -20,6 +21,8 @@ type TDashboard = {
     has_file_loaded: boolean;
     toggleStrategyModal: () => void;
     is_drawer_open: boolean;
+    has_tour_started: boolean;
+    setTourActive: (param: boolean) => void;
 };
 
 const Dashboard = ({
@@ -29,19 +32,19 @@ const Dashboard = ({
     onEntered,
     has_file_loaded,
     is_drawer_open,
+    has_tour_started,
 }: TDashboard) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
-    const [tour_run, setTourRun] = React.useState<boolean>(true);
+    const [is_tour_running, setTourRun] = React.useState<boolean>(true);
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
         toggleStrategyModal();
     };
-
-    const [joyride_Token, setJoyrideToken] = React.useState<string>('');
+    const [joyride_run_state, setJoyrideRunState] = React.useState<string>('');
     React.useEffect(() => {
-        setJoyrideToken(getJoyrideToken());
+        setJoyrideRunState(getJoyrideToken());
     }, [handleJoyrideCallback]);
 
     React.useEffect(() => {
@@ -53,16 +56,20 @@ const Dashboard = ({
         <>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    {/* {!joyride_Token && (
+                    {/* {!joyride_run_state && (
                        //TODO : Once the trigger button is implemented this check will be used
                     )} */}
-                    <ReactJoyride
-                        steps={DBOT_ONBOARDING}
-                        run={tour_run}
-                        continuous
-                        spotlightClicks
-                        callback={handleJoyrideCallback}
-                    />
+                    <TourTriggrerDialog />
+                    {has_tour_started && (
+                        <ReactJoyride
+                            steps={DBOT_ONBOARDING}
+                            run={is_tour_running}
+                            continuous
+                            callback={handleJoyrideCallback}
+                            spotlightClicks
+                        />
+                    )}
+
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
                         {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                         <div icon='IcDashboardComponentTab' id='id-dashboard' label={localize('Dashboard')}>
@@ -117,4 +124,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     is_drawer_open: run_panel.is_drawer_open,
     onEntered: load_modal.onEntered,
     has_file_loaded: dashboard.has_file_loaded,
+    has_tour_started: dashboard.has_tour_started,
+    setTourActive: dashboard.setTourActive,
 }))(Dashboard);

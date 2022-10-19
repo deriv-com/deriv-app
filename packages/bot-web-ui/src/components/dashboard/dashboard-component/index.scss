@@ -133,36 +133,12 @@
     }
 }
 
-.side_bar_container_none {
-    display: none;
-}
-
 .w-100 {
     width: 100%;
 }
 
 .nm-48 {
     margin-top: -48px;
-}
-
-.main_dashboard_container {
-    display: flex;
-    overflow: hidden;
-
-    .dc-dialog__dialog {
-        width: 80vw;
-        max-width: 100%;
-        height: 80vh;
-        max-height: 100%;
-        background-color: transparent;
-        padding: 0;
-    }
-
-    .dc-dialog__content {
-        max-width: unset;
-        width: 100%;
-        height: 100%;
-    }
 }
 
 .db-sidebar {
@@ -210,66 +186,11 @@
         }
 
         p {
-            font-size: 1.4rem;
+            font-size: var(--text-size-xs);
             margin-bottom: 0.8rem;
             line-height: 2rem;
             font-weight: 400;
         }
-    }
-}
-
-.disabled--card {
-    pointer-events: none;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.load-strategy__button-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-right: 1.6rem;
-}
-
-.load-strategy__button-group--clear {
-    height: 3.4rem;
-    width: 6.7rem;
-    background-color: #d6d6d6;
-    border-radius: 0.4rem;
-    color: #ffffff;
-    outline: none;
-    border: none;
-    font-weight: 700;
-    font-size: 1.4rem;
-    cursor: pointer;
-    margin-right: 1.6rem;
-}
-
-.load-strategy__button-group--open {
-    height: 3.4rem;
-    width: 6.7rem;
-    background-color: #ff444f;
-    border-radius: 0.4rem;
-    color: #ffffff;
-    outline: none;
-    border: none;
-    font-weight: 700;
-    font-size: '1.4rem';
-    cursor: pointer;
-}
-
-.dc-dialog__wrapper--googledrive {
-    .dc-dialog__dialog {
-        width: unset;
-        max-width: unset;
-        height: unset;
-        max-height: unset;
-        padding: 2.4rem;
-        background-color: var(--general-main-2);
-    }
-
-    .dc-dialog__footer {
-        display: none;
     }
 }
 
@@ -307,6 +228,7 @@
         &__description {
             max-width: 44rem;
             text-align: center;
+            margin-bottom: 4rem;
         }
 
         &__info-panel {
@@ -330,6 +252,11 @@
                 justify-content: center;
                 align-items: center;
             }
+            &__disabled-card {
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
 
             &__block {
                 display: flex;
@@ -340,6 +267,7 @@
             }
             &__images {
                 background-color: var(--general-section-1);
+                margin-bottom: 0.8rem;
             }
         }
     }

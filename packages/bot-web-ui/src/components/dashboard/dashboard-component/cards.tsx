@@ -1,6 +1,6 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
-import { Icon, Dialog } from '@deriv/components';
+import { Icon, Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -9,41 +9,37 @@ import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
 import GoogleDrive from './load-bot-preview/google-drive';
 
-type TCardsProps = {
-    load_modal: LoadModalStore;
+type TCardProps = {
     active_tab: number;
+    closeResetDialog: () => void;
+    dialog_options: { [key: string]: string };
+    handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
     has_file_loaded: boolean;
-    setActiveTab: (active_tab: number) => void;
-    openFileLoader: () => void;
-    onConfirmSave: () => void;
-    handleFileChange: () => void;
-    setLoadedLocalFile: () => void;
-    onDriveConnect: () => void;
-    loadFileFromLocal: () => void;
-    save_modal: SaveModalStore;
-    setFileLoaded: (param: boolean) => void;
     is_dialog_open: boolean;
     is_running: boolean;
-    closeResetDialog: () => void;
+    load_modal: LoadModalStore;
+    loadFileFromLocal: () => void;
+    openFileLoader: () => void;
+    onConfirmSave: () => void;
     onOkButtonClick: () => void;
+    setActiveTab: (active_tab: number) => void;
+    save_modal: SaveModalStore;
+    setFileLoaded: (param: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
-    dialog_options: { [key: string]: string };
 };
 
-const Cards = ({
-    handleFileChange,
-    setActiveTab,
-    onConfirmSave,
-    setLoadedLocalFile,
-    onDriveConnect,
-    loadFileFromLocal,
-    setFileLoaded,
-    has_file_loaded,
-    is_dialog_open,
-    showVideoDialog,
+const Card = ({
     closeResetDialog,
     dialog_options,
-}: TCardsProps) => {
+    handleFileChange,
+    has_file_loaded,
+    is_dialog_open,
+    loadFileFromLocal,
+    onConfirmSave,
+    setActiveTab,
+    setFileLoaded,
+    showVideoDialog,
+}: TCardProps) => {
     type TCardArray = {
         icon: string;
         content: string;
@@ -64,20 +60,20 @@ const Cards = ({
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
-    const [icon_array, SetIconArray] = React.useState<TCardArray[] | []>([]);
+    const [icon_array, setIconArray] = React.useState<TCardArray[] | []>([]);
     React.useEffect(() => {
         const IconArray: TCardArray[] = [
             {
                 icon: 'IcMyComputer',
                 content: 'My computer',
                 method: openFileLoader,
-                disable: has_file_loaded ? 'disabled--card' : '',
+                disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
             },
             {
                 icon: 'IcGoogleDriveDbot',
                 content: 'Google Drive',
                 method: openGoogleDriveDialog,
-                disable: has_file_loaded ? 'disabled--card' : '',
+                disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
             },
             {
                 icon: 'IcBotBuilder',
@@ -92,32 +88,27 @@ const Cards = ({
                 disable: '',
             },
         ];
-        SetIconArray(IconArray);
+        setIconArray(IconArray);
     }, [has_file_loaded]);
 
     return (
         <div className='tab__dashboard__table'>
-            <div
-                className='dc-tabs__content_group_tiles tab__dashboard__table__tiles'
-                id='dc-tabs__content_group_tiles'
-            >
+            <div className='tab__dashboard__table__tiles' id='tab__dashboard__table__tiles'>
                 {icon_array.map((icons, index) => {
                     const { icon, content, method, disable } = icons;
                     return (
-                        <div
-                            key={index}
-                            className={`dc-tabs__content_group_tiles_block ${disable} tab__dashboard__table__block`}
-                        >
+                        <div key={index} className={`${disable} tab__dashboard__table__block`}>
                             <Icon
-                                className={'dc-tabs__content_group_tiles_images tab__dashboard__table__images'}
+                                className={'tab__dashboard__table__images'}
                                 width='8rem'
                                 height='8rem'
                                 icon={icon}
                                 id={icon}
                                 onClick={method}
                             />
-
-                            <span className='dc-tabs__content_group_tiles_content'>{localize(content)}</span>
+                            <Text color='prominent' size='xs'>
+                                {localize(content)}
+                            </Text>
                         </div>
                     );
                 })}
@@ -125,9 +116,8 @@ const Cards = ({
                     type='file'
                     ref={file_input_ref}
                     accept='.xml'
-                    style={{ display: 'none' }}
+                    hidden
                     onChange={e => {
-                        //setLoadedLocalFile(null);
                         clear_preview_ref.current?.click();
                         onConfirmSave();
                         setIsFileSupported(handleFileChange(e, false));
@@ -140,7 +130,7 @@ const Cards = ({
                     is_visible={is_dialog_open}
                     onCancel={closeResetDialog}
                     is_mobile_full_width
-                    className={'dc-dialog__wrapper--fixed dc-dialog__wrapper--googledrive'}
+                    className={'dc-dialog__wrapper--google-drive'}
                     has_close_icon
                 >
                     {dialog_options.message}
@@ -152,20 +142,19 @@ const Cards = ({
 };
 
 export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
-    load_modal,
     active_tab: dashboard.active_tab,
+    closeResetDialog: dashboard.onCloseDialog,
+    dialog_options: dashboard.dialog_options,
+    handleFileChange: load_modal.handleFileChange,
     has_file_loaded: dashboard.has_file_loaded,
+    is_dialog_open: dashboard.is_dialog_open,
+    load_modal,
+    loadFileFromLocal: load_modal.loadFileFromLocal,
+    onConfirmSave: save_modal.onConfirmSave,
+    onDriveConnect: load_modal.onDriveConnect,
+    onOkButtonClick: dashboard.onCloseDialog,
     setFileLoaded: dashboard.setFileLoaded,
     setActiveTab: dashboard.setActiveTab,
-    handleFileChange: load_modal.handleFileChange,
-    toggleLoadModal: load_modal.toggleLoadModal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
-    onConfirmSave: save_modal.onConfirmSave,
-    loadFileFromLocal: load_modal.loadFileFromLocal,
-    onDriveConnect: load_modal.onDriveConnect,
-    is_dialog_open: dashboard.is_dialog_open,
-    onOkButtonClick: dashboard.onCloseDialog,
-    closeResetDialog: dashboard.onCloseDialog,
     showVideoDialog: dashboard.showVideoDialog,
-    dialog_options: dashboard.dialog_options,
-}))(Cards);
+}))(Card);

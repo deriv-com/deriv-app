@@ -48,7 +48,6 @@ const RecentWorkspace = ({
                 className={classnames('load-strategy__recent-item', {
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                 })}
-                ref={trigger_div_ref}
                 key={workspace.id}
                 onClick={
                     selected_strategy_id === workspace.id
@@ -67,8 +66,7 @@ const RecentWorkspace = ({
                     <Icon
                         icon={getRecentFileIcon(workspace.save_type)}
                         className={classnames({
-                            'load-strategy__recent-icon--active':
-                                true || workspace.save_type === save_types.GOOGLE_DRIVE,
+                            'load-strategy__recent-icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
                         })}
                     />
                     <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>

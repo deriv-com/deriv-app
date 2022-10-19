@@ -1,0 +1,19 @@
+.dc-dialog__wrapper--google-drive {
+    .dc-dialog__dialog {
+        width: unset;
+        max-width: unset;
+        height: unset;
+        max-height: unset;
+        padding: 2.4rem;
+        background-color: var(--general-main-2);
+    }
+
+    .dc-dialog__footer {
+        display: none;
+    }
+}
+
+.dc-dialog__delete-strategy--delete {
+    .dc-dialog__content {
+    }
+}

@@ -10,7 +10,6 @@ const clearInjectionDiv = () => {
 };
 export interface IDashboardStore {
     active_tab: number;
-    active_tab_tutotials: number;
     faq_search_value: string | null;
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
@@ -38,6 +37,18 @@ export default class DashboardStore implements IDashboardStore {
     @observable getFileArray = [];
     @observable has_file_loaded = false;
     @observable is_info_panel_visible = true;
+    @observable has_tour_started = false;
+    @observable is_tour_dialog_visible = true;
+
+    @action.bound
+    setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {
+        this.is_tour_dialog_visible = is_tour_dialog_visible;
+    };
+
+    @action.bound
+    setTourActive = (has_tour_started: boolean): void => {
+        this.has_tour_started = has_tour_started;
+    };
 
     @action.bound
     setFileLoaded = (has_file_loaded: boolean): void => {
@@ -58,17 +69,10 @@ export default class DashboardStore implements IDashboardStore {
     @action.bound
     showVideoDialog(param: { [key: string]: string | React.ReactNode }): void {
         const { type, component, url } = param;
-        if (type === 'DBotVideo') {
-            this.dialog_options = {
-                message: component,
-            };
-            this.is_dialog_open = true;
-        } else {
-            this.dialog_options = {
-                message: component,
-            };
-            this.is_dialog_open = true;
-        }
+        this.dialog_options = {
+            message: component,
+        };
+        this.is_dialog_open = true;
     }
 
     @action.bound

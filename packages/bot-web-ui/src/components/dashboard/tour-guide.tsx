@@ -1,29 +1,28 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { storeSetting, getSetting } from '../../utils/settings';
 import { Text } from '@deriv/components';
-import { getUrlBase } from '@deriv/shared';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
 type TTourGuide = {
-    Label: string | boolean;
-    Content: string[];
+    label: string | boolean;
+    content: string[];
     img?: string;
     className: string;
-    setJoyrideStepIndex: number;
+    dashboardTabIndex: number;
     setActiveTab: (param: number) => void;
 };
 
-const TourGuide = ({ Label, Content, img, className, setJoyrideStepIndex, setActiveTab }: TTourGuide) => {
+const TourGuide = ({ label, content, img, className, dashboardTabIndex, setActiveTab }: TTourGuide) => {
     React.useEffect(() => {
-        setActiveTab(setJoyrideStepIndex);
-    }, [setJoyrideStepIndex]);
+        setTimeout(() => {
+            setActiveTab(dashboardTabIndex);
+        }, 50);
+    }, [dashboardTabIndex]);
     return (
         <React.Fragment>
             <div>
-                <Text as='h' align='left' size='s' line_height='l' weight='bold' className='intial_bot_tour'>
-                    {Label}
+                <Text as='h' line_height='l' weight='bold' className='intial_bot_tour'>
+                    {label}
                 </Text>
             </div>
 
@@ -34,20 +33,14 @@ const TourGuide = ({ Label, Content, img, className, setJoyrideStepIndex, setAct
             )}
 
             <div>
-                <Text
-                    as='h'
-                    align='left'
-                    size='xs'
-                    line_height='l'
-                    className='load-strategy__google-drive-text-content'
-                >
-                    {Content}
+                <Text as='h' size='xs' line_height='l' className='load-strategy__google-drive-text-content'>
+                    {content}
                 </Text>
             </div>
         </React.Fragment>
     );
 };
-export default connect(({ dashboard }: any) => ({
+export default connect(({ dashboard }: RootStore) => ({
     setActiveTab: dashboard.setActiveTab,
     active_tab: dashboard.active_tab,
 }))(TourGuide);

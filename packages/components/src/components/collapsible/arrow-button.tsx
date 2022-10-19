@@ -4,12 +4,12 @@ import Icon from '../icon';
 import Text from '../text';
 
 type TIconArrow = {
-    className: string;
+    className?: string;
 };
 
 type TIconArrowWithTitle = {
     title: string;
-    className: string;
+    className?: string;
 };
 
 type TArrowButton = {
@@ -23,12 +23,12 @@ type TArrowButton = {
 const IconArrow = (props: TIconArrow) => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 
 const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
-    <>
+    <React.Fragment>
         <Text size='xs' weight='bold' color='prominent' className='dc-collapsible__title'>
             {title}
         </Text>
         <Icon icon='IcChevronDown' {...props} />
-    </>
+    </React.Fragment>
 );
 
 const ArrowButton = ({ is_collapsed, position, onClick, title }: TArrowButton) => {

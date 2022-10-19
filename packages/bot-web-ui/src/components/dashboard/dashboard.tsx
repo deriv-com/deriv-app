@@ -2,15 +2,15 @@ import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
-import DashboardComponent from './dashboard-component';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getJoyrideToken } from './joyride-config';
+import { DBOT_ONBOARDING, handleJoyrideCallback, getTourStatus } from './joyride-config';
 import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import Tutorial from './tutorial-tab';
 import TourTriggrerDialog from './tour-trigger-dialog';
 
@@ -19,10 +19,12 @@ type TDashboard = {
     setActiveTab: (active_tab: number) => void;
     onEntered: () => void;
     has_file_loaded: boolean;
-    toggleStrategyModal: () => void;
-    is_drawer_open: boolean;
     has_tour_started: boolean;
+    is_drawer_open: boolean;
+    onboard_tour_run_state: boolean;
     setTourActive: (param: boolean) => void;
+    setOnBoardTourRunState: (param: boolean) => void;
+    toggleStrategyModal: () => void;
 };
 
 const Dashboard = ({
@@ -30,9 +32,11 @@ const Dashboard = ({
     setActiveTab,
     toggleStrategyModal,
     onEntered,
+    has_tour_started,
     has_file_loaded,
     is_drawer_open,
-    has_tour_started,
+    onboard_tour_run_state,
+    setOnBoardTourRunState,
 }: TDashboard) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
@@ -42,21 +46,19 @@ const Dashboard = ({
         setTourRun(true);
         toggleStrategyModal();
     };
-    const [joyride_run_state, setJoyrideRunState] = React.useState<string>('');
-    React.useEffect(() => {
-        setJoyrideRunState(getJoyrideToken());
-    }, [handleJoyrideCallback]);
 
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
         }
+        const status = getTourStatus();
+        if (status === 'ready') setOnBoardTourRunState(false);
     }, [active_tab]);
     return (
         <>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    {/* {!joyride_run_state && (
+                    {/* {!onboard_tour_run_state  && (
                        //TODO : Once the trigger button is implemented this check will be used
                     )} */}
                     <TourTriggrerDialog />
@@ -122,8 +124,10 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     is_drawer_open: run_panel.is_drawer_open,
+    onboard_tour_run_state: dashboard.onboard_tour_run_state,
     onEntered: load_modal.onEntered,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
     setTourActive: dashboard.setTourActive,
+    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
 }))(Dashboard);

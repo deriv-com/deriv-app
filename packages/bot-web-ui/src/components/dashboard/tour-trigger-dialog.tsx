@@ -8,15 +8,24 @@ type TourTriggrerDialog = {
     setTourActive: (param: boolean) => void;
     is_tour_dialog_visible: boolean;
     setTourDialogVisibility: (param: boolean) => void;
+    setOnBoardTourRunState: (param: boolean) => void;
 };
 
-const TourTriggrerDialog = ({ setTourActive, is_tour_dialog_visible, setTourDialogVisibility }: TourTriggrerDialog) => {
+const TourTriggrerDialog = ({
+    is_tour_dialog_visible,
+    setTourDialogVisibility,
+    setOnBoardTourRunState,
+    setTourActive,
+}: TourTriggrerDialog) => {
     const handleChange = () => {
         setTourActive(true);
+        setOnBoardTourRunState(true);
         setTourDialogVisibility(false);
     };
     const closTourChange = () => {
         setTourDialogVisibility(false);
+        setOnBoardTourRunState(false);
+        setTourActive(false);
     };
     return (
         <div>
@@ -50,4 +59,5 @@ export default connect(({ dashboard }: RootStore) => ({
     setTourActive: dashboard.setTourActive,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
 }))(TourTriggrerDialog);

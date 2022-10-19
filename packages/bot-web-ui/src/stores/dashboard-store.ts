@@ -13,6 +13,7 @@ export interface IDashboardStore {
     faq_search_value: string | null;
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
+    onboard_tour_run_state: boolean;
     is_info_panel_visible: boolean;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
@@ -20,6 +21,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
+    setOnBoardTourRunState: (onboard_tour_run_state: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -39,6 +41,12 @@ export default class DashboardStore implements IDashboardStore {
     @observable is_info_panel_visible = true;
     @observable has_tour_started = false;
     @observable is_tour_dialog_visible = true;
+    @observable onboard_tour_run_state = false;
+
+    @action.bound
+    setOnBoardTourRunState = (onboard_tour_run_state: boolean): void => {
+        this.onboard_tour_run_state = onboard_tour_run_state;
+    };
 
     @action.bound
     setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {

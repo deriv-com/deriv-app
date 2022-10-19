@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
-import { TCheckboxEvent } from '../types';
 
 type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
     className?: string;
@@ -12,7 +11,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
     greyDisabled?: boolean;
     id?: string;
     label: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement> | TCheckboxEvent) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
 };

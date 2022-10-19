@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
-import { TCheckboxEvent } from '../types';
 
 type TCompositeCheckbox = {
     name: string;
     value: boolean;
-    onChange: (e: TCheckboxEvent) => void;
+    onChange: (e: { target: { value: boolean } }) => void;
     className?: string;
     label: string;
     id?: string;

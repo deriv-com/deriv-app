@@ -177,7 +177,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body');
+    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
     const form_value = getCurrent('form_value');
 
     const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(

@@ -8,6 +8,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -632,11 +633,11 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
-            if (response.error.code === 'RestrictedCountry') {
+            if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
-            } else if (response.error.code === 'AdvertiserNotFound') {
+            } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {
                 this.setIsAdvertiser(false);
-            } else if (response.error.code === 'PermissionDenied') {
+            } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.setIsBlocked(true);
                 this.setIsLoading(false);
                 return;

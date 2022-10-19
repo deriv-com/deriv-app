@@ -6,7 +6,7 @@ import Text from '../text';
 type TCompositeCheckbox = {
     name: string;
     value: boolean;
-    onChange: (e: { target: { value: boolean } }) => void;
+    onChange: (e: React.SyntheticEvent) => void;
     className?: string;
     label: string;
     id?: string;
@@ -31,7 +31,7 @@ const CompositeCheckbox = ({
             target: {
                 value: !value,
             },
-        });
+        } as any);
     };
 
     return (

@@ -376,6 +376,7 @@ const Dropdown = ({
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
                     })}
+                    data-testid='dt_dropdown_container'
                 >
                     {label && (
                         <span

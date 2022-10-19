@@ -73,6 +73,11 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
+    setAppstorePlatform(platform) {
+        this.platform = platform;
+    }
+
+    @action.bound
     setPlatform() {
         const search = window.location.search;
         if (search) {
@@ -257,6 +262,13 @@ export default class CommonStore extends BaseStore {
                 BinarySocket.closeAndOpenNewConnection(key);
             });
         });
+    };
+
+    @action.bound
+    getExchangeRate = async (from_currency, to_currency) => {
+        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
+
+        return exchange_rates?.rates?.[to_currency];
     };
 
     @action.bound

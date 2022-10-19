@@ -18,6 +18,7 @@ type TAccountManager = {
     description?: string;
     has_account: boolean;
     disabled: boolean;
+    dxtrade_link?: string;
 };
 
 const AccountManager = ({
@@ -27,12 +28,13 @@ const AccountManager = ({
     loginid,
     currency,
     platform,
-    has_account,
-    description,
     disabled,
+    onClickGet,
+    description,
+    has_account,
     onClickTopUp,
     onClickTrade,
-    onClickGet,
+    dxtrade_link,
 }: TAccountManager) => {
     const openStaticPage = () => {
         if (platform === CFD_PLATFORMS.MT5) window.open(getStaticUrl(`/dmt5`));
@@ -82,9 +84,24 @@ const AccountManager = ({
                         <Button secondary className='account-manager__buttons-topup' onClick={onClickTopUp}>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
-                        <Button primary onClick={onClickTrade}>
-                            <Localize i18n_default_text='Trade' />
-                        </Button>
+
+                        {platform === CFD_PLATFORMS.DXTRADE && (
+                            <a
+                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                style={{ margin: '0', width: '100%', height: '3.4rem' }}
+                                type='button'
+                                href={dxtrade_link}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <Localize i18n_default_text='Trade' />
+                            </a>
+                        )}
+                        {platform === CFD_PLATFORMS.MT5 && (
+                            <Button primary onClick={onClickTrade}>
+                                <Localize i18n_default_text='Trade' />
+                            </Button>
+                        )}
                     </>
                 ) : (
                     <Button

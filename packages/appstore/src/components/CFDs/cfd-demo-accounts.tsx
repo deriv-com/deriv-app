@@ -2,7 +2,9 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import AccountManager from '../account-manager';
-import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps } from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
+import { useStores } from 'Stores/index';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const available_demo_accounts: Array<TStaticAccountProps> = [
@@ -36,10 +38,60 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
     ];
 
-    const existingDemoAccounts = (platform: TPlatform, market_type?: string) => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.demo.${market_type}`))
+    const { client, modules, common, ui }: TRootStore = useStores();
+    const {
+        standpoint,
+        dxtrade_tokens,
+        createCFDAccount,
+        setCurrentAccount,
+        setMT5TradeAccount,
+        toggleMT5TradeModal,
+        enableCFDPasswordModal,
+        openAccountNeededModal,
+        has_maltainvest_account,
+    } = modules.cfd;
+    const { platform, setAppstorePlatform } = common;
+    const { openTopUpModal } = ui;
+    const { is_eu } = client;
+
+    const openAccountTransfer = (
+        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
+        meta: { category: string; type?: string }
+    ) => {
+        setCurrentAccount(data, meta);
+        openTopUpModal();
+    };
+
+    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+    const getDXTradeWebTerminalLink = (category: string, token?: string) => {
+        let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+        if (token) {
+            url += `?token=${token}`;
+        }
+
+        return url;
+    };
+
+    const openCFDAccount = (account_type: string) => {
+        if (is_eu && !has_maltainvest_account && standpoint.iom) {
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+        } else {
+            createCFDAccount({
+                category: 'demo',
+                type: account_type,
+                platform,
+            });
+            enableCFDPasswordModal();
+        }
+    };
+
+    const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
+        const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.demo.${market_type}`))
+                  .filter(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -77,9 +129,24 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                               loginid={existing_account.display_login}
                                               currency={existing_account.currency}
                                               amount={existing_account.display_balance}
-                                              //   TODO will pass the click functions when flows are updated
-                                              onClickTopUp={() => null}
-                                              onClickTrade={() => null}
+                                              dxtrade_link={getDXTradeWebTerminalLink('demo', dxtrade_tokens.demo)}
+                                              onClickTopUp={() =>
+                                                  openAccountTransfer(
+                                                      current_list[
+                                                          Object.keys(current_list).find((key: string) =>
+                                                              key.startsWith(`${platform}.demo.${account.type}`)
+                                                          ) || ''
+                                                      ],
+                                                      {
+                                                          category: 'demo',
+                                                          type: account.type,
+                                                      }
+                                                  )
+                                              }
+                                              onClickTrade={() => {
+                                                  toggleMT5TradeModal();
+                                                  setMT5TradeAccount(existing_account);
+                                              }}
                                               description={account.description}
                                           />
                                       </div>
@@ -93,8 +160,10 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           appname={account.name}
                                           platform={account.platform}
                                           disabled={account.disabled}
-                                          //   TODO will pass the click functions when flows are updated
-                                          onClickGet={() => null}
+                                          onClickGet={() => {
+                                              setAppstorePlatform(account.platform);
+                                              openCFDAccount(account.type);
+                                          }}
                                           description={account.description}
                                       />
                                   </div>

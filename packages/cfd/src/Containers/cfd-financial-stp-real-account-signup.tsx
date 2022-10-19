@@ -30,6 +30,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
+    context: RootStore;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     refreshNotifications: () => void;
@@ -180,6 +181,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     index={state_index}
                     onSubmit={nextStep}
                     height={height}
+                    context={props.context}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}

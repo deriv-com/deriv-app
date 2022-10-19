@@ -269,9 +269,6 @@ const MT5TradeModal = ({
                     <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
-                    <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationApple' width={135} height={40} />
-                    </a>
                     <a href={getPlatformMt5DownloadLink('huawei')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />
                     </a>

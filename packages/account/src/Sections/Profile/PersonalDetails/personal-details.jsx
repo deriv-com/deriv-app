@@ -127,6 +127,7 @@ export const PersonalDetailsForm = ({
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
+        form_initial_values: {},
     });
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({
@@ -472,7 +473,11 @@ export const PersonalDetailsForm = ({
         { text: localize('Miss'), value: 'Miss' },
     ];
 
-    const { form_initial_values, api_error, show_form } = rest_state;
+    const {
+        form_initial_values: { ...form_initial_values },
+        api_error,
+        show_form,
+    } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 

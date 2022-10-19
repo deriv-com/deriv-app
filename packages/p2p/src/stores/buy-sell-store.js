@@ -7,6 +7,7 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
@@ -286,7 +287,7 @@ export default class BuySellStore extends BaseStore {
                             }
                         }
                         // Added a check to prevent console errors
-                    } else if (response && response.error.code === 'PermissionDenied') {
+                    } else if (response && response.error.code === api_error_codes.PERMISSION_DENIED) {
                         this.root_store.general_store.setIsBlocked(true);
                     } else {
                         this.setApiErrorMessage(response?.error.message);

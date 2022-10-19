@@ -3,6 +3,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class OrderStore {
     constructor(root_store) {
@@ -72,12 +73,12 @@ export default class OrderStore {
         }).then(response => {
             if (response) {
                 if (response.error) {
-                    if (response.error.code === 'OrderEmailVerificationRequired') {
+                    if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
                         clearTimeout(wait);
                         const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
                     } else if (
-                        response?.error.code === 'InvalidVerificationToken' ||
-                        response?.error.code === 'ExcessiveVerificationRequests'
+                        response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                        response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
                         clearTimeout(wait);
                         if (this.is_email_verification_modal_open) {
@@ -88,7 +89,7 @@ export default class OrderStore {
                         }
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
-                    } else if (response?.error.code === 'ExcessiveVerificationFailures') {
+                    } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
                         if (this.is_invalid_verification_link_modal_open) {
                             this.setIsInvalidVerificationLinkModalOpen(false);
                         }
@@ -227,7 +228,7 @@ export default class OrderStore {
 
                         this.setOrders([...old_list, ...new_list]);
                     }
-                } else if (response.error.code === 'PermissionDenied') {
+                } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     this.root_store.general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
@@ -438,13 +439,13 @@ export default class OrderStore {
                         clearTimeout(wait);
                         const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
                     } else if (
-                        response.error.code === 'InvalidVerificationToken' ||
-                        response.error.code === 'ExcessiveVerificationRequests'
+                        response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                        response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
-                    } else if (response.error.code === 'ExcessiveVerificationFailures') {
+                    } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
                         if (this.is_invalid_verification_link_modal_open) {
                             this.setIsInvalidVerificationLinkModalOpen(false);
                         }

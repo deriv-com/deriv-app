@@ -11,6 +11,7 @@
     @include mobile {
         left: 0;
     }
+    z-index: 1;
     &__btn {
         background-color: var(--button-primary-default) !important;
 

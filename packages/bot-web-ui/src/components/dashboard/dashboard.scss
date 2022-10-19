@@ -26,6 +26,7 @@
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
+        z-index: 1;
         .db-toolbox {
             &__title {
                 height: 2.6rem;

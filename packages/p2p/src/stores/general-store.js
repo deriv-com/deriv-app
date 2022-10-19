@@ -232,7 +232,17 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
+    @action.bound
+    redirectToOrderDetails(order_id) {
+        const { order_store } = this.root_store;
+        this.redirectTo('orders');
+        this.setOrderTableType(order_list.INACTIVE);
+        order_store.setOrderId(order_id);
+    }
+
+    @action.bound
     showCompletedOrderNotification(advertiser_name, order_id) {
+        const { order_store } = this.root_store;
         const notification_key = `order-${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
@@ -241,9 +251,10 @@ export default class GeneralStore extends BaseStore {
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {
-                    this.redirectTo('orders');
-                    this.setOrderTableType(order_list.INACTIVE);
-                    this.root_store.order_store.setOrderId(order_id);
+                    if (order_store.order_id === order_id) {
+                        order_store.setIsRatingModalOpen(true);
+                    }
+                    this.redirectToOrderDetails(order_id);
                 },
                 text: localize('Give feedback'),
             },

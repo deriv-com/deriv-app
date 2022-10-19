@@ -8,7 +8,7 @@ import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
-import { isMobile, compressImageFiles, readFiles, WS } from '@deriv/shared';
+import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import Card from './Card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 
@@ -17,7 +17,7 @@ const getScrollOffset = (items_count = 0) => {
     if (items_count <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications, is_dark_mode }) => {
+const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications, is_dark_mode, client_email }) => {
     const initial_values = {};
     const [is_disabled, setIsDisabled] = React.useState(true);
     initial_values.data = cards?.map(item => {
@@ -90,33 +90,28 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
             setFormState({ ...form_state, ...{ is_btn_loading: true } });
             const { data: formValues } = form_ref.current.values;
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
-            const { get_settings, error } = await WS.authorized.storage.getSettings();
-            if (error) {
-                throw new Error(error);
-            }
             if (form_ref.current.errors.length > 0) {
                 // Only upload if no errors and a file has been attached
                 return;
             }
             formValues.forEach(async (values, index) => {
                 if (values.files.length > 0) {
-                    const files_to_process = await compressImageFiles(values.files);
-                    const processed_files = await readFiles(files_to_process, fileReadErrorMessage);
+                    const processed_files = await readFiles(values.files, fileReadErrorMessage, {
+                        documentType: DOCUMENT_TYPE.proof_of_ownership,
+                        proof_of_ownership: {
+                            details: {
+                                email: client_email,
+                                payment_identifier: values.payment_method_identifier,
+                            },
+                            id: values.id,
+                        },
+                    });
                     if (typeof processed_files === 'string') {
                         // eslint-disable-next-line no-console
                         console.warn(processed_files);
                     }
                     processed_files.forEach(async (processed_file, sub_index) => {
-                        const files_to_send = processed_file;
-                        files_to_send.proof_of_ownership = {
-                            details: {
-                                email: get_settings.email,
-                                payment_method_identifier: values.payment_method_identifier,
-                            },
-                            id: values.id,
-                        };
-                        files_to_send.documentType = 'proof_of_ownership';
-                        const response = await uploader.upload(files_to_send);
+                        const response = await uploader.upload(processed_file);
                         if (response.warning) {
                             if (response.warning.trim() === 'DuplicateUpload') {
                                 form_ref.current.errors.data = document_upload_errors;
@@ -218,6 +213,7 @@ ProofOfOwnershipForm.propTypes = {
     updateAccountStatus: PropTypes.func,
     refreshNotifications: PropTypes.func,
     is_dark_mode: PropTypes.bool,
+    client_email: PropTypes.string,
 };
 
 export default ProofOfOwnershipForm;

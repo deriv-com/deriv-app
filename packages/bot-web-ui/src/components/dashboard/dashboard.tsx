@@ -2,15 +2,15 @@ import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
-import DashboardComponent from './dashboard-component';
+import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
+import classNames from 'classnames';
 import ReactJoyride from 'react-joyride';
+import DashboardComponent from './dashboard-component';
 import { DBOT_ONBOARDING } from './joyride-config';
 import RunStrategy from './dashboard-component/run-strategy';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import classNames from 'classnames';
 import Tutorial from './tutorial-tab';
 
 type TDashboard = {

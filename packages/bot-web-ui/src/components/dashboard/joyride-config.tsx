@@ -12,7 +12,7 @@ type TStep = {
 export const Step = ({ label, content }: TStep) => {
     return (
         <div className='db-tour'>
-            <Text line_height='xl' as='p' weight='bold' color='colored-background'>
+            <Text line_height='xl' as='p' weight='bold' color='var(--text-joyride-tour)'>
                 {label}
             </Text>
             {content.map(item => (
@@ -20,7 +20,7 @@ export const Step = ({ label, content }: TStep) => {
                     key={item}
                     line_height='xl'
                     as='p'
-                    color='colored-background'
+                    color='var(--text-joyride-tour)'
                     dangerouslySetInnerHTML={{ __html: item }}
                 />
             ))}

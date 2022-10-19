@@ -39,11 +39,18 @@ export type TPaymentAgentWithdrawReceipt = {
 };
 
 export type TPartialPaymentAgentList = {
+    currency?: string;
+    deposit_commission?: string;
     email?: string;
+    further_information?: string;
+    max_withdrawal?: string | null;
+    min_withdrawal?: string | null;
     name?: string;
+    paymentagent_loginid?: string;
     phones?: TPhoneNumber[];
     supported_banks?: TPaymentMethod[];
     urls?: TUrl[];
+    withdrawal_commission?: string;
 };
 
 export type TSupportedBank = {

@@ -17,6 +17,11 @@ import {
     TPaymentAgentWithdrawRequest,
 } from 'Types';
 
+type TCashierPayments = {
+    provider: string;
+    transaction_type: string;
+};
+
 export type TServerError = {
     code: string;
     details?: { [key: string]: string };
@@ -37,12 +42,18 @@ type TServiceTokenRequest = {
     referrer: string;
 };
 
+type TCancelCryptoTransaction = {
+    error: TServerError;
+};
+
 type TWebSocketCall = {
     cashier: (
         action: CashierInformationRequest['cashier'],
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
+    cashierPayments?: ({ provider, transaction_type }: TCashierPayments) => Promise<any>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
+    p2pAdvertiserInfo?: () => Promise<any>;
     paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
     paymentAgentList: (residence: string, currency: string) => Promise<TExtendedPaymentAgentListResponse>;
     paymentAgentTransfer: ({
@@ -59,6 +70,7 @@ type TWebSocketCall = {
         verification_code,
         dry_run,
     }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+    send?: (obj: any) => Promise<any>;
     storage: TStorage;
     transferBetweenAccounts: (
         account_from?: string,
@@ -76,18 +88,13 @@ export type TWebSocket = {
         args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     balanceAll: () => Promise<Balance>;
-    mt5LoginList: () => {
-        mt5_login_list: Array<TMT5LoginAccount>;
-    };
+    cancelCryptoTransaction?: (transaction_id: string) => Promise<TCancelCryptoTransaction>;
+    mt5LoginList: () => { mt5_login_list: Array<TMT5LoginAccount> };
     send: (obj: any) => Promise<any>;
     serviceToken: (req: TServiceTokenRequest) => Promise<any>;
-    storage: {
-        mt5LoginList: () => {
-            mt5_login_list: Array<TMT5LoginAccount>;
-        };
-    };
-    tradingPlatformAccountsList: (platform: string) => {
-        trading_platform_accounts: Array<TMT5LoginAccount>;
-    };
+    storage: { mt5LoginList: () => { mt5_login_list: Array<TMT5LoginAccount> } };
+    subscribeCashierPayments?: (response: any) => Promise<any>;
+    tradingPlatformAccountsList: (platform: string) => { trading_platform_accounts: Array<TMT5LoginAccount> };
+    verifyEmail?: (email: string, withdrawal_type: string) => Promise<any>;
     wait: (value: string) => Promise<any>;
 };

@@ -325,8 +325,8 @@ export default class AccountTransferStore {
                     : account.landing_company_short?.toUpperCase();
 
             const cfd_account_text_display =
-                account.account_type === CFD_PLATFORMS.MT5
-                    ? `${cfd_text_display} ${getCFDAccountDisplay({
+                account.account_type === 'mt5'
+                    ? `${getCFDAccountDisplay({
                           market_type: account.market_type,
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
@@ -354,6 +354,7 @@ export default class AccountTransferStore {
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 ...(is_cfd && {
                     platform_icon: cfd_icon_display,
+                    status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
                         sub_account_type: account.sub_account_type,
@@ -427,7 +428,7 @@ export default class AccountTransferStore {
 
     @action.bound
     onChangeTransferFrom({ target }: { target: { value: string } }) {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ message: '', code: '' });
         this.selected_from.error = '';
 
         const accounts = this.accounts_list;
@@ -462,7 +463,7 @@ export default class AccountTransferStore {
 
     @action.bound
     onChangeTransferTo({ target }: { target: { value: string | undefined } }) {
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ message: '', code: '' });
         this.selected_to.error = '';
 
         const accounts = this.accounts_list;
@@ -491,7 +492,7 @@ export default class AccountTransferStore {
         }
 
         setLoading(true);
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ message: '', code: '' });
 
         const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
 
@@ -517,7 +518,7 @@ export default class AccountTransferStore {
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
+            this.setReceiptTransfer({ amount: Number(formatMoney(currency, amount, true)) });
             transfer_between_accounts.accounts?.forEach((account: TTransferAccount) => {
                 if (account.loginid && account.balance) {
                     this.setBalanceByLoginId(account.loginid, account.balance);

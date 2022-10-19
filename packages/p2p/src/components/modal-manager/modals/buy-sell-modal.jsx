@@ -12,17 +12,16 @@ import {
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { reaction } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import BuySellForm from './buy-sell-form.jsx';
-import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
-import NicknameForm from '../nickname-form';
+import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
+import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-amount.jsx';
+import NicknameForm from 'Components/nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
-import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import modals from 'Constants/modals';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>
@@ -102,7 +101,6 @@ const BuySellModal = () => {
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const formik_ref = React.useRef();
-    const { hideModal, is_modal_open } = useModalManagerContext();
     const selected_ad = buy_sell_store.selected_ad_state;
     const table_type = buy_sell_store.table_type;
 
@@ -133,7 +131,7 @@ const BuySellModal = () => {
                 my_profile_store.hideAddPaymentMethodForm();
             }
         } else {
-            hideModal(modals.BuySellModal);
+            buy_sell_store.setShouldShowPopup(false);
         }
         floating_rate_store.setIsMarketRateChanged(false);
         buy_sell_store.setShowRateChangePopup(false);
@@ -142,27 +140,30 @@ const BuySellModal = () => {
     const onConfirmClick = order_info => {
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
         order_store.setOrderId(order_info.id);
-        hideModal(modals.BuySellModal);
+        buy_sell_store.setShouldShowPopup(false);
         buy_sell_store.setShowAdvertiserPage(false);
     };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
-        const balance_check =
-            parseFloat(general_store.balance) === 0 ||
-            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit;
+        return reaction(
+            () => buy_sell_store.should_show_popup,
+            () => {
+                const balance_check =
+                    parseFloat(general_store.balance) === 0 ||
+                    parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit;
 
-        setIsAccountBalanceLow(balance_check);
-        if (!should_show_popup) {
-            setErrorMessage(null);
-        }
+                setIsAccountBalanceLow(balance_check);
+                if (!buy_sell_store.should_show_popup) {
+                    setErrorMessage(null);
+                }
 
-        my_profile_store.setSelectedPaymentMethod('');
-        my_profile_store.setSelectedPaymentMethodDisplayName('');
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_show_popup]);
+                my_profile_store.setSelectedPaymentMethod('');
+                my_profile_store.setSelectedPaymentMethodDisplayName('');
+            }
+        );
+    }, []);
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
 
@@ -173,7 +174,7 @@ const BuySellModal = () => {
                 className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={is_modal_open}
+                is_modal_open={buy_sell_store.should_show_popup}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 pageHeaderReturnFn={onCancel}
@@ -211,13 +212,13 @@ const BuySellModal = () => {
             </MobileFullPageModal>
         );
     }
-    if (should_show_popup) {
+    if (buy_sell_store.should_show_popup) {
         return (
             <Modal
                 className='buy-sell__modal'
                 height={table_type === buy_sell.BUY ? 'auto' : '649px'}
                 width='456px'
-                is_open={is_modal_open}
+                is_open={buy_sell_store.should_show_popup}
                 title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 portalId={general_store.props.modal_root_id}
                 toggleModal={onCancel}
@@ -257,13 +258,6 @@ const BuySellModal = () => {
     }
 
     return null;
-};
-
-BuySellModal.propTypes = {
-    table_type: PropTypes.string,
-    selected_ad: PropTypes.object,
-    should_show_popup: PropTypes.bool,
-    setShouldShowPopup: PropTypes.func,
 };
 
 export default observer(BuySellModal);

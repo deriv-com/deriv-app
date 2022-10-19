@@ -12,8 +12,6 @@ import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
-import { useModalManagerContext } from '../modal-manager/modal-manager-context';
-import modals from 'Constants/modals';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, floating_rate_store, general_store } = useStores();
@@ -60,8 +58,6 @@ const BuySellRow = ({ row: advert }) => {
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
     });
-    const { showModal } = useModalManagerContext();
-    console.log(showModal);
 
     if (isMobile()) {
         return (
@@ -150,10 +146,7 @@ const BuySellRow = ({ row: advert }) => {
                             className='buy-sell-row__button'
                             is_disabled={general_store.is_barred}
                             large
-                            onClick={() => {
-                                buy_sell_store.setSelectedAdvert(advert);
-                                showModal(modals.BuySellModal);
-                            }}
+                            onClick={() => buy_sell_store.setSelectedAdvert(advert)}
                             primary
                         >
                             {is_buy_advert ? (
@@ -248,10 +241,7 @@ const BuySellRow = ({ row: advert }) => {
                 <Table.Cell className='buy-sell__button'>
                     <Button
                         is_disabled={general_store.is_barred}
-                        onClick={() => {
-                            buy_sell_store.setSelectedAdvert(advert);
-                            showModal(modals.BuySellModal);
-                        }}
+                        onClick={() => buy_sell_store.setSelectedAdvert(advert)}
                         primary
                         small
                     >

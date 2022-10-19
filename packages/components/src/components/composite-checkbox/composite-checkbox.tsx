@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import Checkbox from '../checkbox/checkbox.jsx';
+import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
 
 type TCompositeCheckbox = {

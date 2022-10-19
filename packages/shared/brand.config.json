@@ -1,5 +1,5 @@
 {
-    "brand_name" : "Deriv",
+    "brand_name": "Deriv",
     "domain_name": "Deriv.com",
     "legal_entities": {
         "fx": "Deriv (FX) Ltd",
@@ -20,7 +20,7 @@
             "icon": "IcBrandDbot"
         },
         "mt5": {
-            "name": "DMT5",
+            "name": "Deriv MT5",
             "icon": "IcBrandDmt5"
         },
         "dxtrade": {
@@ -39,5 +39,4 @@
             "name": "Deriv Go"
         }
     }
-    
 }

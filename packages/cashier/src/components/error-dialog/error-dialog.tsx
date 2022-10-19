@@ -4,9 +4,10 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore, TError, TReactElement } from 'Types';
+import { TRootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
+    className: string;
     disableApp: () => void;
     enableApp: () => void;
     error: TError | Record<string, never>;
@@ -21,7 +22,7 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDialogProps) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -126,6 +127,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
             title={details.title}
             confirm_button_text={details.confirm_button_text}
             cancel_button_text={details.cancel_button_text}
+            className={className}
             onConfirm={() => {
                 if (typeof details.onConfirm === 'function') {
                     details.onConfirm();
@@ -148,7 +150,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
     );
 };
 
-export default connect(({ ui }: RootStore) => ({
+export default connect(({ ui }: TRootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
 }))(ErrorDialog);

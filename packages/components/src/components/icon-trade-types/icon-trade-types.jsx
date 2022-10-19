@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const IconTradeTypes = ({ type, className, ...props }) => {
     switch (type.toLowerCase()) {

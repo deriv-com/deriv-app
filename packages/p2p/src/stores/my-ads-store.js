@@ -26,6 +26,7 @@ export default class MyAdsStore extends BaseStore {
     @observable is_ad_created_modal_visible = false;
     @observable is_ad_exceeds_daily_limit_modal_open = false;
     @observable is_api_error_modal_visible = false;
+    @observable is_delete_error_modal_open = false;
     @observable is_delete_modal_open = false;
     @observable is_edit_ad_error_modal_visible = false;
     @observable is_form_loading = false;
@@ -248,8 +249,24 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     onClickDelete(id) {
         if (!this.root_store.general_store.is_barred) {
-            this.setSelectedAdId(id);
-            this.setIsDeleteModalOpen(true);
+            requestWS({ p2p_advert_info: 1, id }).then(response => {
+                if (!response?.error) {
+                    const { p2p_advert_info } = response;
+
+                    this.setSelectedAdId(id);
+
+                    if (p2p_advert_info.active_orders > 0) {
+                        this.setDeleteErrorMessage(
+                            localize(
+                                'You have open orders for this ad. Complete all open orders before deleting this ad.'
+                            )
+                        );
+                        this.setIsDeleteErrorModalOpen(true);
+                    } else {
+                        this.setIsDeleteModalOpen(true);
+                    }
+                }
+            });
         }
     }
 
@@ -346,8 +363,10 @@ export default class MyAdsStore extends BaseStore {
             }).then(response => {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_adverts;
+                    const is_first_page = startIndex === 0;
+                    const adverts_list = is_first_page ? list : [...this.adverts, ...list];
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                    this.setAdverts(this.adverts.concat(list));
+                    this.setAdverts(adverts_list);
                     if (!floating_rate_store.change_ad_alert) {
                         let should_update_ads = false;
                         if (floating_rate_store.rate_type === ad_type.FLOAT) {
@@ -489,6 +508,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsApiErrorModalVisible(is_api_error_modal_visible) {
         this.is_api_error_modal_visible = is_api_error_modal_visible;
+    }
+
+    @action.bound
+    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
+        this.is_delete_error_modal_open = is_delete_error_modal_open;
     }
 
     @action.bound

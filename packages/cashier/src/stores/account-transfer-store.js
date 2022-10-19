@@ -337,7 +337,7 @@ export default class AccountTransferStore {
 
             const account_text_display = is_cfd
                 ? account.account_type === 'mt5'
-                    ? `${cfd_text_display} ${getCFDAccountDisplay({
+                    ? `${getCFDAccountDisplay({
                           market_type: account.market_type,
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
@@ -363,6 +363,7 @@ export default class AccountTransferStore {
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 ...(is_cfd && {
                     platform_icon: cfd_icon_display,
+                    status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
                         sub_account_type: account.sub_account_type,

@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
 import classNames from 'classnames';
+import { compressImageFiles } from '@deriv/shared';
 
 const FileUploader = ({
     handleFile,
@@ -25,20 +26,18 @@ const FileUploader = ({
         hidden_file_input.current.click();
     };
 
-    const handleChange = event => {
+    const handleChange = async event => {
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
-        const fileUploaded = event.target.files[0];
-        handleFile(name, fileUploaded);
+        const files_to_upload = await compressImageFiles([...event.target.files]);
+        handleFile(name, files_to_upload[0]);
         updateShowBrowseButton(sub_index, !show_browse_button);
     };
     const handleIconClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        const parent_element = e.target?.parentElement?.parentElement?.parentElement;
         updateShowBrowseButton(sub_index, !show_browse_button);
-        parent_element.querySelector(`input[name="${name}"]`).value = '';
-        parent_element.querySelector(`input[type="text"]`).value = '';
+        hidden_file_input.current.value = '';
         handleFile(name, '');
         updateErrors(index, sub_index);
         validateField('files');

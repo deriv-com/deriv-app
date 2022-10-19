@@ -1,12 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Deposit from '../deposit';
+import { StoreProvider } from '../../../hooks';
+import { TRootStore, DeepPartial } from '../../../types';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
@@ -49,102 +46,475 @@ jest.mock('../deposit-locked', () => {
 });
 
 describe('<Deposit />', () => {
-    const props = {
-        currency: 'USD',
-        current_currency_type: 'fiat',
-        error: { is_ask_uk_funds_protection: false, message: '' },
-        is_cashier_locked: false,
-        is_crypto_transactions_visible: false,
-        is_deposit: false,
-        is_deposit_locked: false,
-        is_eu: false,
-        is_loading: false,
-        is_switching: false,
-        is_system_maintenance: false,
-        is_virtual: false,
-        onMount: jest.fn(),
-        recentTransactionOnMount: jest.fn(),
-        setActiveTab: jest.fn(),
-        setIsDeposit: jest.fn(),
-        setErrorMessage: jest.fn(),
-        setSideNotes: jest.fn(),
-    };
-
     it('should render <Loading /> component', () => {
-        const { rerender } = render(<Deposit {...props} is_switching is_loading={false} iframe_url='' />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: true,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
-        rerender(<Deposit {...props} is_switching={false} is_loading iframe_url='' />);
+        rerender(<Deposit setSideNotes={jest.fn()} is_switching={false} is_loading iframe_url='' />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render <Virtual /> component', () => {
-        render(<Deposit {...props} is_virtual />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: true,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
     });
 
     it('should render <CashierLocked /> component', () => {
-        const { rerender } = render(<Deposit {...props} is_system_maintenance is_cashier_locked />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: true,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: true,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+        const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(<Deposit {...props} is_system_maintenance is_deposit_locked current_currency_type='crypto' />);
+        rerender(
+            <Deposit setSideNotes={jest.fn()} is_system_maintenance is_deposit_locked current_currency_type='crypto' />
+        );
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(<Deposit {...props} is_cashier_locked />);
+        rerender(<Deposit setSideNotes={jest.fn()} is_cashier_locked />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <FundsProtection /> component', () => {
-        render(<Deposit {...props} error={{ is_ask_uk_funds_protection: true }} />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: true, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('FundsProtection')).toBeInTheDocument();
     });
 
     it('should render <DepositLocked /> component', () => {
-        render(<Deposit {...props} is_deposit_locked />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: true,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('DepositLocked')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        render(<Deposit {...props} is_crypto_transactions_visible />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: true,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
     it('should render <Error /> component', () => {
-        render(<Deposit {...props} is_deposit error={{ message: 'error' }} />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: 'error', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: true,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <CryptoDeposit /> component', () => {
-        render(<Deposit {...props} is_eu currency='BTC' is_crypto />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: true,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_crypto: true,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
     });
 
     it('should render <Real /> component', () => {
-        render(<Deposit {...props} is_deposit />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: true,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
     it('should render <CashierOnboarding /> component', () => {
-        render(<Deposit {...props} />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'USD',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_deposit: false,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        render(<Deposit setSideNotes={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
     });
 
     it('should trigger "setSideNotes" callback', () => {
-        render(<Deposit {...props} is_deposit crypto_transactions={[{}]} currency='UST' is_crypto />);
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'UST',
+                can_change_fiat_currency: false,
+                current_currency_type: 'fiat',
+                is_eu: false,
+                is_switching: false,
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    iframe: {},
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    deposit: {
+                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
+                        is_deposit_locked: false,
+                        onMountDeposit: jest.fn(),
+                    },
+                    general_store: {
+                        is_cashier_locked: false,
+                        is_crypto: true,
+                        is_deposit: true,
+                        is_loading: false,
+                        is_system_maintenance: false,
+                        setActiveTab: jest.fn(),
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
 
-        expect(props.setSideNotes).toHaveBeenCalledTimes(2);
+        const setSideNotes = jest.fn();
+
+        render(<Deposit setSideNotes={setSideNotes} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
+
+        expect(setSideNotes).toHaveBeenCalledTimes(2);
     });
 });

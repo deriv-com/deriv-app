@@ -20,8 +20,9 @@ const Card = ({
     const [show_browse_button, setShowBrowseButton] = React.useState([]);
     const card_details = paymentMethodConfig[card?.payment_method?.toLowerCase()] ?? paymentMethodConfig.other;
     card_details.icon = is_dark_mode ? card_details?.icon_dark : card_details?.icon_light;
-    values.data[index].files_required = card_details?.documents_required;
+    values.data[index].files_required = card?.documents_required ?? card_details?.documents_required;
     values.data[index].is_generic_pm = !card_details?.input_label;
+    card_details.id = card?.id;
     const updateShowBrowseButton = (sub_index, value) => {
         const show_browse_button_state = [...show_browse_button];
         show_browse_button_state[sub_index] = value;

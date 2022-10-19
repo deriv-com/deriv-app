@@ -1,12 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { LinearProgress } from './linear-progress.jsx';
+import { LinearProgress } from './linear-progress';
+
+type TLinearProgressContainer = {
+    timeout: number;
+    action: () => void;
+    render: (prop: number) => number;
+    className?: string;
+    should_store_in_session?: boolean;
+    session_id: string;
+};
 
 const LinearProgressContainer = React.forwardRef(
-    ({ timeout, action, render, className, should_store_in_session, session_id }, ref) => {
-        const current_progress_timeout = sessionStorage.getItem(`linear_progress_timeout_${session_id}`);
+    ({ timeout, action, render, className, should_store_in_session, session_id }: TLinearProgressContainer, ref) => {
+        const current_progress_timeout = Number(sessionStorage.getItem(`linear_progress_timeout_${session_id}`));
 
-        const popup_timeout = !current_progress_timeout ? timeout / 1000 : current_progress_timeout;
+        const popup_timeout = !current_progress_timeout ? timeout / 1000 : Number(current_progress_timeout);
         const [timeout_state, setTimeoutState] = React.useState(popup_timeout);
         const time_past = 100 - (timeout_state / (timeout / 1000)) * 100;
 
@@ -26,7 +34,7 @@ const LinearProgressContainer = React.forwardRef(
 
         React.useEffect(() => {
             if (should_store_in_session) {
-                sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
+                sessionStorage.setItem(`linear_progress_timeout_${session_id}`, String(timeout_state));
             }
         }, [timeout_state, should_store_in_session, session_id]);
 
@@ -46,7 +54,7 @@ const LinearProgressContainer = React.forwardRef(
         if (current_progress_timeout <= 0) {
             sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
         } else if (current_progress_timeout > 0) {
-            sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
+            sessionStorage.setItem(`linear_progress_timeout_${session_id}`, String(timeout_state));
         } else {
             return null;
         }
@@ -56,20 +64,11 @@ const LinearProgressContainer = React.forwardRef(
         return (
             <div className='dc-linear-progress-container'>
                 <div className='dc-linear-progress__countdown'>{render(getRemaining())}</div>
-                <LinearProgress className={className} progress={getProgress()} height={4} />
+                <LinearProgress className={className} progress={getProgress()} />
             </div>
         );
     }
 );
-
-LinearProgressContainer.propTypes = {
-    timeout: PropTypes.number,
-    action: PropTypes.func,
-    render: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    should_store_in_session: PropTypes.bool,
-    session_id: PropTypes.string,
-};
 
 LinearProgressContainer.displayName = 'LinearProgressContainer';
 

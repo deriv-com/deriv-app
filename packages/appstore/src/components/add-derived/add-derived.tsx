@@ -13,7 +13,7 @@ const AddDerived = ({ title, onClickHandler, class_names }: TAddDerivedProps) =>
     return (
         <div className={classNames('add-derived', class_names)} onClick={onClickHandler}>
             <Icon icon='icAppstoreAddRounded' width='24' height='24' />
-            <Text type='paragraph-2' bold>
+            <Text type='paragraph-2' bold color='prominant'>
                 {title}
             </Text>
         </div>

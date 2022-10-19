@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import CFDDemoAccounts from './cfd-demo-accounts';
 import CFDRealAccounts from './cfd-real-accounts';
 import { isLandingCompanyEnabled, CFD_PLATFORMS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
@@ -74,7 +74,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         <div className='cfd-accounts-container'>
             <div className='cfd-demo-account__title'>
                 <Text weight='bold' size='m'>
-                    CFDs
+                    {localize('CFDs')}
                 </Text>
                 <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
                     <Text weight='bold' size='xxs' color='red'>

@@ -7,17 +7,17 @@ type AddOptionsProps = Parameters<typeof AddOptions>[0];
 export default {
     title: 'AddOptions',
     argTypes: {
+        number_of_accounts: {
+            type: 'number',
+            defaultValue: 4,
+        },
         title: {
             type: 'string',
-            defaultValue: 'More Options accounts',
+            defaultValue: 'title',
         },
         description: {
             type: 'string',
-            defaultValue: 'Including cryptocurrencies',
-        },
-        class_names: {
-            type: 'string',
-            defaultValue: '',
+            defaultValue: 'description',
         },
     },
 } as Meta<AddOptionsProps>;

@@ -15,6 +15,7 @@ const CFDPersonalDetailsModal = ({
     account_settings,
     disableApp,
     enableApp,
+    context,
     getChangeableFields,
     is_fully_authenticated,
     is_open,
@@ -77,7 +78,7 @@ const CFDPersonalDetailsModal = ({
     }, [is_open]);
 
     const transform = (value: unknown) => {
-        const [result] = residence_list.filter(item => item.value === value);
+        const [result] = residence_list?.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
@@ -127,10 +128,11 @@ const CFDPersonalDetailsModal = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    changeable_fields={getChangeableFields()}
                     form_error={form_error}
                     has_previous_button
                     index={0}
+                    context={context}
+                    // changeable_fields={getChangeableFields()}
                     is_fully_authenticated={is_fully_authenticated}
                     is_in_personal_details_modal
                     is_loading={is_loading}
@@ -154,6 +156,7 @@ const CFDPersonalDetailsModal = ({
                     enableApp={enableApp}
                     has_close_icon={true}
                     height='688px'
+                    context={context}
                     id='cfd-personal-details-modal'
                     is_open={is_open}
                     title={localize('Add a real MT5 account')}
@@ -170,6 +173,7 @@ const CFDPersonalDetailsModal = ({
                     portal_element_id='modal_root'
                     title={localize('Add a real MT5 account')}
                     visible={is_open}
+                    context={context}
                     wrapper_classname='account-signup-mobile-dialog'
                 >
                     {getPersonalDetailsForm()}

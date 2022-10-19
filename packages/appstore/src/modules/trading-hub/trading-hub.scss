@@ -5,6 +5,7 @@
 
     @include mobile {
         padding: 0;
+        overflow-y: auto;
     }
 
     &_header {

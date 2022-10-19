@@ -2,11 +2,20 @@ import Cookies from 'js-cookie';
 import { deriv_urls } from '../url/constants';
 import { getPropertyValue, isEmptyObject } from '../object/object';
 
-const getObject = function (key) {
+type TCookieStorageThis = {
+    initialized: boolean;
+    cookie_name: string;
+    domain: string;
+    path: string;
+    expires: Date;
+    value: unknown;
+};
+
+const getObject = function (this: { getItem: (key: string) => string | null }, key: string) {
     return JSON.parse(this.getItem(key) || '{}');
 };
 
-const setObject = function (key, value) {
+const setObject = function (this: { setItem: (key: string, value: string) => void }, key: string, value: unknown) {
     if (value && value instanceof Object) {
         try {
             this.setItem(key, JSON.stringify(value));
@@ -21,7 +30,7 @@ if (typeof Storage !== 'undefined') {
     Storage.prototype.setObject = setObject;
 }
 
-export const isStorageSupported = storage => {
+export const isStorageSupported = (storage: Storage) => {
     if (typeof storage === 'undefined') {
         return false;
     }
@@ -36,27 +45,27 @@ export const isStorageSupported = storage => {
     }
 };
 
-const Store = function (storage) {
+const Store = function (this: { storage: Storage }, storage: Storage) {
     this.storage = storage;
     this.storage.getObject = getObject;
     this.storage.setObject = setObject;
 };
 
 Store.prototype = {
-    get(key) {
+    get(key: string) {
         return this.storage.getItem(key) || undefined;
     },
-    set(key, value) {
+    set(key: string, value: string) {
         if (typeof value !== 'undefined') {
             this.storage.setItem(key, value);
         }
     },
-    getObject(key) {
+    getObject(key: string) {
         return typeof this.storage.getObject === 'function' // Prevent runtime error in IE
             ? this.storage.getObject(key)
             : JSON.parse(this.storage.getItem(key) || '{}');
     },
-    setObject(key, value) {
+    setObject(key: string, value: unknown) {
         if (typeof this.storage.setObject === 'function') {
             // Prevent runtime error in IE
             this.storage.setObject(key, value);
@@ -64,7 +73,7 @@ Store.prototype = {
             this.storage.setItem(key, JSON.stringify(value));
         }
     },
-    remove(key) {
+    remove(key: string) {
         this.storage.removeItem(key);
     },
     clear() {
@@ -72,15 +81,20 @@ Store.prototype = {
     },
 };
 
-const InScriptStore = function (object) {
+const InScriptStore = function (this: { store: unknown }, object?: unknown) {
     this.store = typeof object !== 'undefined' ? object : {};
 };
 
 InScriptStore.prototype = {
-    get(key) {
+    get(key: string) {
         return getPropertyValue(this.store, key);
     },
-    set(k, value, obj = this.store) {
+    set(
+        this: { store: any; set: (key: string | string[], value: string, obj: string[]) => void },
+        k: string | string[],
+        value: string,
+        obj = this.store
+    ) {
         let key = k;
         if (!Array.isArray(key)) key = [key];
         if (key.length > 1) {
@@ -90,13 +104,13 @@ InScriptStore.prototype = {
             obj[key[0]] = value;
         }
     },
-    getObject(key) {
+    getObject(key: string) {
         return JSON.parse(this.get(key) || '{}');
     },
-    setObject(key, value) {
+    setObject(key: string, value: unknown) {
         this.set(key, JSON.stringify(value));
     },
-    remove(...keys) {
+    remove(...keys: string[]) {
         keys.forEach(key => {
             delete this.store[key];
         });
@@ -104,18 +118,18 @@ InScriptStore.prototype = {
     clear() {
         this.store = {};
     },
-    has(key) {
+    has(key: string) {
         return this.get(key) !== undefined;
     },
     keys() {
         return Object.keys(this.store);
     },
-    call(key) {
+    call(key: string) {
         if (typeof this.get(key) === 'function') this.get(key)();
     },
 };
 
-export const State = new InScriptStore();
+export const State = new (InScriptStore as any)();
 State.prototype = InScriptStore.prototype;
 /**
  * Shorthand function to get values from response object of State
@@ -123,7 +137,7 @@ State.prototype = InScriptStore.prototype;
  * @param {String} pathname
  *     e.g. getResponse('authorize.currency') == get(['response', 'authorize', 'authorize', 'currency'])
  */
-State.prototype.getResponse = function (pathname) {
+State.prototype.getResponse = function (pathname: string | string[]) {
     let path = pathname;
     if (typeof path === 'string') {
         const keys = path.split('.');
@@ -134,7 +148,7 @@ State.prototype.getResponse = function (pathname) {
 State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
-export const CookieStorage = function (cookie_name, cookie_domain) {
+export const CookieStorage = function (this: TCookieStorageThis, cookie_name: string, cookie_domain?: string) {
     const hostname = window.location.hostname;
 
     this.initialized = false;
@@ -159,7 +173,7 @@ CookieStorage.prototype = {
         }
         this.initialized = true;
     },
-    write(val, expireDate, isSecure) {
+    write(val: string, expireDate: Date, isSecure: boolean) {
         if (!this.initialized) this.read();
         this.value = val;
         if (expireDate) this.expires = expireDate;
@@ -170,11 +184,11 @@ CookieStorage.prototype = {
             secure: !!isSecure,
         });
     },
-    get(key) {
+    get(key: string) {
         if (!this.initialized) this.read();
         return this.value[key];
     },
-    set(key, val) {
+    set(key: string, val: string) {
         if (!this.initialized) this.read();
         this.value[key] = val;
         Cookies.set(this.cookie_name, this.value, {
@@ -191,7 +205,7 @@ CookieStorage.prototype = {
     },
 };
 
-export const removeCookies = (...cookie_names) => {
+export const removeCookies = (...cookie_names: string[]) => {
     const domains = [`.${document.domain.split('.').slice(-2).join('.')}`, `.${document.domain}`];
 
     let parent_path = window.location.pathname.split('/', 2)[1];
@@ -212,8 +226,8 @@ export const removeCookies = (...cookie_names) => {
 };
 
 export const LocalStore = isStorageSupported(window.localStorage)
-    ? new Store(window.localStorage)
-    : new InScriptStore();
+    ? new (Store as any)(window.localStorage)
+    : new (InScriptStore as any)();
 export const SessionStore = isStorageSupported(window.sessionStorage)
-    ? new Store(window.sessionStorage)
-    : new InScriptStore();
+    ? new (Store as any)(window.sessionStorage)
+    : new (InScriptStore as any)();

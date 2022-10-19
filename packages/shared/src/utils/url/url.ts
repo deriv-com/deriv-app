@@ -3,6 +3,12 @@ import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
 import { routes } from '../routes';
 
+type TOption = {
+    query_string?: string;
+    legacy?: boolean;
+    language?: string;
+};
+
 const default_domain = 'binary.com';
 const host_map = {
     // the exceptions regarding updating the URLs
@@ -11,12 +17,13 @@ const host_map = {
     'academy.binary.com': 'academy.binary.com',
     'blog.binary.com': 'blog.binary.com',
 };
-let location_url, static_host, default_language;
 
-export const legacyUrlForLanguage = (target_language, url = window.location.href) =>
+let location_url: Location, default_language: string;
+
+export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 
-export const urlForLanguage = (lang, url = window.location.href) => {
+export const urlForLanguage = (lang: string, url: string = window.location.href) => {
     const current_url = new URL(url);
 
     if (lang === 'EN') {
@@ -32,7 +39,7 @@ export const reset = () => {
     location_url = window?.location ?? location_url;
 };
 
-export const params = href => {
+export const params = (href?: string | URL) => {
     const arr_params = [];
     const parsed = ((href ? new URL(href) : location_url).search || '').substr(1).split('&');
     let p_l = parsed.length;
@@ -43,23 +50,11 @@ export const params = href => {
     return arr_params;
 };
 
-export const paramsHash = href => {
-    const param_hash = {};
-    const arr_params = params(href);
-    let param = arr_params.length;
-    while (param--) {
-        if (arr_params[param][0]) {
-            param_hash[arr_params[param][0]] = arr_params[param][1] || '';
-        }
-    }
-    return param_hash;
-};
-
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()#])/g, '') : '');
+export const normalizePath = (path: string) => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()#])/g, '') : '');
 
 export const urlFor = (
-    path,
-    options = {
+    path: string,
+    options: TOption = {
         query_string: undefined,
         legacy: false,
         language: undefined,
@@ -93,7 +88,7 @@ export const urlFor = (
     return new_url;
 };
 
-export const urlForCurrentDomain = href => {
+export const urlForCurrentDomain = (href: string) => {
     const current_domain = getCurrentProductionDomain();
 
     if (!current_domain) {
@@ -102,7 +97,7 @@ export const urlForCurrentDomain = href => {
 
     const url_object = new URL(href);
     if (Object.keys(host_map).includes(url_object.hostname)) {
-        url_object.hostname = host_map[url_object.hostname];
+        url_object.hostname = host_map[url_object.hostname as keyof typeof host_map];
     } else if (url_object.hostname.indexOf(default_domain) !== -1) {
         // to keep all non-Binary links unchanged, we use default domain for all Binary links in the codebase (javascript and templates)
         url_object.hostname = url_object.hostname.replace(
@@ -114,23 +109,6 @@ export const urlForCurrentDomain = href => {
     }
 
     return url_object.href;
-};
-
-export const urlForStatic = (path = '') => {
-    if (!static_host || static_host.length === 0) {
-        static_host = document.querySelector('script[src*="vendor.min.js"]');
-        if (static_host) {
-            static_host = static_host.getAttribute('src');
-        }
-
-        if (static_host?.length > 0) {
-            static_host = static_host.substr(0, static_host.indexOf('/js/') + 1);
-        } else {
-            static_host = websiteUrl();
-        }
-    }
-
-    return static_host + path.replace(/(^\/)/g, '');
 };
 
 export const websiteUrl = () => `${location.protocol}//${location.hostname}/`;
@@ -147,15 +125,9 @@ export const removeBranchName = (path = '') => {
     return path.replace(/^\/br_.*?\//, '/');
 };
 
-export const param = name => paramsHash()[name];
-
 export const getHostMap = () => host_map;
 
-export const resetStaticHost = () => {
-    static_host = undefined;
-};
-
-export const setUrlLanguage = lang => {
+export const setUrlLanguage = (lang: string) => {
     default_language = lang;
 };
 
@@ -181,17 +153,20 @@ export const getStaticUrl = (path = '', _options = {}, is_document = false) => {
     return `${host}${lang}/${normalizePath(path)}`;
 };
 
-export const getPath = (route_path, parameters = {}) =>
-    Object.keys(parameters).reduce((p, name) => p.replace(`:${name}`, parameters[name]), route_path);
+export const getPath = (route_path: string, parameters = {}) =>
+    Object.keys(parameters).reduce(
+        (p, name) => p.replace(`:${name}`, parameters[name as keyof typeof parameters]),
+        route_path
+    );
 
-export const getContractPath = contract_id => getPath(routes.contract, { contract_id });
+export const getContractPath = (contract_id: number) => getPath(routes.contract, { contract_id });
 
 /**
  * Filters query string. Returns filtered query (without '/?')
  * @param {string} search_param window.location.search
  * @param {Array<string>} allowed_keys array of string of allowed query string keys
  */
-export const filterUrlQuery = (search_param, allowed_keys) => {
+export const filterUrlQuery = (search_param: string, allowed_keys: string[]) => {
     const search_params = new URLSearchParams(search_param);
     const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
     return new URLSearchParams(filtered_queries || '').toString();

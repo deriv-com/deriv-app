@@ -14,6 +14,8 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable advertiser_buy_limit = null;
+    @observable advertiser_sell_limit = null;
     @observable block_unblock_user_error = '';
     @observable balance;
     @observable inactive_notification_count = 0;
@@ -441,6 +443,16 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setAdvertiserBuyLimit(advertiser_buy_limit) {
+        this.advertiser_buy_limit = advertiser_buy_limit;
+    }
+
+    @action.bound
+    setAdvertiserSellLimit(advertiser_sell_limit) {
+        this.advertiser_sell_limit = advertiser_sell_limit;
+    }
+
+    @action.bound
     setAppProps(props) {
         this.props = props;
     }
@@ -631,11 +643,24 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
-            response?.p2p_advertiser_info || {};
+        const {
+            daily_buy,
+            daily_buy_limit,
+            daily_sell,
+            daily_sell_limit,
+            blocked_until,
+            blocked_by_count,
+            id,
+            is_approved,
+            is_blocked,
+            is_listed,
+            name,
+        } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
+            this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
             this.setIsAdvertiserBlocked(!!is_blocked);
             this.setIsListed(!!is_listed);

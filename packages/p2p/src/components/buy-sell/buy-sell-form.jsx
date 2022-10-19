@@ -36,10 +36,10 @@ const BuySellForm = props => {
     } = buy_sell_store?.advert || {};
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
+    const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
+
     const should_disable_field =
-        !buy_sell_store.is_buy_advert &&
-        (parseFloat(general_store.balance) === 0 ||
-            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit);
+        !buy_sell_store.is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -109,6 +109,14 @@ const BuySellForm = props => {
                 setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
         }
+    };
+
+    const getAdvertiserMaxLimit = () => {
+        if (buy_sell_store.is_buy_advert) {
+            if (advertiser_buy_limit < max_order_amount_limit_display) return roundOffDecimal(advertiser_buy_limit);
+        } else if (advertiser_sell_limit < max_order_amount_limit_display)
+            return roundOffDecimal(advertiser_sell_limit);
+        return max_order_amount_limit_display;
     };
 
     return (
@@ -361,7 +369,7 @@ const BuySellForm = props => {
                                                             i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
                                                             values={{
                                                                 min: min_order_amount_limit_display,
-                                                                max: max_order_amount_limit_display,
+                                                                max: getAdvertiserMaxLimit(),
                                                                 currency: buy_sell_store.account_currency,
                                                             }}
                                                         />

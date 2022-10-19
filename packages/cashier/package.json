@@ -73,6 +73,7 @@
         "@babel/preset-react": "^7.16.7",
         "@testing-library/react": "^12.0.0",
         "@testing-library/user-event": "^13.2.1",
+        "@types/loadjs": "^4.0.1",
         "@types/lodash.debounce": "^4.0.7",
         "@types/qrcode.react": "^1.0.2",
         "@types/react": "^18.0.7",

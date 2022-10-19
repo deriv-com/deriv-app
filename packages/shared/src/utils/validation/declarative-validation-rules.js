@@ -35,6 +35,7 @@ export const validNumber = (value, opts) => {
     const options = cloneObject(opts);
     let message = null;
     let is_ok = true;
+
     if (options.allow_empty && value.length === 0) {
         return { is_ok };
     }

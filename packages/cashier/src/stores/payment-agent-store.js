@@ -34,7 +34,11 @@ export default class PaymentAgentStore {
     @observable supported_banks = [];
     @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     @observable active_tab_index = 0;
-    @observable all_payment_agent_list = [];
+    @observable all_payment_agent_list = {
+        paymentagent_list: {
+            list: {},
+        },
+    };
     @observable search_term = '';
     @observable has_payment_agent_search_warning = false;
 

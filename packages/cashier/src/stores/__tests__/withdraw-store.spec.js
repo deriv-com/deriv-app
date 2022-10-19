@@ -87,7 +87,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore({ root_store, WS });
+        withdraw_store = new WithdrawStore(WS, root_store);
     });
 
     it('should set is_withdraw_confirmed', () => {
@@ -139,7 +139,7 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         await withdraw_store.saveWithdraw(verification_code);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 

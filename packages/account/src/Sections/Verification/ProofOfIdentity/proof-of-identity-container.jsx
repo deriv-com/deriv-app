@@ -186,6 +186,8 @@ const ProofOfIdentityContainer = ({
                     is_from_external={!!is_from_external}
                     needs_poa={needs_poa}
                     onfido={onfido}
+                    manual={manual}
+                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
                 />
             );

@@ -9,7 +9,7 @@ type TClipboard = {
     text_copy: string;
     icon?: string;
     info_message?: string;
-    success_message: string;
+    success_message?: string;
     className?: string;
     popoverClassName?: string;
     popoverAlignment?: 'top' | 'right' | 'bottom' | 'left';
@@ -28,7 +28,7 @@ const Clipboard = ({
 }: TClipboard) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const isMounted = useIsMounted();
-    let timeout_clipboard: ReturnType<typeof setTimeout>;
+    let timeout_clipboard: NodeJS.Timeout;
 
     const copyToClipboard = async (text: string) => {
         const textField = document.createElement('textarea');

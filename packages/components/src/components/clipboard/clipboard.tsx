@@ -3,16 +3,17 @@ import classNames from 'classnames';
 import { useIsMounted } from '@deriv/shared';
 import Popover from '../popover';
 import Icon from '../icon';
+import { TPopoverProps } from '../types';
 
 type TClipboard = {
     text_copy: string;
-    icon: string;
-    info_message: string;
+    icon?: string;
+    info_message?: string;
     success_message: string;
-    className: string;
-    popoverClassName: string;
-    popoverAlignment: 'top' | 'right' | 'bottom' | 'left';
-    popover_props: any;
+    className?: string;
+    popoverClassName?: string;
+    popoverAlignment?: 'top' | 'right' | 'bottom' | 'left';
+    popover_props?: Partial<TPopoverProps>;
 };
 
 const Clipboard = ({
@@ -42,7 +43,7 @@ const Clipboard = ({
         textField.remove();
     };
 
-    const onClick = (event: MouseEvent | undefined) => {
+    const onClick = (event: { stopPropagation: () => void }) => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
@@ -50,7 +51,7 @@ const Clipboard = ({
                 setIsCopied(false);
             }
         }, 2000);
-        event?.stopPropagation();
+        event.stopPropagation();
     };
 
     React.useEffect(() => {

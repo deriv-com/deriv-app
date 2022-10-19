@@ -3,16 +3,17 @@
     flex-direction: row;
     align-items: center;
     padding: 0.4rem 2rem;
-    isolation: isolate;
     position: relative;
-    width: 24rem;
     height: 7.2rem;
     border-radius: 0.6rem 0.6rem 0 0;
     flex-shrink: 0;
     cursor: pointer;
+    &:hover,
+    &-active {
+        background: $color-grey-2;
+    }
     @include mobile {
         gap: 0.4rem;
-        isolation: isolate;
         width: 22rem;
         height: 5.2rem;
         border-radius: 0.4rem 0.4rem 0 0;
@@ -60,18 +61,13 @@
         top: 0.8rem;
         border-radius: 0.4rem;
         @include mobile {
-            top: 0.5rem;
             border-radius: 0.4rem;
             right: 3.1rem;
             width: 5rem;
         }
+        &-modal {
+            width: 100%;
+            padding: 0.4rem 1rem;
+        }
     }
-}
-.account-container-active {
-    background: $color-grey-2;
-    cursor: auto;
-}
-.account-container-modal {
-    width: 100%;
-    padding: 0.4rem 1rem;
 }

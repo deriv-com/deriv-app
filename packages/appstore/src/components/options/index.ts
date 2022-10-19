@@ -1,4 +1,4 @@
-import Options from './options-accounts';
+import OptionsAccounts from './options-accounts';
 import './options-accounts.scss';
 
-export default Options;
+export default OptionsAccounts;

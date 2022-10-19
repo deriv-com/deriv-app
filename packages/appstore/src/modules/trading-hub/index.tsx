@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Options from 'Components/options';
 import platform_config from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import ToggleAccountType from 'Components/toggle-account-type';
@@ -7,6 +6,7 @@ import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode 
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import CFDAccounts from 'Components/CFDs';
+import OptionsAccounts from 'Components/options';
 import { TAccountCategory } from 'Types';
 import { Localize, localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
@@ -48,24 +48,24 @@ const TradingHub = () => {
 
     return (
         <React.Fragment>
-            <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
             <div className='trading-hub'>
-                <CFDAccounts account_type={account_type} />
+                <ToggleAccountType accountTypeChange={(event: any) => accountTypeChange(event)} value={account_type} />
+                {/* <CFDAccounts account_type={account_type} /> */}
+                <Joyride
+                    run={is_tour_open}
+                    continuous
+                    disableScrolling
+                    hideCloseButton
+                    disableCloseOnEsc
+                    steps={tour_step_config}
+                    styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+                    locale={tour_step_locale}
+                    floaterProps={{
+                        disableAnimation: true,
+                    }}
+                />
+                <OptionsAccounts platformlauncherprops={platform_config} accountType={account_type} />
             </div>
-            <Joyride
-                run={is_tour_open}
-                continuous
-                disableScrolling
-                hideCloseButton
-                disableCloseOnEsc
-                steps={tour_step_config}
-                styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-                locale={tour_step_locale}
-                floaterProps={{
-                    disableAnimation: true,
-                }}
-            />
-            <Options platformlauncherprops={platform_config} accountType={account_type} />
         </React.Fragment>
     );
 };

@@ -1,205 +1,85 @@
-.options-container,
-.options-container-app-launcher {
+.options-accounts-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
-    width: 110.2rem;
-    @include mobile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: absolute;
-        width: 32.8rem;
-        height: 28rem;
+    &__description {
+        margin-bottom: 2.4rem;
     }
-
-    &__title-description-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        @include mobile {
-            width: 32.8rem;
-            height: 5.4rem;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-        }
-        &--title {
-            line-height: 3.6rem;
-            color: $color-black-1;
-        }
-        &--description {
-            align-items: flex-start;
-            .link {
-                height: 2.4rem;
-                font-style: normal;
-                font-weight: 400;
-                font-size: 1.6rem;
-                line-height: 2.4rem;
-                text-decoration-line: underline;
-                color: $color-red;
-            }
-        }
-    }
-    &__accounts-platform-container {
-        display: flex;
-        flex-direction: column;
-        height: 21.9rem;
-        border-radius: 1.6rem;
+    &__appLuncher {
         width: 100%;
-        position: relative;
+        display: flex;
+        overflow-x: auto;
         @include mobile {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 32.8rem;
-            height: 5.6rem;
-            border-radius: 0rem 0.6rem 0rem 0rem;
-            margin-left: 1rem;
+            overflow: hidden;
         }
-        &--accounts,
+        &--account-real,
         &--account-demo {
+            width: 100%;
             display: flex;
             flex-direction: row;
-            align-items: flex-start;
-            height: 7.2rem;
-            width: 100%;
-            max-width: 94%;
-            overflow: hidden;
-            overflow-y: hidden;
-            @include mobile {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.4rem;
-                isolation: isolate;
-                width: 80%;
-                height: 6.2rem;
-                border-radius: 0.4rem 0.4rem 0rem 0rem;
-                overflow: visible;
-            }
-        }
-        &--scroller:hover {
-            overflow: auto;
-            overflow-y: hidden;
-            height: 10rem;
-        }
-        &--account-launcher {
-            padding: 1.6rem 2.3rem 1.6rem 2.4rem;
-            @include mobile {
-                padding: 1.6rem 1.3rem 1.6rem 1rem;
-            }
-        }
-        &--add-options,
-        &--add-options-scroller {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.6rem;
-            gap: 1.6rem;
-            background: var(--general-main-1);
-            border-radius: 0.4rem;
-            margin-left: 1rem;
-            @include mobile {
-                width: 4rem;
-                padding: 0.3rem;
+            .account-container {
+                width: 20%;
+                @include mobile {
+                    width: 70%;
+                }
             }
         }
         &--add-options-scroller {
             position: absolute;
             right: 0;
-            z-index: 999;
-            opacity: 0.9;
-            padding: 1.9rem;
-        }
-        &--platform {
             display: flex;
-            flex-direction: row;
             align-items: center;
-            padding: 1.6rem 2.3rem 1.6rem 2.4rem;
-            width: 110.5rem;
-            height: 14.7rem;
-            background: var(--general-section-1);
-            border-radius: 0rem 0.6rem 0.6rem;
+            justify-content: flex-end;
+            height: 7.2rem;
+            width: 20%;
+            background: linear-gradient(to right, transparent, var(--general-main-1));
             @include mobile {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 0.8rem 0 0;
-                width: 32.8rem;
-                height: 28rem;
-                left: 0;
-            }
-            &--divider {
-                width: 4rem;
-                height: 0.1rem;
-                background: $color-grey-4;
-                transform: rotate(90deg);
+                height: auto;
             }
         }
-        &--platform-with-applauncher {
-            background: var(--general-main-1);
+        &--add-options {
+            width: 20%;
             display: flex;
-            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            padding: 1.6rem 2.3rem 1.6rem 2.4rem;
-            width: 100%;
-            border-radius: 0rem 0.6rem 0.6rem;
             @include mobile {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 0.8rem 0 0;
-                width: 32.8rem;
-                height: 28rem;
-                left: 0;
-            }
-            &--divider {
-                width: 4rem;
-                height: 0.1rem;
-                background: $color-grey-4;
-                transform: rotate(90deg);
+                height: auto;
+                position: absolute;
+                right: 0;
             }
         }
-        &--divider {
-            width: 96%;
-            height: 0.1rem;
-            background: $color-grey-4;
-            flex: none;
-            align-self: stretch;
-            flex-grow: 0;
-            margin-left: 2.4rem;
+        &--account__loader {
+            height: 7.2rem;
             @include mobile {
-                margin-left: 1rem;
+                height: 5.2rem;
             }
         }
     }
-
-    .dc-mobile-dialog__account-signup-mobile-dialog {
-        margin: 20px 15px 10px;
-    }
-}
-.options-container {
-    gap: 1.5rem;
-}
-.options-container-app-launcher {
-    gap: 0rem;
-    @include mobile {
-        gap: 1.5rem;
-    }
-}
-.dc-mobile-dialog__account-switcher-container {
-    margin: 20px 16px 0px 20px;
-    .dc-modal-footer {
-        position: fixed;
-        bottom: 0px;
+    &__platformLuncher {
         width: 100%;
+        display: flex;
+        flex-direction: row;
+        background: var(--general-section-1);
+        border-radius: 0rem 0.6rem 0.6rem;
+        padding: 1.6rem 2.4rem;
+        &--item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 20%;
+            &_divider {
+                width: 4rem;
+                height: 0.1rem;
+                background: $color-grey-4;
+                transform: rotate(90deg);
+            }
+            @include mobile {
+                width: 100%;
+            }
+        }
+        @include mobile {
+            flex-direction: column;
+            padding: 1.6rem 0;
+        }
     }
-}
-.options-accounts-container__loader {
-    width: 110.2rem;
-    height: 30.3rem;
 }

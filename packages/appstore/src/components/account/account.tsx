@@ -1,7 +1,7 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
+import classNames from 'classnames';
 import { Text, Button, Icon, Money } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import WalletIcon from 'Assets/svgs/wallet';
 import {
     getCurrencyDisplayCode,
     isMobile,
@@ -10,23 +10,23 @@ import {
     isBot,
     formatMoney,
 } from '@deriv/shared';
-import classNames from 'classnames';
-import { RouteComponentProps } from 'react-router';
+import { localize, Localize } from '@deriv/translations';
+import WalletIcon from 'Assets/svgs/wallet';
 
-type Icountry_standpoint = {
+type TcountryStandpoint = {
     is_united_kingdom: boolean;
     is_isle_of_man: boolean;
 };
 
-type Igeolocation = {
+type Tgeolocation = {
     region: any;
     sequence: number;
 };
-type Iserver_info = {
-    geolocation: Igeolocation;
+type Tserver_info = {
+    geolocation: Tgeolocation;
 };
-type Iserver = {
-    server_info: Iserver_info;
+type Tserver = {
+    server_info: Tserver_info;
 };
 
 type TOptionsAccountprops = RouteComponentProps & {
@@ -41,10 +41,10 @@ type TOptionsAccountprops = RouteComponentProps & {
     is_disabled?: boolean;
     is_virtual?: boolean;
     title?: string;
-    country_standpoint: Icountry_standpoint;
+    country_standpoint: TcountryStandpoint;
     is_eu?: string;
     market_type?: string;
-    server?: Iserver;
+    server?: Tserver;
     sub_account_type?: string;
     has_error?: string;
     platform?: string;
@@ -61,7 +61,7 @@ type TOptionsAccountprops = RouteComponentProps & {
 };
 
 type TCurrentDisplay = {
-    country_standpoint: Icountry_standpoint;
+    country_standpoint: TcountryStandpoint;
     currency?: string;
     loginid: string;
     is_virtual?: boolean;
@@ -70,7 +70,7 @@ type TCurrentDisplay = {
 type TAccountDisplay = {
     is_eu?: string;
     market_type?: string;
-    server?: Iserver;
+    server?: Tserver;
     sub_account_type?: string;
     has_error?: string;
     platform?: string;
@@ -297,7 +297,7 @@ const OptionsAccount = ({
                     )}
                 </div>
             )}
-            {!is_modal && isMobile() && getCurrencyDisplayCode(currency) !== 'Demo' && (
+            {!is_modal && isMobile() && !is_virtual && (
                 <div className='account-container__dropdown'>
                     <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />
                 </div>

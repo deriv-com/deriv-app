@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { ButtonLink, Text, Button } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
+import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 
 type TPlatformLauncherProps = {
@@ -27,57 +28,40 @@ const PlatformLauncher = ({
                 <div className='platform-launcher__container--icon'>
                     <WalletIcon icon={app_icon} />
                 </div>
-                <DesktopWrapper>
-                    <div className='platform-launcher__container--title-desc-wrapper'>
-                        <Text
-                            size='xxs'
-                            line_height='l'
-                            className='platform-launcher__container--title-desc-wrapper--title'
-                            weight='bold'
-                        >
-                            <Localize i18n_default_text={app_title} />
-                        </Text>
-                        <Text
-                            size='xxs'
-                            line_height='l'
-                            className='platform-launcher__container--title-desc-wrapper--description'
-                        >
-                            <Localize i18n_default_text={app_desc} />
-                        </Text>
-                    </div>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <div className='platform-launcher__container--title-desc-wrapper'>
-                        <Text
-                            size='xxs'
-                            line_height='s'
-                            className='platform-launcher__container--title-desc-wrapper--title'
-                            weight='bold'
-                        >
-                            <Localize i18n_default_text={app_title} />
-                        </Text>
-                        <Text
-                            size='xxxs'
-                            line_height='l'
-                            className='platform-launcher__container--title-desc-wrapper--description'
-                        >
-                            <Localize i18n_default_text={app_desc} />
-                        </Text>
-                    </div>
-                </MobileWrapper>
+                <div className='platform-launcher__container--title-desc-wrapper'>
+                    <Text
+                        size='xxs'
+                        line_height={isMobile() ? 's' : 'l'}
+                        className='platform-launcher__container--title-desc-wrapper--title'
+                        weight='bold'
+                    >
+                        <Localize i18n_default_text={app_title} />
+                    </Text>
+                    <Text
+                        size={isMobile ? 'xxxs' : 'xxs'}
+                        line_height='l'
+                        className='platform-launcher__container--title-desc-wrapper--description'
+                    >
+                        <Localize i18n_default_text={app_desc} />
+                    </Text>
+                </div>
             </div>
             {has_real_account && (
                 <React.Fragment>
                     {link_to ? (
                         <Link to={link_to}>
                             <Button primary className='platform-launcher__trade-button'>
-                                <Localize i18n_default_text='Trade' />
+                                <Text color='white' weight='bold' size={isMobile ? 'xxxs' : 's'}>
+                                    {localize('Trade')}
+                                </Text>
                             </Button>
                         </Link>
                     ) : (
                         <a href={href}>
                             <Button primary className='platform-launcher__trade-button'>
-                                <Localize i18n_default_text='Trade' />
+                                <Text color='white' weight='bold' size={isMobile ? 'xxxs' : 's'}>
+                                    {localize('Trade')}
+                                </Text>
                             </Button>
                         </a>
                     )}

@@ -37,12 +37,12 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
                                 width={getHeightWidthOfIcon().width}
                                 height={getHeightWidthOfIcon().height}
                             />
-                            <Text weight='bold' size={'xxs'} line_height='l'>
+                            <Text weight='bold' size='xxs' line_height='l'>
                                 <Localize i18n_default_text={title} />
                             </Text>
                         </div>
                         <div className='add-options--desktop_description'>
-                            <Text size={'xxs'} line_height='l' weight='lighter'>
+                            <Text size='xxs' line_height='l' weight='lighter'>
                                 <Localize i18n_default_text={description} />
                             </Text>
                         </div>

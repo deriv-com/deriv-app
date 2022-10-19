@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -12,6 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
+import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 const BuySellForm = props => {
@@ -35,10 +36,10 @@ const BuySellForm = props => {
     } = buy_sell_store?.advert || {};
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
+    const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
+
     const should_disable_field =
-        !buy_sell_store.is_buy_advert &&
-        (parseFloat(general_store.balance) === 0 ||
-            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit);
+        !buy_sell_store.is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -108,6 +109,14 @@ const BuySellForm = props => {
                 setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
         }
+    };
+
+    const getAdvertiserMaxLimit = () => {
+        if (buy_sell_store.is_buy_advert) {
+            if (advertiser_buy_limit < max_order_amount_limit_display) return roundOffDecimal(advertiser_buy_limit);
+        } else if (advertiser_sell_limit < max_order_amount_limit_display)
+            return roundOffDecimal(advertiser_sell_limit);
+        return max_order_amount_limit_display;
     };
 
     return (
@@ -360,7 +369,7 @@ const BuySellForm = props => {
                                                             i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
                                                             values={{
                                                                 min: min_order_amount_limit_display,
-                                                                max: max_order_amount_limit_display,
+                                                                max: getAdvertiserMaxLimit(),
                                                                 currency: buy_sell_store.account_currency,
                                                             }}
                                                         />
@@ -378,16 +387,16 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     onChange={event => {
-                                                        if (event.target.value === '') {
-                                                            setFieldValue('amount', '');
-                                                            setInputAmount('');
+                                                        const { value } = event.target;
+
+                                                        if (
+                                                            countDecimalPlaces(value) >
+                                                            getDecimalPlaces(buy_sell_store.account_currency)
+                                                        ) {
+                                                            setFieldValue('amount', parseFloat(input_amount));
                                                         } else {
-                                                            const amount = getRoundedNumber(
-                                                                event.target.value,
-                                                                buy_sell_store.account_currency
-                                                            );
-                                                            setFieldValue('amount', amount);
-                                                            setInputAmount(amount);
+                                                            setFieldValue('amount', parseFloat(value));
+                                                            setInputAmount(value);
                                                         }
                                                     }}
                                                     required

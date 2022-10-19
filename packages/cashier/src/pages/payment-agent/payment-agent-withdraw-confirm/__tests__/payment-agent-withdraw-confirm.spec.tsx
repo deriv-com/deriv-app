@@ -25,7 +25,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         currency: 'USD',
         client_loginid: 'CR90000100',
         error: {},
-        paymentagent_loginid: 'CR90000999',
+        loginid: 'CR90000999',
         payment_agent_name: 'Alicharger',
         requestPaymentAgentWithdraw: jest.fn(),
         setIsTryWithdrawSuccessful: jest.fn(),
@@ -95,7 +95,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
         fireEvent.click(transfer_now_btn);
 
         expect(props.requestPaymentAgentWithdraw).toHaveBeenCalledWith({
-            paymentagent_loginid: props.paymentagent_loginid,
+            paymentagent_loginid: 'CR90000999',
             paymentagent_withdraw: 1,
             currency: props.currency,
             amount: props.amount,

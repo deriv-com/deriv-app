@@ -332,28 +332,28 @@
             display: block;
         }
         &.arrow-top {
-            transform: translateX(-50%) translateY(7.5px);
+            transform: translateX(-50%) translateY(8.5px);
 
             &:after {
                 top: -4px;
             }
         }
         &.arrow-bottom {
-            transform: translateX(-50%) translateY(calc(-100% - 7.5px));
+            transform: translateX(-50%) translateY(calc(-100% - 8.5px));
 
             &:before {
                 top: 100%;
             }
         }
         &.arrow-left {
-            transform: translateX(7.5px) translateY(-50%);
+            transform: translateX(8.5px) translateY(-50%);
 
             &:after {
                 left: -4px;
             }
         }
         &.arrow-right {
-            transform: translateX(calc(-100% - 7.5px)) translateY(-50%);
+            transform: translateX(calc(-100% - 8.5px)) translateY(-50%);
 
             &:before {
                 left: 100%;

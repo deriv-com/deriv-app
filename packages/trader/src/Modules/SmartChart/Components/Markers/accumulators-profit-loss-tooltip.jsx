@@ -14,6 +14,7 @@ const AccumulatorsProfitLossTooltip = ({
     profit,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(true);
+    const [has_close_icon, setHasCloseIcon] = React.useState(true);
     const won = profit > 0;
     const sign = won ? '+' : '';
 
@@ -42,6 +43,7 @@ const AccumulatorsProfitLossTooltip = ({
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => !is_tooltip_open && setIsTooltipOpen(true)}
+                onMouseLeave={() => is_tooltip_open && !has_close_icon && setIsTooltipOpen(false)}
             />
             {is_tooltip_open && (
                 <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
@@ -53,11 +55,16 @@ const AccumulatorsProfitLossTooltip = ({
                         className={`${className}__text`}
                         weight='bold'
                     >{`${sign}${profit} ${currency}`}</Text>
-                    <Icon
-                        className={`${className}__close-icon`}
-                        icon='IcCloseLight'
-                        onClick={() => setIsTooltipOpen(false)}
-                    />
+                    {has_close_icon && (
+                        <Icon
+                            className={`${className}__close-icon`}
+                            icon='IcCloseLight'
+                            onClick={() => {
+                                setHasCloseIcon(false);
+                                setIsTooltipOpen(false);
+                            }}
+                        />
+                    )}
                 </div>
             )}
         </FastMarker>

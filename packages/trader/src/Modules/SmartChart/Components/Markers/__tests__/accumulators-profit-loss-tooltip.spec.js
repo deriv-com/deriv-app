@@ -22,5 +22,6 @@ describe('AccumulatorsProfitLossTooltip', () => {
         expect(wrapper.find('.profit-loss-tooltip').exists()).to.be.true;
         expect(wrapper.find('.profit-loss-tooltip__spot-circle').exists()).to.be.true;
         expect(wrapper.find('.profit-loss-tooltip__content').render()[0].attribs.class).to.include('arrow-left');
+        expect(wrapper.find('.profit-loss-tooltip__close-icon').exists()).to.be.true;
     });
 });

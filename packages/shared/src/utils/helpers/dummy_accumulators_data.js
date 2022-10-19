@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1666100508; // should be an epoch of some real tick!
+const dummy_current_time = 1666169462; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 7;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6487.9;
-const low_barrier = 6487.5;
+const high_barrier = 6534.9;
+const low_barrier = 6534.5;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
@@ -62,26 +62,26 @@ let is_sold = 0; // 0 || 1
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
 //         setTimeout(() => {
-// contract_status = 'won'; // 'lost', 'won' or 'open'
-// position_status = 'profit'; // 'profit' or 'loss'
-// result = 'won'; // 'won' or 'lost'
-// profit = +0.15;
-// profit_percentage = +1.5;
-// is_sold = 1; // 0 || 1
-// exit_tick = current_spot;
-// exit_tick_display_value = `${current_spot}`;
-// exit_tick_time = dummy_current_time;
-//         }, ms1);
-//         setTimeout(() => {
-contract_status = 'lost'; // 'lost', 'won' or 'open'
-position_status = 'loss'; // 'profit' or 'loss'
-result = 'lost'; // 'won' or 'lost'
-profit = -10;
-profit_percentage = -100;
+contract_status = 'won'; // 'lost', 'won' or 'open'
+position_status = 'profit'; // 'profit' or 'loss'
+result = 'won'; // 'won' or 'lost'
+profit = +0.15;
+profit_percentage = +1.5;
 is_sold = 1; // 0 || 1
 exit_tick = current_spot;
 exit_tick_display_value = `${current_spot}`;
 exit_tick_time = dummy_current_time;
+//         }, ms1);
+//         setTimeout(() => {
+// contract_status = 'lost'; // 'lost', 'won' or 'open'
+// position_status = 'loss'; // 'profit' or 'loss'
+// result = 'lost'; // 'won' or 'lost'
+// profit = -10;
+// profit_percentage = -100;
+// is_sold = 1; // 0 || 1
+// exit_tick = current_spot;
+// exit_tick_display_value = `${current_spot}`;
+// exit_tick_time = dummy_current_time;
 //         }, ms2);
 //         setTimeout(() => {
 //             contract_status = 'open'; // 'lost', 'won' or 'open'

@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { formatMoney, routes } from '@deriv/shared';
+import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -16,6 +16,7 @@ export default class PaymentAgentStore {
     @observable error = new ErrorStore();
     @observable filtered_list = [];
     @observable is_name_selected = true;
+    @observable is_search_loading = false;
     @observable is_withdraw = false;
     @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
@@ -30,6 +31,8 @@ export default class PaymentAgentStore {
             list: {},
         },
     };
+    @observable search_term = '';
+    @observable has_payment_agent_search_warning = false;
 
     @action.bound
     setActiveTabIndex(index) {
@@ -47,7 +50,7 @@ export default class PaymentAgentStore {
 
     @computed
     get is_payment_agent_visible() {
-        return !!(this.filtered_list.length || this.agents.length);
+        return !!(this.filtered_list.length || this.agents.length || this.has_payment_agent_search_warning);
     }
 
     @action.bound
@@ -108,6 +111,7 @@ export default class PaymentAgentStore {
 
     @action.bound
     async setPaymentAgentList(pa_list) {
+        const { setLoading } = this.root_store.modules.cashier.general_store;
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
         this.clearList();
         this.clearSuppertedBanks();
@@ -115,16 +119,25 @@ export default class PaymentAgentStore {
         try {
             payment_agent_list.paymentagent_list?.list.forEach(payment_agent => {
                 this.setList({
+                    currency: payment_agent.currencies,
+                    deposit_commission: payment_agent.deposit_commission,
                     email: payment_agent.email,
-                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
+                    further_information: payment_agent.further_information,
+                    max_withdrawal: payment_agent.max_withdrawal,
+                    min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
+                    paymentagent_loginid: payment_agent.paymentagent_loginid,
+                    phones: payment_agent?.phone_numbers || payment_agent?.telephone,
                     supported_banks: payment_agent?.supported_payment_methods,
                     urls: payment_agent?.urls || payment_agent?.url,
+                    withdrawal_commission: payment_agent.withdrawal_commission,
                 });
                 const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
                 supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
+            shuffleArray(this.list);
         } catch (e) {
+            setLoading(false);
             // eslint-disable-next-line no-console
             console.error(e);
         }
@@ -134,15 +147,24 @@ export default class PaymentAgentStore {
 
     @action.bound
     filterPaymentAgentList(bank) {
-        if (bank) {
-            this.filtered_list = [];
+        this.setPaymentAgentSearchWarning(false);
+        const { common } = this.root_store;
+
+        this.filtered_list = [];
+
+        if (bank || this.selected_bank) {
             this.list.forEach(payment_agent => {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
                     const is_string = typeof supported_banks === 'string';
                     const bank_index = is_string
-                        ? supported_banks.toLowerCase().split(',').indexOf(bank)
-                        : supported_banks.map(x => x.payment_method.toLowerCase()).indexOf(bank);
+                        ? supported_banks
+                              .toLowerCase()
+                              .split(',')
+                              .indexOf(bank || this.selected_bank)
+                        : supported_banks
+                              .map(supported_bank => supported_bank.payment_method.toLowerCase())
+                              .indexOf(bank || this.selected_bank);
 
                     if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }
@@ -150,6 +172,36 @@ export default class PaymentAgentStore {
         } else {
             this.filtered_list = this.list;
         }
+        if (this.search_term) {
+            this.filtered_list = this.filtered_list.filter(payment_agent => {
+                return payment_agent.name.toLocaleLowerCase().includes(this.search_term.toLocaleLowerCase());
+            });
+
+            if (this.filtered_list.length === 0) {
+                this.setPaymentAgentSearchWarning(true);
+            }
+        }
+
+        this.setIsSearchLoading(false);
+
+        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
+            common.routeTo(routes.cashier_deposit);
+        }
+    }
+
+    @action.bound
+    setSearchTerm(search_term) {
+        this.search_term = search_term;
+    }
+
+    @action.bound
+    setIsSearchLoading(value) {
+        this.is_search_loading = value;
+    }
+
+    @action.bound
+    setPaymentAgentSearchWarning(value) {
+        this.has_payment_agent_search_warning = value;
     }
 
     @action.bound
@@ -261,7 +313,7 @@ export default class PaymentAgentStore {
                 amount,
                 currency,
                 loginid,
-                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+                payment_agent_name: selected_agent?.text || payment_agent_withdraw.paymentagent_name,
             });
             this.setIsTryWithdrawSuccessful(true);
         } else {
@@ -273,6 +325,8 @@ export default class PaymentAgentStore {
     resetPaymentAgent = () => {
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
+        this.setIsWithdrawSuccessful(false);
+        this.setIsTryWithdrawSuccessful(false);
         this.verification.clearVerification();
         this.setActiveTabIndex(0);
     };
@@ -323,9 +377,6 @@ export default class PaymentAgentStore {
                     payment_agent_name: selected_agent.text,
                     payment_agent_phone: selected_agent.phone,
                     payment_agent_url: selected_agent.url,
-                }),
-                ...(!selected_agent && {
-                    payment_agent_id: loginid,
                 }),
             });
             this.setIsWithdrawSuccessful(true);

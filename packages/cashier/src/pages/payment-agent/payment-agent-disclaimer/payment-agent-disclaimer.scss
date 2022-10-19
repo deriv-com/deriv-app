@@ -1,0 +1,12 @@
+.payment-agent-disclaimer {
+    &__title {
+        margin-bottom: 0.8rem;
+    }
+    @include mobile {
+        background-color: var(--general-section-1);
+        border-radius: $BORDER_RADIUS * 2;
+        padding: 1.6rem 2.4rem;
+        color: var(--text-general);
+        line-height: 1.5;
+    }
+}

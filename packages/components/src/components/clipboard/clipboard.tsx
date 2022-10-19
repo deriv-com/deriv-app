@@ -42,7 +42,7 @@ const Clipboard = ({
         textField.remove();
     };
 
-    const onClick = (event: React.MouseEvent<HTMLImageElement>) => {
+    const onClick = (event: MouseEvent | undefined) => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
@@ -50,7 +50,7 @@ const Clipboard = ({
                 setIsCopied(false);
             }
         }, 2000);
-        event.stopPropagation();
+        event?.stopPropagation();
     };
 
     React.useEffect(() => {

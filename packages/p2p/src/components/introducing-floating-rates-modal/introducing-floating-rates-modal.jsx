@@ -6,21 +6,26 @@ import { getUrlBase } from '@deriv/shared';
 import { useStores } from 'Stores';
 
 const IntroducingFloatingRatesModal = () => {
-    const { floating_rate_store } = useStores();
+    const { floating_rate_store, general_store } = useStores();
     const should_not_show_modal_again = React.useRef(false);
     const [is_open, setIsOpen] = React.useState(() => {
-        const should_not_show_introducing_floating_rate_modal = localStorage.getItem(
-            'should_not_show_introducing_floating_rate_modal'
-        );
-        return !JSON.parse(should_not_show_introducing_floating_rate_modal) ?? true;
+        const p2p_settings = general_store.getLocalStorageSettings();
+        const show_introduce_fr_notf = p2p_settings[general_store.client.loginid]?.show_introduce_fr_notf;
+        return show_introduce_fr_notf ?? true;
     });
 
-    const closeModal = React.useCallback(() => {
-        localStorage.setItem('should_not_show_introducing_floating_rate_modal', should_not_show_modal_again.current);
+    const closeModal = () => {
         setIsOpen(false);
-    });
+    };
 
-    const onCheckboxChange = () => (should_not_show_modal_again.current = !should_not_show_modal_again.current);
+    const onCheckboxChange = () => {
+        const p2p_settings = general_store.getLocalStorageSettings();
+        should_not_show_modal_again.current = !should_not_show_modal_again.current;
+        Object.assign(p2p_settings[general_store.client.loginid], {
+            show_introduce_fr_notf: !should_not_show_modal_again.current,
+        });
+        localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
+    };
 
     return (
         <Modal
@@ -67,4 +72,4 @@ const IntroducingFloatingRatesModal = () => {
     );
 };
 
-export default observer(IntroducingFloatingRatesModal);
+export default React.memo(observer(IntroducingFloatingRatesModal));

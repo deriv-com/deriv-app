@@ -1,8 +1,12 @@
 .my-profile-stats-table {
     border-bottom: none;
     grid-template-columns: repeat(4, 1fr);
-    margin: 2.4rem 0;
+    margin: 1.4rem 0;
     overflow: auto;
+
+    &.dc-table__row {
+        height: unset;
+    }
 
     &__cell {
         align-items: flex-start;

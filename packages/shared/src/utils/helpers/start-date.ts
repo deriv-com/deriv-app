@@ -1,7 +1,28 @@
+import moment from 'moment';
 import { toMoment } from '../date';
 
-export const buildForwardStartingConfig = (contract, forward_starting_dates) => {
-    const forward_starting_config = [];
+type TForwardStartingDates = {
+    blackouts?: unknown[];
+    close?: string;
+    date: string;
+    open?: string;
+};
+
+type TContract = {
+    forward_starting_options: TForwardStartingDates[];
+};
+
+type TConfig = {
+    text: string;
+    value: number;
+    sessions: {
+        open: moment.Moment;
+        close: moment.Moment;
+    }[];
+}[];
+
+export const buildForwardStartingConfig = (contract: TContract, forward_starting_dates: TForwardStartingDates[]) => {
+    const forward_starting_config: TConfig = [];
 
     if ((contract.forward_starting_options || []).length) {
         contract.forward_starting_options.forEach(option => {

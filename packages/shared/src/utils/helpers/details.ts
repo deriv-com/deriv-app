@@ -1,7 +1,15 @@
 import { epochToMoment, formatMilliseconds, getDiffDuration } from '../date';
 import { localize } from '@deriv/translations';
+import moment from 'moment';
 
-export const getDurationUnitValue = obj_duration => {
+type TGetDurationPeriod = {
+    date_start: number;
+    purchase_time: number;
+    date_expiry: number;
+    tick_count?: number;
+};
+
+export const getDurationUnitValue = (obj_duration: moment.Duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // Check with isEndTime to find out if value of duration has decimals
     // for days we do not require precision for End Time value since users cannot select with timepicker if not in same day
@@ -29,7 +37,7 @@ export const getDurationUnitValue = obj_duration => {
     return Math.floor(duration_ms / 1000);
 };
 
-export const isEndTime = duration => duration % 1 !== 0;
+export const isEndTime = (duration: number) => duration % 1 !== 0;
 
 export const getUnitMap = () => {
     return {
@@ -40,7 +48,7 @@ export const getUnitMap = () => {
     };
 };
 
-export const getDurationUnitText = obj_duration => {
+export const getDurationUnitText = (obj_duration: moment.Duration) => {
     const unit_map = getUnitMap();
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
@@ -62,11 +70,11 @@ export const getDurationUnitText = obj_duration => {
     return unit_map.s.name;
 };
 
-export const getDurationPeriod = contract_info =>
+export const getDurationPeriod = (contract_info: TGetDurationPeriod) =>
     getDiffDuration(
-        epochToMoment(contract_info.date_start || contract_info.purchase_time),
-        epochToMoment(contract_info.date_expiry)
+        +epochToMoment(contract_info.date_start || contract_info.purchase_time),
+        +epochToMoment(contract_info.date_expiry)
     );
 
-export const getDurationTime = contract_info =>
+export const getDurationTime = (contract_info: TGetDurationPeriod) =>
     contract_info.tick_count ? contract_info.tick_count : getDurationUnitValue(getDurationPeriod(contract_info));

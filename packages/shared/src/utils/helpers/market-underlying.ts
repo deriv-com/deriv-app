@@ -1,5 +1,10 @@
 import { getMarketNamesMap, getContractConfig } from '../constants/contract';
 
+type TTradeConfig = {
+    name: JSX.Element;
+    position: string;
+};
+
 /**
  * Fetch market information from shortcode
  * @param shortcode: string
@@ -7,7 +12,7 @@ import { getMarketNamesMap, getContractConfig } from '../constants/contract';
  */
 
 // TODO: Combine with  extractInfoFromShortcode function in shared, both are currently used
-export const getMarketInformation = shortcode => {
+export const getMarketInformation = (shortcode: string) => {
     const market_info = {
         category: '',
         underlying: '',
@@ -25,6 +30,10 @@ export const getMarketInformation = shortcode => {
     return market_info;
 };
 
-export const getMarketName = underlying => (underlying ? getMarketNamesMap()[underlying.toUpperCase()] : null);
+export const getMarketName = (underlying: string) =>
+    underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
-export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
+export const getTradeTypeName = (category: string) =>
+    category
+        ? (getContractConfig()[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig).name
+        : null;

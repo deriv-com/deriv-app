@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
-export const useOnScroll = (ref, callback) => {
+export const useOnScroll = (ref: RefObject<HTMLElement>, callback: EventListener) => {
     // Allow consumer to prematurely dispose this scroll listener.
-    const remover = React.useRef(null);
+    const remover = React.useRef<(() => void) | null>(null);
     const has_removed = React.useRef(false);
 
     const diposeListener = () => {
@@ -19,7 +19,7 @@ export const useOnScroll = (ref, callback) => {
             ref.current.addEventListener('scroll', callback);
 
             remover.current = () => {
-                ref.current.removeEventListener('scroll', callback);
+                ref.current!.removeEventListener('scroll', callback);
             };
         }
 

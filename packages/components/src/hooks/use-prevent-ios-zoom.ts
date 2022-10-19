@@ -3,7 +3,7 @@ import React from 'react';
 export const usePreventIOSZoom = () => {
     React.useEffect(() => {
         // Fix to prevent iOS from zooming in erratically on quick taps
-        const preventIOSZoom = event => {
+        const preventIOSZoom = (event: TouchEvent) => {
             if (event.touches.length > 1) {
                 event.preventDefault();
                 event.stopPropagation();

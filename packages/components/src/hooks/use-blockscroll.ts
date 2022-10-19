@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
-export const useBlockScroll = target_ref => {
+export const useBlockScroll = (target_ref: RefObject<HTMLElement>) => {
     React.useEffect(() => {
         if (!target_ref) return undefined;
 
-        const getScrollableParentElement = elem => {
+        const getScrollableParentElement: (prop: HTMLElement | null) => HTMLElement | null = (
+            elem: HTMLElement | null
+        ) => {
             if (!elem) return null;
             if (elem.classList.contains('dc-themed-scrollbars') && elem.scrollHeight > elem.clientHeight) return elem;
             return getScrollableParentElement(elem.parentElement);

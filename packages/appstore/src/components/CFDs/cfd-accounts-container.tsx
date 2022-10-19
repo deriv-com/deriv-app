@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import CFDDemoAccounts from './cfd-demo-accounts';
 import CFDRealAccounts from './cfd-real-accounts';
-import { isLandingCompanyEnabled, CFD_PLATFORMS } from '@deriv/shared';
+import { isLandingCompanyEnabled, CFD_PLATFORMS, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType, TRootStore } from 'Types';
@@ -72,18 +72,20 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
     return (
         <div className='cfd-accounts-container'>
-            <div className='cfd-demo-account__title'>
-                <Text weight='bold' size='m'>
-                    {localize('CFDs')}
-                </Text>
+            <div className='cfd-accounts__title'>
+                {!isMobile() && (
+                    <Text weight='bold' size='m'>
+                        {localize('CFDs')}
+                    </Text>
+                )}
                 <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
                     <Text weight='bold' size='xxs' color='red'>
                         <Localize i18n_default_text='Compare accounts' />
                     </Text>
                 </div>
             </div>
-            <div className='cfd-demo-account__description'>
-                <Text>
+            <div className='cfd-accounts__description'>
+                <Text size={isMobile() ? 'xxs' : 's'}>
                     <Localize
                         i18n_default_text={
                             'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'

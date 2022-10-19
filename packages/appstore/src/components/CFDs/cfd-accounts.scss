@@ -2,9 +2,7 @@
     &__compare-accounts {
         cursor: pointer;
     }
-
-    .cfd-demo-account,
-    .cfd-real-account {
+    .cfd-accounts {
         &__title {
             display: flex;
             justify-content: flex-start;
@@ -20,7 +18,10 @@
                 text-decoration-line: underline;
             }
         }
+    }
 
+    .cfd-demo-account,
+    .cfd-real-account {
         &__accounts {
             display: flex;
             justify-content: start;

@@ -4,7 +4,7 @@ import platform_config from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
 import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
@@ -100,7 +100,7 @@ const TradingHub: React.FC = () => {
         <div id='trading-hub' className='trading-hub'>
             <div className='trading-hub_header'>
                 <div className='trading-hub_header--title'>
-                    <Text weight='bold' size='m'>
+                    <Text weight='bold' size={isMobile ? 'xxs' : 'm'} align='left'>
                         {localize('Welcome to Deriv trading hub')}
                     </Text>
                 </div>

@@ -12,9 +12,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         @include mobile {
             flex-direction: column;
             padding: 2.4rem;
+            &--title {
+                width: 100%;
+            }
         }
         &--account {
             display: flex;

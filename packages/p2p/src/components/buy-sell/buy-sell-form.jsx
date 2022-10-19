@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -12,6 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
+import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 const BuySellForm = props => {
@@ -378,16 +379,16 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     onChange={event => {
-                                                        if (event.target.value === '') {
-                                                            setFieldValue('amount', '');
-                                                            setInputAmount('');
+                                                        const { value } = event.target;
+
+                                                        if (
+                                                            countDecimalPlaces(value) >
+                                                            getDecimalPlaces(buy_sell_store.account_currency)
+                                                        ) {
+                                                            setFieldValue('amount', parseFloat(input_amount));
                                                         } else {
-                                                            const amount = getRoundedNumber(
-                                                                event.target.value,
-                                                                buy_sell_store.account_currency
-                                                            );
-                                                            setFieldValue('amount', amount);
-                                                            setInputAmount(amount);
+                                                            setFieldValue('amount', parseFloat(value));
+                                                            setInputAmount(value);
                                                         }
                                                     }}
                                                     required

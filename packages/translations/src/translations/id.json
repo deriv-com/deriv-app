@@ -351,6 +351,7 @@
     "478280278": "Blok ini menampilkan kotak dialog yang menggunakan pesan kustom untuk meminta input. Input dapat berupa string teks atau angka dan dapat ditetapkan pada variabel. Ketika kotak dialog ditampilkan, strategi Anda dijeda dan hanya akan dilanjutkan setelah Anda memasukkan respon dan klik \"OK\".",
     "479420576": "Pendidikan Tinggi",
     "481276888": "Goes Outside",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Hapus semua {{ delete_count }} blok?",
     "485379166": "Lihat transaksi",
     "487239607": "Mengkonversi nilai yang diberikan Benar atau Salah menjadi nilai berlawanan",
@@ -1348,6 +1349,10 @@
     "1766212789": "Pemeliharaan server dimulai pukul 06:00 GMT setiap hari Minggu dan dapat berlangsung hingga 2 jam. Anda mungkin mengalami gangguan layanan selama periode ini.",
     "1766993323": "Hanya huruf, angka, dan garis bawah yang diizinkan.",
     "1767429330": "Daftar akun Turunan",
+<<<<<<< HEAD
+=======
+    "1767726621": "Pilih agen",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Menit",
     "1768918213": "Hanya huruf, spasi, tanda hubung, titik, dan tanda kutip yang diperbolehkan.",
     "1769068935": "Pilih salah satu exchanger untuk membeli mata uang kripto:",
@@ -2141,6 +2146,10 @@
     "-749765720": "Mata uang akun fiat Anda telah diatur ke {{currency_code}}.",
     "-803546115": "Kelola akun Anda ",
     "-1463156905": "Metode pembayaran lebih lanjut",
+<<<<<<< HEAD
+=======
+    "-316545835": "Pastikan <0>semua detail</0> sudah <0>benar</0> sebelum melakukan transfer.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Dari nomor akun",
     "-1247676678": "Ke nomor akun",
     "-816476007": "Nama pemegang akun",
@@ -2151,6 +2160,7 @@
     "-1979554765": "Silakan masukkan deskripsi yang valid.",
     "-1186807402": "Transfer",
     "-1254233806": "Anda sudah mentransfer",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2172,14 @@
     "-1474202916": "Lakukan penarikan baru",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Semua agen pembayaran",
+    "-1137412124": "Belum menemukan metode pembayaran yang sesuai untuk Anda? Coba gunakan metode agen pembayaran.",
+    "-460879294": "Transaksi Anda belum selesai. Untuk menerima dana yang ditransfer, Anda harus menghubungi agen pembayaran untuk memperoleh instruksi lebih lanjut. Ringkasan transaksi telah dikirim melalui email untuk catatan Anda.",
+    "-596416199": "Dengan nama",
+    "-1169636644": "Dengan ID agen pembayaran",
+    "-118683067": "Batas penarikan: <0 />-<1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Untuk menarik dana, pilih metode pembayaran yang sama dengan metode deposit.",
     "-1787304306": "Deriv P2P",
     "-60779216": "Penarikan tidak tersedia untuk sementara waktu berhubung perbaikan sistem. Anda dapat melakukan penarikan kembali setelah perbaikan selesai.",
@@ -2208,7 +2226,10 @@
     "-1612346919": "Lihat semua",
     "-89973258": "Kirim ulang email dalam {{seconds}}",
     "-1059419768": "Catatan",
+<<<<<<< HEAD
     "-316545835": "Pastikan <0>semua detail</0> sudah <0>benar</0> sebelum melakukan transfer.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Saya mengonfirmasi bahwa saya telah memverifikasi informasi transfer klien.",
     "-1752211105": "Transfer sekarang",
     "-598073640": "Tentang Tether (Ethereum)",
@@ -3336,6 +3357,7 @@
     "-1254554534": "Silakan ubah durasi grafik dalam tik untuk memperoleh pengalaman trading yang lebih baik.",
     "-1603581277": "menit",
     "-1658230823": "Kontrak dijual seharga <0 />.",
+<<<<<<< HEAD
     "-1905867404": "Kontrak dibatalkan",
     "-922253974": "Rise/Fall",
     "-1361254291": "Higher/Lower",
@@ -3345,3 +3367,7 @@
     "-657360193": "Over/Under",
     "-558031309": "High Tick/Low Tick"
 }
+=======
+    "-1905867404": "Kontrak dibatalkan"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

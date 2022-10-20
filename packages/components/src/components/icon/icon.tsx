@@ -18,6 +18,7 @@ const Icon = React.forwardRef(
             onMouseEnter,
             onMouseLeave,
             size = 16,
+            style,
             width,
         }: TIconProps,
         ref?: React.ForwardedRef<SVGSVGElement | null>

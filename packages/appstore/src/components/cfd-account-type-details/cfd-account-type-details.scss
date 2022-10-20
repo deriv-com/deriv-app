@@ -1,0 +1,42 @@
+.cfd-account-details {
+    max-width: 26.4rem;
+    font-style: normal;
+    margin: 2.4rem;
+
+    &__title {
+        line-height: 2rem;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0.8rem 0;
+        color: #333333;
+    }
+
+    &__description {
+        line-height: 2rem;
+        color: #999999;
+        margin: 0.8rem 0;
+    }
+
+    &__specification {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 0.8rem;
+    }
+
+    &__specification-value {
+        line-height: 1.8rem;
+        color: #333333;
+    }
+
+    &__specification-label {
+        line-height: 1.8rem;
+        color: #333333;
+    }
+
+    &__no-commision-text {
+        font-size: 1rem;
+        line-height: 1.4rem;
+        color: #999999;
+    }
+}

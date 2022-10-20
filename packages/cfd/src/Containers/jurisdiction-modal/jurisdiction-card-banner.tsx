@@ -1,6 +1,6 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import RootStore from '../../Stores/index';
+import { connect } from '../../Stores/connect';
 import { TVerificationStatusBannerProps } from '../props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';

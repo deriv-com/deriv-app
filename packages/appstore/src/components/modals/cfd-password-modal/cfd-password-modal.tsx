@@ -7,7 +7,6 @@ import { FormSubmitButton, Modal, PasswordInput, PasswordMeter, Text } from '@de
 import { isMobile, validLength, validPassword, getErrorMessages, getLegalEntityName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
-import './cfd-password-modal.scss';
 
 type TCFDPasswordFormProps = {
     validatePassword: any;

@@ -69,7 +69,11 @@
     "107206831": "Chúng tôi sẽ xem xét tài liệu và thông báo cho bạn về trạng thái của nó trong vòng 1-3 ngày.",
     "108916570": "Thời lượng: {{duration}} ngày",
     "109073671": "Vui lòng chọn loại ví điện tử bạn đã dùng để gửi tiền. Đảm bảo rằng ví đó hỗ trợ việc rút tiền. Xem danh sách các ví điện tử cho phép rút tiền <0>tại đây</0>.",
+<<<<<<< HEAD
     "110261653": "Chúc mừng, bạn đã tạo thành công tài khoản {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0>. Để bắt đầu giao dịch, hãy chuyển tiền từ tài khoản Deriv của bạn vào tài khoản này.",
+=======
+    "110261653": "Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "111215238": "Tránh khỏi ánh sáng trực tiếp",
     "111718006": "Ngày kết thúc",
     "111931529": "Tổng tiền cược tối đa qua 7 ngày",
@@ -119,7 +123,11 @@
     "173991459": "Chúng tôi đang gửi yêu cầu của bạn đến chuỗi khối.",
     "176319758": "Tổng tiền cược tối đa qua 30 ngày",
     "176654019": "$100,000 - $250,000",
+<<<<<<< HEAD
     "177099483": "Việc xác minh địa chỉ của bạn đang được xử lý, đồng thời chúng tôi đang đặt một số hạn chế đối với tài khoản của bạn. Các hạn chế sẽ được dỡ bỏ sau khi địa chỉ của bạn được xác minh.",
+=======
+    "177099483": "Your address verification is pending, and we’ve placed some restrictions on your account. The restrictions will be lifted once your address is verified.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "178413314": "Tên nên được viết trong khoảng từ 2 đến 50 ký tự.",
     "179083332": "Ngày",
     "181881956": "Loại Hợp đồng: {{ contract_type }}",
@@ -133,7 +141,11 @@
     "196998347": "Chúng tôi giữ tiền của khách hàng trong tài khoản ngân hàng tách biệt với tài khoản hoạt động của chúng tôi, trong trường hợp mất khả năng thanh toán, sẽ không được gộp thành một phần tài sản của công ty. Điều này đáp ứng các yêu cầu của <0>Ủy ban cá cược</0> về việc phân tách tiền của khách hàng ở cấp độ: <1>bảo vệ trung bình</1>.",
     "197190401": "Ngày hết hạn",
     "201091938": "30 ngày",
+<<<<<<< HEAD
     "203179929": "<0>Bạn sẽ được mở tài khoản này sau khi các giấy tờ bạn gửi đã được xác minh.</0>",
+=======
+    "203179929": "<0>You can open this account once your submitted documents have been verified.</0>",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "203271702": "Thử lại",
     "204797764": "Chuyển khoản tới khách hàng",
     "204863103": "Thời gian thoát",
@@ -343,7 +355,11 @@
     "465993338": "Oscar's Grind",
     "466369320": "Tổng lợi nhuận của bạn là tỷ lệ phần trăm thay đổi của giá thị trường nhân với số tiền đặt cược của bạn và hệ số được chọn ở đây.",
     "473154195": "Cài đặt",
+<<<<<<< HEAD
     "473863031": "Xác minh địa chỉ đang được xử lý",
+=======
+    "473863031": "Pending proof of address review",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "474306498": "Chúng tôi rất tiếc khi bạn rời đi. Tài khoản của bạn hiện đã bị hủy.",
     "475492878": "Thử các Chỉ số Tổng hợp",
     "476023405": "Không nhận được email?",
@@ -351,6 +367,7 @@
     "478280278": "Khung này hiển thị một hộp thoại sử dụng tin nhẵn tùy chỉnh để yêu cầu một đầu vào. Đầu vào có thể là một chuỗi văn bản hoặc một số và có thể được gán vào một biến. Khi hộp thoại hiển thị, chiến lược của bạn sẽ bị tạm dừng và chỉ tiếp tục sau khi bạn nhập một phản hồi sau đó nhấp vào \"OK\".",
     "479420576": "Cấp thứ ba",
     "481276888": "Ra Ngoài",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Xóa tất cả {{ delete_count }} khung?",
     "485379166": "Xem giao dịch",
     "487239607": "Chuyển đổi một giá trị Đúng hoặc Sai đã cho thành giá trị ngược lại",
@@ -458,7 +475,11 @@
     "627292452": "<0> Xác minh danh tính hoặc xác minh địa chỉ của bạn</0> không đúng với yêu cầu của chúng tôi. Vui lòng kiểm tra email để được hướng dẫn thêm.",
     "627814558": "Khung này trả về một giá trị khi một điều kiện là đúng. Sử dụng khung này vào một trong các khung chức năng ở trên.",
     "629145209": "Trong trường hợp nếu thuật toán \"AND\" được chọn, khung sẽ trả về giá trị \"Đúng\" chỉ khi cả hai điều kiện đưa ra là \"Đúng\"",
+<<<<<<< HEAD
     "630336049": "Giao dịch CFD cho các chỉ số tổng hợp, giỏ chỉ số, và Derived FX.",
+=======
+    "630336049": "Trade CFDs on our synthetics, basket indices, and Derived FX.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "632398049": "Khung này gán giá trị rỗng cho một mục hoặc câu lệnh.",
     "634219491": "Bạn chưa cung cấp mã số thuế của mình. Thông tin này là cần thiết cho các yêu cầu pháp lý và quy định. Vui lòng truy cập tới <0>Chi tiết cá nhân</0> trong phần cài đặt tài khoản của bạn và điền vào mã số thuế mới nhất của bạn.",
     "636219628": "<0>c.</0> Nếu không có cơ hội giải quyết, khiếu nại sẽ chuyển sang giai đoạn phán quyết do DRC xử lý.",
@@ -499,7 +520,11 @@
     "668344562": "Chất tổng hợp, Cặp tiền tệ chính (lô tiêu chuẩn/nhỏ), Cặp tiền tệ thứ yếu, giỏ chỉ số, hàng hoá thương mại, và tiền điện tử",
     "672008428": "ZEC/USD",
     "673915530": "Thẩm quyền và sự chọn lựa luật pháp",
+<<<<<<< HEAD
     "674973192": "Sử dụng mật khẩu này để đăng nhập vào các tài khoản Deriv MT5 của bạn trên máy tính, trang web, và các ứng dụng điện thoại.",
+=======
+    "674973192": "Use this password to log in to your Deriv MT5 accounts on the desktop, web, and mobile apps.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "676159329": "Không thể đổi về tài khoản mặc định.",
     "677918431": "Thị trường: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }}",
     "678517581": "Đơn vị",
@@ -677,7 +702,11 @@
     "905134118": "Thanh toán:",
     "905227556": "Mật khẩu mạnh chứa ít nhất 8 ký tự, bao gồm chữ viết hoa, chữ viết thường và số.",
     "905564365": "CFD MT5",
+<<<<<<< HEAD
     "906049814": "Chúng tôi sẽ xem xét tài liệu và thông báo cho bạn về tình trạng của nó trong vòng 5 phút.",
+=======
+    "906049814": "We’ll review your documents and notify you of its status within 5 minutes.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "910888293": "Có quá nhiều lần thử",
     "915735109": "Quay lại {{platform_name}}",
     "918447723": "Thực",
@@ -758,7 +787,11 @@
     "1023643811": "Khung này mua hợp đồng của một loại xác định.",
     "1023795011": "Chẵn/Lẻ",
     "1024205076": "Hoạt động lý luận",
+<<<<<<< HEAD
     "1024760087": "Bạn đã được xác minh để thêm tài khoản này",
+=======
+    "1024760087": "You are verified to add this account",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1025887996": "Bảo vệ cân bằng số âm",
     "1026046972": "Vui lòng nhập số tiền thanh toán thấp hơn {{max_payout}}.",
     "1027098103": "Đòn bẩy cung cấp cho bạn khả năng giao dịch một vị trí lớn hơn bằng cách sử dụng vốn hiện có của bạn. Đòn bẩy thay đổi trên các biểu tượng khác nhau.",
@@ -842,7 +875,11 @@
     "1122910860": "Vui lòng hoàn thành <0>đánh giá tài chính</0> của bạn.",
     "1123927492": "Bạn chưa chọn loại tiền tệ của mình",
     "1125090693": "Phải là một số",
+<<<<<<< HEAD
     "1126075317": "Thêm tài khoản Deriv MT5 <0>{{account_type_name}}</0> STP của bạn theo Deriv (FX) Ltd được quản lý bởi Cơ quan Dịch vụ Tài chính Labuan (Giấy phép số MB/18/0024).",
+=======
+    "1126075317": "Add your Deriv MT5 <0>{{account_type_name}}</0>  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1126934455": "Độ dài tên của token phải nằm trong khoảng từ 2 đến 32 chữ cái.",
     "1127149819": "Hãy đảm bảo§",
     "1128404172": "Hoàn tác",
@@ -941,7 +978,11 @@
     "1248018350": "Nguồn thu nhập",
     "1248940117": "<0>a.</0>Quyết định được đưa ra bởi DRC đang ràng buộc chúng tôi. Các quyết định của DRC chỉ có thế ràng buộc bạn nếu bạn chấp nhận chúng.",
     "1250495155": "Token đã được sao chép!",
+<<<<<<< HEAD
     "1253154463": "Giao dịch CFD trên các chỉ số tổng hợp, giỏ chỉ số của chúng tôi.",
+=======
+    "1253154463": "Trade CFDs on our synthetics, basket indices.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1254565203": "đặt {{ variable }} để tạo danh sách với",
     "1255909792": "cuối cùng",
     "1255963623": "Tới ngày/thời gian {{ input_timestamp }} {{ dummy }}",
@@ -962,7 +1003,11 @@
     "1281290230": "Chọn",
     "1282951921": "Chỉ Giảm",
     "1284522768": "Nếu \"Thua\" được chọn, nó sẽ trả về \"Đúng\" nếu giao dịch cuối của bạn không thành công. Nếu không, nó sẽ trả về chuỗi rỗng.",
+<<<<<<< HEAD
     "1285686014": "Xác nhận danh tính đang được xử lý",
+=======
+    "1285686014": "Pending proof of identity review",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1286094280": "Rút tiền",
     "1286507651": "Đóng màn hình xác minh danh tính",
     "1288965214": "Hộ chiếu",
@@ -975,13 +1020,21 @@
     "1295284664": "Vui lòng chấp nhận <0>Điều khoản và Điều kiện cập nhật</0> của chúng tôi để tiếp tục.",
     "1296380713": "Đóng hợp đồng của tôi",
     "1299479533": "8 giờ",
+<<<<<<< HEAD
     "1300576911": "Vui lòng gửi lại bằng chứng địa chỉ của bạn không chúng tôi có thể sẽ phải hạn chế tài khoản của bạn.",
+=======
+    "1300576911": "Please resubmit your proof of address or we may restrict your account.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1301668579": "Chúng tôi đang làm việc để sớm cung cấp tính năng này cho bạn. Nếu bạn có tài khoản khác, hãy chuyển sang tài khoản đó để tiếp tục giao dịch. Bạn có thể thêm một tài khoản DMT5 Tài chính.",
     "1302691457": "Nghề nghiệp",
     "1303016265": "Có",
     "1303530014": "Chúng tôi đang xử lý yêu cầu rút tiền của bạn.",
     "1304083330": "sao chép",
+<<<<<<< HEAD
     "1304272843": "Vui lòng nộp xác minh địa chỉ của bạn.",
+=======
+    "1304272843": "Please submit your proof of address.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1304620236": "Bật camera",
     "1304788377": "<0/><1/>Nếu khiếu nại của bạn liên quan đến thực tiễn xử lý dữ liệu của chúng tôi, bạn có thể gửi đơn khiếu nại chính thức đến <2>Ủy ban bảo vệ thông tin và dữ liệu</2> (Malta) trên trang web của họ hoặc khiếu nại với bất kỳ cơ quan giám sát nào trong Liên minh Châu Âu.",
     "1305217290": "Tải lên mặt sau của thẻ căn cước của bạn.",
@@ -1116,7 +1169,11 @@
     "1454648764": "id tham chiếu thỏa thuận",
     "1454865058": "Không nhập địa chỉ được liên kết với giao dịch mua trong ICO hoặc đợt mở bán lớn. Nếu bạn làm vậy, mã token ICO sẽ không được thêm vào tài khoản của bạn.",
     "1455741083": "Tải lên mặt sau bằng lái xe của bạn.",
+<<<<<<< HEAD
     "1457341530": "Xác nhận danh tính thất bại",
+=======
+    "1457341530": "Your proof of identity verification has failed",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1457603571": "Không có thông báo",
     "1461323093": "Hiển thị thông báo trong bảng điều khiển dành cho nhà phát triển.",
     "1464190305": "Khung này sẽ chuyển quyền điều khiển trở lại khung Các điều kiện Mua, cho phép bạn mua hợp đồng khác mà không cần dừng và khởi động lại bot của mình theo cách thủ công.",
@@ -1151,7 +1208,11 @@
     "1497773819": "Tài khoản Deriv MT5",
     "1499074768": "Thêm tài khoản Deriv Multiplier thực",
     "1499080621": "Đã cố gắng thực hiện một hoạt động không hợp lệ.",
+<<<<<<< HEAD
     "1501691227": "Thêm tài khoản Deriv MT5 <0>{{account_type_name}}</0> của bạn theo Deriv (V) Ltd, được quản lý bởi Ủy ban Dịch vụ Tài chính Vanuatu.",
+=======
+    "1501691227": "Add Your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1502039206": "Quá {{barrier}}",
     "1502325741": "Mật khẩu không được trùng với mật khẩu cho email của bạn.",
     "1503618738": "- ID tham chiếu của thỏa thuận: ID tham chiếu của hợp đồng",
@@ -1223,7 +1284,11 @@
     "1604916224": "Tuyệt đối",
     "1605292429": "Tổng mức thua lỗ tối đa",
     "1612105450": "Nhận chuỗi phụ",
+<<<<<<< HEAD
     "1613273139": "Nộp lại chứng minh danh tính và địa chỉ",
+=======
+    "1613273139": "Resubmit proof of identity and address",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1613633732": "Thời gian nghỉ nên trong khoảng 10-60 phút",
     "1615897837": "Thời lượng EMA Dấu hiệu {{ input_number }}",
     "1618809782": "Maximum withdrawal",
@@ -1347,7 +1412,12 @@
     "1763123662": "Tải lên NIMC của bạn.",
     "1766212789": "Bảo trì máy chủ bắt đầu lúc 06:00 GMT mỗi Chủ Nhật và có thể kéo dài tối đa 2 giờ. Bạn có thể gặp phải sự gián đoạn dịch vụ trong thời gian này.",
     "1766993323": "Chỉ các chữ cái, số và dấu gạch dưới là được phép.",
+<<<<<<< HEAD
     "1767429330": "Thêm một tài khoản Derived",
+=======
+    "1767429330": "Add a Derived account",
+    "1767726621": "Chọn đại lý",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Phút",
     "1768918213": "Chỉ chữ cái, dấu cách, dấu nối, dấu chấm và dấu nháy đơn được cho phép.",
     "1769068935": "Chọn bất kỳ sàn giao dịch nào sau đây để mua tiền điện tử:",
@@ -1401,7 +1471,10 @@
     "1830520348": "Mật khẩu {{platform_name_dxtrade}}",
     "1833481689": "Mở khoá",
     "1833499833": "Bằng chứng về giấy tờ tùy thân tải lên không thành công",
+<<<<<<< HEAD
     "1836767074": "Search payment agent name",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1837762008": "Vui lòng gửi bằng chứng nhận dạng và bằng chứng địa chỉ để xác minh tài khoản của bạn trong cài đặt tài khoản để truy cập vào thu ngân.",
     "1838639373": "Tài nguyên",
     "1839021527": "Please enter a valid account number. Example: CR123456789",
@@ -1426,7 +1499,11 @@
     "1854480511": "Thu ngân bị khóa",
     "1854874899": "Back to list",
     "1855566768": "Vị trí danh sách mục",
+<<<<<<< HEAD
     "1856485118": "Vui lòng <0>gửi lại</0> chứng minh địa chỉ của bạn để có thể chuyển tiền giữa tài khoản MT5 và Deriv.",
+=======
+    "1856485118": "Please <0>resubmit</0> your proof of address to transfer funds between MT5 and Deriv accounts.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1858251701": "phút",
     "1859308030": "Gửi phản hồi",
     "1863053247": "Hãy tải lên văn bản định danh của bạn.",
@@ -1944,7 +2021,11 @@
     "-1008641170": "Tài khoản của bạn không cần xác minh địa chỉ vào lúc này. Chúng tôi sẽ thông báo cho bạn nếu cần xác minh địa chỉ trong tương lai.",
     "-60204971": "Chúng tôi không thể xác minh bằng xác nhận địa chỉ của bạn",
     "-1944264183": "Để tiếp tục giao dịch, bạn cũng cần gửi xác nhận địa chỉ.",
+<<<<<<< HEAD
     "-1088324715": "Chúng tôi sẽ xem xét tài liệu và thông báo cho bạn về tình trạng của nó trong vòng 1 - 3 ngày.",
+=======
+    "-1088324715": "We’ll review your documents and notify you of its status within 1 - 3 working days.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1176889260": "Vui lòng chọn một loại văn bản.",
     "-1515286538": "Vui lòng nhập số văn bản của bạn. ",
     "-1785463422": "Xác định danh tính của bạn",
@@ -2141,6 +2222,10 @@
     "-749765720": "Đơn vị tiền tệ trong tài khoản tiền pháp định của bạn được đặt thành {{currency_code}}.",
     "-803546115": "Quản lý tài khoản của bạn ",
     "-1463156905": "Tìm hiểu thêm về các phương thức thanh toán",
+<<<<<<< HEAD
+=======
+    "-316545835": "Vui lòng đảm bảo <0>tất cả các thông tin chi tiết</0> là <0>chính xác</0> trước khi thực hiện chuyển khoản.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Từ số tài khoản",
     "-1247676678": "Đến số tài khoản",
     "-816476007": "Tên chủ tài khoản",
@@ -2151,6 +2236,7 @@
     "-1979554765": "Vui lòng nhập một mô tả hợp lệ.",
     "-1186807402": "Chuyển khoản",
     "-1254233806": "Bạn đã chuyển khoản",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2248,14 @@
     "-1474202916": "Tạo một lệnh rút tiền mới",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Tất cả đại lý thanh toán",
+    "-1137412124": "Không thể tìm thấy phương thức thanh toán phù hợp cho quốc gia của bạn? Sau đó, hãy thử một đại lý thanh toán.",
+    "-460879294": "Chưa hoàn tất chuyển tiền. Để nhận được tiền đã chuyển, bạn phải liên hệ với đại lý thanh toán để được hướng dẫn thêm. Một bản tóm tắt về giao dịch này đã được gửi qua email cho bạn để lưu hồ sơ.",
+    "-596416199": "Bằng tên",
+    "-1169636644": "Bằng ID đại lý thanh toán",
+    "-118683067": "Hạn mức rút tiền: <0 />-<1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Để rút tiền, vui lòng chọn cùng một phương thức thanh toán mà bạn đã sử dụng để gửi tiền.",
     "-1787304306": "Deriv P2P",
     "-60779216": "Rút tiền tạm thời không khả dụng do bảo trì hệ thống. Bạn có thể rút tiền khi quá trình bảo trì hoàn tất.",
@@ -2208,7 +2302,10 @@
     "-1612346919": "Xem tất cả",
     "-89973258": "Gửi lại email trong {{seconds}} giây",
     "-1059419768": "Ghi chú",
+<<<<<<< HEAD
     "-316545835": "Vui lòng đảm bảo <0>tất cả các thông tin chi tiết</0> là <0>chính xác</0> trước khi thực hiện chuyển khoản.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Tôi xác nhận rằng tôi đã xác minh thông tin chuyển khoản của khách hàng.",
     "-1752211105": "Chuyển khoản ngay",
     "-598073640": "Về Tether (Ethereum)",
@@ -2229,7 +2326,11 @@
     "-757062699": "Việc chuyển tiền có thể không khả dụng do sự biến động cao hoặc các vấn đề kỹ thuật và khi thị trường hối đoái đóng cửa.",
     "-1344870129": "Tài khoản Deriv",
     "-1156059326": "Bạn còn {{number}} lượt chuyển khoản trong hôm nay.",
+<<<<<<< HEAD
     "-1109729546": "Bạn sẽ có thể chuyển tiền giữa các tài khoản MT5 và các tài khoản khác sau khi địa chỉ của bạn được xác minh.",
+=======
+    "-1109729546": "You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1593609508": "Chuyển khoản giữa các tài khoản của bạn trong Deriv",
     "-464965808": "Giới hạn chuyển khoản: <0 /> - <1 />",
     "-553249337": "Chuyển tiền bị khóa",
@@ -2618,6 +2719,7 @@
     "-1125797291": "Mật khẩu đã được cập nhật.",
     "-157145612": "Vui lòng đăng nhập với mật khẩu mới cập nhật.",
     "-1728185398": "Nộp lại bằng chứng địa chỉ",
+<<<<<<< HEAD
     "-1519764694": "Chứng minh địa chỉ của bạn đã được xác minh.",
     "-1961967032": "Nộp lại chứng minh danh tính",
     "-117048458": "Vui lòng nộp xác minh danh tính của bạn.",
@@ -2625,6 +2727,15 @@
     "-136292383": "Xác minh địa chỉ của bạn đang chờ được xử lý",
     "-386909054": "Chứng minh địa chỉ của bạn đã thất bại",
     "-430041639": "Bằng chứng địa chỉ của bạn không vượt qua kiểm tra xác minh của chúng tôi và chúng tôi đã đặt một số hạn chế đối với tài khoản của bạn. Vui lòng gửi lại bằng chứng về địa chỉ của bạn.",
+=======
+    "-1519764694": "Your proof of address is verified.",
+    "-1961967032": "Nộp lại chứng minh danh tính",
+    "-117048458": "Please submit your proof of identity.",
+    "-1196422502": "Your proof of identity is verified.",
+    "-136292383": "Your proof of address verification is pending",
+    "-386909054": "Your proof of address verification has failed",
+    "-430041639": "Your proof of address did not pass our verification checks, and we’ve placed some restrictions on your account. Please resubmit your proof of address.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-87177461": "Vui lòng đi tới cài đặt tài khoản của bạn và điền đầy đủ thông tin cá nhân của bạn để có thể gửi tiền.",
     "-904632610": "Đặt lại số dư",
     "-470018967": "Đặt lại số dư",
@@ -2774,7 +2885,11 @@
     "-305915794": "Chạy MT5 trên trình duyệt hoặc tải ứng dụng MT5 cho thiết bị của bạn",
     "-404375367": "Giao dịch ngoại hối, rổ chỉ số, hàng hóa và tiền mã hóa với đòn bẩy cao.",
     "-811331160": "Giao dịch CFD trên ngoại hối, cổ phiếu, chỉ số chứng khoán, chỉ số tổng hợp và hàng hóa có đòn bẩy.",
+<<<<<<< HEAD
     "-2030107144": "Giao dịch CFD trên forex, cổ phiếu & chỉ số chứng khoán, hàng hóa và tiền điện tử.",
+=======
+    "-2030107144": "Trade CFDs on forex, stocks & stock indices, commodities, and crypto.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-781132577": "Đòn bẩy",
     "-1264604378": "Lên đến 1:1000",
     "-637908996": "100%",
@@ -2834,9 +2949,15 @@
     "-184453418": "Nhập mật khẩu {{platform}} của bạn",
     "-1769158315": "thực",
     "-700260448": "\bdemo",
+<<<<<<< HEAD
     "-1980366110": "Xin chúc mừng, bạn đã tạo thành công tài khoản {{category}} {{platform}} <0>{{type}}</0> của mình.",
     "-790488576": "Quên mật khẩu?",
     "-926547017": "Nhập mật khẩu {{platform}} của bạn để thêm tài khoản {{platform}} {{account}} {{jurisdiction_shortcode}}.",
+=======
+    "-1980366110": "Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account.",
+    "-790488576": "Quên mật khẩu?",
+    "-926547017": "Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1190393389": "Nhập mật khẩu {{platform}} của bạn để thêm tài khoản {{platform}} {{account}}.",
     "-2057918502": "Gợi ý: Bạn có thể đã nhập mật khẩu Deriv của mình, mật khẩu này khác với mật khẩu {{platform}} của bạn.",
     "-1928229820": "Đặt lại mật khẩu nhà đầu tư Deriv X",
@@ -2868,6 +2989,7 @@
     "-1124208206": "Chuyển sang tài khoản thực của bạn để tạo một tài khoản DMT5 {{account_title}} {{type_title}}.",
     "-1271218821": "Đã thêm tài khoản",
     "-1576792859": "Cần có bằng chứng danh tính và địa chỉ",
+<<<<<<< HEAD
     "-1931257307": "Bạn sẽ cần phải nộp bằng chứng về danh tính",
     "-2026018074": "Thêm tài khoản Deriv MT5 <0>{{account_type_name}}</0> của bạn với Deriv (SVG) LLC (công ty số 273 LLC 2020).",
     "-16048185": "Để tạo tài khoản này trước tiên, chúng tôi cần chứng minh danh tính và địa chỉ của bạn.",
@@ -2877,6 +2999,17 @@
     "-1627989291": "Để tạo tài khoản này trước tiên, chúng tôi cần bạn gửi lại bằng chứng danh tính của mình.",
     "-724308541": "Thẩm quyền cho tài khoản CFD Deriv MT5 của bạn",
     "-479119833": "Chọn một thẩm quyền cho tài khoản Deriv MT5 {{account_type}} của bạn",
+=======
+    "-1931257307": "You will need to submit proof of identity",
+    "-2026018074": "Add your Deriv MT5 <0>{{account_type_name}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).",
+    "-16048185": "Để tạo tài khoản này trước tiên, chúng tôi cần chứng minh danh tính và địa chỉ của bạn.",
+    "-162320753": "Add your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).",
+    "-1731304187": "Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).",
+    "-1389025684": "Để tạo tài khoản này trước tiên, chúng tôi cần bạn gửi lại chứng minh danh tính và địa chỉ của bạn.",
+    "-1627989291": "Để tạo tài khoản này trước tiên, chúng tôi cần bạn gửi lại bằng chứng danh tính của mình.",
+    "-724308541": "Jurisdiction for your Deriv MT5 CFDs account",
+    "-479119833": "Choose a jurisdiction for your Deriv MT5 {{account_type}} account",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-10956371": "Bạn cần một tài khoản thực (tiền pháp định hoặc tiền điện tử) trong Deriv để tạo một tài khoản DMT5 thực.",
     "-1760596315": "Tạo một tài khoản Deriv",
     "-705682181": "Malta",
@@ -3336,6 +3469,7 @@
     "-1254554534": "Vui lòng thay đổi thời lượng biểu đồ về tick cho trải nghiệm giao dịch tốt hơn.",
     "-1603581277": "phút",
     "-1658230823": "Hợp đồng được bán cho <0 />.",
+<<<<<<< HEAD
     "-1905867404": "Hợp đồng đã hủy",
     "-922253974": "Tăng/Giảm",
     "-1361254291": "Cao hơn/Thấp hơn",
@@ -3345,3 +3479,7 @@
     "-657360193": "Trên/Dưới",
     "-558031309": "High Tick/Low Tick"
 }
+=======
+    "-1905867404": "Hợp đồng đã hủy"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

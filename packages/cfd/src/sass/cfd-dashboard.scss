@@ -2084,6 +2084,9 @@
     }
     &__table-header {
         grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 1.39fr 2.74fr 0.9fr;
+        }
     }
     @for $financial_accounts_count from 0 through 6 {
         @for $synthetic_accounts_count from 0 through 2 {
@@ -2106,11 +2109,20 @@
 
     &__table-row {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+        }
         &--leverage {
             grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
+            &__pre-appstore {
+                grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr 0.9fr;
+            }
         }
         &--instruments {
             grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
+        }
+        &__pre-appstore--instruments {
+            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
         }
     }
 
@@ -2123,6 +2135,9 @@
     }
     &__table-footer {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+        }
         height: 5.8rem;
         &__item {
             height: 5.8rem;

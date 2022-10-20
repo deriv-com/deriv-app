@@ -1,0 +1,25 @@
+.total-assets {
+    display: flex;
+
+    &-amount {
+        color: var(--text-profit-success);
+    }
+
+    &-currency {
+        margin-left: 0.4rem;
+        color: var(--text-profit-success);
+    }
+
+    &-tooltip {
+        margin-left: 0.8rem;
+        &--msg {
+            font-size: var(--text-size-xxs);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.8rem;
+            width: 27.6rem;
+            border-radius: $BORDER_RADIUS;
+        }
+    }
+}

@@ -351,6 +351,7 @@
     "478280278": "Questo blocco presenta una finestra di dialogo che usa un messaggio personalizzato per dare un input; quest'ultimo può essere o una stringa di testo o un numero, e può essere assegnato a una variabile. Quando appare la finestra di dialogo, la strategia viene interrotta e riprende a operare solo dopo che avrai inserito una risposta e cliccato \"OK\".",
     "479420576": "Terziario",
     "481276888": "Esce fuori",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Elimina tutti i {{ delete_count }} blocchi?",
     "485379166": "Visualizza le transazioni",
     "487239607": "Converte un dato valore Vero o Falso nel suo opposto",
@@ -1348,6 +1349,10 @@
     "1766212789": "La manutenzione del server inizia ogni domenica alle 06:00 GMT e potrebbe richiedere fino a 2 ore. È possibile che si verifichi un'interruzioni del servizio durante questo periodo.",
     "1766993323": "Sono consentiti solo numeri, lettere e trattini bassi.",
     "1767429330": "Aggiungi un conto derivato",
+<<<<<<< HEAD
+=======
+    "1767726621": "Scegli agente",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Minuto",
     "1768918213": "Sono consentiti solo lettere, spazi, trattini, punti e apostrofi.",
     "1769068935": "Scegli uno di questi trade per comprare criptovalute:",
@@ -2141,6 +2146,10 @@
     "-749765720": "Il conto fiat è impostato in {{currency_code}}.",
     "-803546115": "Gestisci i tuoi conti ",
     "-1463156905": "Scopri di più sulle modalità di pagamento",
+<<<<<<< HEAD
+=======
+    "-316545835": "Assicurati che <0>tutti i dettagli</0> siano <0>corretti</0> prima di effettuare il trasferimento.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Dal numero di conto",
     "-1247676678": "Al numero di conto",
     "-816476007": "Nome del titolare del conto",
@@ -2151,6 +2160,7 @@
     "-1979554765": "Inserire una descrizione valida.",
     "-1186807402": "Trasferisci",
     "-1254233806": "Hai trasferito",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2172,14 @@
     "-1474202916": "Effettua un nuovo prelievo",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Tutti gli agenti di pagamento",
+    "-1137412124": "Non riesci a trovare una modalità di pagamento adatta al tuo paese? Allora prova un agente di pagamento.",
+    "-460879294": "Non hai ancora finito: per ricevere i fondi trasferiti, devi contattare l'agente di pagamento per ulteriori istruzioni. Abbiamo inviato un riassunto di questa operazione al tuo indirizzo e-mail.",
+    "-596416199": "Per nome",
+    "-1169636644": "Per ID dell'agente di pagamento",
+    "-118683067": "Limiti di prelievo: <0 /> - <1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Per prelevare i fondi, scegli la stessa modalità di pagamento che hai usato per fare i depositi.",
     "-1787304306": "Deriv P2P",
     "-60779216": "Al momento non è possibile prelevare fondi a causa della manutenzione del sistema. Potrei effettuare prelievi a manutenzione finita.",
@@ -2208,7 +2226,10 @@
     "-1612346919": "Visualizza tutto",
     "-89973258": "Invia di nuovo l'e-mail tra {{seconds}}s",
     "-1059419768": "Note",
+<<<<<<< HEAD
     "-316545835": "Assicurati che <0>tutti i dettagli</0> siano <0>corretti</0> prima di effettuare il trasferimento.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Confermo che ho controllato e verificato le informazioni di trasferimento del cliente.",
     "-1752211105": "Trasferisci ora",
     "-598073640": "Tether (Ethereum)",
@@ -3336,6 +3357,7 @@
     "-1254554534": "Imposta la durata del contratto su tick per una migliore esperienza di trading.",
     "-1603581277": "minuti",
     "-1658230823": "Il contratto è stato venduto a <0 />.",
+<<<<<<< HEAD
     "-1905867404": "Il contratto è stato annullato",
     "-922253974": "Rialzo/Ribasso",
     "-1361254291": "Superiore/Inferiore",
@@ -3345,3 +3367,7 @@
     "-657360193": "Sopra/Sotto",
     "-558031309": "Tick alto/Tick basso"
 }
+=======
+    "-1905867404": "Il contratto è stato annullato"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

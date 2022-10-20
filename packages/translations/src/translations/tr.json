@@ -351,6 +351,7 @@
     "478280278": "Bu blok, bir giriş isteyen özelleştirilmiş bir mesaj kullanan bir iletişim kutusu görüntüler. Giriş bir metin dizesi veya sayı olabilir ve bir değişkene atanabilir. Bir iletişim kutusu görüntülendiğinde, stratejiniz duraklatılır ve yalnızca bir yanıt girip \"TAMAM\"a tıkladıktan sonra devam eder.",
     "479420576": "Üçüncü derece",
     "481276888": "Goes Outside",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Tüm {{ delete_count }} blokları silinsin mi?",
     "485379166": "İşlemleri görüntüle",
     "487239607": "Belirli bir Doğru veya Yanlış değeri zıt değere dönüştürür",
@@ -712,6 +713,10 @@
     "948156236": "{{type}} şifresi oluştur",
     "948545552": "150+",
     "949859957": "Gönder",
+<<<<<<< HEAD
+=======
+    "952655566": "Ödeme aracısı",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "952927527": "Malta Finansal Hizmetler Kurumu (MFSA) tarafından düzenlenir (lisans no. IS/70156)",
     "955352264": "{{platform_name_dxtrade}} ile ticaret yapın",
     "956448295": "Kesik resim algılandı",
@@ -1348,6 +1353,10 @@
     "1766212789": "Sunucu bakımı her Pazar 06:00 GMT'de başlar ve 2 saate kadar sürebilir. Bu süre zarfında hizmet kesintisi yaşayabilirsiniz.",
     "1766993323": "Yalnızca harf, sayı ve alt çizgi kullanılabilir.",
     "1767429330": "Add a Derived account",
+<<<<<<< HEAD
+=======
+    "1767726621": "Aracı seçin",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Dakika",
     "1768918213": "Yalnızca harfler, boşluk, tire, nokta ve kesme işareti kullanılabilir.",
     "1769068935": "Kripto para satın almak için şu borsalardan birini seçin:",
@@ -1401,7 +1410,10 @@
     "1830520348": "{{platform_name_dxtrade}} Parolası",
     "1833481689": "Kilidini aç",
     "1833499833": "Kimlik kanıtı belgelerinin yüklenmesi başarısız oldu",
+<<<<<<< HEAD
     "1836767074": "Search payment agent name",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1837762008": "Kasiyere erişmek için lütfen hesap ayarlarınızda hesabınızı doğrulamak üzere kimlik kanıtınızı ve adres kanıtınızı sunun.",
     "1838639373": "Kaynaklar",
     "1839021527": "Please enter a valid account number. Example: CR123456789",
@@ -2141,6 +2153,10 @@
     "-749765720": "Fiat hesabınızın para birimi {{currency_code}} olarak ayarlandı.",
     "-803546115": "Hesaplarınızı yönetin ",
     "-1463156905": "Ödeme yöntemleri hakkında daha fazla bilgi edinin",
+<<<<<<< HEAD
+=======
+    "-316545835": "Lütfen transferinizi yapmadan önce <0>tüm bilgilerin</0> <0>doğru</0> olduğundan emin olun.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Hesap numarasından",
     "-1247676678": "Hesap numarasına",
     "-816476007": "Hesap sahibinin adı",
@@ -2151,6 +2167,7 @@
     "-1979554765": "Lütfen geçerli bir açıklama girin.",
     "-1186807402": "Transfer",
     "-1254233806": "Transfer ettiniz",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2179,14 @@
     "-1474202916": "Yeni bir para çekme işlemi gerçekleştirin",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Tüm ödeme aracıları",
+    "-1137412124": "Ülkeniz için uygun bir ödeme yöntemi bulamıyor musunuz? O zaman bir ödeme acentası deneyin.",
+    "-460879294": "Henüz tamamlamadınız. Aktarılan fonları almak için, daha fazla talimat almak amacıyla ödeme aracısı ile iletişime geçmeniz gerekir. Kayıtlarınız için bu işlemin bir özeti e-posta ile gönderildi.",
+    "-596416199": "İsmen",
+    "-1169636644": "Ödeme aracısı kimliği ile",
+    "-118683067": "Para çekme limitleri: <0 /><1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Paranızı çekmek için, lütfen para yatırmak için kullandığınız ödeme yönteminin aynısını seçin.",
     "-1787304306": "Deriv P2P",
     "-60779216": "Sistem bakımı nedeniyle para çekme işlemleri geçici olarak kullanılamıyor. Bakım tamamlandığında para çekme işlemi yapabilirsiniz.",
@@ -2208,7 +2233,10 @@
     "-1612346919": "Hepsini görüntüle",
     "-89973258": "E-postayı {{seconds}} saniye içinde yeniden gönder",
     "-1059419768": "Notlar",
+<<<<<<< HEAD
     "-316545835": "Lütfen transferinizi yapmadan önce <0>tüm bilgilerin</0> <0>doğru</0> olduğundan emin olun.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Müşterinin transfer bilgilerini doğruladığımı onaylıyorum.",
     "-1752211105": "Şimdi aktar",
     "-598073640": "Tether (Ethereum) hakkında",
@@ -3336,6 +3364,7 @@
     "-1254554534": "Lütfen daha iyi bir alım satım deneyimi amacıyla tik için grafik süresini değiştirin.",
     "-1603581277": "dakikalar",
     "-1658230823": "Sözleşme <0/> için satıldı.",
+<<<<<<< HEAD
     "-1905867404": "Sözleşme iptal edildi",
     "-922253974": "Rise/Fall",
     "-1361254291": "Higher/Lower",
@@ -3345,3 +3374,7 @@
     "-657360193": "Üzerinde/Altında",
     "-558031309": "Yüksek Tik/Düşük Tik"
 }
+=======
+    "-1905867404": "Sözleşme iptal edildi"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

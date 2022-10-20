@@ -351,6 +351,7 @@
     "478280278": "Este bloco exibe uma caixa de diálogo que usa uma mensagem personalizada para solicitar uma entrada. A entrada pode ser uma sequência de texto ou um número e pode ser atribuída a uma variável. Quando a caixa de diálogo é exibida, sua estratégia é pausada e só será retomada depois que você inserir uma resposta e clicar em \"OK\".",
     "479420576": "Terciário",
     "481276888": "Sai fora",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Deletar todos {{ delete_count }} blocos?",
     "485379166": "Exibir transações",
     "487239607": "Converte um dado Verdadeiro ou Falso para o valor oposto",
@@ -1348,6 +1349,10 @@
     "1766212789": "A manutenção do servidor começa a partir das 06:00 GMT todos os domingos e pode levar até 2 horas para ser concluído. O serviço pode ser interrompido durante esse período.",
     "1766993323": "Apenas letras, números e underline são permitidos.",
     "1767429330": "Adicionar uma conta Deriv",
+<<<<<<< HEAD
+=======
+    "1767726621": "Escolha agente",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Minuto",
     "1768918213": "Apenas letras, espaço, hífen, ponto final e apóstrofo são permitidos.",
     "1769068935": "Escolha qualquer uma dessas exchanges para comprar criptomoedas:",
@@ -2141,6 +2146,10 @@
     "-749765720": "A moeda de sua conta fiduciária está definida para {{currency_code}}.",
     "-803546115": "Gerencie suas contas ",
     "-1463156905": "Saiba mais sobre os métodos de pagamento",
+<<<<<<< HEAD
+=======
+    "-316545835": "Certifique-se de que <0>todos os detalhes</0> estejam <0>corretos</0> antes de fazer sua transferência.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Da conta número",
     "-1247676678": "Para conta número",
     "-816476007": "Nome do titular da conta",
@@ -2151,6 +2160,7 @@
     "-1979554765": "Por favor, insira uma descrição válida.",
     "-1186807402": "Transferir",
     "-1254233806": "Você transferiu",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2172,14 @@
     "-1474202916": "Faça um novo saque",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Todos os agentes de pagamento",
+    "-1137412124": "Não consegue encontrar um método de pagamento adequado para seu país? Tente um agente de pagamento.",
+    "-460879294": "Você não terminou ainda. Para receber os fundos transferidos, você deve entrar em contato com o agente de pagamento para obter mais instruções. Um resumo desta transação foi enviado a você para seus registros.",
+    "-596416199": "Por nome",
+    "-1169636644": "Por ID Agente de Pagamento",
+    "-118683067": "Limites de retirada: <0 />-<1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Para retirar seus fundos, utilize a mesma forma de pagamento que você usou para fazer seus depósitos.",
     "-1787304306": "Deriv P2P",
     "-60779216": "As retiradas estão temporariamente indisponíveis devido à manutenção do sistema. Você pode fazer seus saques quando a manutenção for concluída.",
@@ -2208,7 +2226,10 @@
     "-1612346919": "Ver todas",
     "-89973258": "Reenviar email em {{seconds}}s",
     "-1059419768": "Notas",
+<<<<<<< HEAD
     "-316545835": "Certifique-se de que <0>todos os detalhes</0> estejam <0>corretos</0> antes de fazer sua transferência.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Confirmo que verifiquei as informações de transferência do cliente.",
     "-1752211105": "Transferir agora",
     "-598073640": "Sobre Tether (Ethereum)",
@@ -3336,6 +3357,7 @@
     "-1254554534": "Altere a duração do gráfico para tick para uma melhor experiência de negociação.",
     "-1603581277": "minutos",
     "-1658230823": "O contrato foi vendido por <0 />.",
+<<<<<<< HEAD
     "-1905867404": "Contrato cancelado",
     "-922253974": "Sobe/Desce",
     "-1361254291": "Superior/Inferior",
@@ -3345,3 +3367,7 @@
     "-657360193": "Acima/Abaixo",
     "-558031309": "Tick Alto/Tick Baixo"
 }
+=======
+    "-1905867404": "Contrato cancelado"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

@@ -351,6 +351,7 @@
     "478280278": "Ten blok wyświetla okno dialogowe, które używa spersonalizowanej wiadomości, aby monitować o dane wejściowe. Dane wejściowe mogą być ciągiem tekstu lub liczbą i można je przypisać do zmiennej. Gdy wyświetlane jest okno dialogowe, Twoja strategia zostaje zatrzymana i jest wznawiana po wprowadzeniu odpowiedzi i kliknięciu „OK”.",
     "479420576": "Wyższe",
     "481276888": "Przekroczy",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Usunąć wszystkie bloki w liczbie {{ delete_count }}?",
     "485379166": "Zobac transakcje",
     "487239607": "Zamienia określoną wartość Prawda lub Fałsz w odwrotną wartość",
@@ -1348,6 +1349,10 @@
     "1766212789": "Konserwacja serwera rozpoczyna się o godz. 06:00 GMT w każdą niedzielę. Konserwacja może potrwać do 2 godzin. W tym czasie możliwe jest zakłócenie usług.",
     "1766993323": "Dozwolone są tylko litery, cyfry i podkreślniki.",
     "1767429330": "Dodaj konto pochodne",
+<<<<<<< HEAD
+=======
+    "1767726621": "Wybierz pośrednika",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "1768861315": "Minuta",
     "1768918213": "Dozwolone są tylko litery, spacja, myślniki, kropki i apostrof.",
     "1769068935": "Wybierz jedną z poniższych giełd, aby kupić kryptowaluty:",
@@ -2141,6 +2146,10 @@
     "-749765720": "Waluta Twojego konto w walucie fiducjarnej to {{currency_code}}.",
     "-803546115": "Zarządzaj swoimi kontami ",
     "-1463156905": "Dowiedz się więcej o metodach płatności",
+<<<<<<< HEAD
+=======
+    "-316545835": "Przed dokonaniem przelewu upewnij się, że <0>wszystkie szczegóły</0> są <0>poprawne</0>.",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1309258714": "Z konta o numerze",
     "-1247676678": "Na konto o numerze",
     "-816476007": "Imię i nazwisko posiadacza rachunku",
@@ -2151,6 +2160,7 @@
     "-1979554765": "Proszę podać prawidłowy opis.",
     "-1186807402": "Przelew",
     "-1254233806": "Przelano",
+<<<<<<< HEAD
     "-1491457729": "All payment methods",
     "-142563298": "Contact your preferred payment agent for payment instructions and make your deposit.",
     "-1023961762": "Commission on deposits",
@@ -2162,6 +2172,14 @@
     "-1474202916": "Wypłać",
     "-511423158": "Enter the payment agent account number",
     "-2059278156": "Note: {{website_name}} does not charge any transfer fees.",
+=======
+    "-1179992129": "Wszyscy pośrednicy płatności",
+    "-1137412124": "Nie możesz znaleźć odpowiedniej metody płatności dla swojego kraju? Skorzystaj z pośrednika płatności.",
+    "-460879294": "Jeszcze niegotowe. Aby otrzymać przelewane środki, musisz skontaktować się z pośrednikiem płatności celem uzyskania dalszych instrukcji. Wysłaliśmy Ci podsumowanie tej transakcji.",
+    "-596416199": "Przez nazwę",
+    "-1169636644": "Przez ID pośrednika płatności",
+    "-118683067": "Limity wypłat: <0 />-<1 />",
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-1201279468": "Aby wypłacić swoje środki, użyj tej samej metody płatności, której użyto przy dokonywaniu wpłaty.",
     "-1787304306": "Deriv P2P",
     "-60779216": "Wypłaty są tymczasowo niedostępne z powodu konserwacji systemu. Możesz dokonać wypłaty po zakończeniu konserwacji.",
@@ -2208,7 +2226,10 @@
     "-1612346919": "Wyświetl wszystko",
     "-89973258": "Wyślij wiadomość ponownie za {{seconds}}sek.",
     "-1059419768": "Uwagi",
+<<<<<<< HEAD
     "-316545835": "Przed dokonaniem przelewu upewnij się, że <0>wszystkie szczegóły</0> są <0>poprawne</0>.",
+=======
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06
     "-949073402": "Potwierdzam, że dane przelewu klienta zostały zweryfikowane.",
     "-1752211105": "Przelej teraz",
     "-598073640": "O Tether (Ethereum)",
@@ -3336,6 +3357,7 @@
     "-1254554534": "Zmień okres wykresu na tick, aby zapewnić lepsze doświadczenia podczas handlowania.",
     "-1603581277": "minuty",
     "-1658230823": "Kontrakt został sprzedany za <0 />.",
+<<<<<<< HEAD
     "-1905867404": "Kontrakt anulowany",
     "-922253974": "Wzrost/spadek",
     "-1361254291": "Wyższy/niższy",
@@ -3345,3 +3367,7 @@
     "-657360193": "Ponad/poniżej",
     "-558031309": "Duże zmiany ceny/ małe zmiany ceny"
 }
+=======
+    "-1905867404": "Kontrakt anulowany"
+}
+>>>>>>> ef25e190213bd7a746fad8b1f7032d408377cd06

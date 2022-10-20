@@ -6,7 +6,7 @@ import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { connect } from 'Stores/connect';
 
 const BinaryRoutes = props => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const { is_social_signup } = props;
     return (
         <React.Suspense
@@ -19,7 +19,7 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ is_appstore }, is_social_signup).map((route, idx) => (
+                {getRoutesConfig({ is_appstore, is_pre_appstore }, is_social_signup).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

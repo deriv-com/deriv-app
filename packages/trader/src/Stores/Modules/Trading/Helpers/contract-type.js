@@ -30,19 +30,14 @@ export const ContractType = (() => {
 
     const buildContractTypesConfig = symbol =>
         WS.storage.contractsFor(symbol).then(r => {
-            console.log('symbol: ', symbol);
             const has_contracts = getPropertyValue(r, ['contracts_for']);
             has_only_forward_starting_contracts =
                 has_contracts && !r.contracts_for.available.find(contract => contract.start_type !== 'forward');
             if (!has_contracts || has_only_forward_starting_contracts) return;
             const contract_categories = getContractCategoriesConfig();
-            console.log('contract_categories: ', contract_categories);
             contract_types = getContractTypesConfig(symbol);
-            console.log('contract_types: ', contract_types);
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
-            console.log('available_categories: ', available_categories);
-            console.log('r.contracts_for.available: ', r.contracts_for.available);
             r.contracts_for.available.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
@@ -82,7 +77,6 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
-            console.log('available_contract_types: ', available_contract_types);
 
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
@@ -117,7 +111,6 @@ export const ContractType = (() => {
         if (!contract_type) return {};
 
         const form_components = getComponents(contract_type);
-        console.log('Check form_components: ', form_components);
         const obj_basis = getBasis(contract_type, basis);
         const obj_trade_types = getTradeTypes(contract_type);
         const obj_start_dates = getStartDates(contract_type, start_date);
@@ -162,7 +155,6 @@ export const ContractType = (() => {
     };
 
     const getComponents = c_type => {
-        console.log('c_type: ', c_type, contract_types[c_type]);
         let check = [];
         if (contract_types[c_type]?.config?.should_override) {
             check = [...contract_types[c_type].components];
@@ -176,7 +168,6 @@ export const ContractType = (() => {
                     )
             );
         }
-        console.log('Check: ', check);
         return (
             contract_types && {
                 form_components: check,

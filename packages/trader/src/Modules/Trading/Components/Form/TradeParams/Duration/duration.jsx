@@ -38,8 +38,6 @@ const Duration = ({
 }) => {
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
-    console.log('In duration: ', contract_type);
-
     const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');
     if (duration_units_list.length === 1 && duration_unit === 't') {
         if (has_end_time) {

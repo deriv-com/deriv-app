@@ -92,8 +92,6 @@ const Amount = ({
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
-    console.log('contract_type: ', contract_type);
-
     return (
         <Fieldset
             className='trade-container__fieldset center-text'

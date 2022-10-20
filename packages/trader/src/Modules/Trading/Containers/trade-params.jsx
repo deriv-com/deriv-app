@@ -13,7 +13,6 @@ import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import { connect } from 'Stores/connect';
 
 const TradeParams = ({ form_components, is_minimized }) => {
-    console.log('form_components: ', form_components, is_minimized);
     const isVisible = component_key => {
         return form_components.includes(component_key);
     };

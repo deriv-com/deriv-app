@@ -412,7 +412,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async onChangeMultiple(values) {
-        console.log('Values: submitted: ', values);
         Object.keys(values).forEach(name => {
             if (!(name in this)) {
                 throw new Error(`Invalid Argument: ${name}`);
@@ -426,8 +425,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async onChange(e) {
         const { name, value } = e.target;
-        console.log('Value: ', value, name);
-
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
@@ -597,7 +594,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     processPurchase(proposal_id, price, type) {
-        console.log('Purchase with: ', proposal_id, price, type);
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
@@ -751,7 +747,6 @@ export default class TradeStore extends BaseStore {
         obj_old_values = {},
         should_forget_first = true
     ) {
-        console.log('obj_new_values: ', obj_new_values);
         // To switch to rise_fall_equal contract type when allow equal is checked on first page refresh or
         // when switch back to Rise/Fall from another contract type i.e.
         if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
@@ -766,7 +761,6 @@ export default class TradeStore extends BaseStore {
         }
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
-        console.log('should_forget_first: ', should_forget_first);
         if (should_forget_first) {
             this.forgetAllProposal();
             this.proposal_requests = {};
@@ -801,7 +795,6 @@ export default class TradeStore extends BaseStore {
         if (has_only_forward_starting_contracts) return;
 
         const new_state = this.updateStore(cloneObject(obj_new_values));
-        console.log('new_state: ', { ...new_state });
 
         if (is_changed_by_user || /\b(symbol|contract_types_list)\b/.test(Object.keys(new_state))) {
             this.updateStore({

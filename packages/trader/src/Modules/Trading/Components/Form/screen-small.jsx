@@ -44,8 +44,6 @@ const CollapsibleTradeParams = ({
 
     const isVisible = component => form_components.includes(component);
 
-    console.log('form_components: ', form_components);
-
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
             <div className='trade-params__contract-type-container'>

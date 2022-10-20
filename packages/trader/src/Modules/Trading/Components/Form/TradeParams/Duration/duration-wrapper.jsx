@@ -23,8 +23,6 @@ const DurationWrapper = props => {
         onChangeMultiple,
     } = props;
 
-    console.log('duration_units_list: ', [...duration_units_list], duration_unit, duration);
-
     const hasDurationUnit = (duration_type, is_advanced) => {
         let duration_list = [...duration_units_list];
 

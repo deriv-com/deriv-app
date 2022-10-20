@@ -20,6 +20,7 @@
         transform: translateX(calc(0px)) !important;
     }
 }
+
 .dashboard {
     &__main {
         display: flex;
@@ -29,17 +30,14 @@
         border: none;
         max-width: 100%;
         width: 100%;
-
         .dc-tabs {
             &__active-line {
                 background-color: var(--general-main-1);
                 transition: none;
             }
-
             &__active {
                 background: var(--general-main-1);
             }
-
             &__list {
                 background: var(--general-section-1);
                 justify-content: start;
@@ -70,7 +68,6 @@
                     overflow-x: auto;
                 }
             }
-
             &__item {
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
@@ -91,7 +88,6 @@
                 display: flex;
                 margin-top: 4rem;
             }
-
             &__dashboard-card {
                 margin-right: 4.2rem;
                 display: flex;
@@ -102,7 +98,7 @@
 
                     &:hover {
                         transition: all 100ms ease-in;
-                        box-shadow: rgba(0, 0, 0, 0.35) 0px 0.5rem 1.5rem;
+                        box-shadow: rgba(0, 0, 0, 0.35) 0 0.5rem 1.5rem;
                         border-radius: 0.5rem;
                         font-weight: 700;
                     }
@@ -121,12 +117,6 @@
                 &__image {
                     background: var(--general-section-1);
                 }
-                &__label {
-                    font-size: 1.2rem;
-                    font-weight: 400;
-                    line-height: 2rem;
-                }
-
                 img {
                     margin-bottom: 0.8rem;
                 }
@@ -140,7 +130,7 @@
 }
 
 .nm-48 {
-    margin-top: -48px;
+    margin-top: -4.8rem;
 }
 
 .db-info-panel {
@@ -159,7 +149,7 @@
         }
     }
     &__card {
-        margin-bottom: 16px;
+        margin-bottom: 1.6rem;
         h1 {
             font-size: 2.4rem;
             margin-bottom: 0.8rem;

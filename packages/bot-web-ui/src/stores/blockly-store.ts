@@ -57,6 +57,7 @@ export default class BlocklyStore implements IBlocklyStore {
         window.removeEventListener('resize', this.setContainerSize);
     }
 
+    // TODO: add setLoading method and pass such as setLoading(true/false), remove startLoading & endLoading
     @action.bound
     startLoading(): void {
         this.is_loading = true;

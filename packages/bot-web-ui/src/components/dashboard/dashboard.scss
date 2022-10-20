@@ -20,6 +20,9 @@
         @include mobile {
             height: var(--tab-content-height-mobile);
         }
+        &--expanded {
+            width: calc(100vw - 39.8rem);
+        }
     }
     &__toolbox {
         position: absolute;
@@ -28,6 +31,7 @@
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
+        z-index: 1;
         .db-toolbox {
             &__title {
                 height: 2.6rem;
@@ -63,12 +67,6 @@
                 }
             }
         }
-    }
-    &__toolbar {
-        position: absolute;
-        top: 0;
-        left: 232px;
-        background-color: var(--general-main-1);
     }
     &__run-strategy-wrapper {
         position: absolute;

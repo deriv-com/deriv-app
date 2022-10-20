@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from '@deriv/components';
+import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import RootStore from 'Stores/index';
@@ -15,9 +15,9 @@ import Tutorial from './tutorial-tab';
 
 type TDashboard = {
     active_tab: number;
+    is_drawer_open: boolean;
     setActiveTab: (active_tab: number) => void;
     toggleStrategyModal: () => void;
-    is_drawer_open: boolean;
 };
 
 const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: TDashboard) => {
@@ -29,12 +29,12 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
     };
 
     return (
-        <>
+        <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous={true} showProgress={true} />
+                    <ReactJoyride steps={DBOT_ONBOARDING} run={tour_run} continuous showProgress />
                     <Tabs active_index={active_tab} onTabItemClick={setActiveTab} top>
-                        {/* [Todo] needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
+                        {/* TODO: needs to update tabs comIcDashBoardComponentsTabponent children instead of using label property */}
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponent />
                         </div>
@@ -55,9 +55,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                             </div>
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
-                            <div className='dashboard__chart-wrapper'>
-                                <Chart />
-                            </div>
+                            <Chart />
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
@@ -67,22 +65,28 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                     </Tabs>
                 </div>
             </div>
-            <div className='dashboard__run-strategy-wrapper'>
-                <RunStrategy />
-                {/*
-                    1. Bot-Builder
-                    2. Quick Strategy
-                    3. Charts
-                */}
-                {[1, 2, 3].includes(active_tab) && <RunPanel />}
-            </div>
-        </>
+            <DesktopWrapper>
+                <div className='dashboard__run-strategy-wrapper'>
+                    <RunStrategy />
+
+                    {/*
+                        TODO: need to add named tab index such as 'dashboard', 'charts' etc
+                        instead of using default index 0, 1, 2
+                        
+                        1. Bot-Builder
+                        2. Quick Strategy
+                        3. Charts
+                    */}
+                    {[1, 2, 3].includes(active_tab) && <RunPanel />}
+                </div>
+            </DesktopWrapper>
+        </React.Fragment>
     );
 };
 
 export default connect(({ dashboard, quick_strategy, run_panel }: RootStore) => ({
     active_tab: dashboard.active_tab,
+    is_drawer_open: run_panel.is_drawer_open,
     setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
-    is_drawer_open: run_panel.is_drawer_open,
 }))(Dashboard);

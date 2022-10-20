@@ -13,7 +13,11 @@
     }
     &__chart-wrapper {
         position: relative;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 16.5rem);
+
+        &--expanded {
+            width: calc(100vw - 39.8rem);
+        }
     }
     &__toolbox {
         position: absolute;
@@ -59,12 +63,6 @@
             }
         }
     }
-    &__toolbar {
-        position: absolute;
-        top: 0;
-        left: 232px;
-        background-color: var(--general-main-1);
-    }
     &__run-strategy-wrapper {
         position: absolute;
         right: 1.6rem;
@@ -100,5 +98,8 @@
     height: calc(100vh - 16.6rem);
     &--active {
         z-index: 1;
+    }
+    @include mobile {
+        width: auto;
     }
 }

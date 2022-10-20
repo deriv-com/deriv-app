@@ -1,15 +1,14 @@
 import React from 'react';
 import { Field as FormField, Formik, Form, FieldProps } from 'formik';
-import { Input, Icon } from '@deriv/components';
+import { Input } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import SearchIcon from './search-icon';
 
 type TSearchBox = {
     is_search_loading: boolean;
     onSearch: () => void;
     onSearchBlur: () => void;
-    onSearchClear: (
-        param: (field: string, value: number | string, shouldValidate?: boolean | undefined) => void
-    ) => void;
+    onSearchClear: (param: (field: string, value: number | string, shouldValidate?: boolean) => void) => void;
     onSearchKeyUp: (param: () => void) => void;
 };
 
@@ -32,17 +31,11 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
                                 onFocus={submitForm}
                                 onBlur={onSearchBlur}
                                 leading_icon={
-                                    (search &&
-                                        (is_search_loading ? (
-                                            <div className='loader' />
-                                        ) : (
-                                            <Icon
-                                                icon='IcCloseCircle'
-                                                onClick={() => onSearchClear(setFieldValue)}
-                                                color='secondary'
-                                            />
-                                        ))) ||
-                                    (!search && <Icon icon='IcSearch' />)
+                                    <SearchIcon
+                                        search={search}
+                                        is_search_loading={is_search_loading}
+                                        onClick={() => onSearchClear(setFieldValue)}
+                                    />
                                 }
                             />
                         )}

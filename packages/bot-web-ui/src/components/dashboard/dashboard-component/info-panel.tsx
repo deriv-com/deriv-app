@@ -22,7 +22,7 @@ const InfoPanel = ({ setInfoPanelVisibility }: TInfoPanel) => {
             {SIDEBAR_INTRO.map((sidebar_item, index) => {
                 const { label, content } = sidebar_item;
                 return (
-                    <div className='db-info-panel__card' key={index}>
+                    <div className='db-info-panel__card' key={`${label}-${index}`}>
                         <Text color='prominent' line_height='xxl' size='sm' weight='bold' as='h1'>
                             {label}
                         </Text>

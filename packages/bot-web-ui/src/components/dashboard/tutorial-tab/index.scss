@@ -33,6 +33,9 @@
             border-radius: 1rem;
             cursor: pointer;
         }
+        &--disabled {
+            pointer-events: none;
+        }
     }
 }
 

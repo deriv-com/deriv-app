@@ -170,6 +170,7 @@ export type TCFDPasswordManagerModal = {
 
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
+    context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -181,6 +182,7 @@ export type TJurisdictionCardProps = {
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
     account_type: string;
+    context: RootStore;
     card_classname: string;
     disabled: boolean;
     is_virtual: boolean;
@@ -190,6 +192,7 @@ export type TVerificationStatusBannerProps = {
 
 export type TJurisdictionCheckBoxProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     class_name: string;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
@@ -207,6 +210,7 @@ export type TJurisdictionModalProps = {
         type: string;
         category: string;
     };
+    context: RootStore;
     account_settings: GetSettings;
     account_status: GetAccountStatus;
     disableApp: () => void;
@@ -230,6 +234,7 @@ export type TJurisdictionModalProps = {
 
 export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -245,6 +250,7 @@ export type TJurisdictionModalContentProps = {
 
 export type TJurisdictionModalFootNoteProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     card_classname: string;
     account_type: string;
     jurisdiction_selected_shortcode: string;

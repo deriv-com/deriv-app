@@ -11,7 +11,7 @@ module.exports = function (env) {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store',
             CompareAccountsModal: 'Containers/compare-accounts-modal.tsx',
-            JurisdictionModal: 'Containers/jurisdiction-modal.tsx',
+            JurisdictionModal: 'Containers/jurisdiction-modal/jurisdiction-modal.tsx',
             CFDPasswordModal: 'Containers/cfd-password-modal.tsx',
             CFDDbviOnBoarding: 'Containers/cfd-dbvi-onboarding.tsx',
             CFDPersonalDetailsModal: 'Containers/cfd-personal-details-modal.tsx',

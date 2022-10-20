@@ -24,6 +24,7 @@ import { Button } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import TotalAssets from 'Components/total-assets';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
@@ -36,12 +37,37 @@ const TradingHub: React.FC = () => {
         is_mt5_trade_modal_visible,
         togglePasswordManagerModal,
         toggleMT5TradeModal,
+        getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
     const history = useHistory();
+
+    type TCurrentList = DetailsOfEachMT5Loginid & {
+        enabled: number;
+    };
+
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+        const should_be_enabled = (list_item: TCurrentList) =>
+            platform === 'dxtrade' ? list_item.enabled === 1 : true;
+        const acc = Object.keys(current_list).some(
+            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+        )
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
+            : undefined;
+        return acc;
+    };
+
+    getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
+    getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
 
     type TOpenAccountTransferMeta = {
         category: string;

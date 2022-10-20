@@ -5,14 +5,16 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { TRootStore } from 'Types';
 
+type TAccountPromptDialog = TRootStore['modules']['cashier']['account_prompt_dialog'];
+
 type TAccountPromptDialogProps = {
     accounts: TRootStore['client']['accounts'];
-    continueRoute: TRootStore['modules']['cashier']['account_prompt_dialog']['continueRoute'];
-    is_confirmed: TRootStore['modules']['cashier']['account_prompt_dialog']['is_confirmed'];
-    last_location: TRootStore['modules']['cashier']['account_prompt_dialog']['last_location'];
-    onCancel: TRootStore['modules']['cashier']['account_prompt_dialog']['onCancel'];
-    onConfirm: TRootStore['modules']['cashier']['account_prompt_dialog']['onConfirm'];
-    should_show: TRootStore['modules']['cashier']['account_prompt_dialog']['should_show'];
+    continueRoute: TAccountPromptDialog['continueRoute'];
+    is_confirmed: TAccountPromptDialog['is_confirmed'];
+    last_location: TAccountPromptDialog['last_location'];
+    onCancel: TAccountPromptDialog['onCancel'];
+    onConfirm: TAccountPromptDialog['onConfirm'];
+    should_show: TAccountPromptDialog['should_show'];
 };
 
 const AccountPromptDialog = ({

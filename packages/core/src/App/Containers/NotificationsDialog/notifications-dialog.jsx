@@ -23,7 +23,7 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         const { type } = item;
         if (['contract_sold', 'info'].includes(type)) {
             return 'IcAlertInfo';
-        } else if (type === 'p2p_completed_order') {
+        } else if (['p2p_completed_order', 'p2p_ad_type_changed'].includes(type)) {
             return 'IcAlertAnnounce';
         }
 

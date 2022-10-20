@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid, Mt5LoginList } from '@deriv/api-types';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import { Popover, Text } from '@deriv/components';
@@ -9,6 +9,7 @@ import React from 'react';
 
 type TTotalAssets = {
     category: TAccountCategory;
+    className?: string;
 };
 
 const TotalAssets = ({ category }: TTotalAssets) => {
@@ -101,10 +102,10 @@ const TotalAssets = ({ category }: TTotalAssets) => {
 
     return (
         <div className='total-assets'>
-            <Text weight='bold' size='m' className='total-assets-amount'>
+            <Text weight='bold' size={isMobile() ? 'xsm' : 'm'} className='total-assets-amount'>
                 {formatMoney(currency, total_assets, true)}
             </Text>
-            <Text weight='bold' size='m' color='prominent' className='total-assets-currency'>
+            <Text weight='bold' size={isMobile() ? 'xsm' : 'm'} color='prominent' className='total-assets-currency'>
                 {currency}
             </Text>
             <div>

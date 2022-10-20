@@ -168,7 +168,14 @@ const CFDRealAccounts = ({
                                               account.platform !== CFD_PLATFORMS.DXTRADE && (
                                                   <AddDerived
                                                       title={localize(`More ${account.name} accounts`)}
-                                                      onClickHandler={() => null}
+                                                      onClickHandler={() => {
+                                                          toggleJurisdictionModal();
+                                                          setAccountType({
+                                                              category: 'real',
+                                                              type: account.type,
+                                                          });
+                                                          setAppstorePlatform(account.platform);
+                                                      }}
                                                       class_names='cfd-real-account__accounts--item__add-derived'
                                                   />
                                               )}

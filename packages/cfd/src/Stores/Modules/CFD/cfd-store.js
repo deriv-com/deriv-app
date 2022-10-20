@@ -36,6 +36,8 @@ export default class CFDStore extends BaseStore {
         real: '',
     };
 
+    is_from_mt5_compare_accounts_table = false;
+
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
 
@@ -62,6 +64,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
             dxtrade_tokens: observable,
+            is_from_mt5_compare_accounts_table: observable,
             account_title: computed,
             current_list: computed,
             onMount: action.bound,
@@ -98,6 +101,7 @@ export default class CFDStore extends BaseStore {
             disableMt5FinancialStpModal: action.bound,
             topUpVirtual: action.bound,
             sendVerifyEmail: action.bound,
+            setIsFromMt5CompareAccountsTable: action.bound,
             toggleCFDPersonalDetailsModal: action.bound,
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
@@ -586,8 +590,12 @@ export default class CFDStore extends BaseStore {
             }
         });
     }
+    setIsFromMt5CompareAccountsTable(is_from_compare_accounts) {
+        this.is_from_mt5_compare_accounts_table = is_from_compare_accounts;
+    }
 
-    toggleCFDPersonalDetailsModal() {
+    toggleCFDPersonalDetailsModal(is_from_compare_accounts = false) {
+        this.setIsFromMt5CompareAccountsTable(is_from_compare_accounts);
         this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 

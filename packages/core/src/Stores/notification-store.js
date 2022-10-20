@@ -37,6 +37,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    p2p_order_props = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -49,11 +50,13 @@ export default class NotificationStore extends BaseStore {
             push_notifications: observable,
             client_notifications: observable,
             should_show_popups: observable,
+            p2p_order_props: observable,
             custom_notifications: computed,
             filtered_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
+            showCompletedOrderNotification: action.bound,
             addVerificationNotifications: action.bound,
             filterNotificationMessages: action.bound,
             handleClientNotifications: action.bound,
@@ -66,6 +69,7 @@ export default class NotificationStore extends BaseStore {
             removeNotificationMessageByKey: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
+            setP2POrderProps: action.bound,
             setShouldShowPopups: action.bound,
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
@@ -87,6 +91,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                this.p2p_order_props.order_id,
             ],
             async () => {
                 if (
@@ -462,11 +467,37 @@ export default class NotificationStore extends BaseStore {
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `order-${order_id}`;
 
+        const notification_redirect_action =
+            routes.cashier_p2p === window.location.pathname
+                ? {
+                      onClick: () => {
+                          this.p2p_order_props.redirectToOrderDetails(order_id);
+                          this.setP2POrderProps({
+                              ...this.p2p_order_props,
+                              order_id,
+                          });
+                          if (this.is_notifications_visible) this.toggleNotificationsModal();
+                          this.refreshNotifications();
+                      },
+                      text: localize('Give feedback'),
+                  }
+                : {
+                      route: `${routes.cashier_p2p}?order=${order_id}`,
+                      text: localize('Give feedback'),
+                  };
+
         this.addNotificationMessage({
-            action: {
-                route: `${routes.cashier_p2p}?order=${order_id}`,
-                text: localize('Give feedback'),
-            },
+            action:
+                this.p2p_order_props?.order_id === order_id
+                    ? {
+                          onClick: () => {
+                              this.p2p_order_props.setIsRatingModalOpen(true);
+                              if (this.is_notifications_visible) this.toggleNotificationsModal();
+                              this.refreshNotifications();
+                          },
+                          text: localize('Give feedback'),
+                      }
+                    : notification_redirect_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (
@@ -1127,6 +1158,10 @@ export default class NotificationStore extends BaseStore {
             },
         };
         this.client_notifications = notifications;
+    }
+
+    setP2POrderProps(p2p_order_props) {
+        this.p2p_order_props = p2p_order_props;
     }
 
     setShouldShowPopups(should_show_popups) {

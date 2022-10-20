@@ -8,11 +8,14 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
     advertiser_id = null;
+    advertiser_buy_limit = null;
+    advertiser_sell_limit = null;
     block_unblock_user_error = '';
     balance;
     inactive_notification_count = 0;
@@ -59,6 +62,8 @@ export default class GeneralStore extends BaseStore {
             active_index: observable,
             active_notification_count: observable,
             advertiser_id: observable,
+            advertiser_buy_limit: observable,
+            advertiser_sell_limit: observable,
             block_unblock_user_error: observable,
             balance: observable,
             inactive_notification_count: observable,
@@ -98,6 +103,8 @@ export default class GeneralStore extends BaseStore {
             createAdvertiser: action.bound,
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
+            redirectToOrderDetails: action.bound,
+            showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
             onUnmount: action.bound,
@@ -107,6 +114,8 @@ export default class GeneralStore extends BaseStore {
             setActiveNotificationCount: action.bound,
             setAccountBalance: action.bound,
             setAdvertiserId: action.bound,
+            setAdvertiserBuyLimit: action.bound,
+            setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
@@ -309,7 +318,15 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
+    redirectToOrderDetails(order_id) {
+        const { order_store } = this.root_store;
+        this.redirectTo('orders');
+        this.setOrderTableType(order_list.INACTIVE);
+        order_store.setOrderId(order_id);
+    }
+
     showCompletedOrderNotification(advertiser_name, order_id) {
+        const { order_store } = this.root_store;
         const notification_key = `order-${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
@@ -318,9 +335,10 @@ export default class GeneralStore extends BaseStore {
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {
-                    this.redirectTo('orders');
-                    this.setOrderTableType(order_list.INACTIVE);
-                    this.root_store.order_store.setOrderId(order_id);
+                    if (order_store.order_id === order_id) {
+                        order_store.setIsRatingModalOpen(true);
+                    }
+                    this.redirectToOrderDetails(order_id);
                 },
                 text: localize('Give feedback'),
             },
@@ -497,6 +515,14 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    setAdvertiserBuyLimit(advertiser_buy_limit) {
+        this.advertiser_buy_limit = advertiser_buy_limit;
+    }
+
+    setAdvertiserSellLimit(advertiser_sell_limit) {
+        this.advertiser_sell_limit = advertiser_sell_limit;
+    }
+
     setAppProps(props) {
         this.props = props;
     }
@@ -657,11 +683,24 @@ export default class GeneralStore extends BaseStore {
     }
 
     updateAdvertiserInfo(response) {
-        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
-            response?.p2p_advertiser_info || {};
+        const {
+            daily_buy,
+            daily_buy_limit,
+            daily_sell,
+            daily_sell_limit,
+            blocked_until,
+            blocked_by_count,
+            id,
+            is_approved,
+            is_blocked,
+            is_listed,
+            name,
+        } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
+            this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
             this.setIsAdvertiserBlocked(!!is_blocked);
             this.setIsListed(!!is_listed);
@@ -670,11 +709,11 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
-            if (response.error.code === 'RestrictedCountry') {
+            if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
-            } else if (response.error.code === 'AdvertiserNotFound') {
+            } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {
                 this.setIsAdvertiser(false);
-            } else if (response.error.code === 'PermissionDenied') {
+            } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.setIsBlocked(true);
                 this.setIsLoading(false);
                 return;

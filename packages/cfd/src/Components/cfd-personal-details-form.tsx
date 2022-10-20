@@ -1,6 +1,5 @@
 import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import { LandingCompany, ResidenceList } from '@deriv/api-types';
 import {
     Autocomplete,
@@ -24,8 +23,6 @@ import { Localize, localize } from '@deriv/translations';
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
     has_previous_button?: boolean;
-    is_fully_authenticated: boolean;
-    is_in_personal_details_modal?: boolean;
     is_loading: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
@@ -42,7 +39,6 @@ type TValidatePersonalDetailsParams = {
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
-    has_place_of_birth?: boolean;
 };
 
 type TFindDefaultValuesInResidenceList = (params: {
@@ -65,6 +61,7 @@ type TCFDInputFieldProps = {
     optional?: boolean;
     required?: boolean;
     placeholder: string;
+    disabled?: boolean;
     onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
@@ -132,7 +129,6 @@ const validatePersonalDetails = ({
     residence_list,
     account_opening_reason,
     is_tin_required,
-    has_place_of_birth,
 }: TValidatePersonalDetailsParams) => {
     const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
 
@@ -151,18 +147,15 @@ const validatePersonalDetails = ({
             (v: string) => !!v,
             (v: string) => account_opening_reason.map(i => i.value).includes(v),
         ],
+        place_of_birth: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
     };
     const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
         tax_identification_number: localize('Tax identification number'),
         account_opening_reason: localize('Account opening reason'),
+        place_of_birth: localize('Place of birth'),
     };
-
-    if (has_place_of_birth) {
-        validations.place_of_birth = [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)];
-        mappedKey.place_of_birth = localize('Place of birth');
-    }
 
     const field_error_messages = (field_name: string): string[] => [
         localize('{{field_name}} is required', { field_name }),
@@ -222,8 +215,6 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, res
 const CFDPersonalDetailsForm = ({
     changeable_fields,
     has_previous_button,
-    is_fully_authenticated,
-    is_in_personal_details_modal,
     is_loading,
     landing_company,
     residence_list,
@@ -247,6 +238,7 @@ const CFDPersonalDetailsForm = ({
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
     if (is_loading) return <Loading is_fullscreen={false} />;
+
     return (
         <Formik
             initialValues={{ ...value }}
@@ -258,10 +250,10 @@ const CFDPersonalDetailsForm = ({
                     residence_list,
                     account_opening_reason,
                     is_tin_required,
-                    has_place_of_birth: is_in_personal_details_modal,
                 })
             }
             onSubmit={onSubmitForm}
+            validateOnMount
         >
             {({
                 handleSubmit,
@@ -275,15 +267,17 @@ const CFDPersonalDetailsForm = ({
                 isValid,
             }: FormikProps<TFormValues>) => {
                 const citizenship_error = touched.citizen && errors.citizen;
-                const place_of_birth_error =
-                    is_in_personal_details_modal && touched.place_of_birth && errors.place_of_birth;
+                const place_of_birth_error = touched.place_of_birth && errors.place_of_birth;
                 const tax_residence_error = touched.tax_residence && errors.tax_residence;
                 const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
-                const is_citizenship_disabled = !!(value.citizen && !changeable_fields?.includes('citizen'));
+
+                const is_citizenship_disabled = !!value.citizen && !changeable_fields?.includes('citizen');
                 const is_place_of_birth_disabled =
-                    !!(value.place_of_birth && is_fully_authenticated) ||
-                    changeable_fields?.every(field => field !== 'place_of_birth');
-                const is_tax_residence_disabled = !!(value.tax_residence && is_fully_authenticated);
+                    !!value.place_of_birth && !changeable_fields?.includes('place_of_birth');
+                const is_tax_residence_disabled =
+                    !!value.tax_residence && !changeable_fields?.includes('tax_residence');
+                const is_account_opening_reason_disabled =
+                    !!value.account_opening_reason && !changeable_fields?.includes('account_opening_reason');
                 const handleItemSelection = (item: ResidenceList[0], _field: string) => {
                     const item_value = item.value ? item.text : '';
                     setFieldValue(_field, item_value, true);
@@ -291,22 +285,13 @@ const CFDPersonalDetailsForm = ({
 
                 return (
                     <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
-                        {({
-                            height,
-                            setRef,
-                        }: {
-                            height: number;
-                            setRef: (instance: HTMLFormElement | null) => void;
-                        }) => (
+                        {({ setRef }: { setRef: (instance: HTMLFormElement | null) => void }) => (
                             <form
-                                className={
-                                    is_in_personal_details_modal
-                                        ? 'cfd-personal-details-modal__form'
-                                        : 'cfd-financial-stp-modal__form'
-                                }
+                                className='cfd-personal-details-modal__form'
                                 ref={setRef}
                                 onSubmit={handleSubmit}
                                 autoComplete='off'
+                                noValidate
                             >
                                 <Div100vhContainer
                                     className='details-form'
@@ -315,19 +300,10 @@ const CFDPersonalDetailsForm = ({
                                 >
                                     <Text
                                         as='p'
-                                        size={is_in_personal_details_modal ? 'xxs' : 'xxxs'}
+                                        size='xxs'
                                         align='center'
                                         className='details-form__description'
                                         data-testid='dt_cfd_details_form_description'
-                                        style={
-                                            isMobile()
-                                                ? {
-                                                      textAlign: 'center',
-                                                      fontSize: is_in_personal_details_modal ? '1.2rem' : '1rem',
-                                                      color: '#333333',
-                                                  }
-                                                : {}
-                                        }
                                     >
                                         <Localize
                                             i18n_default_text={
@@ -335,14 +311,8 @@ const CFDPersonalDetailsForm = ({
                                             }
                                         />
                                     </Text>
-                                    <ThemedScrollbars
-                                        height={is_in_personal_details_modal ? '512px' : height}
-                                        is_bypassed={isMobile()}
-                                    >
+                                    <ThemedScrollbars height='512px' is_bypassed={isMobile()}>
                                         <div className='details-form__elements'>
-                                            {!is_in_personal_details_modal && (
-                                                <FormSubHeader title={localize('Details')} />
-                                            )}
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Field name='citizen'>
@@ -383,51 +353,46 @@ const CFDPersonalDetailsForm = ({
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                            {is_in_personal_details_modal && (
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Field name='place_of_birth'>
-                                                            {({ field }: FieldProps<string, TFormValues>) => (
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    id='real_mt5_place_of_birth'
-                                                                    data-lpignore='true'
-                                                                    autoComplete='off'
-                                                                    type='text'
-                                                                    label={localize('Place of birth')}
-                                                                    error={place_of_birth_error}
-                                                                    disabled={is_place_of_birth_disabled}
-                                                                    list_items={residence_list}
-                                                                    onItemSelection={(item: ResidenceList[0]) =>
-                                                                        handleItemSelection(item, 'place_of_birth')
-                                                                    }
-                                                                    list_portal_id='modal_root'
-                                                                    required
-                                                                />
-                                                            )}
-                                                        </Field>
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            label={localize('Place of birth')}
-                                                            value={values.place_of_birth}
-                                                            list_items={residence_list}
-                                                            error={place_of_birth_error}
-                                                            disabled={is_place_of_birth_disabled}
-                                                            use_text={true}
-                                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                                                                setFieldValue('place_of_birth', e.target.value, true)
-                                                            }
-                                                            required
-                                                            should_hide_disabled_options={false}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                            )}
-                                            {!is_in_personal_details_modal && (
-                                                <FormSubHeader title={localize('Tax information')} />
-                                            )}
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Field name='place_of_birth'>
+                                                        {({ field }: FieldProps<string, TFormValues>) => (
+                                                            <Autocomplete
+                                                                {...field}
+                                                                id='real_mt5_place_of_birth'
+                                                                data-lpignore='true'
+                                                                autoComplete='off'
+                                                                type='text'
+                                                                label={localize('Place of birth')}
+                                                                error={place_of_birth_error}
+                                                                disabled={is_place_of_birth_disabled}
+                                                                list_items={residence_list}
+                                                                onItemSelection={(item: ResidenceList[0]) =>
+                                                                    handleItemSelection(item, 'place_of_birth')
+                                                                }
+                                                                list_portal_id='modal_root'
+                                                                required
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        label={localize('Place of birth')}
+                                                        value={values.place_of_birth}
+                                                        list_items={residence_list}
+                                                        error={place_of_birth_error}
+                                                        disabled={is_place_of_birth_disabled}
+                                                        use_text={true}
+                                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                                                            setFieldValue('place_of_birth', e.target.value, true)
+                                                        }
+                                                        required
+                                                        should_hide_disabled_options={false}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Field name='tax_residence'>
@@ -474,12 +439,13 @@ const CFDPersonalDetailsForm = ({
                                                     placeholder={localize('Tax identification number')}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}
+                                                    disabled={
+                                                        !!value.tax_identification_number &&
+                                                        !changeable_fields?.includes('tax_identification_number')
+                                                    }
                                                     optional
                                                 />
                                             </fieldset>
-                                            {!is_in_personal_details_modal && (
-                                                <FormSubHeader title={localize('Account opening reason')} />
-                                            )}
                                             <Field name='account_opening_reason'>
                                                 {({ field }: FieldProps<string, TFormValues>) => (
                                                     <React.Fragment>
@@ -491,6 +457,7 @@ const CFDPersonalDetailsForm = ({
                                                                 name={field.name}
                                                                 list={account_opening_reason}
                                                                 value={values.account_opening_reason}
+                                                                disabled={is_account_opening_reason_disabled}
                                                                 onChange={handleChange}
                                                                 handleBlur={handleBlur}
                                                                 error={account_opening_reason_error}
@@ -505,6 +472,7 @@ const CFDPersonalDetailsForm = ({
                                                                 label={localize('Account opening reason')}
                                                                 list_items={account_opening_reason}
                                                                 value={values.account_opening_reason}
+                                                                disabled={is_account_opening_reason_disabled}
                                                                 error={account_opening_reason_error}
                                                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                                     handleChange(e);
@@ -514,6 +482,7 @@ const CFDPersonalDetailsForm = ({
                                                                         true
                                                                     );
                                                                 }}
+                                                                data_testid='account_opening_reason_mobile'
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -522,11 +491,11 @@ const CFDPersonalDetailsForm = ({
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={isMobile()} has_separator={is_in_personal_details_modal}>
+                                <Modal.Footer is_bypassed={isMobile()} has_separator>
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
-                                        is_disabled={isSubmitting || !isValid}
+                                        is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={() => handleCancel(values)}

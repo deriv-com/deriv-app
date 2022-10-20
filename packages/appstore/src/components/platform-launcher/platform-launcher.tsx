@@ -38,7 +38,7 @@ const PlatformLauncher = ({
                         <Localize i18n_default_text={app_title} />
                     </Text>
                     <Text
-                        size={isMobile ? 'xxxs' : 'xxs'}
+                        size={isMobile() ? 'xxxs' : 'xxs'}
                         line_height='l'
                         className='platform-launcher__container--title-desc-wrapper--description'
                     >
@@ -51,7 +51,7 @@ const PlatformLauncher = ({
                     {link_to ? (
                         <Link to={link_to}>
                             <Button primary className='platform-launcher__trade-button'>
-                                <Text color='white' weight='bold' size={isMobile ? 'xxxs' : 's'}>
+                                <Text color='white' weight='bold' size={isMobile() ? 'xxxs' : 's'}>
                                     {localize('Trade')}
                                 </Text>
                             </Button>
@@ -59,7 +59,7 @@ const PlatformLauncher = ({
                     ) : (
                         <a href={href}>
                             <Button primary className='platform-launcher__trade-button'>
-                                <Text color='white' weight='bold' size={isMobile ? 'xxxs' : 's'}>
+                                <Text color='white' weight='bold' size={isMobile() ? 'xxxs' : 's'}>
                                     {localize('Trade')}
                                 </Text>
                             </Button>

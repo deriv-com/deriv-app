@@ -10,7 +10,7 @@
     cursor: pointer;
     &:hover,
     &-active {
-        background: $color-grey-2;
+        background: var(--general-section-5);
     }
     @include mobile {
         gap: 0.4rem;

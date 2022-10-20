@@ -394,8 +394,9 @@ const DMT5CompareModalContent = ({
                     toggleCFDVerificationModal();
                 }
                 break;
-            // TODO: add functioanlity derivx
-            // case 'derivx':
+            case 'derivx':
+                openPasswordModal(type_of_account);
+                break;
             default:
         }
     };

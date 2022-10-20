@@ -25,6 +25,10 @@ export const domain_app_ids = {
     'binary.com': 1,
 };
 
+export const platform_app_ids = {
+    derivgo: 23789,
+};
+
 export const getCurrentProductionDomain = () =>
     !/^staging\./.test(window.location.hostname) &&
     Object.keys(domain_app_ids).find(domain => window.location.hostname === domain);
@@ -43,8 +47,12 @@ export const getAppId = () => {
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain = getCurrentProductionDomain();
+    const platform = new URLSearchParams(window.location.search).get('platform');
 
-    if (config_app_id) {
+    // Added platform at the top since this should take precedence over the config_app_id
+    if (platform && platform_app_ids[platform]) {
+        app_id = platform_app_ids[platform];
+    } else if (config_app_id) {
         app_id = config_app_id;
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
@@ -58,6 +66,7 @@ export const getAppId = () => {
         window.localStorage.removeItem('config.default_app_id');
         app_id = (isBot() ? 19111 : domain_app_ids[current_domain]) || 16929;
     }
+
     return app_id;
 };
 

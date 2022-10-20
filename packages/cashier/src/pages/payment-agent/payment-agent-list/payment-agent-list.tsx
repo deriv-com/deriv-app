@@ -10,28 +10,25 @@ import WithdrawalTab from './withdrawal-tab';
 import './payment-agent-list.scss';
 import SideNote from 'Components/side-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import { TSideNotesProps } from 'Types';
 
 type TProps = {
-    setSideNotes: (notes: JSX.Element[]) => void;
+    setSideNotes: (notes: TSideNotesProps) => void;
 };
 
 const PaymentAgentList = ({ setSideNotes }: TProps) => {
     const { modules } = useStore();
-    const { payment_agent } = modules.cashier;
+    const { payment_agent, general_store } = modules.cashier;
 
     React.useEffect(() => {
-        const side_notes: JSX.Element[] = [];
-
-        if (!payment_agent.is_try_withdraw_successful) {
-            side_notes.push(
+        if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
+            setSideNotes([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
-                </SideNote>
-            );
+                </SideNote>,
+            ]);
         }
-
-        setSideNotes(side_notes);
-    }, [setSideNotes, payment_agent.is_try_withdraw_successful]);
+    }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>

@@ -2,11 +2,14 @@
     position: relative;
     height: calc(100vh - 8.4rem);
     overflow: hidden;
+    @include mobile {
+        height: calc(100vh - 3.4rem);
+    }
     .toolbar__section {
         justify-content: end;
     }
     .run-panel__container {
-        height: calc(100vh - 16.6rem) !important;
+        height: var(--tab-content-height) !important;
         position: unset !important;
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
@@ -38,12 +41,39 @@
             &__list {
                 background: var(--general-section-1);
                 justify-content: start;
+                @include mobile {
+                    overflow-x: auto;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                &--header {
+                    &--dashboard {
+                        &__tabs {
+                            @include mobile {
+                                width: 100%;
+                                overflow-x: auto;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__content {
+                @include mobile {
+                    width: 100%;
+                    overflow-x: auto;
+                }
             }
             &__item {
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
                 height: 4.8rem;
                 width: 14.4rem;
+                min-width: 14.4rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -148,9 +178,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 16.6rem);
+            height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
+            @include mobile {
+                height: var(--tab-content-height-mobile);
+            }
         }
         &__centered {
             display: flex;

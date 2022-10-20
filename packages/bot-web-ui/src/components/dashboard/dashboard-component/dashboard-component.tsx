@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Cards from './cards';
-import { Text } from '@deriv/components';
+import { Text, DesktopWrapper } from '@deriv/components';
 import InfoPanel from './info-panel';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -30,13 +30,15 @@ const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => (
                 <Cards />
             </div>
         </div>
-        <div
-            className={classNames('tab__dashboard__info-panel', {
-                'tab__dashboard__info-panel--active': is_info_panel_visible,
-            })}
-        >
-            <InfoPanel />
-        </div>
+        <DesktopWrapper>
+            <div
+                className={classNames('tab__dashboard__info-panel', {
+                    'tab__dashboard__info-panel--active': is_info_panel_visible,
+                })}
+            >
+                <InfoPanel />
+            </div>
+        </DesktopWrapper>
     </div>
 );
 

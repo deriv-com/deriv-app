@@ -68,7 +68,11 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
                     <RunStrategy />
+
                     {/*
+                        TODO: need to add named tab index such as 'dashboard', 'charts' etc
+                        instead of using default index 0, 1, 2
+                        
                         1. Bot-Builder
                         2. Quick Strategy
                         3. Charts

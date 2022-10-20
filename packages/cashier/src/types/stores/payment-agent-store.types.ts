@@ -16,7 +16,7 @@ export type TAgent = {
     email?: string;
     max_withdrawal?: string | null;
     min_withdrawal?: string | null;
-    phone?: TPhoneNumber[];
+    phone_numbers?: TPhoneNumber[];
     text?: string;
     url?: TUrl[];
     value?: string;
@@ -47,7 +47,7 @@ export type TPartialPaymentAgentList = {
     min_withdrawal?: string | null;
     name?: string;
     paymentagent_loginid?: string;
-    phones?: TPhoneNumber[];
+    phone_numbers?: TPhoneNumber[];
     supported_banks?: TPaymentMethod[];
     urls?: TUrl[];
     withdrawal_commission?: string;

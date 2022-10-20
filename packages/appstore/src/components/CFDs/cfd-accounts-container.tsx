@@ -13,6 +13,11 @@ type TCFDAccountsProps = {
     account_type: TAccountCategory;
 };
 
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
+};
+
 const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     const store = useStores();
     const { client, modules }: TRootStore = store;
@@ -31,8 +36,19 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         trading_platform_available_accounts,
     } = client;
 
-    const { current_list, is_compare_accounts_visible, toggleCompareAccountsModal } = modules.cfd;
+    const {
+        current_list,
+        is_compare_accounts_visible,
+        toggleCompareAccountsModal,
+        setAccountType,
+        enableCFDPasswordModal,
+    } = modules.cfd;
     const is_demo_tab = account_type === 'demo';
+
+    const openRealPasswordModal = (account_creation_account_type: TOpenAccountTransferMeta) => {
+        setAccountType(account_creation_account_type);
+        enableCFDPasswordModal();
+    };
 
     const hasAccount = (platform: TPlatform, landing_company_short?: string) =>
         Object.keys(current_list).some(key =>
@@ -129,8 +145,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                 <CompareAccountsModal
                     context={store}
                     is_demo_tab={is_demo_tab}
-                    // TODO: Will handle it in CFD flows
-                    // openPasswordModal={openRealPasswordModal}
+                    openPasswordModal={openRealPasswordModal}
                     is_real_enabled={has_active_real_account}
                 />
             )}

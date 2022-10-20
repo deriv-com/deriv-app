@@ -3,7 +3,7 @@ import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getTourStatus } from './joyride-config';
+import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings } from './joyride-config';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -32,15 +32,14 @@ const Dashboard = ({
     setActiveTab,
     toggleStrategyModal,
     onEntered,
+    setTourActive,
     has_tour_started,
     has_file_loaded,
     is_drawer_open,
-    onboard_tour_run_state,
     setOnBoardTourRunState,
 }: TDashboard) => {
     const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
-
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
@@ -51,9 +50,16 @@ const Dashboard = ({
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
         }
-        const status = getTourStatus();
-        if (status === 'ready') setOnBoardTourRunState(false);
-    }, [active_tab]);
+        const tour_status = getTourSettings('status');
+
+        if (tour_status) {
+            const { action } = tour_status;
+            if (action === 'skip' || action === 'close' || action === 'reset') {
+                setOnBoardTourRunState(false);
+                setTourActive(false);
+            }
+        }
+    }, [active_tab, handleJoyrideCallback]);
     return (
         <>
             <div className='dashboard__main'>
@@ -124,7 +130,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     is_drawer_open: run_panel.is_drawer_open,
-    onboard_tour_run_state: dashboard.onboard_tour_run_state,
     onEntered: load_modal.onEntered,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,

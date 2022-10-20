@@ -13,19 +13,17 @@ type TStep = {
 
 export const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-export const setOnBoardTourToken = () => {
-    return storeSetting('onboard_tour_token', new Date().getTime());
-};
-
-export const getOnBoardTourToken = () => {
-    return getSetting('onboard_tour_token');
-};
-
-export const setTourStatus = (param: string) => {
+export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
+    if (type === 'token') {
+        return storeSetting('onboard_tour_token', param);
+    }
     return storeSetting('onboard_tour_status', param);
 };
 
-export const getTourStatus = () => {
+export const getTourSettings = (type: string) => {
+    if (type === 'token') {
+        return getSetting('onboard_tour_token');
+    }
     return getSetting('onboard_tour_status');
 };
 
@@ -48,10 +46,18 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
+let onboarding_tour: { [key: string]: string } = {};
+let current_target: number;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
-    setTourStatus(status);
-    if (!getOnBoardTourToken()) setOnBoardTourToken();
+    if (current_target !== undefined && current_target !== index) {
+        onboarding_tour = {};
+        onboarding_tour.status = status;
+        onboarding_tour.action = action;
+    }
+    current_target = index;
+    setTourSettings(onboarding_tour, 'tour');
+    if (!getTourSettings('token')) setTourSettings(new Date().getTime(), 'token');
 };
 
 type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;

@@ -18,7 +18,6 @@ const BotBuilder = ({ app, active_tab, onboard_tour_run_state, setOnBoardTourRun
     const { onMount, onUnmount } = app;
 
     React.useEffect(() => {
-        if (!onboard_tour_run_state) setOnBoardTourRunState(false);
         onMount();
         return () => onUnmount();
     }, []);

@@ -277,26 +277,26 @@ export default class LoadModalStore implements ILoadModalStore {
             return;
         }
 
-        //if (!this.recent_workspace || !this.recent_workspace.rendered) {
-        //TODO: this was the check check used on the older functionality
-        const ref = document.getElementById('load-strategy__blockly-container');
+        if (!this.recent_workspace || !this.recent_workspace.rendered) {
+            //TODO: this was the check check used on the older functionality
+            const ref = document.getElementById('load-strategy__blockly-container');
 
-        if (!ref) {
-            // eslint-disable-next-line no-console
-            console.warn('Could not find preview workspace element.');
-            return;
+            if (!ref) {
+                // eslint-disable-next-line no-console
+                console.warn('Could not find preview workspace element.');
+                return;
+            }
+
+            this.recent_workspace = Blockly.inject(ref, {
+                media: `${__webpack_public_path__}media/`,
+                zoom: {
+                    wheel: true,
+                    startScale: config.workspaces.previewWorkspaceStartScale,
+                },
+                readOnly: true,
+                scrollbars: true,
+            });
         }
-
-        this.recent_workspace = Blockly.inject(ref, {
-            media: `${__webpack_public_path__}media/`,
-            zoom: {
-                wheel: true,
-                startScale: config.workspaces.previewWorkspaceStartScale,
-            },
-            readOnly: true,
-            scrollbars: true,
-        });
-        //}
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
     }
 

@@ -5,6 +5,7 @@ import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets';
 import classNames from 'classnames';
 import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
+import { isMobile } from '@deriv/shared';
 
 interface TChartProps {
     chart_type: string;
@@ -49,7 +50,7 @@ const Chart = ({
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {
-                'dashboard__chart-wrapper--expanded': is_drawer_open,
+                'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
             <SmartChart

@@ -21,7 +21,7 @@ export default class CashierStore {
         this.deposit = new DepositStore(WS, root_store);
         this.error_dialog = new ErrorDialogStore();
         this.error = new ErrorStore();
-        this.general_store = new GeneralStore({ root_store, WS });
+        this.general_store = new GeneralStore(WS, root_store);
         this.iframe = new IframeStore(root_store);
         this.onramp = new OnRampStore(WS, root_store);
         this.payment_agent = new PaymentAgentStore(WS, root_store);

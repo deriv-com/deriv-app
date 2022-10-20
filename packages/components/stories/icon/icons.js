@@ -1,6 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons =
+export const icons = 
 {
     'brand': [
         'IcBrandBinarybot',
@@ -420,6 +420,7 @@ export const icons =
         'IcVerification',
         'IcWebTerminal',
         'IcWebsite',
+        'IcWhatsApp',
         'IcWindowsLogo',
         'IcWindows',
         'IcWip',

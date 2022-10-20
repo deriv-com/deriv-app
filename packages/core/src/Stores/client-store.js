@@ -606,6 +606,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_nigeria() {
+        return (this.residence || this.clients_country) === 'ng';
+    }
+
+    @computed
+    get is_south_africa() {
+        return (this.residence || this.clients_country) === 'za';
+    }
+
+    @computed
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,

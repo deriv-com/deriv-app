@@ -1,6 +1,6 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons = 
+export const icons =
 {
     'brand': [
         'IcBrandBinarybot',

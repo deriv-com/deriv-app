@@ -13,16 +13,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import {
-    TRootStore,
-    TClientStore,
-    TUiStore,
-    TReactChangeEvent,
-    TAccount,
-    TAccountsList,
-    TCryptoTransactionDetails,
-} from 'Types';
+import { TReactChangeEvent, TAccount, TAccountsList } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -31,17 +22,6 @@ import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
 import './account-transfer-form.scss';
 import { useStore } from '../../../hooks';
-
-type TSelect = {
-    currency: string;
-    balance: number;
-    is_dxtrade: boolean;
-    is_crypto: boolean;
-    is_mt: boolean;
-    value: string;
-    error: string;
-    status?: string;
-};
 
 type TAccountTransferFormProps = {
     error: object;

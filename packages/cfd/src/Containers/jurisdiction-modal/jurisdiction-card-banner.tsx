@@ -11,6 +11,7 @@ const VerificationStatusBanner = ({
     account_type,
     card_classname,
     disabled,
+    context,
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,

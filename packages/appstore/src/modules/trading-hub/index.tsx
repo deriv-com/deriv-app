@@ -1,4 +1,5 @@
 import * as React from 'react';
+import platform_config from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import ToggleAccountType from 'Components/toggle-account-type';
 import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
@@ -16,6 +17,7 @@ import {
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
 import CFDAccounts from 'Components/CFDs';
+import OptionsAccounts from 'Components/options';
 import { TAccountCategory } from 'Types';
 import { Localize, localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
@@ -103,7 +105,7 @@ const TradingHub: React.FC = () => {
                     disableAnimation: true,
                 }}
             />
-            {/* <Onboarding contents={trading_hub_contents} setIsTourOpen={setIsTourOpen} /> */}
+            <OptionsAccounts platformlauncherprops={platform_config} accountType={tab_account_type} />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

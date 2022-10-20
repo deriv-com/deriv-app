@@ -1,17 +1,17 @@
-import React, { HTMLAttributes } from 'react';
-import { Text } from '@deriv/ui';
-import classNames from 'classnames';
-import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import React from 'react';
+import { Text, Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { useStores } from 'Stores';
 
-export interface TAddOptionsProps extends HTMLAttributes<HTMLDivElement> {
-    onClickHandler: () => void;
-    class_names?: string;
+type TAddOptionsProps = {
+    number_of_accounts: number;
     title: string;
     description: string;
-}
+};
 
-const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOptionsProps) => {
+const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps) => {
+    const { ui } = useStores();
     const getHeightWidthOfIcon = () => {
         return isMobile()
             ? {
@@ -23,30 +23,44 @@ const AddOptions = ({ title, description, onClickHandler, class_names }: TAddOpt
                   height: 16,
               };
     };
-
+    const onClickHandler = () => {
+        return ui.openRealAccountSignup('manage');
+    };
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div className={classNames('add-options--desktop', class_names)} onClick={onClickHandler}>
-                    <div className='add-options--desktop_title'>
+                {number_of_accounts < 4 ? (
+                    <div className={'add-options--desktop'} onClick={onClickHandler}>
+                        <div className='add-options--desktop_title'>
+                            <Icon
+                                icon='IcAppstoreAdd'
+                                width={getHeightWidthOfIcon().width}
+                                height={getHeightWidthOfIcon().height}
+                            />
+                            <Text weight='bold' size='xxs' line_height='l'>
+                                <Localize i18n_default_text={title} />
+                            </Text>
+                        </div>
+                        <div className='add-options--desktop_description'>
+                            <Text size='xxs' line_height='l' weight='lighter'>
+                                <Localize i18n_default_text={description} />
+                            </Text>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='add-options--mobile' onClick={onClickHandler}>
                         <Icon
-                            icon='icAppstoreAdd'
+                            icon='IcAppstoreAdd'
                             width={getHeightWidthOfIcon().width}
                             height={getHeightWidthOfIcon().height}
                         />
-                        <Text type='paragraph-2' bold>
-                            {title}
-                        </Text>
                     </div>
-                    <div className='add-options--desktop_description'>
-                        <Text type='paragraph-2'>{description}</Text>
-                    </div>
-                </div>
+                )}
             </DesktopWrapper>
             <MobileWrapper>
-                <div className={classNames('add-options--mobile', class_names)} onClick={onClickHandler}>
+                <div className='add-options--mobile' onClick={onClickHandler}>
                     <Icon
-                        icon='icAppstoreAdd'
+                        icon='IcAppstoreAdd'
                         width={getHeightWidthOfIcon().width}
                         height={getHeightWidthOfIcon().height}
                     />

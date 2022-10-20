@@ -321,8 +321,10 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
+            this.setLoading(true);
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
+            this.setLoading(false);
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();

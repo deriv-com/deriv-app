@@ -15,6 +15,7 @@ const PaymentAgent = ({
     payment_agent_active_tab_index,
     setActiveTab,
     setPaymentAgentActiveTabIndex,
+    setSideNotes,
     verification_code,
 }) => {
     const initial_active_index =
@@ -41,7 +42,7 @@ const PaymentAgent = ({
         return <CashierLocked />;
     }
 
-    return <PaymentAgentList />;
+    return <PaymentAgentList setSideNotes={setSideNotes} />;
 };
 
 PaymentAgent.propTypes = {
@@ -53,6 +54,7 @@ PaymentAgent.propTypes = {
     payment_agent_active_tab_index: PropTypes.number,
     setActiveTab: PropTypes.func,
     setPaymentAgentActiveTabIndex: PropTypes.func,
+    setSideNotes: PropTypes.func,
     verification_code: PropTypes.string,
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore, useVerifyEmail } from '@deriv/hooks';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
-import PaymentAgentWithdrawForm from '../payment-agent-withdraw-form';
+import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 
 const WithdrawalTab = () => {
@@ -20,7 +20,7 @@ const WithdrawalTab = () => {
     if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
     if (verify.has_been_sent) return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
     if (verification_code || payment_agent.is_withdraw)
-        return <PaymentAgentWithdrawForm verification_code={verification_code} />;
+        return <PaymentAgentContainer verification_code={verification_code} />;
 
     return null;
 };

@@ -161,7 +161,7 @@
             &-span {
                 font-size: 1.4rem;
                 text-align: left;
-                padding: 9px 36px 9px 12px;
+                padding: 0.9rem 3.6rem 0.9rem 1.2rem;
                 text-transform: none;
                 line-height: 1.43;
                 display: flex;
@@ -174,8 +174,8 @@
         }
         &-items {
             svg {
-                width: 24px;
-                height: 24px;
+                width: 2.4rem;
+                height: 2.4rem;
             }
         }
         &-label {
@@ -228,7 +228,7 @@
         }
     }
     &__tab-header-note {
-        max-width: 256px;
+        max-width: 25.6rem;
     }
     &__success {
         text-align: center;
@@ -247,7 +247,7 @@
             margin-bottom: 1.6rem;
 
             + .dc-text {
-                margin-bottom: 8px;
+                margin-bottom: 0.8rem;
             }
         }
         &-button {
@@ -283,9 +283,8 @@
         }
 
         &-button {
-            min-width: 25.8rem;
-            padding: 6px 16px;
-            margin-right: 0.1rem;
+            min-width: 25.6rem;
+            padding: 0.6rem 0.8rem;
         }
         .acc-prompt-dialog {
             padding: 0 1rem;
@@ -303,11 +302,11 @@
         /* stylelint-disable-next-line plugin/selector-bem-pattern */
         .dc-checklist {
             width: 100%;
-            max-width: 500px;
+            max-width: 50rem;
         }
         /* stylelint-disable-next-line plugin/selector-bem-pattern */
         .dc-checklist__item-text {
-            max-width: 320px;
+            max-width: 32rem;
         }
         &__icon {
             width: 12.8rem;
@@ -327,6 +326,11 @@
                 padding: 0 1rem;
             }
         }
+    }
+
+    .dc-vertical-tab__content-side-note-item {
+        position: sticky;
+        top: calc(2.4rem + 4.1rem);
     }
 }
 

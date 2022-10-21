@@ -1341,7 +1341,7 @@ export default class ClientStore extends BaseStore {
                 const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
                     action_param
                 );
-
+                const platform = window.localStorage.getItem('config.platform');
                 if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
                     if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
@@ -1351,7 +1351,7 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(`${redirect_route}/?${platform}`);
                 }
             }
             runInAction(() => {

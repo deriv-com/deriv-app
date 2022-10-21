@@ -56,7 +56,7 @@ const BuySellRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: floating_rate_store.exchange_rate ?? floating_rate_store.override_exchange_rate,
     });
 
     if (isMobile()) {

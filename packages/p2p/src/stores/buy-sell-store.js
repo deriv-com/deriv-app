@@ -3,7 +3,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -368,6 +368,20 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     onLocalCurrencySelect(local_currency) {
+        const { floating_rate_store, general_store } = this.root_store;
+        const { ws_subscriptions } = general_store;
+
+        ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+        ws_subscriptions.exchange_rate_subscription = subscribeWS(
+            {
+                exchange_rates: 1,
+                base_currency: general_store.client.currency,
+                subscribe: 1,
+                target_currency: local_currency,
+            },
+            [floating_rate_store.fetchExchangeRate]
+        );
+
         this.setSelectedLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);

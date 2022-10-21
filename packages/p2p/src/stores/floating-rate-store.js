@@ -15,6 +15,7 @@ export default class FloatingRateStore extends BaseStore {
     @observable is_loading;
     @observable api_error_message = '';
     @observable is_market_rate_changed = false;
+    @observable override_exchange_rate = null;
 
     previous_exchange_rate = null;
     current_exchange_rate = null;
@@ -89,6 +90,11 @@ export default class FloatingRateStore extends BaseStore {
         if (this.root_store.buy_sell_store.show_rate_change_popup) {
             this.is_market_rate_changed = value;
         }
+    }
+
+    @action.bound
+    setOverrideExchangeRate(override_exchange_rate) {
+        this.override_exchange_rate = removeTrailingZeros(roundOffDecimal(parseFloat(override_exchange_rate), 6));
     }
 
     @action.bound

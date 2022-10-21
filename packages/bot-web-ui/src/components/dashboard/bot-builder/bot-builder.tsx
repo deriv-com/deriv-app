@@ -31,11 +31,11 @@ const BotBuilder = ({ app, active_tab }: TBotBuilder) => {
                         showProgress={true}
                         styles={{
                             options: {
-                                arrowColor: 'var(--text-general)',
-                                backgroundColor: 'var(--text-general)',
+                                arrowColor: 'var(--general-section-7)',
+                                backgroundColor: 'var(--general-section-7)',
                                 overlayColor: 'rgba(0, 0, 0, 0.5)',
                                 primaryColor: 'var(--brand-red-coral)',
-                                textColor: 'var(--text-colored-background)',
+                                textColor: 'var(--text-joyride-tour)',
                                 spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                             },
                         }}

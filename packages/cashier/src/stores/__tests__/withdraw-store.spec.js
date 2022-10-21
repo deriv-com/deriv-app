@@ -146,8 +146,8 @@ describe('WithdrawStore', () => {
         withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.saveWithdraw(verification_code);
         expect(spySetErrorMessage).toHaveBeenCalled();
-        expect(setConverterFromAmount).toHaveBeenCalledWith('');
-        expect(setConverterToAmount).toHaveBeenCalledWith('');
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterToAmount).toHaveBeenCalledWith(0);
         expect(withdraw_store.blockchain_address).toBe('');
     });
 
@@ -156,8 +156,8 @@ describe('WithdrawStore', () => {
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
         withdraw_store.resetWithrawForm();
-        expect(setConverterFromAmount).toHaveBeenCalledWith('');
-        expect(setConverterToAmount).toHaveBeenCalledWith('');
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterToAmount).toHaveBeenCalledWith(0);
         expect(withdraw_store.blockchain_address).toBe('');
         expect(withdraw_store.blockchain_address).toBe('');
     });

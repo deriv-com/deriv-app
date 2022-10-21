@@ -39,7 +39,7 @@ export default class PaymentAgentStore {
     @observable receipt: TPaymentAgentWithdrawReceipt = {};
     @observable selected_bank: number | string = 0;
     @observable supported_banks: IObservableArray<TSupportedBank> | [] = [];
-    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
+    @observable verification = new VerificationStore(this.WS, this.root_store);
     @observable active_tab_index = 0;
     @observable all_payment_agent_list: TExtendedPaymentAgentListResponse | null = null;
     @observable onRemount: VoidFunction | null = null;

@@ -4,10 +4,10 @@ import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class VerificationStore {
-    constructor({ WS, root_store }) {
+    resend_interval?: ReturnType<typeof setInterval>;
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         this.root_store = root_store;
         this.WS = WS;
-        this.resend_interval = null;
     }
 
     @observable is_button_clicked = false;

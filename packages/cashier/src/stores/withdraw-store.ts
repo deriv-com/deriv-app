@@ -19,8 +19,8 @@ export default class WithdrawStore {
     @observable error = new ErrorStore();
     @observable is_10k_withdrawal_limit_reached?: boolean = undefined;
     @observable is_withdraw_confirmed = false;
-    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
-    @observable withdraw_amount = '';
+    @observable verification = new VerificationStore(this.WS, this.root_store);
+    @observable withdraw_amount = 0;
     @observable max_withdraw_amount = 0;
     @observable crypto_config: CryptoConfig = {
         currencies_config: {},
@@ -39,7 +39,7 @@ export default class WithdrawStore {
     }
 
     @action.bound
-    setWithdrawAmount(amount: string): void {
+    setWithdrawAmount(amount: number): void {
         this.withdraw_amount = amount;
     }
 
@@ -98,8 +98,8 @@ export default class WithdrawStore {
     resetWithrawForm(): void {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.setBlockchainAddress('');
-        setConverterFromAmount('');
-        setConverterToAmount('');
+        setConverterFromAmount(0);
+        setConverterToAmount(0);
         this.verification.clearVerification();
     }
 
@@ -318,7 +318,7 @@ export default class WithdrawStore {
                 error_message = ReadMoreWrapper({ error_content, openDialog });
             }
         }
-        setConverterFromError(error_message);
+        setConverterFromError(error_message as string);
     }
 
     @action.bound

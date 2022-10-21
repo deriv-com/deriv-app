@@ -120,7 +120,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={account.balance && account.balance < 0}
+                    has_sign={Boolean(account.balance && account.balance < 0)}
                     show_currency
                 />
             </span>

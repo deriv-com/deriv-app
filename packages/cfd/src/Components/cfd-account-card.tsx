@@ -329,6 +329,15 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
+                <div className='cfd-account-card__acuity-banner'>
+                    <div className='cfd-account-card__acuity-banner--wrapper'>
+                        <Icon icon='icMt5Acuity' />
+                        <Text as='p' size='xxs' weight='bold' color='prominent'>
+                            <Localize i18n_default_text='Get Acuity trading tools' />
+                        </Text>
+                        <Icon icon='IcAddOutline' color='secondary' />
+                    </div>
+                </div>
                 {existing_data && <div className='cfd-account-card__divider' />}
 
                 <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>

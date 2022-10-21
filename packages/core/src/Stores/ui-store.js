@@ -144,6 +144,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
+    @observable app_contents_scroll_ref = null;
     @observable is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
@@ -214,6 +215,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;
+    }
+
+    @action.bound
+    setAppContentsScrollRef(value) {
+        this.app_contents_scroll_ref = value;
     }
 
     @action.bound

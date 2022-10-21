@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
-import { connect } from '../../../../stores/connect';
-import RootStore from 'Stores/index.js';
-import SearchBox from './search-box';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import SearchBox from './search-box/search-box';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;
@@ -46,7 +46,7 @@ const Toolbox = ({
     React.useEffect(() => {
         onMount(toolbox_ref);
         return () => onUnmount();
-    }, [onMount, onUnmount]);
+    }, []);
 
     if (is_mobile) {
         return null;
@@ -128,7 +128,7 @@ const Toolbox = ({
                                                                 onToolboxItemClick(subCategory);
                                                             }}
                                                         >
-                                                            <Text size='xxs' line_height='m'>
+                                                            <Text size='xxs'>
                                                                 {localize(subCategory.getAttribute('name'))}
                                                             </Text>
                                                         </div>

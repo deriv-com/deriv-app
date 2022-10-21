@@ -44,6 +44,9 @@
                 &--top {
                     display: flex;
                     height: calc(100vh - 26rem);
+                    @include mobile {
+                        height: calc(100vh - 22rem);
+                    }
                 }
                 &__list {
                     width: 22.5rem;

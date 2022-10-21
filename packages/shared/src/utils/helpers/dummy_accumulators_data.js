@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1666169462; // should be an epoch of some real tick!
+const dummy_current_time = 1666338480; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 7;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6534.9;
-const low_barrier = 6534.5;
+const high_barrier = 6587.9;
+const low_barrier = 6586.5;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
@@ -51,6 +51,7 @@ let result = ''; // 'won' or 'lost'
 let profit = +0.15;
 let profit_percentage = +1.5;
 let is_sold = 0; // 0 || 1
+let is_expired = 0; // 0 || 1
 
 //losing:
 // contract_status = 'open'; // 'lost', 'won' or 'open'
@@ -62,15 +63,16 @@ let is_sold = 0; // 0 || 1
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
 //         setTimeout(() => {
-contract_status = 'won'; // 'lost', 'won' or 'open'
-position_status = 'profit'; // 'profit' or 'loss'
-result = 'won'; // 'won' or 'lost'
-profit = +0.15;
-profit_percentage = +1.5;
-is_sold = 1; // 0 || 1
-exit_tick = current_spot;
-exit_tick_display_value = `${current_spot}`;
-exit_tick_time = dummy_current_time;
+// contract_status = 'won'; // 'lost', 'won' or 'open'
+// position_status = 'profit'; // 'profit' or 'loss'
+// result = 'won'; // 'won' or 'lost'
+// profit = +0.15;
+// profit_percentage = +1.5;
+// is_sold = 1; // 0 || 1
+// exit_tick = current_spot;
+// exit_tick_display_value = `${current_spot}`;
+// exit_tick_time = dummy_current_time;
+// is_expired = 1;
 //         }, ms1);
 //         setTimeout(() => {
 // contract_status = 'lost'; // 'lost', 'won' or 'open'
@@ -82,6 +84,7 @@ exit_tick_time = dummy_current_time;
 // exit_tick = current_spot;
 // exit_tick_display_value = `${current_spot}`;
 // exit_tick_time = dummy_current_time;
+// is_expired = 1;
 //         }, ms2);
 //         setTimeout(() => {
 //             contract_status = 'open'; // 'lost', 'won' or 'open'
@@ -134,7 +137,7 @@ export const getDummyPOCResponseForACCU = time_now => {
             exit_tick_time,
             expiry_time: dummy_end_time,
             id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-            is_expired: 0,
+            is_expired,
             is_forward_starting: 0,
             is_intraday: 1,
             is_path_dependent: 0,
@@ -299,7 +302,7 @@ export const getDummyAllPositionsForACCU = time_now => {
                 exit_tick_time,
                 expiry_time: dummy_end_time,
                 id: '2b88e20f-f976-a380-904d-04db08e10eeb',
-                is_expired: 0,
+                is_expired,
                 is_forward_starting: 0,
                 is_intraday: 1,
                 is_path_dependent: 0,

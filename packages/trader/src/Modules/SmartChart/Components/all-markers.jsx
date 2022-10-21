@@ -217,6 +217,7 @@ const TickContract = RawMarkerMaker(
         prices: [barrier, barrier_2], // TODO: support two barrier contracts
         is_last_contract,
         is_dark_theme,
+        is_in_contract_details,
         granularity,
         contract_info: {
             contract_type,
@@ -254,6 +255,11 @@ const TickContract = RawMarkerMaker(
             b = Math.min(Math.max(b, 2), canvas_height - 32); // eslint-disable-line
         });
 
+        const entry = ticks[0];
+        const exit = ticks[ticks.length - 1];
+        const previous_tick = ticks[ticks.length - 2] || exit;
+        const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
+
         if (is_accumulators_trade_without_contract) {
             // draw 2 barriers with a shade in-between only
             draw_partial_shade({
@@ -268,6 +274,91 @@ const TickContract = RawMarkerMaker(
             });
             ctx.restore();
             return;
+        }
+
+        if (is_accumulators_contract) {
+            // draw custom barrier shadows with borders and labels for accumulators:
+            if (contract_type === 'ACCU') {
+                if (status === 'open' || is_in_contract_details) {
+                    // draw 2 barriers with a shade between them for an open Stay in contract
+                    draw_partial_shade({
+                        ctx,
+                        start_left: status !== 'open' ? exit.left : previous_tick.left,
+                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                        top: barrier,
+                        bottom: barrier_2,
+                        is_between_shade: true,
+                        scale,
+                    });
+                }
+            } else if (status === 'open' || is_in_contract_details) {
+                // draw 2 barriers with a shade outside them for an open Break out contract
+                [
+                    { top: barrier - 165 * scale, bottom: barrier },
+                    { top: barrier_2, bottom: barrier_2 + 165 * scale, is_bottom_shade: true },
+                ].forEach(({ top, bottom, is_bottom_shade }) => {
+                    draw_partial_shade({
+                        ctx,
+                        start_left: status !== 'open' ? exit.left : previous_tick.left,
+                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                        top,
+                        bottom,
+                        is_bottom_shade,
+                        scale,
+                    });
+                });
+            }
+            if (is_in_contract_details) {
+                ctx.restore();
+                return;
+            }
+
+            if (start.visible || entry.visible || exit.visible) {
+                const sign = profit > 0 ? '+' : '';
+                const profit_text = `${sign}${profit}`;
+                ctx.save();
+                if (current_spot_time.visible && !is_sold) {
+                    // draw 3 text items with different font size and weight:
+                    let profit_text_width = 0;
+                    [
+                        {
+                            text: profit_text,
+                            font: `bold 20px IBM Plex Sans`,
+                            left: current_spot_time.left + 33,
+                            top: current_spot_time.top,
+                        },
+                        {
+                            text: `${currency}`,
+                            font: '10px IBM Plex Sans',
+                            left: current_spot_time.left + 35,
+                            top: current_spot_time.top + 1.5,
+                        },
+                        {
+                            text: `${sign}${profit_percentage}%`,
+                            font: '12px IBM Plex Sans',
+                            left: current_spot_time.left + 32,
+                            top: current_spot_time.top + 16,
+                        },
+                    ].forEach(({ text, font, left, top }) => {
+                        shadowed_text({
+                            ctx,
+                            scale,
+                            is_dark_theme,
+                            text,
+                            font,
+                            text_align: 'start',
+                            color: getColor({ status: 'open', profit }),
+                            left: text === profit_text ? left : left + profit_text_width,
+                            top,
+                        });
+                        profit_text_width =
+                            text === profit_text
+                                ? ctx.measureText(profit_text).actualBoundingBoxRight
+                                : profit_text_width;
+                    });
+                    ctx.restore();
+                }
+            }
         }
 
         if (draw_start_line) {
@@ -293,10 +384,6 @@ const TickContract = RawMarkerMaker(
             ctx.restore();
             return;
         }
-        const entry = ticks[0];
-        const exit = ticks[ticks.length - 1];
-        const previous_tick = ticks[ticks.length - 2] || exit;
-        const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
         // barrier line
         if (start.visible || entry.visible || exit.visible) {
@@ -346,7 +433,7 @@ const TickContract = RawMarkerMaker(
                     if (tick === entry && is_accumulators_contract) {
                         // draw line to start marker having the same y-coordinates:
                         ctx.lineTo(start.left - 1 * scale, entry.top);
-                    } else ctx.lineTo(tick.left - 1 * scale, barrier);
+                    } else if (!is_accumulators_contract) ctx.lineTo(tick.left - 1 * scale, barrier);
                     ctx.stroke();
 
                     ctx.fillStyle = color + opacity;
@@ -408,83 +495,6 @@ const TickContract = RawMarkerMaker(
             }
         }
         ctx.restore();
-
-        if ((start.visible || entry.visible || exit.visible) && is_accumulators_contract) {
-            const sign = profit > 0 ? '+' : '';
-            const profit_text = `${sign}${profit}`;
-            ctx.save();
-            if (current_spot_time.visible && !is_sold) {
-                // draw 3 text items with different font size and weight:
-                let profit_text_width = 0;
-                [
-                    {
-                        text: profit_text,
-                        font: `bold 20px IBM Plex Sans`,
-                        left: current_spot_time.left + 33,
-                        top: current_spot_time.top,
-                    },
-                    {
-                        text: `${currency}`,
-                        font: '10px IBM Plex Sans',
-                        left: current_spot_time.left + 35,
-                        top: current_spot_time.top + 1.5,
-                    },
-                    {
-                        text: `${sign}${profit_percentage}%`,
-                        font: '12px IBM Plex Sans',
-                        left: current_spot_time.left + 32,
-                        top: current_spot_time.top + 16,
-                    },
-                ].forEach(({ text, font, left, top }) => {
-                    shadowed_text({
-                        ctx,
-                        scale,
-                        is_dark_theme,
-                        text,
-                        font,
-                        text_align: 'start',
-                        color: getColor({ status: 'open', profit }),
-                        left: text === profit_text ? left : left + profit_text_width,
-                        top,
-                    });
-                    profit_text_width =
-                        text === profit_text ? ctx.measureText(profit_text).actualBoundingBoxRight : profit_text_width;
-                });
-                ctx.restore();
-            }
-
-            // draw custom barrier shadows with borders and labels for accumulators:
-            if (contract_type === 'ACCU') {
-                if (status === 'open') {
-                    // draw 2 barriers with a shade between them for an open Stay in contract
-                    draw_partial_shade({
-                        ctx,
-                        start_left: previous_tick.left,
-                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                        top: barrier,
-                        bottom: barrier_2,
-                        is_between_shade: true,
-                        scale,
-                    });
-                }
-            } else if (status === 'open') {
-                // draw 2 barriers with a shade outside them for an open Break out contract
-                [
-                    { top: barrier - 165 * scale, bottom: barrier },
-                    { top: barrier_2, bottom: barrier_2 + 165 * scale, is_bottom_shade: true },
-                ].forEach(({ top, bottom, is_bottom_shade }) => {
-                    draw_partial_shade({
-                        ctx,
-                        start_left: previous_tick.left,
-                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                        top,
-                        bottom,
-                        is_bottom_shade,
-                        scale,
-                    });
-                });
-            }
-        }
     }
 );
 

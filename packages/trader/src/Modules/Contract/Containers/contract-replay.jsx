@@ -28,7 +28,8 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
-import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 
 const ContractReplay = ({
     contract_id,
@@ -145,7 +146,7 @@ const ContractReplay = ({
                             </DesktopWrapper>
                             <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                             <DesktopWrapper>
-                                <ReplayChart />
+                                <ReplayChart is_dark_theme={is_dark_theme} is_accumulator_contract={is_accumulator} />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 {is_digit_contract ? (
@@ -157,7 +158,10 @@ const ContractReplay = ({
                                         </SwipeableWrapper>
                                     </React.Fragment>
                                 ) : (
-                                    <ReplayChart />
+                                    <ReplayChart
+                                        is_dark_theme={is_dark_theme}
+                                        is_accumulator_contract={is_accumulator}
+                                    />
                                 )}
                             </MobileWrapper>
                         </div>
@@ -219,6 +223,8 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
+    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_barriers_marker.type];
+
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
     };
@@ -280,11 +286,21 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
+            {props.is_accumulator_contract && (
+                <AccumulatorsMarkerWithBarriers
+                    key={props.accumulators_barriers_marker.key}
+                    is_dark_theme={props.is_dark_theme}
+                    granularity={props.granularity}
+                    is_in_contract_details
+                    {...props.accumulators_barriers_marker}
+                />
+            )}
         </SmartChart>
     );
 };
 
 Chart.propTypes = {
+    accumulators_barriers_marker: PropTypes.object,
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
     chartStateChange: PropTypes.func,
@@ -293,6 +309,7 @@ Chart.propTypes = {
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
     is_accumulator_contract: PropTypes.bool,
+    is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
@@ -338,13 +355,13 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     };
 
     return {
+        accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
         scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
         settings,
-        is_accumulator_contract: contract_store.is_accumulator_contract,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,
         is_digit_contract: contract_store.is_digit_contract,

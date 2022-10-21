@@ -56,51 +56,8 @@ describe('<AccountTransferReceipt />', () => {
         };
     });
 
-    const mockProps = loginid_value => {
-        const history = createBrowserHistory();
-        const resetAccountTransfer = jest.fn();
-        const switchAccount = jest.fn();
-        const selected_to = {
-            balance: '0.01194762',
-            currency: 'BTC',
-            is_crypto: true,
-            is_dxtrade: false,
-            is_mt: false,
-            text: 'BTC',
-            value: 'CR90000401',
-        };
-        const selected_from = {
-            balance: '9400.00',
-            currency: 'USD',
-            is_crypto: false,
-            is_dxtrade: false,
-            is_mt: false,
-            text: 'USD',
-            value: 'CR90000400',
-        };
-        const loginid = loginid_value;
-        const receipt = { amount_transferred: '100' };
-
-        return { history, loginid, receipt, selected_from, selected_to, resetAccountTransfer, switchAccount };
-    };
-
-    it('should show "Your funds have been transferred" message, "View transaction details" and "Make a new transfer" buttons', () => {
-        render(<AccountTransferReceipt />, {
-            wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
-                    <Router history={createBrowserHistory()}>{children}</Router>
-                </StoreProvider>
-            ),
-        });
-
-        expect(screen.getByText('Your funds have been transferred')).toBeInTheDocument();
-        expect(screen.getByText('View transaction details')).toBeInTheDocument();
-        expect(screen.getByText('Make a new transfer')).toBeInTheDocument();
-    });
-
-    it('should redirect to "/reports/statement", when the "View transaction details" button was clicked', () => {
-        const history = createBrowserHistory();
-
+    const history = createBrowserHistory();
+    const renderAccountTransferReceipt = () =>
         render(<AccountTransferReceipt />, {
             wrapper: ({ children }) => (
                 <StoreProvider store={mockRootStore}>
@@ -108,6 +65,17 @@ describe('<AccountTransferReceipt />', () => {
                 </StoreProvider>
             ),
         });
+
+    it('should show "Your funds have been transferred" message, "View transaction details" and "Make a new transfer" buttons', () => {
+        renderAccountTransferReceipt();
+
+        expect(screen.getByText('Your funds have been transferred')).toBeInTheDocument();
+        expect(screen.getByText('View transaction details')).toBeInTheDocument();
+        expect(screen.getByText('Make a new transfer')).toBeInTheDocument();
+    });
+
+    it('should redirect to "/reports/statement", when the "View transaction details" button was clicked', () => {
+        renderAccountTransferReceipt();
 
         const view_transaction_btn = screen.getByText('View transaction details');
         fireEvent.click(view_transaction_btn);
@@ -116,15 +84,7 @@ describe('<AccountTransferReceipt />', () => {
     });
 
     it('should reset account transfer, when the "Make a new transfer" button was clicked', () => {
-        const history = createBrowserHistory();
-
-        render(<AccountTransferReceipt />, {
-            wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
-                    <Router history={history}>{children}</Router>
-                </StoreProvider>
-            ),
-        });
+        renderAccountTransferReceipt();
 
         const make_a_new_transfer_btn = screen.getByText('Make a new transfer');
         fireEvent.click(make_a_new_transfer_btn);
@@ -137,15 +97,8 @@ describe('<AccountTransferReceipt />', () => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
         mockRootStore.client.loginid = 'CR90000403';
-        const history = createBrowserHistory();
 
-        render(<AccountTransferReceipt />, {
-            wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
-                    <Router history={history}>{children}</Router>
-                </StoreProvider>
-            ),
-        });
+        renderAccountTransferReceipt();
 
         const view_transaction_btn = screen.getByText('View transaction details');
         fireEvent.click(view_transaction_btn);
@@ -167,15 +120,8 @@ describe('<AccountTransferReceipt />', () => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
         mockRootStore.client.loginid = 'CR90000403';
-        const history = createBrowserHistory();
 
-        render(<AccountTransferReceipt />, {
-            wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
-                    <Router history={history}>{children}</Router>
-                </StoreProvider>
-            ),
-        });
+        renderAccountTransferReceipt();
 
         const view_transaction_btn = screen.getByText('View transaction details');
         fireEvent.click(view_transaction_btn);

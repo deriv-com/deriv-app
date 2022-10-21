@@ -384,6 +384,14 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
+
+                // Acuity notification only for desktop and non EU clients
+                if (!is_eu) {
+                    this.addNotificationMessage(this.client_notifications.acuity);
+                } else {
+                    this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                }
+
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
@@ -557,6 +565,24 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
+            acuity: {
+                key: 'acuity',
+                header: localize('New trading tools for MT5'),
+                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
+                secondary_btn: {
+                    text: localize('Download Acuity'),
+                    onClick: () => {
+                        window.open(
+                            'https://dashboard.acuitytrading.com/metatrader/DownloadMt5Installer?apiKey=2713b8d0-43ed-4194-b5d7-b1ff60dbdae0&isFull=true',
+                            '_blank'
+                        );
+                    },
+                },
+                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
+                img_alt: 'Acuity',
+                className: 'acuity',
+                type: 'news',
+            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),

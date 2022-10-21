@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
-import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
+import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import CashierNotifications from 'Components/cashier-notifications';
@@ -70,6 +70,28 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    /**
+     * Gets the notifications from local storage, within p2p_settings, where it checks which notification has
+     * been seen. The number of unseen notifications is displayed in vertical tab, notifications count, for P2P.
+     *
+     * @returns {number} Notifications that have not been seen by the user.
+     */
+    @computed
+    get p2p_unseen_notifications() {
+        const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+        const local_storage_settings = p2p_settings[this.root_store.client.loginid];
+
+        if (isEmptyObject(local_storage_settings)) {
+            return 0;
+        }
+
+        const unseen_notifications = local_storage_settings.notifications.filter(
+            notification => !notification.is_seen
+        );
+
+        return unseen_notifications.length;
     }
 
     @action.bound
@@ -283,6 +305,8 @@ export default class GeneralStore extends BaseStore {
         const { client, common, modules } = this.root_store;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
+
+        this.setNotificationCount(this.p2p_unseen_notifications);
 
         if (client.is_logged_in) {
             // avoid calling this again

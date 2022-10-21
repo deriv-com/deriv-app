@@ -22,7 +22,16 @@ const checkNimcStep = documents => {
     return has_nimc;
 };
 
-const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
+const Unsupported = ({
+    country_code,
+    handlePOIforMT5Complete,
+    manual,
+    redirect_button,
+    needs_poa,
+    handleRequireSubmission,
+    allow_poi_resubmission,
+    ...props
+}) => {
     const [detail, setDetail] = React.useState(null);
     const toggleDetail = index => setDetail(index);
 
@@ -31,23 +40,16 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
         country_code,
     });
 
-    if (props?.manual) {
-        if (props.manual.status === identity_status_codes.pending) return <UploadComplete />;
-        else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(props.manual.status)) {
-            if (!props?.allow_poi_resubmission) return <Limited />;
-        } else if (props.manual.status === identity_status_codes.verified) {
-            return <Verified needs_poa={props.needs_poa} redirect_button={props.redirect_button} />;
-        } else if (props.manual.status === identity_status_codes.expired) {
-            return (
-                <Expired
-                    redirect_button={props.redirect_button}
-                    handleRequireSubmission={props.handleRequireSubmission}
-                />
-            );
+    if (manual) {
+        if (manual.status === identity_status_codes.pending) return <UploadComplete />;
+        else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(manual.status)) {
+            if (!allow_poi_resubmission) return <Limited />;
+        } else if (manual.status === identity_status_codes.verified) {
+            return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
+        } else if (manual.status === identity_status_codes.expired) {
+            return <Expired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
         }
     }
-
-    if (props?.manual?.status === identity_status_codes.pending) return <UploadComplete />;
 
     if (detail !== null) {
         return (

@@ -576,6 +576,11 @@ export default class NotificationStore extends BaseStore {
                             'https://dashboard.acuitytrading.com/metatrader/DownloadMt5Installer?apiKey=2713b8d0-43ed-4194-b5d7-b1ff60dbdae0&isFull=true',
                             '_blank'
                         );
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity.key,
+                            should_show_again: false,
+                        });
                     },
                 },
                 img_src: getUrlBase('/public/images/common/acuity_banner.png'),

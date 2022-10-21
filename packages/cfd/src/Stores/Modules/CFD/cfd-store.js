@@ -36,6 +36,8 @@ export default class CFDStore extends BaseStore {
         real: '',
     };
 
+    @observable is_from_mt5_compare_accounts_table = false;
+
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
 
@@ -561,9 +563,14 @@ export default class CFDStore extends BaseStore {
             }
         });
     }
+    @action.bound
+    setIsFromMt5CompareAccountsTable(is_from_compare_accounts) {
+        this.is_from_mt5_compare_accounts_table = is_from_compare_accounts;
+    }
 
     @action.bound
-    toggleCFDPersonalDetailsModal() {
+    toggleCFDPersonalDetailsModal(is_from_compare_accounts = false) {
+        this.setIsFromMt5CompareAccountsTable(is_from_compare_accounts);
         this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 

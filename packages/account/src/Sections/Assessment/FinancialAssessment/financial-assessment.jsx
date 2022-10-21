@@ -317,39 +317,30 @@ const FinancialAssessment = ({
     if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
-    const setInitialFormData = () => {
-        const form_data = {
-            income_source,
-            employment_status,
-            employment_industry,
-            occupation,
-            source_of_wealth,
-            education_level,
-            net_income,
-            estimated_worth,
-            account_turnover,
-            ...(has_trading_experience && {
-                binary_options_trading_experience,
-                binary_options_trading_frequency,
-                cfd_trading_experience,
-                cfd_trading_frequency,
-                forex_trading_experience,
-                forex_trading_frequency,
-                other_instruments_trading_experience,
-                other_instruments_trading_frequency,
-            }),
-        };
-        if (!is_mf) {
-            return form_data;
-        }
-        delete form_data.employment_status;
-        return form_data;
-    };
-
     return (
         <React.Fragment>
             <Formik
-                initialValues={setInitialFormData()}
+                initialValues={{
+                    income_source,
+                    employment_status,
+                    employment_industry,
+                    occupation,
+                    source_of_wealth,
+                    education_level,
+                    net_income,
+                    estimated_worth,
+                    account_turnover,
+                    ...(has_trading_experience && {
+                        binary_options_trading_experience,
+                        binary_options_trading_frequency,
+                        cfd_trading_experience,
+                        cfd_trading_frequency,
+                        forex_trading_experience,
+                        forex_trading_frequency,
+                        other_instruments_trading_experience,
+                        other_instruments_trading_frequency,
+                    }),
+                }}
                 enableReinitialize
                 validate={validateFields}
                 onSubmit={onSubmit}
@@ -437,36 +428,34 @@ const FinancialAssessment = ({
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        {!is_mf && (
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Dropdown
-                                                        placeholder={localize('Employment status')}
-                                                        is_align_text_left
-                                                        name='employment_status'
-                                                        list={getEmploymentStatusList()}
-                                                        value={values.employment_status}
-                                                        onChange={handleChange}
-                                                        handleBlur={handleBlur}
-                                                        error={touched.employment_status && errors.employment_status}
-                                                    />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <SelectNative
-                                                        placeholder={localize('Please select')}
-                                                        name='employment_status'
-                                                        label={localize('Employment status')}
-                                                        list_items={getEmploymentStatusList()}
-                                                        value={values.employment_status}
-                                                        error={touched.employment_status && errors.employment_status}
-                                                        onChange={e => {
-                                                            setFieldTouched('employment_status', true);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                </MobileWrapper>
-                                            </fieldset>
-                                        )}
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Employment status')}
+                                                    is_align_text_left
+                                                    name='employment_status'
+                                                    list={getEmploymentStatusList()}
+                                                    value={values.employment_status}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.employment_status && errors.employment_status}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='employment_status'
+                                                    label={localize('Employment status')}
+                                                    list_items={getEmploymentStatusList()}
+                                                    value={values.employment_status}
+                                                    error={touched.employment_status && errors.employment_status}
+                                                    onChange={e => {
+                                                        setFieldTouched('employment_status', true);
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Dropdown

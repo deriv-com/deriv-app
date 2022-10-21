@@ -21,7 +21,6 @@ import {
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list.js';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -162,7 +161,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form
@@ -535,42 +534,6 @@ const PersonalDetails = ({
                                                             />
                                                         </div>
                                                     </div>
-                                                )}
-                                                {'employment_status' in props.value && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Dropdown
-                                                                placeholder={localize('Employment status')}
-                                                                is_align_text_left
-                                                                name='employment_status'
-                                                                list={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                name='employment_status'
-                                                                label={localize('Employment status')}
-                                                                list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                                onChange={e => {
-                                                                    setFieldTouched('employment_status', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                            />
-                                                        </MobileWrapper>
-                                                    </fieldset>
                                                 )}
                                                 {warning_items?.tax_identification_number && (
                                                     <div className='details-form__tin-warn-divider' />

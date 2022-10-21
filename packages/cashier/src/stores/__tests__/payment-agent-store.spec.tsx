@@ -4,7 +4,7 @@ import PaymentAgentStore from '../payment-agent-store';
 jest.mock('../verification-store');
 
 describe('PaymentAgentStore', () => {
-    let payment_agent_store;
+    let payment_agent_store, spyWindow;
     const mocked_payment_agent_list = {
         list: [
             {
@@ -47,7 +47,7 @@ describe('PaymentAgentStore', () => {
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000000',
             paymentagent_loginid: 'CR90000000',
-            phones: [{ phone_number: '+12345678' }],
+            phone_numbers: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }],
             urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
@@ -61,7 +61,7 @@ describe('PaymentAgentStore', () => {
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000002',
             paymentagent_loginid: 'CR90000002',
-            phones: [{ phone_number: '+12345678' }],
+            phone_numbers: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
@@ -112,11 +112,11 @@ describe('PaymentAgentStore', () => {
             wait: () => Promise.resolve(),
         };
 
-        payment_agent_store = new PaymentAgentStore({ root_store, WS });
+        payment_agent_store = new PaymentAgentStore(WS, root_store);
     });
 
     beforeAll(() => {
-        const spyWindow = jest.spyOn(window, 'window', 'get');
+        spyWindow = jest.spyOn(window, 'window', 'get');
         spyWindow.mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa,
@@ -164,7 +164,7 @@ describe('PaymentAgentStore', () => {
     });
 
     it('should clear the list of supported banks', () => {
-        payment_agent_store.clearSuppertedBanks();
+        payment_agent_store.clearSupportedBanks();
         expect(payment_agent_store.supported_banks.length).toBe(0);
     });
 
@@ -193,7 +193,7 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000000',
                     paymentagent_loginid: 'CR90000000',
-                    phones: [{ phone_number: '+12345678' }],
+                    phone_numbers: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
@@ -229,7 +229,7 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000002',
                     paymentagent_loginid: 'CR90000002',
-                    phones: [{ phone_number: '+12345678' }],
+                    phone_numbers: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
@@ -254,7 +254,7 @@ describe('PaymentAgentStore', () => {
                     min_withdrawal: '10',
                     name: 'Payment Agent of CR90000002',
                     paymentagent_loginid: 'CR90000002',
-                    phones: [{ phone_number: '+12345678' }],
+                    phone_numbers: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
@@ -311,7 +311,7 @@ describe('PaymentAgentStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
         payment_agent_store.setIsTryWithdrawSuccessful(true);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });
 
@@ -366,7 +366,7 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: [{ phone_number: '+12345678' }],
+                    phone_numbers: [{ phone_number: '+12345678' }],
                     url: [{ url: 'http://www.pa.com' }],
                 },
             ])
@@ -387,7 +387,7 @@ describe('PaymentAgentStore', () => {
                     max_withdrawal: '2000',
                     min_withdrawal: '10',
                     email: 'pa@example.com',
-                    phone: [{ phone_number: '+12345678' }],
+                    phone_numbers: [{ phone_number: '+12345678' }],
                     url: [{ url: 'http://www.pa.com' }],
                 },
             ])
@@ -405,7 +405,7 @@ describe('PaymentAgentStore', () => {
 
         await payment_agent_store.onMountPaymentAgentWithdraw();
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.confirm).toEqual({
             amount: '200',
             currency: 'USD',
@@ -430,7 +430,7 @@ describe('PaymentAgentStore', () => {
         const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
         payment_agent_store.resetPaymentAgent();
-        expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenLastCalledWith({ code: '', message: '' });
         expect(payment_agent_store.is_withdraw).toBeFalsy();
         expect(spyClearVerification).toHaveBeenCalled();
         expect(payment_agent_store.active_tab_index).toBe(0);

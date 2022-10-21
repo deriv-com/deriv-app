@@ -1,7 +1,7 @@
 import PaymentAgentTransferStore from '../payment-agent-transfer-store';
 import { routes } from '@deriv/shared';
 
-let payment_agent_transfer_store, response_payment_agent, root_store, transfer_data, WS;
+let payment_agent_transfer_store, response_payment_agent, root_store, spyWindow, transfer_data, WS;
 
 beforeEach(() => {
     WS = {
@@ -36,7 +36,7 @@ beforeEach(() => {
             },
         },
     };
-    payment_agent_transfer_store = new PaymentAgentTransferStore({ WS, root_store });
+    payment_agent_transfer_store = new PaymentAgentTransferStore(WS, root_store);
     response_payment_agent = {
         paymentagent_list: {
             list: [{ paymentagent_loginid: 'CR9000000' }],
@@ -48,6 +48,19 @@ beforeEach(() => {
         description: 'This is description',
         transfer_to: 'CR9000000',
     };
+});
+
+beforeAll(() => {
+    spyWindow = jest.spyOn(window, 'window', 'get');
+    spyWindow.mockImplementation(() => ({
+        location: {
+            pathname: routes.cashier_pa_transfer,
+        },
+    }));
+});
+
+afterAll(() => {
+    spyWindow.mockRestore();
 });
 
 describe('PaymentAgentTransferStore', () => {
@@ -80,18 +93,9 @@ describe('PaymentAgentTransferStore', () => {
     });
 
     it('should route to /cashier/deposit if there is no payment agent and window.location.pathname ends with /cashier/payment-agent-transfer', () => {
-        const windowSpy = jest.spyOn(window, 'window', 'get');
-        windowSpy.mockImplementation(() => ({
-            location: {
-                pathname: routes.cashier_pa_transfer,
-            },
-        }));
-
         payment_agent_transfer_store.setIsPaymentAgent(false);
 
         expect(payment_agent_transfer_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-
-        windowSpy.mockRestore();
     });
 
     it('shoud clear an error and set correct is_try_transfer_successful value', () => {
@@ -99,7 +103,7 @@ describe('PaymentAgentTransferStore', () => {
 
         payment_agent_transfer_store.setIsTryTransferSuccessful(true);
 
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_transfer_store.is_try_transfer_successful).toBeTruthy();
     });
 
@@ -143,8 +147,8 @@ describe('PaymentAgentTransferStore', () => {
         payment_agent_transfer_store.setMinMaxPaymentAgentTransfer(transfer_limit);
 
         expect(payment_agent_transfer_store.transfer_limit).toEqual({
-            min: transfer_limit.min_withdrawal,
-            max: transfer_limit.max_withdrawal,
+            min_withdrawal: transfer_limit.min_withdrawal,
+            max_withdrawal: transfer_limit.max_withdrawal,
         });
     });
 
@@ -153,7 +157,7 @@ describe('PaymentAgentTransferStore', () => {
         payment_agent_transfer_store.resetPaymentAgentTransfer();
 
         expect(payment_agent_transfer_store.is_transfer_successful).toBeFalsy();
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
     });
 
     it('should get current payment agent from response_payment_agent', async () => {
@@ -196,8 +200,8 @@ describe('PaymentAgentTransferStore', () => {
         await payment_agent_transfer_store.onMountPaymentAgentTransfer();
 
         expect(payment_agent_transfer_store.transfer_limit).toEqual({
-            min: 1,
-            max: 10,
+            min_withdrawal: 1,
+            max_withdrawal: 10,
         });
     });
 

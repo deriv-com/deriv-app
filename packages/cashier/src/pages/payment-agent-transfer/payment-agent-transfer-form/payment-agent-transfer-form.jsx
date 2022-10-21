@@ -19,9 +19,12 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
-        ...(transfer_limit.min && {
-            min: transfer_limit.min,
-            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
+        ...(transfer_limit.min_withdrawal && {
+            min: transfer_limit.min_withdrawal,
+            max:
+                +balance >= transfer_limit.min_withdrawal && +balance < transfer_limit.max_withdrawal
+                    ? balance
+                    : transfer_limit.max_withdrawal,
         }),
     });
 

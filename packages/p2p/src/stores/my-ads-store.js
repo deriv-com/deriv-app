@@ -7,6 +7,7 @@ import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, rangeValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
     @observable activate_deactivate_error_message = '';
@@ -379,7 +380,7 @@ export default class MyAdsStore extends BaseStore {
                             floating_rate_store.setChangeAdAlert(should_update_ads);
                         }
                     }
-                } else if (response.error.code === 'PermissionDenied') {
+                } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);

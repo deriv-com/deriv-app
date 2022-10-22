@@ -305,8 +305,10 @@ export default class NotificationStore extends BaseStore {
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
-                const poo_required = needs_verification?.includes('ownership') && ownership?.status !== 'rejected';
-                const poo_rejected = needs_verification?.includes('ownership') && ownership?.status === 'rejected';
+                const poo_required =
+                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() !== 'rejected';
+                const poo_rejected =
+                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
 
                 this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
 

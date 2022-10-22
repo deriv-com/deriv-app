@@ -7,7 +7,7 @@ import { Loading } from '@deriv/components';
 import POONotRequired from 'Components/poo-not-required';
 import POOVerified from 'Components/poo-verified';
 import POORejetced from 'Components/poo-rejected';
-import { VERIFIED, PENDING, NONE, REJECTED, OWNERSHIP } from './constants/constants';
+import { POO_STATUSES } from './constants/constants';
 
 export const ProofOfOwnership = ({
     account_status,
@@ -17,15 +17,15 @@ export const ProofOfOwnership = ({
     client_email,
 }) => {
     const cards = account_status?.authentication?.ownership?.requests;
-    const needs_verification = account_status?.authentication?.needs_verification?.includes(OWNERSHIP);
-    const [status, setStatus] = useState(NONE);
+    const needs_verification = account_status?.authentication?.needs_verification?.includes(POO_STATUSES.ownership);
+    const [status, setStatus] = useState(POO_STATUSES.none);
     useEffect(() => {
-        setStatus(account_status?.authentication?.ownership?.status);
+        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());
     }, [account_status]);
     const handleRequireSubmission = () => {
-        setStatus(NONE);
+        setStatus(POO_STATUSES.none);
     };
-    if (needs_verification && status !== REJECTED) {
+    if (needs_verification && status !== POO_STATUSES.rejected) {
         return (
             <ProofOfOwnershipForm
                 cards={cards}
@@ -36,16 +36,16 @@ export const ProofOfOwnership = ({
             />
         ); // Proof of ownership is required.
     }
-    if (status === VERIFIED) {
+    if (status === POO_STATUSES.verified) {
         return <POOVerified />; // Proof of ownership verified
     }
-    if (status === PENDING) {
+    if (status === POO_STATUSES.pending) {
         return <POOSubmitted />; // Proof of ownership submitted pending review
     }
-    if (status === NONE) {
+    if (status === POO_STATUSES.none) {
         return <POONotRequired />; // Client does not need proof of ownership.
     }
-    if (status === REJECTED) {
+    if (status === POO_STATUSES.rejected) {
         return <POORejetced handleRequireSubmission={handleRequireSubmission} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;

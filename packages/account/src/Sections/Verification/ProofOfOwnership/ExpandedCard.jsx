@@ -5,6 +5,7 @@ import { Input, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 import classNames from 'classnames';
+import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants.js';
 
 const ExpandedCard = ({
     card_details,
@@ -23,7 +24,7 @@ const ExpandedCard = ({
         setFieldValue(name, file);
     };
     const handleBlur = (name, payment_method_identifier) => {
-        handleIdentifierChange(name, formatIdentifier(payment_method_identifier, card_details?.icon));
+        handleIdentifierChange(name, formatIdentifier(payment_method_identifier, card_details?.identifier_type));
     };
     const handleIdentifierChange = (name, payment_method_identifier) => {
         setFieldValue(name, payment_method_identifier);
@@ -44,15 +45,20 @@ const ExpandedCard = ({
         ) : (
             ''
         );
-    const formatIdentifier = (id, type) => {
-        let formatted_id = id;
-        if (
-            id &&
-            ['IcCreditCard', 'IcVisaLight', 'IcMasterCardLight', 'IcVisaDark', 'IcMasterCardDark'].some(s => s === type)
-        )
-            formatted_id = `${id.substr(0, 6)}XXXXXX${id.substr(12)}`;
-        else if (type === 'IcEwallet') return formatted_id;
-        return formatted_id.replace(/\s/g, '').replace(/(\w{4})/g, '$1 ');
+    const formatIdentifier = (payment_method_identifier, identifier_type) => {
+        let formatted_id = payment_method_identifier?.replace(/\s/g, '') ?? '';
+        if (identifier_type === IDENTIFIER_TYPES.card_number) {
+            if (
+                formatted_id.length !== 16 ||
+                (formatted_id.length === 16 && VALIDATIONS.has_invalid_characters.test(formatted_id))
+            ) {
+                return formatted_id;
+            }
+            formatted_id = `${formatted_id.substring(0, 6)}XXXXXX${formatted_id.substring(12)}`;
+        } else if ([IDENTIFIER_TYPES.email_address, IDENTIFIER_TYPES.user_id].some(s => s === identifier_type)) {
+            return formatted_id;
+        }
+        return formatted_id.replace(/(\w{4})/g, '$1 ').trim();
     };
     return (
         <>
@@ -93,7 +99,6 @@ const ExpandedCard = ({
                             </div>
                         )}
                         {controls_to_show.map(i => (
-                            // Using control_index Headers, because I have no unique value to use as a key
                             <React.Fragment key={`${i}${card_details?.id}}`}>
                                 <div
                                     className={classNames('proof-of-ownership__card-open-inputs-upload', {

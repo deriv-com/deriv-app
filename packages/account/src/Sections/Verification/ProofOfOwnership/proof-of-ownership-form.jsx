@@ -11,6 +11,7 @@ import FormBodySection from '../../../Components/form-body-section';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import Card from './Card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
+import { VALIDATIONS } from './constants/constants';
 
 const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
@@ -38,7 +39,8 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
         errors.data = [...document_upload_errors];
         let is_file_uploaded;
         values.data.map((element, index) => {
-            const is_pm_identifier_provided = element?.is_generic_pm || element?.payment_method_identifier?.length > 0;
+            const payment_identifier_length = element?.payment_method_identifier?.length;
+            const is_pm_identifier_provided = element?.is_generic_pm || payment_identifier_length > 0;
             is_file_uploaded = false;
             element.files.forEach((file, i) => {
                 if (file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.type)) {
@@ -62,6 +64,17 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
                     errors.data[index].payment_method_identifier = localize('Please complete this field.');
                 }
                 checked_indices.push(index);
+            }
+            if (
+                (element?.is_credit_or_debit_card &&
+                    payment_identifier_length !== 0 &&
+                    (payment_identifier_length !== 16 || payment_identifier_length > 19) &&
+                    !VALIDATIONS.is_formated_card_number.test(element?.payment_method_identifier)) ||
+                (payment_identifier_length === 16 &&
+                    VALIDATIONS.has_invalid_characters.test(element?.payment_method_identifier))
+            ) {
+                errors.data[index] = {};
+                errors.data[index].payment_method_identifier = localize('Enter your full card number');
             }
         });
         is_file_uploaded = checked_indices.length === values?.data?.length;

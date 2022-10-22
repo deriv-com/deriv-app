@@ -4,6 +4,7 @@ import * as React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
 import paymentMethodConfig from './payment-method-config';
+import { IDENTIFIER_TYPES } from './constants/constants.js';
 
 const Card = ({
     card,
@@ -23,6 +24,8 @@ const Card = ({
     values.data[index].files_required = card?.documents_required ?? card_details?.documents_required;
     values.data[index].is_generic_pm = !card_details?.input_label;
     card_details.id = card?.id;
+    values.data[index].is_credit_or_debit_card = card_details?.identifier_type === IDENTIFIER_TYPES.card_number;
+
     const updateShowBrowseButton = (sub_index, value) => {
         const show_browse_button_state = [...show_browse_button];
         show_browse_button_state[sub_index] = value;

@@ -25,10 +25,10 @@ describe('proof-of-ownership-form.jsx', () => {
         fireEvent.click(poo_dropdown_button);
         const identifier_input = await screen.findByTestId('payment_method_identifier');
         act(() => {
-            fireEvent.change(identifier_input, { target: { value: '12345678910111213' } });
+            fireEvent.change(identifier_input, { target: { value: '1234567891011121' } });
             fireEvent.blur(identifier_input);
         });
-        const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', {
+        const element = screen.getByDisplayValue('1234 56XX XXXX 1121', {
             exact: true,
         });
         expect(element).toBeInTheDocument();

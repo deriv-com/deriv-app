@@ -6,12 +6,6 @@ import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import { StoreProvider } from '../../../hooks';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));

@@ -5,7 +5,7 @@ import { TServerError } from 'Types';
 export default class ErrorStore {
     @observable message = '';
     @observable code = '';
-    @observable fields = '';
+    @observable fields: string[] | string = '';
     @observable is_show_full_page = false;
     @observable onClickButton: VoidFunction | null = null;
     @observable is_ask_uk_funds_protection = false;

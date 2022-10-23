@@ -1,9 +1,8 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -17,23 +16,7 @@ import RecentTransaction from 'Components/recent-transaction';
 import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
 import { Virtual } from 'Components/cashier-container';
-
-type TErrorFull = {
-    code?: string;
-    fields?: string;
-    is_ask_authentication: boolean;
-    is_ask_financial_risk_approval: boolean;
-    is_ask_uk_funds_protection: boolean;
-    is_self_exclusion_max_turnover_set: boolean;
-    is_show_full_page: boolean | null;
-    message?: string;
-    onClickButton?: () => void | null;
-};
-
-type TErrorShort = {
-    code: string;
-    message: string;
-};
+import { useStore } from '../../hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -41,35 +24,7 @@ type TWithdrawalSideNoteProps = {
 };
 
 type TWithdrawalProps = {
-    balance: TClientStore['balance'];
-    container: string;
-    crypto_transactions: TCryptoTransactionDetails[];
-    current_currency_type: TClientStore['current_currency_type'];
-    currency: TClientStore['currency'];
-    error: TErrorFull;
-    iframe_url: string;
-    is_10k_withdrawal_limit_reached: boolean;
-    is_cashier_locked: boolean;
-    is_crypto: boolean;
-    is_crypto_transactions_visible: boolean;
-    is_switching: TClientStore['is_switching'];
-    is_system_maintenance: boolean;
-    is_virtual: TClientStore['is_virtual'];
-    is_withdraw_confirmed: boolean;
-    is_withdrawal_locked: boolean;
-    tab_index: number;
-    verification_code: TClientStore['verification_code']['payment_withdraw'];
-    verify_error: TErrorFull;
-    check10kLimit: () => void;
-    setActiveTab: (container: string) => void;
-    setErrorMessage: (
-        error: TErrorShort | string,
-        onClickButton?: () => void | null,
-        is_show_full_page?: boolean | null
-    ) => void;
     setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
-    willMountWithdraw: (verification_code: TClientStore['verification_code']['payment_withdraw']) => void;
-    recentTransactionOnMount: () => void;
 };
 
 const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
@@ -93,33 +48,51 @@ const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) =
     return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
-const Withdrawal = ({
-    balance,
-    check10kLimit,
-    container,
-    crypto_transactions,
-    currency,
-    current_currency_type,
-    error,
-    iframe_url,
-    is_10k_withdrawal_limit_reached,
-    is_cashier_locked,
-    is_crypto,
-    is_crypto_transactions_visible,
-    is_switching,
-    is_system_maintenance,
-    is_virtual,
-    is_withdraw_confirmed,
-    is_withdrawal_locked,
-    setActiveTab,
-    setErrorMessage,
-    setSideNotes,
-    tab_index,
-    verify_error,
-    verification_code,
-    willMountWithdraw,
-    recentTransactionOnMount,
-}: TWithdrawalProps) => {
+const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
+    const {
+        client,
+        modules: {
+            cashier: { iframe, general_store, transaction_history, withdraw },
+        },
+    } = useStore();
+
+    const {
+        balance,
+        currency,
+        current_currency_type,
+        is_switching,
+        is_virtual,
+        verification_code: { payment_withdraw: verification_code },
+    } = client;
+
+    const {
+        is_cashier_locked,
+        is_crypto,
+        is_system_maintenance,
+        setActiveTab,
+        cashier_route_tab_index: tab_index,
+    } = general_store;
+
+    const { iframe_url } = iframe;
+
+    const {
+        crypto_transactions,
+        is_crypto_transactions_visible,
+        onMount: recentTransactionOnMount,
+    } = transaction_history;
+
+    const {
+        check10kLimit,
+        container,
+        error,
+        is_10k_withdrawal_limit_reached,
+        is_withdraw_confirmed,
+        is_withdrawal_locked,
+        error: { setErrorMessage },
+        verification: { error: verify_error },
+        willMountWithdraw,
+    } = withdraw;
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -129,7 +102,7 @@ const Withdrawal = ({
     React.useEffect(() => {
         setActiveTab(container);
         return () => {
-            setErrorMessage('');
+            setErrorMessage({ code: '', message: '' });
         };
     }, [container, setActiveTab, setErrorMessage]);
 
@@ -219,29 +192,4 @@ const Withdrawal = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    balance: client.balance,
-    check10kLimit: modules.cashier.withdraw.check10kLimit,
-    container: modules.cashier.withdraw.container,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    current_currency_type: client.current_currency_type,
-    error: modules.cashier.withdraw.error,
-    iframe_url: modules.cashier.iframe.iframe_url,
-    is_10k_withdrawal_limit_reached: modules.cashier.withdraw.is_10k_withdrawal_limit_reached,
-    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_crypto: modules.cashier.general_store.is_crypto,
-    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_switching: client.is_switching,
-    is_system_maintenance: modules.cashier.general_store.is_system_maintenance,
-    is_virtual: client.is_virtual,
-    is_withdraw_confirmed: modules.cashier.withdraw.is_withdraw_confirmed,
-    is_withdrawal_locked: modules.cashier.withdraw.is_withdrawal_locked,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setActiveTab: modules.cashier.general_store.setActiveTab,
-    setErrorMessage: modules.cashier.withdraw.error.setErrorMessage,
-    tab_index: modules.cashier.general_store.cashier_route_tab_index,
-    verification_code: client.verification_code.payment_withdraw,
-    verify_error: modules.cashier.withdraw.verification.error,
-    willMountWithdraw: modules.cashier.withdraw.willMountWithdraw,
-}))(Withdrawal);
+export default observer(Withdrawal);

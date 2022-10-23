@@ -108,10 +108,12 @@ export default class ClientStore extends BaseStore {
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
+        social_email_change: '',
         system_email_change: '',
     };
 
     @observable new_email = {
+        social_email_change: '',
         system_email_change: '',
     };
 

@@ -68,9 +68,9 @@ describe('WithdrawalLocked', () => {
         };
     });
 
-    const renderWithdrawalLocked = store => {
+    const renderWithdrawalLocked = () => {
         return render(
-            <StoreProvider store={store}>
+            <StoreProvider store={mockRootStore}>
                 <Router history={history}>
                     <WithdrawalLocked />
                 </Router>
@@ -79,7 +79,7 @@ describe('WithdrawalLocked', () => {
     };
 
     it('Should show "Check proof of identity document verification status" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_identity_btn');
         expect(history.location.pathname).toBe(routes.proof_of_identity);
@@ -87,7 +87,7 @@ describe('WithdrawalLocked', () => {
 
     it('Should show "Upload a proof of identity to verify your identity" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
         mockRootStore.client.account_status = setAccountStatus('none', '', '');
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_identity_btn');
         expect(history.location.pathname).toBe(routes.proof_of_identity);
@@ -95,7 +95,7 @@ describe('WithdrawalLocked', () => {
 
     it('Should show "Check proof of address document verification status" message and redirect to account/proof_of_address when "-->" button clicked', () => {
         mockRootStore.client.account_status = setAccountStatus('', 'pending', 'document');
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
         expect(history.location.pathname).toBe(routes.proof_of_address);
@@ -103,7 +103,7 @@ describe('WithdrawalLocked', () => {
 
     it('Should show "Upload a proof of address to verify your address" message and redirect to account/proof_of_address when "-->" button clicked', () => {
         mockRootStore.client.account_status = setAccountStatus('', 'none', 'document');
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
         expect(history.location.pathname).toBe(routes.proof_of_address);
@@ -112,7 +112,7 @@ describe('WithdrawalLocked', () => {
     it('Should show "Complete the financial assessment form" message and redirect to account/financial_assessment when "-->" button clicked', () => {
         mockRootStore.client.account_status = setAccountStatus('', '', '');
         mockRootStore.modules.cashier.withdraw.error.is_ask_financial_risk_approval = true;
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         fireButtonEvent('financial_assessment_btn');
         expect(history.location.pathname).toBe(routes.financial_assessment);
@@ -121,7 +121,7 @@ describe('WithdrawalLocked', () => {
     it('should render <CashierLocked /> component', () => {
         mockRootStore.client.account_status = setAccountStatus('', '', '');
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = false;
-        renderWithdrawalLocked(mockRootStore);
+        renderWithdrawalLocked();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });

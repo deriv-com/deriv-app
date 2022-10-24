@@ -77,7 +77,7 @@ export default class OnRampStore extends BaseStore {
 
     @computed
     get should_show_dialog() {
-        return this.api_error;
+        return !!this.api_error;
     }
 
     @action.bound

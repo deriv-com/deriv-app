@@ -199,10 +199,6 @@ const AppstoreAppCard = ({
     faded,
     disabled,
 }: TCFDAppCard) => {
-    /* eslint-disabled */
-    // console.log('faded_el ', faded);
-    /* eslint-enable */
-
     const [is_hovered, set_hovered] = React.useState(false);
     const main_class = 'appstore-app-card';
     const dark_mode_on = dark && 'appstore-app-card--dark';

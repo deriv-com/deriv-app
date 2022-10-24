@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonLink, Text, Button } from '@deriv/components';
+import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 import { isMobile } from '@deriv/shared';

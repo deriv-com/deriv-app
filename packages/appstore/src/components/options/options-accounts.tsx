@@ -1,16 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import {
-    Text,
-    StaticUrl,
-    DesktopWrapper,
-    MobileWrapper,
-    MobileDialog,
-    Modal,
-    Button,
-    Loading,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Text, StaticUrl, MobileDialog, Modal, Button, Loading } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import PlatformLauncher from '../platform-launcher';
 import OptionsAccount from '../account';

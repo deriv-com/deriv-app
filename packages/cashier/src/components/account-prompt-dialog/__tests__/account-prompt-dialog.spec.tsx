@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AccountPromptDialog from '../account-prompt-dialog.jsx';
+import AccountPromptDialog from '../account-prompt-dialog';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

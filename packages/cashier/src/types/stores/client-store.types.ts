@@ -2,7 +2,6 @@ import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, GetLimits } from 
 import { TAccountsList, TMT5LoginAccount } from 'Types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
-type TAccountList = Array<TAccount & { title: string }>;
 
 // balance is missing in @deriv/api-types
 type TActiveAccounts = TAccount & {

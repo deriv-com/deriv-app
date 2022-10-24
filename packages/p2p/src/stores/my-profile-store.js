@@ -4,6 +4,7 @@ import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 import BaseStore from 'Stores/base_store';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
@@ -209,7 +210,7 @@ export default class MyProfileStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
-            } else if (response.error.code === 'PermissionDenied') {
+            } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.root_store.general_store.setIsBlocked(true);
             } else {
                 this.setErrorMessage(response.error.message);

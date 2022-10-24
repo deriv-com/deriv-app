@@ -84,12 +84,16 @@
             @include mobile {
                 display: inline-grid;
                 grid-template-columns: auto auto;
-                margin: 0 0 1rem;
+                margin: 0 0 3rem;
 
                 .dp2p-avatar {
-                    align-self: flex-start;
-                    margin-top: 0.6rem;
-                    margin-right: 0.7rem;
+                    align-self: center;
+
+                    @include mobile {
+                        align-self: flex-start;
+                        margin-top: 0.6rem;
+                        margin-right: 0.7rem;
+                    }
                 }
             }
         }

@@ -147,7 +147,6 @@ export const icons =
         'IcCashierPaymentAgent',
         'IcCashierPaypalDark',
         'IcCashierPaypalLight',
-        'IcCashierPaymentAgent',
         'IcCashierPerfectMoneyDark',
         'IcCashierPerfectMoneyLight',
         'IcCashierPermatabankDark',
@@ -273,7 +272,6 @@ export const icons =
         'IcChevronRightBold',
         'IcChevronRight',
         'IcChevronUpBold',
-        'IcChevronUpNormal',
         'IcChevronUp',
         'IcCircleDynamicColor',
         'IcCircle',
@@ -881,4 +879,4 @@ export const icons =
         'IcWalletZingpayDark',
         'IcWalletZingpayLight',
     ],
-};
+}

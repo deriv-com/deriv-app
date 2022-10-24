@@ -9,10 +9,6 @@ import TicksHistoryCounter from './ticks-history-counter';
 import { AccumulatorsStatsManualModal } from './accumulators-stats-manual-modal';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 
-export const CONTRACT_TYPES = {
-    STAY_IN: 'Stay in',
-    BREAK_OUT: 'Break out',
-};
 export const ROW_SIZES = {
     DESKTOP_COLLAPSED: 10,
     DESKTOP_EXPANDED: 10,
@@ -23,11 +19,8 @@ export const ROW_SIZES = {
 const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) => {
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
-    const [displayed_contract_name, setDisplayedContractName] = React.useState(CONTRACT_TYPES.STAY_IN);
-    const { ACCU, DECCU } = ticks_history_stats;
-    const widget_title = localize('{{displayed_contract_name}} history', { displayed_contract_name });
-    const ticks_history =
-        (displayed_contract_name === CONTRACT_TYPES.STAY_IN ? ACCU?.ticks_stayed_in : DECCU?.ticks_stayed_in) || [];
+    const widget_title = localize('Stay in history');
+    const ticks_history = ticks_history_stats?.ticks_stayed_in || [];
     const history_text_size = isDesktop() || !is_collapsed ? 'xxs' : 'xxxs';
 
     const rows = ticks_history.reduce((acc, _el, index) => {
@@ -39,12 +32,6 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
         }
         return acc;
     }, []);
-
-    const handleSwitchBetweenContracts = () => {
-        // don't switch if ACCU or DECCU history is missing
-        if (!ACCU?.ticks_stayed_in?.length || !DECCU?.ticks_stayed_in?.length) return;
-        setDisplayedContractName(Object.values(CONTRACT_TYPES).find(name => name !== displayed_contract_name));
-    };
 
     const DynamicWrapper = {
         Component: isMobile() ? MobileDialog : React.Fragment,
@@ -74,15 +61,6 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
                     <Text weight='bold' size={isMobile() ? 'xxxs' : 'xxs'} className='accumulators-stats__title-text'>
                         {widget_title}
                     </Text>
-                    <div
-                        data-testid='dt_accu_stats_switcher'
-                        className='accumulators-stats__switcher'
-                        onClick={handleSwitchBetweenContracts}
-                    >
-                        {['IcChevronUpNormal', 'IcChevronDown'].map(icon => (
-                            <Icon key={icon} icon={icon} />
-                        ))}
-                    </div>
                 </div>
                 <Text size={history_text_size} className='accumulators-stats__history'>
                     {!is_collapsed ? (

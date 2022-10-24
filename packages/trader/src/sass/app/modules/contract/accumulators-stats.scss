@@ -49,11 +49,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 11.9rem;
+        width: 8.7rem;
 
         @include mobile {
             width: unset;
-            min-width: 9.8rem;
             flex-shrink: 1;
         }
         &-text {
@@ -68,11 +67,6 @@
                 opacity: 1;
             }
         }
-    }
-    &__switcher {
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
     }
     &__history {
         display: flex;

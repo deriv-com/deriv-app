@@ -7,14 +7,14 @@ const PurchaseButtonsOverlay = ({ is_to_cover_one_button = false, message }) => 
     const desktop_text_size = is_to_cover_one_button ? 'xxs' : 'xs';
     return (
         <div
-            className={classNames('contract-limit-overlay', {
-                'contract-limit-overlay__one-button': !isMobile() && is_to_cover_one_button,
+            className={classNames('purchase-buttons-overlay', {
+                'purchase-buttons-overlay__one-button': !isMobile() && is_to_cover_one_button,
             })}
         >
             <Text
                 weight='bold'
                 size={isMobile() ? 'xxs' : desktop_text_size}
-                className='contract-limit-overlay__caption'
+                className='purchase-buttons-overlay__caption'
             >
                 {message}
             </Text>

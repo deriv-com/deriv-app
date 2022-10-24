@@ -63,6 +63,7 @@ const P2PCashier = ({
     removeNotificationByKey,
     removeNotificationMessage,
     residence,
+    setP2POrderProps,
     setNotificationCount,
     setCurrentFocus,
     balance,
@@ -177,6 +178,7 @@ const P2PCashier = ({
             setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
+            setP2POrderProps={setP2POrderProps}
             should_show_verification={/verification/.test(location.hash)}
             verification_action={action_param}
             verification_code={code_param}
@@ -203,6 +205,7 @@ export default connect(({ client, common, modules, notifications, ui }: TRootSto
     residence: client.residence,
     setNotificationCount: modules.cashier.general_store.setNotificationCount,
     setOnRemount: modules.cashier.general_store.setOnRemount,
+    setP2POrderProps: notifications.setP2POrderProps,
     is_mobile: ui.is_mobile,
     setCurrentFocus: ui.setCurrentFocus,
     current_focus: ui.current_focus,

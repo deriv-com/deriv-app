@@ -73,7 +73,8 @@
             position: relative;
             white-space: nowrap;
             margin-top: auto;
-            grid-area: payment-icons;
+            grid-row: payment-icons;
+            grid-column-start: payment-icons;
             overflow: hidden;
 
             &-shadow {

@@ -3,29 +3,24 @@ import { useHistory } from 'react-router-dom';
 import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore } from 'Types';
+import { observer } from 'mobx-react-lite';
 import CashierLocked from 'Components/cashier-locked';
+import { useStore } from '../../../hooks';
 
-type TDepositLocked = {
-    account_status: TClientStore['account_status'];
-    is_financial_account: TClientStore['is_financial_account'];
-    is_financial_information_incomplete: TClientStore['is_financial_information_incomplete'];
-    is_tnc_needed: TClientStore['is_tnc_needed'];
-    is_trading_experience_incomplete: TClientStore['is_trading_experience_incomplete'];
-    onMount: () => void;
-    standpoint: TClientStore['standpoint'];
-};
+const DepositLocked = () => {
+    const { client, modules } = useStore();
+    const {
+        account_status,
+        is_financial_account,
+        is_financial_information_incomplete,
+        is_tnc_needed,
+        is_trading_experience_incomplete,
+        standpoint,
+    } = client;
+    const { cashier } = modules;
+    const { deposit } = cashier;
+    const { onMountDeposit: onMount } = deposit;
 
-const DepositLocked = ({
-    account_status,
-    is_financial_account,
-    is_financial_information_incomplete,
-    is_tnc_needed,
-    is_trading_experience_incomplete,
-    onMount,
-    standpoint,
-}: TDepositLocked) => {
     // handle authentication locked
     const identity = account_status?.authentication?.identity;
     const document = account_status?.authentication?.document;
@@ -114,12 +109,4 @@ const DepositLocked = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    account_status: client.account_status,
-    is_financial_account: client.is_financial_account,
-    is_financial_information_incomplete: client.is_financial_information_incomplete,
-    is_tnc_needed: client.is_tnc_needed,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    onMount: modules.cashier.deposit.onMountDeposit,
-    standpoint: client.standpoint,
-}))(DepositLocked);
+export default observer(DepositLocked);

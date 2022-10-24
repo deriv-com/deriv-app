@@ -38,7 +38,7 @@ const Div100vhContainer = ({
         height: max_autoheight_offset ? '' : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : '',
     };
-    if (is_bypassed) return children;
+    if (is_bypassed) return children as JSX.Element;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}

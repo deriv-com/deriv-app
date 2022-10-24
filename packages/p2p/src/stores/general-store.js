@@ -212,14 +212,25 @@ export default class GeneralStore extends BaseStore {
             name,
         }).then(response => {
             const { sendbird_store, buy_sell_store } = this.root_store;
-            const { p2p_advertiser_create } = response;
+            const { error, p2p_advertiser_create } = response;
+            const {
+                daily_buy,
+                daily_buy_limit,
+                daily_sell,
+                daily_sell_limit,
+                id,
+                is_approved,
+                name: advertiser_name,
+            } = p2p_advertiser_create || {};
 
-            if (response.error) {
-                this.setNicknameError(response.error.message);
+            if (error) {
+                this.setNicknameError(error.message);
             } else {
-                this.setAdvertiserId(p2p_advertiser_create.id);
-                this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
-                this.setNickname(p2p_advertiser_create.name);
+                this.setAdvertiserId(id);
+                this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
+                this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
+                this.setIsAdvertiser(!!is_approved);
+                this.setNickname(advertiser_name);
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();

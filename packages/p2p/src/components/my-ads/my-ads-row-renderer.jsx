@@ -19,6 +19,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         account_currency,
         amount,
         amount_display,
+        effective_rate,
         id,
         is_active,
         local_currency,
@@ -45,7 +46,8 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate ?? floating_rate_store.override_exchange_rate,
+        exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';

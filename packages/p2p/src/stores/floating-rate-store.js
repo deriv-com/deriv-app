@@ -23,6 +23,11 @@ export default class FloatingRateStore extends BaseStore {
     exchange_rate_subscription = {};
 
     @computed
+    get market_rate() {
+        return this.exchange_rate > 0 ? this.exchange_rate : this.override_exchange_rate;
+    }
+
+    @computed
     get rate_type() {
         if (this.float_rate_adverts_status === 'enabled') {
             return ad_type.FLOAT;
@@ -99,14 +104,19 @@ export default class FloatingRateStore extends BaseStore {
 
     @action.bound
     fetchExchangeRate(response) {
-        const { client, ws_subscriptions } = this.root_store.general_store;
+        const { buy_sell_store, general_store } = this.root_store;
+        const { client, ws_subscriptions } = general_store;
+        const { selected_local_currency } = buy_sell_store;
+
         if (response) {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
                 ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+                this.setExchangeRate(0);
             } else {
                 const { rates } = response.exchange_rates;
-                this.setExchangeRate(rates[client?.local_currency_config?.currency]);
+                const rate = rates[client?.local_currency_config?.currency] ?? rates[selected_local_currency];
+                this.setExchangeRate(rate);
                 this.setApiErrorMessage(null);
             }
         }

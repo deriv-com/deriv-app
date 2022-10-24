@@ -22,21 +22,23 @@ describe('<AccountTransferNoAccount />', () => {
         };
     });
 
-    it('should show "Please create another Deriv, Deriv MT5, or Deriv X account." message and "Create account" button', () => {
-        mockRootStore.client.is_dxtrade_allowed = true;
-
+    const renderAccountTransferNoAccount = () => {
         render(<AccountTransferNoAccount />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
+    };
+
+    it('should show "Please create another Deriv, Deriv MT5, or Deriv X account." message and "Create account" button', () => {
+        mockRootStore.client.is_dxtrade_allowed = true;
+
+        renderAccountTransferNoAccount();
 
         expect(screen.getByText('Please create another Deriv, Deriv MT5, or Deriv X account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
     });
 
     it('should show "Please create another Deriv or Deriv MT5 account." message and "Create account" button', () => {
-        render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferNoAccount();
 
         expect(screen.getByText('Please create another Deriv or Deriv MT5 account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
@@ -45,9 +47,8 @@ describe('<AccountTransferNoAccount />', () => {
     it('should trigger onClick callback, when the "Create account" button was clicked', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
-        render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferNoAccount();
+
         const create_acc_btn = screen.getByText('Create account');
         fireEvent.click(create_acc_btn);
 

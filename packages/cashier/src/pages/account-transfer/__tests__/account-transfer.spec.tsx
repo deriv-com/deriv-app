@@ -69,10 +69,14 @@ describe('<AccountTransfer />', () => {
         setSideNotes: jest.fn(),
     };
 
-    it('should render the account transfer form', async () => {
+    const renderAccountTransfer = () => {
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
+    };
+
+    it('should render the account transfer form', async () => {
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });
@@ -80,9 +84,7 @@ describe('<AccountTransfer />', () => {
     it('should not show the side notes when switching', async () => {
         mockRootStore.client.is_switching = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         await waitFor(() => {
             expect(props.setSideNotes).toHaveBeenCalledWith(null);
@@ -109,9 +111,7 @@ describe('<AccountTransfer />', () => {
     it('should render the cashier locked component if cashier is locked', async () => {
         mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -119,9 +119,7 @@ describe('<AccountTransfer />', () => {
     it('should render the transfer lock component if only transfer is locked', async () => {
         mockRootStore.modules.cashier.general_store.is_transfer_locked = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });
@@ -131,9 +129,7 @@ describe('<AccountTransfer />', () => {
             message: 'error',
         };
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
@@ -141,9 +137,7 @@ describe('<AccountTransfer />', () => {
     it('should render the no account component if the client has only one account', async () => {
         mockRootStore.modules.cashier.account_transfer.has_no_account = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('You need at least two accounts')).toBeInTheDocument();
     });
@@ -166,9 +160,7 @@ describe('<AccountTransfer />', () => {
     it('should show the receipt if transfer is successful', async () => {
         mockRootStore.modules.cashier.account_transfer.is_transfer_confirm = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
@@ -176,9 +168,7 @@ describe('<AccountTransfer />', () => {
     it('should show the crypto transactions if triggered from recent transactions', async () => {
         mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
 
-        render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransfer();
 
         expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
     });

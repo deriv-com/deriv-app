@@ -110,10 +110,14 @@ describe('<AccountTransferForm />', () => {
         },
     };
 
-    it('component should be rendered', () => {
+    const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
+    };
+
+    it('component should be rendered', () => {
+        renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
         expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
@@ -122,9 +126,7 @@ describe('<AccountTransferForm />', () => {
     it('should show loader if account_list.length === 0', () => {
         mockRootStore.modules.cashier.account_transfer.accounts_list = [];
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_cashier_loader_wrapper')).toBeInTheDocument();
     });
@@ -140,9 +142,7 @@ describe('<AccountTransferForm />', () => {
             },
         ];
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('From')).toBeInTheDocument();
         expect(screen.getByText('To')).toBeInTheDocument();
@@ -154,9 +154,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show an error if amount is not provided', async () => {
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
@@ -169,9 +167,7 @@ describe('<AccountTransferForm />', () => {
     it('should show an error if transfer amount is greater than balance', async () => {
         mockRootStore.modules.cashier.account_transfer.selected_from.balance = 100;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
@@ -186,9 +182,7 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_from.balance = 200;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
@@ -197,9 +191,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show input if same currency', () => {
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_input')).toBeInTheDocument();
     });
@@ -210,9 +202,7 @@ describe('<AccountTransferForm />', () => {
             message: 'testMessage',
         };
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
     });
@@ -223,9 +213,7 @@ describe('<AccountTransferForm />', () => {
             message: 'testMessage',
         };
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
@@ -233,9 +221,7 @@ describe('<AccountTransferForm />', () => {
     it('should show <AccountTransferNote /> component', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('Transfer limits may vary depending on the exchange rates.')).toBeInTheDocument();
         expect(
@@ -259,9 +245,7 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
         mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
@@ -283,9 +267,7 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.modules.cashier.account_transfer.selected_to.is_dxtrade = true;
         mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'USD';
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
@@ -302,9 +284,7 @@ describe('<AccountTransferForm />', () => {
             },
         };
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
@@ -317,9 +297,7 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'BTC';
         mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -334,9 +312,7 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
         mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -349,9 +325,7 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -364,9 +338,7 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.modules.cashier.account_transfer.transfer_fee = null;
 
-        render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderAccountTransferForm();
 
         expect(screen.getByText('Please bear in mind that some transfers may not be possible.')).toBeInTheDocument();
     });

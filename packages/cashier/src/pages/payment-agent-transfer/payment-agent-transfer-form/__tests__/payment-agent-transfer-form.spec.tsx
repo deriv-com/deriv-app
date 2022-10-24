@@ -18,8 +18,8 @@ describe('<PaymentAgentTransferForm />', () => {
     const balance = '80';
     const setErrorMessage = jest.fn();
     const transfer_limit = {
-        min: '1',
-        max: '100',
+        min_withdrawal: '1',
+        max_withdrawal: '100',
     };
 
     beforeAll(() => {

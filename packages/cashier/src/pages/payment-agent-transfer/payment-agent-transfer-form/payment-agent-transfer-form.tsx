@@ -16,6 +16,11 @@ type TError = {
     description?: string;
 };
 
+type TTransferLimit = {
+    min_withdrawal?: string | number;
+    max_withdrawal?: string | number;
+};
+
 type TValidateTransferValueProps = {
     amount: number;
     loginid: string;
@@ -25,10 +30,7 @@ type TValidateTransferValueProps = {
 type TValidateTransferProps = {
     balance: string;
     currency: string;
-    transfer_limit: {
-        min?: string | number;
-        max?: string | number;
-    };
+    transfer_limit: TTransferLimit;
 };
 
 type TPaymentAgentTransferFormProps = {
@@ -41,10 +43,7 @@ type TPaymentAgentTransferFormProps = {
         error?: string;
     };
     setErrorMessage: (error: string) => void;
-    transfer_limit: {
-        min?: string | number;
-        max?: string | number;
-    };
+    transfer_limit: TTransferLimit;
     transfer_to: string;
 };
 
@@ -64,7 +63,9 @@ const validateTransfer = (
         ...(transfer_limit.min_withdrawal && {
             min: transfer_limit.min_withdrawal,
             max:
-                +balance >= transfer_limit.min_withdrawal && +balance < transfer_limit.max_withdrawal
+                +balance >= transfer_limit.min_withdrawal &&
+                transfer_limit.max_withdrawal &&
+                +balance < transfer_limit.max_withdrawal
                     ? balance
                     : transfer_limit.max_withdrawal,
         }),

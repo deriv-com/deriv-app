@@ -87,7 +87,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore({ root_store, WS });
+        withdraw_store = new WithdrawStore(WS, root_store);
     });
 
     it('should set is_withdraw_confirmed', () => {
@@ -139,15 +139,15 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         await withdraw_store.saveWithdraw(verification_code);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe(100);
 
         withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.saveWithdraw(verification_code);
         expect(spySetErrorMessage).toHaveBeenCalled();
-        expect(setConverterFromAmount).toHaveBeenCalledWith('');
-        expect(setConverterToAmount).toHaveBeenCalledWith('');
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterToAmount).toHaveBeenCalledWith(0);
         expect(withdraw_store.blockchain_address).toBe('');
     });
 
@@ -156,8 +156,8 @@ describe('WithdrawStore', () => {
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
         withdraw_store.resetWithrawForm();
-        expect(setConverterFromAmount).toHaveBeenCalledWith('');
-        expect(setConverterToAmount).toHaveBeenCalledWith('');
+        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterToAmount).toHaveBeenCalledWith(0);
         expect(withdraw_store.blockchain_address).toBe('');
         expect(withdraw_store.blockchain_address).toBe('');
     });

@@ -14,7 +14,11 @@ export default class ErrorStore {
     @observable is_ask_financial_risk_approval = false;
 
     @action.bound
-    setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
+    setErrorMessage(
+        error: TServerError,
+        onClickButton?: VoidFunction | null,
+        is_show_full_page?: boolean | null
+    ): void {
         // for errors that need to show a button, reset the form
         const error_object = {
             onClickButton,

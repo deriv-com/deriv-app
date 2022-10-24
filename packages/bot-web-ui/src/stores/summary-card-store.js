@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
 import { contract_stages } from 'Constants/contract-stage';
 import { getValidationRules } from 'Constants/contract';
@@ -6,18 +6,18 @@ import { getContractUpdateConfig } from 'Utils/multiplier';
 import Validator from 'Utils/validator';
 
 export default class SummaryCardStore {
-    @observable contract_info = null;
-    @observable indicative_movement = '';
-    @observable profit_movement = '';
+    contract_info = null;
+    indicative_movement = '';
+    profit_movement = '';
 
-    @observable validation_errors = {};
-    @observable validation_rules = getValidationRules();
+    validation_errors = {};
+    validation_rules = getValidationRules();
 
     // Multiplier contract update config
-    @observable contract_update_take_profit = '';
-    @observable contract_update_stop_loss = '';
-    @observable has_contract_update_take_profit = false;
-    @observable has_contract_update_stop_loss = false;
+    contract_update_take_profit = '';
+    contract_update_stop_loss = '';
+    has_contract_update_take_profit = false;
+    has_contract_update_stop_loss = false;
     contract_update_config = {};
 
     contract_id = null;
@@ -25,11 +25,37 @@ export default class SummaryCardStore {
     indicative = 0;
 
     constructor(root_store) {
+        makeObservable(this, {
+            contract_info: observable,
+            indicative_movement: observable,
+            profit_movement: observable,
+            validation_errors: observable,
+            validation_rules: observable,
+            contract_update_take_profit: observable,
+            contract_update_stop_loss: observable,
+            has_contract_update_take_profit: observable,
+            has_contract_update_stop_loss: observable,
+            is_contract_completed: computed,
+            is_contract_loading: computed,
+            is_contract_inactive: computed,
+            is_multiplier: computed,
+            clear: action.bound,
+            clearContractUpdateConfigValues: action.bound,
+            getLimitOrder: action.bound,
+            onBotContractEvent: action.bound,
+            onChange: action.bound,
+            populateConfig: action.bound,
+            populateContractUpdateConfig: action.bound,
+            setContractUpdateConfig: action.bound,
+            updateLimitOrder: action.bound,
+            setValidationErrorMessages: action,
+            validateProperty: action,
+        });
+
         this.root_store = root_store;
         this.disposeReactionsFn = this.registerReactions();
     }
 
-    @computed
     get is_contract_completed() {
         return (
             !!this.contract_info?.is_sold &&
@@ -37,7 +63,6 @@ export default class SummaryCardStore {
         );
     }
 
-    @computed
     get is_contract_loading() {
         return (
             (this.root_store.run_panel.is_running && this.contract_info === null) ||
@@ -46,17 +71,14 @@ export default class SummaryCardStore {
         );
     }
 
-    @computed
     get is_contract_inactive() {
         return !this.contract_info && !this.is_loading;
     }
 
-    @computed
     get is_multiplier() {
         return isMultiplierContract(this.contract_info?.contract_type);
     }
 
-    @action.bound
     clear(should_unset_contract = true) {
         if (should_unset_contract) {
             this.contract_info = null;
@@ -69,14 +91,12 @@ export default class SummaryCardStore {
         this.profit_movement = '';
     }
 
-    @action.bound
     clearContractUpdateConfigValues() {
         if (this.contract_info) {
             Object.assign(this, getContractUpdateConfig(this.contract_info));
         }
     }
 
-    @action.bound
     getLimitOrder() {
         const limit_order = {};
 
@@ -89,7 +109,6 @@ export default class SummaryCardStore {
         return limit_order;
     }
 
-    @action.bound
     onBotContractEvent(contract) {
         const { profit } = contract;
         const indicative = getIndicativePrice(contract);
@@ -117,13 +136,11 @@ export default class SummaryCardStore {
         this.contract_info = contract;
     }
 
-    @action.bound
     onChange({ name, value }) {
         this[name] = value;
         this.validateProperty(name, this[name]);
     }
 
-    @action.bound
     populateConfig(contract_info) {
         this.contract_info = contract_info;
 
@@ -132,7 +149,6 @@ export default class SummaryCardStore {
         }
     }
 
-    @action.bound
     populateContractUpdateConfig(response) {
         const contract_update_config = getContractUpdateConfig(response);
 
@@ -147,7 +163,6 @@ export default class SummaryCardStore {
         }
     }
 
-    @action.bound
     setContractUpdateConfig(contract_update_take_profit, contract_update_stop_loss) {
         this.has_contract_update_take_profit = !!contract_update_take_profit;
         this.has_contract_update_stop_loss = !!contract_update_stop_loss;
@@ -155,7 +170,6 @@ export default class SummaryCardStore {
         this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
     }
 
-    @action.bound
     updateLimitOrder() {
         const limit_order = this.getLimitOrder();
 
@@ -177,7 +191,6 @@ export default class SummaryCardStore {
      * @param [{String}] messages - An array of strings that contains validation error messages for the particular property.
      *
      */
-    @action
     setValidationErrorMessages(propertyName, messages) {
         const is_different = () =>
             !!this.validation_errors[propertyName]
@@ -195,7 +208,6 @@ export default class SummaryCardStore {
      * @param {object} value    - The value of the property, it can be undefined.
      *
      */
-    @action
     validateProperty(property, value) {
         const trigger = this.validation_rules[property].trigger;
         const inputs = { [property]: value !== undefined ? value : this[property] };

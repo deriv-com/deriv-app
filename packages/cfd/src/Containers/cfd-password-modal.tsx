@@ -610,19 +610,25 @@ const CFDPasswordModal = ({
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const getVerificationStatus = () => {
-        if (jurisdiction_selected_shortcode === 'svg') setIsSelectedMT5Verified(true);
-        else if (jurisdiction_selected_shortcode === 'bvi')
+        if (jurisdiction_selected_shortcode === 'svg') {
+            setIsSelectedMT5Verified(true);
+        } else if (jurisdiction_selected_shortcode === 'bvi') {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_maltainvest);
-        else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode))
+        } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_maltainvest && poa_verified);
-        else if (jurisdiction_selected_shortcode === 'vanuatu') setIsSelectedMT5Verified(poi_verified_for_vanuatu);
-        return setIsSelectedMT5Verified(false);
+        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+            setIsSelectedMT5Verified(poi_verified_for_vanuatu);
+        }
     };
+
     React.useEffect(() => {
         updateAccountStatus();
+    }, []);
+
+    React.useEffect(() => {
         getVerificationStatus();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [jurisdiction_selected_shortcode, account_status]);
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
@@ -739,7 +745,6 @@ const CFDPasswordModal = ({
     }, [platform, account_type, is_selected_mt5_verified]);
 
     const getSubmitText = () => {
-        // const getSubmitText = (platform: string, is_eu: boolean, jurisdiction_selected_shortcode?: string) => {
         const { category, type } = account_type;
         if (!category && !type) return '';
 

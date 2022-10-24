@@ -1,4 +1,4 @@
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
@@ -69,6 +69,7 @@ export type TTradingPlatformAvailableAccount = {
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {
+    account_status: GetAccountStatus;
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
@@ -108,6 +109,7 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    toggleCFDVerificationModal: () => void;
 };
 
 export type TTradingPlatformAccounts = {

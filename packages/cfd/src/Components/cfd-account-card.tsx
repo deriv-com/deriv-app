@@ -2,7 +2,13 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    isMobile,
+    mobileOSDetect,
+    getCFDPlatformLabel,
+    CFD_PLATFORMS,
+    getAuthenticationStatusInfo,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -159,6 +165,7 @@ const CFDAccountCardAction = ({
 };
 
 const CFDAccountCardComponent = ({
+    account_status,
     button_label,
     commission_message,
     descriptor,
@@ -186,6 +193,7 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     setMT5TradeAccount,
+    toggleCFDVerificationModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -258,6 +266,65 @@ const CFDAccountCardComponent = ({
         return '';
     }, []);
 
+    const getBannerStatus = (landing_company_short: string) => {
+        const {
+            poi_pending_for_bvi_labuan_maltainvest,
+            poi_pending_for_vanuatu,
+            poi_resubmit_for_vanuatu,
+            poi_resubmit_for_bvi_labuan_maltainvest,
+            poi_poa_verified_for_bvi_labuan_maltainvest,
+            poi_acknowledged_for_bvi_labuan_maltainvest,
+            poa_acknowledged,
+            need_poa_resubmission,
+            need_poi_for_bvi_labuan_maltainvest,
+        } = getAuthenticationStatusInfo(account_status);
+        const is_svg = landing_company_short === 'svg';
+        const is_vanuatu = landing_company_short === 'vanuatu';
+        const is_bvi = landing_company_short === 'bvi';
+        const is_labuan_or_maltainvest =
+            landing_company_short && ['labuan', 'maltainvest'].includes(landing_company_short);
+
+        if (
+            (is_vanuatu && poi_pending_for_vanuatu) ||
+            (is_bvi && poi_pending_for_bvi_labuan_maltainvest) ||
+            (is_labuan_or_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_maltainvest &&
+                poa_acknowledged &&
+                !poi_poa_verified_for_bvi_labuan_maltainvest)
+        ) {
+            return (
+                <Button
+                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                    type='button'
+                    disabled
+                    primary
+                    large
+                >
+                    <Localize i18n_default_text='Pending Verification' />
+                </Button>
+            );
+        } else if (
+            (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
+            (is_vanuatu && poi_resubmit_for_vanuatu) ||
+            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
+        ) {
+            return (
+                <Button
+                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                    type='button'
+                    onClick={() => {
+                        toggleCFDVerificationModal();
+                    }}
+                    primary
+                    large
+                >
+                    <Localize i18n_default_text='Resubmit document' />
+                </Button>
+            );
+        }
+        return null;
+    };
+
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
     const tbody_content = platform === CFD_PLATFORMS.DXTRADE && (
         <React.Fragment>
@@ -277,7 +344,10 @@ const CFDAccountCardComponent = ({
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
-                className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
+                className={classNames('cfd-account-card', {
+                    'cfd-account-card--is_mt5': CFD_PLATFORMS.MT5,
+                    'cfd-account-card__logged-out': !is_logged_in,
+                })}
                 ref={ref}
             >
                 {has_popular_banner && (
@@ -308,7 +378,13 @@ const CFDAccountCardComponent = ({
                                 <p className='cfd-account-card--paragraph'>{descriptor}</p>
                             )
                         ) : (
-                            <p className='cfd-account-card--paragraph'>{descriptor}</p>
+                            <p
+                                className={classNames('cfd-account-card--paragraph', {
+                                    'cfd-account-card--paragraph--is-mt5': CFD_PLATFORMS.MT5,
+                                })}
+                            >
+                                {descriptor}
+                            </p>
                         )}
                         {existing_data?.display_balance && is_logged_in && platform === CFD_PLATFORMS.DXTRADE && (
                             <Text size='xxl' className='cfd-account-card__balance--value'>
@@ -511,42 +587,50 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
-                                        {existing_data && is_logged_in && (
-                                            <Button
-                                                onClick={() => {
-                                                    const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
-                                                            data.landing_company_short === acc.landing_company_short &&
-                                                            data.login === acc.login
-                                                    );
+                                        {(acc.landing_company_short && getBannerStatus(acc.landing_company_short)) ?? (
+                                            <React.Fragment>
+                                                {existing_data && is_logged_in && (
+                                                    <Button
+                                                        onClick={() => {
+                                                            const selected_account_data = existing_accounts_data?.find(
+                                                                data =>
+                                                                    data.landing_company_short ===
+                                                                        acc.landing_company_short &&
+                                                                    data.login === acc.login
+                                                            );
 
-                                                    onClickFund(selected_account_data as DetailsOfEachMT5Loginid);
-                                                }}
-                                                type='button'
-                                                secondary
-                                            >
-                                                <Localize i18n_default_text='Top up' />
-                                            </Button>
-                                        )}
-                                        {existing_data && is_logged_in && !is_web_terminal_unsupported && (
-                                            <Button
-                                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                                type='button'
-                                                onClick={() => {
-                                                    const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
-                                                            data.landing_company_short === acc.landing_company_short &&
-                                                            data.login === acc.login
-                                                    );
+                                                            onClickFund(
+                                                                selected_account_data as DetailsOfEachMT5Loginid
+                                                            );
+                                                        }}
+                                                        type='button'
+                                                        secondary
+                                                    >
+                                                        <Localize i18n_default_text='Top up' />
+                                                    </Button>
+                                                )}
+                                                {existing_data && is_logged_in && !is_web_terminal_unsupported && (
+                                                    <Button
+                                                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                                        type='button'
+                                                        onClick={() => {
+                                                            const selected_account_data = existing_accounts_data?.find(
+                                                                data =>
+                                                                    data.landing_company_short ===
+                                                                        acc.landing_company_short &&
+                                                                    data.login === acc.login
+                                                            );
 
-                                                    toggleMT5TradeModal();
-                                                    setMT5TradeAccount(selected_account_data);
-                                                }}
-                                                primary
-                                                large
-                                            >
-                                                <Localize i18n_default_text='Trade' />
-                                            </Button>
+                                                            toggleMT5TradeModal();
+                                                            setMT5TradeAccount(selected_account_data);
+                                                        }}
+                                                        primary
+                                                        large
+                                                    >
+                                                        <Localize i18n_default_text='Trade' />
+                                                    </Button>
+                                                )}
+                                            </React.Fragment>
                                         )}
                                     </div>
                                 </div>
@@ -681,6 +765,8 @@ const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
+    account_status: client.account_status,
+    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

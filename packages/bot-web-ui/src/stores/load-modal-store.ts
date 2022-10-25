@@ -41,12 +41,6 @@ interface ILoadModalStore {
     getSaveType: (save_type: { [key: string]: string } | string) => string;
 }
 
-const clearInjectionDiv = () => {
-    const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
-    }
-};
 export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
 

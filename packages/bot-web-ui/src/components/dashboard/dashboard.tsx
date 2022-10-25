@@ -64,9 +64,6 @@ const Dashboard = ({
         <>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    {/* {!onboard_tour_run_state  && (
-                       //TODO : Once the trigger button is implemented this check will be used
-                    )} */}
                     <TourTriggrerDialog />
                     {has_tour_started && (
                         <ReactJoyride

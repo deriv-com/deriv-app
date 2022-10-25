@@ -20,6 +20,7 @@
         "@babel/preset-react": "^7.16.7",
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
+        "@commitlint/config-nx-scopes": "^17.0.0",
         "@jest/globals": "^26.5.3",
         "@nrwl/nx-cloud": "latest",
         "@testing-library/react": "^12.0.0",

@@ -9,13 +9,9 @@ import {
     PaymentAgentTransferResponse,
     PaymentAgentWithdrawResponse,
     TransferBetweenAccountsResponse,
+    PaymentAgentWithdrawRequest,
 } from '@deriv/api-types';
-import {
-    TExtendedPaymentAgentListResponse,
-    TMT5LoginAccount,
-    TPaymentAgentTransferRequest,
-    TPaymentAgentWithdrawRequest,
-} from 'Types';
+import { TExtendedPaymentAgentListResponse, TMT5LoginAccount, TPaymentAgentTransferRequest } from 'Types';
 
 type TCashierPayments = {
     provider: string;
@@ -64,12 +60,12 @@ type TWebSocketCall = {
         dry_run,
     }: TPaymentAgentTransferRequest) => Promise<PaymentAgentTransferResponse>;
     paymentAgentWithdraw: ({
-        loginid,
+        paymentagent_loginid,
         currency,
         amount,
         verification_code,
         dry_run,
-    }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+    }: PaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
     send?: (obj: any) => Promise<any>;
     storage: TStorage;
     transferBetweenAccounts: (

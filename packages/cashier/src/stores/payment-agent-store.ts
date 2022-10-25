@@ -1,5 +1,5 @@
 import { action, computed, observable, IObservableArray } from 'mobx';
-import { PaymentAgentDetailsResponse } from '@deriv/api-types';
+import { PaymentAgentDetailsResponse, PaymentAgentWithdrawRequest } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
@@ -10,7 +10,6 @@ import {
     TExtendedPaymentAgentListResponse,
     TPartialPaymentAgentList,
     TPaymentAgentWithdrawConfirm,
-    TPaymentAgentWithdrawRequest,
     TPaymentAgentWithdrawReceipt,
     TRootStore,
     TServerError,
@@ -317,26 +316,27 @@ export default class PaymentAgentStore {
 
     @action.bound
     async requestTryPaymentAgentWithdraw({
-        loginid,
+        paymentagent_loginid,
         currency,
         amount,
         verification_code,
-    }: TPaymentAgentWithdrawRequest): Promise<void> {
+    }: PaymentAgentWithdrawRequest): Promise<void> {
         this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            loginid,
+            paymentagent_loginid,
             currency,
             amount,
             verification_code,
             dry_run: 1,
+            paymentagent_withdraw: 1,
         });
 
         if (Number(payment_agent_withdraw?.paymentagent_withdraw) === 2) {
-            const selected_agent = this.agents.find(agent => agent.value === loginid);
+            const selected_agent = this.agents.find(agent => agent.value === paymentagent_loginid);
             this.setConfirmation({
                 amount,
                 currency,
-                loginid,
+                loginid: paymentagent_loginid,
                 payment_agent_name: selected_agent?.text || payment_agent_withdraw.paymentagent_name,
             });
             this.setIsTryWithdrawSuccessful(true);
@@ -384,20 +384,21 @@ export default class PaymentAgentStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({
-        loginid,
+        paymentagent_loginid,
         currency,
         amount,
         verification_code,
-    }: TPaymentAgentWithdrawRequest): Promise<void> {
+    }: PaymentAgentWithdrawRequest): Promise<void> {
         this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            loginid,
+            paymentagent_loginid,
             currency,
             amount,
             verification_code,
+            paymentagent_withdraw: 1,
         });
         if (Number(payment_agent_withdraw?.paymentagent_withdraw) === 1) {
-            const selected_agent = this.agents.find(agent => agent.value === loginid);
+            const selected_agent = this.agents.find(agent => agent.value === paymentagent_loginid);
             this.setReceipt({
                 amount_transferred: formatMoney(currency, amount, true),
                 ...(selected_agent && {

@@ -76,7 +76,8 @@ const PaymentAgentList = ({
 
             setSideNotes(side_notes);
         }
-    }, [is_loading, is_try_withdraw_successful, setSideNotes]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_loading, is_try_withdraw_successful]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>

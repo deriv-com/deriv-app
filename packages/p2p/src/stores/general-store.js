@@ -8,7 +8,8 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from '../constants/api-error-codes';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { ad_type } from 'Constants/floating-rate';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -104,6 +105,7 @@ export default class GeneralStore extends BaseStore {
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
             redirectToOrderDetails: action.bound,
+            showAdTypeChangedNotification: action.bound,
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
@@ -317,12 +319,57 @@ export default class GeneralStore extends BaseStore {
 
         this.updateP2pNotifications(notifications);
     }
-
     redirectToOrderDetails(order_id) {
         const { order_store } = this.root_store;
         this.redirectTo('orders');
         this.setOrderTableType(order_list.INACTIVE);
         order_store.setOrderId(order_id);
+    }
+
+    async showAdTypeChangedNotification() {
+        const { floating_rate_store, my_ads_store } = this.root_store;
+
+        await my_ads_store.loadMoreAds({ startIndex: 0 });
+        if (floating_rate_store.change_ad_alert) {
+            if (floating_rate_store.rate_type === ad_type.FLOAT) {
+                if (floating_rate_store.reached_target_date) {
+                    this.props.addNotificationMessage({
+                        header: <Localize i18n_default_text='Your fixed rate ads are deactivated' />,
+                        message: (
+                            <Localize i18n_default_text='You can still find them in My ads. Switch to floating rates to reactivate.' />
+                        ),
+                        key: 'floating-to-fixed-ad-deactivated',
+                        platform: 'P2P',
+                        type: 'p2p_ad_type_changed',
+                    });
+                } else {
+                    this.props.addNotificationMessage({
+                        header: <Localize i18n_default_text='Floating rates are enabled' />,
+                        message: (
+                            <Localize
+                                i18n_default_text='Please switch your ads to floating rates by {{end_date}}.'
+                                values={{
+                                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                                }}
+                            />
+                        ),
+                        key: 'floating-to-fixed-ad-enabled',
+                        platform: 'P2P',
+                        type: 'p2p_ad_type_changed',
+                    });
+                }
+            } else {
+                this.props.addNotificationMessage({
+                    header: <Localize i18n_default_text='Your floating rate ads are deactivated' />,
+                    message: (
+                        <Localize i18n_default_text='You can still find them in My ads. Switch to fixed rates to reactivate.' />
+                    ),
+                    key: 'fixed-to-floating-ad-deactivated',
+                    platform: 'P2P',
+                    type: 'p2p_ad_type_changed',
+                });
+            }
+        }
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {
@@ -610,6 +657,7 @@ export default class GeneralStore extends BaseStore {
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
+                this.showAdTypeChangedNotification();
             }
         });
     }

@@ -1,0 +1,21 @@
+.introducing-floating-rates-modal {
+    &__image {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    &__checkbox {
+        margin-top: 1.2rem;
+
+        .dc-checkbox__box {
+            margin-left: unset;
+        }
+
+        &--label {
+            font-size: var(--text-size-s);
+        }
+    }
+}

@@ -8,10 +8,13 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ad_type } from 'Constants/floating-rate';
 import './app.scss';
+import IntroducingFloatingRatesModal from 'Components/introducing-floating-rates-modal/';
+import { DesktopWrapper } from '@deriv/components';
 
 const App = props => {
-    const { general_store, order_store } = useStores();
+    const { general_store, floating_rate_store, order_store } = useStores();
     const {
         balance,
         className,
@@ -67,11 +70,6 @@ const App = props => {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
-        general_store.props.setP2POrderProps({
-            order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
-            setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
@@ -100,6 +98,9 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
+            <DesktopWrapper>
+                {floating_rate_store.rate_type === ad_type.FLOAT && <IntroducingFloatingRatesModal />}
+            </DesktopWrapper>
             <Notifications />
             <AppContent />
         </main>

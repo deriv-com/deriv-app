@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import AccountArticle from 'Components/article/article.jsx';
+import AccountArticle from 'Components/article';
 
 const ApiTokenArticle = () => (
     <AccountArticle

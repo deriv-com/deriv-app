@@ -18,11 +18,11 @@ export default class CashierStore {
         this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
         this.account_transfer = new AccountTransferStore({ root_store, WS });
         this.crypto_fiat_converter = new CryptoFiatConverterStore({ root_store, WS });
-        this.deposit = new DepositStore({ root_store, WS });
+        this.deposit = new DepositStore(WS, root_store);
         this.error_dialog = new ErrorDialogStore();
         this.error = new ErrorStore();
         this.general_store = new GeneralStore({ root_store, WS });
-        this.iframe = new IframeStore({ root_store, WS });
+        this.iframe = new IframeStore(root_store);
         this.onramp = new OnRampStore({ root_store, WS });
         this.payment_agent = new PaymentAgentStore({ root_store, WS });
         this.payment_agent_transfer = new PaymentAgentTransferStore({ root_store, WS });

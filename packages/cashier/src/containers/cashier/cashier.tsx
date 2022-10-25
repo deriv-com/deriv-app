@@ -43,6 +43,7 @@ type TCashierProps = RouteComponentProps & {
     setTabIndex: (index: number) => void;
     routeBackInApp: TCommonStore['routeBackInApp'];
     toggleCashier: TUiStore['toggleCashier'];
+    resetLastLocation: () => void;
 };
 
 type TCashierOptions = {
@@ -61,7 +62,6 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_cashier_onboarding,
-    is_crypto,
     is_crypto_transactions_visible,
     is_loading,
     is_logged_in,
@@ -71,11 +71,11 @@ const Cashier = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
-    // is_virtual,
     is_visible,
     location,
     onMount,
     p2p_notification_count,
+    resetLastLocation,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -88,8 +88,10 @@ const Cashier = ({
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
+            resetLastLocation();
         };
     }, [toggleCashier]);
+
     React.useEffect(() => {
         (async () => {
             await WS?.wait('authorize');
@@ -146,10 +148,6 @@ const Cashier = ({
         return selected_route.getTitle();
     };
 
-    const getSideNoteClassName = () => {
-        return location.pathname?.endsWith(routes.cashier_withdrawal) && !is_crypto ? 'cashier__side-note' : '';
-    };
-
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <AccountPromptDialog />
@@ -160,7 +158,6 @@ const Cashier = ({
                         <VerticalTab
                             alignment='center'
                             id='cashier'
-                            side_note_class_name={getSideNoteClassName()}
                             classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
@@ -221,7 +218,6 @@ export default connect(({ client, common, modules, ui }: TRootStore) => ({
     is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
-    is_crypto: modules.cashier.general_store.is_crypto,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_loading: modules.cashier.general_store.is_loading,
     is_logged_in: client.is_logged_in,
@@ -235,6 +231,7 @@ export default connect(({ client, common, modules, ui }: TRootStore) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.general_store.onMountCommon,
     p2p_notification_count: modules.cashier.general_store.p2p_notification_count,
+    resetLastLocation: modules.cashier.account_prompt_dialog.resetLastLocation,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,

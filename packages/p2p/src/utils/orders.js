@@ -61,7 +61,7 @@ export default class ExtendedOrderDetails {
     }
 
     get is_my_ad() {
-        return this.order_details.advertiser_details.loginid === this.loginid;
+        return this.order_details?.advertiser_details?.loginid === this.loginid;
     }
 
     get is_inactive_order() {
@@ -90,16 +90,10 @@ export default class ExtendedOrderDetails {
         return this.order_details.is_reviewable;
     }
 
-    get is_user_rated_previously() {
-        return this.is_buy_order_for_user
-            ? this.order_details.advertiser_details?.is_recommended
-            : this.order_details.client_details?.is_recommended;
-    }
-
-    get previous_recommendation() {
-        return this.is_buy_order_for_user
-            ? this.order_details.advertiser_details.is_recommended
-            : this.order_details.client_details.is_recommended;
+    get is_user_recommended_previously() {
+        return this.is_my_ad
+            ? this.order_details.client_details.is_recommended
+            : this.order_details.advertiser_details.is_recommended;
     }
 
     get rating() {

@@ -1,4 +1,4 @@
-import introducingFloatingRatesModal from './introducing-floating-rates-modal.jsx';
+import IntroducingFloatingRatesModal from './introducing-floating-rates-modal.jsx';
 import './introducing-floating-rates-modal.scss';
 
-export default introducingFloatingRatesModal;
+export default IntroducingFloatingRatesModal;

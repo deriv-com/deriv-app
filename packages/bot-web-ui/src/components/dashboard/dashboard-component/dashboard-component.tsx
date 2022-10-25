@@ -16,7 +16,7 @@ const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => (
         <div className='tab__dashboard__content'>
             <div className='tab__dashboard__centered'>
                 <div className='tab__dashboard__header'>
-                    <Text color='prominent' line_height='xxl' size='sm' weight='bold'>
+                    <Text color='prominent' line_height='xxl' size='m' weight='bold'>
                         {localize('Load or build your bot')}
                     </Text>
                 </div>

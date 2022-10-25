@@ -13,17 +13,16 @@ jest.mock('Stores/connect', () => ({
 
 describe('<PaymentAgentTransferReceipt />', () => {
     const history = createBrowserHistory();
-    const mockProps = () => ({
+    const props = {
         currency: 'currency',
         receipt: {
             amount_transferred: '1',
             client_id: 'CR9000000',
         },
         resetPaymentAgentTransfer: jest.fn(),
-    });
+    };
 
     it('component should render', () => {
-        const props = mockProps();
         render(
             <Router history={history}>
                 <PaymentAgentTransferReceipt {...props} />
@@ -34,8 +33,6 @@ describe('<PaymentAgentTransferReceipt />', () => {
     });
 
     it(`should redirect to statement page when click on 'View in statement' button`, () => {
-        const props = mockProps();
-
         render(
             <Router history={history}>
                 <PaymentAgentTransferReceipt {...props} />
@@ -49,8 +46,6 @@ describe('<PaymentAgentTransferReceipt />', () => {
     });
 
     it(`resetPaymentAgentTransfer func should be triggered when click on 'Make a new transfer' button`, () => {
-        const props = mockProps();
-
         render(
             <Router history={history}>
                 <PaymentAgentTransferReceipt {...props} />

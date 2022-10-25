@@ -5,18 +5,26 @@
     This will look for predefined `ignored_responses_in_trackjs` from GTM, if
     there is none, then it just does not filter out any response.
 */
+declare global {
+    interface Window {
+        ignored_responses_in_trackjs: [];
+        TrackJS: { console: { log: (arg0: unknown[]) => void }; track: (arg0: object) => void };
+    }
+}
 
 const getIgnoredResponseKeywords = () => {
     return window.ignored_responses_in_trackjs || [];
 };
 
 class ResponseQueue {
+    list: unknown[];
+    size: number;
     constructor() {
         this.list = [];
         this.size = 3;
     }
 
-    add(response) {
+    add(response: unknown) {
         this.list.unshift(response);
     }
 
@@ -24,7 +32,7 @@ class ResponseQueue {
         this.list.pop();
     }
 
-    push(response) {
+    push(response: unknown) {
         if (this.list.length >= this.size) {
             this.remove();
         }
@@ -43,11 +51,11 @@ const queue = new ResponseQueue();
  * Handling the response status is NOT this function's responsibility
  */
 export const ApiCallProxyHandler = {
-    get(target, prop_key, receiver) {
+    get(target: object, prop_key: PropertyKey, receiver: string) {
         try {
             const target_value = Reflect.get(target, prop_key, receiver);
             if (typeof target_value === 'function') {
-                return function (...args) {
+                return (...args: string[]) => {
                     const result = target_value.apply(this, args);
                     if (result instanceof Promise) {
                         return new Promise(resolve => {
@@ -59,7 +67,9 @@ export const ApiCallProxyHandler = {
                                         queue.fresh();
                                         if (
                                             window.TrackJS &&
-                                            !getIgnoredResponseKeywords().some(item => item === response.error.code)
+                                            !getIgnoredResponseKeywords().some(
+                                                (item: string) => item === response.error.code
+                                            )
                                         ) {
                                             window.TrackJS.track(response.error.code);
                                         }
@@ -76,13 +86,16 @@ export const ApiCallProxyHandler = {
                         });
                     }
                     return result;
-                }.bind(this);
+                };
             }
             return target_value;
-        } catch (error) {
-            throw new Error(error.getMessage());
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            }
         }
+        return null;
     },
 };
 
-export const trackJSNetworkMonitor = obj => new Proxy(obj, ApiCallProxyHandler);
+export const trackJSNetworkMonitor = (obj: Record<string, unknown>) => new Proxy(obj, ApiCallProxyHandler);

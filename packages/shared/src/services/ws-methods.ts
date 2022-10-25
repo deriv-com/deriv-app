@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-mutable-exports
-export let WS;
+export let WS: any;
 
-export const setWebsocket = websocket => {
+export const setWebsocket = (websocket: object) => {
     WS = websocket;
 };
 

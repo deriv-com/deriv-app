@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 import { WS, validPassword } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
+import { platform } from 'os';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -70,6 +71,7 @@ describe('<CFDPasswordModal/>', () => {
         setMt5Error: mockSetMt5Error,
         submitMt5Password: mockSubmitMt5Password,
         submitCFDPassword: mockSubmitCFDPasswordFn,
+        updateAccountStatus: jest.fn(),
     };
 
     beforeAll(() => {
@@ -189,13 +191,14 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
-    it('should show password dialog asking user to provide POI', async () => {
+    it('should show transfer message on successfull dxtrade account creation', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial_stp' },
-            is_eu: true,
+            account_type: { category: 'real', type: 'financial' },
+            is_eu: false,
             is_fully_authenticated: false,
+            platform: 'dxtrade',
         };
 
         render(
@@ -205,17 +208,18 @@ describe('<CFDPasswordModal/>', () => {
         );
 
         expect(
-            await screen.findByText(/we need proof of your identity and address before you can start trading./i)
+            await screen.findByText(/to start trading, transfer funds from your Deriv account into this account./i)
         ).toBeInTheDocument();
     });
 
-    it('should close the dialog when you click on Submit proof', async () => {
+    it('should close the dialog when you click on ok button', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial_stp' },
+            account_type: { category: 'real', type: 'financial' },
             is_eu: true,
             is_fully_authenticated: false,
+            jurisdiction_selected_shortcode: 'bvi',
         };
 
         render(
@@ -224,7 +228,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        fireEvent.click(await screen.findByRole('button', { name: /submit proof/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /ok/i }));
 
         await waitFor(() => {
             expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
@@ -242,7 +246,7 @@ describe('<CFDPasswordModal/>', () => {
                     is_fully_authenticated
                     is_cfd_success_dialog_enabled
                     is_password_modal_exited
-                    account_type={{ category: 'real', type: 'financial_stp' }}
+                    account_type={{ category: 'real', type: 'financial' }}
                 />
             </Router>
         );

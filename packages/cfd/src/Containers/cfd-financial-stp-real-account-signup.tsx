@@ -1,5 +1,5 @@
 import React from 'react';
-import { Div100vhContainer, Loading } from '@deriv/components';
+import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
@@ -66,7 +66,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
-    const [is_loading, setIsLoading] = React.useState(false);
     let is_mounted = React.useRef(true).current;
 
     const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(account_status);
@@ -141,9 +140,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     }, [items, refreshNotifications]);
 
     React.useEffect(() => {
-        setIsLoading(true);
         fetchStatesList();
-        setIsLoading(false);
     }, []);
 
     const unmount = () => {
@@ -197,20 +194,16 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             height_offset='40px'
         >
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
-                {is_loading ? (
-                    <Loading />
-                ) : (
-                    <BodyComponent
-                        value={form_value}
-                        index={state_index}
-                        onSubmit={nextStep}
-                        height='auto'
-                        onCancel={prevStep}
-                        onSave={saveFormData}
-                        form_error={form_error}
-                        {...passthrough}
-                    />
-                )}
+                <BodyComponent
+                    value={form_value}
+                    index={state_index}
+                    onSubmit={nextStep}
+                    height='auto'
+                    onCancel={prevStep}
+                    onSave={saveFormData}
+                    form_error={form_error}
+                    {...passthrough}
+                />
             </div>
         </Div100vhContainer>
     );

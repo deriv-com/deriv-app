@@ -327,49 +327,46 @@ export default class GeneralStore extends BaseStore {
         order_store.setOrderId(order_id);
     }
 
-    async showAdTypeChangedNotification() {
-        const { floating_rate_store, my_ads_store } = this.root_store;
+    showAdTypeChangedNotification() {
+        const { floating_rate_store } = this.root_store;
 
-        await my_ads_store.loadMoreAds({ startIndex: 0 });
-        if (floating_rate_store.change_ad_alert) {
-            if (floating_rate_store.rate_type === ad_type.FLOAT) {
-                if (floating_rate_store.reached_target_date) {
-                    this.props.addNotificationMessage({
-                        header: <Localize i18n_default_text='Your fixed rate ads are deactivated' />,
-                        message: (
-                            <Localize i18n_default_text='You can still find them in My ads. Switch to floating rates to reactivate.' />
-                        ),
-                        key: 'floating-to-fixed-ad-deactivated',
-                        platform: 'P2P',
-                        type: 'p2p_ad_type_changed',
-                    });
-                } else {
-                    this.props.addNotificationMessage({
-                        header: <Localize i18n_default_text='Floating rates are enabled' />,
-                        message: (
-                            <Localize
-                                i18n_default_text='Please switch your ads to floating rates by {{end_date}}.'
-                                values={{
-                                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
-                                }}
-                            />
-                        ),
-                        key: 'floating-to-fixed-ad-enabled',
-                        platform: 'P2P',
-                        type: 'p2p_ad_type_changed',
-                    });
-                }
+        if (floating_rate_store.rate_type === ad_type.FLOAT) {
+            if (floating_rate_store.reached_target_date) {
+                this.props.addNotificationMessage({
+                    header: <Localize i18n_default_text='Your fixed rate ads are deactivated' />,
+                    message: (
+                        <Localize i18n_default_text='You can still find them in My ads. Switch to floating rates to reactivate.' />
+                    ),
+                    key: 'ad-type-changed',
+                    platform: 'P2P',
+                    type: 'p2p_ad_type_changed',
+                });
             } else {
                 this.props.addNotificationMessage({
-                    header: <Localize i18n_default_text='Your floating rate ads are deactivated' />,
+                    header: <Localize i18n_default_text='Floating rates are enabled' />,
                     message: (
-                        <Localize i18n_default_text='You can still find them in My ads. Switch to fixed rates to reactivate.' />
+                        <Localize
+                            i18n_default_text='Please switch your ads to floating rates by {{end_date}}.'
+                            values={{
+                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                            }}
+                        />
                     ),
-                    key: 'fixed-to-floating-ad-deactivated',
+                    key: 'ad-type-changed',
                     platform: 'P2P',
                     type: 'p2p_ad_type_changed',
                 });
             }
+        } else {
+            this.props.addNotificationMessage({
+                header: <Localize i18n_default_text='Your floating rate ads are deactivated' />,
+                message: (
+                    <Localize i18n_default_text='You can still find them in My ads. Switch to fixed rates to reactivate.' />
+                ),
+                key: 'ad-type-changed',
+                platform: 'P2P',
+                type: 'p2p_ad_type_changed',
+            });
         }
     }
 

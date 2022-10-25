@@ -47,7 +47,7 @@ const Cards = ({ load_modal, setActiveTab }: TCard) => {
                             id={icon}
                             onClick={method}
                         />
-                        <Text size='xxs' line_height='s' color='prominent'>
+                        <Text size='xs' line_height='s' color='prominent'>
                             {label}
                         </Text>
                     </div>

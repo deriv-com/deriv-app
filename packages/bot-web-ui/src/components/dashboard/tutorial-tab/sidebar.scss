@@ -3,7 +3,6 @@
     .dc-tabs {
         &__wrapper {
             padding: 1.6rem 0.8rem;
-            overflow: auto;
 
             &__group {
                 display: flex;
@@ -39,11 +38,10 @@
             .dc-tabs {
                 &__content {
                     margin: -6.5rem 0 0 2.4rem;
-                    width: 70%;
+                    width: 100%;
                 }
                 &--top {
                     display: flex;
-                    height: calc(100vh - 26rem);
                     @include mobile {
                         height: calc(100vh - 22rem);
                     }
@@ -52,11 +50,11 @@
                     width: 22.5rem;
                     display: flex;
                     flex-direction: column;
-                    height: calc(100vh - 16rem);
                     padding: 0 0.8rem;
 
                     &--border-bottom {
                         padding: 0 0.8rem;
+                        height: 100vh;
 
                         &:first-child {
                             margin-top: -7.2rem;

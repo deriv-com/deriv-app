@@ -1,6 +1,5 @@
 import { TRootStore } from 'Types';
 import ConfigStore from './config-store';
-import WalletStore from './wallet-store';
 
 export default class RootStore {
     public config: ConfigStore;
@@ -8,7 +7,6 @@ export default class RootStore {
     public client: Record<string, any>;
     public common: Record<string, any>;
     public ui: Record<string, any>;
-    public wallet_store: WalletStore;
     public modules: Record<string, any>;
     public notifications: Record<string, any>;
 
@@ -17,7 +15,6 @@ export default class RootStore {
         this.client = core_store.client;
         this.common = core_store.common;
         this.ui = core_store.ui;
-        this.wallet_store = new WalletStore(this);
         this.modules = core_store.modules;
         this.notifications = core_store.notifications;
     }

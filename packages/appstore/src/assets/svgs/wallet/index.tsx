@@ -11,15 +11,10 @@ import DerivLogo from 'Assets/svgs/wallet/ic-appstore-deriv-logo.svg';
 import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
 import DropDown from 'Assets/svgs/wallet/drop-down.svg';
 import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
-import FasapayLight from 'Assets/svgs/wallet/fasapay-light.svg';
 import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
 import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
-import PaymentAgentLight from 'Assets/svgs/wallet/payment-agent-light.svg';
-import SkrillLight from 'Assets/svgs/wallet/skrill-light.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
-import UsdLight from 'Assets/svgs/wallet/usd-light.svg';
-import ZingpayLight from 'Assets/svgs/wallet/zingpay-light.svg';
 
 const Icons = {
     BinaryBot,
@@ -34,15 +29,10 @@ const Icons = {
     DerivX,
     DropDown,
     DTrader,
-    FasapayLight,
     Financial,
     Options,
-    PaymentAgentLight,
-    SkrillLight,
     SmartTrader,
     SmartTraderBlue,
-    UsdLight,
-    ZingpayLight,
 };
 
 const WalletIcon = ({

@@ -1,19 +1,18 @@
 import classNames from 'classnames';
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { useStore } from '../../../hooks';
 import './virtual.scss';
 
-type TVirtualProps = RouteComponentProps & {
-    is_dark_mode_on: boolean;
-    toggleAccountsDialog: () => void;
-};
-const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
+const Virtual = () => {
+    const {
+        ui: { is_dark_mode_on, toggleAccountsDialog },
+    } = useStore();
+
     return (
         <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
             <React.Fragment>
@@ -51,7 +50,4 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
     );
 };
 
-export default connect(({ ui }: TRootStore) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-}))(withRouter(Virtual));
+export default observer(withRouter(Virtual));

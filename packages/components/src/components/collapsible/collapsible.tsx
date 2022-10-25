@@ -6,7 +6,7 @@ import ArrowButton from './arrow-button';
 type TCollapsible = {
     as: React.ElementType;
     is_collapsed?: boolean;
-    position: 'top' | 'bottom';
+    position?: 'top' | 'bottom';
     onClick: (state: boolean) => void;
     title: string;
 };

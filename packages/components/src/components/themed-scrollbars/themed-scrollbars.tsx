@@ -32,7 +32,7 @@ const ThemedScrollbars = ({
     style = {},
     width,
 }: React.PropsWithChildren<TThemedScrollbars>) => {
-    const [hoverRef, isHovered] = useHover(refSetter);
+    const [hoverRef, isHovered] = useHover<HTMLDivElement>(refSetter, false);
 
     if (is_bypassed) return children;
     return (

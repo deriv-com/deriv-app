@@ -42,6 +42,8 @@ type TCancelCryptoTransaction = {
     error: TServerError;
 };
 
+type TPaymentAgentWithdrawRequest = Omit<PaymentAgentWithdrawRequest, 'paymentagent_loginid'> & { loginid: string };
+
 type TWebSocketCall = {
     cashier: (
         action: CashierInformationRequest['cashier'],
@@ -60,12 +62,12 @@ type TWebSocketCall = {
         dry_run,
     }: TPaymentAgentTransferRequest) => Promise<PaymentAgentTransferResponse>;
     paymentAgentWithdraw: ({
-        paymentagent_loginid,
+        loginid,
         currency,
         amount,
         verification_code,
         dry_run,
-    }: PaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+    }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
     send?: (obj: any) => Promise<any>;
     storage: TStorage;
     transferBetweenAccounts: (

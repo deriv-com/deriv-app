@@ -323,7 +323,7 @@ export default class PaymentAgentStore {
     }: PaymentAgentWithdrawRequest): Promise<void> {
         this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            paymentagent_loginid,
+            loginid: paymentagent_loginid,
             currency,
             amount,
             verification_code,
@@ -391,7 +391,7 @@ export default class PaymentAgentStore {
     }: PaymentAgentWithdrawRequest): Promise<void> {
         this.error.setErrorMessage({ code: '', message: '' });
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
-            paymentagent_loginid,
+            loginid: paymentagent_loginid,
             currency,
             amount,
             verification_code,

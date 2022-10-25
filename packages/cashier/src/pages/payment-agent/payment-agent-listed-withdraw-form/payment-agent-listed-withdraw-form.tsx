@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Input, Loading, Money, Text } from '@deriv/components';
+import { PaymentAgentWithdrawRequest } from '@deriv/api-types';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -10,7 +11,7 @@ import { TRootStore, TPaymentAgentDetails, TServerError } from 'Types';
 import './payment-agent-listed-withdraw-form.scss';
 
 type TValidateWithdrawalValueProps = {
-    amount: string;
+    amount: number;
 };
 
 type TValidateWithdrawalProps = {
@@ -28,12 +29,7 @@ type PaymentAgentListedWithdrawFormProps = {
     onMount: () => void;
     payment_agent: TPaymentAgentDetails;
     payment_agent_list: TPaymentAgentDetails[];
-    requestTryPaymentAgentWithdraw: (arg: {
-        loginid: string | number | undefined;
-        currency: string;
-        amount: string;
-        verification_code: string;
-    }) => {
+    requestTryPaymentAgentWithdraw: (arg: PaymentAgentWithdrawRequest) => {
         error?: string;
     };
     selected_bank: number | string;
@@ -103,10 +99,11 @@ const PaymentAgentListedWithdrawForm = ({
         actions: { setSubmitting: (status: boolean) => void }
     ) => {
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
-            loginid: payment_agent.paymentagent_loginid,
+            paymentagent_loginid: payment_agent.paymentagent_loginid,
             currency,
             amount: values.amount,
             verification_code,
+            paymentagent_withdraw: 1,
         });
         if (payment_agent_withdraw?.error) {
             actions.setSubmitting(false);
@@ -124,7 +121,7 @@ const PaymentAgentListedWithdrawForm = ({
             </Text>
             <Formik
                 initialValues={{
-                    amount: '',
+                    amount: 0,
                 }}
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}

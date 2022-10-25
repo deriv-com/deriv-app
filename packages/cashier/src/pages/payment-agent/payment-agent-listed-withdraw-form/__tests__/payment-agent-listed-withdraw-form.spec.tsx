@@ -135,7 +135,8 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
 
         await waitFor(() => {
             expect(props.requestTryPaymentAgentWithdraw).toHaveBeenCalledWith({
-                loginid: 'CR90000102',
+                paymentagent_loginid: 'CR90000102',
+                paymentagent_withdraw: 1,
                 currency: 'USD',
                 amount: '100',
                 verification_code: 'ABCdef',

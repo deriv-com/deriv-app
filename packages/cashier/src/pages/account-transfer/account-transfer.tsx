@@ -12,14 +12,12 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
+import ErrorStore from 'Stores/error-store';
 
 type TAccountTransferProps = {
     accounts_list: Array<TAccountsList>;
     container: string;
-    error: {
-        is_show_full_page: boolean;
-        message: string;
-    };
+    error: ErrorStore;
     has_no_account: boolean;
     has_no_accounts_balance: boolean;
     is_cashier_locked: boolean;

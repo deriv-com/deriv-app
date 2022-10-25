@@ -1,7 +1,8 @@
 export type TServerError = {
     code: string;
     message: string;
-    details?: { fields: string[] };
+    details?: { [key: string]: string };
+    fields?: string[];
 };
 
 type TWebSocketCall = {

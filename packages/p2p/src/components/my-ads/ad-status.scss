@@ -23,7 +23,7 @@
     &--active {
         @include ad-status-base(var(--status-success));
 
-        width: 6.7rem;
+        width: fit-content;
 
         @include mobile {
             margin-bottom: 0.8rem;
@@ -33,6 +33,7 @@
 
     &--inactive {
         @include ad-status-base(var(--status-danger));
-        width: 8rem;
+        
+        width: fit-content;
     }
 }

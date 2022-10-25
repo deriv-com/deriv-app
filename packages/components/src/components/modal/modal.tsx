@@ -89,7 +89,7 @@ const ModalElement = ({
         );
     };
 
-    const closeModal = (e: IClickEvent) => {
+    const closeModal = () => {
         if (is_open) toggleModal?.();
     };
 

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from '../field/field.jsx';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Field from '../field/field';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));

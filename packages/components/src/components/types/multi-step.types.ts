@@ -9,5 +9,5 @@ export type TMultiStepRefProps = {
 export type TMultiStepProps = {
     className?: string;
     lbl_previous?: string;
-    steps: Array<{ component: React.ReactNode }>;
+    steps: Array<{ component: React.ReactElement }>;
 };

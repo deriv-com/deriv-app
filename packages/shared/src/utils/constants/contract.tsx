@@ -130,7 +130,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 });
 
 export const getContractCategoriesConfig = () => ({
-    'Multipliers': { name: localize('Multipliers'), categories: ['multiplier'] },
+    Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
         name: localize('Ups & Downs'),
         categories: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
@@ -138,7 +138,7 @@ export const getContractCategoriesConfig = () => ({
     'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', 'tick_high_low'] },
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
-    'Digits': { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
+    Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
 });
 
 export const unsupported_contract_types_list = [

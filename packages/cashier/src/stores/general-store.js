@@ -224,14 +224,13 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 
             if (is_logged_in) {
                 await this.getAdvertizerError();
-                account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
@@ -298,8 +297,10 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
+            this.setLoading(true);
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
+            this.setLoading(false);
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();
@@ -377,11 +378,17 @@ export default class GeneralStore extends BaseStore {
     accountSwitcherListener() {
         const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
 
+        clearInterval(withdraw.verification.resend_interval);
+        clearInterval(payment_agent.verification.resend_interval);
         withdraw.verification.clearVerification();
         payment_agent.verification.clearVerification();
         iframe.clearIframe();
 
         this.payment_agent = payment_agent;
+        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+            payment_agent.setActiveTab(1);
+        }
+
         this.is_populating_values = false;
 
         this.onRemount();

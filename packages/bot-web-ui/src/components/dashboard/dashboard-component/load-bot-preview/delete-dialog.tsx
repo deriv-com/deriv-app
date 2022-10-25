@@ -6,12 +6,12 @@ import { connect } from 'Stores/connect';
 type TDeleteDialog = {
     is_running: boolean;
     is_delete_modal_open: boolean;
-    onToggleDeleteDialog: (type: string) => void;
+    onToggleDeleteDialog: (type: string, param: boolean) => void;
 };
 
 const DeleteDialog = ({ is_delete_modal_open, is_running, onToggleDeleteDialog }: TDeleteDialog) => {
-    const onHandleChange = (type: string) => {
-        onToggleDeleteDialog(type);
+    const onHandleChange = (type: string, param: boolean) => {
+        onToggleDeleteDialog(type, false);
     };
     return (
         <div>
@@ -20,11 +20,11 @@ const DeleteDialog = ({ is_delete_modal_open, is_running, onToggleDeleteDialog }
                 is_visible={is_delete_modal_open}
                 confirm_button_text={is_running ? localize('Yes') : localize('Yes, delete')}
                 onConfirm={() => {
-                    onHandleChange('confirm');
+                    onHandleChange('confirm', false);
                 }}
                 cancel_button_text={is_running ? localize('No') : localize('Cancel')}
                 onCancel={() => {
-                    onHandleChange('cancel');
+                    onHandleChange('cancel', false);
                 }}
                 is_mobile_full_width={false}
                 className={'dc-dialog__delete-strategy--delete'}

@@ -14,6 +14,8 @@ type TRecentComponent = {
     recent_strategies: [];
     toggleExplanationExpand: boolean;
     is_strategy_removed: boolean;
+    load_recent_strategies: boolean;
+    is_delete_modal_open: boolean;
     handleFileChange: () => void;
     toggleStrategies: (param: boolean) => void;
     setRecentStrategies: () => void;
@@ -28,16 +30,18 @@ const RecentComponent = ({
     is_explanation_expand,
     recent_strategies,
     toggleExplanationExpand,
+    is_delete_modal_open,
     toggleStrategies,
 }: TRecentComponent) => {
-    const [get_strategies, setStrategies] = React.useState([recent_strategies]);
+    const [get_strategies, setStrategies] = React.useState([]);
 
     React.useEffect(() => {
         toggleStrategies(true);
-        getSavedWorkspaces().then(data => {
-            setStrategies(data);
+        getSavedWorkspaces().then((load_recent_strategies: []) => {
+            setStrategies(load_recent_strategies);
         });
-    }, []);
+    }, [!is_delete_modal_open]);
+
     if (get_strategies?.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -47,9 +51,9 @@ const RecentComponent = ({
                             <Localize i18n_default_text='Your Bots' />
                         </div>
                         <div className='load-strategy__recent__files__list'>
-                            {recent_strategies.map((workspace, index) => (
-                                <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />
-                            ))}
+                            {recent_strategies.map((workspace, index) => {
+                                return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
+                            })}
                         </div>
                         <DeleteDialog />
                     </div>
@@ -97,13 +101,9 @@ const RecentComponent = ({
 const Recent = connect(({ load_modal }: RootStore) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
     recent_strategies: load_modal.recent_strategies,
-    handleFileChange: load_modal.handleFileChange,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
-    onEntered: load_modal.onEntered,
-    load_recent_strategies: load_modal.load_recent_strategies,
+    is_delete_modal_open: load_modal.is_delete_modal_open,
     toggleStrategies: load_modal.toggleStrategies,
-    is_strategy_removed: load_modal.is_strategy_removed,
-    setRecentStrategies: load_modal.setRecentStrategies,
 }))(RecentComponent);
 
 export default Recent;

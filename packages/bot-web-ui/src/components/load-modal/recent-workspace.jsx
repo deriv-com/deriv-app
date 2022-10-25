@@ -29,7 +29,7 @@ const RecentWorkspace = ({
                 <Icon
                     icon={getRecentFileIcon(workspace.save_type)}
                     className={classnames({
-                        'load-strategy__recent-icon--active': true || workspace.save_type === save_types.GOOGLE_DRIVE,
+                        'load-strategy__recent-icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
                     })}
                 />
                 <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>

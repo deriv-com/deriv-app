@@ -59,7 +59,7 @@ const Toolbox = ({
                 <div className='db-toolbox__header'>
                     <div className='db-toolbox__title' onClick={() => setOpen(!is_open)}>
                         {localize('Blocks menu')}
-                        <span className={classNames('chevron', { active: is_open })}>
+                        <span className={classNames('db-toolbox__title__chevron', { active: is_open })}>
                             <Icon icon='IcChevronDownBold' />
                         </span>
                     </div>

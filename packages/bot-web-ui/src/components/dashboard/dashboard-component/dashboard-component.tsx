@@ -10,19 +10,26 @@ import Local from './load-bot-preview/local';
 
 type TDashboard = {
     is_info_panel_visible: boolean;
+    recent_strategies: boolean;
 };
 
-const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => {
+const DashboardComponent = ({ is_info_panel_visible, recent_strategies }: TDashboard) => {
     return (
         <div className='tab__dashboard'>
             <div className='tab__dashboard__content'>
                 <div className='tab__dashboard__centered'>
-                    <div className='tab__dashboard__header'>
-                        <Text color='prominent' line_height='xxl' size='sm' weight='bold'>
-                            {localize('Load or build your bot')}
-                        </Text>
-                    </div>
-                    <div className='tab__dashboard__description'>
+                    {!recent_strategies && (
+                        <div className='tab__dashboard__header'>
+                            <Text color='prominent' line_height='xxl' size='sm' weight='bold'>
+                                {localize('Load or build your bot')}
+                            </Text>
+                        </div>
+                    )}
+                    <div
+                        className={classNames('tab__dashboard__description', {
+                            tab__dashboard__description__loaded: recent_strategies,
+                        })}
+                    >
                         <Text color='prominent' line_height='s'>
                             {localize(
                                 'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
@@ -46,6 +53,7 @@ const DashboardComponent = ({ is_info_panel_visible }: TDashboard) => {
     );
 };
 
-export default connect(({ dashboard }: RootStore) => ({
+export default connect(({ dashboard, load_modal }: RootStore) => ({
     is_info_panel_visible: dashboard.is_info_panel_visible,
+    recent_strategies: load_modal.recent_strategies,
 }))(DashboardComponent);

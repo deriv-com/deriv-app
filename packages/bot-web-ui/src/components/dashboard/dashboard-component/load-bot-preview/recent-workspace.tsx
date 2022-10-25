@@ -16,10 +16,13 @@ type TRecentWorkspace = {
     setFileLoaded: (param: boolean) => void;
     index: number;
     has_file_loaded: boolean;
+    recent_strategies: boolean;
     toggleSaveModal: () => void;
-    toggleDeleteDialog: () => void;
+    onToggleDeleteDialog: (type: string, is_delete_modal_open: boolean) => void;
     loadFileFromRecent: () => void;
     setActiveTab: (active_tab: number) => void;
+    toggleStrategies: (param: boolean) => void;
+    is_delete_modal_open: boolean;
 };
 
 const RecentWorkspace = ({
@@ -30,11 +33,13 @@ const RecentWorkspace = ({
     workspace,
     index,
     has_file_loaded,
+    recent_strategies,
     setFileLoaded,
-    toggleDeleteDialog,
     toggleSaveModal,
     loadFileFromRecent,
+    onToggleDeleteDialog,
     setActiveTab,
+    toggleStrategies,
 }: TRecentWorkspace) => {
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
@@ -46,6 +51,7 @@ const RecentWorkspace = ({
         <>
             <div
                 className={classnames('load-strategy__recent-item', {
+                    'load-strategy__recent-item__loaded': recent_strategies,
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                 })}
                 key={workspace.id}
@@ -92,7 +98,8 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button__delete'
                         onClick={() => {
-                            toggleDeleteDialog();
+                            onToggleDeleteDialog('delete', true);
+                            toggleStrategies(true);
                         }}
                     >
                         <Icon icon='IcDelete' />
@@ -111,7 +118,10 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     setFileLoaded: dashboard.setFileLoaded,
     has_file_loaded: dashboard.has_file_loaded,
     toggleSaveModal: save_modal.toggleSaveModal,
-    toggleDeleteDialog: load_modal.toggleDeleteDialog,
+    toggleStrategies: load_modal.toggleStrategies,
+    onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
+    is_delete_modal_open: load_modal.is_delete_modal_open,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setActiveTab: dashboard.setActiveTab,
+    recent_strategies: load_modal.recent_strategies,
 }))(RecentWorkspace);

@@ -27,6 +27,7 @@ interface ILoadModalStore {
     onDriveOpen: () => void;
     onEntered: () => void;
     onLoadModalClose: () => void;
+    onToggleDeleteDialog: (type: string, is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
     setActiveTabIndex: (index: number) => void;
@@ -75,9 +76,11 @@ export default class LoadModalStore implements ILoadModalStore {
             }
         );
         reaction(
-            () => this.is_strategy_removed,
-            async () => {
-                this.setRecentStrategies((await getSavedWorkspaces()) || []);
+            () => this.is_delete_modal_open,
+            async is_delete_modal_open => {
+                if (!is_delete_modal_open) {
+                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
+                }
             }
         );
     }
@@ -220,7 +223,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
         if (this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy_id);
+            this.previewRecentStrategy(this.selected_strategy.id);
         }
     };
 
@@ -366,19 +369,13 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     @action.bound
-    onToggleDeleteDialog = (type: string): void => {
+    onToggleDeleteDialog = (type: string, is_delete_modal_open: boolean): void => {
         if (type === 'confirm') {
             removeExistingWorkspace(this.selected_strategy.id);
-            this.is_delete_modal_open = false;
-        } else {
-            this.is_delete_modal_open = false;
         }
+        this.is_delete_modal_open = is_delete_modal_open;
     };
 
-    @action.bound
-    toggleDeleteDialog = (): void => {
-        this.is_delete_modal_open = true;
-    };
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();

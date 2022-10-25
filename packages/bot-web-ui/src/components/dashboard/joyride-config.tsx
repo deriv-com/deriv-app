@@ -1,17 +1,15 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { storeSetting, getSetting } from '../../utils/settings';
-import { getUrlBase } from '@deriv/shared';
 import TourGuide from './tour-guide';
 import { CallBackProps } from 'react-joyride';
 import { Text } from '@deriv/components';
+import { getImageLocation } from '../../public-path';
 
 type TStep = {
     label?: string;
     content: string[];
 };
-
-export const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
     if (type === 'token') {

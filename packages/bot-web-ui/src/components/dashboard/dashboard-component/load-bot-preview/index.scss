@@ -217,6 +217,10 @@
             padding: 0.8rem;
             align-items: center;
             text-align: center;
+            &__loaded {
+                text-align: left;
+                padding-left: 3.5rem;
+            }
 
             &:not(.load-strategy__recent-item--selected):hover {
                 background-color: var(--state-hover);

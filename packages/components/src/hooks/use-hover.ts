@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 
-export const useHover = (refSetter: RefObject<HTMLElement> | null, should_prevent_bubbling: boolean) => {
+export const useHover = <T extends HTMLElement>(refSetter: RefObject<T> | null, should_prevent_bubbling: boolean) => {
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
@@ -32,7 +32,7 @@ export const useHover = (refSetter: RefObject<HTMLElement> | null, should_preven
         return undefined;
     }, [ref, should_prevent_bubbling]);
 
-    return [ref, value];
+    return [ref, value] as const;
 };
 
 export const useHoverCallback = () => {

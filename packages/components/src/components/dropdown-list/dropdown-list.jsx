@@ -100,7 +100,7 @@ const ListItems = React.forwardRef((props, ref) => {
                     />
                 ))
             ) : (
-                <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
+                <div className='dc-dropdown-list__item dc-dropdown-list__item--not-found'>{not_found_text}</div>
             )}
         </>
     );

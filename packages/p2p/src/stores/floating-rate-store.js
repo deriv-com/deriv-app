@@ -15,11 +15,17 @@ export default class FloatingRateStore extends BaseStore {
     @observable is_loading;
     @observable api_error_message = '';
     @observable is_market_rate_changed = false;
+    @observable override_exchange_rate = null;
 
     previous_exchange_rate = null;
     current_exchange_rate = null;
 
     exchange_rate_subscription = {};
+
+    @computed
+    get market_rate() {
+        return this.exchange_rate > 0 ? this.exchange_rate : this.override_exchange_rate;
+    }
 
     @computed
     get rate_type() {
@@ -92,15 +98,25 @@ export default class FloatingRateStore extends BaseStore {
     }
 
     @action.bound
+    setOverrideExchangeRate(override_exchange_rate) {
+        this.override_exchange_rate = removeTrailingZeros(roundOffDecimal(parseFloat(override_exchange_rate), 6));
+    }
+
+    @action.bound
     fetchExchangeRate(response) {
-        const { client, ws_subscriptions } = this.root_store.general_store;
+        const { buy_sell_store, general_store } = this.root_store;
+        const { client, ws_subscriptions } = general_store;
+        const { selected_local_currency } = buy_sell_store;
+
         if (response) {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
                 ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+                this.setExchangeRate(0);
             } else {
                 const { rates } = response.exchange_rates;
-                this.setExchangeRate(rates[client?.local_currency_config?.currency]);
+                const rate = rates[client?.local_currency_config?.currency] ?? rates[selected_local_currency];
+                this.setExchangeRate(rate);
                 this.setApiErrorMessage(null);
             }
         }

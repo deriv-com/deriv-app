@@ -1,7 +1,11 @@
 .ad-type {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+
+    @include mobile {
+        justify-content: flex-end;
+    }
 
     &__badge {
         align-items: center;
@@ -9,7 +13,7 @@
         border: 1px solid var(--border-normal);
         display: flex;
         flex-direction: row;
-        margin: 0.25rem;
+        margin: 0.3rem 0.5rem 0.3rem 0;
         padding: 0.1rem 0.8rem;
         width: fit-content;
     }

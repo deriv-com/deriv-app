@@ -8,7 +8,7 @@ type TMobileWrapper = {
 const MobileWrapper = ({ children }: TMobileWrapper) => {
     if (!isMobile()) return null;
 
-    return children;
+    return <React.Fragment>{children}</React.Fragment>;
 };
 
 export default MobileWrapper;

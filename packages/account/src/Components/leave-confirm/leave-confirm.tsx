@@ -80,7 +80,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     });
 
     const leave = () => {
-        if (next_location && 'pathname' in next_location) {
+        if (next_location?.pathname) {
             const { pathname } = next_location;
             unblock();
             history.push(pathname);

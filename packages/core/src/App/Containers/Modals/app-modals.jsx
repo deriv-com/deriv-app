@@ -38,6 +38,10 @@ const CloseUKAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseUKAccountModal')
 );
 
+const WarningScamMessageModal = React.lazy(() =>
+    import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_welcome_modal_visible,
@@ -55,6 +59,7 @@ const AppModals = ({
     cfd_score,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
+    is_warning_scam_message_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -95,6 +100,10 @@ const AppModals = ({
 
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
+    }
+
+    if (is_warning_scam_message_modal_visible) {
+        ComponentToLoad = <WarningScamMessageModal />;
     }
 
     if (is_welcome_modal_visible) {
@@ -158,4 +167,5 @@ export default connect(({ client, ui }) => ({
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.active_account_landing_company,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
+    is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
 }))(AppModals);

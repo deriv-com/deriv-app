@@ -7,10 +7,10 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -369,6 +369,7 @@ const Dropdown = ({
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
                     })}
+                    data-testid='dt_dropdown_container'
                 >
                     {label && (
                         <span
@@ -460,7 +461,7 @@ Dropdown.propTypes = {
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
     disabled: PropTypes.bool,
-    error: PropTypes.string,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     handleBlur: PropTypes.func,
     has_symbol: PropTypes.bool,
     hint: PropTypes.string,

@@ -80,17 +80,7 @@ commands:
     steps:
       - run:
           name: "Build all packages"
-          command: npm run build
-
-  build_storybook:
-    description: "Build storybook"
-    steps:
-      - run:
-          name: "Bootstrap for deriv storybook"
-          command: npm run build:travis
-      - run:
-          name: "Build all packages for deriv storybook"
-          command: npm run build:storybook
+          command: npm run build:all
 
   notify_slack:
     description: "Notify slack"
@@ -167,7 +157,7 @@ commands:
           name: "Publish to cloudflare pages (staging)"
           command: |
             npm i wrangler@2.0.19
-            cd packages/core 
+            cd packages/core
             npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
 
@@ -176,9 +166,9 @@ commands:
     steps:
       - run:
           name: "Publish to cloudflare pages (production)"
-          command: | 
+          command: |
             npm i wrangler@2.0.19
-            cd packages/core 
+            cd packages/core
             npx wrangler pages publish dist/ --project-name=deriv-app-pages --branch=main
             echo "New website - http://cf-pages-deriv-app.deriv.com"
 
@@ -190,26 +180,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-
-  release_storybook:
-    docker:
-      - image: cimg/node:16.16.0
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build_storybook
-      - versioning:
-          version_name: storybook
-      - docker_build_push:
-          docker_image_latest_tag: latest
-          docker_image_name: "deriv-app-storybook"
-          docker_file: "Dockerfile-storybook"
-      - k8s_deploy:
-          k8s_namespace: "deriv-app-storybook-production"
-          k8s_service: "deriv-app-storybook"
-      - notify_slack
-    environment:
-      NODE_ENV: staging
 
   release_staging:
     docker:
@@ -284,16 +254,6 @@ jobs:
           command: npm test
 
 workflows:
-  release_storybook:
-    jobs:
-      - release_storybook:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^storybook.*/
-
   release_staging:
     jobs:
       - release_staging:
@@ -338,4 +298,3 @@ workflows:
                 - gh-pages
             tags:
               ignore: /.*/
-              

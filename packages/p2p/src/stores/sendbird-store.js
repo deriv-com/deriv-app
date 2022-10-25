@@ -270,7 +270,7 @@ export default class SendbirdStore extends BaseStore {
             } else {
                 this.markMessagesAsRead(true);
             }
-        }, 500);
+        }, 1000);
     }
 
     onReadReceiptUpdated(channel) {

@@ -46,7 +46,7 @@
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.14.0",
         "react-i18next": "^11.11.0",
-        "react-simple-star-rating": "^4.0.5",
+        "react-simple-star-rating": "4.0.4",
         "react-svg-loader": "^3.0.3",
         "react-transition-group": "4.4.2",
         "sendbird": "~3.0.137",

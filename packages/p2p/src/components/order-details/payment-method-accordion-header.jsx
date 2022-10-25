@@ -7,7 +7,7 @@ const PaymentMethodAccordionHeader = ({ payment_method }) => {
     if (method === 'BankTransfer' || method === 'Other') {
         return (
             <div className='order-details-card__accordion-row'>
-                <Icon icon={`IcCashier${method}`} size={16} />
+                <Icon className='order-details-card__accordion-icon' icon={`IcCashier${method}`} size={16} />
                 <div className='order-details-card__accordion-title'>
                     <Text color='prominent' size='xs'>
                         {payment_method.display_name}

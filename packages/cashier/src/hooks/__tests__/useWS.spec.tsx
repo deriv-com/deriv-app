@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWS as useWSShared } from '@deriv/shared';
 import useWS from '../useWS';
-import { TSocketEndpointNames, TSocketRequestProps } from '../../types';
+import { TSocketEndpointNames, TSocketRequestProps, TSocketResponse } from '../../types';
 
 jest.mock('@deriv/shared');
 
@@ -46,7 +46,13 @@ describe('useWS', () => {
 
     test('should call ping and get pong in response', async () => {
         mockUseWSShared.mockReturnValue({
-            send: jest.fn(() => Promise.resolve({ ping: 'pong' })),
+            send: jest.fn(() =>
+                Promise.resolve<TSocketResponse<'ping'>>({
+                    msg_type: 'ping',
+                    ping: 'pong',
+                    echo_req: {},
+                })
+            ),
         });
 
         render(<UseWSExample name={'ping'} />);
@@ -68,7 +74,13 @@ describe('useWS', () => {
 
     test('should call verify_email and get 1 in response', async () => {
         mockUseWSShared.mockReturnValue({
-            send: jest.fn(() => Promise.resolve({ verify_email: 1 })),
+            send: jest.fn(() =>
+                Promise.resolve<TSocketResponse<'verify_email'>>({
+                    verify_email: 1,
+                    msg_type: 'verify_email',
+                    echo_req: {},
+                })
+            ),
         });
 
         render(
@@ -90,5 +102,34 @@ describe('useWS', () => {
         await waitFor(() => expect(is_loading).toHaveTextContent('false'));
     });
 
-    // TODO: Add more test cases.
+    test('should call cashier and get ASK_TNC_APPROVAL error code in response', async () => {
+        mockUseWSShared.mockReturnValue({
+            send: jest.fn(() =>
+                Promise.resolve<TSocketResponse<'cashier'>>({
+                    msg_type: 'cashier',
+                    echo_req: {},
+                    error: {
+                        code: 'ASK_TNC_APPROVAL',
+                        message: 'Error message',
+                    },
+                })
+            ),
+        });
+
+        render(<UseWSExample name={'cashier'} request={{ cashier: 'deposit' }} />);
+
+        const is_loading = screen.getByTestId('dt_is_loading');
+        const error = screen.getByTestId('dt_error');
+        const data = screen.getByTestId('dt_data');
+        const send = screen.getByTestId('dt_send');
+
+        expect(is_loading).toHaveTextContent('false');
+        expect(error).toHaveTextContent('undefined');
+        expect(data).toHaveTextContent('undefined');
+        userEvent.click(send);
+        await waitFor(() => expect(is_loading).toHaveTextContent('true'));
+        await waitFor(() => expect(data).toHaveTextContent('undefined'));
+        await waitFor(() => expect(error).toHaveTextContent('{"code":"ASK_TNC_APPROVAL","message":"Error message"}'));
+        await waitFor(() => expect(is_loading).toHaveTextContent('false'));
+    });
 });

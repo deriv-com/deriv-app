@@ -13,14 +13,7 @@ import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/p
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
-    enableApp: () => void;
-    disableApp: () => void;
     getChangeableFields: () => string[];
-    is_open: boolean;
-    openPasswordModal: () => void;
-    toggleCFDPersonalDetailsModal: () => void;
-    toggleJurisdictionModal: () => void;
-    is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
     setAccountSettings: (account_settings: GetSettings) => void;

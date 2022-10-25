@@ -51,7 +51,6 @@ type TDMT5CompareModalContentProps = {
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
     account_status: GetAccountStatus;
@@ -221,7 +220,6 @@ const DMT5CompareModalContent = ({
     openPasswordModal,
     openSwitchToRealAccountModal,
     toggleCFDVerificationModal,
-    toggleCFDPersonalDetailsModal,
     toggleCompareAccounts,
     trading_platform_available_accounts,
     show_eu_related,

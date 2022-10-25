@@ -8,11 +8,14 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
+import { api_error_codes } from '../constants/api-error-codes';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable advertiser_buy_limit = null;
+    @observable advertiser_sell_limit = null;
     @observable block_unblock_user_error = '';
     @observable balance;
     @observable inactive_notification_count = 0;
@@ -123,14 +126,25 @@ export default class GeneralStore extends BaseStore {
             name,
         }).then(response => {
             const { sendbird_store, buy_sell_store } = this.root_store;
-            const { p2p_advertiser_create } = response;
+            const { error, p2p_advertiser_create } = response;
+            const {
+                daily_buy,
+                daily_buy_limit,
+                daily_sell,
+                daily_sell_limit,
+                id,
+                is_approved,
+                name: advertiser_name,
+            } = p2p_advertiser_create || {};
 
-            if (response.error) {
-                this.setNicknameError(response.error.message);
+            if (error) {
+                this.setNicknameError(error.message);
             } else {
-                this.setAdvertiserId(p2p_advertiser_create.id);
-                this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
-                this.setNickname(p2p_advertiser_create.name);
+                this.setAdvertiserId(id);
+                this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
+                this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
+                this.setIsAdvertiser(!!is_approved);
+                this.setNickname(advertiser_name);
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
@@ -231,7 +245,17 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
+    @action.bound
+    redirectToOrderDetails(order_id) {
+        const { order_store } = this.root_store;
+        this.redirectTo('orders');
+        this.setOrderTableType(order_list.INACTIVE);
+        order_store.setOrderId(order_id);
+    }
+
+    @action.bound
     showCompletedOrderNotification(advertiser_name, order_id) {
+        const { order_store } = this.root_store;
         const notification_key = `order-${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
@@ -240,9 +264,10 @@ export default class GeneralStore extends BaseStore {
         this.props.addNotificationMessage({
             action: {
                 onClick: () => {
-                    this.redirectTo('orders');
-                    this.setOrderTableType(order_list.INACTIVE);
-                    this.root_store.order_store.setOrderId(order_id);
+                    if (order_store.order_id === order_id) {
+                        order_store.setIsRatingModalOpen(true);
+                    }
+                    this.redirectToOrderDetails(order_id);
                 },
                 text: localize('Give feedback'),
             },
@@ -426,6 +451,16 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setAdvertiserId(advertiser_id) {
         this.advertiser_id = advertiser_id;
+    }
+
+    @action.bound
+    setAdvertiserBuyLimit(advertiser_buy_limit) {
+        this.advertiser_buy_limit = advertiser_buy_limit;
+    }
+
+    @action.bound
+    setAdvertiserSellLimit(advertiser_sell_limit) {
+        this.advertiser_sell_limit = advertiser_sell_limit;
     }
 
     @action.bound
@@ -619,11 +654,24 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
-            response?.p2p_advertiser_info || {};
+        const {
+            daily_buy,
+            daily_buy_limit,
+            daily_sell,
+            daily_sell_limit,
+            blocked_until,
+            blocked_by_count,
+            id,
+            is_approved,
+            is_blocked,
+            is_listed,
+            name,
+        } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
+            this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
             this.setIsAdvertiserBlocked(!!is_blocked);
             this.setIsListed(!!is_listed);
@@ -632,11 +680,11 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
-            if (response.error.code === 'RestrictedCountry') {
+            if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
-            } else if (response.error.code === 'AdvertiserNotFound') {
+            } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {
                 this.setIsAdvertiser(false);
-            } else if (response.error.code === 'PermissionDenied') {
+            } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.setIsBlocked(true);
                 this.setIsLoading(false);
                 return;

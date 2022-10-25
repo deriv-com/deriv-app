@@ -133,13 +133,12 @@ const CFDPersonalDetailsContainer = ({
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
     landing_company: client.landing_company,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,
 }))(CFDPersonalDetailsContainer);

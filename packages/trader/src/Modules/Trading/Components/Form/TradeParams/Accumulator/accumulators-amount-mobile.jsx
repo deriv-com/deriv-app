@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
 import { MobileWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -22,9 +23,9 @@ const AccumulatorsAmountMobile = ({
             <MobileWrapper>
                 <LabeledQuantityInputMobile
                     input_label={localize('Stake')}
-                    className='trade-container__amount'
+                    className={classNames('trade-container__amount', 'trade-container__amount--accumulator')}
                     classNameInlinePrefix='trade-container__currency'
-                    classNameInput='trade-container__input'
+                    classNameInput={classNames('trade-container__input', 'trade-container__input--accumulator')}
                     currency={currency}
                     current_focus={current_focus}
                     error_messages={error_messages}

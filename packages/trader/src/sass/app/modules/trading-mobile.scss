@@ -64,10 +64,20 @@
                 &__amount {
                     margin: 0.3rem 0 0;
 
+                    &--accumulator {
+                        .dc-input-wrapper__button {
+                            transform: none !important;
+                            stroke: none !important;
+                        }
+                    }
                     .trade-container__input {
                         font-weight: bold;
                         max-width: 100%;
                         padding: 0 4rem;
+
+                        &--accumulator {
+                            font-weight: normal;
+                        }
                     }
                 }
             }

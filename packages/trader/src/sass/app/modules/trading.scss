@@ -51,6 +51,9 @@
         .category-wrapper {
             background-color: var(--general-main-1) !important;
         }
+        @include mobile {
+            overflow: hidden;
+        }
     }
     .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
@@ -146,6 +149,10 @@
         &:active,
         &:focus {
             border-color: var(--border-active);
+        }
+
+        &--accumulator {
+            padding: 0 !important;
         }
     }
     &__error {

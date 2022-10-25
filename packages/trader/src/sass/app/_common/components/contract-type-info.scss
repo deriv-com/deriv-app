@@ -6,6 +6,10 @@
     flex-direction: column;
     justify-content: space-between;
 
+    @include mobile {
+        margin: 1.6rem;
+    }
+
     & .dc-carousel {
         width: 100%;
     }
@@ -20,6 +24,10 @@
         }
         @media screen and (min-height: 821px) {
             min-height: 535px;
+        }
+
+        @include mobile {
+            min-height: calc(100vh - 118px);
         }
     }
     &__content {
@@ -53,12 +61,20 @@
         width: 100%;
         height: 148px;
         border-radius: 4px;
+
+        @include mobile {
+            height: auto;
+        }
     }
     &__action-bar {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
+
+        @include mobile {
+            gap: 2.4rem;
+        }
     }
     &__title {
         margin: auto;
@@ -103,8 +119,18 @@
     &__scrollbars {
         margin-top: 2.4rem;
         margin-bottom: auto;
+
+        @include mobile {
+            max-height: 100% !important;
+        }
     }
     &__button {
         margin-top: 2.4rem;
+
+        @include mobile {
+            width: 27.2rem;
+            padding: 1.5rem 0;
+            align-self: center;
+        }
     }
 }

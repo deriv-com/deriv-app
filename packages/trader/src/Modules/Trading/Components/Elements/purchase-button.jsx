@@ -97,7 +97,11 @@ const PurchaseButton = ({
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='btn-purchase__top'>
+                <div
+                    className={classNames('btn-purchase__top', {
+                        'btn-purchase__top--accumulator': is_accumulator,
+                    })}
+                >
                     <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
                         should_fade={should_fade}

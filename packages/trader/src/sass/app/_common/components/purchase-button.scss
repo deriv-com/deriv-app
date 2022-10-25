@@ -283,7 +283,8 @@
     &__shadow-wrapper:hover:after {
         opacity: 0;
     }
-    &--multiplier {
+    &--multiplier,
+    &--accumulator {
         .btn-purchase__info--left {
             width: 35%;
             flex: none;
@@ -325,28 +326,35 @@
         }
     }
     &--accumulator {
-        .trade-container__price-info {
-            @include mobile {
-                justify-content: center;
-            }
-        }
         .btn-purchase {
             &__info {
                 padding-left: 1.6rem;
+
+                &--left {
+                    .btn-purchase__text_wrapper {
+                        white-space: normal;
+                    }
+                }
 
                 &--right {
                     padding-right: 1.6rem;
                 }
             }
-            &__effect-detail {
-                width: 11.2rem;
-
-                &--arrow {
-                    width: 3.96rem;
-                    height: 3.96rem;
-                    left: 9.2rem;
-                    top: 8px;
-                    border-top-right-radius: 0.4rem;
+        }
+        &.btn-purchase--swoosh {
+            &.btn-purchase--1 {
+                .btn-purchase__type-wrapper {
+                    transform: translate3d(60px, 0, 0);
+                }
+            }
+            &.btn-purchase--2 {
+                .btn-purchase__type-wrapper {
+                    transform: translate3d(50px, 0, 0);
+                }
+            }
+            &.btn-purchase {
+                .btn-purchase__text_wrapper {
+                    white-space: unset;
                 }
             }
         }

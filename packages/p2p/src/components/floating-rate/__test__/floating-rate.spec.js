@@ -11,7 +11,7 @@ jest.mock('Stores', () => ({
             setCurrentFocus: jest.fn(),
         },
         floating_rate_store: {
-            exchange_rate: '100',
+            market_rate: '100',
         },
     }),
 }));

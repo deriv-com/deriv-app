@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 import { TRootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
+    className: string;
     disableApp: () => void;
     enableApp: () => void;
     error: TError | Record<string, never>;
@@ -21,7 +22,7 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDialogProps) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -126,6 +127,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
             title={details.title}
             confirm_button_text={details.confirm_button_text}
             cancel_button_text={details.cancel_button_text}
+            className={className}
             onConfirm={() => {
                 if (typeof details.onConfirm === 'function') {
                     details.onConfirm();

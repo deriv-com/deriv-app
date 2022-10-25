@@ -22,17 +22,16 @@ const WorkspaceWrapper = ({ onMount, onUnmount, is_loading }: TWorkspaceWrapper)
 
     if (is_loading) return null;
 
-    return (
-        <>
-            {Blockly?.derivWorkspace && (
-                <>
-                    <Toolbox />
-                    <Toolbar />
-                    <Flyout />
-                </>
-            )}
-        </>
-    );
+    if (Blockly?.derivWorkspace)
+        return (
+            <React.Fragment>
+                <Toolbox />
+                <Toolbar />
+                <Flyout />
+            </React.Fragment>
+        );
+
+    return null;
 };
 
 export default connect(({ blockly_store }: RootStore) => ({

@@ -6,6 +6,9 @@
         width: 100%;
         height: calc(100vh - 90px);
         padding: 1.6rem;
+        @include mobile {
+            height: calc(100vh - 6rem);
+        }
     }
 
     &__container {
@@ -14,7 +17,13 @@
 
     &__chart-wrapper {
         position: relative;
-        height: calc(100vh - 150px);
+        height: var(--tab-content-height);
+        @include mobile {
+            height: var(--tab-content-height-mobile);
+        }
+        &--expanded {
+            width: calc(100vw - 39.8rem);
+        }
     }
 
     &__toolbox {
@@ -68,14 +77,6 @@
             }
         }
     }
-
-    &__toolbar {
-        position: absolute;
-        top: 0;
-        left: 232px;
-        background-color: var(--general-main-1);
-    }
-
     &__run-strategy-wrapper {
         position: absolute;
         right: 1.6rem;
@@ -112,10 +113,13 @@
     z-index: -1;
     background: var(--general-main-1);
     width: calc(100vw - 4.6rem);
-    height: calc(100vh - 16.6rem);
-
+    height: var(--tab-content-height);
     &--active {
         z-index: 1;
+    }
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+        height: var(--tab-content-height-mobile);
     }
 }
 

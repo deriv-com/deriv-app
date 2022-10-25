@@ -33,11 +33,21 @@
             border-radius: 1rem;
             cursor: pointer;
         }
+        &--disabled {
+            pointer-events: none;
+        }
     }
 }
 
 .faq {
     &__wrapper {
+        overflow: auto;
+        height: 100vh;
+        padding-bottom: 20rem;
+
+        &__content {
+            width: 85%;
+        }
         .dc-accordion {
             &__item-header {
                 display: flex;

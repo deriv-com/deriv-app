@@ -3,13 +3,14 @@ import { Icon, Dialog, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
+import classNames from 'classnames';
 
 type TGuideContent = {
     dialog_options: { [key: string]: string };
     faq_search_value: string;
     is_dialog_open: boolean;
     onOkButtonClick: () => void;
-    showVideoDialog: (type: string, component: HTMLElement) => void;
+    showVideoDialog: (url: string) => void;
     guide_list: [];
 };
 
@@ -28,31 +29,21 @@ const GuideContent = ({
             </Text>
             <div className='tutorials-wrap__group'>
                 {guide_list?.length ? (
-                    guide_list.map(items => {
-                        const { id, content, type, url } = items;
+                    guide_list.map(({ id, content, url }) => {
                         return (
                             <div className='tutorials-wrap__group__cards' key={id}>
-                                <div className='tutorials-wrap__placeholder'>
+                                <div
+                                    className={classNames('tutorials-wrap__placeholder', {
+                                        'tutorials-wrap__placeholder--disabled': !url,
+                                    })}
+                                >
                                     <div className='tutorials-wrap__placeholder__button-group'>
                                         <Icon
                                             className='tutorials-wrap__placeholder__button-group--play'
                                             width='4rem'
                                             height='4rem'
                                             icon={'IcPlayOutline'}
-                                            onClick={() => {
-                                                showVideoDialog(
-                                                    type,
-                                                    <React.Fragment>
-                                                        <iframe
-                                                            width='100%'
-                                                            height='100%'
-                                                            src={url}
-                                                            frameBorder='0'
-                                                            allowFullScreen
-                                                        />
-                                                    </React.Fragment>
-                                                );
-                                            }}
+                                            onClick={() => showVideoDialog(url)}
                                         />
                                     </div>
                                 </div>
@@ -81,7 +72,7 @@ const GuideContent = ({
                     has_close_icon
                     onClose={onOkButtonClick}
                 >
-                    {dialog_options.message}
+                    <iframe width='100%' height='100%' src={dialog_options.url} frameBorder='0' allowFullScreen />
                 </Dialog>
             </div>
         </div>

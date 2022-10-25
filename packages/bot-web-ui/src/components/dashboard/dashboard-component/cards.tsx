@@ -60,84 +60,84 @@ const Card = ({
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
-    const [icon_array, setIconArray] = React.useState<TCardArray[] | []>([]);
-    React.useEffect(() => {
-        const IconArray: TCardArray[] = [
-            {
-                icon: 'IcMyComputer',
-                content: 'My computer',
-                method: openFileLoader,
-                disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
-            },
-            {
-                icon: 'IcGoogleDriveDbot',
-                content: 'Google Drive',
-                method: openGoogleDriveDialog,
-                disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
-            },
-            {
-                icon: 'IcBotBuilder',
-                content: 'Bot Builder',
-                method: () => setActiveTab(1),
-                disable: '',
-            },
-            {
-                icon: 'IcQuickStrategy',
-                content: 'Quick Strategy',
-                method: () => setActiveTab(2),
-                disable: '',
-            },
-        ];
-        setIconArray(IconArray);
-    }, [has_file_loaded]);
 
-    return (
-        <div className='tab__dashboard__table'>
-            <div className='tab__dashboard__table__tiles' id='tab__dashboard__table__tiles'>
-                {icon_array.map((icons, index) => {
-                    const { icon, content, method, disable } = icons;
-                    return (
-                        <div key={index} className={`${disable} tab__dashboard__table__block`}>
-                            <Icon
-                                className={'tab__dashboard__table__images'}
-                                width='8rem'
-                                height='8rem'
-                                icon={icon}
-                                id={icon}
-                                onClick={method}
-                            />
-                            <Text color='prominent' size='xs'>
-                                {localize(content)}
-                            </Text>
-                        </div>
-                    );
-                })}
-                <input
-                    type='file'
-                    ref={file_input_ref}
-                    accept='.xml'
-                    hidden
-                    onChange={e => {
-                        clear_preview_ref.current?.click();
-                        onConfirmSave();
-                        setIsFileSupported(handleFileChange(e, false));
-                        loadFileFromLocal();
-                        setFileLoaded(true);
-                    }}
-                />
-                <Dialog
-                    title={dialog_options.title}
-                    is_visible={is_dialog_open}
-                    onCancel={closeResetDialog}
-                    is_mobile_full_width
-                    className={'dc-dialog__wrapper--google-drive'}
-                    has_close_icon
-                >
-                    {dialog_options.message}
-                </Dialog>
+    const actions: TCardArray[] = [
+        {
+            icon: 'IcMyComputer',
+            content: 'My computer',
+            method: openFileLoader,
+            disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
+        },
+        {
+            icon: 'IcGoogleDriveDbot',
+            content: 'Google Drive',
+            method: openGoogleDriveDialog,
+            disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
+        },
+        {
+            icon: 'IcBotBuilder',
+            content: 'Bot Builder',
+            method: () => setActiveTab(1),
+            disable: '',
+        },
+        {
+            icon: 'IcQuickStrategy',
+            content: 'Quick Strategy',
+            method: () => setActiveTab(2),
+            disable: '',
+        },
+    ];
+
+    return React.useMemo(
+        () => (
+            <div className='tab__dashboard__table'>
+                <div className='tab__dashboard__table__tiles' id='tab__dashboard__table__tiles'>
+                    {actions.map((icons, index) => {
+                        const { icon, content, method, disable } = icons;
+                        return (
+                            <div key={index} className={`${disable} tab__dashboard__table__block`}>
+                                <Icon
+                                    className={'tab__dashboard__table__images'}
+                                    width='8rem'
+                                    height='8rem'
+                                    icon={icon}
+                                    id={icon}
+                                    onClick={method}
+                                />
+                                <Text color='prominent' size='xs'>
+                                    {localize(content)}
+                                </Text>
+                            </div>
+                        );
+                    })}
+                    <input
+                        type='file'
+                        ref={file_input_ref}
+                        accept='.xml'
+                        hidden
+                        onChange={e => {
+                            clear_preview_ref.current?.click();
+                            onConfirmSave();
+                            setIsFileSupported(handleFileChange(e, false));
+                            loadFileFromLocal();
+                            setFileLoaded(true);
+                        }}
+                    />
+                    <Dialog
+                        title={dialog_options.title}
+                        is_visible={is_dialog_open}
+                        onCancel={closeResetDialog}
+                        is_mobile_full_width
+                        className={'dc-dialog__wrapper--google-drive'}
+                        has_close_icon
+                    >
+                        {dialog_options.message}
+                    </Dialog>
+                </div>
+                <Recent />
             </div>
-            <Recent />
-        </div>
+        ),
+        []
     );
 };
 

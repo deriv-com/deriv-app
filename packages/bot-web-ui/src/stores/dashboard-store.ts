@@ -19,7 +19,7 @@ export interface IDashboardStore {
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
-    showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
+    showVideoDialog: (url: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (onboard_tour_run_state: boolean) => void;
 }
@@ -75,21 +75,24 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     @action.bound
-    showVideoDialog(param: { [key: string]: string | React.ReactNode }): void {
-        const { type, component, url } = param;
-        this.dialog_options = {
-            message: component,
-        };
-        this.is_dialog_open = true;
-    }
-
-    @action.bound
     setActiveTabTutorial(active_tab_tutorials: number): void {
         this.active_tab_tutorials = active_tab_tutorials;
     }
     @action.bound
     setFAQSearchValue(faq_search_value: string): void {
         this.faq_search_value = faq_search_value;
+    }
+
+    @action.bound
+    showVideoDialog(url: string) {
+        if (url) {
+            this.dialog_options = {
+                url,
+            };
+            this.is_dialog_open = true;
+        } else {
+            this.is_dialog_open = false;
+        }
     }
 
     @action.bound

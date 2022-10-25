@@ -5,7 +5,11 @@
 
 .quick-strategy {
     $quick-strategy: &;
-    height: calc(100vh - 16.6rem);
+    height: var(--tab-content-height);
+    background: var(--content-bg-color);
+    @include mobile {
+        height: var(--tab-content-height-mobile);
+    }
 
     &__notifications-container {
         &--open {

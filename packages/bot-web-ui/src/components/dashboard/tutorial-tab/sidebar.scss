@@ -42,12 +42,16 @@
                 }
                 &--top {
                     display: flex;
+                    @include mobile {
+                        height: calc(100vh - 22rem);
+                    }
                 }
                 &__list {
                     width: 22.5rem;
                     display: flex;
                     flex-direction: column;
                     padding: 0 0.8rem;
+                    height: 100vh;
 
                     &--border-bottom {
                         padding: 0 0.8rem;

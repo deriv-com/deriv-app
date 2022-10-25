@@ -2,11 +2,14 @@
     position: relative;
     height: calc(100vh - 8.4rem);
     overflow: hidden;
+    @include mobile {
+        height: calc(100vh - 3.4rem);
+    }
     .toolbar__section {
         justify-content: end;
     }
     .run-panel__container {
-        height: calc(100vh - 16.6rem) !important;
+        height: var(--tab-content-height) !important;
         position: unset !important;
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
@@ -17,6 +20,7 @@
         transform: translateX(calc(0px)) !important;
     }
 }
+
 .dashboard {
     &__main {
         display: flex;
@@ -26,27 +30,50 @@
         border: none;
         max-width: 100%;
         width: 100%;
-
         .dc-tabs {
             &__active-line {
                 background-color: var(--general-main-1);
                 transition: none;
             }
-
             &__active {
                 background: var(--general-main-1);
             }
-
             &__list {
                 background: var(--general-section-1);
                 justify-content: start;
+                @include mobile {
+                    overflow-x: auto;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                &--header {
+                    &--dashboard {
+                        &__tabs {
+                            @include mobile {
+                                width: 100%;
+                                overflow-x: auto;
+                            }
+                        }
+                    }
+                }
             }
 
+            &__content {
+                @include mobile {
+                    width: 100%;
+                    overflow-x: auto;
+                }
+            }
             &__item {
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
                 height: 4.8rem;
                 width: 14.4rem;
+                min-width: 14.4rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -61,7 +88,6 @@
                 display: flex;
                 margin-top: 4rem;
             }
-
             &__dashboard-card {
                 margin-right: 4.2rem;
                 display: flex;
@@ -72,7 +98,7 @@
 
                     &:hover {
                         transition: all 100ms ease-in;
-                        box-shadow: rgba(0, 0, 0, 0.35) 0px 0.5rem 1.5rem;
+                        box-shadow: rgba(0, 0, 0, 0.35) 0 0.5rem 1.5rem;
                         border-radius: 0.5rem;
                         font-weight: 700;
                     }
@@ -91,12 +117,6 @@
                 &__image {
                     background: var(--general-section-1);
                 }
-                &__label {
-                    font-size: 1.2rem;
-                    font-weight: 400;
-                    line-height: 2rem;
-                }
-
                 img {
                     margin-bottom: 0.8rem;
                 }
@@ -110,7 +130,7 @@
 }
 
 .nm-48 {
-    margin-top: -48px;
+    margin-top: -4.8rem;
 }
 
 .db-info-panel {
@@ -129,7 +149,7 @@
         }
     }
     &__card {
-        margin-bottom: 16px;
+        margin-bottom: 1.6rem;
         h1 {
             font-size: 2.4rem;
             margin-bottom: 0.8rem;
@@ -158,9 +178,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 16.6rem);
+            height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
+            @include mobile {
+                height: var(--tab-content-height-mobile);
+            }
         }
         &__centered {
             display: flex;

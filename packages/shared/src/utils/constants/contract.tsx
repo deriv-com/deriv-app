@@ -411,7 +411,7 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
 });
 
-export const getContractConfig = (is_high_low: boolean) => ({
+export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });

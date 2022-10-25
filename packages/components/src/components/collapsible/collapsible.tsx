@@ -56,7 +56,7 @@ const Collapsible = ({
     const arrow_button = (
         <ArrowButton is_collapsed={!is_open} position={position} onClick={toggleExpand} title={title} />
     );
-    const CustomTag = as ?? 'div';
+    const CustomTag = as || 'div';
     return (
         <CustomTag
             {...swipe_handlers}

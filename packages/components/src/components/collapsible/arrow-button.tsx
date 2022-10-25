@@ -31,7 +31,7 @@ const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
     </React.Fragment>
 );
 
-const ArrowButton = ({ is_collapsed, position, onClick, title }: TArrowButton) => {
+const ArrowButton = ({ is_collapsed = false, position, onClick, title }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 
     const toggleExpand = () => {
@@ -42,7 +42,7 @@ const ArrowButton = ({ is_collapsed, position, onClick, title }: TArrowButton) =
     };
 
     React.useEffect(() => {
-        expand(Boolean(is_collapsed));
+        expand(is_collapsed);
     }, [is_collapsed]);
 
     let icon_arrow;

@@ -869,7 +869,7 @@ const CFDPasswordModal = ({
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
-                onSubmit={closeOpenSuccess}
+                onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText()}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}

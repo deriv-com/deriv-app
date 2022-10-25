@@ -300,7 +300,7 @@ const CFDAccountCardComponent = ({
                     primary
                     large
                 >
-                    <Localize i18n_default_text='Pending Verification' />
+                    <Localize i18n_default_text='Pending verification' />
                 </Button>
             );
         } else if (

@@ -320,49 +320,6 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
-    showAdTypeChangedNotification() {
-        const { floating_rate_store } = this.root_store;
-
-        if (floating_rate_store.rate_type === ad_type.FLOAT) {
-            if (floating_rate_store.reached_target_date) {
-                this.props.addNotificationMessage({
-                    header: <Localize i18n_default_text='Your fixed rate ads are deactivated' />,
-                    message: (
-                        <Localize i18n_default_text='You can still find them in My ads. Switch to floating rates to reactivate.' />
-                    ),
-                    key: 'ad-type-changed',
-                    platform: 'P2P',
-                    type: 'p2p_ad_type_changed',
-                });
-            } else {
-                this.props.addNotificationMessage({
-                    header: <Localize i18n_default_text='Floating rates are enabled' />,
-                    message: (
-                        <Localize
-                            i18n_default_text='Please switch your ads to floating rates by {{end_date}}.'
-                            values={{
-                                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
-                            }}
-                        />
-                    ),
-                    key: 'ad-type-changed',
-                    platform: 'P2P',
-                    type: 'p2p_ad_type_changed',
-                });
-            }
-        } else {
-            this.props.addNotificationMessage({
-                header: <Localize i18n_default_text='Your floating rate ads are deactivated' />,
-                message: (
-                    <Localize i18n_default_text='You can still find them in My ads. Switch to fixed rates to reactivate.' />
-                ),
-                key: 'ad-type-changed',
-                platform: 'P2P',
-                type: 'p2p_ad_type_changed',
-            });
-        }
-    }
-
     redirectToOrderDetails(order_id) {
         const { order_store } = this.root_store;
         this.redirectTo('orders');

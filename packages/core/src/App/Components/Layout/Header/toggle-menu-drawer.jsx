@@ -299,7 +299,6 @@ const ToggleMenuDrawer = React.forwardRef(
                     enableApp={enableApp}
                     disableApp={disableApp}
                     title={title || title === '' ? title : localize('Menu')}
-                    livechat={is_appstore ? null : <LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >
@@ -360,6 +359,20 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </div>
                                             </MobileDrawer.Item>
                                         }
+                                        <MobileDrawer.Item>
+                                            {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                        </MobileDrawer.Item>
+                                        <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                            <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                            <a
+                                                className='whatsapp-link'
+                                                href='https://wa.me/35699578341'
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                            >
+                                                {localize('WhatsApp')}
+                                            </a>
+                                        </MobileDrawer.Item>
 
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)

@@ -19,8 +19,8 @@ const ContractTypeDialog = ({
     onCategoryClick,
     show_loading,
 }) => {
-    const current_title = is_info_dialog_open ? (
-        <Header title={item.text} onClickGoBack={onBackButtonClick} />
+    const current_mobile_title = is_info_dialog_open ? (
+        <Header title={item.text} onClickGoBack={onBackButtonClick} text_size='xs' />
     ) : (
         localize('Trade type')
     );
@@ -30,13 +30,12 @@ const ContractTypeDialog = ({
                 <span className='contract-type-widget__select-arrow' />
                 <MobileDialog
                     portal_element_id='modal_root'
-                    title={current_title}
+                    title={current_mobile_title}
                     header_classname='contract-type-widget__header'
                     wrapper_classname='contracts-modal-list'
                     visible={is_open}
                     onClose={onClose}
                     has_content_scroll
-                    has_full_height
                 >
                     {children}
                 </MobileDialog>

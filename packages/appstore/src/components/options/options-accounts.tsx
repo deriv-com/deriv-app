@@ -1,19 +1,20 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import classNames from 'classnames';
 import { Text, StaticUrl, MobileDialog, Modal, Button, Loading } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { isMobile, routes } from '@deriv/shared';
 import PlatformLauncher from '../platform-launcher';
 import OptionsAccount from '../account';
 import AddOptions from '../add-options';
-import { isMobile, routes } from '@deriv/shared';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { getSortedAccountList } from '../../helpers';
 import AccountManager from '../account-manager';
-import classNames from 'classnames';
+import { Icons } from 'Assets/svgs/wallet';
 
 type TPlatformLauncherPropsArray = {
-    app_icon: string;
+    app_icon: keyof typeof Icons;
     app_title: string;
     app_desc: string;
     link_to?: string;

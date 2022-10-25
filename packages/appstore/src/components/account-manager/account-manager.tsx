@@ -70,17 +70,17 @@ const AccountManager = ({
                     {appname}
                 </Text>
                 {has_account ? (
-                    <>
+                    <React.Fragment>
                         <Text size='xs' weight='bold'>{`${formatMoney(currency, amount, true)} ${currency}`}</Text>
                         <Text size='xs'>{loginid}</Text>
-                    </>
+                    </React.Fragment>
                 ) : (
                     <Text size='xxxs'>{description}</Text>
                 )}
             </div>
             <div className='account-manager__buttons'>
                 {has_account ? (
-                    <>
+                    <React.Fragment>
                         <Button secondary className='account-manager__buttons-topup' onClick={onClickTopUp}>
                             <Localize i18n_default_text='Top-up' />
                         </Button>
@@ -102,7 +102,7 @@ const AccountManager = ({
                                 <Localize i18n_default_text='Trade' />
                             </Button>
                         )}
-                    </>
+                    </React.Fragment>
                 ) : (
                     <Button
                         primary_light

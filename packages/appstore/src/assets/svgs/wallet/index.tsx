@@ -16,7 +16,14 @@ import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
 
-const Icons = {
+type TWalletIconProps = {
+    icon: keyof typeof Icons;
+    className?: string;
+    size?: number;
+    onClick?: () => void;
+};
+
+export const Icons = {
     BinaryBot,
     BinaryBotBlue,
     CurrencyUSD,
@@ -35,17 +42,7 @@ const Icons = {
     SmartTraderBlue,
 };
 
-const WalletIcon = ({
-    icon,
-    className,
-    size,
-    onClick,
-}: {
-    icon: string;
-    className?: string;
-    size?: number;
-    onClick?: () => void;
-}) => {
+const WalletIcon = ({ icon, className, size, onClick }: TWalletIconProps) => {
     const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
 
     return Icon ? <Icon className={className} style={{ width: size, height: size }} onClick={onClick} /> : null;

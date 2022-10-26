@@ -281,6 +281,7 @@ export const icons =
         'IcClock',
         'IcCloseCircleRed',
         'IcCloseCircle',
+        'IcCloseDark',
         'IcCloseLight',
         'IcCloudUpload',
         'IcConfirmDetails',

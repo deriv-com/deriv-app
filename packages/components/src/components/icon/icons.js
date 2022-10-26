@@ -273,6 +273,7 @@ import './common/ic-clock-outline.svg';
 import './common/ic-clock.svg';
 import './common/ic-close-circle-red.svg';
 import './common/ic-close-circle.svg';
+import './common/ic-close-dark.svg';
 import './common/ic-close-light.svg';
 import './common/ic-cloud-upload.svg';
 import './common/ic-confirm-details.svg';

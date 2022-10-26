@@ -16,10 +16,11 @@ const CFDPersonalDetailsModal = ({
     disableApp,
     enableApp,
     getChangeableFields,
-    is_fully_authenticated,
+    is_from_mt5_compare_accounts_table,
     is_open,
     landing_company,
     openPasswordModal,
+    toggleCompareAccounts,
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     residence_list,
@@ -93,7 +94,11 @@ const CFDPersonalDetailsModal = ({
     const prevStep = () => {
         setFormError('');
         toggleCFDPersonalDetailsModal();
-        toggleJurisdictionModal();
+        if (is_from_mt5_compare_accounts_table) {
+            toggleCompareAccounts();
+        } else {
+            toggleJurisdictionModal();
+        }
     };
 
     const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmitting, is_dirty = true) => {
@@ -131,8 +136,6 @@ const CFDPersonalDetailsModal = ({
                     form_error={form_error}
                     has_previous_button
                     index={0}
-                    is_fully_authenticated={is_fully_authenticated}
-                    is_in_personal_details_modal
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onCancel={prevStep}
@@ -179,17 +182,18 @@ const CFDPersonalDetailsModal = ({
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     getChangeableFields: client.getChangeableFields,
-    is_fully_authenticated: client.is_fully_authenticated,
-    is_open: modules.cfd.is_cfd_personal_details_modal_visible,
+    is_open: cfd.is_cfd_personal_details_modal_visible,
+    is_from_mt5_compare_accounts_table: cfd.is_from_mt5_compare_accounts_table,
     landing_company: client.landing_company,
-    openPasswordModal: modules.cfd.enableCFDPasswordModal,
-    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+    openPasswordModal: cfd.enableCFDPasswordModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,
+    toggleCompareAccounts: cfd.toggleCompareAccountsModal,
+    toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
+    toggleJurisdictionModal: cfd.toggleJurisdictionModal,
 }))(CFDPersonalDetailsModal);

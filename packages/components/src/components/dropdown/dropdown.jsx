@@ -196,6 +196,7 @@ const Dropdown = ({
     name,
     no_border,
     onChange,
+    onClick,
     placeholder,
     suffix_icon,
     test_id,
@@ -265,6 +266,12 @@ const Dropdown = ({
     };
 
     const handleVisibility = () => {
+        if (typeof onClick === 'function') {
+            onClick();
+
+            return;
+        }
+
         if (is_nativepicker && !is_list_visible) {
             if (mobileOSDetect() === 'iOS') {
                 /* .focus() doesn't trigger open <select /> in Android :(
@@ -479,6 +486,7 @@ Dropdown.propTypes = {
     name: PropTypes.string,
     no_border: PropTypes.bool,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
     test_id: PropTypes.string,

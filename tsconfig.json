@@ -21,7 +21,8 @@
         "noUnusedParameters": false, // Report errors on unused parameters
         "incremental": true, // Enable incremental compilation by reading/writing information from prior compilations to a file on disk
         "removeComments": true, // Disable emitting comments
-        "skipDefaultLibCheck": true // Skip type checking .d.ts files that are included with TypeScript
+        "skipDefaultLibCheck": true, // Skip type checking .d.ts files that are included with TypeScript
+        "downlevelIteration": true
     },
     "exclude": ["node_modules", "build", "**/__tests__/**/*", "**/*.js", "**/*.jsx"] // *** The files to not type check ***
 }

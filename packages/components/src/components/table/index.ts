@@ -1,4 +1,4 @@
-import Table from './table.jsx';
+import Table from './table';
 import './table.scss';
 
 export default Table;

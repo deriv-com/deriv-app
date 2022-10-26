@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import { TCell } from './table-cell';
 
-const Head = ({ children, align, className, fixed }) => (
+const Head = ({ children, align, className, fixed }: React.PropsWithChildren<Partial<TCell>>) => (
     <div
         role='columnheader'
         className={classNames('dc-table__head', className, {
@@ -13,12 +13,5 @@ const Head = ({ children, align, className, fixed }) => (
         {children}
     </div>
 );
-
-Head.propTypes = {
-    align: PropTypes.oneOf(['left', 'right']),
-    children: PropTypes.node,
-    className: PropTypes.string,
-    fixed: PropTypes.bool,
-};
 
 export default Head;

@@ -1,14 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
-import Head from './table-head.jsx';
-import Header from './table-header.jsx';
-import Body from './table-body.jsx';
-import Row from './table-row.jsx';
-import Cell from './table-cell.jsx';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import Head from './table-head';
+import Header from './table-header';
+import Body from './table-body';
+import Row from './table-row';
+import Cell from './table-cell';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
+
+type TTable = {
+    className: string;
+    fixed: boolean;
+    scroll_width: string;
+    scroll_height: string;
+};
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
-const Table = ({ className, fixed, children, scroll_width, scroll_height }) => (
+const Table = ({
+    className,
+    fixed,
+    children,
+    scroll_width,
+    scroll_height,
+}: React.PropsWithChildren<Partial<TTable>>) => (
     <div
         role='table'
         className={classNames('dc-table', className, {

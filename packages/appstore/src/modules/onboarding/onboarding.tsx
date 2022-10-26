@@ -62,16 +62,16 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             </div>
             <div className='onboarding-body'>
                 <Text as='h2' weight='bold' align='center' color='white'>
-                    {contents[onboarding_step as keyof typeof contents]?.component}
+                    {contents[onboarding_step]?.component}
                 </Text>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
                     <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {contents[onboarding_step as keyof typeof contents]?.footer_header}
+                        {contents[onboarding_step]?.footer_header}
                     </Text>
                     <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {contents[onboarding_step as keyof typeof contents]?.footer_text}
+                        {contents[onboarding_step]?.footer_text}
                     </Text>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
@@ -80,8 +80,8 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                             </Button>
                             <ProgressBarOnboarding step={step} amount_of_steps={number_of_steps} setStep={setStep} />
                             <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
-                                {contents[onboarding_step as keyof typeof contents]?.has_next_content
-                                    ? contents[onboarding_step as keyof typeof contents]?.next_content
+                                {contents[onboarding_step]?.has_next_content
+                                    ? contents[onboarding_step]?.next_content
                                     : localize('Next')}
                             </Button>
                         </div>
@@ -116,8 +116,8 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                                             : 'onboarding-footer-buttons--mobile'
                                     }
                                 >
-                                    {contents[onboarding_step as keyof typeof contents]?.has_next_content
-                                        ? contents[onboarding_step as keyof typeof contents]?.next_content
+                                    {contents[onboarding_step]?.has_next_content
+                                        ? contents[onboarding_step]?.next_content
                                         : localize('Next')}
                                 </Button>
                             </div>

@@ -86,15 +86,14 @@ const FloatingRate = ({
                     </Text>
                     <Text
                         as='span'
-                        size='xs'
+                        size='xxs'
                         color='prominent'
                         weight='normal'
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
                         1 {fiat_currency} ={' '}
-                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}{' '}
-                        {local_currency}
+                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}
                     </Text>
                 </div>
             </section>

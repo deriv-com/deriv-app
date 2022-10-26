@@ -562,7 +562,7 @@ const PersonalDetails = ({
                                                                 {title}
                                                             </Text>
                                                         )}
-                                                        withTabIndex='0'
+                                                        withTabIndex={0}
                                                         data-testid='tax_identification_confirm'
                                                     />
                                                 )}

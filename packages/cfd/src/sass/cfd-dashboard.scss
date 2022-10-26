@@ -704,6 +704,9 @@
         grid-template-rows: 1fr;
         justify-content: center;
         height: 100%;
+        &--is_mt5 {
+            height: unset;
+        }
 
         @include mobile {
             grid-template-rows: 1fr;

@@ -266,7 +266,7 @@ const CFDAccountCardComponent = ({
         return '';
     }, []);
 
-    const getBannerStatus = (landing_company_short: string) => {
+    const getBannerStatus = (account: DetailsOfEachMT5Loginid) => {
         const {
             poi_pending_for_bvi_labuan_maltainvest,
             poi_pending_for_vanuatu,
@@ -278,35 +278,18 @@ const CFDAccountCardComponent = ({
             need_poa_resubmission,
             need_poi_for_bvi_labuan_maltainvest,
         } = getAuthenticationStatusInfo(account_status);
-        const is_svg = landing_company_short === 'svg';
+
+        const { landing_company_short, status } = account;
         const is_vanuatu = landing_company_short === 'vanuatu';
         const is_bvi = landing_company_short === 'bvi';
         const is_labuan_or_maltainvest =
             landing_company_short && ['labuan', 'maltainvest'].includes(landing_company_short);
 
         if (
-            (is_vanuatu && poi_pending_for_vanuatu) ||
-            (is_bvi && poi_pending_for_bvi_labuan_maltainvest) ||
-            (is_labuan_or_maltainvest &&
-                poi_acknowledged_for_bvi_labuan_maltainvest &&
-                poa_acknowledged &&
-                !poi_poa_verified_for_bvi_labuan_maltainvest)
-        ) {
-            return (
-                <Button
-                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                    type='button'
-                    disabled
-                    primary
-                    large
-                >
-                    <Localize i18n_default_text='Pending verification' />
-                </Button>
-            );
-        } else if (
             (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
             (is_vanuatu && poi_resubmit_for_vanuatu) ||
-            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
+            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest) ||
+            (account.status && ['proof_failed', 'poa_failed'].includes(account.status))
         ) {
             return (
                 <Button
@@ -319,6 +302,26 @@ const CFDAccountCardComponent = ({
                     large
                 >
                     <Localize i18n_default_text='Resubmit document' />
+                </Button>
+            );
+        } else if (
+            (is_vanuatu && poi_pending_for_vanuatu) ||
+            (is_bvi && poi_pending_for_bvi_labuan_maltainvest) ||
+            (is_labuan_or_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_maltainvest &&
+                poa_acknowledged &&
+                !poi_poa_verified_for_bvi_labuan_maltainvest) ||
+            account.status === 'verification_pending'
+        ) {
+            return (
+                <Button
+                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                    type='button'
+                    disabled
+                    primary
+                    large
+                >
+                    <Localize i18n_default_text='Pending verification' />
                 </Button>
             );
         }
@@ -342,10 +345,15 @@ const CFDAccountCardComponent = ({
     );
 
     return (
-        <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
+        <div
+            ref={wrapper_ref}
+            className={classNames('cfd-account-card__wrapper', {
+                'cfd-account-card__wrapper--is_mt5': platform === CFD_PLATFORMS.MT5,
+            })}
+        >
             <div
                 className={classNames('cfd-account-card', {
-                    'cfd-account-card--is_mt5': CFD_PLATFORMS.MT5,
+                    'cfd-account-card--is_mt5': platform === CFD_PLATFORMS.MT5,
                     'cfd-account-card__logged-out': !is_logged_in,
                 })}
                 ref={ref}
@@ -587,7 +595,7 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
-                                        {(acc.landing_company_short && getBannerStatus(acc.landing_company_short)) ?? (
+                                        {(acc.landing_company_short && getBannerStatus(acc)) ?? (
                                             <React.Fragment>
                                                 {existing_data && is_logged_in && (
                                                     <Button

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 
@@ -42,12 +42,16 @@ const TourTriggrerDialog = ({
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent' size='s'>
-                        Get started on DBot
+                        {localize('Get started on DBot')}
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
                     <Text color='prominent' size='s'>
-                        Hi [first name]! Hit <strong>Start</strong> for a quick tour to help you get started.
+                        <Localize
+                            key={0}
+                            i18n_default_text='Hi [first name]! Hit <0>Start</0> for a quick <1>tour</1> to help you get started.'
+                            components={[<strong key={1} />, <i key={2} />]}
+                        />
                     </Text>
                 </div>
             </Dialog>

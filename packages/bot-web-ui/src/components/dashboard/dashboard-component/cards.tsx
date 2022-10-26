@@ -64,25 +64,25 @@ const Card = ({
     const actions: TCardArray[] = [
         {
             icon: 'IcMyComputer',
-            content: 'My computer',
+            content: localize('My computer'),
             method: openFileLoader,
             disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
         },
         {
             icon: 'IcGoogleDriveDbot',
-            content: 'Google Drive',
+            content: localize('Google Drive'),
             method: openGoogleDriveDialog,
             disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
         },
         {
             icon: 'IcBotBuilder',
-            content: 'Bot Builder',
+            content: localize('Bot Builder'),
             method: () => setActiveTab(1),
             disable: '',
         },
         {
             icon: 'IcQuickStrategy',
-            content: 'Quick Strategy',
+            content: localize('Quick Strategy'),
             method: () => setActiveTab(2),
             disable: '',
         },

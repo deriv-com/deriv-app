@@ -24,8 +24,8 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { ui } = useStores();
-    const { toggleIsTourOpen } = ui;
+    const { trading_hub_store } = useStores();
+    const { toggleIsTourOpen } = trading_hub_store;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
     const { setIsPreAppStore } = React.useContext(PlatformContext);
@@ -40,7 +40,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step === number_of_steps.length) {
             history.push(routes.trading_hub);
             setIsPreAppStore(true);
-            toggleIsTourOpen();
+            toggleIsTourOpen(true);
         }
     };
 

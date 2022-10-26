@@ -30,7 +30,7 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client } = useStores();
+    const { ui, modules, common, client, trading_hub_store } = useStores();
     const { is_logged_in, is_eu, is_eu_country } = client;
     const {
         setAccountType,
@@ -43,7 +43,8 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
+    const { is_dark_mode_on } = ui;
+    const { is_tour_open, toggleIsTourOpen } = trading_hub_store;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
     const [platform_type, setPlatformType] = React.useState<any>('cfd');
@@ -101,12 +102,9 @@ const TradingHub: React.FC = () => {
     ];
 
     tour_step_locale.last = (
-        <Localize
-            i18n_default_text='OK'
-            onClick={() => {
-                toggleIsTourOpen();
-            }}
-        />
+        <div onClick={() => toggleIsTourOpen(false)}>
+            <Localize i18n_default_text='OK' />
+        </div>
     );
 
     tour_step_locale.back = (
@@ -117,7 +115,7 @@ const TradingHub: React.FC = () => {
             medium
             onClick={() => {
                 history.push(routes.onboarding);
-                toggleIsTourOpen();
+                toggleIsTourOpen(true);
             }}
         />
     );

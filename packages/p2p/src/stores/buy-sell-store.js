@@ -1,8 +1,9 @@
+import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -22,14 +23,17 @@ export default class BuySellStore extends BaseStore {
     @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
+    @observable local_currencies = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
     @observable search_term = '';
     @observable selected_ad_state = {};
+    @observable selected_local_currency = null;
     @observable selected_payment_method_value = [];
     @observable selected_payment_method_text = [];
     @observable selected_value = 'rate';
+    @observable should_show_currency_selector_modal = false;
     @observable should_show_popup = false;
     @observable should_show_verification = false;
     @observable should_use_client_limits = false;
@@ -160,6 +164,32 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
+    getSupportedPaymentMethods(payment_method_names) {
+        const { my_profile_store } = this.root_store;
+
+        //Get all payment methods supported in the country
+        const payment_methods = payment_method_names?.filter(
+            payment_method_name =>
+                Object.entries(my_profile_store.available_payment_methods).findIndex(
+                    payment_method => payment_method[1].display_name === payment_method_name
+                ) !== -1
+        );
+
+        return payment_methods;
+    }
+
+    @action.bound
+    getWebsiteStatus() {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response) {
+                const { error, website_status } = response;
+
+                if (error) this.setErrorMessage(error.message);
+                else this.setLocalCurrencies(website_status.p2p_config?.local_currencies);
+            }
+        });
+    }
+
     @action.bound
     handleChange(e) {
         this.setIsLoading(true);
@@ -241,6 +271,7 @@ export default class BuySellStore extends BaseStore {
                 ...(this.selected_payment_method_value.length > 0
                     ? { payment_method: this.selected_payment_method_value }
                     : {}),
+                ...(this.selected_local_currency ? { local_currency: this.selected_local_currency } : {}),
             }).then(response => {
                 if (response) {
                     if (!response.error) {
@@ -256,6 +287,10 @@ export default class BuySellStore extends BaseStore {
 
                             list.forEach(new_item => {
                                 const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
+
+                                new_item.payment_method_names = this.getSupportedPaymentMethods(
+                                    new_item.payment_method_names
+                                );
 
                                 if (old_item_idx > -1) {
                                     old_items[old_item_idx] = new_item;
@@ -330,6 +365,28 @@ export default class BuySellStore extends BaseStore {
 
         order_store.props.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+    }
+
+    @action.bound
+    onLocalCurrencySelect(local_currency) {
+        const { floating_rate_store, general_store } = this.root_store;
+        const { ws_subscriptions } = general_store;
+
+        ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+        ws_subscriptions.exchange_rate_subscription = subscribeWS(
+            {
+                exchange_rates: 1,
+                base_currency: general_store.client.currency,
+                subscribe: 1,
+                target_currency: local_currency,
+            },
+            [floating_rate_store.fetchExchangeRate]
+        );
+
+        this.setSelectedLocalCurrency(local_currency);
+        this.setItems([]);
+        this.setIsLoading(true);
+        this.loadMoreItems({ startIndex: 0 });
     }
 
     registerIsListedReaction() {
@@ -413,6 +470,32 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setLocalCurrencies(local_currencies) {
+        const currency_list = [];
+
+        local_currencies.forEach(currency => {
+            const { display_name, has_adverts, is_default, symbol } = currency;
+
+            if (is_default && !this.selected_local_currency) this.setSelectedLocalCurrency(symbol);
+
+            currency_list.push({
+                component: (
+                    <div className='currency-dropdown__list-item'>
+                        <div>{symbol}</div>
+                        <div>{display_name}</div>
+                    </div>
+                ),
+                has_adverts,
+                is_default,
+                text: symbol,
+                value: symbol,
+            });
+        });
+
+        this.local_currencies = currency_list;
+    }
+
+    @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
     }
@@ -443,6 +526,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setSelectedLocalCurrency(selected_local_currency) {
+        this.selected_local_currency = selected_local_currency;
+    }
+
+    @action.bound
     setSelectedPaymentMethodValue(payment_method_value) {
         this.selected_payment_method_value = [...payment_method_value];
     }
@@ -455,6 +543,11 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setSelectedValue(selected_value) {
         this.selected_value = selected_value;
+    }
+
+    @action.bound
+    setShouldShowCurrencySelectorModal(should_show_currency_selector_modal) {
+        this.should_show_currency_selector_modal = should_show_currency_selector_modal;
     }
 
     @action.bound
@@ -621,6 +714,10 @@ export default class BuySellStore extends BaseStore {
                                 // Added a check to prevent console errors
                                 if (response?.error) return;
                                 const { p2p_advert_info } = response;
+
+                                p2p_advert_info.payment_method_names = this.getSupportedPaymentMethods(
+                                    p2p_advert_info.payment_method_names
+                                );
 
                                 if (this.selected_ad_state?.id === p2p_advert_info.id) {
                                     this.setSelectedAdState(p2p_advert_info);

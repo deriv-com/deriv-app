@@ -2,7 +2,7 @@ import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
 import { Text, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import '../components/toggle-account-type/toggle-account-type.scss';
+import 'Components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
     {

@@ -416,7 +416,7 @@ const Chart = props => {
             {show_accumulators_stats &&
                 accumulators_positions.map(({ contract_info }) => {
                     return (
-                        contract_info.is_sold && (
+                        !!contract_info.is_sold && (
                             <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                         )
                     );

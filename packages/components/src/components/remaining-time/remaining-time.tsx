@@ -9,7 +9,7 @@ type TRemainingTimeProps = {
     getCardLabels: () => { [key: string]: string }; // TODO Use the one from common after contract-card migration
 };
 
-const RemainingTime = ({ end_time = null, format, getCardLabels, start_time }: TRemainingTimeProps) => {
+const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {
     if (!end_time || start_time.unix() > +end_time) {
         return '';
     }

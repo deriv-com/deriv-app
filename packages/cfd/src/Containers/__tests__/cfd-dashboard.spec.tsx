@@ -60,7 +60,10 @@ jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_moda
 jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
 jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
 jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
-jest.mock('../jurisdiction-modal', () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : '');
+jest.mock(
+    '../jurisdiction-modal/jurisdiction-modal',
+    () => props => props.is_jurisdiction_modal_visible ? 'JurisdictionModal' : ''
+);
 
 describe('<CFDDashboard />', () => {
     const props: Partial<TCFDDashboardProps> = {
@@ -317,7 +320,7 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
         expect(screen.getByText(real_tab_name)).toBeInTheDocument();
         expect(screen.getByText(demo_tab_name)).toBeInTheDocument();
-        expect(screen.getByText('Synthetic')).toBeInTheDocument();
+        expect(screen.getByText('Derived')).toBeInTheDocument();
         expect(screen.getByText('Financial')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: compare_accounts_button_label })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: dmt5_download_header })).toBeInTheDocument();
@@ -434,10 +437,10 @@ describe('<CFDDashboard />', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: derivx_welcome_header })).not.toBeInTheDocument();
     });
-    it('Should show PageError when is_logged_in to DMT5 & mt5 in not allowed', () => {
+    it('Should show PageError when is_logged_in to Deriv MT5 & mt5 in not allowed', () => {
         renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.MT5, is_mt5_allowed: false });
 
-        expect(screen.getByRole('heading', { name: /dmt5 is not available in indonesia/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /deriv mt5 is not available in indonesia/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: dmt5_welcome_header })).not.toBeInTheDocument();
     });
     it('Should ask to open a real Deriv account when is_logged_in && !has_real_account && upgradeable_landing_companies.length > 0 in DMT5', () => {

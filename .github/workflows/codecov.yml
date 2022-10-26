@@ -20,11 +20,11 @@ jobs:
         run: |
           npm install
           npm run bootstrap
-          npm run build
+          npm run build:all
           npm run test:jest
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3.1.1
         with:
           directory: ./coverage
           fail_ci_if_error: true

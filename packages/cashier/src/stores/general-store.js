@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, when } from 'mobx';
-import { isCryptocurrency, getPropertyValue, routes } from '@deriv/shared';
+import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import CashierNotifications from 'Components/cashier-notifications';
@@ -70,6 +70,28 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    /**
+     * Gets the notifications from local storage, within p2p_settings, where it checks which notification has
+     * been seen. The number of unseen notifications is displayed in vertical tab, notifications count, for P2P.
+     *
+     * @returns {number} Notifications that have not been seen by the user.
+     */
+    @computed
+    get p2p_unseen_notifications() {
+        const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+        const local_storage_settings = p2p_settings[this.root_store.client.loginid];
+
+        if (isEmptyObject(local_storage_settings)) {
+            return 0;
+        }
+
+        const unseen_notifications = local_storage_settings.notifications.filter(
+            notification => !notification.is_seen
+        );
+
+        return unseen_notifications.length;
     }
 
     @action.bound
@@ -224,14 +246,13 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { account_prompt_dialog, payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
 
             if (is_logged_in) {
                 await this.getAdvertizerError();
-                account_prompt_dialog.resetLastLocation();
                 if (!switched) {
                     this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
@@ -285,6 +306,8 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
 
+        this.setNotificationCount(this.p2p_unseen_notifications);
+
         if (client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -298,8 +321,10 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
+            this.setLoading(true);
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
+            this.setLoading(false);
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();
@@ -377,11 +402,17 @@ export default class GeneralStore extends BaseStore {
     accountSwitcherListener() {
         const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
 
+        clearInterval(withdraw.verification.resend_interval);
+        clearInterval(payment_agent.verification.resend_interval);
         withdraw.verification.clearVerification();
         payment_agent.verification.clearVerification();
         iframe.clearIframe();
 
         this.payment_agent = payment_agent;
+        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+            payment_agent.setActiveTab(1);
+        }
+
         this.is_populating_values = false;
 
         this.onRemount();

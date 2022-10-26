@@ -38,6 +38,12 @@ const BotBuilder = ({ app, active_tab }: TBotBuilder) => {
                                 textColor: 'var(--text-joyride-tour)',
                                 spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                             },
+                            buttonBack: {
+                                border: '0.1rem solid var(--text-less-prominent)',
+                                marginRight: '1rem',
+                                borderRadius: '0.4rem',
+                                color: 'var(--text-joyride-tour)',
+                            },
                         }}
                     />
                 )}

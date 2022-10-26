@@ -27,7 +27,7 @@ import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(() => {
-    const { general_store, order_store, sendbird_store } = useStores();
+    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
 
     const {
         account_currency,
@@ -80,6 +80,7 @@ const OrderDetails = observer(() => {
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
+        my_profile_store.getPaymentMethodsList();
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -288,6 +289,7 @@ const OrderDetails = observer(() => {
                                                 content: (
                                                     <PaymentMethodAccordionContent payment_method={payment_method} />
                                                 ),
+                                                payment_method,
                                             }))}
                                             is_expand_all={should_expand_all}
                                             onChange={setShouldExpandAll}

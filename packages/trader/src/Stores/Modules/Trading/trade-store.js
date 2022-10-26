@@ -23,7 +23,6 @@ import {
     isBarrierSupported,
     removeBarrier,
     getDummyProposalResponseForACCU,
-    getDummyProposalResponseForDECCU,
     isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -957,7 +956,6 @@ export default class TradeStore extends BaseStore {
         this.proposal_info = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, proposal_response, obj_prev_contract_basis),
-            DECCU: getProposalInfo(this, getDummyProposalResponseForDECCU(), obj_prev_contract_basis), //delete this, made for enable DECCU button
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
@@ -971,25 +969,23 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
-        if (this.is_accumulator && this.proposal_info && (this.proposal_info.ACCU || this.proposal_info.DECCU)) {
+        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
             const {
                 maximum_ticks,
-                ticks_stayed_in: stay_in_history,
+                ticks_stayed_in,
                 tick_size_barrier,
-                last_tick_epoch: last_tick_epoch_accu,
+                last_tick_epoch,
                 maximum_payout,
                 high_barrier,
                 low_barrier,
                 spot_time,
             } = this.proposal_info.ACCU;
-            const { ticks_stayed_in: break_out_history, last_tick_epoch: last_tick_epoch_deccu } =
-                this.proposal_info.DECCU;
             this.root_store.contract_trade.current_spot_time = spot_time;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
-                new_ticks_history_stats: stay_in_history.length ? stay_in_history : break_out_history,
-                last_tick_epoch: stay_in_history.length ? last_tick_epoch_accu : last_tick_epoch_deccu,
-            }); // in case ticks history is missing in ACCU response, we'll fall back to the same one from DECCU
+                new_ticks_history_stats: ticks_stayed_in,
+                last_tick_epoch,
+            });
             this.tick_size_barrier = tick_size_barrier;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;

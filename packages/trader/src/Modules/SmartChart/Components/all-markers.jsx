@@ -247,7 +247,7 @@ const TickContract = RawMarkerMaker(
         ctx.fillStyle = color;
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
-        const is_accumulators_contract = contract_type === 'ACCU' || contract_type === 'DECCU';
+        const is_accumulators_contract = contract_type === 'ACCU';
         const scale = calc_scale(start.zoom);
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
 
@@ -291,23 +291,8 @@ const TickContract = RawMarkerMaker(
                         scale,
                     });
                 }
-            } else if (status === 'open' || is_in_contract_details) {
-                // draw 2 barriers with a shade outside them for an open Break out contract
-                [
-                    { top: barrier - 165 * scale, bottom: barrier },
-                    { top: barrier_2, bottom: barrier_2 + 165 * scale, is_bottom_shade: true },
-                ].forEach(({ top, bottom, is_bottom_shade }) => {
-                    draw_partial_shade({
-                        ctx,
-                        start_left: status !== 'open' ? exit.left : previous_tick.left,
-                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                        top,
-                        bottom,
-                        is_bottom_shade,
-                        scale,
-                    });
-                });
             }
+
             if (is_in_contract_details) {
                 ctx.restore();
                 return;

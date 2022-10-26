@@ -4,7 +4,6 @@ import {
     convertToUnix,
     toMoment,
     getDummyProposalInfoForACCU,
-    getDummyProposalInfoForDECCU,
 } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
@@ -51,9 +50,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     if (store.contract_type === 'accumulator') {
         // maryia: temporary dummy proposal info for accumulators:
-        if (response.echo_req.contract_type === 'ACCU') return getDummyProposalInfoForACCU(store.growth_rate, response);
-        else if (response.echo_req.contract_type === 'DECCU')
-            return getDummyProposalInfoForDECCU(store.growth_rate, response);
+        return getDummyProposalInfoForACCU(store.growth_rate, response);
     }
     return {
         commission,

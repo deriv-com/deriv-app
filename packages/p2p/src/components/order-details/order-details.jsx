@@ -304,7 +304,7 @@ const OrderDetails = observer(() => {
                                 )}
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
-                                    className='order-details-card--padding'
+                                    className='order-details-card--padding order-details-card__textbox'
                                     label={labels.contact_details}
                                     size='xs'
                                     weight='bold'
@@ -312,7 +312,7 @@ const OrderDetails = observer(() => {
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
-                                    className='order-details-card--padding'
+                                    className='order-details-card--padding order-details-card__textbox'
                                     label={labels.instructions}
                                     size='xs'
                                     weight='bold'

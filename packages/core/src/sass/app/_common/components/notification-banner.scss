@@ -95,6 +95,26 @@
         cursor: pointer;
     }
 
+    &__acuity-mt5 {
+        min-width: 55rem;
+        .notification-banner {
+            &--left {
+                min-width: 42.2rem;
+            }
+            &__bg {
+                background-color: var(--icon-grey-background);
+                width: 12.8rem;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 60% 100%);
+            }
+            &__img {
+                width: 15rem;
+                height: 11.5rem;
+                right: -1rem;
+                bottom: 3rem;
+            }
+        }
+    }
+
     @include mobile {
         height: 100%;
         max-height: 13.8rem;

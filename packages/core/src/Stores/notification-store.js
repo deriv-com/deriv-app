@@ -384,6 +384,11 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
+                if (!is_eu && !isMobile()) {
+                    this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+                } else {
+                    this.removeNotificationByKey(this.client_notifications.acuity_mt5_download);
+                }
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
@@ -557,6 +562,30 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
+            acuity_mt5_download: {
+                key: 'acuity_mt5_download',
+                header: localize('Power up your trades with Acuity'),
+                message: localize(
+                    'Download intuitive trading tools to keep track of market events. The Acuity suite is only available for Windows, and is most recommended for financial assets.'
+                ),
+                secondary_btn: {
+                    text: localize('Learn More'),
+                    onClick: () => {
+                        ui.setIsAcuityModalOpen(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity_mt5_download.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity_mt5_download.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                platform: [platform_name.DMT5],
+                img_src: getUrlBase('/public/images/common/acuity_software.png'),
+                img_alt: 'Acuity Download',
+                className: 'acuity-mt5',
+                icon: 'IcCloseDark',
+                type: 'news',
+            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),

@@ -25,6 +25,7 @@ const BuySellForm = props => {
     const {
         advertiser_details,
         description,
+        effective_rate: market_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit,
@@ -53,6 +54,7 @@ const BuySellForm = props => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate,
     });
 
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));

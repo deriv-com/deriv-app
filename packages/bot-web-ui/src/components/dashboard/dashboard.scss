@@ -117,6 +117,9 @@
     &--active {
         z-index: 1;
     }
+    &--inactive {
+        display: none;
+    }
     @include mobile {
         width: calc(100vw - 3.2rem);
         height: var(--tab-content-height-mobile);

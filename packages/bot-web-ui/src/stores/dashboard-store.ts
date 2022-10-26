@@ -1,6 +1,5 @@
-import { observable, action } from 'mobx';
+import { observable, action, reaction } from 'mobx';
 import RootStore from './root-store';
-import { removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
@@ -15,6 +14,7 @@ export interface IDashboardStore {
     is_dialog_open: boolean;
     onboard_tour_run_state: boolean;
     is_info_panel_visible: boolean;
+    is_preview_on_popup: boolean;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
@@ -29,6 +29,14 @@ export default class DashboardStore implements IDashboardStore {
 
     constructor(root_store: RootStore) {
         this.root_store = root_store;
+        reaction(
+            () => this.is_preview_on_popup,
+            async is_preview_on_popup => {
+                if (is_preview_on_popup === true) {
+                    this.setPreviewOnPopup(false);
+                }
+            }
+        );
     }
 
     @observable active_tab = 0;
@@ -42,6 +50,12 @@ export default class DashboardStore implements IDashboardStore {
     @observable has_tour_started = false;
     @observable is_tour_dialog_visible = true;
     @observable onboard_tour_run_state = false;
+    @observable is_preview_on_popup = false;
+
+    @action.bound
+    setPreviewOnPopup = (is_preview_on_popup: boolean): void => {
+        this.is_preview_on_popup = is_preview_on_popup;
+    };
 
     @action.bound
     setOnBoardTourRunState = (onboard_tour_run_state: boolean): void => {

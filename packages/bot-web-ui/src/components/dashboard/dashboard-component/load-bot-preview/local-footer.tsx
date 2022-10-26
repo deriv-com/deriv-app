@@ -11,9 +11,18 @@ type TLocalFooter = {
     is_open_button_loading: boolean;
     loadFileFromLocal: () => void;
     setLoadedLocalFile: (data: Nullable<string>) => void;
+    setPreviewOnPopup: (param: boolean) => boolean;
+    toggleLoadModal: () => void;
 };
 
-const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, setLoadedLocalFile }: TLocalFooter) => {
+const LocalFooter = ({
+    is_mobile,
+    is_open_button_loading,
+    loadFileFromLocal,
+    setLoadedLocalFile,
+    setPreviewOnPopup,
+    toggleLoadModal,
+}: TLocalFooter) => {
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
     return (
         <Wrapper>
@@ -22,7 +31,11 @@ const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, set
             )}
             <Button
                 text={localize('Open')}
-                onClick={loadFileFromLocal}
+                onClick={() => {
+                    loadFileFromLocal();
+                    setPreviewOnPopup(false);
+                    toggleLoadModal();
+                }}
                 is_loading={is_open_button_loading}
                 has_effect
                 primary
@@ -32,9 +45,11 @@ const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, set
     );
 };
 
-export default connect(({ load_modal, ui }: RootStore) => ({
+export default connect(({ load_modal, ui, dashboard }: RootStore) => ({
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
+    setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    toggleLoadModal: load_modal.toggleLoadModal,
 }))(LocalFooter);

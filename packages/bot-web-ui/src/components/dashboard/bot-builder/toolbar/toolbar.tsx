@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -44,7 +43,6 @@ const Toolbar = (props: TToolbar) => {
                 </div>
             </div>
             <SaveModal />
-            <LoadModal />
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}

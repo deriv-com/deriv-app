@@ -1,6 +1,8 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import ToolbarIcon from './toolbar-icon';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TWorkspaceGroup = {
     has_redo_stack: boolean;
@@ -9,6 +11,7 @@ type TWorkspaceGroup = {
     onSortClick: () => void;
     onUndoClick: (param?: boolean) => void;
     onZoomInOutClick: (param?: boolean) => void;
+    setPreviewOnPopup: (param: boolean) => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
 };
@@ -20,6 +23,7 @@ const WorkspaceGroup = ({
     onSortClick,
     onUndoClick,
     onZoomInOutClick,
+    setPreviewOnPopup,
     toggleLoadModal,
     toggleSaveModal,
 }: TWorkspaceGroup) => (
@@ -34,7 +38,12 @@ const WorkspaceGroup = ({
             popover_message={localize('Import')}
             icon='IcFolderOpen'
             icon_id='db-toolbar__import-button'
-            action={toggleLoadModal}
+            action={() => {
+                setPreviewOnPopup(true);
+                setTimeout(() => {
+                    toggleLoadModal();
+                }, 1000);
+            }}
         />
         <ToolbarIcon
             popover_message={localize('Save')}
@@ -78,4 +87,6 @@ const WorkspaceGroup = ({
     </div>
 );
 
-export default WorkspaceGroup;
+export default connect(({ dashboard }: RootStore) => ({
+    setPreviewOnPopup: dashboard.setPreviewOnPopup,
+}))(WorkspaceGroup);

@@ -1,0 +1,21 @@
+#modal_root {
+    .load-strategy {
+        &__recent-item {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        &__recent-files {
+            width: 35%;
+        }
+
+        &__recent-preview {
+            width: 65%;
+        }
+
+        &__container {
+            &--has-footer {
+                overflow: auto;
+            }
+        }
+    }
+}

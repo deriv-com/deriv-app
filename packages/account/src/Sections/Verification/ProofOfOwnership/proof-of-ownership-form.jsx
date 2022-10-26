@@ -18,7 +18,7 @@ const getScrollOffset = (items_count = 0) => {
     if (items_count <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications, is_dark_mode, client_email }) => {
+const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifications, updateAccountStatus }) => {
     const initial_values = {};
     const [is_disabled, setIsDisabled] = React.useState(true);
     initial_values.data = cards?.map(item => {
@@ -223,10 +223,10 @@ const ProofOfOwnershipForm = ({ cards, updateAccountStatus, refreshNotifications
 
 ProofOfOwnershipForm.propTypes = {
     cards: PropTypes.array,
-    updateAccountStatus: PropTypes.func,
-    refreshNotifications: PropTypes.func,
-    is_dark_mode: PropTypes.bool,
     client_email: PropTypes.string,
+    is_dark_mode: PropTypes.bool,
+    refreshNotifications: PropTypes.func,
+    updateAccountStatus: PropTypes.func,
 };
 
 export default ProofOfOwnershipForm;

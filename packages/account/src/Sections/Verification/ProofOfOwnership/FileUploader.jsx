@@ -5,18 +5,18 @@ import classNames from 'classnames';
 import { compressImageFiles } from '@deriv/shared';
 
 const FileUploader = ({
-    handleFile,
-    file_name,
     class_name,
     data_test_id,
-    name,
     error,
-    validateField,
+    file_name,
+    handleFile,
     index,
+    name,
+    show_browse_button,
     sub_index,
     updateErrors,
-    show_browse_button,
     updateShowBrowseButton,
+    validateField,
 }) => {
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);

@@ -87,15 +87,15 @@ const Card = ({
 
 Card.propTypes = {
     card: PropTypes.object,
-    handleChange: PropTypes.func,
-    handleBlur: PropTypes.func,
-    values: PropTypes.object,
-    setFieldValue: PropTypes.func,
-    index: PropTypes.number,
     error: PropTypes.object,
-    validateField: PropTypes.func,
-    updateErrors: PropTypes.func,
+    handleBlur: PropTypes.func,
+    handleChange: PropTypes.func,
+    index: PropTypes.number,
     is_dark_mode: PropTypes.bool,
+    setFieldValue: PropTypes.func,
+    updateErrors: PropTypes.func,
+    validateField: PropTypes.func,
+    values: PropTypes.object,
 };
 
 export default Card;

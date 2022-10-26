@@ -9,14 +9,14 @@ import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants.js';
 
 const ExpandedCard = ({
     card_details,
-    values,
-    setFieldValue,
-    index,
     error,
-    validateField,
-    updateErrors,
+    index,
+    setFieldValue,
     show_browse_button,
+    updateErrors,
     updateShowBrowseButton,
+    validateField,
+    values,
 }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
     const controls_to_show = [...Array(card_details?.documents_required).keys()];
@@ -140,14 +140,14 @@ const ExpandedCard = ({
 
 ExpandedCard.propTypes = {
     card_details: PropTypes.object,
-    values: PropTypes.object,
-    setFieldValue: PropTypes.func,
-    index: PropTypes.number,
     error: PropTypes.object,
-    validateField: PropTypes.func,
-    updateErrors: PropTypes.func,
+    index: PropTypes.number,
+    setFieldValue: PropTypes.func,
     show_browse_button: PropTypes.array,
+    updateErrors: PropTypes.func,
     updateShowBrowseButton: PropTypes.func,
+    validateField: PropTypes.func,
+    values: PropTypes.object,
 };
 
 export default ExpandedCard;

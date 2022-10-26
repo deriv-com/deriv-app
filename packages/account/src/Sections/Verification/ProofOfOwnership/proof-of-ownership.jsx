@@ -11,10 +11,10 @@ import { POO_STATUSES } from './constants/constants';
 
 export const ProofOfOwnership = ({
     account_status,
-    updateAccountStatus,
-    refreshNotifications,
-    is_dark_mode,
     client_email,
+    is_dark_mode,
+    refreshNotifications,
+    updateAccountStatus,
 }) => {
     const cards = account_status?.authentication?.ownership?.requests;
     const needs_verification = account_status?.authentication?.needs_verification?.includes(POO_STATUSES.ownership);
@@ -52,9 +52,9 @@ export const ProofOfOwnership = ({
 };
 
 export default connect(({ client, notifications, ui }) => ({
-    client_email: client.client_email,
     account_status: client.account_status,
-    updateAccountStatus: client.updateAccountStatus,
-    refreshNotifications: notifications.refreshNotifications,
+    client_email: client.client_email,
     is_dark_mode: ui.is_dark_mode_on,
+    refreshNotifications: notifications.refreshNotifications,
+    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(ProofOfOwnership));

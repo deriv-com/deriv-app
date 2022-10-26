@@ -12,7 +12,7 @@ export interface IDashboardStore {
     faq_search_value: string | null;
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
-    onboard_tour_run_state: boolean;
+    has_onboard_tour_started: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
     onCloseDialog: () => void;
@@ -21,7 +21,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     showVideoDialog: (url: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
-    setOnBoardTourRunState: (onboard_tour_run_state: boolean) => void;
+    setOnBoardTourRunState: (has_onboard_tour_started: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -49,7 +49,7 @@ export default class DashboardStore implements IDashboardStore {
     @observable is_info_panel_visible = true;
     @observable has_tour_started = false;
     @observable is_tour_dialog_visible = true;
-    @observable onboard_tour_run_state = false;
+    @observable has_onboard_tour_started = false;
     @observable is_preview_on_popup = false;
 
     @action.bound
@@ -58,8 +58,8 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     @action.bound
-    setOnBoardTourRunState = (onboard_tour_run_state: boolean): void => {
-        this.onboard_tour_run_state = onboard_tour_run_state;
+    setOnBoardTourRunState = (has_onboard_tour_started: boolean): void => {
+        this.has_onboard_tour_started = has_onboard_tour_started;
     };
 
     @action.bound

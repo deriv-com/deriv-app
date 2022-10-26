@@ -21,7 +21,7 @@ type TDashboard = {
     onEntered: () => void;
     has_file_loaded: boolean;
     has_tour_started: boolean;
-    onboard_tour_run_state: boolean;
+    has_onboard_tour_started: boolean;
     setTourActive: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     toggleStrategyModal: () => void;

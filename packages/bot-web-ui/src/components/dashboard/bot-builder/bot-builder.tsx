@@ -11,12 +11,12 @@ import LoadModal from 'Components/load-modal';
 type TBotBuilder = {
     app: AppStore;
     active_tab: number;
-    onboard_tour_run_state: boolean;
+    has_onboard_tour_started: boolean;
     is_preview_on_popup: boolean;
-    setOnBoardTourRunState: (onboard_tour_run_state: boolean) => boolean;
+    setOnBoardTourRunState: (has_onboard_tour_started: boolean) => boolean;
 };
 
-const BotBuilder = ({ app, active_tab, onboard_tour_run_state, is_preview_on_popup }: TBotBuilder) => {
+const BotBuilder = ({ app, active_tab, has_onboard_tour_started, is_preview_on_popup }: TBotBuilder) => {
     const { onMount, onUnmount } = app;
 
     React.useEffect(() => {
@@ -40,7 +40,7 @@ const BotBuilder = ({ app, active_tab, onboard_tour_run_state, is_preview_on_pop
                         }}
                     >
                         <WorkspaceWrapper />
-                        {active_tab === 1 && !onboard_tour_run_state && (
+                        {active_tab === 1 && !has_onboard_tour_started && (
                             <ReactJoyride
                                 steps={BOT_BUILDER_TOUR}
                                 continuous={true}
@@ -69,7 +69,7 @@ const BotBuilder = ({ app, active_tab, onboard_tour_run_state, is_preview_on_pop
 export default connect(({ app, dashboard }: RootStore) => ({
     app,
     active_tab: dashboard.active_tab,
-    onboard_tour_run_state: dashboard.onboard_tour_run_state,
+    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     is_preview_on_popup: dashboard.is_preview_on_popup,
 }))(BotBuilder);

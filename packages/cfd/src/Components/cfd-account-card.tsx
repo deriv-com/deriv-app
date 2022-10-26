@@ -330,7 +330,7 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                {has_real_account && type.type === 'financial' && !is_eu && (
+                {has_real_account && type.type === 'financial' && !is_eu && !isMobile() && (
                     <Button
                         onClick={() => setIsAcuityModalOpen(true)}
                         className='cfd-account-card__acuity-banner'

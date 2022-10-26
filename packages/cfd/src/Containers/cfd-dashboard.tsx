@@ -35,7 +35,6 @@ import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/a
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
-// import AcuitySocialBanner from './acuity-social-banner';
 import AcuityDownloadModal from './acuity-download-modal';
 
 declare module 'react' {
@@ -438,10 +437,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         is_notification_loaded={is_notification_loaded}
                         stopNotificationLoading={stopNotificationLoading}
                     />
-
-                    {/* <React.Fragment>
-                        <AcuitySocialBanner />
-                    </React.Fragment> */}
                     <div className='cfd-dashboard'>
                         <div className='cfd-dashboard__welcome-message'>
                             <h1 className='cfd-dashboard__welcome-message--heading'>

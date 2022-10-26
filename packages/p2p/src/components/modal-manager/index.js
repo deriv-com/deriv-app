@@ -1,4 +1,3 @@
-import ModalManager from './modal-manager';
-import ModalManagerContextProvider from './modal-manager-context-provider';
+import ModalManager from './modal-manager.jsx';
 
-export { ModalManager, ModalManagerContextProvider };
+export { ModalManager };

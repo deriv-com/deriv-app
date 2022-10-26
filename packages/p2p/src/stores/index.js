@@ -4,6 +4,7 @@ import AdvertiserPageStore from './advertiser-page-store';
 import BuySellStore from './buy-sell-store';
 import FloatingRateStore from './floating-rate-store';
 import MyAdsStore from './my-ads-store';
+import ModalStore from './modal-store';
 import MyProfileStore from './my-profile-store';
 import OrderStore from './order-store';
 import OrderDetailsStore from './order-details-store';
@@ -15,6 +16,7 @@ class RootStore {
         this.advertiser_page_store = new AdvertiserPageStore(this);
         this.buy_sell_store = new BuySellStore(this);
         this.floating_rate_store = new FloatingRateStore(this);
+        this.modal_store = new ModalStore(this);
         this.my_ads_store = new MyAdsStore(this);
         this.my_profile_store = new MyProfileStore(this);
         this.order_store = new OrderStore(this);
@@ -34,6 +36,7 @@ export const useStores = () => {
             general_store: root_store.general_store,
             advertiser_page_store: root_store.advertiser_page_store,
             buy_sell_store: root_store.buy_sell_store,
+            modal_store: root_store.modal_store,
             my_ads_store: root_store.my_ads_store,
             my_profile_store: root_store.my_profile_store,
             order_store: root_store.order_store,

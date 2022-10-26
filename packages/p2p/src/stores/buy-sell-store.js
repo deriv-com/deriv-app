@@ -496,15 +496,18 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     setSelectedAdvert(selected_advert) {
+        const { modal_store } = this.root_store;
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
             this.getAdvertiserInfo();
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            // this.setShouldShowPopup(true);
+            modal_store.showModal('BuySellModal');
         } else {
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            // this.setShouldShowPopup(true);
+            modal_store.showModal('BuySellModal');
         }
     }
 

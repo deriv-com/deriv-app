@@ -88,7 +88,9 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
 };
 
 const BuySellModal = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store, modal_store, my_profile_store, order_store } =
+        useStores();
+
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -174,7 +176,7 @@ const BuySellModal = () => {
                 className='buy-sell__modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={buy_sell_store.should_show_popup}
+                is_modal_open={modal_store.is_modal_open}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 pageHeaderReturnFn={onCancel}
@@ -212,13 +214,13 @@ const BuySellModal = () => {
             </MobileFullPageModal>
         );
     }
-    if (buy_sell_store.should_show_popup) {
+    if (modal_store.is_modal_open) {
         return (
             <Modal
                 className='buy-sell__modal'
                 height={table_type === buy_sell.BUY ? 'auto' : '649px'}
                 width='456px'
-                is_open={buy_sell_store.should_show_popup}
+                is_open={modal_store.is_modal_open}
                 title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                 portalId={general_store.props.modal_root_id}
                 toggleModal={onCancel}

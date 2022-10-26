@@ -91,7 +91,6 @@
             height: 18px;
             left: 8px;
             top: 18px;
-            font-style: normal;
             flex: none;
             order: 2;
             flex-grow: 0;
@@ -143,6 +142,7 @@
             border: unset;
             background-color: unset;
             padding: unset;
+            font-size: small;
             &:focus {
                 border-color: unset;
             }

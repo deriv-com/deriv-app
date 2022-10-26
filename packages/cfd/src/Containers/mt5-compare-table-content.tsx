@@ -49,7 +49,7 @@ type TDMT5CompareModalContentProps = {
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: () => void;
+    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
     account_status: GetAccountStatus;
@@ -316,7 +316,7 @@ const DMT5CompareModalContent = ({
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
     const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) =>
-        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
+        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal(true) : openPasswordModal(type_of_account);
 
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';

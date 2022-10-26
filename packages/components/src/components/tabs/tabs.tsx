@@ -1,22 +1,46 @@
 import classNames from 'classnames';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Tab from './tab.jsx';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import Tab from './tab';
 import { useConstructor } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
+type TTabsProps = RouteComponentProps & {
+    active_icon_color: string;
+    active_index?: number;
+    background_color: string;
+    bottom: boolean;
+    center: boolean;
+    children: React.ReactElement & React.ReactElement[];
+    className?: string;
+    fit_content: boolean;
+    has_active_line?: boolean;
+    has_bottom_line?: boolean;
+    header_fit_content: boolean;
+    history: History;
+    icon_color: string;
+    icon_size: number;
+    is_100vw: boolean;
+    is_full_width: boolean;
+    is_overflow_hidden: boolean;
+    is_scrollable: boolean;
+    onTabItemClick: (active_tab_index: number) => void;
+    should_update_hash: boolean;
+    single_tab_has_no_label: boolean;
+    top: boolean;
+};
+
 const Tabs = ({
     active_icon_color,
-    active_index,
+    active_index = 0,
     background_color,
     bottom,
     center,
     children,
-    className,
+    className = '',
     fit_content,
-    has_active_line,
-    has_bottom_line,
+    has_active_line = true,
+    has_bottom_line = true,
     header_fit_content,
     history,
     icon_color,
@@ -29,11 +53,11 @@ const Tabs = ({
     should_update_hash,
     single_tab_has_no_label,
     top,
-}) => {
+}: TTabsProps) => {
     const [active_line_style, updateActiveLineStyle] = React.useState({});
-    const active_tab_ref = React.useRef();
-    const tabs_wrapper_ref = React.useRef();
-    const pushHash = hash => {
+    const active_tab_ref = React.useRef<HTMLLIElement>(null);
+    const tabs_wrapper_ref = React.useRef<HTMLUListElement>(null);
+    const pushHash = (hash: string) => {
         history.replace(`${history.location.pathname}${window.location.search}#${hash}`);
     };
 
@@ -52,10 +76,11 @@ const Tabs = ({
         }
     }, []);
 
-    let initial_index_to_show, tab_width;
+    let initial_index_to_show = 0;
+    let tab_width;
 
     useConstructor(() => {
-        initial_index_to_show = active_index || 0;
+        initial_index_to_show = active_index;
         if (should_update_hash) {
             // if hash is in url, find which tab index correlates to it
             const hash = location.hash.slice(1);
@@ -80,9 +105,7 @@ const Tabs = ({
 
     React.useEffect(() => {
         if (active_tab_index >= 0 && active_index !== active_tab_index) {
-            if (typeof onTabItemClick === 'function') {
-                onTabItemClick(active_tab_index);
-            }
+            onTabItemClick?.(active_tab_index);
         }
         setActiveLineStyle();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +118,7 @@ const Tabs = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_index]);
 
-    const onClickTabItem = index => {
+    const onClickTabItem = (index: number) => {
         if (should_update_hash) {
             const hash = children[index].props.hash;
             pushHash(hash);
@@ -119,7 +142,7 @@ const Tabs = ({
                 'dc-tabs--top': top,
                 'dc-tabs--100vw': is_100vw,
             })}
-            style={{ '--tab-width': `${tab_width}`, background: background_color }}
+            style={{ '--tab-width': `${tab_width}`, background: background_color } as React.CSSProperties}
         >
             <div className={classNames({ [`dc-tabs__list--header--${className}`]: className })}>
                 <ul
@@ -198,36 +221,6 @@ const Tabs = ({
             </div>
         </div>
     );
-};
-
-Tabs.defaultProps = {
-    has_active_line: true,
-    has_bottom_line: true,
-};
-
-Tabs.propTypes = {
-    active_icon_color: PropTypes.string,
-    active_index: PropTypes.number,
-    bottom: PropTypes.bool,
-    center: PropTypes.bool,
-    className: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    fit_content: PropTypes.bool,
-    has_bottom_line: PropTypes.bool,
-    has_active_line: PropTypes.bool,
-    header_fit_content: PropTypes.bool,
-    history: PropTypes.object,
-    icon_color: PropTypes.string,
-    icon_size: PropTypes.number,
-    is_100vw: PropTypes.bool,
-    onTabItemClick: PropTypes.func,
-    should_update_hash: PropTypes.bool,
-    single_tab_has_no_label: PropTypes.bool,
-    top: PropTypes.bool,
-    background_color: PropTypes.string,
-    is_full_width: PropTypes.bool,
-    is_scrollable: PropTypes.bool,
-    is_overflow_hidden: PropTypes.bool,
 };
 
 export default withRouter(Tabs);

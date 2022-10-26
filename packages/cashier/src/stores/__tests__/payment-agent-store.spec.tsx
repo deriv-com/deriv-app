@@ -68,7 +68,7 @@ describe('PaymentAgentStore', () => {
         },
     ];
     const mocked_withdrawal_request = {
-        loginid: 'CR90000000',
+        paymentagent_loginid: 'CR90000000',
         currency: 'USD',
         amount: '200',
         verification_code: 'abCDefXa',

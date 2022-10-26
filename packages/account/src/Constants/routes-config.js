@@ -63,7 +63,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                     {
                         path: routes.trading_assessment,
                         component: TradingAssessment,
-                        getTitle: () => localize('Trading Assessment'),
+                        getTitle: () => localize('Trading assessment'),
                     },
                     {
                         path: routes.financial_assessment,

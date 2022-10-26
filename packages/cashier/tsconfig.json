@@ -13,7 +13,8 @@
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "experimentalDecorators": true
     },
     "include": ["src"]
 }

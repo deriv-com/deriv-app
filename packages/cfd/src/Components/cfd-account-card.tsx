@@ -186,6 +186,7 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     setMT5TradeAccount,
+    setIsAcuityModalOpen,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -329,15 +330,22 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                <div className='cfd-account-card__acuity-banner'>
-                    <div className='cfd-account-card__acuity-banner--wrapper'>
-                        <Icon icon='icMt5Acuity' />
-                        <Text as='p' size='xxs' weight='bold' color='prominent'>
-                            <Localize i18n_default_text='Get Acuity trading tools' />
-                        </Text>
-                        <Icon icon='IcAddOutline' color='secondary' />
-                    </div>
-                </div>
+                {has_real_account && type.type === 'financial' && !is_eu && (
+                    <Button
+                        onClick={() => setIsAcuityModalOpen(true)}
+                        className='cfd-account-card__acuity-banner'
+                        type='button'
+                        transparent
+                    >
+                        <div className='cfd-account-card__acuity-banner--wrapper'>
+                            <Icon icon='icMt5Acuity' />
+                            <Text as='p' size='xxs' weight='bold' color='prominent'>
+                                <Localize i18n_default_text='Get Acuity trading tools' />
+                            </Text>
+                            <Icon icon='IcAddOutline' color='secondary' />
+                        </div>
+                    </Button>
+                )}
                 {existing_data && <div className='cfd-account-card__divider' />}
 
                 <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>

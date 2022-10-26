@@ -104,6 +104,9 @@ export default class UIStore extends BaseStore {
     // MT5 create real STP from demo, show only real accounts from switcher
     @observable should_show_real_accounts_list = false;
 
+    // MTF5 acuity download
+    @observable is_acuity_modal_open = false;
+
     // Real account signup
     @observable real_account_signup = {
         active_modal_index: -1,
@@ -675,6 +678,12 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
+    }
+
+    // acuity
+    @action.bound
+    setIsAcuityModalOpen(value) {
+        this.is_acuity_modal_open = value;
     }
 
     @action.bound

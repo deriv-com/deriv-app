@@ -16,7 +16,10 @@ export type TIsEnded = Partial<TGetFinalPrice> & {
 
 export type TContractInfo = {
     tick_stream?: TTickItem[];
-    cancellation?: { ask_price: number };
+    cancellation?: {
+        ask_price?: number;
+        date_expiry?: number;
+    };
     status?: TStatus;
     is_expired?: 0 | 1;
     is_settleable?: 0 | 1;
@@ -27,9 +30,15 @@ export type TContractInfo = {
     entry_tick?: number;
     current_spot_time?: number;
     current_spot?: number;
-    exit_tick_time?: number;
     barrier?: string;
     contract_type?: string;
+    exit_tick_time?: number;
+    date_expiry?: number;
+    is_path_dependent?: 0 | 1;
+    sell_time?: number | null;
+    tick_count?: number;
+    date_start?: number;
+    is_forward_starting?: 0 | 1;
 };
 
 export type TIsValidToSell = TIsEnded & {

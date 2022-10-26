@@ -602,6 +602,21 @@
         cursor: not-allowed;
     }
 
+    .highlight {
+        animation: bounce 2s ease infinite;
+    }
+    @keyframes bounce {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(2);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
     @include mobile() {
         .dc-dropdown__display-placeholder {
             width: 100%;

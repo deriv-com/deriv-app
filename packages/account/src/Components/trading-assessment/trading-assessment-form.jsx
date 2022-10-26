@@ -112,7 +112,11 @@ const TradingAssessmentForm = ({
                         )}
                         type='button'
                     >
-                        <Icon icon='IcChevronRight' color={is_next_button_enabled ? 'black' : 'secondary'} />
+                        <Icon
+                            icon='IcChevronRight'
+                            color={is_next_button_enabled ? 'black' : 'secondary'}
+                            className={classNames({ highlight: is_next_button_enabled })}
+                        />
                     </Button>
                 </div>
                 <div className='trading-assessment__header--arrow-down' />

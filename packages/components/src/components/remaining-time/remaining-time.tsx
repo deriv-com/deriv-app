@@ -3,7 +3,7 @@ import { formatDuration, getDiffDuration } from '@deriv/shared';
 import moment from 'moment';
 
 type TRemainingTimeProps = {
-    end_time?: number | null;
+    end_time?: number;
     start_time: moment.Moment;
     format: string;
     getCardLabels: () => { [key: string]: string }; // TODO Use the one from common after contract-card migration

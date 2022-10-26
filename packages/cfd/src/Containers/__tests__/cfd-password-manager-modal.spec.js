@@ -50,8 +50,8 @@ const mock_errors = {
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => {
-    const original_module = jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules.js');
+jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', () => {
+    const original_module = jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules.ts');
     return {
         ...original_module,
         validPassword: jest.fn(() => {

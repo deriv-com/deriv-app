@@ -54,7 +54,8 @@ const Dashboard = ({
 
         if (tour_status) {
             const { action } = tour_status;
-            if (action === 'skip' || action === 'close' || action === 'reset') {
+            const actions = ['skip', 'close', 'reset'];
+            if (actions.includes(action)) {
                 setOnBoardTourRunState(false);
                 setTourActive(false);
             }

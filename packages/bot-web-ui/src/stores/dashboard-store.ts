@@ -32,7 +32,7 @@ export default class DashboardStore implements IDashboardStore {
         reaction(
             () => this.is_preview_on_popup,
             async is_preview_on_popup => {
-                if (is_preview_on_popup === true) {
+                if (is_preview_on_popup) {
                     this.setPreviewOnPopup(false);
                 }
             }

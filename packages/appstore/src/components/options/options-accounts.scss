@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
     &__description {
         margin-bottom: 2.4rem;
     }
@@ -25,17 +26,25 @@
                 @include mobile {
                     width: 70%;
                 }
+                @include tablet {
+                    width: 25%;
+                }
             }
         }
         &--add-options-scroller {
             position: absolute;
-            right: 6.5rem;
+            right: 0;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             height: 7.2rem;
-            width: 20%;
+            width: 3%;
             background: linear-gradient(to right, transparent, var(--general-main-1));
+            @include tablet {
+                width: 7%;
+                height: auto;
+                top: 39%;
+            }
             @include mobile {
                 right: 0;
                 height: auto;

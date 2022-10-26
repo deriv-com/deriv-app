@@ -4,7 +4,6 @@
     align-items: center;
     padding: 0.4rem 2rem;
     position: relative;
-    height: 7.2rem;
     border-radius: 0.6rem 0.6rem 0 0;
     flex-shrink: 0;
     cursor: pointer;
@@ -28,7 +27,10 @@
         }
     }
     &__icon {
-        width: 35%;
+        width: 30%;
+        @include tablet {
+            padding-right: 1.5rem;
+        }
         @include mobile {
             width: 3.1rem;
         }

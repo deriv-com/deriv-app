@@ -57,16 +57,16 @@ let is_expired = 0; // 0 || 1
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
 //         setTimeout(() => {
-// contract_status = 'won'; // 'lost', 'won' or 'open'
-// position_status = 'profit'; // 'profit' or 'loss'
-// result = 'won'; // 'won' or 'lost'
-// profit = +0.15;
-// profit_percentage = +1.5;
-// is_sold = 1; // 0 || 1
-// exit_tick = current_spot;
-// exit_tick_display_value = `${current_spot}`;
-// exit_tick_time = dummy_current_time;
-// is_expired = 1;
+contract_status = 'won'; // 'lost', 'won' or 'open'
+position_status = 'profit'; // 'profit' or 'loss'
+result = 'won'; // 'won' or 'lost'
+profit = +0.15;
+profit_percentage = +1.5;
+is_sold = 1; // 0 || 1
+exit_tick = current_spot;
+exit_tick_display_value = `${current_spot}`;
+exit_tick_time = dummy_current_time;
+is_expired = 1;
 //         }, ms1);
 //         setTimeout(() => {
 // contract_status = 'lost'; // 'lost', 'won' or 'open'

@@ -340,21 +340,27 @@
                     padding-right: 1.6rem;
                 }
             }
+            &__effect-detail--arrow {
+                border-radius: $BORDER_RADIUS;
+            }
         }
         &.btn-purchase--swoosh {
-            &.btn-purchase--1 {
-                .btn-purchase__type-wrapper {
-                    transform: translate3d(60px, 0, 0);
-                }
+            .btn-purchase__type-wrapper {
+                transform: translate3d(60px, 0, 0);
             }
-            &.btn-purchase--2 {
-                .btn-purchase__type-wrapper {
-                    transform: translate3d(50px, 0, 0);
-                }
+            .btn-purchase__text_wrapper {
+                white-space: unset;
             }
-            &.btn-purchase {
-                .btn-purchase__text_wrapper {
-                    white-space: unset;
+        }
+
+        @include mobile {
+            .btn-purchase {
+                &__bottom,
+                &__top {
+                    width: unset;
+                }
+                &__icon_wrapper {
+                    height: 1.6rem;
                 }
             }
         }

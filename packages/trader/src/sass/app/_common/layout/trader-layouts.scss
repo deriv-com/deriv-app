@@ -404,7 +404,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     position: relative;
 
     .trade-container--accumulators & {
-        height: 270px;
+        height: 27rem;
     }
     &__content-loader {
         position: absolute;
@@ -424,6 +424,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .chart-container {
     width: 100%;
     position: relative;
+
+    @include mobile {
+        .trade-container & {
+            height: calc(100vh - #{$HEADER_HEIGHT} - 21.2rem) !important;
+        }
+        .trade-container--accumulators & {
+            height: calc(100vh - #{$HEADER_HEIGHT} - 27rem) !important;
+        }
+    }
 
     &__wrapper {
         position: fixed;

@@ -605,7 +605,11 @@
         grid-column-gap: 0.5rem;
 
         &--accumulator {
-            grid-column-gap: 0.8rem;
+            display: block;
+
+            .purchase-container__option {
+                margin-bottom: 0 !important;
+            }
         }
     }
 

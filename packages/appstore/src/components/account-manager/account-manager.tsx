@@ -62,7 +62,7 @@ const AccountManager = ({
             </div>
             <div className='account-manager__details'>
                 <Text
-                    size='xs'
+                    size={isMobile() ? 'xxs' : 'xs'}
                     weight={!has_account ? 'bold' : 'normal'}
                     onClick={openStaticPage}
                     className='account-manager__details--title'

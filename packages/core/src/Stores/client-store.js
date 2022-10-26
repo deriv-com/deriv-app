@@ -551,7 +551,7 @@ export default class ClientStore extends BaseStore {
     get is_valid_login() {
         if (!this.is_logged_in) return true;
         // TODO: fetch this list from backend api once the api is readyy
-        const valid_login_ids_regex = new RegExp('^(DW|MX|MF|VRTC|VRDW|MLT|CR|FOG|AFF)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(VRTC|VRW|CR|CRW|MF|MFW|MLT|MX|AFF|FOG)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 

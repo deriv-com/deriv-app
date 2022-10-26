@@ -94,6 +94,26 @@
         top: 1.6rem;
         cursor: pointer;
     }
+    &__acuity {
+        .notification-banner {
+            &__bg {
+                width: 12.8rem;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 63% 100%);
+            }
+            &__btn-wrapper {
+                margin-top: 1.6rem;
+            }
+            &__img {
+                width: 12.7rem;
+                height: auto;
+                right: 0.3rem;
+                bottom: 1.4rem;
+            }
+            &--left {
+                width: unset;
+            }
+        }
+    }
 
     &__acuity-mt5 {
         min-width: 55rem;

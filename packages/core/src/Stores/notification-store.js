@@ -384,10 +384,13 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
+                // Acuity notification only for desktop and non EU clients
                 if (!is_eu && !isMobile()) {
+                  this.addNotificationMessage(this.client_notifications.acuity);
                     this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
                 } else {
-                    this.removeNotificationByKey(this.client_notifications.acuity_mt5_download);
+                    this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                    this.removeNotificationByKey(this.client_notifications.acuity_mt5_download.key);
                 }
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
@@ -562,6 +565,31 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
+            acuity: {
+                key: 'acuity',
+                header: localize('New trading tools for MT5'),
+                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
+                secondary_btn: {
+                    text: localize('Download Acuity'),
+                    onClick: () => {
+                        window.open(
+                            'https://dashboard.acuitytrading.com/metatrader/DownloadMt5Installer?apiKey=2713b8d0-43ed-4194-b5d7-b1ff60dbdae0&isFull=true',
+                            '_blank'
+                        );
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity.key,
+                            should_show_again: false,
+                            });
+                    },
+                },
+                platform: [platform_name.DTrader],
+                is_disposable: true,
+                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
+                img_alt: 'Acuity',
+                className: 'acuity',
+                type: 'news',
+            },
             acuity_mt5_download: {
                 key: 'acuity_mt5_download',
                 header: localize('Power up your trades with Acuity'),

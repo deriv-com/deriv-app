@@ -138,9 +138,10 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     },
 });
 
+// Config for rendering trade options
 export const getContractCategoriesConfig = () => ({
     [localize('Multipliers')]: ['multiplier'],
-    [localize('Vanillas')]: ['v_call_put'],
+    [localize('Vanillas')]: ['vanilla'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
     [localize('Ins & Outs')]: ['end', 'stay'],

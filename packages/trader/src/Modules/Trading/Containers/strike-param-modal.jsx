@@ -9,7 +9,7 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, currency, onChange }) 
     const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
     const setBasisAndAmount = value => {
-        onChange({ target: { value, name: 'strike' } });
+        onChange({ target: { value, name: 'barrier_1' } });
         toggleModal();
     };
 

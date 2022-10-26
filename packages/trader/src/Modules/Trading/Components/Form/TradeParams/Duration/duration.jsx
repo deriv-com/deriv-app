@@ -36,6 +36,12 @@ const Duration = ({
     market_open_times,
     contract_type,
 }) => {
+    React.useEffect(() => {
+        if (contract_type === 'vanilla') {
+            onToggleDurationType({ target: { value: true, name: 'is_advanced_duration' } });
+        }
+    }, [contract_type]);
+
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
     const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');

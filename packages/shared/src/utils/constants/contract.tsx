@@ -41,10 +41,9 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     high_low: {
         title: localize('Higher/Lower'),
         trade_types: ['CALL', 'PUT'],
-        basis: ['stake'],
-        components: ['duration', 'strike', 'amount'],
+        basis: ['stake', 'payout'],
+        components: ['barrier'],
         barrier_count: 1,
-        config: { should_override: true },
     },
     touch: {
         title: localize('Touch/No Touch'),

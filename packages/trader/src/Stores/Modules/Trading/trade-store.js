@@ -70,9 +70,6 @@ export default class TradeStore extends BaseStore {
     @observable basis_list = [];
     @observable currency = '';
 
-    // Strike
-    @observable strike = 0;
-
     // Duration
     @observable duration = 5;
     @observable duration_unit = '';

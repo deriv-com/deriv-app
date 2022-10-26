@@ -7,7 +7,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 
-const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrentFocus, currency }) => {
+const Strike = ({ barrier_1, current_focus, onChange, validation_errors, setCurrentFocus, currency }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleWidget = () => setIsOpen(!is_open);
@@ -24,8 +24,8 @@ const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrent
                 >
                     <InputField
                         type='number'
-                        name='strike'
-                        value={strike}
+                        name='barrier_1'
+                        value={barrier_1}
                         className='trade-container__barriers-single'
                         classNameInput={classNames(
                             'trade-container__input',
@@ -34,8 +34,9 @@ const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrent
                         )}
                         current_focus={current_focus}
                         onChange={onChange}
-                        error_messages={validation_errors?.strike || []}
+                        error_messages={validation_errors?.barrier_1 || []}
                         is_float
+                        is_signed
                         setCurrentFocus={setCurrentFocus}
                     />
                 </Fieldset>
@@ -44,14 +45,14 @@ const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrent
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget}>
                         <div className='mobile-widget__amount'>
-                            <Money amount={strike} currency={currency} />
+                            <Money amount={barrier_1} currency={currency} />
                         </div>
                         <div className='mobile-widget__type'>{localize('Strike')}</div>
                     </div>
                     <StrikeParamModal
                         is_open={is_open}
                         toggleModal={toggleWidget}
-                        strike={strike}
+                        strike={barrier_1}
                         currency={currency}
                         onChange={onChange}
                     />
@@ -62,7 +63,7 @@ const Strike = ({ strike, current_focus, onChange, validation_errors, setCurrent
 };
 
 export default connect(({ client, modules, ui }) => ({
-    strike: modules.trade.strike,
+    barrier_1: modules.trade.barrier_1,
     current_focus: ui.current_focus,
     currency: client.currency,
     setCurrentFocus: ui.setCurrentFocus,

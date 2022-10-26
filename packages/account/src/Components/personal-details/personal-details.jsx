@@ -493,6 +493,42 @@ const PersonalDetails = ({
                                                         )}
                                                     </Field>
                                                 )}
+                                                {'employment_status' in props.value && (
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <DesktopWrapper>
+                                                            <Dropdown
+                                                                placeholder={localize('Employment status')}
+                                                                is_align_text_left
+                                                                name='employment_status'
+                                                                list={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                name='employment_status'
+                                                                label={localize('Employment status')}
+                                                                list_items={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                                onChange={e => {
+                                                                    setFieldTouched('employment_status', true);
+                                                                    handleChange(e);
+                                                                }}
+                                                            />
+                                                        </MobileWrapper>
+                                                    </fieldset>
+                                                )}
                                                 {'tax_identification_number' in props.value && (
                                                     <div className='details-form__tax'>
                                                         <FormInputField
@@ -535,42 +571,6 @@ const PersonalDetails = ({
                                                             />
                                                         </div>
                                                     </div>
-                                                )}
-                                                {'employment_status' in props.value && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Dropdown
-                                                                placeholder={localize('Employment status')}
-                                                                is_align_text_left
-                                                                name='employment_status'
-                                                                list={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                name='employment_status'
-                                                                label={localize('Employment status')}
-                                                                list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                                onChange={e => {
-                                                                    setFieldTouched('employment_status', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                            />
-                                                        </MobileWrapper>
-                                                    </fieldset>
                                                 )}
                                                 {warning_items?.tax_identification_number && (
                                                     <div className='details-form__tin-warn-divider' />

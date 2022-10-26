@@ -920,24 +920,6 @@ export const PersonalDetailsForm = ({
                                                         </Field>
                                                     </fieldset>
                                                 )}
-                                                {'tax_identification_number' in values && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            type='text'
-                                                            id={'tax_identification_number'}
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax identification number*')}
-                                                            value={values.tax_identification_number}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            warn={getWarningMessages(values).tax_identification_number}
-                                                            error={errors.tax_identification_number}
-                                                            disabled={!isChangeableField('tax_identification_number')}
-                                                            required
-                                                        />
-                                                    </fieldset>
-                                                )}
                                                 {'employment_status' in values && (
                                                     <fieldset className='account-form__fieldset'>
                                                         <DesktopWrapper>
@@ -972,6 +954,24 @@ export const PersonalDetailsForm = ({
                                                                 }}
                                                             />
                                                         </MobileWrapper>
+                                                    </fieldset>
+                                                )}
+                                                {'tax_identification_number' in values && (
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <Input
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            id={'tax_identification_number'}
+                                                            name='tax_identification_number'
+                                                            label={localize('Tax identification number*')}
+                                                            value={values.tax_identification_number}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            warn={getWarningMessages(values).tax_identification_number}
+                                                            error={errors.tax_identification_number}
+                                                            disabled={!isChangeableField('tax_identification_number')}
+                                                            required
+                                                        />
                                                     </fieldset>
                                                 )}
                                             </FormBodySection>

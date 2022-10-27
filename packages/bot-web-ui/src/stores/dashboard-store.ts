@@ -19,7 +19,7 @@ export interface IDashboardStore {
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
-    showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
+    showVideoDialog: (param: { [key: string]: string }) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_onboard_tour_started: boolean) => void;
 }
@@ -89,31 +89,32 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     @action.bound
-    setActiveTabTutorial(active_tab_tutorials: number): void {
+    setActiveTabTutorial = (active_tab_tutorials: number): void => {
         this.active_tab_tutorials = active_tab_tutorials;
-    }
+    };
     @action.bound
-    setFAQSearchValue(faq_search_value: string): void {
+    setFAQSearchValue = (faq_search_value: string): void => {
         this.faq_search_value = faq_search_value;
-    }
+    };
 
     @action.bound
-    showVideoDialog(param: { [key: string]: string | React.ReactNode }): void {
+    showVideoDialog = (param: { [key: string]: string }): void => {
         const { url, type } = param;
-        if (type === 'google') {
-            this.is_dialog_open = true;
-        } else if (url) {
-            this.dialog_options = {
-                url,
-            };
+        const dialog_type = ['google', 'url'];
+        if (dialog_type.includes(type)) {
+            if (type === 'url') {
+                this.dialog_options = {
+                    url,
+                };
+            }
             this.is_dialog_open = true;
         } else {
             this.is_dialog_open = false;
         }
-    }
+    };
 
     @action.bound
-    setInfoPanelVisibility(is_info_panel_visible: boolean) {
+    setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
         this.is_info_panel_visible = is_info_panel_visible;
-    }
+    };
 }

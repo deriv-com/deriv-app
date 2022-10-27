@@ -30,7 +30,6 @@ const TourTriggrerDialog = ({
     return (
         <div>
             <Dialog
-                //title={dialog_options.title}
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={closTourChange}

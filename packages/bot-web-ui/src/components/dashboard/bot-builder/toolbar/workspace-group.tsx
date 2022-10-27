@@ -40,9 +40,7 @@ const WorkspaceGroup = ({
             icon_id='db-toolbar__import-button'
             action={() => {
                 setPreviewOnPopup(true);
-                setTimeout(() => {
-                    toggleLoadModal();
-                }, 1000);
+                toggleLoadModal();
             }}
         />
         <ToolbarIcon

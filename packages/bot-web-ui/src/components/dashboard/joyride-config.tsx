@@ -48,7 +48,7 @@ let onboarding_tour: { [key: string]: string } = {};
 let current_target: number;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
-    if (current_target !== undefined && current_target !== index) {
+    if (current_target && current_target !== index) {
         onboarding_tour = {};
         onboarding_tour.status = status;
         onboarding_tour.action = action;

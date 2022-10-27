@@ -13,6 +13,7 @@ const DeleteDialog = ({ is_delete_modal_open, is_running, onToggleDeleteDialog }
     const onHandleChange = (type: string, param: boolean) => {
         onToggleDeleteDialog(type, false);
     };
+
     return (
         <div>
             <Dialog

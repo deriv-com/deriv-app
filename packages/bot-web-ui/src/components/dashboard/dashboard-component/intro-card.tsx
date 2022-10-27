@@ -1,18 +1,16 @@
 import React from 'react';
+import { TSidebarItem } from './constants';
 
 type TIntroCard = {
-    label: string;
-    content: string[];
-    index: number;
-    sidebar_item: string[] | any;
+    sidebar_item: TSidebarItem;
 };
 
-const Index = (sidebar_item: TIntroCard) => {
-    const { label, content, index } = sidebar_item;
+const Index = ({ sidebar_item }: TIntroCard) => {
+    const { label, content } = sidebar_item;
     return (
-        <div className='db-sidebar__card' key={index}>
+        <div className='db-sidebar__card' key={label}>
             <h1>{label}</h1>
-            {content.map((text, key) => (
+            {content?.map((text, key) => (
                 <p key={`sidebar-tour${key}`}>{text}</p>
             ))}
         </div>

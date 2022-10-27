@@ -55,14 +55,10 @@ const RecentWorkspace = ({
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                 })}
                 key={workspace.id}
-                onClick={
-                    selected_strategy_id === workspace.id
-                        ? undefined
-                        : () => {
-                              previewRecentStrategy(workspace.id);
-                              setFileLoaded(true);
-                          }
-                }
+                onClick={() => {
+                    previewRecentStrategy(workspace.id);
+                    setFileLoaded(true);
+                }}
             >
                 <div className='load-strategy__recent-item-text'>
                     <div className='load-strategy__recent-item-title'>{workspace.name}</div>

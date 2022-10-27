@@ -4,7 +4,7 @@ import { Field as FormField, Formik, Form, FieldProps } from 'formik';
 import { Input, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
-import { connect } from '../../../../stores/connect';
+import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SearchBox from './search-box';
 

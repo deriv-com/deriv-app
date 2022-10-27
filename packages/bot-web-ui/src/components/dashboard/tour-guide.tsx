@@ -14,9 +14,10 @@ type TTourGuide = {
 
 const TourGuide = ({ label, content, img, className, dashboardTabIndex, setActiveTab }: TTourGuide) => {
     React.useEffect(() => {
-        setTimeout(() => {
-            setActiveTab(dashboardTabIndex);
-        }, 50);
+        const tour_guide_timer = setTimeout(() => setActiveTab(dashboardTabIndex), 50);
+        return () => {
+            clearTimeout(tour_guide_timer);
+        };
     }, [dashboardTabIndex]);
     return (
         <React.Fragment>
@@ -28,7 +29,7 @@ const TourGuide = ({ label, content, img, className, dashboardTabIndex, setActiv
 
             {img && (
                 <div className={className}>
-                    <img src={window.location.origin + img} />
+                    <img src={img} />
                 </div>
             )}
 

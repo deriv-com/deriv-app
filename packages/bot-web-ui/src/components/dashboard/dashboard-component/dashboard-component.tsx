@@ -15,7 +15,7 @@ type TDashboard = {
 
 const DashboardComponent = ({ is_info_panel_visible, recent_strategies }: TDashboard) => {
     return (
-        <>
+        <React.Fragment>
             <div className='tab__dashboard'>
                 <div className='tab__dashboard__content'>
                     <div className='tab__dashboard__centered'>
@@ -53,7 +53,7 @@ const DashboardComponent = ({ is_info_panel_visible, recent_strategies }: TDashb
                     <InfoPanel />
                 </div>
             </DesktopWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

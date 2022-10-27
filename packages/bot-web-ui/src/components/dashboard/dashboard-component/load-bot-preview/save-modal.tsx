@@ -65,7 +65,6 @@ const SaveModalForm = ({
                                 <Field name='bot_name'>
                                     {({ field }) => (
                                         <Input
-                                            {...field}
                                             className='save-type__input'
                                             type='text'
                                             placeholder={localize('Untitled Strategy')}
@@ -73,6 +72,7 @@ const SaveModalForm = ({
                                             label={localize('Strategy name')}
                                             onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                             onBlur={() => setCurrentFocus(null)}
+                                            {...field}
                                         />
                                     )}
                                 </Field>
@@ -81,10 +81,10 @@ const SaveModalForm = ({
                                 <RadioGroup
                                     className='radio-group__save-type'
                                     name='is_local'
-                                    selected={(() => {
+                                    selected={() => {
                                         if (is_authorised && !is_local) return save_types.GOOGLE_DRIVE;
                                         return save_types.LOCAL;
-                                    })()}
+                                    }}
                                     onToggle={() => setFieldValue('is_local', !is_local)}
                                 >
                                     <RadioGroup.Item
@@ -119,7 +119,6 @@ const SaveModalForm = ({
                                 <Field name='save_as_collection'>
                                     {({ field }) => (
                                         <Checkbox
-                                            {...field}
                                             onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
                                             defaultChecked={save_as_collection}
                                             label={
@@ -128,6 +127,7 @@ const SaveModalForm = ({
                                                 </Text>
                                             }
                                             classNameLabel='save-type__checkbox-text'
+                                            {...field}
                                         />
                                     )}
                                 </Field>

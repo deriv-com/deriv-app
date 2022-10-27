@@ -27,7 +27,7 @@ const Sidebar = ({ setSideBarState, is_sidebar_open }: TSideBar) => {
                     }}
                 />
             </div>
-            {SIDEBAR_INTRO.map((sidebar_item, index) => {
+            {SIDEBAR_INTRO.map(sidebar_item => {
                 const { label } = sidebar_item;
                 return (
                     <React.Fragment key={label}>

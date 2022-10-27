@@ -49,8 +49,6 @@ const Card = ({
     const openGoogleDriveDialog = () => {
         showVideoDialog({
             type: 'google',
-            component: <GoogleDrive />,
-            url: '',
         });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -92,10 +90,10 @@ const Card = ({
         () => (
             <div className='tab__dashboard__table'>
                 <div className='tab__dashboard__table__tiles' id='tab__dashboard__table__tiles'>
-                    {actions.map((icons, index) => {
+                    {actions.map(icons => {
                         const { icon, content, method, disable } = icons;
                         return (
-                            <div key={index} className={`${disable} tab__dashboard__table__block`}>
+                            <div key={content} className={`${disable} tab__dashboard__table__block`}>
                                 <Icon
                                     className={'tab__dashboard__table__images'}
                                     width='8rem'
@@ -105,7 +103,7 @@ const Card = ({
                                     onClick={method}
                                 />
                                 <Text color='prominent' size='xs'>
-                                    {localize(content)}
+                                    {content}
                                 </Text>
                             </div>
                         );
@@ -131,13 +129,13 @@ const Card = ({
                         className={'dc-dialog__wrapper--google-drive'}
                         has_close_icon
                     >
-                        {dialog_options.message}
+                        <GoogleDrive />
                     </Dialog>
                 </div>
                 <Recent />
             </div>
         ),
-        []
+        [is_dialog_open]
     );
 };
 

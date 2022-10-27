@@ -3,7 +3,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS, subscribeWS } from 'Utils/websocket';
+import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -24,6 +24,7 @@ export default class BuySellStore extends BaseStore {
     @observable is_submit_disabled = true;
     @observable items = [];
     @observable local_currencies = [];
+    @observable local_currency = null;
     @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
@@ -369,21 +370,8 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     onLocalCurrencySelect(local_currency) {
-        const { floating_rate_store, general_store } = this.root_store;
-        const { ws_subscriptions } = general_store;
-
-        ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
-        ws_subscriptions.exchange_rate_subscription = subscribeWS(
-            {
-                exchange_rates: 1,
-                base_currency: general_store.client.currency,
-                subscribe: 1,
-                target_currency: local_currency,
-            },
-            [floating_rate_store.fetchExchangeRate]
-        );
-
         this.setSelectedLocalCurrency(local_currency);
+        this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
@@ -470,13 +458,21 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setLocalCurrency(local_currency) {
+        this.local_currency = local_currency;
+    }
+
+    @action.bound
     setLocalCurrencies(local_currencies) {
         const currency_list = [];
 
         local_currencies.forEach(currency => {
             const { display_name, has_adverts, is_default, symbol } = currency;
 
-            if (is_default && !this.selected_local_currency) this.setSelectedLocalCurrency(symbol);
+            if (is_default && !this.selected_local_currency) {
+                this.setSelectedLocalCurrency(symbol);
+                this.setLocalCurrency(symbol);
+            }
 
             currency_list.push({
                 component: (

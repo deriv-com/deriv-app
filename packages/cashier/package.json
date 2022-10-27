@@ -42,6 +42,7 @@
         "@deriv/p2p": "^0.7.3",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/ui": "^0.0.15",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "loadjs": "^4.2.0",

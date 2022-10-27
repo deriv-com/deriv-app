@@ -100,7 +100,7 @@ const ListItems = React.forwardRef((props, ref) => {
                     />
                 ))
             ) : (
-                <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
+                <div className='dc-dropdown-list__item dc-dropdown-list__item--not-found'>{not_found_text}</div>
             )}
         </>
     );
@@ -131,6 +131,7 @@ const DropdownList = React.forwardRef((props, ref) => {
 
     const el_dropdown_list = (
         <CSSTransition
+            appear={is_visible}
             in={is_visible}
             timeout={100}
             classNames={{

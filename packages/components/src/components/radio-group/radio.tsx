@@ -1,7 +1,14 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Text from '../text';
+
+type TRadio = {
+    className?: string;
+    classNameLabel?: string;
+    defaultChecked: boolean;
+    id: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const Radio = ({
     children,
@@ -11,7 +18,7 @@ const Radio = ({
     id,
     onChange, // This needs to be here so it's not included in `otherProps`
     ...otherProps
-}) => {
+}: React.PropsWithChildren<TRadio>) => {
     const [checked, setChecked] = React.useState(defaultChecked);
 
     /*
@@ -23,7 +30,7 @@ const Radio = ({
         setChecked(defaultChecked);
     }, [defaultChecked]);
 
-    const onInputChange = e => {
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(e.target.checked);
         onChange(e);
     };
@@ -46,15 +53,6 @@ const Radio = ({
             </Text>
         </label>
     );
-};
-
-Radio.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    classNameLabel: PropTypes.string,
-    defaultChecked: PropTypes.bool,
-    id: PropTypes.string,
-    onChange: PropTypes.func,
 };
 
 export default Radio;

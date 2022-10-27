@@ -9,6 +9,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
     changeCurrentLanguage,
@@ -101,6 +102,7 @@ const ToggleMenuDrawer = React.forwardRef(
         },
         ref
     ) => {
+        const liveChat = useLiveChat();
         const [is_open, setIsOpen] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
@@ -362,17 +364,19 @@ const ToggleMenuDrawer = React.forwardRef(
                                         <MobileDrawer.Item>
                                             {is_appstore ? null : <LiveChat is_mobile_drawer />}
                                         </MobileDrawer.Item>
-                                        <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
-                                            <Icon icon='IcWhatsApp' className='drawer-icon' />
-                                            <a
-                                                className='whatsapp-link'
-                                                href='https://wa.me/35699578341'
-                                                target='_blank'
-                                                rel='noopener noreferrer'
-                                            >
-                                                {localize('WhatsApp')}
-                                            </a>
-                                        </MobileDrawer.Item>
+                                        {liveChat.isReady && (
+                                            <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                                <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                                <a
+                                                    className='whatsapp-link'
+                                                    href='https://wa.me/35699578341'
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                >
+                                                    {localize('WhatsApp')}
+                                                </a>
+                                            </MobileDrawer.Item>
+                                        )}
 
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)

@@ -26,7 +26,7 @@ type TTabProps = {
 
 const Tab = ({
     active_icon_color,
-    active_tab_ref = null,
+    active_tab_ref,
     bottom,
     className,
     count,

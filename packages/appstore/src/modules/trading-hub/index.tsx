@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import platform_config from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
-import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
@@ -31,7 +31,8 @@ import './trading-hub.scss';
 const TradingHub: React.FC = () => {
     const store = useStores();
     const { ui, modules, common, client, trading_hub_store } = useStores();
-    const { is_logged_in, is_eu, is_eu_country } = client;
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
+        client;
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -119,6 +120,10 @@ const TradingHub: React.FC = () => {
             }}
         />
     );
+
+    const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
+
+    if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 
     return (
         <div id='trading-hub' className='trading-hub'>

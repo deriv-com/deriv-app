@@ -1,6 +1,5 @@
 .account-manager {
     display: flex;
-    width: 36.8rem;
     align-items: center;
     justify-content: space-between;
     @include mobile {
@@ -15,7 +14,7 @@
     &__details {
         display: flex;
         flex-direction: column;
-        margin-left: 0 0.8rem;
+        margin-left: 0.8rem;
         &--title {
             cursor: pointer;
         }

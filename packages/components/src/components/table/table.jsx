@@ -5,7 +5,7 @@ import Header from './table-header.jsx';
 import Body from './table-body.jsx';
 import Row from './table-row.jsx';
 import Cell from './table-cell.jsx';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
 const Table = ({ className, fixed, children, scroll_width, scroll_height }) => (

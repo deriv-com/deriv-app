@@ -130,7 +130,7 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status--failed`}>
                 <Text size='xxs' color='colored-background'>
-                    <Localize i18n_default_text='Resubmit proof of identity and address' />
+                    <Localize i18n_default_text='Resubmit your proof of identity and address' />
                 </Text>
             </div>
         );

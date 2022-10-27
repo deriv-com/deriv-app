@@ -388,7 +388,7 @@ const CFDAccountCardComponent = ({
                         ) : (
                             <p
                                 className={classNames('cfd-account-card--paragraph', {
-                                    'cfd-account-card--paragraph--is-mt5': CFD_PLATFORMS.MT5,
+                                    'cfd-account-card--paragraph--is_mt5': platform === CFD_PLATFORMS.MT5,
                                 })}
                             >
                                 {descriptor}

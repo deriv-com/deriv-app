@@ -792,7 +792,7 @@
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
         line-height: 1.45;
-        &--is-mt5 {
+        &--is_mt5 {
             height: 6rem;
         }
     }

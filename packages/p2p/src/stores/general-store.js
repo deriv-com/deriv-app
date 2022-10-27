@@ -108,6 +108,7 @@ export default class GeneralStore extends BaseStore {
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
+            subscribeToLocalCurrency: action.bound,
             onUnmount: action.bound,
             onNicknamePopupClose: action.bound,
             redirectTo: action.bound,
@@ -465,16 +466,40 @@ export default class GeneralStore extends BaseStore {
                         exchange_rates: 1,
                         base_currency: this.client.currency,
                         subscribe: 1,
-                        target_currency: this.client.local_currency_config?.currency,
+                        target_currency:
+                            this.root_store.buy_sell_store.selected_local_currency ??
+                            this.client.local_currency_config?.currency,
                     },
                     [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
             };
 
+            this.disposeLocalCurrencyReaction = reaction(
+                () => this.root_store.buy_sell_store.local_currency,
+                () => {
+                    this.subscribeToLocalCurrency();
+                }
+            );
+
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
         });
+    }
+
+    subscribeToLocalCurrency() {
+        const { floating_rate_store, buy_sell_store } = this.root_store;
+
+        this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+        this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
+            {
+                exchange_rates: 1,
+                base_currency: this.client.currency,
+                subscribe: 1,
+                target_currency: buy_sell_store.local_currency ?? this.client.local_currency_config?.currency,
+            },
+            [floating_rate_store.fetchExchangeRate]
+        );
     }
 
     onUnmount() {
@@ -485,6 +510,10 @@ export default class GeneralStore extends BaseStore {
 
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
+        }
+
+        if (typeof this.disposeLocalCurrencyReaction === 'function') {
+            this.disposeLocalCurrencyReaction();
         }
 
         this.setActiveIndex(0);

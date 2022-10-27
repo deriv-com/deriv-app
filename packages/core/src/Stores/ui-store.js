@@ -104,7 +104,7 @@ export default class UIStore extends BaseStore {
     // MT5 create real STP from demo, show only real accounts from switcher
     @observable should_show_real_accounts_list = false;
 
-    // MTF5 acuity download
+    // MT5 acuity download
     @observable is_acuity_modal_open = false;
 
     // Real account signup

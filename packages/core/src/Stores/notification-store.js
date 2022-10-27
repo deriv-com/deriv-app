@@ -386,7 +386,7 @@ export default class NotificationStore extends BaseStore {
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 // Acuity notification only for desktop and non EU clients
                 if (!is_eu && !isMobile()) {
-                  this.addNotificationMessage(this.client_notifications.acuity);
+                    this.addNotificationMessage(this.client_notifications.acuity);
                     this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
                 } else {
                     this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
@@ -580,7 +580,7 @@ export default class NotificationStore extends BaseStore {
                         this.removeNotificationMessage({
                             key: this.client_notifications.acuity.key,
                             should_show_again: false,
-                            });
+                        });
                     },
                 },
                 platform: [platform_name.DTrader],

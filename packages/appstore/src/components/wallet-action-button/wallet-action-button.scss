@@ -1,10 +1,10 @@
 .wallet-action-button {
-    background-color: #fff;
+    background-color: var(--general-main-1);
     border-radius: 16px;
     cursor: pointer;
     align-items: center;
     display: flex;
-    border: 1px solid #999999;
+    border: 1px solid var(--button-secondary-default);
     gap: 8px;
     padding: 0 1.5rem;
 
@@ -12,11 +12,11 @@
         height: 3rem;
     }
 
-    // TODO: wait for desing to get finalized and then ask about other variants for the size
+    // TODO: wait for design to get finalized and then ask about other variants for the size
     &__medium {
         height: 3rem;
     }
-    // TODO: wait for desing to get finalized and then ask about other variants for the size
+    // TODO: wait for design to get finalized and then ask about other variants for the size
     &__large {
         height: 3rem;
     }

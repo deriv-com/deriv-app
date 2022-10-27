@@ -1,6 +1,6 @@
 .wallet-account {
     position: relative;
-    background: #fff8f9;
+    background: $color-grey-13;
 
     &__background {
         position: absolute;
@@ -31,7 +31,11 @@
         margin-bottom: -1rem;
 
         &--link {
+            background-color: transparent;
             margin-left: 1.5rem;
+            &:hover {
+                background-color: $alpha-color-red-1 !important;
+            }
         }
 
         &.no-mt {
@@ -46,7 +50,10 @@
     }
 
     &__app-launcher-button {
-        background-color: #ff444f29 !important;
+        background-color: $alpha-color-red-4 !important;
+        &:hover {
+            background-color: $alpha-color-red-5 !important;
+        }
     }
 
     &__details {
@@ -104,5 +111,5 @@
 }
 
 .link-text {
-    color: #ff444f !important;
+    color: var(--brand-red-coral) !important;
 }

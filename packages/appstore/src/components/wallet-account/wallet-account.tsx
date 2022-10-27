@@ -21,7 +21,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
             expand_section={false}
             elevation_type='xs'
             onToggle={() => {
-                /**do something */
+                // TODO: add some actions if needed; otherwise we need to make this optional
             }}
             type='containerWithBorder'
             className='wallet-account'

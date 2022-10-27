@@ -599,12 +599,9 @@ export default class NotificationStore extends BaseStore {
                 header: localize('New trading tools for MT5'),
                 message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
                 secondary_btn: {
-                    text: localize('Download Acuity'),
+                    text: localize('Learn More'),
                     onClick: () => {
-                        window.open(
-                            'https://dashboard.acuitytrading.com/metatrader/DownloadMt5Installer?apiKey=2713b8d0-43ed-4194-b5d7-b1ff60dbdae0&isFull=true',
-                            '_blank'
-                        );
+                        ui.setIsAcuityModalOpen(true);
                         this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
                         this.removeNotificationMessage({
                             key: this.client_notifications.acuity.key,
@@ -613,7 +610,6 @@ export default class NotificationStore extends BaseStore {
                     },
                 },
                 platform: [platform_name.DTrader],
-                is_disposable: true,
                 img_src: getUrlBase('/public/images/common/acuity_banner.png'),
                 img_alt: 'Acuity',
                 className: 'acuity',

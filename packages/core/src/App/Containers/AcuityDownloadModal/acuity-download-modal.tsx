@@ -1,9 +1,10 @@
 import React from 'react';
+import RootStore from 'Stores/index';
 import { Button, Modal, Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { getUrlBase } from '@deriv/shared';
-import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
+import 'Sass/app/modules/acuity-download.scss';
 
 type TAcuityDownloadModal = {
     is_acuity_modal_open: boolean;

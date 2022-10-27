@@ -35,7 +35,6 @@ import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/a
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
-import AcuityDownloadModal from './acuity-download-modal';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -464,7 +463,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             </div>
                         )}
                         <div className='cfd-dashboard__accounts-display'>
-                            <AcuityDownloadModal />
                             <CFDPasswordManagerModal
                                 is_visible={password_manager.is_visible}
                                 platform={platform}

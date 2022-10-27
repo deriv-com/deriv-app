@@ -150,10 +150,27 @@ export default class NotificationStore extends BaseStore {
     }
 
     @action.bound
-    addVerificationNotifications(identity, document) {
-        if (identity.status === 'expired') this.addNotificationMessage(this.client_notifications.poi_expired);
+    addVerificationNotifications(identity, document, has_restricted_mt5_account) {
+        //identity
+        if (identity.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poi_verified);
+        } else if (!['none', 'pending'].includes(identity.status)) {
+            this.addNotificationMessage(this.client_notifications.poi_failed);
+        }
 
-        if (document.status === 'expired') this.addNotificationMessage(this.client_notifications.poa_expired);
+        // document
+
+        if (document.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poa_verified);
+        } else if (has_restricted_mt5_account) {
+            if (document.status === 'pending') {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_pending_poa);
+            } else {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_failed_poa);
+            }
+        } else if (!['none', 'pending'].includes(document.status)) {
+            this.addNotificationMessage(this.client_notifications.poa_failed);
+        }
     }
 
     @action.bound
@@ -161,11 +178,7 @@ export default class NotificationStore extends BaseStore {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
 
-        if (window.location.pathname === routes.cashier_p2p) {
-            this.notification_messages = this.notification_messages.filter(
-                notification => notification.platform === 'P2P'
-            );
-        } else {
+        if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -205,6 +218,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            has_restricted_mt5_account,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -215,7 +229,6 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
-
         let has_missing_required_field;
 
         if (is_logged_in) {
@@ -293,28 +306,20 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document);
+                this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (needs_verification.includes('identity')) {
-                    if (
-                        poi_name_mismatch &&
-                        identity?.services.onfido.last_rejected &&
-                        !personal_details_locked &&
-                        onfido_submissions_left > 0
-                    ) {
-                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
-                        this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    } else if (is_identity_verification_needed) {
-                        this.addNotificationMessage(this.client_notifications.identity);
-                    }
+
+                if (
+                    poi_name_mismatch &&
+                    identity?.services.onfido.last_rejected &&
+                    !personal_details_locked &&
+                    onfido_submissions_left > 0
+                ) {
+                    this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
                 }
 
-                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
-                }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -786,34 +791,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
-            needs_poa_virtual: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Verify address'),
-                },
-                key: 'needs_poa_virtual',
-                header: localize('Please Verify your address'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
-                ),
-                type: 'danger',
-            },
-            needs_poi_virtual: {
-                action: {
-                    onClick: async () => {
-                        const { switchAccount, first_switchable_real_loginid } = client_data;
 
-                        await switchAccount(first_switchable_real_loginid);
-                    },
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi_virtual',
-                header: localize('Please Verify your identity'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
-                ),
-                type: 'danger',
-            },
             new_version_available: {
                 action: {
                     onClick: () => window.location.reload(),
@@ -851,27 +829,41 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            onfido_failed: {
-                key: 'onfido_failed',
-                header: localize("You've reached the limit for uploading your documents."),
-                message: localize('Please contact us via live chat.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'danger',
-            },
             password_changed: {
                 key: 'password_changed',
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
-            poa_poi_verified: {
-                key: 'poa_poi_verified',
-                header: localize('Proof of identity and address verified'),
+            poa_failed: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poa_failed',
+                header: localize('Please resubmit your proof of address or we may restrict your account.'),
+                message: localize('Please submit your proof of address.'),
+                type: 'danger',
+            },
+            poa_verified: {
+                key: 'poa_verified',
+                header: localize('Your proof of address is verified.'),
+                type: 'announce',
+                should_hide_close_btn: false,
+            },
+            poi_failed: {
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Resubmit proof of identity'),
+                },
+                key: 'poi_failed',
+                header: localize('Your proof of identity verification has failed'),
+                message: localize('Please submit your proof of identity.'),
+                type: 'danger',
+            },
+            poi_verified: {
+                key: 'poi_verified',
+                header: localize('Your proof of identity is verified.'),
                 type: 'announce',
                 should_hide_close_btn: false,
             },
@@ -889,6 +881,26 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            resticted_mt5_with_pending_poa: {
+                key: 'resticted_mt5_with_pending_poa',
+                header: localize('Your proof of address verification is pending'),
+                message: localize(
+                    'Your address verification is pending, and we’ve placed some restrictions on your account. The restrictions will be lifted once your address is verified.'
+                ),
+                type: 'danger',
+            },
+            resticted_mt5_with_failed_poa: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'resticted_mt5_with_failed_poa',
+                header: localize('Your proof of address verification has failed'),
+                message: localize(
+                    'Your proof of address did not pass our verification checks, and we’ve placed some restrictions on your account. Please resubmit your proof of address.'
+                ),
+                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;

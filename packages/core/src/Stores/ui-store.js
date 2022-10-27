@@ -1,4 +1,4 @@
-import { getPlatformInformation, isMobile, isTouchDevice, LocalStore, platform_name, routes } from '@deriv/shared';
+import { isMobile, isTouchDevice, LocalStore, routes, isBot } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { action, autorun, computed, observable } from 'mobx';
 import BaseStore from './base-store';
@@ -28,11 +28,13 @@ export default class UIStore extends BaseStore {
     @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
+    @observable has_read_scam_message = localStorage.getItem('readScamMessage') || false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
     @observable is_services_error_visible = false;
     @observable is_unsupported_contract_modal_visible = false;
+    @observable is_new_account = localStorage.getItem('isNewAccount') || false;
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
@@ -142,6 +144,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     @observable should_show_cancel = false;
 
+    @observable app_contents_scroll_ref = null;
     @observable is_deriv_account_needed_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
@@ -164,6 +167,7 @@ export default class UIStore extends BaseStore {
             'is_dark_mode_on',
             'is_positions_drawer_on',
             'is_reports_visible',
+            'is_warning_scam_message_modal_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_cancellation_warning',
@@ -177,15 +181,6 @@ export default class UIStore extends BaseStore {
         });
     }
     changeTheme = () => {
-        // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-        const platform = getPlatformInformation(new_app_routing_history).header;
-        if (platform === platform_name.DBot) {
-            document.body.classList.remove('theme--dark');
-            document.body.classList.add('theme--light');
-            return;
-        }
-
         if (this.is_dark_mode_on) {
             document.body.classList.remove('theme--light');
             document.body.classList.add('theme--dark');
@@ -195,9 +190,36 @@ export default class UIStore extends BaseStore {
         }
     };
 
+    @computed
+    get is_warning_scam_message_modal_visible() {
+        return (
+            this.root_store.client.is_logged_in &&
+            this.root_store.client.is_brazil &&
+            !this.has_read_scam_message &&
+            !this.is_new_account
+        );
+    }
+
+    @action.bound
+    setScamMessageLocalStorage() {
+        localStorage.setItem('readScamMessage', !this.has_read_scam_message);
+        this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
+    }
+
+    @action.bound
+    setIsNewAccount() {
+        localStorage.setItem('isNewAccount', !this.is_new_account);
+        this.is_new_account = localStorage.getItem('isNewAccount') || false;
+    }
+
     @action.bound
     init(notification_messages) {
         this.notification_messages_ui = notification_messages;
+    }
+
+    @action.bound
+    setAppContentsScrollRef(value) {
+        this.app_contents_scroll_ref = value;
     }
 
     @action.bound
@@ -356,6 +378,9 @@ export default class UIStore extends BaseStore {
             this.is_dark_mode_on = is_dark_mode_on;
             // This GTM call is here instead of the GTM store due to frequency of use
             this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
+            if (isBot()) {
+                location.reload();
+            }
         }
 
         return this.is_dark_mode_on;

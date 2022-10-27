@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { withRouter } from 'react-router';
+import { setUrlLanguage } from '@deriv/shared';
 import NetworkStatus, {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
@@ -39,6 +40,7 @@ const Footer = ({
     is_settings_modal_on,
     is_virtual,
     disableApp,
+    language,
     toggleSettingsModal,
     settings_extension,
     landing_company_shortcode,
@@ -49,6 +51,8 @@ const Footer = ({
         footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
         footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
     }
+
+    setUrlLanguage(language);
 
     return (
         <footer
@@ -106,7 +110,8 @@ Footer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, ui }) => ({
+    connect(({ client, common, ui }) => ({
+        language: common.current_language.toLowerCase(),
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,

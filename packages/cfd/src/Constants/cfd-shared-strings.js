@@ -24,7 +24,7 @@ export const general_messages = {
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (is_eu) {
                 return localize(
-                    'Trade CFDs on forex, stocks, stock indices, synthetic indices, and commodities with leverage.'
+                    'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
                 );
             }
             return localize('Trade CFDs on forex, stocks & stock indices, commodities, and crypto.');

@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import { TRootStore } from 'Types';
 
@@ -6,16 +6,29 @@ type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
     constructor(public root_store: TRootStore) {
+        makeObservable(this, {
+            iframe_height: observable,
+            iframe_url: observable,
+            is_session_timeout: observable,
+            timeout_session: observable,
+            setSessionTimeout: action.bound,
+            checkIframeLoaded: action.bound,
+            clearTimeoutCashierUrl: action.bound,
+            setTimeoutCashierUrl: action.bound,
+            setIframeUrl: action.bound,
+            setContainerHeight: action.bound,
+            clearIframe: action.bound,
+        });
+
         this.root_store = root_store;
     }
 
-    @observable iframe_height = 0;
-    @observable iframe_url = '';
-    @observable is_session_timeout = true;
+    iframe_height = 0;
+    iframe_url = '';
+    is_session_timeout = true;
     onIframeLoaded: TOnIframeLoadedCallback | null = null;
-    @observable timeout_session: NodeJS.Timeout | null = null;
+    timeout_session: NodeJS.Timeout | null = null;
 
-    @action.bound
     setSessionTimeout(is_session_time_out: boolean): void {
         this.is_session_timeout = is_session_time_out;
         if (is_session_time_out) {
@@ -23,7 +36,6 @@ export default class IframeStore {
         }
     }
 
-    @action.bound
     async checkIframeLoaded(): Promise<void> {
         const { modules, ui } = this.root_store;
 
@@ -52,14 +64,12 @@ export default class IframeStore {
         }
     }
 
-    @action.bound
     clearTimeoutCashierUrl(): void {
         if (this.timeout_session) {
             clearTimeout(this.timeout_session);
         }
     }
 
-    @action.bound
     setTimeoutCashierUrl(is_withdrawal?: boolean): void {
         this.clearTimeoutCashierUrl();
         if (is_withdrawal) {
@@ -69,7 +79,6 @@ export default class IframeStore {
         }
     }
 
-    @action.bound
     setIframeUrl(url: string): void {
         const { client, ui } = this.root_store;
 
@@ -89,12 +98,10 @@ export default class IframeStore {
         }
     }
 
-    @action.bound
     setContainerHeight(height: number): void {
         this.iframe_height = height;
     }
 
-    @action.bound
     clearIframe(): void {
         this.setContainerHeight(0);
         this.setIframeUrl('');

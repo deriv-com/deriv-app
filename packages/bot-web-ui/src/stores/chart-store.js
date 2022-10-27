@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
 
@@ -7,6 +7,21 @@ let WS;
 
 export default class ChartStore {
     constructor(root_store) {
+        makeObservable(this, {
+            symbol: observable,
+            is_chart_loading: observable,
+            chart_type: observable,
+            granularity: observable,
+            is_contract_ended: computed,
+            onStartBot: action.bound,
+            onStopBot: action.bound,
+            updateSymbol: action.bound,
+            onSymbolChange: action.bound,
+            updateGranularity: action.bound,
+            updateChartType: action.bound,
+            setChartStatus: action.bound,
+        });
+
         this.root_store = root_store;
         WS = root_store.ws;
         const { run_panel } = root_store;
@@ -17,19 +32,17 @@ export default class ChartStore {
         );
     }
 
-    @observable symbol;
-    @observable is_chart_loading;
-    @observable chart_type;
-    @observable granularity;
+    symbol;
+    is_chart_loading;
+    chart_type;
+    granularity;
 
-    @computed
     get is_contract_ended() {
         const { transactions } = this.root_store;
 
         return transactions.contracts.length > 0 && transactions.contracts[0].is_ended;
     }
 
-    @action.bound
     onStartBot() {
         this.updateSymbol();
 
@@ -37,14 +50,12 @@ export default class ChartStore {
         // main_content.setActiveTab(tabs_title.CHART);
     }
 
-    @action.bound
     // eslint-disable-next-line
     onStopBot() {
         // const { main_content } = this.root_store;
         // main_content.setActiveTab(tabs_title.WORKSPACE);
     }
 
-    @action.bound
     updateSymbol() {
         const workspace = Blockly.derivWorkspace;
         const market_block = workspace.getAllBlocks().find(block => {
@@ -57,22 +68,18 @@ export default class ChartStore {
         }
     }
 
-    @action.bound
     onSymbolChange(symbol) {
         this.symbol = symbol;
     }
 
-    @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
     }
 
-    @action.bound
     updateChartType(chart_type) {
         this.chart_type = chart_type;
     }
 
-    @action.bound
     setChartStatus(status) {
         this.is_chart_loading = status;
     }

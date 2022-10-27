@@ -2,6 +2,7 @@ import React from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
 type TWhatsAppProps = {
     is_nigeria: boolean;
@@ -9,6 +10,10 @@ type TWhatsAppProps = {
 };
 
 const WhatsApp = ({ is_nigeria, is_south_africa }: TWhatsAppProps) => {
+    const liveChat = useLiveChat();
+
+    if (!liveChat.isReady) return null;
+
     if (!(is_nigeria || is_south_africa)) return null;
 
     return (

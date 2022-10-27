@@ -35,6 +35,7 @@ import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/a
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import AcuityDownloadModal from './acuity-download-modal';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -172,6 +173,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
         getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
     ) => void;
     openDerivRealAccountNeededModal: () => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -392,6 +394,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen,
     } = props;
 
     const should_show_missing_real_account =
@@ -461,6 +464,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             </div>
                         )}
                         <div className='cfd-dashboard__accounts-display'>
+                            <AcuityDownloadModal />
                             <CFDPasswordManagerModal
                                 is_visible={password_manager.is_visible}
                                 platform={platform}
@@ -522,6 +526,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 residence={residence}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
+                                                setIsAcuityModalOpen={setIsAcuityModalOpen}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -724,5 +729,6 @@ export default withRouter(
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
         mt5_status_server: client.website_status.mt5_status,
         openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     }))(CFDDashboard)
 );

@@ -120,6 +120,41 @@
         }
     }
 
+    &__social-banner {
+        width: 100%;
+        background-color: var(--general-section-1);
+        opacity: 95%;
+        top: 0;
+        position: absolute;
+        z-index: 1;
+
+        &--close-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+        }
+
+        &--wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 2.4rem;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0px;
+            margin-inline: 2.4rem;
+
+            &__image {
+                width: 160px;
+                height: 120px;
+            }
+
+            &__button {
+                float: right;
+                padding: 8px;
+            }
+        }
+    }
+
     &__download-container {
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
@@ -1057,6 +1092,22 @@
             }
         }
     }
+
+    &__acuity-banner {
+        background: var(--general-section-1);
+        height: 34px;
+        border-radius: 8px;
+        margin: 1.6rem;
+
+        &--wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.6rem;
+            padding: 0.8rem 2.65rem;
+        }
+    }
+
     &__divider {
         width: calc(100% - 3.2rem);
         margin-left: 1.6rem;

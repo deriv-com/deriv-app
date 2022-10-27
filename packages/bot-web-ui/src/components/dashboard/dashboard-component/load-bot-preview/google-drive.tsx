@@ -45,7 +45,7 @@ const GoogleDrive = ({
                 </div>
                 {google_content.map(content => {
                     return (
-                        <Text as='p' size='xs' line_height='l' key={content}>
+                        <Text align='center' as='p' size='xs' line_height='l' key={content}>
                             {content}
                         </Text>
                     );

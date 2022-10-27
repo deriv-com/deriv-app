@@ -297,8 +297,10 @@ export default class GeneralStore extends BaseStore {
             }
             // we need to see if client's country has PA
             // if yes, we can show the PA tab in cashier
+            this.setLoading(true);
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
+            this.setLoading(false);
 
             if (!payment_agent_transfer.is_payment_agent) {
                 payment_agent_transfer.checkIsPaymentAgent();
@@ -376,11 +378,17 @@ export default class GeneralStore extends BaseStore {
     accountSwitcherListener() {
         const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
 
+        clearInterval(withdraw.verification.resend_interval);
+        clearInterval(payment_agent.verification.resend_interval);
         withdraw.verification.clearVerification();
         payment_agent.verification.clearVerification();
         iframe.clearIframe();
 
         this.payment_agent = payment_agent;
+        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+            payment_agent.setActiveTab(1);
+        }
+
         this.is_populating_values = false;
 
         this.onRemount();

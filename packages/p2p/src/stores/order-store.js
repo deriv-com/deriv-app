@@ -138,6 +138,23 @@ export default class OrderStore {
     }
 
     @action.bound
+    getP2POrderList() {
+        requestWS({ p2p_order_list: 1 }).then(response => {
+            if (response) {
+                if (response.error) {
+                    this.setErrorMessage(response.error.message);
+                } else {
+                    const { p2p_order_list } = response;
+
+                    this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
+                    p2p_order_list.list.forEach(order => this.syncOrder(order));
+                    this.setOrders(p2p_order_list.list);
+                }
+            }
+        });
+    }
+
+    @action.bound
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
             if (response && !response.error) {
@@ -289,7 +306,9 @@ export default class OrderStore {
                 if (response.error) {
                     this.setErrorMessage(response.error.message);
                 }
+                this.getP2POrderList();
                 this.setIsRatingModalOpen(false);
+                this.setRatingValue(0);
             }
         });
     }

@@ -180,6 +180,13 @@ const Interpreter = () => {
     }
 
     function terminateSession() {
+        const { connection } = $scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
+        }
+
         $scope.stopped = true;
         $scope.is_error_triggered = false;
         globalObserver.emit('bot.stop');

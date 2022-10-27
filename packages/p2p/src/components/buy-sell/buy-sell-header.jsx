@@ -11,7 +11,6 @@ import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
-import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
 
 const getBuySellFilters = () => [
@@ -25,10 +24,8 @@ const getBuySellFilters = () => [
     },
 ];
 
-const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
+const BuySellHeader = ({ table_type }) => {
     const { buy_sell_store } = useStores();
-
-    const onChangeTableType = event => setTableType(event.target.value);
 
     const returnedFunction = debounce(() => {
         buy_sell_store.loadMoreItems({ startIndex: 0 });
@@ -69,19 +66,17 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             })}
         >
             <div className='buy-sell__header-container'>
-                <AnimationWrapper is_visible={is_visible}>
-                    <ToggleContainer>
-                        <ButtonToggle
-                            buttons_arr={getBuySellFilters()}
-                            className='buy-sell__header-filters'
-                            is_animated
-                            name='filter'
-                            onChange={onChangeTableType}
-                            value={table_type}
-                            has_rounded_button
-                        />
-                    </ToggleContainer>
-                </AnimationWrapper>
+                <ToggleContainer>
+                    <ButtonToggle
+                        buttons_arr={getBuySellFilters()}
+                        className='buy-sell__header-filters'
+                        is_animated
+                        name='filter'
+                        onChange={buy_sell_store.onChangeTableType}
+                        value={table_type}
+                        has_rounded_button
+                    />
+                </ToggleContainer>
                 <div className='buy-sell__header-row'>
                     <SearchBox
                         onClear={onClear}
@@ -102,8 +97,6 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
 };
 
 BuySellHeader.propTypes = {
-    is_visible: PropTypes.bool,
-    setTableType: PropTypes.func,
     table_type: PropTypes.string,
 };
 

@@ -1,9 +1,16 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { formatDuration, getDiffDuration } from '@deriv/shared';
+import moment from 'moment';
 
-const RemainingTime = ({ end_time = null, format, getCardLabels, start_time }) => {
-    if (!+end_time || start_time.unix() > +end_time) {
+type TRemainingTimeProps = {
+    end_time?: number;
+    start_time: moment.Moment;
+    format: string;
+    getCardLabels: () => { [key: string]: string }; // TODO Use the one from common after contract-card migration
+};
+
+const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {
+    if (!end_time || start_time.unix() > +end_time) {
         return '';
     }
 
@@ -15,13 +22,6 @@ const RemainingTime = ({ end_time = null, format, getCardLabels, start_time }) =
     const is_zeroes = /^00:00$/.test(remaining_time);
 
     return !is_zeroes && <div className='dc-remaining-time'>{remaining_time}</div>;
-};
-
-RemainingTime.propTypes = {
-    end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    start_time: PropTypes.object,
-    format: PropTypes.string,
-    getCardLabels: PropTypes.func,
 };
 
 export default RemainingTime;

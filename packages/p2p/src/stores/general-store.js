@@ -18,6 +18,7 @@ export default class GeneralStore extends BaseStore {
     advertiser_sell_limit = null;
     block_unblock_user_error = '';
     balance;
+    feature_level = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
@@ -117,6 +118,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
+            setFeatureLevel: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
             setIsBlocked: action.bound,
@@ -256,9 +258,13 @@ export default class GeneralStore extends BaseStore {
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
             if (response && !response.error) {
+                const { buy_sell_store } = this.root_store;
                 const { p2p_config } = response.website_status;
+                const { feature_level, local_currencies, review_period } = p2p_config || {};
 
-                this.setReviewPeriod(p2p_config.review_period);
+                this.setFeatureLevel(feature_level);
+                buy_sell_store.setLocalCurrencies(local_currencies);
+                this.setReviewPeriod(review_period);
             }
         });
     }
@@ -542,6 +548,10 @@ export default class GeneralStore extends BaseStore {
         this.block_unblock_user_error = block_unblock_user_error;
     }
 
+    setFeatureLevel(feature_level) {
+        this.feature_level = feature_level;
+    }
+
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -614,13 +624,19 @@ export default class GeneralStore extends BaseStore {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
-                    response.website_status.p2p_config;
+                const {
+                    fixed_rate_adverts,
+                    float_rate_adverts,
+                    float_rate_offset_limit,
+                    fixed_rate_adverts_end_date,
+                    override_exchange_rate,
+                } = response.website_status.p2p_config;
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
+                if (override_exchange_rate) floating_rate_store.setOverrideExchangeRate(override_exchange_rate);
             }
         });
     }

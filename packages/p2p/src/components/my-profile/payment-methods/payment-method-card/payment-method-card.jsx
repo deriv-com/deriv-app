@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 const PaymentMethodCard = ({
     add_payment_method,
     disabled,
-    icon_method,
     is_add = false,
     is_vertical_ellipsis_visible = true,
     label = undefined,
@@ -22,11 +21,16 @@ const PaymentMethodCard = ({
     style,
 }) => {
     const { my_profile_store } = useStores();
-    const method = !is_add && payment_method.display_name.replace(/\s|-/gm, '');
+    const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
     const payment_name = payment_method?.fields?.name?.value;
+    const payment_method_name = payment_method?.display_name.replace(/\s|-/gm, '');
+    const icon_method =
+        payment_method_name === 'BankTransfer' || payment_method_name === 'Other'
+            ? `IcCashier${payment_method_name}`
+            : 'IcCashierEwallet';
 
     if (is_add) {
         return (

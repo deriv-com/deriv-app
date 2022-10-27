@@ -7,7 +7,7 @@ type TTabProps = {
     active_icon_color: string;
     active_tab_ref?: React.RefObject<HTMLLIElement> | null;
     bottom: boolean;
-    className: string;
+    className?: string;
     count: number;
     header_content: React.ReactElement;
     header_fit_content: boolean;

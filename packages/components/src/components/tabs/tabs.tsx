@@ -37,7 +37,7 @@ const Tabs = ({
     bottom,
     center,
     children,
-    className = '',
+    className,
     fit_content,
     has_active_line = true,
     has_bottom_line = true,
@@ -77,7 +77,7 @@ const Tabs = ({
     }, []);
 
     let initial_index_to_show = 0;
-    let tab_width;
+    let tab_width: string;
 
     useConstructor(() => {
         initial_index_to_show = active_index;

@@ -117,6 +117,7 @@ export const PersonalDetailsForm = ({
     history,
     is_social_signup,
     updateAccountStatus,
+    has_poa_address_mismatch,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -942,7 +943,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                     {!is_appstore && !is_virtual && (
                                         <React.Fragment>
-                                            <POAAddressMismatchHintBox />
+                                            {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
@@ -1239,6 +1240,7 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
+    has_poa_address_mismatch: PropTypes.bool,
 };
 
 export default connect(({ client, notifications, ui }) => ({
@@ -1259,4 +1261,5 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
+    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
 }))(withRouter(PersonalDetailsForm));

@@ -36,7 +36,7 @@ const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
         if (is_eu || country_standpoint.is_belgium) {
             return <Localize i18n_default_text='Options' />;
         }
-        return <Localize i18n_default_text='Synthetic' />;
+        return <Localize i18n_default_text='Derived' />;
     }
     return null;
 };

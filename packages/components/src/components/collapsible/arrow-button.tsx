@@ -3,10 +3,6 @@ import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-type TIconArrow = {
-    className?: string;
-};
-
 type TIconArrowWithTitle = {
     title: string;
     className?: string;
@@ -20,7 +16,9 @@ type TArrowButton = {
     position: 'top' | 'bottom';
 };
 
-const IconArrow = (props: TIconArrow) => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
+const IconArrow = ({ className }: { className?: string }) => (
+    <Icon width={30} height={9} icon='IcChevronUp' className={className} />
+);
 
 const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
     <React.Fragment>

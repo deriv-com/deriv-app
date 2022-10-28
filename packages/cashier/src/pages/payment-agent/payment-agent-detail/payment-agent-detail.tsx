@@ -27,11 +27,7 @@ const PaymentAgentDetail = ({
 }: PaymentAgentDetailProps) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
-        <div
-            className={classNames('payment-agent-detail', {
-                [className as string]: !!className,
-            })}
-        >
+        <div className={classNames('payment-agent-detail', className && { [className]: !!className })}>
             {icon && (
                 <div className='payment-agent-detail__icon-wrapper'>
                     <Icon icon={icon} data_testid='dt_payment_agent_detail_icon' />

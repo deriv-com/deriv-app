@@ -12,6 +12,7 @@ import SideNote from 'Components/side-note';
 import { TRootStore, TSideNotesProps, TServerError } from 'Types';
 import './payment-agent-list.scss';
 
+// TODO: Remove this after refactoring Tab component
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
         label?: string;

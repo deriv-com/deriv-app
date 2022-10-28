@@ -46,7 +46,7 @@ const RadioButtonGroup = ({
             )}
             <div
                 className={classNames('currency-list__items', {
-                    'currency-list__items__center': item_count && item_count < 4,
+                    'currency-list__items__center': item_count < 4,
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,
                 })}

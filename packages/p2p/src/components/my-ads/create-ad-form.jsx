@@ -15,7 +15,6 @@ import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared'
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import FloatingRate from 'Components/floating-rate';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -34,8 +33,8 @@ const CreateAdFormWrapper = ({ children }) => {
 
 const CreateAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
+
     const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
@@ -199,14 +198,16 @@ const CreateAdForm = () => {
                                                         hint={
                                                             // Using two "==" is intentional as we're checking for nullish
                                                             // rather than falsy values.
-                                                            !is_sell_advert || available_balance == null
+                                                            !is_sell_advert ||
+                                                            general_store.advertiser_info.balance_available == null
                                                                 ? undefined
                                                                 : localize(
                                                                       'Your Deriv P2P balance is {{ dp2p_balance }}',
                                                                       {
                                                                           dp2p_balance: `${formatMoney(
                                                                               currency,
-                                                                              available_balance,
+                                                                              general_store.advertiser_info
+                                                                                  .balance_available,
                                                                               true
                                                                           )} ${currency}`,
                                                                       }

@@ -23,7 +23,7 @@ const RadioButtonGroup = ({
     description,
     has_fiat,
 }: React.PropsWithChildren<TRadioButtonGroup>) => {
-    const [is_currency_selected, setIsCurrencySelected] = useState<boolean>(false);
+    const [is_currency_selected, setIsCurrencySelected] = useState(false);
 
     const onCurrencyClicked = () => {
         setIsCurrencySelected(true);

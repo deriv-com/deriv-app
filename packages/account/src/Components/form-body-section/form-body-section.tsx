@@ -1,11 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PropTypes } from 'prop-types';
 import { Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
+import { TPlatformContext } from 'Types';
 
-const FormBodySection = ({ children, has_side_note, side_note }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+export type TFormBodySection = {
+    has_side_note?: boolean;
+    side_note?: string | React.ReactElement;
+};
+
+const FormBodySection = ({ children, has_side_note, side_note }: React.PropsWithChildren<TFormBodySection>) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
     if (has_side_note) {
         return (
             <div
@@ -25,11 +30,7 @@ const FormBodySection = ({ children, has_side_note, side_note }) => {
             </div>
         );
     }
-    return children;
+    return <React.Fragment>children</React.Fragment>;
 };
-FormBodySection.prototype = {
-    children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    has_side_note: PropTypes.bool,
-    side_note: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-};
+
 export default FormBodySection;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import FormBodySection from '../form-body-section';
+import FormBodySection, { TFormBodySection } from '../form-body-section';
 
-const MockFormBodySection = props => {
+const MockFormBodySection = (props: TFormBodySection) => {
     return (
         <FormBodySection {...props}>
             <p>Lorem Ipsum</p>
@@ -28,7 +28,7 @@ describe('Test coverage for FormBodySection component', () => {
     });
 
     it('When "side_note" value is not string, it should not render inside Text component', () => {
-        const test_side_note = 80;
+        const test_side_note = 'test side note';
         render(<MockFormBodySection has_side_note side_note={test_side_note} />);
         expect(screen.getByText(test_side_note)).toBeInTheDocument();
         expect(screen.queryByTestId('side-note-text')).not.toBeInTheDocument();

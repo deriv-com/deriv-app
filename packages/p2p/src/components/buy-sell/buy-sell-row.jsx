@@ -38,6 +38,7 @@ const BuySellRow = ({ row: advert }) => {
         account_currency,
         advertiser_details,
         counterparty_type,
+        effective_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -57,6 +58,7 @@ const BuySellRow = ({ row: advert }) => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     if (isMobile()) {

@@ -33,6 +33,7 @@ export const generateEffectiveRate = ({
     rate = 0,
     local_currency = {},
     exchange_rate = 0,
+    market_rate,
     rate_type = ad_type.FIXED,
 } = {}) => {
     let effective_rate = 0;
@@ -41,7 +42,7 @@ export const generateEffectiveRate = ({
         effective_rate = price;
         display_effective_rate = formatMoney(local_currency, effective_rate, true);
     } else {
-        effective_rate = percentOf(exchange_rate, rate);
+        effective_rate = exchange_rate > 0 ? percentOf(exchange_rate, rate) : market_rate;
         const decimal_place = setDecimalPlaces(effective_rate, 6);
         display_effective_rate = removeTrailingZeros(
             formatMoney(local_currency, roundOffDecimal(effective_rate, decimal_place), true, decimal_place)

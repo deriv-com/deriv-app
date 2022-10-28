@@ -200,7 +200,7 @@ Account.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
-    active_account_landing_company: client.active_account_landing_company,
+    active_account_landing_company: client.landing_company_shortcode,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

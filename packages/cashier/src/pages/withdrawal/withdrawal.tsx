@@ -247,7 +247,7 @@ const Withdrawal = ({
 };
 
 export default connect(({ client, modules }: TRootStore) => ({
-    active_account_landing_company: client.active_account_landing_company,
+    active_account_landing_company: client.landing_company_shortcode,
     balance: client.balance,
     check10kLimit: modules.cashier.withdraw.check10kLimit,
     container: modules.cashier.withdraw.container,

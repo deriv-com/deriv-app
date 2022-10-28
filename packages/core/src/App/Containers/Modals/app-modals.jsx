@@ -165,7 +165,7 @@ export default connect(({ client, ui }) => ({
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
-    active_account_landing_company: client.active_account_landing_company,
+    active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
 }))(AppModals);

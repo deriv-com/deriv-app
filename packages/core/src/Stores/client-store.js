@@ -763,11 +763,6 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    @computed
-    get active_account_landing_company() {
-        return this.is_logged_in ? this.getAccount().landing_company_shortcode : null;
-    }
-
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'
             ? account.market_type === market_type || account.market_type === 'gaming'

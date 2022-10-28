@@ -173,5 +173,5 @@ export default connect(({ client, ui }) => ({
     setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
     updateAccountStatus: client.updateAccountStatus,
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
-    active_account_landing_company: client.active_account_landing_company,
+    active_account_landing_company: client.landing_company_shortcode,
 }))(TradingAssessmentExistingUser);

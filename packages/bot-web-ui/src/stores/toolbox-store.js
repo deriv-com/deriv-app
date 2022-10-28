@@ -1,21 +1,44 @@
-import { observable, action, reaction } from 'mobx';
+import { observable, action, reaction, makeObservable } from 'mobx';
 import { isMobile, isTabletDrawer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 
 export default class ToolboxStore {
     constructor(root_store) {
+        makeObservable(this, {
+            is_toolbox_open: observable,
+            is_search_loading: observable,
+            is_search_focus: observable,
+            sub_category_index: observable,
+            toolbox_dom: observable,
+            toolbox_examples: observable,
+            onMount: action.bound,
+            onUnmount: action.bound,
+            setWorkspaceOptions: action.bound,
+            adjustWorkspace: action.bound,
+            toggleDrawer: action.bound,
+            onToolboxItemClick: action.bound,
+            onToolboxItemExpand: action.bound,
+            getCategoryContents: action.bound,
+            getAllCategories: action.bound,
+            hasSubCategory: action.bound,
+            onSearch: action.bound,
+            onSearchBlur: action.bound,
+            onSearchClear: action.bound,
+            onSearchKeyUp: action.bound,
+            showSearch: action.bound,
+        });
+
         this.root_store = root_store;
     }
 
-    @observable is_toolbox_open = true;
-    @observable is_search_loading = false;
-    @observable is_search_focus = false;
-    @observable sub_category_index = [];
-    @observable toolbox_dom = null;
-    @observable toolbox_examples = null;
+    is_toolbox_open = true;
+    is_search_loading = false;
+    is_search_focus = false;
+    sub_category_index = [];
+    toolbox_dom = null;
+    toolbox_examples = null;
 
-    @action.bound
     onMount(toolbox_ref) {
         const { core } = this.root_store;
         this.adjustWorkspace();
@@ -38,14 +61,12 @@ export default class ToolboxStore {
         }
     }
 
-    @action.bound
     onUnmount() {
         if (typeof this.disposeToolboxToggleReaction === 'function') {
             this.disposeToolboxToggleReaction();
         }
     }
 
-    @action.bound
     setWorkspaceOptions() {
         const workspace = Blockly.derivWorkspace;
         const readOnly = !!workspace.options.readOnly;
@@ -72,7 +93,6 @@ export default class ToolboxStore {
         workspace.options.languageTree = languageTree;
     }
 
-    @action.bound
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
         const workspace = Blockly.derivWorkspace;
@@ -87,12 +107,10 @@ export default class ToolboxStore {
         }
     }
 
-    @action.bound
     toggleDrawer() {
         this.is_toolbox_open = !this.is_toolbox_open;
     }
 
-    @action.bound
     onToolboxItemClick(category) {
         const { flyout } = this.root_store;
         const category_id = category.getAttribute('id');
@@ -108,7 +126,6 @@ export default class ToolboxStore {
         }
     }
 
-    @action.bound
     onToolboxItemExpand(index) {
         if (this.sub_category_index.includes(index)) {
             const open_ids = this.sub_category_index.filter(open_id => open_id !== index);
@@ -118,7 +135,6 @@ export default class ToolboxStore {
         }
     }
 
-    @action.bound
     // eslint-disable-next-line class-methods-use-this
     getCategoryContents(category) {
         const workspace = Blockly.derivWorkspace;
@@ -134,7 +150,6 @@ export default class ToolboxStore {
         return xml_list;
     }
 
-    @action.bound
     getAllCategories() {
         const categories = [];
         Array.from(this.toolbox_dom.childNodes).forEach(category => {
@@ -148,7 +163,6 @@ export default class ToolboxStore {
         return categories;
     }
 
-    @action.bound
     // eslint-disable-next-line class-methods-use-this
     hasSubCategory(category) {
         // eslint-disable-next-line consistent-return
@@ -163,24 +177,20 @@ export default class ToolboxStore {
         return false;
     }
 
-    @action.bound
     onSearch({ search }) {
         this.is_search_focus = true;
         this.showSearch(search);
     }
 
-    @action.bound
     onSearchBlur() {
         this.is_search_focus = false;
     }
 
-    @action.bound
     onSearchClear(setFieldValue) {
         setFieldValue('search', '');
         this.showSearch('');
     }
 
-    @action.bound
     onSearchKeyUp(submitForm) {
         this.is_search_loading = true;
 
@@ -194,7 +204,6 @@ export default class ToolboxStore {
         );
     }
 
-    @action.bound
     showSearch(search) {
         const workspace = Blockly.derivWorkspace;
         const flyout_content = [];

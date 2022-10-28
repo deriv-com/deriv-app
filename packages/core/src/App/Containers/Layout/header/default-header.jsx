@@ -69,6 +69,10 @@ const DefaultHeader = ({
     );
 
     React.useEffect(() => {
+        if (is_logged_in) replaceCashierMenuOnclick();
+    }, [is_logged_in]);
+
+    React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
@@ -140,7 +144,6 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div

@@ -96,7 +96,7 @@ const CreateAdForm = () => {
         <React.Fragment>
             <Formik
                 initialValues={{
-                    contact_info: my_ads_store.contact_info,
+                    contact_info: general_store.contact_info,
                     default_advert_description: my_ads_store.default_advert_description,
                     max_transaction: '',
                     min_transaction: '',
@@ -340,7 +340,7 @@ const CreateAdForm = () => {
                                                         }
                                                         error={touched.contact_info && errors.contact_info}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                        initial_character_count={my_ads_store.contact_info.length}
+                                                        initial_character_count={general_store.contact_info.length}
                                                         required
                                                         has_character_counter
                                                         max_characters={300}

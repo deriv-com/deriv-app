@@ -16,8 +16,6 @@ export default class MyAdsStore extends BaseStore {
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
-    @observable available_balance = null;
-    @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
     @observable edit_ad_form_error = '';
@@ -97,27 +95,6 @@ export default class MyAdsStore extends BaseStore {
                 }
             })
             .finally(() => this.setIsFormLoading(false));
-    }
-
-    @action.bound
-    getAdvertiserInfo() {
-        this.setIsFormLoading(true);
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setContactInfo(p2p_advertiser_info.contact_info);
-                    this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                    this.setAvailableBalance(p2p_advertiser_info.balance_available);
-                } else {
-                    this.setContactInfo('');
-                    this.setDefaultAdvertDescription('');
-                }
-                this.setIsFormLoading(false);
-            }
-        });
     }
 
     @action.bound
@@ -456,23 +433,8 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setAvailableBalance(available_balance) {
-        this.available_balance = available_balance;
-    }
-
-    @action.bound
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
-    }
-
-    @action.bound
     setApiErrorCode(error_code) {
         this.error_code = error_code;
-    }
-
-    @action.bound
-    setDefaultAdvertDescription(default_advert_description) {
-        this.default_advert_description = default_advert_description;
     }
 
     @action.bound
@@ -637,7 +599,7 @@ export default class MyAdsStore extends BaseStore {
             offer_amount: [
                 v => !!v,
                 v => !isNaN(v),
-                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
+                v => (values.type === buy_sell.SELL ? v <= general_store.advertiser_info.balance_available : !!v),
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
@@ -698,7 +660,7 @@ export default class MyAdsStore extends BaseStore {
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
-            localize('Max available amount is {{value}}', { value: this.available_balance }),
+            localize('Max available amount is {{value}}', { value: general_store.advertiser_info.balance_available }),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),

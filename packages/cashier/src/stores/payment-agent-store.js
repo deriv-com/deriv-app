@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, makeObservable } from 'mobx';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
@@ -6,36 +6,86 @@ import VerificationStore from './verification-store';
 
 export default class PaymentAgentStore {
     constructor({ WS, root_store }) {
+        makeObservable(this, {
+            list: observable,
+            agents: observable,
+            container: observable,
+            error: observable,
+            filtered_list: observable,
+            is_name_selected: observable,
+            is_search_loading: observable,
+            is_withdraw: observable,
+            is_try_withdraw_successful: observable,
+            is_withdraw_successful: observable,
+            confirm: observable,
+            receipt: observable,
+            selected_bank: observable,
+            supported_banks: observable,
+            verification: observable,
+            active_tab_index: observable,
+            all_payment_agent_list: observable,
+            search_term: observable,
+            has_payment_agent_search_warning: observable,
+            setActiveTabIndex: action.bound,
+            setActiveTab: action.bound,
+            is_payment_agent_visible: computed,
+            getPaymentAgentList: action.bound,
+            getPaymentAgentDetails: action.bound,
+            addSupportedBank: action.bound,
+            clearSuppertedBanks: action.bound,
+            sortSupportedBanks: action.bound,
+            setList: action.bound,
+            clearList: action.bound,
+            setPaymentAgentList: action.bound,
+            filterPaymentAgentList: action.bound,
+            setSearchTerm: action.bound,
+            setIsSearchLoading: action.bound,
+            setPaymentAgentSearchWarning: action.bound,
+            onChangePaymentMethod: action.bound,
+            setIsWithdraw: action.bound,
+            setIsTryWithdrawSuccessful: action.bound,
+            setIsWithdrawSuccessful: action.bound,
+            setConfirmation: action.bound,
+            setReceipt: action.bound,
+            addPaymentAgent: action.bound,
+            onMountPaymentAgentWithdraw: action.bound,
+            requestTryPaymentAgentWithdraw: action.bound,
+            resetPaymentAgent: action.bound,
+            onMountPaymentAgentList: action.bound,
+            setAllPaymentAgentList: action.bound,
+            is_payment_agent_visible_in_onboarding: computed,
+            requestPaymentAgentWithdraw: action.bound,
+        });
+
+        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
 
-    @observable list = [];
-    @observable agents = [];
-    @observable container = Constants.containers.payment_agent;
-    @observable error = new ErrorStore();
-    @observable filtered_list = [];
-    @observable is_name_selected = true;
-    @observable is_search_loading = false;
-    @observable is_withdraw = false;
-    @observable is_try_withdraw_successful = false;
-    @observable is_withdraw_successful = false;
-    @observable confirm = {};
-    @observable receipt = {};
-    @observable selected_bank = 0;
-    @observable supported_banks = [];
-    @observable verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
-    @observable active_tab_index = 0;
-    @observable all_payment_agent_list = [];
-    @observable search_term = '';
-    @observable has_payment_agent_search_warning = false;
+    list = [];
+    agents = [];
+    container = Constants.containers.payment_agent;
+    error = new ErrorStore();
+    filtered_list = [];
+    is_name_selected = true;
+    is_search_loading = false;
+    is_withdraw = false;
+    is_try_withdraw_successful = false;
+    is_withdraw_successful = false;
+    confirm = {};
+    receipt = {};
+    selected_bank = 0;
+    supported_banks = [];
+    verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
+    active_tab_index = 0;
+    all_payment_agent_list = [];
+    search_term = '';
+    has_payment_agent_search_warning = false;
 
-    @action.bound
     setActiveTabIndex(index) {
         this.active_tab_index = index;
     }
 
-    @action.bound
     setActiveTab(index) {
         this.setActiveTabIndex(index);
 
@@ -44,12 +94,10 @@ export default class PaymentAgentStore {
         }
     }
 
-    @computed
     get is_payment_agent_visible() {
         return !!(this.filtered_list.length || this.agents.length || this.has_payment_agent_search_warning);
     }
 
-    @action.bound
     async getPaymentAgentList() {
         // wait for get_settings so residence gets populated in client-store
         // TODO: set residence in client-store from authorize so it's faster
@@ -58,13 +106,11 @@ export default class PaymentAgentStore {
         return this.WS.authorized.paymentAgentList(residence, currency);
     }
 
-    @action.bound
     async getPaymentAgentDetails() {
         const { paymentagent_details } = await this.WS.authorized.paymentAgentDetails();
         return paymentagent_details;
     }
 
-    @action.bound
     addSupportedBank(bank) {
         const supported_bank_exists = this.supported_banks.find(
             supported_bank => supported_bank.value === bank.toLowerCase()
@@ -74,12 +120,10 @@ export default class PaymentAgentStore {
         }
     }
 
-    @action.bound
     clearSuppertedBanks() {
         this.supported_banks = [];
     }
 
-    @action.bound
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.supported_banks.replace(
@@ -95,17 +139,14 @@ export default class PaymentAgentStore {
         );
     }
 
-    @action.bound
     setList(pa_list) {
         this.list.push(pa_list);
     }
 
-    @action.bound
     clearList() {
         this.list = [];
     }
 
-    @action.bound
     async setPaymentAgentList(pa_list) {
         const { setLoading } = this.root_store.modules.cashier.general_store;
         const payment_agent_list = pa_list || (await this.getPaymentAgentList());
@@ -141,7 +182,6 @@ export default class PaymentAgentStore {
         this.sortSupportedBanks();
     }
 
-    @action.bound
     filterPaymentAgentList(bank) {
         this.setPaymentAgentSearchWarning(false);
         const { common } = this.root_store;
@@ -185,45 +225,37 @@ export default class PaymentAgentStore {
         }
     }
 
-    @action.bound
     setSearchTerm(search_term) {
         this.search_term = search_term;
     }
 
-    @action.bound
     setIsSearchLoading(value) {
         this.is_search_loading = value;
     }
 
-    @action.bound
     setPaymentAgentSearchWarning(value) {
         this.has_payment_agent_search_warning = value;
     }
 
-    @action.bound
     onChangePaymentMethod({ target }) {
         const value = target.value === '0' ? parseInt(target.value) : target.value;
         this.selected_bank = value;
         this.filterPaymentAgentList(value);
     }
 
-    @action.bound
     setIsWithdraw(is_withdraw = !this.is_withdraw) {
         this.is_withdraw = is_withdraw;
     }
 
-    @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
         this.error.setErrorMessage('');
         this.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
-    @action.bound
     setIsWithdrawSuccessful(is_withdraw_successful) {
         this.is_withdraw_successful = is_withdraw_successful;
     }
 
-    @action.bound
     setConfirmation({ amount, currency, loginid, payment_agent_name }) {
         this.confirm = {
             amount,
@@ -233,7 +265,6 @@ export default class PaymentAgentStore {
         };
     }
 
-    @action.bound
     setReceipt({
         amount_transferred,
         payment_agent_email,
@@ -252,7 +283,6 @@ export default class PaymentAgentStore {
         };
     }
 
-    @action.bound
     addPaymentAgent(payment_agent) {
         this.agents.push({
             text: payment_agent.name,
@@ -265,7 +295,6 @@ export default class PaymentAgentStore {
         });
     }
 
-    @action.bound
     async onMountPaymentAgentWithdraw() {
         const { common, modules } = this.root_store;
         const { setLoading, onMountCommon } = modules.cashier.general_store;
@@ -293,7 +322,6 @@ export default class PaymentAgentStore {
         setLoading(false);
     }
 
-    @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         this.error.setErrorMessage('');
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
@@ -317,7 +345,6 @@ export default class PaymentAgentStore {
         }
     }
 
-    @action.bound
     resetPaymentAgent = () => {
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
@@ -327,7 +354,6 @@ export default class PaymentAgentStore {
         this.setActiveTabIndex(0);
     };
 
-    @action.bound
     async onMountPaymentAgentList() {
         const { setLoading, onMountCommon } = this.root_store.modules.cashier.general_store;
 
@@ -344,17 +370,14 @@ export default class PaymentAgentStore {
         return this.WS.allPaymentAgentList(this.root_store.client.residence);
     }
 
-    @action.bound
     setAllPaymentAgentList(list) {
         this.all_payment_agent_list = list;
     }
 
-    @computed
     get is_payment_agent_visible_in_onboarding() {
         return !!this.all_payment_agent_list?.paymentagent_list?.list?.length;
     }
 
-    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         this.error.setErrorMessage('');
         const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({

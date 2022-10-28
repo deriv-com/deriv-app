@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { RefObject } from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';
+import { TPopoverProps } from '../types';
 
 const Popover = ({
     alignment,
@@ -21,19 +21,19 @@ const Popover = ({
     id,
     is_open,
     is_bubble_hover_enabled,
-    margin,
+    margin = 0,
     message,
     onBubbleClose,
     onBubbleOpen,
-    onClick = () => {},
-    relative_render,
-    should_disable_pointer_events,
+    onClick = () => undefined,
+    relative_render = false,
+    should_disable_pointer_events = false,
     should_show_cursor,
     window_border,
-    zIndex,
-}) => {
-    const ref = React.useRef();
-    const [popover_ref, setPopoverRef] = React.useState(undefined);
+    zIndex = '1',
+}: React.PropsWithChildren<Partial<TPopoverProps>>) => {
+    const ref = React.useRef<HTMLDivElement | undefined>();
+    const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
     const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
@@ -54,18 +54,22 @@ const Popover = ({
     const icon_class_name = classNames(classNameTargetIcon, icon);
 
     return (
-        <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })} onClick={onClick}>
+        <div
+            ref={hover_ref as RefObject<HTMLDivElement>}
+            className={classNames({ 'dc-popover__wrapper': relative_render })}
+            onClick={onClick}
+        >
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex }}>
-                    <div ref={ref} className='dc-popover__container-relative' />
+                    <div ref={ref as RefObject<HTMLDivElement>} className='dc-popover__container-relative' />
                 </div>
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
                     isOpen={
-                        is_bubble_hover_enabled
+                        (is_bubble_hover_enabled
                             ? is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))
-                            : is_open ?? (is_hovered && message)
+                            : is_open ?? (is_hovered && message)) as boolean
                     }
                     position={alignment}
                     transitionDuration={0.25}
@@ -148,7 +152,7 @@ const Popover = ({
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
-                                    ref={bubble_hover_ref}
+                                    ref={bubble_hover_ref as (node: HTMLDivElement) => void}
                                 >
                                     {!disable_message_icon && icon === 'info' && (
                                         <i className='dc-popover__bubble__icon'>
@@ -191,40 +195,6 @@ const Popover = ({
             )}
         </div>
     );
-};
-
-Popover.defaultProps = {
-    margin: 0,
-    relative_render: false,
-    should_disable_pointer_events: false,
-    zIndex: 1,
-};
-
-Popover.propTypes = {
-    alignment: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    classNameBubble: PropTypes.string,
-    classNameTarget: PropTypes.string,
-    classNameTargetIcon: PropTypes.string,
-    counter: PropTypes.number,
-    disable_message_icon: PropTypes.bool,
-    disable_target_icon: PropTypes.bool,
-    has_error: PropTypes.bool,
-    icon: PropTypes.oneOf(['info', 'question', 'dot', 'counter']),
-    id: PropTypes.string,
-    is_bubble_hover_enabled: PropTypes.bool,
-    is_open: PropTypes.bool,
-    relative_render: PropTypes.bool,
-    margin: PropTypes.number,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
-    onBubbleOpen: PropTypes.func,
-    onBubbleClose: PropTypes.func,
-    onClick: PropTypes.func,
-    should_disable_pointer_events: PropTypes.bool,
-    should_show_cursor: PropTypes.bool,
-    zIndex: PropTypes.number,
-    window_border: PropTypes.number,
 };
 
 export default Popover;

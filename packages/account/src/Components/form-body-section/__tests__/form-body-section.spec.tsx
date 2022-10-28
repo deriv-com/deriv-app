@@ -28,9 +28,9 @@ describe('Test coverage for FormBodySection component', () => {
     });
 
     it('When "side_note" value is not string, it should not render inside Text component', () => {
-        const test_side_note = 'test side note';
+        const test_side_note = <div>test side note component</div>;
         render(<MockFormBodySection has_side_note side_note={test_side_note} />);
-        expect(screen.getByText(test_side_note)).toBeInTheDocument();
+        expect(screen.getByText('test side note component')).toBeInTheDocument();
         expect(screen.queryByTestId('side-note-text')).not.toBeInTheDocument();
     });
 });

@@ -112,6 +112,7 @@ export default class MyProfileStore extends BaseStore {
             validatePaymentMethodFields: action.bound,
             updatePaymentMethod: action.bound,
             showAddPaymentMethodForm: action.bound,
+            onEditDeletePaymentMethodCard: action.bound,
             onSubmit: action.bound,
             onClickUnblock: action.bound,
             setActiveTab: action.bound,
@@ -512,6 +513,18 @@ export default class MyProfileStore extends BaseStore {
         this.setSelectedBlockedUser(advertiser);
     }
 
+    onEditDeletePaymentMethodCard(event, payment_method) {
+        if (event.target.value === 'edit') {
+            this.setPaymentMethodToEdit(payment_method);
+            this.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
+            this.getSelectedPaymentMethodDetails();
+            this.setShouldShowEditPaymentMethodForm(true);
+        } else {
+            this.setPaymentMethodToDelete(payment_method);
+            this.setIsConfirmDeleteModalOpen(true);
+        }
+    }
+  
     onSubmit() {
         const { general_store } = this.root_store;
 

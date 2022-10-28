@@ -285,7 +285,7 @@ describe('<CFDDashboard />', () => {
         window.location.hash = '';
     });
 
-    const dmt5_welcome_header = /welcome to deriv mt5 \(dmt5\) dashboard/i;
+    const dmt5_welcome_header = /welcome to deriv mt5 dashboard/i;
     const derivx_welcome_header = /welcome to deriv x/i;
     const real_tab_name = 'Real account';
     const demo_tab_name = 'Demo account';

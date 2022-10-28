@@ -23,8 +23,7 @@ const FloatingRate = ({
     const { floating_rate_store, general_store } = useStores();
     const os = mobileOSDetect();
     const { name, value, required } = props;
-
-    const market_feed = value ? percentOf(floating_rate_store.exchange_rate, value) : floating_rate_store.exchange_rate;
+    const market_feed = value ? percentOf(floating_rate_store.market_rate, value) : floating_rate_store.market_rate;
     const decimal_place = setDecimalPlaces(market_feed, 6);
 
     // Input mask for formatting value on blur of floating rate field
@@ -93,7 +92,7 @@ const FloatingRate = ({
                         className='floating-rate__mkt-rate--msg'
                     >
                         1 {fiat_currency} ={' '}
-                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.exchange_rate, true, 6))}
+                        {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.market_rate, true, 6))}
                     </Text>
                 </div>
             </section>

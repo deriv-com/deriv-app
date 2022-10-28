@@ -87,9 +87,7 @@ export default class GeneralStore extends BaseStore {
             return 0;
         }
 
-        const unseen_notifications = local_storage_settings.notifications.filter(
-            notification => !notification.is_seen
-        );
+        const unseen_notifications = local_storage_settings.notifications.filter(notification => !notification.is_seen);
 
         return unseen_notifications.length;
     }

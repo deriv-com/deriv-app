@@ -14,6 +14,7 @@
     &__container {
         position: relative;
     }
+
     &__chart-wrapper {
         position: relative;
         height: var(--tab-content-height);
@@ -24,6 +25,7 @@
             width: calc(100vw - 39.8rem);
         }
     }
+
     &__toolbox {
         position: absolute;
         top: 0;
@@ -38,33 +40,40 @@
                 line-height: 2.6rem;
                 position: relative;
                 cursor: pointer;
+
                 &__chevron {
                     position: absolute;
                     right: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
+
                     &--active {
                         transform: rotate(180deg);
                         top: -0.2rem;
                     }
                 }
             }
+
             &__content {
                 border: solid 1px var(--general-section-1);
             }
+
             &__category-menu {
                 height: calc(100vh - 28.4rem);
             }
+
             &__search {
                 padding: 1.3rem 0.8rem;
                 height: 6rem;
             }
+
             &__content-wrapper {
                 height: 0;
                 transition: height 0.4s ease;
-                &--active {
-                    height: auto;
-                }
+            }
+
+            &__content-wrapper.active {
+                height: 100%;
             }
         }
     }
@@ -73,20 +82,24 @@
         right: 1.6rem;
         top: 1.6rem;
         z-index: 2;
+
         .animation {
             &__button {
                 background-color: var(--purchase-main-1);
             }
+
             &__container {
                 background-color: var(--general-main-1);
             }
         }
     }
+
     &__sidebar-wrapper {
         &--active {
             position: fixed;
             right: 0;
         }
+
         &--hidden {
             display: none;
         }
@@ -104,8 +117,17 @@
     &--active {
         z-index: 1;
     }
+    &--inactive {
+        display: none;
+    }
     @include mobile {
         width: calc(100vw - 3.2rem);
         height: var(--tab-content-height-mobile);
+    }
+}
+
+.dbot-onboarding__container {
+    img {
+        width: 100%;
     }
 }

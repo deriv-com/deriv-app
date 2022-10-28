@@ -18,6 +18,7 @@ const LoadModal = ({
     setActiveTabIndex,
     tab_name,
     toggleLoadModal,
+    setPreviewOnPopup,
 }) => {
     const header_text = localize('Load strategy');
 
@@ -27,7 +28,10 @@ const LoadModal = ({
                 is_modal_open={is_load_modal_open}
                 className='load-strategy__wrapper'
                 header={localize('Load strategy')}
-                onClickClose={toggleLoadModal}
+                onClickClose={() => {
+                    setPreviewOnPopup(false);
+                    toggleLoadModal();
+                }}
                 height_offset='80px'
                 page_overlay
             >
@@ -90,9 +94,10 @@ LoadModal.propTypes = {
     recent_strategies: PropTypes.array,
     setActiveTabIndex: PropTypes.func,
     toggleLoadModal: PropTypes.func,
+    setPreviewOnPopup: PropTypes.func,
 };
 
-export default connect(({ load_modal, ui }) => ({
+export default connect(({ load_modal, ui, dashboard }) => ({
     active_index: load_modal.active_index,
     is_load_modal_open: load_modal.is_load_modal_open,
     is_mobile: ui.is_mobile,
@@ -102,4 +107,5 @@ export default connect(({ load_modal, ui }) => ({
     setActiveTabIndex: load_modal.setActiveTabIndex,
     tab_name: load_modal.tab_name,
     toggleLoadModal: load_modal.toggleLoadModal,
+    setPreviewOnPopup: dashboard.setPreviewOnPopup,
 }))(LoadModal);

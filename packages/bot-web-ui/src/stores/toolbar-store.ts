@@ -1,8 +1,28 @@
 import { action, observable } from 'mobx';
 import { runGroupedEvents, load, config } from '@deriv/bot-skeleton';
+import RootStore from './root-store';
 
-export default class ToolbarStore {
-    constructor(root_store) {
+interface IToolbarStore {
+    is_animation_info_modal_open: boolean;
+    is_dialog_open: boolean;
+    file_name: { [key: string]: string };
+    has_undo_stack: boolean;
+    has_redo_stack: boolean;
+    toggleAnimationInfoModal: () => void;
+    onResetClick: () => void;
+    closeResetDialog: () => void;
+    onResetOkButtonClick: () => void;
+    onSortClick: () => void;
+    onUndoClick: (is_redo: boolean) => void;
+    onZoomInOutClick: (is_zoom_in: boolean) => void;
+    setHasUndoStack: () => void;
+    setHasRedoStack: () => void;
+}
+
+export default class ToolbarStore implements IToolbarStore {
+    root_store: RootStore;
+
+    constructor(root_store: RootStore) {
         this.root_store = root_store;
     }
 
@@ -13,22 +33,22 @@ export default class ToolbarStore {
     @observable has_redo_stack = false;
 
     @action.bound
-    toggleAnimationInfoModal() {
+    toggleAnimationInfoModal = (): void => {
         this.is_animation_info_modal_open = !this.is_animation_info_modal_open;
-    }
+    };
 
     @action.bound
-    onResetClick() {
+    onResetClick = (): void => {
         this.is_dialog_open = true;
-    }
+    };
 
     @action.bound
-    closeResetDialog() {
+    closeResetDialog = (): void => {
         this.is_dialog_open = false;
-    }
+    };
 
     @action.bound
-    onResetOkButtonClick() {
+    onResetOkButtonClick = (): void => {
         runGroupedEvents(
             false,
             () => {
@@ -48,23 +68,23 @@ export default class ToolbarStore {
         if (run_panel.is_running) {
             this.root_store.run_panel.stopBot();
         }
-    }
+    };
 
     onSortClick = () => {
         Blockly.derivWorkspace.cleanUp();
     };
 
     @action.bound
-    onUndoClick(is_redo) {
+    onUndoClick = (is_redo: boolean): void => {
         Blockly.Events.setGroup('undo_clicked');
         Blockly.derivWorkspace.undo(is_redo);
         Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
         this.setHasRedoStack();
         this.setHasUndoStack();
         Blockly.Events.setGroup(false);
-    }
+    };
 
-    onZoomInOutClick = is_zoom_in => {
+    onZoomInOutClick = (is_zoom_in: boolean): void => {
         const workspace = Blockly.derivWorkspace;
         const metrics = workspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
@@ -73,12 +93,12 @@ export default class ToolbarStore {
     };
 
     @action.bound
-    setHasUndoStack() {
-        this.has_undo_stack = Blockly.derivWorkspace.hasUndoStack();
-    }
+    setHasUndoStack = (): void => {
+        this.has_undo_stack = Blockly.derivWorkspace?.hasUndoStack();
+    };
 
     @action.bound
-    setHasRedoStack() {
+    setHasRedoStack = (): void => {
         this.has_redo_stack = Blockly.derivWorkspace?.hasRedoStack();
-    }
+    };
 }

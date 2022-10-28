@@ -30,7 +30,7 @@ const FormBodySection = ({ children, has_side_note, side_note }: React.PropsWith
             </div>
         );
     }
-    return <React.Fragment>children</React.Fragment>;
+    return children as JSX.Element;
 };
 
 export default FormBodySection;

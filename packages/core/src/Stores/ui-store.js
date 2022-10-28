@@ -147,7 +147,7 @@ export default class UIStore extends BaseStore {
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
 
-    @observable is_switch_to_deriv_account_modal_visible = false;
+    is_switch_to_deriv_account_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -252,6 +252,7 @@ export default class UIStore extends BaseStore {
             should_show_cancel: observable,
             app_contents_scroll_ref: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_switch_to_deriv_account_modal_visible: observable,
             is_warning_scam_message_modal_visible: computed,
             setScamMessageLocalStorage: action.bound,
             setIsNewAccount: action.bound,
@@ -329,6 +330,7 @@ export default class UIStore extends BaseStore {
             shouldNavigateAfterChooseCrypto: action.bound,
             continueRouteAfterChooseCrypto: action.bound,
             openDerivRealAccountNeededModal: action.bound,
+            openSwitchToRealAccountModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -780,7 +782,6 @@ export default class UIStore extends BaseStore {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
     }
 
-    @action.bound
     openSwitchToRealAccountModal() {
         this.is_switch_to_deriv_account_modal_visible = !this.is_switch_to_deriv_account_modal_visible;
     }

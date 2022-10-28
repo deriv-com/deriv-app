@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { FormSubHeader } from '../form-sub-header';
+import { FormSubHeader, TFormSubHeader } from '../form-sub-header';
 
 describe('Testing FormSubHeader component', () => {
     it('should render properties', () => {
-        const props = {
+        const props: TFormSubHeader = {
             title: 'test-title',
             subtitle: 'test-subtitle',
             description: 'lorem ipsum',

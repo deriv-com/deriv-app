@@ -5,9 +5,9 @@ import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
 
 const MyProfileDetailsTable = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
 
-    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit } = my_profile_store.advertiser_info;
+    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit } = general_store.advertiser_info;
 
     return (
         <div className='my-profile-details-table'>

@@ -7,9 +7,9 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileBalance = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
     // const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
-    const available_balance = useUpdatingAvailableBalance(my_profile_store.advertiser_info.balance_available);
+    const available_balance = useUpdatingAvailableBalance(general_store.advertiser_info.balance_available);
 
     return (
         <div className='my-profile-balance'>

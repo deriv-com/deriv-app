@@ -8,13 +8,11 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 export default class MyProfileStore extends BaseStore {
     @observable active_tab = my_profile_tabs.MY_STATS;
     @observable add_payment_method_error_message = '';
-    @observable advertiser_info = {};
     @observable advertiser_payment_methods = {};
     @observable advertiser_payment_methods_error = '';
     @observable available_payment_methods = {};
     @observable balance_available = null;
     @observable blocked_advertisers_list = [];
-    @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
     @observable error_message = '';
@@ -25,7 +23,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_cancel_edit_payment_method_modal_open = false;
     @observable is_confirm_delete_modal_open = false;
     @observable is_delete_payment_method_error_modal_open = false;
-    @observable is_loading = true;
+    @observable is_loading = false;
     @observable is_submit_success = false;
     @observable payment_info = '';
     @observable payment_method_value = undefined;
@@ -196,29 +194,6 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    getAdvertiserInfo() {
-        this.setIsLoading(true);
-        this.setErrorMessage('');
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            if (!response.error) {
-                const { p2p_advertiser_info } = response;
-                this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setBalanceAvailable(p2p_advertiser_info.balance_available);
-                this.setContactInfo(p2p_advertiser_info.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
-            } else if (response.error.code === 'PermissionDenied') {
-                this.root_store.general_store.setIsBlocked(true);
-            } else {
-                this.setErrorMessage(response.error.message);
-            }
-            this.setIsLoading(false);
-        });
-    }
-
-    @action.bound
     getBlockedAdvertisersList() {
         this.setIsLoading(true);
         requestWS({
@@ -345,10 +320,6 @@ export default class MyProfileStore extends BaseStore {
             default_advert_description: values.default_advert_description,
         }).then(response => {
             if (!response.error) {
-                const { p2p_advertiser_update } = response;
-                this.setBalanceAvailable(p2p_advertiser_update.balance_available);
-                this.setContactInfo(p2p_advertiser_update.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                 this.setIsSubmitSuccess(true);
             } else {
                 this.setFormError(response.error);
@@ -550,11 +521,6 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    setAdvertiserInfo(advertiser_info) {
-        this.advertiser_info = advertiser_info;
-    }
-
-    @action.bound
     setAdvertiserPaymentMethods(advertiser_payment_methods) {
         this.advertiser_payment_methods = advertiser_payment_methods;
     }
@@ -577,11 +543,6 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setBlockedAdvertisersList(blocked_advertisers_list) {
         this.blocked_advertisers_list = blocked_advertisers_list;
-    }
-
-    @action.bound
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
     }
 
     @action.bound

@@ -4,10 +4,13 @@ import { getLanguage } from '@deriv/translations';
 
 const StaticUrl = ({ href, is_document, children, ...props }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    setUrlLanguage(getLanguage());
+    const getHref = () => {
+        setUrlLanguage(getLanguage());
+        return getStaticUrl(href, { is_appstore }, is_document);
+    };
 
     return (
-        <a href={getStaticUrl(href, { is_appstore }, is_document)} rel='noopener noreferrer' target='_blank' {...props}>
+        <a href={getHref()} rel='noopener noreferrer' target='_blank' {...props}>
             {children}
         </a>
     );

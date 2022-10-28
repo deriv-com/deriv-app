@@ -1,10 +1,10 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
-import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
+import { WS, getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
@@ -20,8 +20,24 @@ type TVerificationModalProps = {
     openPasswordModal: () => void;
     has_submitted_cfd_personal_details: boolean;
     fetchAccountSettings: () => void;
+    is_virtual: boolean;
 };
 
+const SwitchToRealAccountMessage = () => (
+    <div className='da-icon-with-message'>
+        <Icon icon={'IcPoaLock'} size={128} />
+        <Text
+            className='da-icon-with-message__text'
+            as='p'
+            color='general'
+            size={isMobile() ? 'xs' : 's'}
+            line_height='m'
+            weight='bold'
+        >
+            {localize('Switch to your real account to submit your documents')}
+        </Text>
+    </div>
+);
 const CFDDbViOnBoarding = ({
     disableApp,
     enableApp,
@@ -34,6 +50,7 @@ const CFDDbViOnBoarding = ({
     openPasswordModal,
     has_submitted_cfd_personal_details,
     fetchAccountSettings,
+    is_virtual,
 }: TVerificationModalProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -116,7 +133,7 @@ const CFDDbViOnBoarding = ({
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
-                    {getModalContent()}
+                    {is_virtual ? <SwitchToRealAccountMessage /> : getModalContent()}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -146,4 +163,5 @@ export default connect(({ client, modules, ui }: RootStore) => ({
     openPasswordModal: modules.cfd.enableCFDPasswordModal,
     has_submitted_cfd_personal_details: modules.cfd.has_submitted_cfd_personal_details,
     fetchAccountSettings: client.fetchAccountSettings,
+    is_virtual: client.is_virtual,
 }))(CFDDbViOnBoarding);

@@ -80,9 +80,7 @@ type TMultiStepRefProps = {
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
     jurisdiction_selected_shortcode: string;
-    poi_pending_for_bvi_labuan_maltainvest: boolean;
     manual_status: string;
-    poi_pending_for_vanuatu: boolean;
 };
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -170,25 +168,18 @@ const PasswordModalHeader = ({
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
     jurisdiction_selected_shortcode,
-    poi_pending_for_bvi_labuan_maltainvest,
     manual_status,
-    poi_pending_for_vanuatu,
 }: TReviewMsgForMT5) => {
     if (is_selected_mt5_verified) {
         return (
             <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
         );
-    } else if (jurisdiction_selected_shortcode === 'bvi') {
-        if (poi_pending_for_bvi_labuan_maltainvest && manual_status !== 'pending') {
-            return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
+    } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
+        if (manual_status === 'pending') {
+            return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
-        return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
+        return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
     } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
-        return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
-    } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-        if (poi_pending_for_vanuatu && manual_status !== 'pending') {
-            return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-        }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;
@@ -598,14 +589,8 @@ const CFDPasswordModal = ({
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const {
-        poi_verified_for_bvi_labuan_maltainvest,
-        poi_verified_for_vanuatu,
-        poa_verified,
-        poi_pending_for_bvi_labuan_maltainvest,
-        manual_status,
-        poi_pending_for_vanuatu,
-    } = getAuthenticationStatusInfo(account_status);
+    const { poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu, poa_verified, manual_status } =
+        getAuthenticationStatusInfo(account_status);
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
@@ -775,9 +760,7 @@ const CFDPasswordModal = ({
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                            poi_pending_for_bvi_labuan_maltainvest={poi_pending_for_bvi_labuan_maltainvest}
                             manual_status={manual_status}
-                            poi_pending_for_vanuatu={poi_pending_for_vanuatu}
                         />
                     )}
                 </React.Fragment>

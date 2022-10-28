@@ -289,7 +289,7 @@ const CFDAccountCardComponent = ({
             (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
             (is_vanuatu && poi_resubmit_for_vanuatu) ||
             ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest) ||
-            (account.status && ['proof_failed', 'poa_failed'].includes(account.status))
+            (status && ['proof_failed', 'poa_failed'].includes(status))
         ) {
             return (
                 <Button
@@ -311,7 +311,7 @@ const CFDAccountCardComponent = ({
                 poi_acknowledged_for_bvi_labuan_maltainvest &&
                 poa_acknowledged &&
                 !poi_poa_verified_for_bvi_labuan_maltainvest) ||
-            account.status === 'verification_pending'
+            status === 'verification_pending'
         ) {
             return (
                 <Button

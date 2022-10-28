@@ -13,9 +13,10 @@ const JurisdictionCheckBox = ({
 }: TJurisdictionCheckBoxProps) => {
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
-                return false;
-            } else if (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation) {
+            if (
+                jurisdiction_selected_shortcode === 'svg' ||
+                (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation)
+            ) {
                 return false;
             }
             return true;

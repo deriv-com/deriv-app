@@ -15,6 +15,7 @@ export default class GeneralStore extends BaseStore {
     @observable advertiser_id = null;
     @observable block_unblock_user_error = '';
     @observable balance;
+    @observable contact_info = '';
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_advertiser_blocked = null;
@@ -31,6 +32,7 @@ export default class GeneralStore extends BaseStore {
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
     @observable parameters = null;
+    @observable payment_info = '';
     @observable poi_status = null;
     @observable.ref props = {};
     @observable review_period;
@@ -434,6 +436,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setContactInfo(contact_info) {
+        this.contact_info = contact_info;
+    }
+
+    @action.bound
     setBlockUnblockUserError(block_unblock_user_error) {
         this.block_unblock_user_error = block_unblock_user_error;
     }
@@ -577,6 +584,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
+    }
+
+    @action.bound
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
     }
@@ -619,19 +631,34 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
-        const { blocked_until, blocked_by_count, id, is_approved, is_blocked, is_listed, name } =
-            response?.p2p_advertiser_info || {};
+        const {
+            blocked_until,
+            contact_info,
+            blocked_by_count,
+            id,
+            is_approved,
+            is_blocked,
+            is_listed,
+            name,
+            payment_info,
+        } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setContactInfo(contact_info);
             this.setIsAdvertiser(!!is_approved);
             this.setIsAdvertiserBlocked(!!is_blocked);
             this.setIsListed(!!is_listed);
             this.setNickname(name);
             this.setUserBlockedUntil(blocked_until);
             this.setUserBlockedCount(blocked_by_count);
+            this.setPaymentInfo(payment_info);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            this.setContactInfo('');
+            this.setPaymentInfo('');
+
             if (response.error.code === 'RestrictedCountry') {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {

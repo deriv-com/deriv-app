@@ -10,7 +10,6 @@ import BaseStore from 'Stores/base_store';
 
 export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
-    @observable contact_info = '';
     @observable error_message = '';
     @observable form_error_code = '';
     @observable has_more_items_to_load = false;
@@ -21,7 +20,6 @@ export default class BuySellStore extends BaseStore {
     @observable is_sort_dropdown_open = false;
     @observable is_submit_disabled = true;
     @observable items = [];
-    @observable payment_info = '';
     @observable receive_amount = 0;
     @observable search_results = [];
     @observable search_term = '';
@@ -138,25 +136,6 @@ export default class BuySellStore extends BaseStore {
         if (!this.is_buy) {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
-    }
-
-    @action.bound
-    getAdvertiserInfo() {
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            // Added a check to prevent console errors
-            if (response) {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setContactInfo(p2p_advertiser_info.contact_info);
-                    this.setPaymentInfo(p2p_advertiser_info.payment_info);
-                } else {
-                    this.setContactInfo('');
-                    this.setPaymentInfo('');
-                }
-            }
-        });
     }
 
     @action.bound
@@ -352,11 +331,6 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
-    }
-
-    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -409,11 +383,6 @@ export default class BuySellStore extends BaseStore {
     @action.bound
     setItems(items) {
         this.items = items;
-    }
-
-    @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
     }
 
     @action.bound
@@ -499,7 +468,6 @@ export default class BuySellStore extends BaseStore {
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
-            this.getAdvertiserInfo();
             this.setSelectedAdState(selected_advert);
             this.setShouldShowPopup(true);
         } else {

@@ -36,6 +36,7 @@ export default class CommonStore extends BaseStore {
             init: action.bound,
             checkAppId: action.bound,
             changeCurrentLanguage: action.bound,
+            setAppstorePlatform: action.bound,
             setPlatform: action.bound,
             is_from_derivgo: computed,
             setInitialRouteHistoryItem: action.bound,
@@ -50,6 +51,8 @@ export default class CommonStore extends BaseStore {
             setAppRouterHistory: action.bound,
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
+            changeLanguage: action.bound,
+            getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
     }
@@ -109,12 +112,10 @@ export default class CommonStore extends BaseStore {
         }
     }
 
-    @action.bound
     setAppstorePlatform(platform) {
         this.platform = platform;
     }
 
-    @action.bound
     setPlatform() {
         const search = window.location.search;
         if (search) {
@@ -263,7 +264,6 @@ export default class CommonStore extends BaseStore {
         this.app_routing_history.unshift(router_action);
     }
 
-    @action.bound
     changeLanguage = (key, changeCurrentLanguage) => {
         const request = {
             set_settings: 1,
@@ -289,14 +289,12 @@ export default class CommonStore extends BaseStore {
         });
     };
 
-    @action.bound
     getExchangeRate = async (from_currency, to_currency) => {
         const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
 
         return exchange_rates?.rates?.[to_currency];
     };
 
-    @action.bound
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {

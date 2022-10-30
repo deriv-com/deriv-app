@@ -1,10 +1,17 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import BaseStore from './base-store';
+import RootStore from './root-store';
 
 export default class TradingHubStore extends BaseStore {
-    @observable is_tour_open = false;
+    is_tour_open = false;
 
-    @action.bound
+    constructor(root_store: RootStore) {
+        super(root_store);
+        makeObservable(this, {
+            is_tour_open: observable,
+            toggleIsTourOpen: action.bound,
+        });
+    }
     toggleIsTourOpen(is_tour_open: boolean) {
         this.is_tour_open = is_tour_open;
     }

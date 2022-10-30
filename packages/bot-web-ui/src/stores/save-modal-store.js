@@ -1,18 +1,28 @@
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
 
 export default class SaveModalStore {
-    @observable is_save_modal_open = false;
-    @observable button_status = button_status.NORMAL;
-    @observable bot_name;
+    is_save_modal_open = false;
+    button_status = button_status.NORMAL;
+    bot_name;
 
     constructor(root_store) {
+        makeObservable(this, {
+            is_save_modal_open: observable,
+            button_status: observable,
+            bot_name: observable,
+            toggleSaveModal: action.bound,
+            onConfirmSave: action.bound,
+            updateBotName: action.bound,
+            onDriveConnect: action.bound,
+            setButtonStatus: action.bound,
+        });
+
         this.root_store = root_store;
     }
 
-    @action.bound
     toggleSaveModal() {
         if (!this.is_save_modal_open) {
             this.setButtonStatus(button_status.NORMAL);
@@ -31,7 +41,6 @@ export default class SaveModalStore {
         return errors;
     };
 
-    @action.bound
     async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
@@ -58,13 +67,11 @@ export default class SaveModalStore {
         this.toggleSaveModal();
     }
 
-    @action.bound
     updateBotName(bot_name) {
         this.bot_name = bot_name;
         updateWorkspaceName();
     }
 
-    @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
 
@@ -75,7 +82,6 @@ export default class SaveModalStore {
         }
     }
 
-    @action.bound
     setButtonStatus(status) {
         this.button_status = status;
     }

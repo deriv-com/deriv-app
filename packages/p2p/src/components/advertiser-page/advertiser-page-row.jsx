@@ -13,6 +13,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
     const { currency } = general_store.client;
     const {
+        effective_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -31,6 +32,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     const showAdForm = () => {

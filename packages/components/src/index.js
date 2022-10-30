@@ -10,8 +10,6 @@
 // export default { Label, Button };
 
 export { default as Accordion } from './components/accordion';
-export { default as AppCard } from './components/app-card';
-export { default as AppSettings } from './components/app-settings';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -87,7 +85,6 @@ export { default as ProgressSlider } from './components/progress-slider';
 export { default as ProgressSliderMobile } from './components/progress-slider-mobile';
 export { default as RadioGroup } from './components/radio-group';
 export { default as ReadMore } from './components/read-more';
-export { default as RealWalletCard } from './components/real-wallet-card';
 export { default as RouteWithSubroutes } from './components/route-with-subroutes';
 export { default as SelectNative } from './components/select-native';
 export { default as StaticUrl } from './components/static-url';
@@ -107,6 +104,5 @@ export { default as Timeline } from './components/timeline';
 export { default as Tooltip } from './components/tooltip';
 export { default as UILoader } from './components/u-i-loader';
 export { default as VerticalTab } from './components/vertical-tab';
-export { default as VirtualWalletCard } from './components/virtual-wallet-card';
 export { default as Wizard } from './components/wizard';
 export * from './hooks';

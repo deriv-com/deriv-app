@@ -1,4 +1,4 @@
-import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { GetAccountStatus, Authorize } from '@deriv/api-types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -59,7 +59,6 @@ export type TClientStore = {
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
 };

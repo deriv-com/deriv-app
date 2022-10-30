@@ -12,7 +12,6 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
@@ -69,6 +68,10 @@ const DefaultHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
+
+    React.useEffect(() => {
+        if (is_logged_in) replaceCashierMenuOnclick();
+    }, [is_logged_in]);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
@@ -168,7 +171,6 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 {is_logged_in && (
@@ -221,7 +223,6 @@ const DefaultHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
-            <TempAppSettings />
         </header>
     );
 };

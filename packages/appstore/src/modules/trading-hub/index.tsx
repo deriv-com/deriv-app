@@ -130,7 +130,7 @@ const TradingHub: React.FC = () => {
             <div className='trading-hub_header'>
                 <div className='trading-hub_header--title'>
                     <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>
-                        {localize('Welcome to Deriv trading hub')}
+                        {localize("Trader's hub")}
                     </Text>
                 </div>
                 <div className='trading-hub_header--account'>

@@ -114,7 +114,7 @@ const DefaultHeader = ({
                     onClick={EnablePreAppstore}
                 >
                     <Text as='p' size='xs'>
-                        <Localize i18n_default_text='Explore Trading hub' />
+                        <Localize i18n_default_text="Trader's hub beta" />
                     </Text>
                     <Icon icon='IcArrowRight' size={18} color='red' />
                 </BinaryLink>

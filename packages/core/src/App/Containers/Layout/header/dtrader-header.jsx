@@ -44,7 +44,7 @@ const RedirectToOldInterface = () => {
                 onClick={disablePreAppstore}
             >
                 <Text as='p' size='xs'>
-                    <Localize i18n_default_text='Back to old interface' />
+                    <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
                 <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>

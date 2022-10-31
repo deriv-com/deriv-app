@@ -18,7 +18,7 @@ import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import CFDPersonalDetailsModal from './cfd-personal-details-modal';
 import CompareAccountsModal from './compare-accounts-modal';
-import JurisdictionModal from './jurisdiction-modal';
+import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
 import MT5TradeModal from './mt5-trade-modal';
 import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
 import CFDDownloadContainer from '../Components/cfd-download-container';
@@ -28,6 +28,7 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
@@ -143,7 +144,6 @@ export type TCFDDashboardProps = RouteComponentProps & {
     toggleAccountsDialog: () => void;
     toggleMT5TradeModal: () => void;
     toggleShouldShowRealAccountsList: () => void;
-    toggleCFDPersonalDetailsModal: () => void;
     upgradeable_landing_companies: unknown[];
     is_reset_trading_password_modal_visible: boolean;
     toggleResetTradingPasswordModal: () => void;
@@ -377,7 +377,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         NotificationMessages,
         platform,
         openAccountNeededModal,
-        toggleCFDPersonalDetailsModal,
         residence,
         standpoint,
         toggleAccountsDialog,
@@ -484,6 +483,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Real account')} hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
@@ -529,6 +529,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Demo account')} hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
@@ -581,11 +582,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 openPasswordModal={openRealPasswordModal}
                                 is_real_enabled={is_real_enabled}
                             />
-                            <JurisdictionModal
-                                platform={platform}
-                                openPasswordModal={openRealPasswordModal}
-                                toggleCFDPersonalDetailsModal={toggleCFDPersonalDetailsModal}
-                            />
+                            <SwitchToRealAccountModal />
+                            <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
                                 current_list={current_list}
                                 is_open={is_mt5_trade_modal_visible}
@@ -698,7 +696,6 @@ export default withRouter(
         is_fully_authenticated: client.is_fully_authenticated,
         openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
-        toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
         getRealSyntheticAccountsExistingData: modules.cfd.getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData: modules.cfd.getRealFinancialAccountsExistingData,
         is_loading: client.is_populating_mt5_account_list,

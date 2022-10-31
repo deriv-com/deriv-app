@@ -12,12 +12,13 @@ import ApiTokenFooter from './api-token-footer';
 import ApiTokenOverlay from './api-token-overlay';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
+import { TToken } from 'Types';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
 
 type AptTokenState = {
-    api_tokens: NonNullable<import('Types').TToken[]>;
+    api_tokens: NonNullable<TToken[]>;
     is_loading: boolean;
     is_success: boolean;
     is_overlay_shown: boolean;

@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import { TApiContext } from 'Types';
 
 const ApiTokenFooter = () => {
-    const { footer_ref, toggleOverlay } = React.useContext<import('Types').TApiContext>(ApiTokenContext);
+    const { footer_ref, toggleOverlay } = React.useContext<TApiContext>(ApiTokenContext);
 
     return createPortal(
         <a className='link link--prominent' onClick={toggleOverlay}>

@@ -2,9 +2,10 @@ import React from 'react';
 import { Popup } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import { TApiContext } from 'Types';
 
 const ApiTokenOverlay = () => {
-    const { overlay_ref, toggleOverlay } = React.useContext<import('Types').TApiContext>(ApiTokenContext);
+    const { overlay_ref, toggleOverlay } = React.useContext<TApiContext>(ApiTokenContext);
 
     return (
         <Popup.Overlay

@@ -3,14 +3,15 @@ import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import { TPopoverAlignment, TToken, TApiContext } from 'Types';
 
 type TApiTokenDeleteButton = {
-    popover_alignment?: import('Types').TPopoverAlignment;
-    token: import('Types').TToken;
+    popover_alignment?: TPopoverAlignment;
+    token: TToken;
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken } = React.useContext<import('Types').TApiContext>(ApiTokenContext);
+    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState<boolean>(false);
     const [is_loading, setIsLoading] = React.useState<boolean>(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState<boolean>(false);

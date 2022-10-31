@@ -2,13 +2,14 @@ import React from 'react';
 import { useIsMounted } from '@deriv/shared';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { TPopoverAlignment } from 'Types';
 
 type TApiTokenClipboard = {
     scopes: string[];
     text_copy: string;
     info_message: string;
     success_message: string;
-    popover_alignment?: import('Types').TPopoverAlignment;
+    popover_alignment?: TPopoverAlignment;
 };
 
 type TWarningNoteBullet = {

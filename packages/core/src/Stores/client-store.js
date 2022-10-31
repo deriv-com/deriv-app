@@ -1877,8 +1877,15 @@ export default class ClientStore extends BaseStore {
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+
         if (is_client_logging_in) {
-            window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            const DERIV_PRE_APPSTORE_KEY = 'is_pre_appstore';
+            const is_pre_appstore = window.localStorage.getItem(DERIV_PRE_APPSTORE_KEY);
+            if (is_pre_appstore === 'true') {
+                window.history.replaceState({}, document.title, '/appstore/trading-hub');
+            } else {
+                window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            }
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;

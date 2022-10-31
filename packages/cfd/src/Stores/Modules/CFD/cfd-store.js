@@ -1,46 +1,114 @@
-import { action, computed, observable, reaction, runInAction } from 'mobx';
+import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
-    @observable is_compare_accounts_visible = false;
-    @observable is_cfd_personal_details_modal_visible = false;
-    @observable is_jurisdiction_modal_visible = false;
-    @observable is_mt5_trade_modal_visible = false;
-    @observable jurisdiction_selected_shortcode = '';
+    is_compare_accounts_visible = false;
+    is_cfd_personal_details_modal_visible = false;
+    is_jurisdiction_modal_visible = false;
+    is_mt5_trade_modal_visible = false;
+    jurisdiction_selected_shortcode = '';
 
-    @observable account_type = {
+    account_type = {
         category: undefined,
         type: undefined,
     };
 
-    @observable mt5_trade_account = {};
-    @observable new_account_response = {};
-    @observable map_type = {};
-    @observable has_cfd_error = false;
-    @observable error_message = '';
+    mt5_trade_account = {};
+    new_account_response = {};
+    map_type = {};
+    has_cfd_error = false;
+    error_message = '';
 
-    @observable is_cfd_success_dialog_enabled = false;
-    @observable is_mt5_financial_stp_modal_open = false;
-    @observable is_cfd_password_modal_enabled = false;
-    @observable is_cfd_reset_password_modal_enabled = false;
+    is_cfd_success_dialog_enabled = false;
+    is_mt5_financial_stp_modal_open = false;
+    is_cfd_password_modal_enabled = false;
+    is_cfd_reset_password_modal_enabled = false;
 
-    @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
+    current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
-    @observable error_type = undefined;
+    error_type = undefined;
 
-    @observable is_cfd_verification_modal_visible = false;
-    @observable dxtrade_tokens = {
+    is_cfd_verification_modal_visible = false;
+    dxtrade_tokens = {
         demo: '',
         real: '',
     };
+
+    is_from_mt5_compare_accounts_table = false;
 
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
 
     constructor({ root_store }) {
         super({ root_store });
+
+        makeObservable(this, {
+            is_compare_accounts_visible: observable,
+            is_cfd_personal_details_modal_visible: observable,
+            is_jurisdiction_modal_visible: observable,
+            is_mt5_trade_modal_visible: observable,
+            jurisdiction_selected_shortcode: observable,
+            account_type: observable,
+            mt5_trade_account: observable,
+            new_account_response: observable,
+            map_type: observable,
+            has_cfd_error: observable,
+            error_message: observable,
+            is_cfd_success_dialog_enabled: observable,
+            is_mt5_financial_stp_modal_open: observable,
+            is_cfd_password_modal_enabled: observable,
+            is_cfd_reset_password_modal_enabled: observable,
+            current_account: observable,
+            is_cfd_verification_modal_visible: observable,
+            error_type: observable,
+            dxtrade_tokens: observable,
+            is_from_mt5_compare_accounts_table: observable,
+            account_title: computed,
+            current_list: computed,
+            onMount: action.bound,
+            onUnmount: override,
+            checkShouldOpenAccount: action.bound,
+            realAccountSignupEndListener: action.bound,
+            resetFormErrors: action.bound,
+            clearCFDError: action.bound,
+            createCFDAccount: action.bound,
+            disableCFDPasswordModal: action.bound,
+            enableCFDPasswordModal: action.bound,
+            getName: action.bound,
+            openMT5Account: action.bound,
+            openCFDAccount: action.bound,
+            beginRealSignupForMt5: action.bound,
+            enableMt5FinancialStpModal: action.bound,
+            setAccountType: action.bound,
+            setCurrentAccount: action.bound,
+            setMT5TradeAccount: action.bound,
+            setError: action.bound,
+            setCFDNewAccount: action.bound,
+            setCFDSuccessDialog: action.bound,
+            storeProofOfAddress: action.bound,
+            getAccountStatus: action.bound,
+            creatMT5Password: action.bound,
+            submitMt5Password: action.bound,
+            createCFDPassword: action.bound,
+            submitCFDPassword: action.bound,
+            toggleCompareAccountsModal: action.bound,
+            getRealSyntheticAccountsExistingData: action.bound,
+            getRealFinancialAccountsExistingData: action.bound,
+            toggleJurisdictionModal: action.bound,
+            toggleMT5TradeModal: action.bound,
+            disableMt5FinancialStpModal: action.bound,
+            topUpVirtual: action.bound,
+            sendVerifyEmail: action.bound,
+            setIsFromMt5CompareAccountsTable: action.bound,
+            toggleCFDPersonalDetailsModal: action.bound,
+            setJurisdictionSelectedShortcode: action.bound,
+            toggleCFDVerificationModal: action.bound,
+            setCFDPasswordResetModal: action.bound,
+            setDxtradeToken: action.bound,
+            loadDxtradeTokens: action.bound,
+        });
 
         reaction(
             () => [this.root_store.client.dxtrade_accounts_list],
@@ -52,14 +120,12 @@ export default class CFDStore extends BaseStore {
         );
     }
 
-    @computed
     get account_title() {
         return this.account_type.category
             ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
             : '';
     }
 
-    @computed
     get current_list() {
         const list = {};
 
@@ -90,14 +156,12 @@ export default class CFDStore extends BaseStore {
         return getDxCompanies();
     }
 
-    @action.bound
     onMount() {
         this.checkShouldOpenAccount();
         this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
         this.root_store.ui.is_cfd_page = true;
     }
 
-    @action.bound
     onUnmount() {
         this.disposeRealAccountSignupEnd();
         this.root_store.ui.is_cfd_page = false;
@@ -105,7 +169,6 @@ export default class CFDStore extends BaseStore {
 
     // other platforms can redirect to here using account switcher's `Add` account button
     // so in that case we should open the corresponding account opening modal on load/component update
-    @action.bound
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_cfd_account_type');
         if (account_type) {
@@ -115,7 +178,6 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     realAccountSignupEndListener() {
         const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
         if (post_signup && post_signup.category && post_signup.type) {
@@ -125,20 +187,17 @@ export default class CFDStore extends BaseStore {
         return Promise.resolve();
     }
 
-    @action.bound
     resetFormErrors() {
         this.error_message = '';
         this.error_type = undefined;
         this.has_cfd_error = false;
     }
 
-    @action.bound
     clearCFDError() {
         this.resetFormErrors();
         this.is_cfd_password_modal_enabled = false;
     }
 
-    @action.bound
     createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
@@ -167,17 +226,14 @@ export default class CFDStore extends BaseStore {
         this.enableCFDPasswordModal();
     }
 
-    @action.bound
     disableCFDPasswordModal() {
         this.is_cfd_password_modal_enabled = false;
     }
 
-    @action.bound
     enableCFDPasswordModal() {
         this.is_cfd_password_modal_enabled = true;
     }
 
-    @action.bound
     getName() {
         const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
@@ -186,7 +242,6 @@ export default class CFDStore extends BaseStore {
         return first_name ? [first_name, title].join(' ') : title;
     }
 
-    @action.bound
     openMT5Account(values) {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
@@ -216,7 +271,6 @@ export default class CFDStore extends BaseStore {
         });
     }
 
-    @action.bound
     openCFDAccount(values) {
         return WS.tradingPlatformNewAccount({
             password: values.password,
@@ -226,7 +280,6 @@ export default class CFDStore extends BaseStore {
         });
     }
 
-    @action.bound
     beginRealSignupForMt5() {
         sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
         this.root_store.ui.openRealAccountSignup();
@@ -252,17 +305,14 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     enableMt5FinancialStpModal() {
         this.is_mt5_financial_stp_modal_open = true;
     }
 
-    @action.bound
     setAccountType(account_type) {
         this.account_type = account_type;
     }
 
-    @action.bound
     setCurrentAccount(data, meta) {
         this.current_account = {
             ...meta,
@@ -270,29 +320,24 @@ export default class CFDStore extends BaseStore {
         };
     }
 
-    @action.bound
     setMT5TradeAccount(mt5_trade_account) {
         this.mt5_trade_account = mt5_trade_account;
     }
 
-    @action.bound
     setError(state, obj) {
         this.has_cfd_error = state;
         this.error_message = obj ? obj.message : '';
         this.error_type = obj?.code ?? undefined;
     }
 
-    @action.bound
     setCFDNewAccount(cfd_new_account) {
         this.new_account_response = cfd_new_account;
     }
 
-    @action.bound
     setCFDSuccessDialog(value) {
         this.is_cfd_success_dialog_enabled = !!value;
     }
 
-    @action.bound
     storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
         return new Promise((resolve, reject) => {
             setStatus({ msg: '' });
@@ -328,7 +373,6 @@ export default class CFDStore extends BaseStore {
         });
     }
 
-    @action.bound
     async getAccountStatus(platform) {
         const should_load_account_status =
             (platform === CFD_PLATFORMS.MT5 && this.root_store.client.is_mt5_password_not_set) ||
@@ -339,7 +383,6 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     async creatMT5Password(values, actions) {
         const response = await WS.tradingPlatformPasswordChange({
             new_password: values.password,
@@ -355,7 +398,6 @@ export default class CFDStore extends BaseStore {
         return false;
     }
 
-    @action.bound
     async submitMt5Password(values, actions) {
         if (this.root_store.client.is_mt5_password_not_set) {
             const has_error = await this.creatMT5Password(values, actions);
@@ -386,7 +428,6 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     async createCFDPassword(values, actions) {
         const response = await WS.tradingPlatformPasswordChange({
             new_password: values.password,
@@ -403,7 +444,6 @@ export default class CFDStore extends BaseStore {
         return false;
     }
 
-    @action.bound
     async submitCFDPassword(values, actions) {
         if (this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
@@ -432,37 +472,30 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
     }
 
-    @action.bound
     getRealSyntheticAccountsExistingData(real_synthetic_accounts_existing_data) {
         this.real_synthetic_accounts_existing_data = real_synthetic_accounts_existing_data;
     }
 
-    @action.bound
     getRealFinancialAccountsExistingData(real_financial_accounts_existing_data) {
         this.real_financial_accounts_existing_data = real_financial_accounts_existing_data;
     }
 
-    @action.bound
     toggleJurisdictionModal() {
         this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
     }
 
-    @action.bound
     toggleMT5TradeModal() {
         this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
     }
 
-    @action.bound
     disableMt5FinancialStpModal() {
         this.is_mt5_financial_stp_modal_open = false;
     }
 
-    @action.bound
     async topUpVirtual(platform) {
         this.root_store.ui.setTopUpInProgress(true);
         let response;
@@ -529,17 +562,14 @@ export default class CFDStore extends BaseStore {
         this.root_store.ui.setTopUpInProgress(false);
     }
 
-    @action.bound
     sendVerifyEmail() {
         return WS.verifyEmail(this.root_store.client.email, 'trading_platform_investor_password_reset');
     }
 
-    @action.bound
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
     }
 
-    @action.bound
     setDxtradeToken(response, server) {
         if (!response.error) {
             const { dxtrade } = response.service_token;
@@ -547,7 +577,6 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    @action.bound
     loadDxtradeTokens() {
         ['demo', 'real'].forEach(account_type => {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
@@ -561,9 +590,12 @@ export default class CFDStore extends BaseStore {
             }
         });
     }
+    setIsFromMt5CompareAccountsTable(is_from_compare_accounts) {
+        this.is_from_mt5_compare_accounts_table = is_from_compare_accounts;
+    }
 
-    @action.bound
-    toggleCFDPersonalDetailsModal() {
+    toggleCFDPersonalDetailsModal(is_from_compare_accounts = false) {
+        this.setIsFromMt5CompareAccountsTable(is_from_compare_accounts);
         this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 
@@ -589,12 +621,10 @@ export default class CFDStore extends BaseStore {
         return response?.error?.message;
     }
 
-    @action.bound
     setJurisdictionSelectedShortcode(shortcode) {
         this.jurisdiction_selected_shortcode = shortcode;
     }
 
-    @action.bound
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
     }

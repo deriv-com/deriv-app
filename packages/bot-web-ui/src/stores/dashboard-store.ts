@@ -13,6 +13,7 @@ export interface IDashboardStore {
     dialog_options: { [key: string]: string };
     is_dialog_open: boolean;
     has_onboard_tour_started: boolean;
+    has_bot_builder_tour_started: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
     onCloseDialog: () => void;
@@ -51,6 +52,12 @@ export default class DashboardStore implements IDashboardStore {
     @observable is_tour_dialog_visible = true;
     @observable has_onboard_tour_started = false;
     @observable is_preview_on_popup = false;
+    @observable has_bot_builder_tour_started = false;
+
+    @action.bound
+    setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {
+        this.has_bot_builder_tour_started = has_bot_builder_tour_started;
+    };
 
     @action.bound
     setPreviewOnPopup = (is_preview_on_popup: boolean): void => {

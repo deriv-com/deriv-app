@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR } from '../joyride-config';
 import LoadModal from 'Components/load-modal';
+import TourTriggrerDialog from '../tour-trigger-dialog';
 
 type TBotBuilder = {
     app: AppStore;
@@ -14,15 +15,30 @@ type TBotBuilder = {
     has_onboard_tour_started: boolean;
     is_preview_on_popup: boolean;
     setOnBoardTourRunState: (has_onboard_tour_started: boolean) => boolean;
+    setTourDialogVisibility: (param: boolean) => boolean;
+    has_bot_builder_tour_started: boolean;
 };
 
-const BotBuilder = ({ app, active_tab, has_onboard_tour_started, is_preview_on_popup }: TBotBuilder) => {
+const BotBuilder = ({
+    app,
+    active_tab,
+    has_onboard_tour_started,
+    is_preview_on_popup,
+    setTourDialogVisibility,
+    has_bot_builder_tour_started,
+}: TBotBuilder) => {
     const { onMount, onUnmount } = app;
 
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, []);
+
+    React.useEffect(() => {
+        if (active_tab === 1 && !has_onboard_tour_started) {
+            setTourDialogVisibility(true);
+        }
+    }, [active_tab, has_onboard_tour_started]);
     return (
         <div
             className={classNames('bot-builder', {
@@ -39,7 +55,8 @@ const BotBuilder = ({ app, active_tab, has_onboard_tour_started, is_preview_on_p
                     }}
                 >
                     <WorkspaceWrapper />
-                    {active_tab === 1 && !has_onboard_tour_started && (
+                    <TourTriggrerDialog />
+                    {has_bot_builder_tour_started && active_tab === 1 && !has_onboard_tour_started && (
                         <ReactJoyride
                             steps={BOT_BUILDER_TOUR}
                             continuous
@@ -70,4 +87,6 @@ export default connect(({ app, dashboard }: RootStore) => ({
     has_onboard_tour_started: dashboard.has_onboard_tour_started,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     is_preview_on_popup: dashboard.is_preview_on_popup,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
 }))(BotBuilder);

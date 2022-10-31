@@ -11,7 +11,7 @@ import { TRootStore, TPaymentAgentDetails, TServerError } from 'Types';
 import './payment-agent-listed-withdraw-form.scss';
 
 type TValidateWithdrawalValueProps = {
-    amount: number;
+    amount: string;
 };
 
 type TValidateWithdrawalProps = {
@@ -101,7 +101,7 @@ const PaymentAgentListedWithdrawForm = ({
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             paymentagent_loginid: payment_agent.paymentagent_loginid,
             currency,
-            amount: values.amount,
+            amount: Number(values.amount),
             verification_code,
             paymentagent_withdraw: 1,
         });
@@ -121,7 +121,7 @@ const PaymentAgentListedWithdrawForm = ({
             </Text>
             <Formik
                 initialValues={{
-                    amount: 0,
+                    amount: '',
                 }}
                 validate={validateWithdrawalPassthrough}
                 onSubmit={onWithdrawalPassthrough}

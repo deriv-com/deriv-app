@@ -17,7 +17,7 @@ export const ProofOfOwnership = ({
     updateAccountStatus,
 }) => {
     const cards = account_status?.authentication?.ownership?.requests;
-    const needs_verification = account_status?.authentication?.needs_verification?.includes(POO_STATUSES.ownership);
+    const needs_verification = account_status?.authentication?.needs_verification?.includes?.(POO_STATUSES.ownership);
     const [status, setStatus] = useState(POO_STATUSES.none);
     useEffect(() => {
         setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());

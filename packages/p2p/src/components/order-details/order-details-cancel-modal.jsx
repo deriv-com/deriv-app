@@ -9,7 +9,7 @@ import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-cancel-modal.scss';
 
 const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
-    const { order_store } = useStores();
+    const { general_store, order_store } = useStores();
     const isMounted = useIsMounted();
 
     const cancelOrderRequest = () => {
@@ -41,7 +41,7 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
             width='440px'
         >
             <Modal.Body>
-                {order_store.cancels_remaining > 1 ? (
+                {general_store.cancels_remaining > 1 ? (
                     <Text color='prominent' size='xs'>
                         <Localize
                             i18n_default_text='If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining.)'
@@ -49,7 +49,7 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                                 block_duration: order_store.cancellation_block_duration,
                                 cancellation_limit: order_store.cancellation_limit,
                                 cancellation_period: order_store.cancellation_count_period,
-                                number_of_cancels_remaining: order_store.cancels_remaining,
+                                number_of_cancels_remaining: general_store.cancels_remaining,
                             }}
                         />
                     </Text>

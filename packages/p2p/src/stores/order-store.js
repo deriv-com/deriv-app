@@ -20,7 +20,6 @@ export default class OrderStore {
     @observable cancellation_block_duration = 0;
     @observable cancellation_count_period = 0;
     @observable cancellation_limit = 0;
-    @observable cancels_remaining = null;
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_email_link_blocked_modal_open = false;
@@ -123,18 +122,6 @@ export default class OrderStore {
                 }
             }
         });
-    }
-
-    @action.bound
-    getAdvertiserInfo(setShouldShowCancelModal) {
-        requestWS({ p2p_advertiser_info: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                this.setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
-            }
-        });
-        this.getWebsiteStatus(setShouldShowCancelModal);
     }
 
     @action.bound
@@ -476,11 +463,6 @@ export default class OrderStore {
     @action.bound
     setCancellationLimit(cancellation_limit) {
         this.cancellation_limit = cancellation_limit;
-    }
-
-    @action.bound
-    setCancelsRemaining(cancels_remaining) {
-        this.cancels_remaining = cancels_remaining;
     }
 
     @action.bound

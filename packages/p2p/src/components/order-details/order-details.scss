@@ -81,6 +81,10 @@ $card-width: 456px;
         justify-content: space-between;
     }
 
+    &__textbox {
+        white-space: pre;
+    }
+
     &--padding {
         padding: 1rem 2.4rem;
 

@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 
 // Todo: Should move this declaration into a .d.ts file.
-// Todo: Should break this into smaller hooks or utility functions.
 declare global {
     interface Window {
         LiveChatWidget: {
@@ -19,6 +18,7 @@ declare global {
     }
 }
 
+// Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);

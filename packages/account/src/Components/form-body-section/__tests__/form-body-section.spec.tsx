@@ -18,7 +18,7 @@ describe('Test coverage for FormBodySection component', () => {
 
     it('When we pass "has_side_note" property, it should render a different ui', () => {
         render(<MockFormBodySection has_side_note />);
-        expect(screen.getByTestId('side-note-container')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_side_note_container')).toBeInTheDocument();
     });
 
     it('When "side_note" value is string, it should render inside Text component', () => {

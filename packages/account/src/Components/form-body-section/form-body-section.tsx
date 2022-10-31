@@ -14,7 +14,7 @@ const FormBodySection = ({ children, has_side_note, side_note }: React.PropsWith
     if (has_side_note) {
         return (
             <div
-                data-testid='side-note-container'
+                data-testid='dt_side_note_container'
                 className={classNames('account-form__section', { 'account-form__section--dashboard': is_appstore })}
             >
                 <div className='account-form__section-side-note'>

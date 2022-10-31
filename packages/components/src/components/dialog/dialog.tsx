@@ -78,7 +78,7 @@ const Dialog = ({
         if (is_closed_on_cancel && enableApp) {
             enableApp();
         }
-        if (onCancel) onCancel();
+        onCancel?.();
     };
 
     const handleConfirm = () => {

@@ -6,6 +6,11 @@ import { CallBackProps } from 'react-joyride';
 import { Text } from '@deriv/components';
 import { getImageLocation } from '../../public-path';
 
+type TJoyrideConfig = Record<
+    'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay',
+    boolean
+>;
+
 type TStep = {
     label?: string;
     content: string[];
@@ -28,7 +33,7 @@ export const getTourSettings = (type: string) => {
 export const Step = ({ label, content }: TStep) => {
     return (
         <div className='db-tour'>
-            <Text line_height='xl' as='p' weight='bold' color='colored-background'>
+            <Text line_height='xl' as='p' weight='bold' color='var(--text-joyride-tour)'>
                 {label}
             </Text>
             {content.map(item => (
@@ -36,7 +41,7 @@ export const Step = ({ label, content }: TStep) => {
                     key={item}
                     line_height='xl'
                     as='p'
-                    color='colored-background'
+                    color='var(--text-joyride-tour)'
                     dangerouslySetInnerHTML={{ __html: item }}
                 />
             ))}
@@ -58,13 +63,12 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     if (!getTourSettings('token')) setTourSettings(new Date().getTime(), 'token');
 };
 
-type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
-
-const joyride_props: TJoyrideProps = {
+const joyride_props: TJoyrideConfig = {
     showProgress: false,
     showSkipButton: true,
     spotlightClicks: true,
     disableBeacon: true,
+    disableOverlay: true,
 };
 
 export const DBOT_ONBOARDING = [
@@ -188,7 +192,7 @@ export const BOT_BUILDER_TOUR = [
             <Step
                 key='Step 1'
                 content={[
-                    localize('Step 1:'),
+                    localize('Step 1 :'),
                     localize('First, set the <strong>Trade parameters</strong> block.'),
                     localize('<strong>1. Trade Parameters</strong>:'),
                     localize(
@@ -196,6 +200,7 @@ export const BOT_BUILDER_TOUR = [
                     ),
                     localize('- <strong>Trade Type</strong>: Up/Down > Rise/Fall'),
                     localize('- <strong>Contract type</strong>: Both'),
+                    localize('- <strong>Default candle interval</strong>: 1 minute'),
                 ]}
             />,
         ],
@@ -221,7 +226,7 @@ export const BOT_BUILDER_TOUR = [
             <Step
                 key='purchase_conditions'
                 content={[
-                    localize('Step 2:'),
+                    localize('Step 2 :'),
                     localize('Then, set the <strong>Purchase conditions</strong> block.'),
                     localize('<strong>2. Purchase conditions</strong>:'),
                     localize('- <strong>Purchase</strong>: Rise'),
@@ -236,7 +241,7 @@ export const BOT_BUILDER_TOUR = [
             <Step
                 key='sell_conditions'
                 content={[
-                    localize('Step 3:'),
+                    localize('Step 3 :'),
                     localize(
                         'The third block is <strong>optional</strong>. You may use this block if you want to sell your contract before it expires. For now, lets leave the block as it is.'
                     ),
@@ -246,14 +251,14 @@ export const BOT_BUILDER_TOUR = [
         ...joyride_props,
     },
     {
-        target: '.dashboard__toolbox',
+        target: '.db-toolbox__row:nth-child(5)',
         content: [
             <Step
                 key='toolbox'
                 content={[
-                    localize('Step 4:'),
+                    localize('Step 4 :'),
                     localize(
-                        'Next, go to <strong>Utility tab</strong> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops</strong>'
+                        'Next, go to <strong>Utility tab</strong> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops</strong>.'
                     ),
                     localize(
                         '- Look for the <strong>Repeat While/Until</strong>, and click the + icon to add the block to the workspace area.'
@@ -266,12 +271,12 @@ export const BOT_BUILDER_TOUR = [
         ...joyride_props,
     },
     {
-        target: '.dashboard__toolbox',
+        target: '.db-toolbox__row:nth-child(6)',
         content: [
             <Step
                 key='dashboard__toolbox'
                 content={[
-                    localize('Step 5:'),
+                    localize('Step 5 :'),
                     localize(
                         'Now, tap the <strong>Analysis</strong> drop-down arrow and hit <strong>Contract</strong>.'
                     ),
@@ -296,7 +301,7 @@ export const BOT_BUILDER_TOUR = [
             <Step
                 key='trade_results'
                 content={[
-                    localize('Step 6:'),
+                    localize('Step 6 :'),
                     localize(
                         'Finally, drag and add the whole <strong>Repeat</strong> block to the <strong>Restart trading conditions</strong> block.'
                     ),
@@ -306,11 +311,11 @@ export const BOT_BUILDER_TOUR = [
         ...joyride_props,
     },
     {
-        target: 'body',
+        target: 'header',
         content: [
             <Step
                 key='Congratulations'
-                label={localize('Congratulations')}
+                label={localize('Congratulations!')}
                 content={[
                     localize('You have successfully created your bot using a simple strategy.'),
                     localize('Now, <strong>run the bot</strong> to test out the strategy.'),

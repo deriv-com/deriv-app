@@ -6,8 +6,8 @@ import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellM
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
-import DataListCell from './data-list-cell.js';
-import DataListRow from './data-list-row.js';
+import DataListCell from './data-list-cell';
+import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 
 type TDataListProps = {

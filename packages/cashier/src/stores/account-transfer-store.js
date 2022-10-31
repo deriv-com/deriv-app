@@ -349,7 +349,7 @@ export default class AccountTransferStore {
 
         accounts.forEach(account => {
             const cfd_platforms = {
-                mt5: { name: 'DMT5', icon: 'IcMt5' },
+                mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
             };
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type);

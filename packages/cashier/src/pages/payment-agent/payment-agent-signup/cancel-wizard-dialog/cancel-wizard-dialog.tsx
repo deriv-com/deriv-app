@@ -24,4 +24,4 @@ const CancelWizardDialog = ({ onConfirm, onCancel, is_visible }: TCancelWizardDi
     );
 };
 
-export { CancelWizardDialog };
+export default CancelWizardDialog;

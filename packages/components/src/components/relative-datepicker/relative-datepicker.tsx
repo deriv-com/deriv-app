@@ -3,8 +3,8 @@ import { toMoment, daysFromTodayTo } from '@deriv/shared';
 import Text from '../text';
 
 type TRelativeDatepickerProps = {
-    max_date?: number | string;
-    min_date?: number | string;
+    max_date?: number | null;
+    min_date?: number | null;
     onChange: (days_from_today_to: number) => void;
     title: string;
 };

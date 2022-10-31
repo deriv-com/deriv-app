@@ -105,7 +105,7 @@ export default class UIStore extends BaseStore {
     should_show_real_accounts_list = false;
 
     // MT5 acuity download
-    @observable is_acuity_modal_open = false;
+    is_acuity_modal_open = false;
 
     // Real account signup
     real_account_signup = {
@@ -229,6 +229,7 @@ export default class UIStore extends BaseStore {
             real_account_signup_target: observable,
             deposit_real_account_signup_target: observable,
             has_real_account_signup_ended: observable,
+            is_acuity_modal_open: observable,
             is_welcome_modal_visible: observable,
             is_close_mx_mlt_account_modal_visible: observable,
             is_close_uk_account_modal_visible: observable,
@@ -323,6 +324,7 @@ export default class UIStore extends BaseStore {
             setCurrentFocus: action.bound,
             addToast: action.bound,
             removeToast: action.bound,
+            setIsAcuityModalOpen: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,

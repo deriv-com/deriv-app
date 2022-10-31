@@ -1,12 +1,28 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { storeSetting, getSetting } from '../../utils/settings';
+import TourGuide from './tour-guide';
+import { CallBackProps } from 'react-joyride';
 import { Text } from '@deriv/components';
-
-type TJoyrideConfig = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
+import { getImageLocation } from '../../public-path';
 
 type TStep = {
     label?: string;
     content: string[];
+};
+
+export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
+    if (type === 'token') {
+        return storeSetting('onboard_tour_token', param);
+    }
+    return storeSetting('onboard_tour_status', param);
+};
+
+export const getTourSettings = (type: string) => {
+    if (type === 'token') {
+        return getSetting('onboard_tour_token');
+    }
+    return getSetting('onboard_tour_status');
 };
 
 export const Step = ({ label, content }: TStep) => {
@@ -28,17 +44,143 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
-/**
- * Joyride specifc config
- * It should be in camel casing.
- */
-const joyride_config: TJoyrideConfig = {
+let onboarding_tour: { [key: string]: string } = {};
+let current_target: number;
+export const handleJoyrideCallback = (data: CallBackProps) => {
+    const { action, index, status, type } = data;
+    if (current_target && current_target !== index) {
+        onboarding_tour = {};
+        onboarding_tour.status = status;
+        onboarding_tour.action = action;
+    }
+    current_target = index;
+    setTourSettings(onboarding_tour, 'tour');
+    if (!getTourSettings('token')) setTourSettings(new Date().getTime(), 'token');
+};
+
+type TJoyrideProps = Record<'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon', boolean>;
+
+const joyride_props: TJoyrideProps = {
     showProgress: true,
     showSkipButton: true,
     spotlightClicks: true,
     disableBeacon: true,
 };
 
+export const DBOT_ONBOARDING = [
+    {
+        target: '#tab__dashboard__table__tiles',
+        content: (
+            <TourGuide
+                label={localize('Shortcuts')}
+                content={localize('You can also use these shortcuts to import or build your bot.')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={0}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '#id-bot-builder',
+        content: (
+            <TourGuide
+                label={localize('Build from scratch')}
+                content={[
+                    localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
+                    localize(
+                        'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy .'
+                    ),
+                ]}
+                img={getImageLocation('ic-new-user-step-two.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={1}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '#id-quick-strategy',
+        content: (
+            <TourGuide
+                label={localize('Start with a template')}
+                content={localize(
+                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                )}
+                img={getImageLocation('ic-new-user-step-three.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={2}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '#id-charts',
+        content: (
+            <TourGuide
+                label={localize('Monitor the market')}
+                content={localize('View the market price of your favourite assets.')}
+                img={getImageLocation('ic-new-user-step-four.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={3}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '#id-tutorials',
+        content: (
+            <TourGuide
+                label={localize('Start with a tutorials')}
+                content={localize(
+                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                )}
+                img={getImageLocation('ic-new-user-step-five.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={4}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '.animation__wrapper',
+        content: (
+            <TourGuide
+                label={localize('Run or stop your bot')}
+                content={localize('Click Run when you want to start trading, and click Stop when you want to stop.')}
+                img={getImageLocation('ic-new-user-step-seven.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={1}
+            />
+        ),
+        ...joyride_props,
+    },
+    {
+        target: '[data-testid="drawer"]',
+        content: (
+            <TourGuide
+                label={localize('How is my bot doing?')}
+                content={localize("See your bot's performance in real-time.")}
+                img={getImageLocation('ic-new-user-step-six.png')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={1}
+            />
+        ),
+        ...joyride_props,
+    },
+
+    {
+        target: 'body',
+        content: (
+            <TourGuide
+                label={localize('Want to take retake the tour?')}
+                content={localize('If yes, go to Tutorials.')}
+                className={'dbot-onboarding__container'}
+                dashboardTabIndex={0}
+            />
+        ),
+        ...joyride_props,
+    },
+];
 export const BOT_BUILDER_TOUR = [
     {
         target: 'body',
@@ -53,7 +195,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '[data-category="trade_parameters"]',
@@ -72,7 +214,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '[data-category="trade_parameters"]',
@@ -86,7 +228,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '[data-category="purchase_conditions"]',
@@ -101,7 +243,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '[data-category="sell_conditions"]',
@@ -116,7 +258,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '.dashboard__toolbox',
@@ -136,7 +278,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '.dashboard__toolbox',
@@ -161,7 +303,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: '[data-category="trade_results"]',
@@ -176,7 +318,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
     {
         target: 'body',
@@ -193,6 +335,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        ...joyride_config,
+        ...joyride_props,
     },
 ];

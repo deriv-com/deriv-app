@@ -1,17 +1,28 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import './index.scss';
+
+type Nullable<T> = T | null;
+type TLocalFooter = {
+    is_mobile: boolean;
+    is_open_button_loading: boolean;
+    loadFileFromLocal: () => void;
+    setLoadedLocalFile: (data: Nullable<string>) => void;
+    setPreviewOnPopup: (param: boolean) => boolean;
+    toggleLoadModal: () => void;
+};
 
 const LocalFooter = ({
     is_mobile,
     is_open_button_loading,
     loadFileFromLocal,
     setLoadedLocalFile,
-    toggleLoadModal,
     setPreviewOnPopup,
-}) => {
+    toggleLoadModal,
+}: TLocalFooter) => {
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
     return (
         <Wrapper>
@@ -22,8 +33,8 @@ const LocalFooter = ({
                 text={localize('Open')}
                 onClick={() => {
                     loadFileFromLocal();
-                    toggleLoadModal();
                     setPreviewOnPopup(false);
+                    toggleLoadModal();
                 }}
                 is_loading={is_open_button_loading}
                 has_effect
@@ -34,19 +45,11 @@ const LocalFooter = ({
     );
 };
 
-LocalFooter.propTypes = {
-    is_mobile: PropTypes.bool,
-    is_open_button_loading: PropTypes.bool,
-    loadFileFromLocal: PropTypes.func,
-    setLoadedLocalFile: PropTypes.bool,
-    setPreviewOnPopup: PropTypes.func,
-};
-
-export default connect(({ load_modal, ui, dashboard }) => ({
+export default connect(({ load_modal, ui, dashboard }: RootStore) => ({
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
-    toggleLoadModal: load_modal.toggleLoadModal,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    toggleLoadModal: load_modal.toggleLoadModal,
 }))(LocalFooter);

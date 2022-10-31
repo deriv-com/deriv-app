@@ -2,26 +2,40 @@ import { observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
+import RootStore from './root-store';
 
-export default class SaveModalStore {
+interface ISaveModalStore {
+    is_save_modal_open: boolean;
+    button_status: { [key: string]: string } | number;
+    bot_name: { [key: string]: string } | string;
+    toggleSaveModal: () => void;
+    validateBotName: (values: string) => { [key: string]: string };
+    onConfirmSave: () => void;
+    updateBotName: (bot_name: { [key: string]: string } | string) => void;
+    setButtonStatus: (status: { [key: string]: string } | string | number) => void;
+}
+
+export default class SaveModalStore implements ISaveModalStore {
+    root_store: RootStore;
+
     @observable is_save_modal_open = false;
     @observable button_status = button_status.NORMAL;
-    @observable bot_name;
+    @observable bot_name = '';
 
-    constructor(root_store) {
+    constructor(root_store: RootStore) {
         this.root_store = root_store;
     }
 
     @action.bound
-    toggleSaveModal() {
+    toggleSaveModal = (): void => {
         if (!this.is_save_modal_open) {
             this.setButtonStatus(button_status.NORMAL);
         }
 
         this.is_save_modal_open = !this.is_save_modal_open;
-    }
+    };
 
-    validateBotName = values => {
+    validateBotName = (values: string): { [key: string]: string } => {
         const errors = {};
 
         if (values.bot_name.trim() === '') {
@@ -59,10 +73,10 @@ export default class SaveModalStore {
     }
 
     @action.bound
-    updateBotName(bot_name) {
+    updateBotName = (bot_name: { [key: string]: string } | string): void => {
         this.bot_name = bot_name;
         updateWorkspaceName();
-    }
+    };
 
     @action.bound
     async onDriveConnect() {
@@ -76,7 +90,7 @@ export default class SaveModalStore {
     }
 
     @action.bound
-    setButtonStatus(status) {
+    setButtonStatus = (status: { [key: string]: string } | string | number): void => {
         this.button_status = status;
-    }
+    };
 }

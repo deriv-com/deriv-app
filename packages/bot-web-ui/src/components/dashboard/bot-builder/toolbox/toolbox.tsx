@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv/components';
+import { Field as FormField, Formik, Form, FieldProps } from 'formik';
+import { Input, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import SearchBox from './search-box/search-box';
+import SearchBox from './search-box';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;
@@ -58,20 +59,12 @@ const Toolbox = ({
                 <div className='db-toolbox__header'>
                     <div className='db-toolbox__title' onClick={() => setOpen(!is_open)}>
                         {localize('Blocks menu')}
-                        <span
-                            className={classNames('db-toolbox__title__chevron', {
-                                'db-toolbox__title__chevron--active': is_open,
-                            })}
-                        >
+                        <span className={classNames('db-toolbox__title__chevron', { active: is_open })}>
                             <Icon icon='IcChevronDownBold' />
                         </span>
                     </div>
                 </div>
-                <div
-                    className={classNames('db-toolbox__content-wrapper', {
-                        'db-toolbox__content-wrapper--active': is_open,
-                    })}
-                >
+                <div className={classNames('db-toolbox__content-wrapper', { active: is_open })}>
                     <SearchBox
                         is_search_loading={is_search_loading}
                         onSearch={onSearch}

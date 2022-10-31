@@ -44,8 +44,10 @@ type TDMT5CompareModalContentProps = {
     is_logged_in: boolean;
     is_demo_tab: boolean;
     is_real_enabled: boolean;
+    is_virtual: boolean;
     openDerivRealAccountNeededModal: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openSwitchToRealAccountModal: () => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
@@ -214,8 +216,10 @@ const DMT5CompareModalContent = ({
     is_logged_in,
     is_demo_tab,
     is_real_enabled,
+    is_virtual,
     openDerivRealAccountNeededModal,
     openPasswordModal,
+    openSwitchToRealAccountModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
     toggleCompareAccounts,
@@ -382,6 +386,8 @@ const DMT5CompareModalContent = ({
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
             openDerivRealAccountNeededModal();
+        } else if (is_virtual && !['synthetic_svg', 'financial_svg'].includes(item.action)) {
+            openSwitchToRealAccountModal();
         } else onSelectRealAccount(item);
     };
 
@@ -594,7 +600,7 @@ const DMT5CompareModalContent = ({
     );
 };
 
-export default connect(({ modules, client }: RootStore) => ({
+export default connect(({ modules, client, ui }: RootStore) => ({
     account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
     has_real_account: client.has_active_real_account,
@@ -603,6 +609,7 @@ export default connect(({ modules, client }: RootStore) => ({
     clearCFDError: modules.cfd.clearCFDError,
     current_list: modules.cfd.current_list,
     has_real_mt5_login: client.has_real_mt5_login,
+    is_virtual: client.is_virtual,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
@@ -610,4 +617,5 @@ export default connect(({ modules, client }: RootStore) => ({
     account_status: client.account_status,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
+    openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
 }))(DMT5CompareModalContent);

@@ -55,7 +55,7 @@ const Dialog = ({
         has_close_icon,
     } = other_props;
 
-    const wrapper_ref = React.useRef<HTMLInputElement>();
+    const wrapper_ref = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
     React.useEffect(() => {
         if (is_visible && !!disableApp) {

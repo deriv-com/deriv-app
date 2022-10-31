@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, FormSubmitErrorMessage, useStateCallback } from '@deriv/components';
+import { Button, useStateCallback } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -69,9 +69,9 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
                 (element?.is_credit_or_debit_card &&
                     payment_identifier_length !== 0 &&
                     (payment_identifier_length !== 16 || payment_identifier_length > 19) &&
-                    !VALIDATIONS.is_formated_card_number.test(element?.payment_method_identifier)) ||
+                    !VALIDATIONS.formated_card_number_regex.test(element?.payment_method_identifier)) ||
                 (payment_identifier_length === 16 &&
-                    VALIDATIONS.has_invalid_characters.test(element?.payment_method_identifier))
+                    VALIDATIONS.invalid_characters_regex.test(element?.payment_method_identifier))
             ) {
                 errors.data[index] = {};
                 errors.data[index].payment_method_identifier = localize('Enter your full card number');
@@ -201,7 +201,6 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
                         </FormBodySection>
                     </FormBody>
                     <FormFooter>
-                        {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}

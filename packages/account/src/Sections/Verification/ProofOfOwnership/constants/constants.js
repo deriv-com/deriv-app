@@ -15,6 +15,6 @@ export const IDENTIFIER_TYPES = {
     user_id: 'user_id',
 };
 export const VALIDATIONS = {
-    has_invalid_characters: /[^\dX\s]/,
-    is_formated_card_number: /(^\d{4})\s(\d{2}X{2})\s(X{4})\s(\d{4}$)/,
+    invalid_characters_regex: /[^\dX\s]/,
+    formated_card_number_regex: /(^\d{4})\s(\d{2}X{2})\s(X{4})\s(\d{4}$)/,
 };

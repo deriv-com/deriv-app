@@ -313,20 +313,9 @@ const CFDPasswordManagerModal = ({
     if (!selected_login) return null;
 
     const getTitle = (i: number) => {
-        if (i === 0) {
-            return localize('Manage {{platform}} password', {
-                platform: getCFDPlatformLabel(platform),
-            });
-        }
-        return selected_account_group === 'real'
-            ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                  platform: getCFDPlatformLabel(platform),
-                  account_title: is_eu ? 'CFDs' : selected_account,
-              })
-            : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                  platform: getCFDPlatformLabel(platform),
-                  account_title: is_eu ? 'CFDs' : selected_account,
-              });
+        return localize('Manage {{platform}} password', {
+            platform: getCFDPlatformLabel(platform),
+        });
     };
 
     const getHeader = (i: number) => {

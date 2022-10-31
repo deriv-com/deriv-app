@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Button from '../button/button';
 import Icon from '../icon/icon';
+import Button from '../button/button';
 import Text from '../text';
 import { useOnClickOutside } from '../../hooks';
 

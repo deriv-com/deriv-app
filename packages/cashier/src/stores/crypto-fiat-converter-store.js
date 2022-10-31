@@ -1,49 +1,62 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 
 export default class CryptoFiatConverterStore {
     constructor({ WS, root_store }) {
+        makeObservable(this, {
+            converter_from_amount: observable,
+            converter_to_amount: observable,
+            converter_from_error: observable,
+            converter_to_error: observable,
+            is_timer_visible: observable,
+            setConverterFromAmount: action.bound,
+            setConverterToAmount: action.bound,
+            setConverterFromError: action.bound,
+            setConverterToError: action.bound,
+            setIsTimerVisible: action.bound,
+            resetTimer: action.bound,
+            getExchangeRate: action.bound,
+            validateFromAmount: action.bound,
+            validateToAmount: action.bound,
+            onChangeConverterFromAmount: action.bound,
+            onChangeConverterToAmount: action.bound,
+            resetConverter: action.bound,
+        });
+
         this.root_store = root_store;
         this.WS = WS;
     }
 
-    @observable converter_from_amount = '';
-    @observable converter_to_amount = '';
-    @observable converter_from_error = '';
-    @observable converter_to_error = '';
-    @observable is_timer_visible = false;
+    converter_from_amount = '';
+    converter_to_amount = '';
+    converter_from_error = '';
+    converter_to_error = '';
+    is_timer_visible = false;
 
-    @action.bound
     setConverterFromAmount(amount) {
         this.converter_from_amount = amount;
     }
 
-    @action.bound
     setConverterToAmount(amount) {
         this.converter_to_amount = amount;
     }
 
-    @action.bound
     setConverterFromError(error) {
         this.converter_from_error = error;
     }
 
-    @action.bound
     setConverterToError(error) {
         this.converter_to_error = error;
     }
 
-    @action.bound
     setIsTimerVisible(is_timer_visible) {
         this.is_timer_visible = is_timer_visible;
     }
 
-    @action.bound
     resetTimer() {
         this.setIsTimerVisible(false);
     }
 
-    @action.bound
     async getExchangeRate(from_currency, to_currency) {
         const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
@@ -52,7 +65,6 @@ export default class CryptoFiatConverterStore {
         return exchange_rates.rates[to_currency];
     }
 
-    @action.bound
     validateFromAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
@@ -63,7 +75,6 @@ export default class CryptoFiatConverterStore {
         }
     }
 
-    @action.bound
     validateToAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
@@ -74,7 +85,6 @@ export default class CryptoFiatConverterStore {
         }
     }
 
-    @action.bound
     async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -108,7 +118,6 @@ export default class CryptoFiatConverterStore {
         }
     }
 
-    @action.bound
     async onChangeConverterToAmount({ target }, from_currency, to_currency) {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -147,7 +156,6 @@ export default class CryptoFiatConverterStore {
         }
     }
 
-    @action.bound
     resetConverter() {
         this.setConverterFromAmount('');
         this.setConverterToAmount('');

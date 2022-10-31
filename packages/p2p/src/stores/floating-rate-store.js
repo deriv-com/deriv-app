@@ -15,10 +15,9 @@ export default class FloatingRateStore extends BaseStore {
     is_loading;
     api_error_message = '';
     is_market_rate_changed = false;
-
+    override_exchange_rate = null;
     previous_exchange_rate = null;
     current_exchange_rate = null;
-
     exchange_rate_subscription = {};
 
     constructor(root_store) {
@@ -35,6 +34,7 @@ export default class FloatingRateStore extends BaseStore {
             is_loading: observable,
             api_error_message: observable,
             is_market_rate_changed: observable,
+            market_rate: computed,
             rate_type: computed,
             reached_target_date: computed,
             setFixedRateAdvertStatus: action.bound,
@@ -46,8 +46,13 @@ export default class FloatingRateStore extends BaseStore {
             setIsLoading: action.bound,
             setExchangeRate: action.bound,
             setIsMarketRateChanged: action.bound,
+            setOverrideExchangeRate: action.bound,
             fetchExchangeRate: action.bound,
         });
+    }
+
+    get market_rate() {
+        return this.exchange_rate > 0 ? this.exchange_rate : this.override_exchange_rate;
     }
 
     get rate_type() {
@@ -109,15 +114,24 @@ export default class FloatingRateStore extends BaseStore {
         }
     }
 
+    setOverrideExchangeRate(override_exchange_rate) {
+        this.override_exchange_rate = removeTrailingZeros(roundOffDecimal(parseFloat(override_exchange_rate), 6));
+    }
+
     fetchExchangeRate(response) {
-        const { client, ws_subscriptions } = this.root_store.general_store;
+        const { buy_sell_store, general_store } = this.root_store;
+        const { client, ws_subscriptions } = general_store;
+        const { selected_local_currency } = buy_sell_store;
+
         if (response) {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
                 ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
+                this.setExchangeRate(0);
             } else {
                 const { rates } = response.exchange_rates;
-                this.setExchangeRate(rates[client?.local_currency_config?.currency]);
+                const rate = rates[client?.local_currency_config?.currency] ?? rates[selected_local_currency];
+                this.setExchangeRate(rate);
                 this.setApiErrorMessage(null);
             }
         }

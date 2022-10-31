@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { TGenericObjectType } from './common.types';
 
 export type TIconsManifest = Readonly<{
@@ -24,7 +25,7 @@ export type TIconProps = {
     data_testid?: string;
     height?: number | string;
     icon: string;
-    onClick?: () => void;
+    onClick?: MouseEventHandler;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     size?: number | string;

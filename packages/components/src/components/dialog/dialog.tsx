@@ -55,7 +55,7 @@ const Dialog = ({
         has_close_icon,
     } = other_props;
 
-    const wrapper_ref = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const wrapper_ref = React.useRef<HTMLInputElement>();
 
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
@@ -89,9 +89,9 @@ const Dialog = ({
     };
 
     const handleClose = () => {
-        if (typeof onClose === 'function') {
+        if (onClose) {
             onClose();
-        } else if (typeof onCancel === 'function') {
+        } else if (onCancel) {
             handleCancel();
         } else {
             handleConfirm();

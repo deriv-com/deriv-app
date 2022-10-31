@@ -9,11 +9,11 @@ import { useOnClickOutside } from '../../hooks';
 
 type TDialog = {
     cancel_button_text: string;
-    className: string;
-    confirm_button_text: string;
+    className?: string;
+    confirm_button_text?: string;
     dismissable?: boolean;
-    disableApp: () => void;
-    enableApp: () => void;
+    disableApp?: () => void;
+    enableApp?: () => void;
     has_close_icon?: boolean;
     is_closed_on_cancel?: boolean;
     is_closed_on_confirm?: boolean;
@@ -21,12 +21,12 @@ type TDialog = {
     is_loading?: boolean;
     is_mobile_full_width?: boolean;
     is_visible?: boolean;
-    onCancel: () => void;
-    onClose: () => void;
+    onCancel?: () => void;
+    onClose?: () => void;
     onConfirm: () => void;
-    onEscapeButtonCancel: () => void;
-    portal_element_id: string;
-    title: string;
+    onEscapeButtonCancel?: () => void;
+    portal_element_id?: string;
+    title?: string;
 };
 
 const Dialog = ({

@@ -475,7 +475,7 @@
     grid-gap: 2.4rem;
     justify-content: center;
     padding-top: 2.4em;
-    height: 100%;
+    height: fit-content;
 
     @include mobile {
         display: flex;
@@ -483,12 +483,6 @@
         overflow-x: hidden;
         flex-direction: column;
         height: unset;
-    }
-}
-
-.cfd-demo-accounts-display .cfd-account-card__wrapper {
-    @include desktop {
-        height: auto;
     }
 }
 
@@ -733,11 +727,10 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
-        height: 100%;
+        height: fit-content;
 
         @include mobile {
             grid-template-rows: 1fr;
-            height: fit-content;
 
             &:not(:last-child) {
                 margin-bottom: 2.4rem;

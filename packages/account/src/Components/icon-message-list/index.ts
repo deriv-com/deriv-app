@@ -1,3 +1,3 @@
-import IconMessageContent from './icon-message-list';
+import IconMessageList from './icon-message-list';
 
-export default IconMessageContent;
+export default IconMessageList;

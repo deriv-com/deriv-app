@@ -5,11 +5,11 @@ import { Div100vhContainer, Text, Button, Icon, ThemedScrollbars } from '@deriv/
 import { isDesktop, isMobile } from '@deriv/shared';
 
 type TListItem = {
-    text: string;
+    text?: string;
 };
 
 type TMessage_list = {
-    message_list: string[];
+    message_list?: string[];
 };
 
 type TIconMessageList = TMessage_list & {
@@ -32,8 +32,8 @@ const ListItem = ({ text }: TListItem) => (
     </div>
 );
 
-const IconMessageList = ({ className, icon, message, message_list, onContinue }: TIconMessageList) => {
-    const has_maximum_list = message_list?.length > 3;
+const IconMessageList = ({ className, icon, message, message_list = [], onContinue }: Partial<TIconMessageList>) => {
+    const has_maximum_list = message_list.length > 3;
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <Div100vhContainer

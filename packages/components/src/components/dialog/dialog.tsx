@@ -8,7 +8,7 @@ import Text from '../text';
 import { useOnClickOutside } from '../../hooks';
 
 type TDialog = {
-    cancel_button_text: string;
+    cancel_button_text?: string;
     className?: string;
     confirm_button_text?: string;
     dismissable?: boolean;
@@ -78,7 +78,7 @@ const Dialog = ({
         if (is_closed_on_cancel && enableApp) {
             enableApp();
         }
-        onCancel();
+        if (onCancel) onCancel();
     };
 
     const handleConfirm = () => {
@@ -187,7 +187,8 @@ const Dialog = ({
     );
 
     if (portal_element_id) {
-        return ReactDOM.createPortal(dialog, document.getElementById(portal_element_id)!); // non-null assertion
+        const target_element = document.getElementById(portal_element_id);
+        if (target_element) return ReactDOM.createPortal(dialog, target_element);
     }
 
     return dialog;

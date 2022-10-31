@@ -19,7 +19,10 @@ const Orders = observer(() => {
     React.useEffect(() => {
         const disposeOrderIdReaction = reaction(
             () => order_store.order_id,
-            () => order_store.onOrderIdUpdate(),
+            () => {
+                // DO NOT REMOVE. This fixes all P2P order routing issues
+                order_store.onOrderIdUpdate();
+            },
             { fireImmediately: true }
         );
 
@@ -41,7 +44,7 @@ const Orders = observer(() => {
     if (order_store.order_information) {
         return (
             <div className='orders'>
-                <OrderDetails onPageReturn={() => order_store.hideDetails(true)} />
+                <OrderDetails />
             </div>
         );
     }

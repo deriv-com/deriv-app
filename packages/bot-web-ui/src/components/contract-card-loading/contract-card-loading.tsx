@@ -6,7 +6,13 @@ type TContractCardLoader = {
 };
 
 const ContractCardLoader = ({ speed = 3 }: TContractCardLoader) => (
-    <ContentLoader height={153} width={334} speed={speed}>
+    <ContentLoader
+        height={153}
+        width={334}
+        speed={speed}
+        primaryColor={'var(--general-section-2)'}
+        secondaryColor={'var(--general-hover)'}
+    >
         <rect x='12' y='15' rx='0' ry='0' width='41' height='25' />
         <rect x='61' y='24' rx='0' ry='0' width='91' height='8' />
         <rect x='180' y='15' rx='0' ry='0' width='41' height='25' />

@@ -37,3 +37,16 @@
         }
     }
 }
+
+.onboarding-tour-guide {
+    .dc-dialog__content {
+        &__header {
+            text-align: left;
+            margin-bottom: 2.4rem;
+        }
+
+        &__description {
+            text-align: left;
+        }
+    }
+}

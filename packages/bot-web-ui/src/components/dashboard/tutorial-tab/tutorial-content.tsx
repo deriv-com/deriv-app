@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
+import { getImageLocation } from '../../../public-path';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
 
@@ -16,8 +16,6 @@ export type TContent = {
     type: string;
     url?: string;
 };
-
-const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
 export const guide_content: TGuideContent[] = [
     {

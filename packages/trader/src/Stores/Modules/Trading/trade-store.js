@@ -118,12 +118,12 @@ export default class TradeStore extends BaseStore {
     should_show_active_symbols_loading = false;
 
     // Accumulator trade params
-    @observable accumulator_range_list = [];
-    @observable growth_rate;
-    @observable maximum_payout = 0;
-    @observable maximum_ticks = 0;
-    @observable ticks_history_stats = {};
-    @observable tick_size_barrier = 0; // TODO: maryia - remove if still unused before Accumulators release
+    accumulator_range_list = [];
+    growth_rate;
+    maximum_payout = 0;
+    maximum_ticks = 0;
+    ticks_history_stats = {};
+    tick_size_barrier = 0; // TODO: maryia - remove if still unused before Accumulators release
 
     // Multiplier trade params
     multiplier;
@@ -189,6 +189,12 @@ export default class TradeStore extends BaseStore {
         });
 
         makeObservable(this, {
+            accumulator_range_list: observable,
+            growth_rate: observable,
+            maximum_payout: observable,
+            maximum_ticks: observable,
+            ticks_history_stats: observable,
+            tick_size_barrier: observable,
             is_trade_component_mounted: observable,
             is_purchase_enabled: observable,
             is_trade_enabled: observable,
@@ -277,6 +283,7 @@ export default class TradeStore extends BaseStore {
             enablePurchase: action.bound,
             updateStore: action.bound,
             is_synthetics_available: computed,
+            show_accumulators_stats: computed,
             show_digits_stats: computed,
             setMobileDigitView: action.bound,
             pushPurchaseDataToGtm: action.bound,
@@ -304,6 +311,7 @@ export default class TradeStore extends BaseStore {
             exportLayout: action.bound,
             chartStateChange: action.bound,
             has_alternative_source: computed,
+            is_accumulator: computed,
             is_multiplier: computed,
             getFirstOpenMarket: action.bound,
         });

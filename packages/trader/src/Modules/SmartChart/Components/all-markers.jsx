@@ -418,7 +418,11 @@ const TickContract = RawMarkerMaker(
                     if (tick === entry && is_accumulators_contract) {
                         // draw line to start marker having the same y-coordinates:
                         ctx.lineTo(start.left - 1 * scale, entry.top);
-                    } else if (!is_accumulators_contract) ctx.lineTo(tick.left - 1 * scale, barrier);
+                    } else if (tick === exit && is_accumulators_contract) {
+                        // draw dashed line from end icon to exit tick:
+                        ctx.moveTo(exit.left, entry.top);
+                        ctx.lineTo(exit.left, exit.top);
+                    } else ctx.lineTo(tick.left - 1 * scale, barrier);
                     ctx.stroke();
 
                     ctx.fillStyle = color + opacity;
@@ -469,15 +473,6 @@ const TickContract = RawMarkerMaker(
                 zoom: exit.zoom,
                 icon: ICONS.END.with_color(color, getColor({ status: 'bg', is_dark_theme })),
             });
-            if (is_accumulators_contract) {
-                // draw dashed line from end icon to exit tick:
-                ctx.strokeStyle = color + opacity;
-                ctx.setLineDash([2, 2]);
-                ctx.beginPath();
-                ctx.moveTo(exit.left, entry.top);
-                ctx.lineTo(exit.left, exit.top);
-                ctx.stroke();
-            }
         }
         ctx.restore();
     }

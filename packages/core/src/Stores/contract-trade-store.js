@@ -25,13 +25,16 @@ export default class ContractTradeStore extends BaseStore {
     chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
     // Accumulators data:
-    @observable accumulators_high_barrier = '';
-    @observable accumulators_low_barrier = '';
+    accumulators_high_barrier = '';
+    accumulators_low_barrier = '';
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
+            accumulators_high_barrier: observable,
+            accumulators_low_barrier: observable,
+            current_spot_time: observable,
             contracts: observable.shallow,
             has_error: observable,
             error_message: observable,

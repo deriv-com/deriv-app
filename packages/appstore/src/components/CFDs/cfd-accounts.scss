@@ -26,20 +26,21 @@
             display: flex;
             justify-content: start;
             margin-top: 4rem;
-            & > div {
-                margin-right: 2.4rem;
-            }
-            @include mobile {
-                flex-direction: column;
-                & > div {
-                    margin-bottom: 3.6rem;
-                    margin-right: 0;
-                }
-            }
+            gap: 2.4rem;
             &--item {
+                width: 33.3%;
+                max-width: 36.8rem;
+                @include mobile {
+                    width: 100%;
+                    max-width: 100%;
+                }
                 &__add-derived {
                     margin-top: 1.4rem;
                 }
+            }
+            @include mobile {
+                flex-direction: column;
+                gap: 3.6rem;
             }
         }
     }

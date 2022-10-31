@@ -1,3 +1,4 @@
+export * from './utils/array';
 export * from './utils/brand';
 export * from './utils/browser';
 export * from './utils/config';

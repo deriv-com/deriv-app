@@ -1,12 +1,12 @@
 import React from 'react';
-import { ButtonLink, Text, Button } from '@deriv/components';
+import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import WalletIcon from 'Assets/svgs/wallet';
+import WalletIcon, { Icons } from 'Assets/svgs/wallet';
 import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 
 type TPlatformLauncherProps = {
-    app_icon: string;
+    app_icon: keyof typeof Icons;
     app_title?: string;
     app_desc?: string;
     link_to?: string;

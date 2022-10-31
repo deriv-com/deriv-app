@@ -3,12 +3,12 @@ import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
-import WalletIcon from 'Assets/svgs/wallet';
+import WalletIcon, { Icons } from 'Assets/svgs/wallet';
 
 import './static-platform-launcher.scss';
 
 type TPlatformLauncherProps = {
-    app_icon: string;
+    app_icon: keyof typeof Icons;
     app_desc?: string;
     is_grey?: boolean;
     app_title?: string;

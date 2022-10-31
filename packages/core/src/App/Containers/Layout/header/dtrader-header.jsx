@@ -12,7 +12,6 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
@@ -45,7 +44,7 @@ const RedirectToOldInterface = () => {
                 onClick={disablePreAppstore}
             >
                 <Text as='p' size='xs'>
-                    <Localize i18n_default_text='Back to old interface' />
+                    <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
                 <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>
@@ -238,7 +237,6 @@ const DTraderHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
-            <TempAppSettings />
         </header>
     );
 };

@@ -45,12 +45,14 @@ type TDMT5CompareModalContentProps = {
     is_logged_in: boolean;
     is_demo_tab: boolean;
     is_real_enabled: boolean;
+    is_virtual: boolean;
     openDerivRealAccountNeededModal: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openSwitchToRealAccountModal: () => void;
     toggleCompareAccounts: () => void;
     toggleCFDVerificationModal: () => void;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: () => void;
+    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     show_eu_related: boolean;
     account_status: GetAccountStatus;
@@ -231,8 +233,10 @@ const DMT5CompareModalContent = ({
     is_logged_in,
     is_demo_tab,
     is_real_enabled,
+    is_virtual,
     openDerivRealAccountNeededModal,
     openPasswordModal,
+    openSwitchToRealAccountModal,
     toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal,
     toggleCompareAccounts,
@@ -339,7 +343,7 @@ const DMT5CompareModalContent = ({
         return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
     const openPersonalDetailsFormOrPasswordForm = (type_of_account: { category: string; type: string }) =>
-        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal() : openPasswordModal(type_of_account);
+        !has_submitted_personal_details ? toggleCFDPersonalDetailsModal(true) : openPasswordModal(type_of_account);
 
     const onSelectRealAccount = (item: TFooterButtonData) => {
         const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
@@ -425,6 +429,8 @@ const DMT5CompareModalContent = ({
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
             openDerivRealAccountNeededModal();
+        } else if (is_virtual && !['synthetic_svg', 'financial_svg'].includes(item.action)) {
+            openSwitchToRealAccountModal();
         } else onSelectRealAccount(item);
     };
 
@@ -465,20 +471,17 @@ const DMT5CompareModalContent = ({
         );
     };
 
+    const pre_appstore_class = should_show_derivx ? '__pre-appstore' : '';
+
     const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
         <Table.Row
             className={
                 show_eu_related
                     ? 'cfd-real-compare-accounts-row-eu'
-                    : classNames(
-                          `cfd-real-compare-accounts__table-row${
-                              should_show_derivx ? '__pre-appstore' : ''
-                          }--instruments`,
-                          {
-                              [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
-                                  available_accounts_count < 6,
-                          }
-                      )
+                    : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}--instruments`, {
+                          [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
+                              available_accounts_count < 6,
+                      })
             }
         >
             <Table.Cell fixed>
@@ -515,16 +518,11 @@ const DMT5CompareModalContent = ({
                 className={
                     show_eu_related
                         ? 'cfd-real-compare-accounts-row-eu'
-                        : classNames(
-                              `cfd-real-compare-accounts__table-row${should_show_derivx ? '__pre-appstore' : ''}`,
-                              {
-                                  [`cfd-real-compare-accounts__table-row--leverage${
-                                      should_show_derivx ? '__pre-appstore' : ''
-                                  }`]: is_leverage,
-                                  [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
-                                      available_accounts_count < 6,
-                              }
-                          )
+                        : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}`, {
+                              [`cfd-real-compare-accounts__table-row--leverage${pre_appstore_class}`]: is_leverage,
+                              [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
+                                  available_accounts_count < 6,
+                          })
                 }
             >
                 <Table.Cell fixed>
@@ -579,15 +577,10 @@ const DMT5CompareModalContent = ({
                                 className={
                                     show_eu_related
                                         ? 'cfd-real-compare-accounts-row-eu'
-                                        : classNames(
-                                              `cfd-real-compare-accounts__table-header${
-                                                  should_show_derivx ? '__pre-appstore' : ''
-                                              }`,
-                                              {
-                                                  [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}`]:
-                                                      available_accounts_count < 6,
-                                              }
-                                          )
+                                        : classNames(`cfd-real-compare-accounts__table-header${pre_appstore_class}`, {
+                                              [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}`]:
+                                                  available_accounts_count < 6,
+                                          })
                                 }
                             >
                                 <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
@@ -619,16 +612,11 @@ const DMT5CompareModalContent = ({
                                 className={
                                     show_eu_related
                                         ? 'cfd-real-compare-accounts-row-eu columns-2'
-                                        : classNames(
-                                              `cfd-real-compare-accounts__table-footer${
-                                                  should_show_derivx ? '__pre-appstore' : ''
-                                              }`,
-                                              {
-                                                  [`cfd-real-compare-accounts__row-with-columns-count-${
-                                                      available_accounts_count + 1
-                                                  }`]: available_accounts_count < 6,
-                                              }
-                                          )
+                                        : classNames(`cfd-real-compare-accounts__table-footer${pre_appstore_class}`, {
+                                              [`cfd-real-compare-accounts__row-with-columns-count-${
+                                                  available_accounts_count + 1
+                                              }`]: available_accounts_count < 6,
+                                          })
                                 }
                             >
                                 <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
@@ -666,7 +654,7 @@ const DMT5CompareModalContent = ({
     );
 };
 
-export default connect(({ modules, client }: RootStore) => ({
+export default connect(({ modules, client, ui }: RootStore) => ({
     account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
     has_real_account: client.has_active_real_account,
@@ -675,6 +663,7 @@ export default connect(({ modules, client }: RootStore) => ({
     clearCFDError: modules.cfd.clearCFDError,
     current_list: modules.cfd.current_list,
     has_real_mt5_login: client.has_real_mt5_login,
+    is_virtual: client.is_virtual,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
@@ -682,4 +671,5 @@ export default connect(({ modules, client }: RootStore) => ({
     account_status: client.account_status,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
+    openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
 }))(DMT5CompareModalContent);

@@ -36,7 +36,7 @@ const RedirectToOldInterface = () => {
         <div className='trading-hub-header__redirect'>
             <BinaryLink to={routes.trade} className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
                 <Text as='p' size='xs' color='general'>
-                    <Localize i18n_default_text='Back to old interface' />
+                    <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
                 <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>

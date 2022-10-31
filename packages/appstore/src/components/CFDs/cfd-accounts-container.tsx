@@ -4,7 +4,7 @@ import CFDDemoAccounts from './cfd-demo-accounts';
 import CFDRealAccounts from './cfd-real-accounts';
 import { isLandingCompanyEnabled, CFD_PLATFORMS, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Loading, Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl } from '@deriv/components';
 import { TPlatform, TAccountCategory, TMt5StatusServer, TMt5StatusServerType, TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
 import { CompareAccountsModal } from '@deriv/cfd';
@@ -83,9 +83,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(website_status.mt5_status?.demo);
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(website_status.mt5_status?.real);
 
-    const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
-
-    if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
     return (
         <div className='cfd-accounts-container'>
             <div className='cfd-accounts__title'>

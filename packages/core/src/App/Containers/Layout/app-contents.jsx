@@ -26,12 +26,20 @@ const AppContents = ({
     platform,
     pageView,
     pushDataLayer,
+    setAppContentsScrollRef,
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_appstore } = React.useContext(PlatformContext);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
+
+    const scroll_ref = React.useRef(null);
+
+    React.useEffect(() => {
+        if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';
@@ -92,6 +100,7 @@ const AppContents = ({
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
             })}
+            ref={scroll_ref}
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
@@ -128,6 +137,7 @@ AppContents.propTypes = {
     pushDataLayer: PropTypes.func,
     notifyAppInstall: PropTypes.func,
     platform: PropTypes.string,
+    setAppContentsScrollRef: PropTypes.func,
 };
 
 export default withRouter(
@@ -147,5 +157,6 @@ export default withRouter(
         is_route_modal_on: ui.is_route_modal_on,
         notifyAppInstall: ui.notifyAppInstall,
         platform: common.platform,
+        setAppContentsScrollRef: ui.setAppContentsScrollRef,
     }))(AppContents)
 );

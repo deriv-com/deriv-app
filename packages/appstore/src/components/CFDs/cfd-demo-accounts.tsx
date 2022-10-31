@@ -104,7 +104,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         <div className='cfd-demo-account'>
             <div className='cfd-demo-account__accounts'>
                 {available_demo_accounts.map(account => (
-                    <div className={`cfd-demo-account__accounts-${account.name}`} key={account.name}>
+                    <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
                         {existingDemoAccounts(account.platform, account.type)
                             ? existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
                                   const non_eu_accounts =
@@ -116,10 +116,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           : existing_account.landing_company_short?.toUpperCase();
 
                                   return (
-                                      <div
-                                          className={`cfd-demo-account__accounts-${account.name}--item`}
-                                          key={existing_account.login}
-                                      >
+                                      <React.Fragment key={existing_account.name}>
                                           <AccountManager
                                               has_account={true}
                                               type={existing_account.market_type}
@@ -149,11 +146,11 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                               }}
                                               description={account.description}
                                           />
-                                      </div>
+                                      </React.Fragment>
                                   );
                               })
                             : account.is_visible && (
-                                  <div className='cfd-demo-account__accounts--item' key={account.name}>
+                                  <React.Fragment key={account.name}>
                                       <AccountManager
                                           has_account={false}
                                           type={account.type || ''}
@@ -166,7 +163,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                           }}
                                           description={account.description}
                                       />
-                                  </div>
+                                  </React.Fragment>
                               )}
                     </div>
                 ))}

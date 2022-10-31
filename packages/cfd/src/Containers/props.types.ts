@@ -17,10 +17,12 @@ export type TCFDPersonalDetailsModalProps = {
     enableApp: () => void;
     disableApp: () => void;
     getChangeableFields: () => string[];
+    is_from_mt5_compare_accounts_table: boolean;
     is_open: boolean;
     context: RootStore;
     openPasswordModal: () => void;
-    toggleCFDPersonalDetailsModal: () => void;
+    toggleCompareAccounts: () => void;
+    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleJurisdictionModal: () => void;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
@@ -187,6 +189,8 @@ export type TVerificationStatusBannerProps = {
     disabled: boolean;
     is_virtual: boolean;
     type_of_card: string;
+    real_synthetic_accounts_existing_data: TExistingData;
+    real_financial_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
 };
 
@@ -224,7 +228,7 @@ export type TJurisdictionModalProps = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: () => void;
+    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;

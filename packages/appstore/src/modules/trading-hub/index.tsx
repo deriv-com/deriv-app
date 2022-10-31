@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import platform_config from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
-import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
@@ -30,8 +30,9 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client } = useStores();
-    const { is_logged_in, is_eu, is_eu_country } = client;
+    const { ui, modules, common, client, trading_hub_store } = useStores();
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
+        client;
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -43,7 +44,8 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on, is_tour_open, toggleIsTourOpen } = ui;
+    const { is_dark_mode_on } = ui;
+    const { is_tour_open, toggleIsTourOpen } = trading_hub_store;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
     const [platform_type, setPlatformType] = React.useState<any>('cfd');
@@ -101,12 +103,9 @@ const TradingHub: React.FC = () => {
     ];
 
     tour_step_locale.last = (
-        <Localize
-            i18n_default_text='OK'
-            onClick={() => {
-                toggleIsTourOpen();
-            }}
-        />
+        <div onClick={() => toggleIsTourOpen(false)}>
+            <Localize i18n_default_text='OK' />
+        </div>
     );
 
     tour_step_locale.back = (
@@ -117,17 +116,21 @@ const TradingHub: React.FC = () => {
             medium
             onClick={() => {
                 history.push(routes.onboarding);
-                toggleIsTourOpen();
+                toggleIsTourOpen(true);
             }}
         />
     );
+
+    const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
+
+    if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 
     return (
         <div id='trading-hub' className='trading-hub'>
             <div className='trading-hub_header'>
                 <div className='trading-hub_header--title'>
                     <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>
-                        {localize('Welcome to Deriv trading hub')}
+                        {localize("Trader's hub")}
                     </Text>
                 </div>
                 <div className='trading-hub_header--account'>

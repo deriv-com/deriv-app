@@ -99,6 +99,12 @@ const setProposalMultiplier = (store, obj_multiplier) => {
 
 const setProposalAccumulator = (store, obj_accumulator) => {
     obj_accumulator.growth_rate = store.growth_rate;
+
+    obj_accumulator.limit_order = store.has_take_profit ? {} : undefined;
+
+    if (store.has_take_profit && store.take_profit) {
+        obj_accumulator.limit_order.take_profit = +store.take_profit || 0; // send positive take_profit to API
+    }
 };
 
 const createProposalRequestForContract = (store, type_of_contract) => {

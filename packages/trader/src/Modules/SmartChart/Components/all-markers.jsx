@@ -146,11 +146,18 @@ const draw_partial_shade = ({
     scale,
 }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
+    const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
+    const is_top_visible = top < end_top;
+    const is_bottom_visible = bottom < end_top;
+    const displayed_top = is_top_visible ? top : end_top;
+    const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const gradient = ctx.createLinearGradient(start_left, top, start_left, bottom);
+    const is_start_left_visible = start_left < end_left;
+    if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
 
-    if (is_between_shade || is_bottom_shade) {
+    if (is_top_visible && (is_between_shade || is_bottom_shade)) {
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.arc(start_left, top, 1.5, 0, Math.PI * 2);
@@ -162,7 +169,7 @@ const draw_partial_shade = ({
         ctx.lineTo(end_left, top);
         ctx.stroke();
     }
-    if (is_between_shade || !is_bottom_shade) {
+    if (is_bottom_visible && (is_between_shade || !is_bottom_shade)) {
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.arc(start_left, bottom, 1.5, 0, Math.PI * 2);
@@ -181,7 +188,7 @@ const draw_partial_shade = ({
     }
 
     ctx.fillStyle = fill_color || is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
-    ctx.fillRect(start_left, top, end_left - start_left, Math.abs(bottom - top));
+    ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
@@ -194,7 +201,7 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, color, font, is_dark_theme, text, text_align, left, top, scale }) => {
+const shadowed_text = ({ ctx, color, font, is_dark_theme, max_width, text, text_align, left, top, scale }) => {
     ctx.textAlign = text_align || 'center';
     const size = Math.floor(scale * 12);
     ctx.font = font || `bold ${size}px BinarySymbols, Roboto`;
@@ -205,7 +212,7 @@ const shadowed_text = ({ ctx, color, font, is_dark_theme, text, text_align, left
     }
     // fillText once in firefox due to disabling of text shadows, for default cases where its enabled, set to 5 (to add blur intensity)
     for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
-        ctx.fillText(text, left, top);
+        ctx.fillText(text, left, top, max_width);
     }
 };
 
@@ -283,7 +290,7 @@ const TickContract = RawMarkerMaker(
                     // draw 2 barriers with a shade between them for an open Stay in contract
                     draw_partial_shade({
                         ctx,
-                        start_left: status !== 'open' ? exit.left : previous_tick.left,
+                        start_left: previous_tick.left,
                         stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                         top: barrier,
                         bottom: barrier_2,
@@ -298,10 +305,24 @@ const TickContract = RawMarkerMaker(
                 return;
             }
 
-            if (start.visible || entry.visible || exit.visible) {
+            if (start.visible || entry.visible) {
                 const sign = profit > 0 ? '+' : '';
                 const profit_text = `${sign}${profit}`;
                 ctx.save();
+                const end_left =
+                    ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
+                const getMaxWidth = (is_profit_text, left, profit_text_width) => {
+                    if (
+                        !is_profit_text &&
+                        left + profit_text_width < end_left &&
+                        end_left - (left + profit_text_width) > 32
+                    ) {
+                        return end_left - (left + profit_text_width);
+                    } else if (is_profit_text && left < end_left && end_left - left > 52) {
+                        return end_left - left;
+                    }
+                    return 0;
+                };
                 if (current_spot_time.visible && !is_sold) {
                     // draw 3 text items with different font size and weight:
                     let profit_text_width = 0;
@@ -335,6 +356,7 @@ const TickContract = RawMarkerMaker(
                             color: getColor({ status: 'open', profit }),
                             left: text === profit_text ? left : left + profit_text_width,
                             top,
+                            max_width: getMaxWidth(text === profit_text, left, profit_text_width),
                         });
                         profit_text_width =
                             text === profit_text
@@ -394,7 +416,7 @@ const TickContract = RawMarkerMaker(
                 .filter((tick, index) => {
                     if (is_accumulators_contract) {
                         // mark only 2 latest ticks for accumulators
-                        return index >= ticks.length - 2;
+                        return index >= ticks.length - 2 && tick.visible;
                     }
                     return tick.visible;
                 })

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1667205752; // should be an epoch of some real tick!
-const dummy_start_time = dummy_current_time - 7;
+const dummy_current_time = 1667209628; // should be an epoch of some real tick!
+const dummy_start_time = dummy_current_time - 17;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6513.9;
-const low_barrier = 6513.5;
+const high_barrier = 6521.9;
+const low_barrier = 6521.5;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
@@ -14,6 +14,16 @@ const tick_5_price = low_barrier + 0.5;
 const entry_spot = low_barrier + 0.33;
 let exit_tick, exit_tick_display_value, exit_tick_time;
 const tick_8_price = low_barrier + 0.75;
+const tick_9_price = low_barrier + 0.5;
+const tick_10_price = low_barrier + 0.65;
+const tick_11_price = low_barrier + 0.15;
+const tick_12_price = low_barrier + 0.74;
+const tick_13_price = low_barrier + 0.34;
+const tick_14_price = low_barrier + 0.23;
+const tick_15_price = low_barrier + 0.53;
+const tick_16_price = low_barrier + 0.46;
+const tick_17_price = low_barrier + 0.79;
+const tick_18_price = low_barrier + 0.12;
 const previous_tick_price = low_barrier + 0.19;
 const current_spot = low_barrier + 0.45;
 const take_profit_price = low_barrier + 3;
@@ -31,7 +41,7 @@ const stay_in_history_stats = [
     ...new Array(33).fill(2853),
     2913,
 ];
-const tick_passed = 4;
+const tick_passed = 14;
 const tick_count = 1000;
 const symbol = 'R_10';
 const symbol_display_name = 'Volatility 10 Index';
@@ -57,16 +67,16 @@ let is_expired = 0; // 0 || 1
 // const winLoseAndOpenContractInSec = (ms1, ms2, ms3) => {
 //     setInterval(() => {
 //         setTimeout(() => {
-contract_status = 'won'; // 'lost', 'won' or 'open'
-position_status = 'profit'; // 'profit' or 'loss'
-result = 'won'; // 'won' or 'lost'
-profit = +0.15;
-profit_percentage = +1.5;
-is_sold = 1; // 0 || 1
-exit_tick = current_spot;
-exit_tick_display_value = `${current_spot}`;
-exit_tick_time = dummy_current_time;
-is_expired = 1;
+// contract_status = 'won'; // 'lost', 'won' or 'open'
+// position_status = 'profit'; // 'profit' or 'loss'
+// result = 'won'; // 'won' or 'lost'
+// profit = +0.15;
+// profit_percentage = +1.5;
+// is_sold = 1; // 0 || 1
+// exit_tick = current_spot;
+// exit_tick_display_value = `${current_spot}`;
+// exit_tick_time = dummy_current_time;
+// is_expired = 1;
 //         }, ms1);
 //         setTimeout(() => {
 // contract_status = 'lost'; // 'lost', 'won' or 'open'
@@ -162,7 +172,57 @@ export const getDummyPOCResponseForACCU = time_now => {
                     tick_display_value: `${tick_8_price}`,
                 },
                 {
+                    epoch: dummy_start_time + 4,
+                    tick: tick_9_price,
+                    tick_display_value: `${tick_9_price}`,
+                },
+                {
                     epoch: dummy_start_time + 5,
+                    tick: tick_10_price,
+                    tick_display_value: `${tick_10_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 6,
+                    tick: tick_11_price,
+                    tick_display_value: `${tick_11_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 7,
+                    tick: tick_12_price,
+                    tick_display_value: `${tick_12_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 8,
+                    tick: tick_13_price,
+                    tick_display_value: `${tick_13_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 9,
+                    tick: tick_14_price,
+                    tick_display_value: `${tick_14_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 10,
+                    tick: tick_15_price,
+                    tick_display_value: `${tick_15_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 11,
+                    tick: tick_16_price,
+                    tick_display_value: `${tick_16_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 12,
+                    tick: tick_17_price,
+                    tick_display_value: `${tick_17_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 13,
+                    tick: tick_18_price,
+                    tick_display_value: `${tick_18_price}`,
+                },
+                {
+                    epoch: dummy_start_time + 14,
                     tick: previous_tick_price,
                     tick_display_value: `${previous_tick_price}`,
                 },
@@ -260,7 +320,57 @@ export const getDummyAllPositionsForACCU = time_now => {
                             tick_display_value: `${tick_8_price}`,
                         },
                         {
+                            epoch: dummy_start_time + 4,
+                            tick: tick_9_price,
+                            tick_display_value: `${tick_9_price}`,
+                        },
+                        {
                             epoch: dummy_start_time + 5,
+                            tick: tick_10_price,
+                            tick_display_value: `${tick_10_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 6,
+                            tick: tick_11_price,
+                            tick_display_value: `${tick_11_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 7,
+                            tick: tick_12_price,
+                            tick_display_value: `${tick_12_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 8,
+                            tick: tick_13_price,
+                            tick_display_value: `${tick_13_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 9,
+                            tick: tick_14_price,
+                            tick_display_value: `${tick_14_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 10,
+                            tick: tick_15_price,
+                            tick_display_value: `${tick_15_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 11,
+                            tick: tick_16_price,
+                            tick_display_value: `${tick_16_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 12,
+                            tick: tick_17_price,
+                            tick_display_value: `${tick_17_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 13,
+                            tick: tick_18_price,
+                            tick_display_value: `${tick_18_price}`,
+                        },
+                        {
+                            epoch: dummy_start_time + 14,
                             tick: previous_tick_price,
                             tick_display_value: `${previous_tick_price}`,
                         },
@@ -328,7 +438,57 @@ export const getDummyAllPositionsForACCU = time_now => {
                         tick_display_value: `${tick_8_price}`,
                     },
                     {
+                        epoch: dummy_start_time + 4,
+                        tick: tick_9_price,
+                        tick_display_value: `${tick_9_price}`,
+                    },
+                    {
                         epoch: dummy_start_time + 5,
+                        tick: tick_10_price,
+                        tick_display_value: `${tick_10_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 6,
+                        tick: tick_11_price,
+                        tick_display_value: `${tick_11_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 7,
+                        tick: tick_12_price,
+                        tick_display_value: `${tick_12_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 8,
+                        tick: tick_13_price,
+                        tick_display_value: `${tick_13_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 9,
+                        tick: tick_14_price,
+                        tick_display_value: `${tick_14_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 10,
+                        tick: tick_15_price,
+                        tick_display_value: `${tick_15_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 11,
+                        tick: tick_16_price,
+                        tick_display_value: `${tick_16_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 12,
+                        tick: tick_17_price,
+                        tick_display_value: `${tick_17_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 13,
+                        tick: tick_18_price,
+                        tick_display_value: `${tick_18_price}`,
+                    },
+                    {
+                        epoch: dummy_start_time + 14,
                         tick: previous_tick_price,
                         tick_display_value: `${previous_tick_price}`,
                     },

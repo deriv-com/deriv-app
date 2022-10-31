@@ -5,17 +5,13 @@
     padding-right: 1.6rem;
 
     &__icon {
-        margin-right: 16px;
-        width: 16px;
-        height: 16px;
+        margin-right: 1.6rem;
+        width: 1.6rem;
+        height: 1.6rem;
 
         &-wrapper {
             display: flex;
             align-items: center;
         }
-    }
-    &__title {
-        @include typeface(--paragraph-left-normal-black);
-        line-height: 1.25;
     }
 }

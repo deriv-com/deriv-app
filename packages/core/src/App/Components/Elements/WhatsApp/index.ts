@@ -1,3 +1,3 @@
 import WhatsApp from './whatsapp';
 
-export { WhatsApp };
+export default WhatsApp;

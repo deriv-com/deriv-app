@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
-import { Popover, Icon } from '@deriv/components';
+import { Popover, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
@@ -15,7 +15,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 <div className='livechat__icon-wrapper'>
                     <Icon icon='IcLiveChat' className='livechat__icon' />
                 </div>
-                <p className='livechat__title'>{localize('Live chat')}</p>
+                <Text size='xs'>{localize('Live chat')}</Text>
             </div>
         );
 

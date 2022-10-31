@@ -3,23 +3,22 @@ import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
+import { whatsapp_url } from '@deriv/shared';
 
 type TWhatsAppProps = {
-    is_nigeria: boolean;
-    is_south_africa: boolean;
+    can_have_whatsapp: boolean;
 };
 
-const WhatsApp = ({ is_nigeria, is_south_africa }: TWhatsAppProps) => {
+const WhatsApp = ({ can_have_whatsapp }: TWhatsAppProps) => {
     const liveChat = useLiveChat();
 
     if (!liveChat.isReady) return null;
 
-    if (!(is_nigeria || is_south_africa)) return null;
+    if (!can_have_whatsapp) return null;
 
     return (
         <a
-            href='https://wa.me/35699578341'
-            id='dt_whatsapp'
+            href={whatsapp_url}
             aria-label={localize('WhatsApp')}
             className='footer__link'
             target='_blank'
@@ -33,6 +32,5 @@ const WhatsApp = ({ is_nigeria, is_south_africa }: TWhatsAppProps) => {
 };
 
 export default connect(({ client }) => ({
-    is_nigeria: client.is_nigeria,
-    is_south_africa: client.is_south_africa,
+    can_have_whatsapp: client.can_have_whatsapp,
 }))(WhatsApp);

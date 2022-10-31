@@ -606,16 +606,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_nigeria() {
-        return (this.residence || this.clients_country) === 'ng';
-    }
-
-    @computed
-    get is_south_africa() {
-        return (this.residence || this.clients_country) === 'za';
-    }
-
-    @computed
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
@@ -705,6 +695,15 @@ export default class ClientStore extends BaseStore {
             'lv',
         ].includes(this.residence);
         return countries;
+    }
+
+    @computed
+    get can_have_whatsapp() {
+        const country = this.residence || this.clients_country;
+        const allowed_countries = ['za', 'ng'];
+        const is_allowed_country = allowed_countries.includes(country);
+
+        return is_allowed_country;
     }
 
     @computed

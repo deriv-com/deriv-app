@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -368,8 +368,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                                 <Icon icon='IcWhatsApp' className='drawer-icon' />
                                                 <a
-                                                    className='whatsapp-link'
-                                                    href='https://wa.me/35699578341'
+                                                    className='header__menu-mobile-whatsapp-link'
+                                                    href={whatsapp_url}
                                                     target='_blank'
                                                     rel='noopener noreferrer'
                                                 >

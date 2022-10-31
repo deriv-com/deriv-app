@@ -22,7 +22,14 @@
         border-bottom: 1px solid var(--general-section-2);
         padding-bottom: 1.6rem;
         margin-bottom: 1.6rem;
+
+        &-link {
+            text-decoration: none;
+            color: var(--text-general);
+            padding-left: 1.6rem;
+        }
     }
+
     &__menu-mobile-body-wrapper {
         position: relative;
         height: calc(100% - 4rem);
@@ -226,10 +233,4 @@
             height: #{$MOBILE_HEADER_HEIGHT - 1px};
         }
     }
-}
-
-.whatsapp-link {
-    text-decoration: none;
-    color: var(--text-general);
-    padding-left: 1.6rem;
 }

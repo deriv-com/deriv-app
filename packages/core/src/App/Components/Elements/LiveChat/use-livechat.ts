@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 
 // Todo: Should move this declaration into a .d.ts file.
+// Todo: Should break this into smaller hooks or utility functions.
 declare global {
     interface Window {
         LiveChatWidget: {

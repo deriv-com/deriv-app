@@ -46,12 +46,18 @@ const BotBuilder = ({ app, active_tab, has_onboard_tour_started, is_preview_on_p
                             showProgress
                             styles={{
                                 options: {
-                                    arrowColor: 'var(--text-general)',
-                                    backgroundColor: 'var(--text-general)',
+                                    arrowColor: 'var(--general-section-7)',
+                                    backgroundColor: 'var(--general-section-7)',
                                     overlayColor: 'rgba(0, 0, 0, 0.5)',
                                     primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-colored-background)',
+                                    textColor: 'var(--text-joyride-tour)',
                                     spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                },
+                                buttonBack: {
+                                    border: '0.1rem solid var(--text-less-prominent)',
+                                    marginRight: '1rem',
+                                    borderRadius: '0.4rem',
+                                    color: 'var(--text-joyride-tour)',
                                 },
                             }}
                         />

@@ -7,8 +7,8 @@ import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
 import { getDocumentData, getRegex } from './utils';
-import BackButtonIcon from '../../../Assets/ic-poi-back-btn.svg';
-import DocumentSubmitLogo from '../../../Assets/ic-document-submit-icon.svg';
+import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
+import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);

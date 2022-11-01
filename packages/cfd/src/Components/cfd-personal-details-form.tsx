@@ -135,15 +135,17 @@ const validatePersonalDetails = ({
     has_place_of_birth,
 }: TValidatePersonalDetailsParams) => {
     const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
-    const [tin_format] = tax_residence_obj?.tin_format ?? [];
-    const tin_regex = tin_format || '^[A-Za-z0-9./s-]{0,25}$'; // fallback to API's default rule check
+
+    const tin_format = tax_residence_obj?.tin_format;
+
+    const tin_regex = tin_format || ['^[A-Za-z0-9./s-]{0,25}$']; // fallback to API's default rule check
 
     const validations: { [key: string]: ((v: string) => boolean | RegExpMatchArray | null)[] } = {
         citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
             (v: string) => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
-            (v: string) => (tin_regex ? v.match(tin_regex) : true),
+            (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
         ],
         account_opening_reason: [
             (v: string) => !!v,
@@ -277,7 +279,7 @@ const CFDPersonalDetailsForm = ({
                     is_in_personal_details_modal && touched.place_of_birth && errors.place_of_birth;
                 const tax_residence_error = touched.tax_residence && errors.tax_residence;
                 const account_opening_reason_error = touched.account_opening_reason && errors.account_opening_reason;
-                const is_citizenship_disabled = !!(value.citizen && is_fully_authenticated);
+                const is_citizenship_disabled = !!(value.citizen && !changeable_fields?.includes('citizen'));
                 const is_place_of_birth_disabled =
                     !!(value.place_of_birth && is_fully_authenticated) ||
                     changeable_fields?.every(field => field !== 'place_of_birth');

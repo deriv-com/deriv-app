@@ -44,7 +44,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                 expand_section={false}
                 elevation_type='xs'
                 onToggle={() => {
-                    /**do something */
+                    // TODO: add some actions if needed; otherwise we need to make this optional
                 }}
                 type='containerWithBorder'
                 className='wallet-account'
@@ -73,16 +73,16 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                     />
                                 </div>
                             </div>
-                        </div>
-                        <div className='wallet-account__balance'>
-                            {isAccountVirtual && (
-                                <Text bold={false} type='small' align='right'>
-                                    {localize('Virtual balance')}
+                            <div className='wallet-account__balance'>
+                                {isAccountVirtual && (
+                                    <Text bold={false} type='small' align='right'>
+                                        {localize('Virtual balance')}
+                                    </Text>
+                                )}
+                                <Text bold type='subtitle-1'>
+                                    <Money amount={account.wallet?.balance} currency={account.currency} show_currency />
                                 </Text>
-                            )}
-                            <Text bold type='subtitle-1'>
-                                <Money amount={account.wallet?.balance} currency={account.currency} show_currency />
-                            </Text>
+                            </div>
                         </div>
                     </div>
                 </Accordion.Title>

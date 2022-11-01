@@ -202,7 +202,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
-        refreshNotifications();
+        props.refreshNotifications();
         props.onMount();
         return () => {
             props.onUnmount();
@@ -397,7 +397,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
         setIsAcuityModalOpen,
-        refreshNotifications,
     } = props;
 
     const should_show_missing_real_account =

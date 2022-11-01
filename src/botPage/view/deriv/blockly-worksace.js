@@ -154,6 +154,30 @@ const setElementActions = blockly => {
   addEventHandlers(blockly);
 };
 
+const addExportButtonToPanel = panelId => {
+  const buttonHtml =
+    '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
+  const $button = $(buttonHtml);
+  const panelSelector = `[aria-describedby="${panelId}"]`;
+  if (!$(`${panelSelector} .icon-save`).length) {
+    $button.insertBefore(`${panelSelector} .icon-close`);
+    $(`${panelSelector} .icon-close`).blur();
+    $($(`${panelSelector} .icon-save`)).click(() => {
+      exportContent[panelId]();
+    });
+  }
+};
+
+export const showSummary = () => {
+  $('#summaryPanel').dialog('option', 'minWidth', 770).dialog('open');
+  addExportButtonToPanel('summaryPanel');
+};
+
+export const logButton = () => {
+  $('#logPanel').dialog('open');
+  addExportButtonToPanel('logPanel');
+};
+
 const addBindings = blockly => {
   const stop = e => {
     if (e) {
@@ -219,31 +243,6 @@ const addBindings = blockly => {
   exportContent.logPanel = () => {
     globalObserver.emit('log.export');
   };
-
-  const addExportButtonToPanel = panelId => {
-    const buttonHtml =
-      '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
-    const $button = $(buttonHtml);
-    const panelSelector = `[aria-describedby="${panelId}"]`;
-    if (!$(`${panelSelector} .icon-save`).length) {
-      $button.insertBefore(`${panelSelector} .icon-close`);
-      $(`${panelSelector} .icon-close`).blur();
-      $($(`${panelSelector} .icon-save`)).click(() => {
-        exportContent[panelId]();
-      });
-    }
-  };
-
-  const showSummary = () => {
-    $('#summaryPanel').dialog('option', 'minWidth', 770).dialog('open');
-    addExportButtonToPanel('summaryPanel');
-  };
-
-  addEvent('showSummary',showSummary);
-    addEvent('logButton', () => {
-    $('#logPanel').dialog('open');
-    addExportButtonToPanel('logPanel');
-  });
 
   globalObserver.register('ui.logout', () => {
     saveBeforeUnload();

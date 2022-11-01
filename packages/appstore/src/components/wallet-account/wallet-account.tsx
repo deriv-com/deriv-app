@@ -54,24 +54,22 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                     />
                                 </Text>
                                 <div className='wallet-account__actions'>
-                                    <WalletActionButton size='small' label='Transfer' icon='icAppstoreTransfer' />
-                                    <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
                                     <WalletActionButton
                                         size='small'
-                                        label='Reset Balance'
+                                        label={localize('Transfer')}
+                                        icon='icAppstoreTransfer'
+                                    />
+                                    <WalletActionButton
+                                        size='small'
+                                        label={localize('Transaction')}
+                                        icon='icAppstoreTransaction'
+                                    />
+                                    <WalletActionButton
+                                        size='small'
+                                        label={localize('Reset Balance')}
                                         icon='icAppstoreResetBalance'
                                     />
                                 </div>
-                            </div>
-                            <div className='wallet-account__balance'>
-                                {isAccountVirtual && (
-                                    <Text bold={false} type='small' align='right'>
-                                        {localize('Virtual balance')}
-                                    </Text>
-                                )}
-                                <Text bold type='subtitle-1'>
-                                    <Money amount={account.wallet?.balance} currency={account.currency} show_currency />
-                                </Text>
                             </div>
                         </div>
                     </div>
@@ -198,7 +196,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                             <Text bold={false} type='paragraph-1' align='right'>
                                 {localize('You have added a Demo Deriv Apps account.')}
                             </Text>
-                            <Button className='' size='medium' color='secondary'>
+                            <Button className='' size='medium' color='secondary' onClick={wallet_store.toggleModal}>
                                 {localize('Back to Trading Hub')}
                             </Button>
                         </div>

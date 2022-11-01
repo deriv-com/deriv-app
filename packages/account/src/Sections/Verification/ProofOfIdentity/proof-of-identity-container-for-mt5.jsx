@@ -18,7 +18,7 @@ const ShowDemoMessage = () => (
             line_height='m'
             weight='bold'
         >
-            {localize('This feature is not available for demo accounts.')}
+            {localize('Switch to your real account to create a Deriv MT5 account')}
         </Text>
     </div>
 );

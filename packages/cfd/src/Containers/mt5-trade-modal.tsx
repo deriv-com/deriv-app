@@ -59,7 +59,13 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
                 <Text size='xs'>***************</Text>
             </Popover>
         </div>
-        <Popover alignment='bottom' message={localize('Change Password')} zIndex={9999}>
+        <Popover
+            className='cfd-trade-modal__password-popover'
+            alignment='left'
+            message={localize('Change Password')}
+            relative_render
+            zIndex={9999}
+        >
             <Button
                 className='cfd-trade-modal__password-action'
                 transparent

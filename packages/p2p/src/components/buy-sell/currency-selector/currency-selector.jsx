@@ -32,7 +32,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             data-lpignore='true'
                             historyValue={default_value}
                             is_list_visible
-                            leading_icon={<Icon className='currency-selector-p2p__search-icon' icon='IcSearch' />}
+                            leading_icon={<Icon className='currency-selector__search-icon' icon='IcSearch' />}
                             list_height={isMobile() ? '100%' : '288px'}
                             list_items={filtered_currency_list}
                             not_found_text={

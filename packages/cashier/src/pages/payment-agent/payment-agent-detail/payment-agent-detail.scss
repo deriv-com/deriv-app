@@ -1,0 +1,13 @@
+.payment-agent-detail {
+    display: flex;
+    &__icon-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0.8rem;
+    }
+    &__link {
+        text-decoration: none;
+        word-break: break-word;
+    }
+}

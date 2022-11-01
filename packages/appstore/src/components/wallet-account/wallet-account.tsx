@@ -41,9 +41,21 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 />
                             </Text>
                             <div className='wallet-account__actions'>
-                                <WalletActionButton size='small' label='Transfer' icon='icAppstoreTransfer' />
-                                <WalletActionButton size='small' label='Transaction' icon='icAppstoreTransaction' />
-                                <WalletActionButton size='small' label='Reset Balance' icon='icAppstoreResetBalance' />
+                                <WalletActionButton
+                                    size='small'
+                                    label={localize('Transfer')}
+                                    icon='icAppstoreTransfer'
+                                />
+                                <WalletActionButton
+                                    size='small'
+                                    label={localize('Transaction')}
+                                    icon='icAppstoreTransaction'
+                                />
+                                <WalletActionButton
+                                    size='small'
+                                    label={localize('Reset Balance')}
+                                    icon='icAppstoreResetBalance'
+                                />
                             </div>
                         </div>
                     </div>
@@ -86,21 +98,25 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                         </div>
                         <div className='wallet-account__apps '>
                             <AppsLauncher
-                                app_name='Derived'
+                                app_name={localize('Derived')}
                                 icon_name='TradingDerived'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                description='Trade CFDs on MT5 with synthetic indices that simulate real-world market movements.'
+                                description={localize(
+                                    'Trade CFDs on MT5 with synthetic indices that simulate real-world market movements.'
+                                )}
                             />
 
                             <AppsLauncher
-                                app_name='Financial'
+                                app_name={localize('Financial')}
                                 icon_name='TradingFinancial'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                                description={localize(
+                                    'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                                )}
                             />
                         </div>
                     </div>
@@ -113,12 +129,14 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                         </div>
                         <div className='wallet-account__apps'>
                             <AppsLauncher
-                                app_name='Deriv X2'
+                                app_name={localize('Deriv X2')}
                                 icon_name='DerivX'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
-                                description='Trade CFDs on Deriv X with synthetic indices that simulate real-world market movements.'
+                                description={localize(
+                                    'Trade CFDs on Deriv X with synthetic indices that simulate real-world market movements.'
+                                )}
                             />
                         </div>
                     </div>
@@ -142,12 +160,14 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                     <div className='wallet-account__deriv-apps'>
                         <AppsLauncher
                             className='wallet-account__app-launcher--full-width'
-                            app_name='Deriv Apps'
+                            app_name={localize('Deriv Apps')}
                             icon_name='DerivApps'
                             is_app_installed={false}
                             button_className='wallet-account__app-launcher-button'
                             jurisdiction=''
-                            description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                            description={localize(
+                                'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                            )}
                         />
                         <div className='test'>apps</div>
                     </div>

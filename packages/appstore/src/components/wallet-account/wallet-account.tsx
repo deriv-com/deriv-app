@@ -28,16 +28,6 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
     const isAccountVirtual = account.is_virtual === 1;
     const { wallet_store } = useStores();
 
-    const actionButtons: TModalActionButton[] = [
-        {
-            id: 1,
-            text: 'Back to Trading Hub',
-            color: 'secondary',
-            onClick: () => {
-                //your action
-            },
-        },
-    ];
     return (
         <>
             <Accordion
@@ -176,8 +166,9 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 button_className='wallet-account__app-launcher-button'
                                 jurisdiction=''
                                 description='Trade CFDs on MT5 with forex, stocks &amp; indices, commodities, and cryptocurrencies.'
+                                handleClick={wallet_store.toggleModal}
                             />
-                            <div className='test'>apps</div>
+                            <div>apps</div>
                         </div>
                     </div>
                 </Accordion.Content>
@@ -191,7 +182,6 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                         has_close_button={true}
                         has_title_separator={true}
                         has_footer_separator={false}
-                        action_buttons={actionButtons}
                         should_prevent_close_on_click_outside={false}
                         style={{ width: '60rem' }}
                     >
@@ -208,6 +198,9 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                             <Text bold={false} type='paragraph-1' align='right'>
                                 {localize('You have added a Demo Deriv Apps account.')}
                             </Text>
+                            <Button className='' size='medium' color='secondary'>
+                                {localize('Back to Trading Hub')}
+                            </Button>
                         </div>
                     </Modal.PageContent>
                 </Modal.Portal>

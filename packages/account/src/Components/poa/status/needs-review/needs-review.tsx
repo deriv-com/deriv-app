@@ -5,7 +5,12 @@ import IconMessageContent from 'Components/icon-message-content';
 import PoiButton from 'Components/poi/poi-button';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 
-export const NeedsReview = ({ needs_poi, is_description_enabled = true }) => {
+type TNeedsReview = {
+    needs_poi: boolean;
+    is_description_enabled?: boolean;
+};
+
+export const NeedsReview = ({ needs_poi, is_description_enabled = true }: TNeedsReview) => {
     const message = localize('Your proof of address was submitted successfully');
     if (!needs_poi) {
         return (

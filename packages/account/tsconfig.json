@@ -12,10 +12,9 @@
             "Modules/*": ["src/Modules/*"],
             "Sections/*": ["src/Sections/*"],
             "Stores/*": ["src/Stores/*"],
-            "Styles/*": ["src/Styles/*"],
             "Types": ["src/Types"],
-            "@deriv/*": ["../*/src"]
+            "@deriv/*": ["../*/src"],
         }
     },
-    "include": ["src", "globals.d.ts"]
+    "include": ["src"]
 }

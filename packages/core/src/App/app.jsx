@@ -9,13 +9,13 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
+    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
-    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -64,6 +64,14 @@ const AppWithoutTranslation = ({ root_store }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const checkInputClick = React.useCallback(() => {
+        if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
+            root_store.ui.setIsInputClicked(true);
+        } else {
+            root_store.ui.setIsInputClicked(false);
+        }
+    }, [root_store.ui]);
+
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
@@ -85,22 +93,14 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.ui]);
 
-    const checkInputClick = React.useCallback(() => {
-        if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
-            root_store.ui.setIsInputClicked(true);
-        } else {
-            root_store.ui.setIsInputClicked(false);
-        }
-    }, [root_store.ui]);
-
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
         window.addEventListener('resize', debouncedHandleResize);
         window.addEventListener('click', checkInputClick);
 
         return () => {
-            window.removeEventListener('click', checkInputClick);
             window.removeEventListener('resize', debouncedHandleResize);
+            window.removeEventListener('click', checkInputClick);
         };
     }, [checkInputClick, handleResize]);
 

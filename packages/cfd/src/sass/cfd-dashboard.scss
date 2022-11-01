@@ -2268,4 +2268,12 @@
     }
 }
 
+.switch-to-real-account-modal {
+    .dc-dialog__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 /* stylelint-enable */

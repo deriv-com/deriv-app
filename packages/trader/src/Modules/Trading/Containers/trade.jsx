@@ -373,7 +373,7 @@ const Chart = props => {
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
-            chartType={chart_type}
+            chartType={show_accumulators_stats ? 'mountain' : chart_type}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -388,7 +388,7 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={granularity}
+            granularity={show_accumulators_stats ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}

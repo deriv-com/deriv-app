@@ -148,8 +148,8 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                 subtitle={localize('All fields are required')}
                             />
                             {trading_assessment_questions.map(item => {
+                                const form_control = item.form_control;
                                 if (item.field_type === 'radio') {
-                                    const form_control = item.form_control;
                                     return (
                                         <fieldset className='account-form__question' key={form_control}>
                                             <DesktopWrapper>
@@ -195,11 +195,11 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                     // eslint-disable-next-line no-else-return
                                 } else {
                                     return (
-                                        <React.Fragment>
+                                        <div key={form_control}>
                                             {item.questions.map(items => {
-                                                const form_control = items.form_control;
+                                                const sub_form_control = items.form_control;
                                                 return (
-                                                    <fieldset key={form_control} className='account-form__question'>
+                                                    <fieldset key={sub_form_control} className='account-form__question'>
                                                         <DesktopWrapper>
                                                             <Text
                                                                 as='h1'
@@ -212,8 +212,8 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                                             </Text>
                                                             <Dropdown
                                                                 is_align_text_left
-                                                                name={form_control}
-                                                                value={values[form_control]}
+                                                                name={sub_form_control}
+                                                                value={values[sub_form_control]}
                                                                 list={items?.answer_options}
                                                                 onChange={handleChange}
                                                                 handleBlur={handleBlur}
@@ -231,8 +231,8 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                                                 {items?.question_text}
                                                             </Text>
                                                             <SelectNative
-                                                                value={values[form_control]}
-                                                                name={form_control}
+                                                                value={values[sub_form_control]}
+                                                                name={sub_form_control}
                                                                 list_items={items?.answer_options}
                                                                 onChange={e => handleChange(e)}
                                                                 should_show_empty_option={false}
@@ -241,7 +241,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment, setSh
                                                     </fieldset>
                                                 );
                                             })}
-                                        </React.Fragment>
+                                        </div>
                                     );
                                 }
                             })}

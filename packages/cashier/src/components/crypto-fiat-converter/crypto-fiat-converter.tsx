@@ -25,7 +25,7 @@ type TCryptoFiatConverterProps = {
     hint: string | TReactChildren;
     is_timer_visible: boolean;
     onChangeConverterFromAmount: (
-        event: { target: { value: string } },
+        event: React.ChangeEvent<HTMLInputElement> | { target: { value: string } },
         from_currency: string,
         to_currency: string
     ) => void;

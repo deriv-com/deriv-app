@@ -499,7 +499,7 @@ const AccountTransferForm = ({
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize

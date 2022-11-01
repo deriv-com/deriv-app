@@ -1,11 +1,49 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
-const InputWrapper = ({ children, has_footer }) =>
-    has_footer ? <div className='dc-input__wrapper'>{children}</div> : children;
+type TInputProps = {
+    autoComplete?: string;
+    bottom_label?: string;
+    className?: string;
+    classNameError?: string;
+    classNameHint?: string;
+    classNameWarn?: string;
+    data_testId?: string;
+    disabled?: boolean;
+    error?: string;
+    field_className?: string;
+    has_character_counter?: boolean;
+    hint?: React.ReactNode;
+    id?: string;
+    initial_character_count?: number;
+    input_id?: string;
+    is_relative_hint?: boolean;
+    label_className?: string;
+    label?: React.ReactNode;
+    leading_icon?: React.ReactElement;
+    max_characters?: number;
+    maxLength?: number;
+    name?: string;
+    onBlur?: <T>(e: React.FocusEvent<T>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onFocus?: <T>(e: React.FocusEvent<T>) => void;
+    onPaste?: <T>(e: React.ClipboardEvent<T>) => void;
+    placeholder?: string;
+    required?: boolean;
+    trailing_icon?: React.ReactElement;
+    type: string;
+    value?: string;
+    warn?: string;
+};
+
+type TInputWrapper = {
+    has_footer: boolean;
+};
+
+const InputWrapper = ({ children, has_footer }: React.PropsWithChildren<TInputWrapper>) =>
+    has_footer ? <div className='dc-input__wrapper'>{children}</div> : <React.Fragment>{children}</React.Fragment>;
 
 const Input = React.forwardRef(
     (
@@ -15,7 +53,7 @@ const Input = React.forwardRef(
             classNameError,
             classNameHint,
             classNameWarn,
-            disabled,
+            disabled = false,
             error,
             field_className,
             has_character_counter,
@@ -31,28 +69,28 @@ const Input = React.forwardRef(
             warn,
             data_testId,
             ...props
-        },
-        ref
+        }: TInputProps,
+        ref?: React.LegacyRef<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const [counter, setCounter] = React.useState(0);
 
         React.useEffect(() => {
-            if (typeof initial_character_count === 'number') {
+            if (initial_character_count || initial_character_count === 0) {
                 setCounter(initial_character_count);
             }
         }, [initial_character_count]);
 
-        const changeHandler = e => {
+        const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             let input_value = e.target.value;
             if (max_characters && input_value.length >= max_characters) {
                 input_value = input_value.slice(0, max_characters);
             }
             setCounter(input_value.length);
             e.target.value = input_value;
-            props.onChange(e);
+            props.onChange?.(e);
         };
 
-        const has_footer = has_character_counter || (hint && is_relative_hint);
+        const has_footer: boolean = !!has_character_counter || (!!hint && !!is_relative_hint);
 
         return (
             <InputWrapper has_footer={has_footer}>
@@ -70,7 +108,7 @@ const Input = React.forwardRef(
                         })}
                     {props.type === 'textarea' ? (
                         <textarea
-                            ref={ref}
+                            ref={ref as React.LegacyRef<HTMLTextAreaElement>}
                             data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field dc-input__textarea', {
@@ -82,7 +120,7 @@ const Input = React.forwardRef(
                         />
                     ) : (
                         <input
-                            ref={ref}
+                            ref={ref as React.LegacyRef<HTMLInputElement>}
                             data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field', field_className, {
@@ -90,11 +128,12 @@ const Input = React.forwardRef(
                             })}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}
-                            onPaste={props.onChange}
+                            onChange={props.onChange}
+                            onPaste={props.onPaste}
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}
-                            aria-label={label}
+                            aria-label={label as string}
                         />
                     )}
                     {trailing_icon &&
@@ -162,24 +201,5 @@ const Input = React.forwardRef(
 );
 
 Input.displayName = 'Input';
-Input.propTypes = {
-    bottom_label: PropTypes.string,
-    className: PropTypes.string,
-    classNameError: PropTypes.string,
-    classNameWarn: PropTypes.string,
-    classNameHint: PropTypes.string,
-    disabled: PropTypes.bool,
-    error: PropTypes.string,
-    has_character_counter: PropTypes.bool,
-    hint: PropTypes.oneOfType([PropTypes.any, PropTypes.node]),
-    is_relative_hint: PropTypes.bool,
-    initial_character_count: PropTypes.number,
-    label: PropTypes.any,
-    leading_icon: PropTypes.any,
-    max_characters: PropTypes.number,
-    trailing_icon: PropTypes.any,
-    warn: PropTypes.string,
-    input_id: PropTypes.string,
-};
 
 export default Input;

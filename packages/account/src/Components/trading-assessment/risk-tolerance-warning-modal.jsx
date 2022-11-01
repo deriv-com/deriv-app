@@ -16,7 +16,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_tex
                 <Text as='p' size='xs' align='center' line_height='l'>
                     {body_content}
                 </Text>
-                <Button type='button' large text={button_text ?? localize('OK')} primary onClick={onClick} />
+                <Button type='button' large text={button_text || localize('OK')} primary onClick={onClick} />
             </MobileDialog>
         </MobileWrapper>
         <DesktopWrapper>
@@ -35,7 +35,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_tex
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type='button' large text={button_text ?? localize('OK')} primary onClick={onClick} />
+                    <Button type='button' large text={button_text || localize('OK')} primary onClick={onClick} />
                 </Modal.Footer>
             </Modal>
         </DesktopWrapper>

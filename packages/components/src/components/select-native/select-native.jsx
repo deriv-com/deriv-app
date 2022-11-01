@@ -56,7 +56,7 @@ const SelectNative = ({
     list_items,
     onItemSelection,
     placeholder,
-    should_hide_disabled_options,
+    should_hide_disabled_options = true,
     should_show_empty_option = true,
     suffix_icon,
     use_text,
@@ -202,11 +202,6 @@ SelectNative.propTypes = {
     hide_selected_value: PropTypes.bool,
     onItemSelection: PropTypes.func,
     hide_top_placeholder: PropTypes.bool,
-};
-
-SelectNative.defaultProps = {
-    should_hide_disabled_options: true,
-    hide_top_placeholder: false,
 };
 
 export default SelectNative;

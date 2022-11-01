@@ -103,6 +103,7 @@ const AppNotificationMessages = ({
                   'dp2p',
                   'install_pwa',
                   'tnc',
+                  'risk_client',
                   'deriv_go',
                   'close_mx_mlt_account',
                   'trustpilot',

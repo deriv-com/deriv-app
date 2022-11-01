@@ -146,7 +146,7 @@ export default class UIStore extends BaseStore {
 
     should_show_risk_warning_modal = false;
     should_show_appropriateness_warning_modal = false;
-    should_show_warning_modal = false;
+    should_show_risk_accept_modal = false;
     should_show_cooldown_modal = false;
     should_show_trading_assessment_modal = false;
     should_show_trade_assessment_form = false;
@@ -263,7 +263,7 @@ export default class UIStore extends BaseStore {
             is_deriv_account_needed_modal_visible: observable,
             should_show_trade_assessment_form: observable,
             should_show_appropriateness_warning_modal: observable,
-            should_show_warning_modal: observable,
+            should_show_risk_accept_modal: observable,
             should_show_cooldown_modal: observable,
             should_show_trading_assessment_modal: observable,
             is_trading_assessment_for_existing_user_enabled: observable,
@@ -826,7 +826,7 @@ export default class UIStore extends BaseStore {
     }
 
     setShouldShowWarningModal(value) {
-        this.should_show_warning_modal = value;
+        this.should_show_risk_accept_modal = value;
     }
 
     setShouldShowAssessmentCompleteModal(value) {

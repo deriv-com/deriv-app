@@ -19,7 +19,7 @@ const TradingAssessmentExistingUser = ({
     setFinancialAndTradingAssessment,
     should_show_risk_warning_modal,
     setShouldShowRiskWarningModal,
-    should_show_warning_modal,
+    should_show_risk_accept_modal,
     setShouldShowWarningModal,
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
@@ -92,10 +92,10 @@ const TradingAssessmentExistingUser = ({
                 }
             />
         );
-    } else if (should_show_warning_modal) {
+    } else if (should_show_risk_accept_modal) {
         return (
             <TestWarningModal
-                show_risk_modal={should_show_warning_modal}
+                show_risk_modal={should_show_risk_accept_modal}
                 body_content={
                     <Text as='p' size='xs'>
                         <Localize
@@ -166,7 +166,7 @@ export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    should_show_warning_modal: ui.should_show_warning_modal,
+    should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
     setShouldShowWarningModal: ui.setShouldShowWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,

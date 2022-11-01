@@ -33,12 +33,13 @@ const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
         has_no_account,
         has_no_accounts_balance,
         is_transfer_confirm,
+        is_transfer_locked,
         onMountAccountTransfer: onMount,
         setAccountTransferAmount,
         setIsTransferConfirm,
     } = account_transfer;
 
-    const { is_cashier_locked, is_loading, is_transfer_locked, setActiveTab } = general_store;
+    const { is_cashier_locked, is_loading, setActiveTab } = general_store;
 
     const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
 

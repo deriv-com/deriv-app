@@ -11,6 +11,7 @@ const AccountTransferNoAccount = () => {
         client: { is_dxtrade_allowed },
         ui: { toggleAccountsDialog },
     } = useStore();
+
     return (
         <div className='cashier__wrapper cashier__no-balance'>
             <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />

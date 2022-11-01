@@ -43,7 +43,6 @@ describe('<AccountTransfer />', () => {
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,
-                        is_transfer_locked: false,
                     },
                     account_transfer: {
                         error: {},
@@ -54,6 +53,7 @@ describe('<AccountTransfer />', () => {
                         has_no_account: false,
                         has_no_accounts_balance: false,
                         is_transfer_confirm: false,
+                        is_transfer_locked: false,
                     },
                     crypto_fiat_converter: {},
                     transaction_history: {
@@ -117,7 +117,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
-        mockRootStore.modules.cashier.general_store.is_transfer_locked = true;
+        mockRootStore.modules.cashier.account_transfer.is_transfer_locked = true;
 
         renderAccountTransfer();
 

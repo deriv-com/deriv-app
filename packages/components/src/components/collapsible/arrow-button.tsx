@@ -1,21 +1,35 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { positionPropType } from './utils';
 import Icon from '../icon';
 import Text from '../text';
 
-const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
-const IconArrowWithTitle = ({ title, ...props }) => (
-    <>
+type TIconArrowWithTitle = {
+    title: string;
+    className?: string;
+};
+
+type TArrowButton = {
+    is_collapsed?: boolean;
+    is_open?: boolean;
+    onClick: () => void;
+    title: string;
+    position: 'top' | 'bottom';
+};
+
+const IconArrow = ({ className }: { className?: string }) => (
+    <Icon width={30} height={9} icon='IcChevronUp' className={className} />
+);
+
+const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
+    <React.Fragment>
         <Text size='xs' weight='bold' color='prominent' className='dc-collapsible__title'>
             {title}
         </Text>
         <Icon icon='IcChevronDown' {...props} />
-    </>
+    </React.Fragment>
 );
 
-const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
+const ArrowButton = ({ is_collapsed = false, position, onClick, title }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 
     const toggleExpand = () => {
@@ -73,13 +87,6 @@ const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
             {icon_arrow}
         </div>
     );
-};
-
-ArrowButton.propTypes = {
-    is_open: PropTypes.bool,
-    onClick: PropTypes.func,
-    title: PropTypes.string,
-    ...positionPropType,
 };
 
 export default ArrowButton;

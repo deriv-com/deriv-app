@@ -1,8 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { positionPropType } from './utils';
-import ArrowButton from './arrow-button.jsx';
+import ArrowButton from './arrow-button';
+
+type TCollapsible = {
+    as: React.ElementType;
+    is_collapsed?: boolean;
+    position?: 'top' | 'bottom';
+    onClick: (state: boolean) => void;
+    title: string;
+};
 
 const swipe_config = {
     delta: 100,
@@ -10,7 +17,14 @@ const swipe_config = {
     trackMouse: true,
 };
 
-const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, title }) => {
+const Collapsible = ({
+    as,
+    is_collapsed,
+    position = 'top',
+    children,
+    onClick,
+    title,
+}: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
 
@@ -24,11 +38,12 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
 
     React.useEffect(() => {
         expand(!is_collapsed);
-        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props));
+        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }: any) => 'collapsible' in props));
     }, [children, is_collapsed]);
 
     React.useEffect(
-        () => setShouldShowCollapsible(React.Children.toArray(children).some(({ props }) => 'collapsible' in props)),
+        () =>
+            setShouldShowCollapsible(React.Children.toArray(children).some(({ props }: any) => 'collapsible' in props)),
         [children]
     );
 
@@ -55,20 +70,22 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
             {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>
                 {React.Children.map(children, element => {
-                    if (!element) return element;
-                    const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
-                        'dc-collapsible__item--collapsed': 'collapsible' in element.props && !is_open,
-                    });
+                    if (React.isValidElement(element)) {
+                        const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
+                            'dc-collapsible__item--collapsed': 'collapsible' in element.props && !is_open,
+                        });
 
-                    const no_collapsible_props = { ...element.props };
-                    if ('collapsible' in no_collapsible_props) delete no_collapsible_props.collapsible;
+                        const no_collapsible_props = { ...element.props };
+                        if ('collapsible' in no_collapsible_props) delete no_collapsible_props.collapsible;
 
-                    const props = {
-                        ...no_collapsible_props,
-                        className: collapsed_class,
-                    };
+                        const props = {
+                            ...no_collapsible_props,
+                            className: collapsed_class,
+                        };
 
-                    return React.cloneElement(element, props);
+                        return React.cloneElement(element, props);
+                    }
+                    return element;
                 })}
             </div>
             {should_show_collapsible && position === 'bottom' && arrow_button}
@@ -76,10 +93,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick, ti
     );
 };
 
-Collapsible.propTypes = {
-    ...positionPropType,
-};
-
 Collapsible.displayName = 'Collapsible';
+Collapsible.ArrowButton = ArrowButton;
 
 export default Collapsible;

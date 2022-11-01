@@ -142,24 +142,27 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
         }
     };
 
-    const BuySellFormError = () => (
-        <div className='buy-sell__modal--error-message'>
-            <HintBox
-                className='buy-sell__modal-danger'
-                icon='IcAlertDanger'
-                message={
-                    <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
-                            <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                        ) : (
-                            error_message
-                        )}
-                    </Text>
-                }
-                is_danger
-            />
-        </div>
-    );
+    const BuySellFormError = () => {
+        if (!!error_message && buy_sell_store.form_error_code !== api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
+            <div className='buy-sell__modal--error-message'>
+                <HintBox
+                    className='buy-sell__modal-danger'
+                    icon='IcAlertDanger'
+                    message={
+                        <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                            {buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_CLIENT_BALANCE ? (
+                                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                            ) : (
+                                error_message
+                            )}
+                        </Text>
+                    }
+                    is_danger
+                />
+            </div>;
+        }
+        return null;
+    };
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -184,11 +187,16 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
+    const has_rate_changed =
+        (!!error_message && buy_sell_store.form_error_code !== api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) ||
+        has_rate_changed_recently;
+    const onSubmit = has_rate_changed ? onSubmitWhenRateChanged : submitForm.current;
+
     React.useEffect(() => {
         const disposeFormErrorCodeReaction = reaction(
             () => buy_sell_store.form_error_code,
             () => {
-                if (buy_sell_store.form_error_code === api_error_codes.MARKET_RATE_CHANGE) {
+                if (buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
                     if (!isMobile()) {
                         buy_sell_store.hidePopup();
                         setTimeout(() => setShowMarketRateChangeErrorModal(true), 280);
@@ -245,7 +253,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={has_rate_changed_recently ? onSubmitWhenRateChanged : submitForm.current}
+                                onSubmit={onSubmit}
                             />
                         )
                     }
@@ -256,9 +264,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     }
                 >
                     {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                    {!!error_message && buy_sell_store.form_error_code !== api_error_codes.MARKET_RATE_CHANGE && (
-                        <BuySellFormError />
-                    )}
+                    <BuySellFormError />
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                     ) : (
@@ -288,7 +294,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                         <Modal.Body className='buy-sell__modal--layout'>
                             {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                            {!!error_message && <BuySellFormError />}
+                            <BuySellFormError />
                             {my_profile_store.should_show_add_payment_method_form ? (
                                 <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
                             ) : (
@@ -309,7 +315,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                                 <BuySellModalFooter
                                     is_submit_disabled={is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={has_rate_changed_recently ? onSubmitWhenRateChanged : submitForm.current}
+                                    onSubmit={onSubmit}
                                 />
                             )}
                         </Modal.Footer>

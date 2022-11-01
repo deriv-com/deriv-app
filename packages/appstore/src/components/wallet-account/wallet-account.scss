@@ -50,9 +50,9 @@
     }
 
     &__app-launcher-button {
-        background-color: $alpha-color-red-4 !important;
+        background-color: $alpha-color-red-2 !important;
         &:hover {
-            background-color: $alpha-color-red-5 !important;
+            background-color: $alpha-color-red-3 !important;
         }
     }
 
@@ -85,10 +85,21 @@
     }
 
     &__deriv-apps {
-        background-color: #fff0f1;
+        background-color: $alpha-color-red-4;
         border-radius: 16px;
         padding: 0 24px 24px;
         margin-top: 24px;
+
+        &--apps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &--seperator {
+            width: 2px;
+            height: 60px;
+            background-color: $color-white;
+        }
     }
 
     &__app-launcher--full-width {
@@ -97,7 +108,7 @@
         display: flex;
         gap: 0.8rem;
         align-items: center;
-        border-bottom: 1px solid #fff;
+        border-bottom: 1px solid $color-white;
     }
 
     &__app-card-wrapper {

@@ -10,18 +10,10 @@ import AppsLauncher from 'Components/app-launcher';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AppstoreAppCard from 'Components/app-card';
+import PlatformLauncher from 'Components/platform-launcher';
 
 type WalletAccountProps = {
     account: ArrayElement<Required<Authorize>['account_list']>;
-};
-
-type TButtonColor = 'primary' | 'primary-light' | 'secondary' | 'tertiary' | 'monochrome';
-
-type TModalActionButton = {
-    id: number;
-    text: string;
-    color: TButtonColor;
-    onClick: () => void;
 };
 
 const WalletAccount = ({ account }: WalletAccountProps) => {
@@ -166,7 +158,37 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                                 description='Trade CFDs on MT5 with forex, stocks &amp; indices, commodities, and cryptocurrencies.'
                                 handleClick={wallet_store.toggleModal}
                             />
-                            <div>apps</div>
+                            <div className='wallet-account__deriv-apps--apps'>
+                                <PlatformLauncher
+                                    app_desc='Options & multipliers trading platform.'
+                                    app_icon='DTrader'
+                                    app_title='DTrader'
+                                />
+                                <div className='wallet-account__deriv-apps--seperator' />
+                                <PlatformLauncher
+                                    app_desc='Automate your trading, no coding needed.'
+                                    app_icon='DBot'
+                                    app_title='DBot'
+                                />
+                                <div className='wallet-account__deriv-apps--seperator' />
+                                <PlatformLauncher
+                                    app_desc='Our legacy options trading platform.'
+                                    app_icon='SmartTrader'
+                                    app_title='SmartTrader'
+                                />
+                                <div className='wallet-account__deriv-apps--seperator' />
+                                <PlatformLauncher
+                                    app_desc='Our legacy automated trading platform.'
+                                    app_icon='BinaryBot'
+                                    app_title='Binary Bot'
+                                />
+                                <div className='wallet-account__deriv-apps--seperator' />
+                                <PlatformLauncher
+                                    app_desc='Trade on the go with our mobile app.'
+                                    app_icon='DerivGo'
+                                    app_title='DerivGo'
+                                />
+                            </div>
                         </div>
                     </div>
                 </Accordion.Content>

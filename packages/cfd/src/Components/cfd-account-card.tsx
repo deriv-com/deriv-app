@@ -330,7 +330,7 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                {type.type === 'financial' && !is_eu && !isMobile() && (
+                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !is_eu && !isMobile() && (
                     <Button
                         onClick={() => setIsAcuityModalOpen(true)}
                         className='cfd-account-card__acuity-banner'
@@ -693,10 +693,11 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
+    setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
 }))(CFDAccountCardComponent);
 

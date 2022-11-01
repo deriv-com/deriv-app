@@ -67,6 +67,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     onClick={() => switchPlatform({ route: routes.mt5 })}
                     icon={<CFDs />}
                     mobileIcon={<CFDs />}
+                    has_arrow={true}
                     options={cfdOptions()}
                 />
                 <WelcomeItem
@@ -79,6 +80,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
                     title={localize('Multipliers')}
                     icon={<Multipliers />}
+                    has_arrow={true}
                     mobileIcon={<Multipliers />}
                     options={mfOptions()}
                 />
@@ -93,6 +95,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         onClick={() => switchPlatform({ route: routes.trade })}
                         title={localize('Options')}
                         icon={<DigitalOptions />}
+                        has_arrow={true}
                         mobileIcon={<DigitalOptions />}
                         options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
                     />

@@ -15,11 +15,7 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, setIsAcuityModalOpen }: TAc
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
-        window.open(
-            'https://dashboard.acuitytrading.com/metatrader/DownloadMt5Installer?apiKey=2713b8d0-43ed-4194-b5d7-b1ff60dbdae0&isFull=true',
-            '_blank',
-            'noopener,noreferrer'
-        );
+        window.open('https://deriv.link/3WhYxq1', '_blank', 'noopener,noreferrer');
         closeModal();
     };
 

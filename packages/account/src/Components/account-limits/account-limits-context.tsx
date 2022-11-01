@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export type TAccountLimitsContext = {
-    currency?: string;
+    currency: string;
     footer_ref?: React.RefObject<HTMLElement>;
     overlay_ref?: React.RefObject<HTMLElement>;
     toggleOverlay?: () => boolean;

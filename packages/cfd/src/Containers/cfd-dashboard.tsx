@@ -174,6 +174,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     ) => void;
     openDerivRealAccountNeededModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
+    refreshNotifications: () => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -201,6 +202,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
+        refreshNotifications();
         props.onMount();
         return () => {
             props.onUnmount();
@@ -395,6 +397,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
         setIsAcuityModalOpen,
+        refreshNotifications,
     } = props;
 
     const should_show_missing_real_account =
@@ -671,7 +674,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }: RootStore) => ({
+    connect(({ client, modules, notifications, ui }: RootStore) => ({
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
@@ -719,6 +722,7 @@ export default withRouter(
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.cfd.onMount,
         onUnmount: modules.cfd.onUnmount,
+        refreshNotifications: notifications.refreshNotifications,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         upgradeable_landing_companies: client.upgradeable_landing_companies,

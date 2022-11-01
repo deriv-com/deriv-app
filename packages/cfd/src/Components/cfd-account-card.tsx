@@ -330,7 +330,7 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !is_eu && !isMobile() && (
+                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !is_eu && !isMobile() && is_logged_in && (
                     <Button
                         onClick={() => setIsAcuityModalOpen(true)}
                         className='cfd-account-card__acuity-banner'

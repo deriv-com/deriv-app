@@ -627,6 +627,7 @@ export default class NotificationStore extends BaseStore {
                     },
                 },
                 platform: [platform_name.DTrader],
+                is_disposable: true,
                 img_src: getUrlBase('/public/images/common/acuity_banner.png'),
                 img_alt: 'Acuity',
                 className: 'acuity',

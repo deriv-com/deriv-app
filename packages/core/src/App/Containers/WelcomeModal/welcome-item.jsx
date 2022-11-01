@@ -22,7 +22,7 @@ const Options = ({ options }) => (
     </footer>
 );
 
-const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, small }) => (
+const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, small, has_arrow }) => (
     <section
         className={classNames('welcome-item', {
             'welcome-item-small': small,
@@ -59,9 +59,11 @@ const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, s
                 </MobileWrapper>
                 {options && options.length && <Options options={options} />}
             </main>
-            <div className='welcome-item__arrow'>
-                <Icon icon='IcChevronRight' size={16} />
-            </div>
+            {has_arrow && (
+                <div className='welcome-item__arrow'>
+                    <Icon icon='IcChevronRight' size={16} />
+                </div>
+            )}
         </div>
     </section>
 );
@@ -74,6 +76,7 @@ WelcomeItem.propTypes = {
     options: PropTypes.arrayOf(PropTypes.string),
     small: PropTypes.bool,
     title: PropTypes.string.isRequired,
+    has_arrow: PropTypes.bool,
 };
 
 export default WelcomeItem;

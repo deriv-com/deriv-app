@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TReactMouseEvent, TRootStore } from 'Types';
 import { useStore } from '../../hooks';
 
 const CryptoTransactionsStatusModal = () => {

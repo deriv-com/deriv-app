@@ -73,7 +73,8 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should close the popover when "No" button is clicked in Desktop mode', async () => {
-        const { container } = renderCryptoTransactionsRenderer();
+        renderCryptoTransactionsRenderer();
+
         const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
         fireEvent.click(cancel_transaction_div);
         const no_btn = screen.getByText('No');

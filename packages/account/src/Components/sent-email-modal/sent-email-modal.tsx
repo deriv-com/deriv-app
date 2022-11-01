@@ -1,10 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { localize, Localize } from '@deriv/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
 import { getPlatformSettings, CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
 
-const getNoEmailContentStrings = () => {
+type TSentEmailModal = {
+    identifier_title: string;
+    is_modal_when_mobile?: boolean;
+    is_open: boolean;
+    has_live_chat?: boolean;
+    onClickSendEmail: () => void;
+    onClose: () => void;
+};
+
+type TNoEmailContentItem = {
+    key: string;
+    icon: string;
+    content: string | React.ReactElement;
+};
+
+// TODO replace these types to real after implementing TS for livechat in core
+type TWindowLiveChatWidget = Window & typeof globalThis & { LiveChatWidget?: { call: (param: string) => void } };
+
+const getNoEmailContentStrings = (): TNoEmailContentItem[] => {
     return [
         {
             key: 'email_spam',
@@ -35,14 +52,14 @@ const getNoEmailContentStrings = () => {
 
 const SentEmailModal = ({
     identifier_title,
-    is_open,
-    onClose,
-    onClickSendEmail,
-    has_live_chat = false,
     is_modal_when_mobile = false,
-}) => {
+    is_open,
+    has_live_chat = false,
+    onClickSendEmail,
+    onClose,
+}: TSentEmailModal) => {
     const getSubtitle = () => {
-        let subtitle = '';
+        let subtitle: string | React.ReactElement = '';
         switch (identifier_title) {
             case CFD_PLATFORMS.DXTRADE:
                 subtitle = (
@@ -75,7 +92,9 @@ const SentEmailModal = ({
 
     const onLiveChatClick = () => {
         onClose();
-        window.LiveChatWidget?.call('maximize');
+
+        // TODO fix types after implementing TS for livechat in core
+        (window as TWindowLiveChatWidget).LiveChatWidget?.call('maximize');
     };
 
     const live_chat = has_live_chat ? (
@@ -95,7 +114,7 @@ const SentEmailModal = ({
         />
     ) : null;
 
-    const sent_email_template = (
+    const sent_email_template: React.ReactElement = (
         <SendEmailTemplate
             className='sent-email'
             subtitle={getSubtitle()}
@@ -161,16 +180,6 @@ const SentEmailModal = ({
             </Div100vhContainer>
         </Modal>
     );
-};
-
-SentEmailModal.propTypes = {
-    identifier_title: PropTypes.string,
-    is_open: PropTypes.bool,
-    is_unlink_modal: PropTypes.bool,
-    onClose: PropTypes.func,
-    onClickSendEmail: PropTypes.func,
-    has_live_chat: PropTypes.bool,
-    is_modal_when_mobile: PropTypes.bool,
 };
 
 export default SentEmailModal;

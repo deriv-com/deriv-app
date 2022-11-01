@@ -4,7 +4,22 @@ import { localize } from '@deriv/translations';
 import { Div100vhContainer, Text, Button, Icon, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 
-const ListItem = ({ text }) => (
+type TListItem = {
+    text?: string;
+};
+
+type TMessage_list = {
+    message_list?: string[];
+};
+
+type TIconMessageList = TMessage_list & {
+    className: string;
+    icon: React.ReactElement;
+    message: string;
+    onContinue: () => void;
+};
+
+const ListItem = ({ text }: TListItem) => (
     <div className='account-management__list-message'>
         <div className='account-management__list-icon'>
             <Icon icon='IcCloseCircle' color='red' />
@@ -17,8 +32,8 @@ const ListItem = ({ text }) => (
     </div>
 );
 
-const IconMessageList = ({ className, icon, message, message_list, onContinue }) => {
-    const has_maximum_list = message_list?.length > 3;
+const IconMessageList = ({ className, icon, message, message_list = [], onContinue }: Partial<TIconMessageList>) => {
+    const has_maximum_list = message_list.length > 3;
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <Div100vhContainer
@@ -76,7 +91,7 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
     );
 };
 
-const MaximumList = ({ message_list }) => {
+const MaximumList = ({ message_list }: TMessage_list) => {
     const [show_more, setShowMore] = React.useState(false);
     const maximum_list = message_list.slice(0, 3);
 

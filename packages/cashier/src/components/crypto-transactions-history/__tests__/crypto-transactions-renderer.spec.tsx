@@ -52,6 +52,7 @@ describe('<CryptoTransactionsRenderer />', () => {
         render(<CryptoTransactionsRenderer {...props} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
+
     it('should show the proper data in Desktop mode', () => {
         renderCryptoTransactionsRenderer();
 
@@ -64,6 +65,7 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should show the popover with the proper message, "Yes" and "No" buttons if the "Cancel transaction" cross-button was clicked in Desktop mode', () => {
         renderCryptoTransactionsRenderer();
+
         const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
         fireEvent.click(cancel_transaction_div);
 
@@ -104,6 +106,7 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should trigger onClick callback when "crypto-transactions-history__table-status" is clicked in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
+
         renderCryptoTransactionsRenderer();
 
         const table_status = screen.getByTestId('dt_table_status');
@@ -116,6 +119,7 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should show the proper data in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
+
         renderCryptoTransactionsRenderer();
 
         expect(screen.getByText('withdrawal')).toBeInTheDocument();
@@ -128,6 +132,7 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should trigger onClick callback when the user clicks "Cancel transaction" button in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
+
         renderCryptoTransactionsRenderer();
 
         const cancel_transaction_btn = screen.getByTestId('dt_cancel_transaction');

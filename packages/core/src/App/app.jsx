@@ -15,6 +15,7 @@ import {
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
+    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -69,24 +70,39 @@ const AppWithoutTranslation = ({ root_store }) => {
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height) {
+            if (view_width <= view_height || root_store.ui.is_input_clicked) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: true });
                 el_landscape_blocker.classList.add('landscape-blocker--visible');
             }
+
+            if (root_store.ui.is_input_clicked) {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
+                el_landscape_blocker.classList.remove('landscape-blocker--visible');
+            }
+        }
+    }, [root_store.ui]);
+
+    const checkInputClick = React.useCallback(() => {
+        if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
+            root_store.ui.setIsInputClicked(true);
+        } else {
+            root_store.ui.setIsInputClicked(false);
         }
     }, [root_store.ui]);
 
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
         window.addEventListener('resize', debouncedHandleResize);
+        window.addEventListener('click', checkInputClick);
 
         return () => {
+            window.removeEventListener('click', checkInputClick);
             window.removeEventListener('resize', debouncedHandleResize);
         };
-    }, [handleResize]);
+    }, [checkInputClick, handleResize]);
 
     const platform_passthrough = {
         root_store,

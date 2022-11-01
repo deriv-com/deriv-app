@@ -123,6 +123,7 @@ export default class UIStore extends BaseStore {
     @observable is_cfd_page = false;
     @observable is_nativepicker_visible = false;
     @observable is_landscape = false;
+    @observable is_input_clicked = false;
 
     @observable prompt_when = false;
     @observable promptFn = () => {};
@@ -210,6 +211,11 @@ export default class UIStore extends BaseStore {
     setIsNewAccount() {
         localStorage.setItem('isNewAccount', !this.is_new_account);
         this.is_new_account = localStorage.getItem('isNewAccount') || false;
+    }
+
+    @action.bound
+    setIsInputClicked(is_input_clicked) {
+        this.is_input_clicked = is_input_clicked;
     }
 
     @action.bound

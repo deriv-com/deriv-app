@@ -82,7 +82,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                         className='options-accounts-container__title-description-container--title'
                         weight='bold'
                     >
-                        <Localize i18n_default_text={'Options'} />
+                        <Localize i18n_default_text={'Options and Multipliers'} />
                     </Text>
                 )}
             </div>
@@ -237,7 +237,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                 <AccountManager
                                     has_account={false}
                                     type={'Options'}
-                                    appname={`Options account`}
+                                    appname={`Options and Multipliers account`}
                                     disabled={false}
                                     onClickGet={() => ui.openRealAccountSignup()}
                                     description={'Get a real Options account, start trading and manage your funds.'}

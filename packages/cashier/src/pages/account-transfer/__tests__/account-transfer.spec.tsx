@@ -7,8 +7,12 @@ import { StoreProvider } from '../../../hooks';
 import { DeepPartial, TRootStore } from '../../../types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
+    client: { currency: 'USD' },
+    ui: { is_dark_mode_on: false, toggleAccountsDialog: jest.fn() },
     modules: {
         cashier: {
+            deposit: { is_deposit_locked: true },
+            general_store: { setCashierTabIndex: jest.fn() },
             withdraw: {
                 verification: {
                     resend_timeout: 3000,

@@ -129,7 +129,7 @@ const WalletAccount = ({ account }: WalletAccountProps) => {
                         </div>
                         <div className='wallet-account__apps'>
                             <AppsLauncher
-                                app_name={localize('Deriv X2')}
+                                app_name={localize('Deriv X')}
                                 icon_name='DerivX'
                                 is_app_installed={false}
                                 button_className='wallet-account__app-launcher-button'

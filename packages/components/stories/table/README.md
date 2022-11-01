@@ -31,11 +31,11 @@ const DummyComponent = props => (
 
 ## Props
 
-| Name          | Type               | Default | Description                                                |
-| ------------- | ------------------ | ------- | ---------------------------------------------------------- |
-| fixed         | {boolean}          | null    | Set it to 'true' to have customed scrollbar for the table  |
-| scroll_width  | {string \| number} | 100%    | If 'fixed' is 'true' you can set fixed width of the table  |
-| scroll_height | {string \| number} | null    | If 'fixed' is 'true' you can set fixed height of the table |
+| Name          | Type      | Default | Description                                                |
+| ------------- | --------- | ------- | ---------------------------------------------------------- |
+| fixed         | {boolean} | null    | Set it to 'true' to have customed scrollbar for the table  |
+| scroll_width  | {string}  | 100%    | If 'fixed' is 'true' you can set fixed width of the table  |
+| scroll_height | {string}  | null    | If 'fixed' is 'true' you can set fixed height of the table |
 
 ## Full example:
 

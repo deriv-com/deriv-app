@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import PoiButton from 'Components/poi/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 

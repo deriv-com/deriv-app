@@ -7,7 +7,7 @@ type TButtonLinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, 'size'> & {
     size: 'small' | 'medium' | 'large';
 };
 
-const ButtonLink = ({ children, className, to, onClick, size = 'medium' }: TButtonLinkProps) => (
+const ButtonLink = ({ children, className, to, onClick, size = 'medium' }: Partial<TButtonLinkProps>) => (
     <Link
         className={classNames('dc-btn dc-btn--primary', className, 'effect', `dc-btn__${size}`)}
         to={to}

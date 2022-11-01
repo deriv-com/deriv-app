@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 import PoiButton from 'Components/poi/poi-button';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 
 export const NeedsReview = ({ needs_poi, is_description_enabled = true }) => {
     const message = localize('Your proof of address was submitted successfully');

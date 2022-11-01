@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import { NeedsReview } from '../needs-review';
 
-jest.mock('Components/poa/continue-trading-button/continue-trading-button.jsx', () => ({
+jest.mock('Components/poa/continue-trading-button/continue-trading-button', () => ({
     ContinueTradingButton: jest.fn(() => <div>ContinueTradingButton</div>),
 }));
 

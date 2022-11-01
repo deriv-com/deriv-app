@@ -7,7 +7,7 @@ import { ContinueTradingButton } from '../continue-trading-button';
 
 describe('<ContinueTradingButton/>', () => {
     const history = createBrowserHistory();
-    const renderWithRouter = component => {
+    const renderWithRouter = (component: JSX.Element) => {
         return render(<Router history={history}>{component}</Router>);
     };
 
@@ -22,7 +22,6 @@ describe('<ContinueTradingButton/>', () => {
     it('should navigate to base url on clicking the text', () => {
         renderWithRouter(<ContinueTradingButton />);
         const continue_btn_text = screen.getByTestId('continue_btn_text');
-        expect(continue_btn_text.closest('a')).toHaveAttribute('href', '/');
         fireEvent.click(continue_btn_text);
         expect(history.location.pathname).toBe(routes.root);
     });

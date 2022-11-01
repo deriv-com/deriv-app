@@ -6,7 +6,7 @@ import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PoiButton } from 'Components/poi/poi-button/poi-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 
 export const Verified = ({ needs_poi, is_description_enabled = true }) => {
     const { is_appstore } = React.useContext(PlatformContext);

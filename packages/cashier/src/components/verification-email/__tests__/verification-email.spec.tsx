@@ -1,6 +1,25 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import VerificationEmail from '../verification-email';
+import { StoreProvider } from '../../../hooks';
+import { DeepPartial, TRootStore } from '../../../types';
+
+const mockRootStore: DeepPartial<TRootStore> = {
+    modules: {
+        cashier: {
+            withdraw: {
+                verification: {
+                    resend_timeout: 3000,
+                },
+            },
+            payment_agent: {
+                verification: {
+                    resend_timeout: 3000,
+                },
+            },
+        },
+    },
+};
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -18,7 +37,9 @@ describe('<VerificationEmail />', () => {
 
     it('component should be rendered', () => {
         const props = mockProps();
-        render(<VerificationEmail {...props} />);
+        render(<VerificationEmail {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText("We've sent you an email.")).toBeInTheDocument();
         expect(
@@ -30,7 +51,9 @@ describe('<VerificationEmail />', () => {
         const props = mockProps();
         props.is_resend_clicked = true;
 
-        render(<VerificationEmail {...props} />);
+        render(<VerificationEmail {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
         const btn = screen.getByRole('button');
 
         expect(screen.getByText("Didn't receive the email?")).toBeInTheDocument();
@@ -44,7 +67,9 @@ describe('<VerificationEmail />', () => {
         const props = mockProps();
         props.is_resend_clicked = true;
 
-        render(<VerificationEmail {...props} />);
+        render(<VerificationEmail {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const btn = screen.getByRole('button', { name: 'Resend email' });
         fireEvent.click(btn);
@@ -55,7 +80,9 @@ describe('<VerificationEmail />', () => {
     it("button with 'Didn't receive the email?' text should be rendered when 'is_resend_clicked' prop is false", () => {
         const props = mockProps();
 
-        render(<VerificationEmail {...props} />);
+        render(<VerificationEmail {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByRole('button', { name: "Didn't receive the email?" })).toBeInTheDocument();
     });
@@ -63,7 +90,9 @@ describe('<VerificationEmail />', () => {
     it('setIsResendClicked func should be triggered', () => {
         const props = mockProps();
 
-        render(<VerificationEmail {...props} />);
+        render(<VerificationEmail {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const btn = screen.getByRole('button', { name: "Didn't receive the email?" });
         fireEvent.click(btn);

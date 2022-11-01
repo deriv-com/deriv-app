@@ -3,6 +3,25 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
+import { StoreProvider } from '../../../hooks';
+import { DeepPartial, TRootStore } from '../../../types';
+
+const mockRootStore: DeepPartial<TRootStore> = {
+    modules: {
+        cashier: {
+            withdraw: {
+                verification: {
+                    resend_timeout: 3000,
+                },
+            },
+            payment_agent: {
+                verification: {
+                    resend_timeout: 3000,
+                },
+            },
+        },
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -38,13 +57,17 @@ describe('<AccountTransfer />', () => {
     };
 
     it('should render the account transfer form', async () => {
-        render(<AccountTransfer {...props} />);
+        render(<AccountTransfer {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });
 
     it('should not show the side notes when switching', async () => {
-        render(<AccountTransfer is_switching {...props} />);
+        render(<AccountTransfer is_switching {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         await waitFor(() => {
             expect(props.setSideNotes).toHaveBeenCalledWith(null);
@@ -57,7 +80,10 @@ describe('<AccountTransfer />', () => {
         render(
             <Router history={history}>
                 <AccountTransfer is_virtual {...props} />
-            </Router>
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(
@@ -66,13 +92,17 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the cashier locked component if cashier is locked', async () => {
-        render(<AccountTransfer is_cashier_locked {...props} />);
+        render(<AccountTransfer is_cashier_locked {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
-        render(<AccountTransfer is_transfer_locked {...props} />);
+        render(<AccountTransfer is_transfer_locked {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });
@@ -83,13 +113,17 @@ describe('<AccountTransfer />', () => {
             message: 'error',
         };
 
-        render(<AccountTransfer {...props} accounts_list={accounts_list} error={cta_error} />);
+        render(<AccountTransfer {...props} accounts_list={accounts_list} error={cta_error} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
 
     it('should render the no account component if the client has only one account', async () => {
-        render(<AccountTransfer has_no_account {...props} />);
+        render(<AccountTransfer has_no_account {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('You need at least two accounts')).toBeInTheDocument();
     });
@@ -100,20 +134,27 @@ describe('<AccountTransfer />', () => {
         render(
             <Router history={history}>
                 <AccountTransfer has_no_accounts_balance {...props} />
-            </Router>
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(await screen.findByText(/You have no funds/i)).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', async () => {
-        render(<AccountTransfer is_transfer_confirm {...props} />);
+        render(<AccountTransfer is_transfer_confirm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
 
     it('should show the crypto transactions if triggered from recent transactions', async () => {
-        render(<AccountTransfer is_crypto_transactions_visible {...props} />);
+        render(<AccountTransfer is_crypto_transactions_visible {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
     });

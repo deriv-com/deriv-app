@@ -283,6 +283,7 @@ export default class ClientStore extends BaseStore {
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
+            setCFDScore: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -1112,7 +1113,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    @action.bound
     setCFDScore(score) {
         this.cfd_score = score;
     }

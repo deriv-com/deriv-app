@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
 import { useStore } from '../../hooks';
@@ -32,4 +33,4 @@ const CashierLocked = () => {
     return <EmptyState icon={state.icon} title={state.title} description={state.description} />;
 };
 
-export default CashierLocked;
+export default observer(CashierLocked);

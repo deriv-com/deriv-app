@@ -1,5 +1,5 @@
 import CurrencySelector from './currency-selector.jsx';
 import CurrencySelectorModal from './currency-selector-modal.jsx';
-import './currency-selector-p2p.scss';
+import './currency-selector.scss';
 
 export { CurrencySelector, CurrencySelectorModal };

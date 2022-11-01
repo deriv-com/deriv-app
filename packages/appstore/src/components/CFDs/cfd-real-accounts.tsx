@@ -130,95 +130,98 @@ const CFDRealAccounts = ({
         <div className='cfd-real-account'>
             {!has_real_account && <AddOptionsAccount />}
             <div className='cfd-real-account__accounts'>
-                {available_real_accounts.map(account => (
-                    <div className={`cfd-real-account__accounts-${account.name}`} key={account.name}>
-                        {existingRealAccounts(account.platform, account?.type)
-                            ? existingRealAccounts(account.platform, account?.type)?.map(existing_account => {
-                                  const non_eu_accounts =
-                                      existing_account.landing_company_short &&
-                                      existing_account.landing_company_short !== 'svg' &&
-                                      existing_account.landing_company_short !== 'bvi'
-                                          ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
-                                            existing_account.landing_company_short?.slice(1)
-                                          : existing_account.landing_company_short?.toUpperCase();
+                {available_real_accounts.map(
+                    account =>
+                        account.is_visible && (
+                            <div className={`cfd-real-account__accounts--item ${account.name}`} key={account.name}>
+                                {existingRealAccounts(account.platform, account?.type) ? (
+                                    existingRealAccounts(account.platform, account?.type)?.map(existing_account => {
+                                        const non_eu_accounts =
+                                            existing_account.landing_company_short &&
+                                            existing_account.landing_company_short !== 'svg' &&
+                                            existing_account.landing_company_short !== 'bvi'
+                                                ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
+                                                  existing_account.landing_company_short?.slice(1)
+                                                : existing_account.landing_company_short?.toUpperCase();
 
-                                  return (
-                                      <div
-                                          className={`cfd-demo-account__accounts-${account.name}--item`}
-                                          key={existing_account.login}
-                                      >
-                                          <AccountManager
-                                              has_account={true}
-                                              type={existing_account.market_type}
-                                              appname={`${account.name} ${non_eu_accounts}`}
-                                              platform={account.platform}
-                                              disabled={false}
-                                              loginid={existing_account?.display_login}
-                                              currency={existing_account.currency}
-                                              amount={existing_account.display_balance}
-                                              onClickTopUp={() => onClickFundReal(existing_account)}
-                                              onClickTrade={() => {
-                                                  toggleMT5TradeModal();
-                                                  setMT5TradeAccount(existing_account);
-                                              }}
-                                              dxtrade_link={getDXTradeWebTerminalLink('real', dxtrade_tokens.real)}
-                                              description={account.description}
-                                          />
-                                          {isEligibleForMoreRealMt5(existing_account.market_type) &&
-                                              account.platform !== CFD_PLATFORMS.DXTRADE && (
-                                                  <AddDerived
-                                                      title={localize(`More ${account.name} accounts`)}
-                                                      onClickHandler={() => {
+                                        return (
+                                            <React.Fragment key={existing_account.name}>
+                                                <AccountManager
+                                                    has_account={true}
+                                                    type={existing_account.market_type}
+                                                    appname={`${account.name} ${non_eu_accounts}`}
+                                                    platform={account.platform}
+                                                    disabled={false}
+                                                    loginid={existing_account?.display_login}
+                                                    currency={existing_account.currency}
+                                                    amount={existing_account.display_balance}
+                                                    onClickTopUp={() => onClickFundReal(existing_account)}
+                                                    onClickTrade={() => {
+                                                        toggleMT5TradeModal();
+                                                        setMT5TradeAccount(existing_account);
+                                                    }}
+                                                    dxtrade_link={getDXTradeWebTerminalLink(
+                                                        'real',
+                                                        dxtrade_tokens.real
+                                                    )}
+                                                    description={account.description}
+                                                />
+                                                {isEligibleForMoreRealMt5(existing_account.market_type) &&
+                                                    account.platform !== CFD_PLATFORMS.DXTRADE && (
+                                                        <AddDerived
+                                                            title={localize(`More ${account.name} accounts`)}
+                                                            onClickHandler={() => {
+                                                                toggleJurisdictionModal();
+                                                                setAccountType({
+                                                                    category: 'real',
+                                                                    type: account.type,
+                                                                });
+                                                                setAppstorePlatform(account.platform);
+                                                            }}
+                                                            class_names='cfd-real-account__accounts--item__add-derived'
+                                                        />
+                                                    )}
+                                            </React.Fragment>
+                                        );
+                                    })
+                                ) : (
+                                    <React.Fragment key={account.name}>
+                                        <AccountManager
+                                            has_account={false}
+                                            type={account.type || ''}
+                                            appname={account.name}
+                                            platform={account.platform}
+                                            disabled={account.disabled}
+                                            onClickGet={
+                                                account.platform === CFD_PLATFORMS.MT5
+                                                    ? () => {
                                                           toggleJurisdictionModal();
                                                           setAccountType({
                                                               category: 'real',
                                                               type: account.type,
                                                           });
                                                           setAppstorePlatform(account.platform);
-                                                      }}
-                                                      class_names='cfd-real-account__accounts--item__add-derived'
-                                                  />
-                                              )}
-                                      </div>
-                                  );
-                              })
-                            : account.is_visible && (
-                                  <div className='cfd-demo-account__accounts--item' key={account.name}>
-                                      <AccountManager
-                                          has_account={false}
-                                          type={account.type || ''}
-                                          appname={account.name}
-                                          platform={account.platform}
-                                          disabled={account.disabled}
-                                          onClickGet={
-                                              account.platform === CFD_PLATFORMS.MT5
-                                                  ? () => {
-                                                        toggleJurisdictionModal();
-                                                        setAccountType({
-                                                            category: 'real',
-                                                            type: account.type,
-                                                        });
-                                                        setAppstorePlatform(account.platform);
-                                                    }
-                                                  : () => {
-                                                        setAccountType({
-                                                            category: 'real',
-                                                            type: account.type,
-                                                        });
-                                                        setAppstorePlatform(account.platform);
-                                                        createCFDAccount({
-                                                            category: 'real',
-                                                            type: account.type,
-                                                        });
-                                                        enableCFDPasswordModal();
-                                                    }
-                                          }
-                                          description={account.description}
-                                      />
-                                  </div>
-                              )}
-                    </div>
-                ))}
+                                                      }
+                                                    : () => {
+                                                          setAccountType({
+                                                              category: 'real',
+                                                              type: account.type,
+                                                          });
+                                                          setAppstorePlatform(account.platform);
+                                                          createCFDAccount({
+                                                              category: 'real',
+                                                              type: account.type,
+                                                          });
+                                                          enableCFDPasswordModal();
+                                                      }
+                                            }
+                                            description={account.description}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        )
+                )}
             </div>
         </div>
     );

@@ -42,12 +42,14 @@ export const isTestLink = () => {
     return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
 };
 
+export const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
+
 export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain = getCurrentProductionDomain() || '';
-    const platform = new URLSearchParams(window.location.search).get('platform');
+    const platform = window.localStorage.getItem('config.platform');
 
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {

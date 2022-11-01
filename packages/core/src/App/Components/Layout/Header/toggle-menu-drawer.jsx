@@ -369,7 +369,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     }`}
                                                     size='xs'
                                                 >
-                                                    {localize('Back to old interface')}
+                                                    {localize("Exit Trader's hub")}
                                                 </Text>
                                                 <Icon
                                                     className='header__menu-mobile-right-arrow'
@@ -412,7 +412,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         }`}
                                                         size='xs'
                                                     >
-                                                        {localize('Back to old interface')}
+                                                        {localize("Exit Trader's hub")}
                                                     </Text>
                                                     <Icon
                                                         className='header__menu-mobile-right-arrow'
@@ -564,7 +564,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 }}
                                             >
                                                 <Text className='header__menu--trading-hub-text' size='xs'>
-                                                    {localize('Explore Trading hub')}
+                                                    {localize("Trader's hub beta")}
                                                 </Text>
                                                 <Icon
                                                     className='header__menu-mobile-right-arrow'

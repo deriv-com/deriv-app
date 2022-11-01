@@ -103,73 +103,76 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     return (
         <div className='cfd-demo-account'>
             <div className='cfd-demo-account__accounts'>
-                {available_demo_accounts.map(account => (
-                    <div className={`cfd-demo-account__accounts-${account.name}`} key={account.name}>
-                        {existingDemoAccounts(account.platform, account.type)
-                            ? existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
-                                  const non_eu_accounts =
-                                      existing_account.landing_company_short &&
-                                      existing_account.landing_company_short !== 'svg' &&
-                                      existing_account.landing_company_short !== 'bvi'
-                                          ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
-                                            existing_account.landing_company_short?.slice(1)
-                                          : existing_account.landing_company_short?.toUpperCase();
+                {available_demo_accounts.map(
+                    account =>
+                        account.is_visible && (
+                            <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
+                                {existingDemoAccounts(account.platform, account.type) ? (
+                                    existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
+                                        const non_eu_accounts =
+                                            existing_account.landing_company_short &&
+                                            existing_account.landing_company_short !== 'svg' &&
+                                            existing_account.landing_company_short !== 'bvi'
+                                                ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
+                                                  existing_account.landing_company_short?.slice(1)
+                                                : existing_account.landing_company_short?.toUpperCase();
 
-                                  return (
-                                      <div
-                                          className={`cfd-demo-account__accounts-${account.name}--item`}
-                                          key={existing_account.login}
-                                      >
-                                          <AccountManager
-                                              has_account={true}
-                                              type={existing_account.market_type}
-                                              appname={`${account.name} ${non_eu_accounts}`}
-                                              platform={account.platform}
-                                              disabled={false}
-                                              loginid={existing_account.display_login}
-                                              currency={existing_account.currency}
-                                              amount={existing_account.display_balance}
-                                              dxtrade_link={getDXTradeWebTerminalLink('demo', dxtrade_tokens.demo)}
-                                              onClickTopUp={() =>
-                                                  openAccountTransfer(
-                                                      current_list[
-                                                          Object.keys(current_list).find((key: string) =>
-                                                              key.startsWith(`${platform}.demo.${account.type}`)
-                                                          ) || ''
-                                                      ],
-                                                      {
-                                                          category: 'demo',
-                                                          type: account.type,
-                                                      }
-                                                  )
-                                              }
-                                              onClickTrade={() => {
-                                                  toggleMT5TradeModal();
-                                                  setMT5TradeAccount(existing_account);
-                                              }}
-                                              description={account.description}
-                                          />
-                                      </div>
-                                  );
-                              })
-                            : account.is_visible && (
-                                  <div className='cfd-demo-account__accounts--item' key={account.name}>
-                                      <AccountManager
-                                          has_account={false}
-                                          type={account.type || ''}
-                                          appname={account.name}
-                                          platform={account.platform}
-                                          disabled={account.disabled}
-                                          onClickGet={() => {
-                                              setAppstorePlatform(account.platform);
-                                              openCFDAccount(account.type);
-                                          }}
-                                          description={account.description}
-                                      />
-                                  </div>
-                              )}
-                    </div>
-                ))}
+                                        return (
+                                            <React.Fragment key={existing_account.name}>
+                                                <AccountManager
+                                                    has_account={true}
+                                                    type={existing_account.market_type}
+                                                    appname={`${account.name} ${non_eu_accounts}`}
+                                                    platform={account.platform}
+                                                    disabled={false}
+                                                    loginid={existing_account.display_login}
+                                                    currency={existing_account.currency}
+                                                    amount={existing_account.display_balance}
+                                                    dxtrade_link={getDXTradeWebTerminalLink(
+                                                        'demo',
+                                                        dxtrade_tokens.demo
+                                                    )}
+                                                    onClickTopUp={() =>
+                                                        openAccountTransfer(
+                                                            current_list[
+                                                                Object.keys(current_list).find((key: string) =>
+                                                                    key.startsWith(`${platform}.demo.${account.type}`)
+                                                                ) || ''
+                                                            ],
+                                                            {
+                                                                category: 'demo',
+                                                                type: account.type,
+                                                            }
+                                                        )
+                                                    }
+                                                    onClickTrade={() => {
+                                                        toggleMT5TradeModal();
+                                                        setMT5TradeAccount(existing_account);
+                                                    }}
+                                                    description={account.description}
+                                                />
+                                            </React.Fragment>
+                                        );
+                                    })
+                                ) : (
+                                    <React.Fragment key={account.name}>
+                                        <AccountManager
+                                            has_account={false}
+                                            type={account.type || ''}
+                                            appname={account.name}
+                                            platform={account.platform}
+                                            disabled={account.disabled}
+                                            onClickGet={() => {
+                                                setAppstorePlatform(account.platform);
+                                                openCFDAccount(account.type);
+                                            }}
+                                            description={account.description}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        )
+                )}
             </div>
         </div>
     );

@@ -38,6 +38,7 @@ const RedirectToOldInterface = () => {
                 <Text as='p' size='xs' color='general'>
                     <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
+                <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
                 <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>
         </div>
@@ -161,7 +162,7 @@ const TradingHubHeader = ({
                 ) : (
                     <DerivBrandLogo className='trading-hub-header__logo' />
                 )}
-
+                <Divider />
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>

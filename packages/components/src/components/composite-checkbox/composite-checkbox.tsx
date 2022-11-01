@@ -1,18 +1,37 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
 
-const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, children, ...props }) => {
-    const onClickContainer = e => {
+type TCompositeCheckbox = {
+    name: string;
+    value: boolean;
+    onChange: (e: React.SyntheticEvent) => void;
+    className?: string;
+    label: string;
+    id?: string;
+    description: string;
+};
+
+const CompositeCheckbox = ({
+    name,
+    value,
+    onChange,
+    className,
+    label,
+    id,
+    description,
+    children,
+    ...props
+}: React.PropsWithChildren<TCompositeCheckbox>) => {
+    const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         e.preventDefault();
         onChange({
             target: {
                 value: !value,
             },
-        });
+        } as any);
     };
 
     return (
@@ -34,17 +53,6 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
             {children}
         </div>
     );
-};
-
-CompositeCheckbox.propTypes = {
-    name: PropTypes.string.isRequired,
-    value: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    label: PropTypes.string.isRequired,
-    id: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 };
 
 export default CompositeCheckbox;

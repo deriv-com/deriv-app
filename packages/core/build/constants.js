@@ -14,6 +14,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
+const webpack = require('webpack');
 
 const {
     copyConfig,
@@ -140,6 +141,9 @@ const plugins = ({ base, is_test_env, env }) => {
         new PreloadWebpackPlugin(htmlPreloadConfig()),
         new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
         new MiniCssExtractPlugin(cssConfig()),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 10,
+        }),
         new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
         ...(IS_RELEASE
             ? []

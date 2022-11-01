@@ -25,11 +25,12 @@ const Popover = ({
     message,
     onBubbleClose,
     onBubbleOpen,
+    onClick = () => {},
     relative_render,
     should_disable_pointer_events,
+    should_show_cursor,
     window_border,
     zIndex,
-    should_show_cursor,
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
@@ -53,7 +54,7 @@ const Popover = ({
     const icon_class_name = classNames(classNameTargetIcon, icon);
 
     return (
-        <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })}>
+        <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })} onClick={onClick}>
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex }}>
                     <div ref={ref} className='dc-popover__container-relative' />
@@ -219,9 +220,10 @@ Popover.propTypes = {
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     onBubbleOpen: PropTypes.func,
     onBubbleClose: PropTypes.func,
-    zIndex: PropTypes.number,
+    onClick: PropTypes.func,
     should_disable_pointer_events: PropTypes.bool,
     should_show_cursor: PropTypes.bool,
+    zIndex: PropTypes.number,
     window_border: PropTypes.number,
 };
 

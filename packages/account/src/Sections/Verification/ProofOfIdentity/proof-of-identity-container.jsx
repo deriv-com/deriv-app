@@ -25,6 +25,8 @@ const ProofOfIdentityContainer = ({
     is_from_external,
     is_switching,
     is_virtual,
+    is_high_risk,
+    is_withdrawal_lock,
     onStateChange,
     refreshNotifications,
     routeBackInApp,
@@ -77,7 +79,6 @@ const ProofOfIdentityContainer = ({
     const {
         idv,
         allow_poi_resubmission,
-        has_attempted_idv,
         identity_last_attempt,
         identity_status,
         is_age_verified,
@@ -86,6 +87,10 @@ const ProofOfIdentityContainer = ({
         needs_poa,
         onfido,
     } = verification_status;
+    const last_attempt_status = identity_last_attempt?.status;
+    const is_last_attempt_idv = identity_last_attempt?.service === 'idv';
+    const is_last_attempt_onfido = identity_last_attempt?.service === 'onfido';
+    const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
     if (!should_allow_authentication && !is_age_verified) {
         return <NotRequired />;
@@ -97,17 +102,22 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
+    if (
+        identity_status === identity_status_codes.none ||
+        has_require_submission ||
+        allow_poi_resubmission ||
+        (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
+        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
+    ) {
         return (
             <POISubmission
                 allow_poi_resubmission={allow_poi_resubmission}
-                has_attempted_idv={has_attempted_idv}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
-                is_idv_disallowed={is_idv_disallowed}
+                is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
                 manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}
@@ -176,6 +186,8 @@ const ProofOfIdentityContainer = ({
                     is_from_external={!!is_from_external}
                     needs_poa={needs_poa}
                     onfido={onfido}
+                    manual={manual}
+                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
                 />
             );

@@ -100,8 +100,7 @@
             background: var(--general-main-2);
             position: absolute;
             z-index: 2;
-            transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
-                opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+            transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
             width: 100%;
             height: 100%;
             top: 0;

@@ -60,6 +60,7 @@ const BuySellTable = ({ onScroll }) => {
                         className='sort'
                         is_open={buy_sell_store.is_sort_dropdown_open}
                         height='10rem'
+                        toggleModal={() => buy_sell_store.setIsSortDropdownOpen(false)}
                         width='80vw'
                     >
                         <RadioGroup

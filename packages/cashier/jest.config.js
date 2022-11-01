@@ -8,7 +8,6 @@ module.exports = {
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
-        '^_common/(.*)$': '<rootDir>/src/_common/$1',
         '^Config/(.*)$': '<rootDir>/src/config/$1',
         '^Components/(.*)$': '<rootDir>/src/components/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',

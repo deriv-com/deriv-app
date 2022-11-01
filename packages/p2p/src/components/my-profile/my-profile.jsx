@@ -13,7 +13,11 @@ const MyProfile = () => {
     React.useEffect(() => {
         my_profile_store.getSettings();
         my_profile_store.getAdvertiserInfo();
-        my_profile_store.setActiveTab(my_profile_tabs.MY_STATS);
+
+        return () => {
+            // leave this in the return otherwise the default isn't set to my stats
+            my_profile_store.setActiveTab(my_profile_tabs.MY_STATS);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -30,7 +34,7 @@ const MyProfile = () => {
     return (
         <AutoSizer>
             {({ height, width }) => (
-                <div className='my-profile' height={height} style={{ width }}>
+                <div className='my-profile' style={{ height, width }}>
                     <div className='my-profile__content'>
                         <MyProfileDetailsContainer />
                         <DesktopWrapper>

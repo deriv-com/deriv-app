@@ -18,11 +18,11 @@ const ShowDemoMessage = () => (
             line_height='m'
             weight='bold'
         >
-            {localize('This feature is not available for demo accounts.')}
+            {localize('Switch to your real account to create a Deriv MT5 account')}
         </Text>
     </div>
 );
-const ProofOfIdentityContainerforMt5 = ({
+const ProofOfIdentityContainerForMt5 = ({
     account_status,
     fetchResidenceList,
     height,
@@ -97,4 +97,4 @@ const ProofOfIdentityContainerforMt5 = ({
     );
 };
 
-export default ProofOfIdentityContainerforMt5;
+export default ProofOfIdentityContainerForMt5;

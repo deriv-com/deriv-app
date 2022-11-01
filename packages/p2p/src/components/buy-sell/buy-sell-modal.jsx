@@ -108,7 +108,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                 icon='IcAlertDanger'
                 message={
                     <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                        {buy_sell_store.form_error_code === api_error_codes.INSUFFICIENT_BALANCE ? (
+                        {buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_CLIENT_BALANCE ? (
                             <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
                         ) : (
                             error_message
@@ -135,9 +135,10 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     };
 
     const onConfirmClick = order_info => {
-        order_store.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+        order_store.setOrderId(order_info.id);
         setShouldShowPopup(false);
+        buy_sell_store.setShowAdvertiserPage(false);
     };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);

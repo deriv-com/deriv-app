@@ -1,6 +1,9 @@
 .account-transfer-form {
     &__hint {
         color: var(--text-general);
+        &__disabled {
+            color: var(--text-less-prominent);
+        }
     }
     &__submit-button {
         @include desktop {
@@ -11,6 +14,9 @@
         }
     }
     &__crypto {
+        &--disabled {
+            pointer-events: none;
+        }
         &--percentage-selector {
             display: flex;
             flex-direction: column;
@@ -53,10 +59,20 @@
             width: 100%;
             align-items: center;
         }
+        & .dc-field--error {
+            padding-top: 0.5rem;
+            .link {
+                pointer-events: all;
+            }
+        }
     }
     &__notes {
         @include mobile {
             padding: 1.6rem 0;
+        }
+
+        @include desktop {
+            margin-top: 0.8rem;
         }
 
         .account-transfer-form__notes-header {

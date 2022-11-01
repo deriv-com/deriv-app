@@ -11,7 +11,7 @@ import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
-import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
+import CurrencyDropdown from 'Components/buy-sell/currency-dropdown.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
 
 const getBuySellFilters = () => [
@@ -25,10 +25,9 @@ const getBuySellFilters = () => [
     },
 ];
 
-const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
-    const { buy_sell_store } = useStores();
-
-    const onChangeTableType = event => setTableType(event.target.value);
+const BuySellHeader = ({ table_type }) => {
+    const { buy_sell_store, general_store } = useStores();
+    const is_currency_selector_visible = general_store.feature_level >= 2;
 
     const returnedFunction = debounce(() => {
         buy_sell_store.loadMoreItems({ startIndex: 0 });
@@ -57,6 +56,14 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             buy_sell_store.setItems([]);
             buy_sell_store.setIsLoading(true);
             buy_sell_store.loadMoreItems({ startIndex: 0 });
+
+            const interval = setInterval(() => {
+                buy_sell_store.getWebsiteStatus();
+            }, 60000);
+
+            return () => {
+                if (interval) clearInterval(interval);
+            };
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -69,20 +76,23 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             })}
         >
             <div className='buy-sell__header-container'>
-                <AnimationWrapper is_visible={is_visible}>
-                    <ToggleContainer>
-                        <ButtonToggle
-                            buttons_arr={getBuySellFilters()}
-                            className='buy-sell__header-filters'
-                            is_animated
-                            name='filter'
-                            onChange={onChangeTableType}
-                            value={table_type}
-                            has_rounded_button
-                        />
-                    </ToggleContainer>
-                </AnimationWrapper>
-                <div className='buy-sell__header-row'>
+                <ToggleContainer>
+                    <ButtonToggle
+                        buttons_arr={getBuySellFilters()}
+                        className='buy-sell__header-filters'
+                        is_animated
+                        name='filter'
+                        onChange={buy_sell_store.onChangeTableType}
+                        value={table_type}
+                        has_rounded_button
+                    />
+                </ToggleContainer>
+                <div
+                    className={classNames('buy-sell__header-row', {
+                        'buy-sell__header-row--selector': is_currency_selector_visible,
+                    })}
+                >
+                    {is_currency_selector_visible && <CurrencyDropdown />}
                     <SearchBox
                         onClear={onClear}
                         onSearch={onSearch}
@@ -102,8 +112,6 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
 };
 
 BuySellHeader.propTypes = {
-    is_visible: PropTypes.bool,
-    setTableType: PropTypes.func,
     table_type: PropTypes.string,
 };
 

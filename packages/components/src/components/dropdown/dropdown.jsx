@@ -7,30 +7,30 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
         classNameItems,
         classNameLabel,
-        has_symbol,
         handleSelect,
+        has_symbol,
         initial_offset,
-        is_list_visible,
+        is_align_text_left,
         is_alignment_left,
         is_alignment_top,
-        is_align_text_left,
         is_large,
+        is_list_visible,
         list,
         nodes,
         onKeyPressed,
+        parent_ref,
         portal_id,
         suffix_icon,
         value,
-        parent_ref,
     } = props;
 
     const [list_dimensions, setListDimensions] = React.useState([initial_offset, 0]);
@@ -184,20 +184,22 @@ const Dropdown = ({
     has_symbol,
     hint,
     initial_offset = 0,
-    is_alignment_top,
-    is_alignment_left,
     is_align_text_left,
+    is_alignment_left,
+    is_alignment_top,
     is_large,
-    is_nativepicker,
     is_nativepicker_visible,
+    is_nativepicker,
     label,
-    list,
     list_portal_id,
+    list,
     name,
     no_border,
+    onChange,
+    onClick,
     placeholder,
     suffix_icon,
-    onChange,
+    test_id,
     value,
 }) => {
     const dropdown_ref = React.useRef();
@@ -264,6 +266,12 @@ const Dropdown = ({
     };
 
     const handleVisibility = () => {
+        if (typeof onClick === 'function') {
+            onClick();
+
+            return;
+        }
+
         if (is_nativepicker && !is_list_visible) {
             if (mobileOSDetect() === 'iOS') {
                 /* .focus() doesn't trigger open <select /> in Android :(
@@ -360,6 +368,7 @@ const Dropdown = ({
                 name={name}
                 readOnly='readonly'
                 type='hidden'
+                data-testid={test_id}
                 value={value || 0}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
@@ -367,6 +376,7 @@ const Dropdown = ({
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
                     })}
+                    data-testid='dt_dropdown_container'
                 >
                     {label && (
                         <span
@@ -396,7 +406,7 @@ const Dropdown = ({
                             is_align_text_left={is_align_text_left}
                             is_title={is_list_visible}
                             placeholder={placeholder}
-                            value={value || 0}
+                            value={value ?? 0}
                             list={list}
                         />
                     </div>
@@ -416,24 +426,24 @@ const Dropdown = ({
                         </Text>
                     )}
                     <DropdownList
-                        ref={list_ref}
                         classNameItems={classNameItems}
                         classNameLabel={classNameLabel}
-                        portal_id={list_portal_id}
-                        has_symbol={has_symbol}
                         handleSelect={handleSelect}
+                        has_symbol={has_symbol}
+                        initial_offset={initial_offset}
+                        is_align_text_left={is_align_text_left}
                         is_alignment_left={is_alignment_left}
                         is_alignment_top={is_alignment_top}
-                        is_align_text_left={is_align_text_left}
                         is_large={is_large}
                         is_list_visible={is_list_visible}
-                        initial_offset={initial_offset}
                         list={list}
                         nodes={nodes}
                         onKeyPressed={onKeyPressed}
-                        value={value}
                         parent_ref={dropdown_ref}
+                        portal_id={list_portal_id}
+                        ref={list_ref}
                         suffix_icon={suffix_icon}
+                        value={value}
                     />
                 </div>
                 {!error && hint && (
@@ -454,31 +464,33 @@ const Dropdown = ({
 Dropdown.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
+    classNameHint: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
-    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
-    list_portal_id: PropTypes.string,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    handleBlur: PropTypes.func,
     has_symbol: PropTypes.bool,
+    hint: PropTypes.string,
     initial_offset: PropTypes.number,
+    is_align_text_left: PropTypes.bool,
     is_alignment_left: PropTypes.bool,
+    is_alignment_top: PropTypes.bool,
     is_large: PropTypes.bool,
-    is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
+    is_nativepicker: PropTypes.bool,
     label: PropTypes.string,
-    list: listPropType(),
     list_height: PropTypes.string,
+    list_portal_id: PropTypes.string,
+    list: listPropType(),
     name: PropTypes.string,
     no_border: PropTypes.bool,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
+    test_id: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    error: PropTypes.string,
-    handleBlur: PropTypes.func,
-    hint: PropTypes.string,
-    is_alignment_top: PropTypes.bool,
-    is_align_text_left: PropTypes.bool,
 };
 
 export default Dropdown;

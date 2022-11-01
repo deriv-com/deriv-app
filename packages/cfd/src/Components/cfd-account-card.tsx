@@ -25,10 +25,12 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         financial_stp: 'IcMt5FinancialStpPlatform',
         cfd: 'IcMt5CfdPlatform',
     },
+    // TODO: Line 30, 31 and 32 should be removed after real released.
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',
         cfd: 'IcMt5CfdPlatform',
+        all: 'IcDxtradeDerivxPlatform',
     },
 };
 
@@ -466,18 +468,15 @@ const CFDAccountCardComponent = ({
                             type.category === 'real' &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {existing_data?.display_balance && is_logged_in && (
+                                    {existing_data?.display_balance && is_logged_in && !is_eu && (
                                         <div className='cfd-account-card__item--banner'>
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    (is_eu
-                                                        ? 'MFSA'
-                                                        : acc.landing_company_short !== 'svg' &&
-                                                          acc.landing_company_short !== 'bvi'
+                                                    !['svg', 'bvi'].includes(acc?.landing_company_short)
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
-                                                        : acc.landing_company_short?.toUpperCase())
+                                                        : acc.landing_company_short?.toUpperCase()
                                                 }
                                             />
                                         </div>
@@ -598,7 +597,7 @@ const CFDAccountCardComponent = ({
                             <div className='cfd-account-card__manage'>
                                 <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
                                     {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                                    {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
+                                    {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                                 </Button>
                             </div>
                         )}

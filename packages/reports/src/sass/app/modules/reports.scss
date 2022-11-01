@@ -389,6 +389,10 @@ $side-padding: 1.2em;
 
 /** @define profit-table; weak */
 .profit-table {
+    .table__cell {
+        display: grid;
+    }
+
     .table__head,
     .table__foot {
         font-weight: bold;
@@ -398,6 +402,13 @@ $side-padding: 1.2em;
         .table__cell {
             align-items: flex-start;
         }
+    }
+
+    .table__cell.action_type,
+    .table__cell.currency,
+    .table__cell.transaction_id {
+        display: flex;
+        justify-self: flex-start;
     }
 
     @include desktop {

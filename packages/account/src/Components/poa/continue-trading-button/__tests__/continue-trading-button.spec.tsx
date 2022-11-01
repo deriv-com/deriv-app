@@ -7,7 +7,7 @@ import { ContinueTradingButton } from '../continue-trading-button';
 
 describe('<ContinueTradingButton/>', () => {
     const history = createBrowserHistory();
-    const renderWithRouter = (component: JSX.Element) => {
+    const renderWithRouter = (component: React.ReactNode) => {
         return render(<Router history={history}>{component}</Router>);
     };
 

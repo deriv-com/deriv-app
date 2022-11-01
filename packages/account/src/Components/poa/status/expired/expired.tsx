@@ -3,7 +3,11 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Expired = ({ onClick }) => (
+type TExpired = {
+    onClick: () => void;
+};
+
+export const Expired = ({ onClick }: TExpired) => (
     <IconMessageContent
         message={localize('New proof of address is needed')}
         text={localize('Your documents for proof of address is expired. Please submit again.')}

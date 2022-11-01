@@ -1,10 +1,14 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
+import { TPlatformContext } from 'Types';
 
-const FormFooter = ({ children, className }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+export type TFormFooter = {
+    className?: string;
+};
+
+const FormFooter = ({ children, className }: React.PropsWithChildren<TFormFooter>) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
     return (
         <div
             className={classNames('account-form__footer', className, {
@@ -15,10 +19,6 @@ const FormFooter = ({ children, className }) => {
             {children}
         </div>
     );
-};
-
-FormFooter.prototype = {
-    children: PropTypes.object,
 };
 
 export default FormFooter;

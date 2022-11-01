@@ -2,7 +2,13 @@ import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
 
-export const FormSubHeader = ({ title, subtitle, description }) => {
+export type TFormSubHeader = {
+    description?: string;
+    subtitle?: string;
+    title: string;
+};
+
+export const FormSubHeader = ({ description, subtitle, title }: TFormSubHeader) => {
     const title_as_class = title.replace(/\s+/g, '-').toLowerCase();
     return (
         <React.Fragment>

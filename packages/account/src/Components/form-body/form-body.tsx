@@ -1,8 +1,12 @@
-import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import React from 'react';
+import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container.jsx';
 
-export const FormBody = ({ children, scroll_offset }) => (
+type TFormBody = {
+    scroll_offset?: string;
+};
+
+export const FormBody = ({ children, scroll_offset }: React.PropsWithChildren<TFormBody>) => (
     <React.Fragment>
         <DesktopWrapper>
             <ScrollbarsContainer className='account__scrollbars_container--grid-layout' scroll_offset={scroll_offset}>

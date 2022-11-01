@@ -1,8 +1,8 @@
 import React from 'react';
-import FormFooter from '../form-footer';
+import FormFooter, { TFormFooter } from '../form-footer';
 import { render, screen } from '@testing-library/react';
 
-const MockFormFooter = props => {
+const MockFormFooter = (props: TFormFooter) => {
     return (
         <FormFooter {...props}>
             <p>Lorem Ipsum</p>

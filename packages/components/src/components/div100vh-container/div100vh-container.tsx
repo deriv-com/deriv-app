@@ -40,7 +40,7 @@ const Div100vhContainer = ({
     };
     if (is_bypassed) return children as JSX.Element;
     return (
-        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
+        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style} data-testid='dt_div_100_vh'>
             {children}
         </Div100vh>
     );

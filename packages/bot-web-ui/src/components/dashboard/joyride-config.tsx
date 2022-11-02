@@ -64,7 +64,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
 };
 
 const joyride_props: TJoyrideConfig = {
-    showProgress: true,
+    showProgress: false,
     showSkipButton: true,
     spotlightClicks: true,
     disableBeacon: true,
@@ -186,21 +186,6 @@ export const DBOT_ONBOARDING = [
     },
 ];
 export const BOT_BUILDER_TOUR = [
-    {
-        target: '#id-bot-builder',
-        content: [
-            <Step
-                key='Lets build a bot'
-                label={localize("Let's build a bot")}
-                content={[
-                    localize('Learn how to build your bot from scratch using a simple strategy.'),
-                    localize('Hit the <strong>Start</strong> button to begin and follow the tutorial.'),
-                    localize('Note: You can also find this tutorial in the <strong>Tutorials</strong> tab.'),
-                ]}
-            />,
-        ],
-        ...joyride_props,
-    },
     {
         target: '[data-category="trade_parameters"]',
         content: [

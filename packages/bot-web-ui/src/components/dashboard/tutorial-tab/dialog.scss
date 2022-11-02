@@ -47,6 +47,9 @@
 
         &__description {
             text-align: left;
+            &__text {
+                margin-bottom: 1.6rem;
+            }
         }
     }
 }

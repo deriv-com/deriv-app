@@ -25,4 +25,5 @@ export type TPopoverProps = {
     should_show_cursor?: boolean;
     zIndex: string;
     window_border: number;
+    data_testid?: string;
 };

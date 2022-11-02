@@ -28,7 +28,7 @@ const LeaveConfirmComponent = () => {
     return (
         <Router history={history}>
             <Formik>
-                <LeaveConfirm />
+                <LeaveConfirm onDirty={jest.fn()} />
             </Formik>
         </Router>
     );
@@ -36,20 +36,20 @@ const LeaveConfirmComponent = () => {
 
 const withRouter = Component => {
     const history = createBrowserHistory();
-    return props => {
-        return (
-            <Router history={history}>
-                <Component {...props} />
-            </Router>
-        );
-    };
+    const WrapperComponent = props => (
+        <Router history={history}>
+            <Component {...props} />
+        </Router>
+    );
+
+    return WrapperComponent;
 };
 
 const TransitionBlockerComponent = withRouter(TransitionBlockerWithRouter);
 
 describe('LeaveConfirm', () => {
     it('should render LeaveConfirm component in desktop mode', () => {
-        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => {}]);
+        jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => null]);
         render(<LeaveConfirmComponent />);
         expect(
             screen.getByText('You have unsaved changes. Are you sure you want to discard changes and leave this page?')
@@ -91,8 +91,8 @@ describe('LeaveConfirm', () => {
     });
     it('should change pathname when user leaves form', () => {
         jest.spyOn(React, 'useState')
-            .mockReturnValueOnce([true, () => {}])
-            .mockReturnValueOnce([{ pathname: '/' }, () => {}]);
+            .mockReturnValueOnce([true, () => null])
+            .mockReturnValueOnce([{ pathname: '/' }, () => null]);
         render(<TransitionBlockerComponent />);
         const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
         fireEvent.click(el_leave_settings_btn);

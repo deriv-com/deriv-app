@@ -2,8 +2,11 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import IconMessageContent from 'Components/icon-message-content';
 
-// TODO: Needs UI
-const LoadErrorMessage = ({ error_message }) => (
+type TLoadErrorMessage = {
+    error_message: React.ReactNode;
+};
+
+const LoadErrorMessage = ({ error_message }: TLoadErrorMessage) => (
     <IconMessageContent message={error_message} icon={<Icon icon='IcPoaLock' size={128} />} />
 );
 

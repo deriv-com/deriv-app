@@ -3,13 +3,15 @@ import { formatMoney } from '@deriv/shared';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
+type TAccountLimits = {
+    name: string;
+    payout_limit: number;
+    profile_name: string;
+    turnover_limit: number;
+};
+
 type TAccountLimitsTurnoverLimitRow = {
-    collection: Array<{
-        name: string;
-        payout_limit: number;
-        profile_name: string;
-        turnover_limit: number;
-    }>;
+    collection: TAccountLimits[];
     title: string;
 };
 
@@ -18,14 +20,14 @@ const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurn
 
     return (
         <React.Fragment>
-            {collection?.map(item => (
-                <tr key={item.name} data-testid='account-limits-turnover-limit-row'>
+            {collection?.map(({ name, turnover_limit }) => (
+                <tr key={name} data-testid='account-limits-turnover-limit-row'>
                     <AccountLimitsTableCell>
                         {title && `${title} - `}
-                        {item.name}
+                        {name}
                     </AccountLimitsTableCell>
                     <AccountLimitsTableCell align='right'>
-                        {formatMoney(currency, item.turnover_limit, true)}
+                        {formatMoney(currency, turnover_limit, true)}
                     </AccountLimitsTableCell>
                 </tr>
             ))}

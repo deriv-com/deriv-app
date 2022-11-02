@@ -1,4 +1,5 @@
 export type TUiStore = {
+    app_contents_scroll_ref: React.RefObject<HTMLElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;

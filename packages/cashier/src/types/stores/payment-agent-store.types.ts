@@ -23,8 +23,11 @@ export type TAgent = {
 };
 
 export type TPaymentAgentWithdrawConfirm = {
-    amount?: string;
+    amount?: number;
+    client_id?: string;
+    client_name?: string;
     currency?: string;
+    description?: string;
     loginid?: string;
     payment_agent_name?: string;
 };
@@ -59,7 +62,7 @@ export type TSupportedBank = {
 };
 
 export type TPaymentAgentWithdrawRequest = {
-    amount: string;
+    amount: number;
     currency: string;
     dry_run?: number;
     loginid: string;

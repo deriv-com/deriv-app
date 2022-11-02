@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { TCommonStore, TClientStore, TProviderDetails, TReactFormEvent, TRootStore } from 'Types';
+import { TCommonStore, TClientStore, TOnRampProviderDetails, TReactFormEvent, TRootStore } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
@@ -21,7 +21,7 @@ type TMenuOption = {
 };
 
 type TOnRampProps = {
-    filtered_onramp_providers: TProviderDetails[];
+    filtered_onramp_providers: TOnRampProviderDetails[];
     is_cashier_locked: boolean;
     is_cashier_onboarding: boolean;
     is_deposit_locked: boolean;

@@ -9,13 +9,9 @@ import {
     PaymentAgentTransferResponse,
     PaymentAgentWithdrawResponse,
     TransferBetweenAccountsResponse,
+    PaymentAgentWithdrawRequest,
 } from '@deriv/api-types';
-import {
-    TExtendedPaymentAgentListResponse,
-    TMT5LoginAccount,
-    TPaymentAgentTransferRequest,
-    TPaymentAgentWithdrawRequest,
-} from 'Types';
+import { TExtendedPaymentAgentListResponse, TMT5LoginAccount, TPaymentAgentTransferRequest } from 'Types';
 
 type TCashierPayments = {
     provider: string;
@@ -45,6 +41,8 @@ type TServiceTokenRequest = {
 type TCancelCryptoTransaction = {
     error: TServerError;
 };
+
+type TPaymentAgentWithdrawRequest = Omit<PaymentAgentWithdrawRequest, 'paymentagent_loginid'> & { loginid: string };
 
 type TWebSocketCall = {
     cashier: (

@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { TOnRampProviderDetails, TRootStore, TUiStore } from 'Types';
 
 type TOnRampProviderCardProps = {
     is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    provider: TProviderDetails;
-    setSelectedProvider: (provider: TProviderDetails) => void;
+    provider: TOnRampProviderDetails;
+    setSelectedProvider: (provider: TOnRampProviderDetails) => void;
     is_mobile: TUiStore['is_mobile'];
 };
 

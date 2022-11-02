@@ -1,6 +1,7 @@
 import { MutableRefObject } from 'react';
+import { PaymentagentList } from '@deriv/api-types';
 
-export type TProviderDetails = {
+export type TOnRampProviderDetails = {
     icon: {
         dark: string;
         light: string;
@@ -21,4 +22,10 @@ export type TProviderDetails = {
     should_show_deposit_address: boolean;
 };
 
-export type TProviderDetailsWithoutFrom = Omit<TProviderDetails, 'getDefaultFromCurrency' | 'getFromCurrencies'>;
+export type TPaymentAgentDetails = PaymentagentList['list'][0] & {
+    supported_banks?: { payment_method: string }[];
+    currency?: string;
+    value?: string;
+};
+
+export type TProviderDetailsWithoutFrom = Omit<TOnRampProviderDetails, 'getDefaultFromCurrency' | 'getFromCurrencies'>;

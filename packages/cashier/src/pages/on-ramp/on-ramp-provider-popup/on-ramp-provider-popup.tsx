@@ -4,7 +4,7 @@ import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { TOnRampProviderDetails, TRootStore, TUiStore } from 'Types';
 
 type TOnRampProviderPopupProps = {
     api_error: string;
@@ -16,7 +16,7 @@ type TOnRampProviderPopupProps = {
     onClickCopyDepositAddress: () => void;
     onClickDisclaimerContinue: () => void;
     onClickGoToDepositPage: () => void;
-    selected_provider: TProviderDetails;
+    selected_provider: TOnRampProviderDetails;
     setDepositAddressRef: (ref: HTMLDivElement | null) => void;
     setIsOnRampModalOpen: (boolean: boolean) => void;
     should_show_dialog: boolean;

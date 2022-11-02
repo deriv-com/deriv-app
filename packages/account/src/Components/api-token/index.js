@@ -1,3 +1,4 @@
-import ApiToken from './api-token.jsx';
+import ApiToken from './api-token';
+import './api-token.scss';
 
 export default ApiToken;

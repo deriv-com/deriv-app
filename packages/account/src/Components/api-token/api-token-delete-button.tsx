@@ -1,15 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
+import { TPopoverAlignment, TToken, TApiContext } from 'Types';
 
-const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
-    const { deleteToken } = React.useContext(ApiTokenContext);
-    const [is_deleting, setIsDeleting] = React.useState(false);
-    const [is_loading, setIsLoading] = React.useState(false);
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
+type TApiTokenDeleteButton = {
+    popover_alignment?: TPopoverAlignment;
+    token: TToken;
+};
+
+const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
+    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
+    const [is_deleting, setIsDeleting] = React.useState<boolean>(false);
+    const [is_loading, setIsLoading] = React.useState<boolean>(false);
+    const [is_popover_open, setIsPopoverOpen] = React.useState<boolean>(false);
     const isMounted = useIsMounted();
 
     const getConfirmationBeforeDelete = () => {
@@ -38,7 +43,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
     };
 
     return (
-        <>
+        <React.Fragment>
             <Modal is_open={is_deleting} small>
                 <Modal.Body>
                     <Text as='h1' color='prominent' weight='bold' className='da-api-token__modal-title'>
@@ -87,18 +92,8 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }) => {
                     onMouseLeave={onMouseLeaveHandler}
                 />
             </Popover>
-        </>
+        </React.Fragment>
     );
-};
-
-ApiTokenDeleteButton.propTypes = {
-    token: PropTypes.shape({
-        display_name: PropTypes.string.isRequired,
-        last_used: PropTypes.string.isRequired,
-        scopes: PropTypes.array.isRequired,
-        token: PropTypes.string.isRequired,
-    }).isRequired,
-    popover_alignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
 export default ApiTokenDeleteButton;

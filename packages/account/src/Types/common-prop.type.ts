@@ -1,3 +1,6 @@
+import { Authorize } from '@deriv/api-types';
+import { Requireable, InferProps } from 'prop-types';
+
 export type TToken = {
     display_name: string;
     last_used: string;
@@ -7,7 +10,7 @@ export type TToken = {
 
 /** Add types that are shared between components */
 
-export type TAuthAccountInfo = NonNullable<import('@deriv/api-types').Authorize['account_list']>[0] & {
+export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };
 
@@ -55,8 +58,8 @@ export type TApiContext = {
     footer_ref: Element | DocumentFragment | undefined;
     overlay_ref:
         | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
+        | InferProps<{
+              current: Requireable<unknown>;
           }>;
     toggleOverlay: () => void;
 };

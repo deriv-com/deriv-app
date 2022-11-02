@@ -14,8 +14,7 @@ const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
 
     const formatTokenScopes = (str: string) => {
-        const string = str || '';
-        const replace_filter = string.replace(/-|_/g, ' ');
+        const replace_filter = str.replace(/-|_/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
         return sentenced_case;
     };

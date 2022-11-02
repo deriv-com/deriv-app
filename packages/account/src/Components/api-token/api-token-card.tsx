@@ -3,7 +3,6 @@ import { Field, FieldProps } from 'formik';
 import { CompositeCheckbox } from '@deriv/components';
 
 type TApiTokenCard = {
-    children?: React.ReactNode;
     description: string;
     display_name: string;
     name: string;
@@ -11,7 +10,14 @@ type TApiTokenCard = {
     setFieldValue: (name: string, value: boolean) => void;
 };
 
-const ApiTokenCard = ({ name, value, display_name, description, setFieldValue, children }: TApiTokenCard) => {
+const ApiTokenCard = ({
+    name,
+    value,
+    display_name,
+    description,
+    setFieldValue,
+    children,
+}: React.PropsWithChildren<TApiTokenCard>) => {
     return (
         <Field name={name}>
             {({ field }: FieldProps<string | boolean>) => {

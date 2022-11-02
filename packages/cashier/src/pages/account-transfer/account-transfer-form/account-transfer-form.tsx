@@ -28,13 +28,7 @@ type TAccountTransferFormProps = {
     setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
 };
 
-const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountsList) => {
-    let server;
-
-    if (account.is_mt) {
-        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-    }
-
+const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
@@ -55,18 +49,11 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
                 </Text>
             </div>
 
-            {server?.market_type === 'synthetic' && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.server_info?.geolocation?.region}&nbsp;
-                    {server.server_info?.geolocation?.sequence !== 1 ? server.server_info?.geolocation?.sequence : ''}
-                </Text>
-            )}
-
             <span className='account-transfer-form__balance'>
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={account.balance && account.balance < 0}
+                    has_sign={!!account.balance && account.balance < 0}
                     show_currency
                 />
             </span>
@@ -86,12 +73,10 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
     const {
         client,
         modules: { cashier },
-        ui,
     } = useStore();
 
-    const { account_limits, authentication_status, is_dxtrade_allowed, mt5_login_list, getLimits: onMount } = client;
+    const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
     const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = cashier;
-    const { is_dark_mode_on } = ui;
 
     const {
         account_transfer_amount,
@@ -186,35 +171,19 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
         dxtrade_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = (
-                <AccountOption
-                    mt5_login_list={mt5_login_list}
-                    idx={idx}
-                    account={account}
-                    is_dark_mode_on={is_dark_mode_on}
-                />
-            );
+            const text = <AccountOption idx={idx} account={account} />;
             const value = account.value;
-            const account_server = mt5_login_list.find(server => server.login === account.value);
 
             const is_cfd_account = account.is_mt || account.is_dxtrade;
-            let server_region = '';
-            if (account_server?.market_type === 'synthetic') {
-                server_region = `[${account_server.server_info?.geolocation?.region}${
-                    account_server.server_info?.geolocation?.sequence !== 1
-                        ? account_server.server_info?.geolocation?.sequence
-                        : ''
-                }]`;
-            }
 
             getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
                 is_dxtrade: account.is_dxtrade,
-                nativepicker_text: `${
-                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
 
@@ -236,9 +205,9 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                     is_mt: account.is_mt,
                     is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
-                    nativepicker_text: `${
-                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                    nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                        account.balance
+                    } ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });

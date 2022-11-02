@@ -117,7 +117,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Stay in'),
+        title: localize('Accumulate'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],
@@ -364,7 +364,7 @@ export const getUnsupportedContracts = () => ({
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
     ACCU: {
-        name: <Localize i18n_default_text='Stay in' />,
+        name: <Localize i18n_default_text='Accumulate' />,
         position: 'top',
     },
     CALL: {

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const dummy_current_time = 1667209628; // should be an epoch of some real tick!
+const dummy_current_time = 1667383788; // should be an epoch of some real tick!
 const dummy_start_time = dummy_current_time - 17;
 const dummy_end_time = dummy_current_time + 6;
 
-const high_barrier = 6521.9;
-const low_barrier = 6521.5;
+const high_barrier = 6572.9;
+const low_barrier = 6572.5;
 const tick_1_price = low_barrier + 0.1;
 const tick_2_price = low_barrier + 0.15;
 const tick_3_price = low_barrier + 0.5;
@@ -562,8 +562,8 @@ export const dummy_accu_in_contracts_for_available = {
     barrier_category: 'american',
     barriers: 2,
     contract_category: 'accumulator',
-    contract_category_display: 'Stay in',
-    contract_display: 'Stay in',
+    contract_category_display: 'Accumulate',
+    contract_display: 'Accumulate',
     contract_type: 'ACCU',
     exchange_name,
     expiry_type: 'tick',

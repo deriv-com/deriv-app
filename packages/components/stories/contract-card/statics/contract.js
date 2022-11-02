@@ -180,7 +180,7 @@ export const getUnsupportedContracts = () => ({
 
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
-        name: 'Stay in',
+        name: 'Accumulate',
         position: 'top',
     },
     CALL: {

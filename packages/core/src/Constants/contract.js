@@ -168,7 +168,7 @@ export const getUnsupportedContracts = () => ({
 
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
-        name: localize('Stay in'),
+        name: localize('Accumulate'),
         position: 'top',
     },
     CALL: {

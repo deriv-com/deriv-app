@@ -20,7 +20,6 @@ export default class PaymentAgentStore {
             receipt: observable,
             selected_bank: observable,
             supported_banks: observable,
-            verification: observable,
             active_tab_index: observable,
             all_payment_agent_list: observable,
             search_term: observable,

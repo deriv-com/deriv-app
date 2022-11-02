@@ -4,21 +4,19 @@ import { Localize, localize } from '@deriv/translations';
 import { Wizard } from '@deriv/ui';
 
 type TSignupWizardProps = {
-    setIsWizardOpen: (is_wizard_open: boolean) => void;
+    onClose: VoidFunction;
 };
 
-const SignupWizard = ({ setIsWizardOpen }: TSignupWizardProps) => {
-    const [create_app_state, setCreateAppState] = React.useState({});
+const SignupWizard = ({ onClose }: TSignupWizardProps) => {
     const [current_step_key, setCurrentStepKey] = React.useState<string>();
-
     const is_final_step = current_step_key === 'complete_step';
 
     const closeWizardHandler = () => {
-        setIsWizardOpen(false);
+        onClose();
     };
 
     const handleComplete = () => {
-        setIsWizardOpen(false);
+        onClose();
     };
 
     const onChangeStep = (_current_step: number, _current_step_key?: string) => {

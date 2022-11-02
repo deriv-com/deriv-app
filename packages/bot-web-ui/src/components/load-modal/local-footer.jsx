@@ -4,7 +4,14 @@ import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, setLoadedLocalFile }) => {
+const LocalFooter = ({
+    is_mobile,
+    is_open_button_loading,
+    loadFileFromLocal,
+    setLoadedLocalFile,
+    toggleLoadModal,
+    setPreviewOnPopup,
+}) => {
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
     return (
         <Wrapper>
@@ -13,7 +20,11 @@ const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, set
             )}
             <Button
                 text={localize('Open')}
-                onClick={loadFileFromLocal}
+                onClick={() => {
+                    loadFileFromLocal();
+                    toggleLoadModal();
+                    setPreviewOnPopup(false);
+                }}
                 is_loading={is_open_button_loading}
                 has_effect
                 primary
@@ -28,11 +39,14 @@ LocalFooter.propTypes = {
     is_open_button_loading: PropTypes.bool,
     loadFileFromLocal: PropTypes.func,
     setLoadedLocalFile: PropTypes.bool,
+    setPreviewOnPopup: PropTypes.func,
 };
 
-export default connect(({ load_modal, ui }) => ({
+export default connect(({ load_modal, ui, dashboard }) => ({
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
+    toggleLoadModal: load_modal.toggleLoadModal,
+    setPreviewOnPopup: dashboard.setPreviewOnPopup,
 }))(LocalFooter);

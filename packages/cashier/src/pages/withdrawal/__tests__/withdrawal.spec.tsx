@@ -53,6 +53,7 @@ describe('<Withdrawal />', () => {
         is_virtual: false,
         verification_code: '',
         verify_error: {},
+        willMountWithdraw: jest.fn(),
     };
 
     it('should render <CashierLocked /> component', () => {

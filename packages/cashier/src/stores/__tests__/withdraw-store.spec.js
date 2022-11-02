@@ -39,6 +39,7 @@ describe('WithdrawStore', () => {
                     };
                 },
                 loginid: 'CR9000000',
+                setVerificationCode: jest.fn(),
             },
             modules: {
                 cashier: {

@@ -59,7 +59,13 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
                 <Text size='xs'>***************</Text>
             </Popover>
         </div>
-        <Popover alignment='bottom' message={localize('Change Password')} zIndex={9999}>
+        <Popover
+            className='cfd-trade-modal__password-popover'
+            alignment='left'
+            message={localize('Change Password')}
+            relative_render
+            zIndex={9999}
+        >
             <Button
                 className='cfd-trade-modal__password-action'
                 transparent
@@ -268,9 +274,6 @@ const MT5TradeModal = ({
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
-                    </a>
-                    <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationApple' width={135} height={40} />
                     </a>
                     <a href={getPlatformMt5DownloadLink('huawei')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />

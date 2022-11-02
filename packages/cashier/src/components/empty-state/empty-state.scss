@@ -1,0 +1,32 @@
+.cashier-empty-state {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 67.2rem;
+    margin: 4rem auto 0;
+
+    &__icon {
+        width: 12.8rem;
+        height: 12.8rem;
+        margin-bottom: 2.4rem;
+    }
+
+    &__title {
+        margin-bottom: 0.8rem;
+
+        @include mobile {
+            margin-left: 1.2rem;
+            margin-right: 1.2rem;
+        }
+    }
+
+    &__desc {
+        margin-bottom: 3.2rem;
+
+        @include mobile {
+            padding: 0 1rem;
+        }
+    }
+}

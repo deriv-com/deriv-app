@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -11,32 +10,29 @@ import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
+import { CurrencySelectorModal } from 'Components/buy-sell/currency-selector';
 import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
     const { buy_sell_store } = useStores();
-    const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
         const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+        buy_sell_store.setLocalCurrency(buy_sell_store.selected_local_currency);
 
         return () => {
             disposeIsListedReaction();
             disposeAdvertIntervalReaction();
+            buy_sell_store.setLocalCurrency(null);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {
-            if (event.target.scrollTop !== previous_scroll_top.current) {
-                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-                setIsToggleVisible(!is_scrolling_down);
-            }
-
             previous_scroll_top.current = event.target.scrollTop;
         }
     };
@@ -53,7 +49,7 @@ const BuySell = () => {
     return (
         <div className='buy-sell'>
             <FilterModal />
-            <BuySellHeader is_visible={is_toggle_visible} table_type={buy_sell_store.table_type} />
+            <BuySellHeader table_type={buy_sell_store.table_type} />
             <BuySellTable
                 key={buy_sell_store.table_type}
                 is_buy={buy_sell_store.table_type === buy_sell.BUY}
@@ -68,6 +64,7 @@ const BuySell = () => {
                 table_type={buy_sell_store.table_type}
             />
             <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
+            <CurrencySelectorModal is_modal_open={buy_sell_store.should_show_currency_selector_modal} />
         </div>
     );
 };

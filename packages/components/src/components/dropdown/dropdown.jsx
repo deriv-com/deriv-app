@@ -7,10 +7,10 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -196,6 +196,7 @@ const Dropdown = ({
     name,
     no_border,
     onChange,
+    onClick,
     placeholder,
     suffix_icon,
     test_id,
@@ -265,6 +266,12 @@ const Dropdown = ({
     };
 
     const handleVisibility = () => {
+        if (typeof onClick === 'function') {
+            onClick();
+
+            return;
+        }
+
         if (is_nativepicker && !is_list_visible) {
             if (mobileOSDetect() === 'iOS') {
                 /* .focus() doesn't trigger open <select /> in Android :(
@@ -369,6 +376,7 @@ const Dropdown = ({
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
                     })}
+                    data-testid='dt_dropdown_container'
                 >
                     {label && (
                         <span
@@ -478,6 +486,7 @@ Dropdown.propTypes = {
     name: PropTypes.string,
     no_border: PropTypes.bool,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
     placeholder: PropTypes.string,
     suffix_icon: PropTypes.string,
     test_id: PropTypes.string,

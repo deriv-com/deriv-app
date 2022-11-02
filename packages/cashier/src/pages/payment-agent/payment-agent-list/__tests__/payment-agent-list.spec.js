@@ -12,8 +12,7 @@ jest.mock('Stores/connect', () => ({
 
 jest.mock('Pages/payment-agent/payment-agent-withdrawal-locked', () => () => <div>PaymentAgentWithdrawalLocked</div>);
 jest.mock('Components/verification-email', () => () => <div>The email has been sent!</div>);
-jest.mock('Pages/payment-agent/payment-agent-withdraw-form', () => () => <div>Payment agent withdraw form</div>);
-jest.mock('Pages/payment-agent/payment-agent-deposit', () => () => <div>Payment agent deposit</div>);
+jest.mock('Pages/payment-agent/payment-agent-container', () => () => <div>Payment agent container</div>);
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -34,6 +33,7 @@ describe('<PaymentAgentList />', () => {
         verification_code: '',
         onMount: jest.fn(),
         sendVerificationEmail: jest.fn(),
+        setSideNotes: jest.fn(),
     };
 
     let history;
@@ -45,13 +45,7 @@ describe('<PaymentAgentList />', () => {
     it('should show proper messages', () => {
         renderWithRouter(<PaymentAgentList {...props} />);
 
-        expect(screen.getByText('Payment agent deposit')).toBeInTheDocument();
-        expect(screen.getByText('DISCLAIMER')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Deriv is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Payment agent container')).toBeInTheDocument();
     });
 
     it('should show loader in Deposit tab', () => {
@@ -76,7 +70,7 @@ describe('<PaymentAgentList />', () => {
         expect(screen.getByText('The email has been sent!')).toBeInTheDocument();
     });
 
-    it('should show "Payment agent withdraw form" message in Withdrawal tab', () => {
+    it('should show "Payment agent container" message in Withdrawal tab', () => {
         renderWithRouter(
             <PaymentAgentList
                 {...props}
@@ -87,6 +81,12 @@ describe('<PaymentAgentList />', () => {
             />
         );
 
-        expect(screen.getByText('Payment agent withdraw form')).toBeInTheDocument();
+        expect(screen.getByText('Payment agent container')).toBeInTheDocument();
+    });
+
+    it('should set side notes when component is mounting', () => {
+        renderWithRouter(<PaymentAgentList {...props} />);
+
+        expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
 });

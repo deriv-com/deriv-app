@@ -21,24 +21,17 @@ const TourTriggrerDialog = ({
     setTourActive,
     active_tab,
 }: TourTriggrerDialog) => {
-    const handleChange = () => {
+    const toggleTour = (value: boolean, type: string) => {
         if (active_tab === 0) {
-            setTourActive(true);
-            setOnBoardTourRunState(true);
+            setTourActive(value);
+            setOnBoardTourRunState(value);
         } else {
-            setBotBuilderTourState(true);
+            setBotBuilderTourState(value);
         }
-        setTourDialogVisibility(false);
-    };
-    const closeTourChange = () => {
-        if (active_tab === 0) {
-            setTourActive(false);
-            setOnBoardTourRunState(false);
-        } else {
-            setBotBuilderTourState(false);
+        setTourDialogVisibility(value);
+        if (type === 'onConfirm') {
+            setTourDialogVisibility(!value);
         }
-
-        setTourDialogVisibility(false);
     };
 
     const getTourContent = () => {
@@ -85,9 +78,9 @@ const TourTriggrerDialog = ({
             <Dialog
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
-                onCancel={closeTourChange}
+                onCancel={() => toggleTour(false, 'onCancel')}
                 confirm_button_text={localize('Start')}
-                onConfirm={handleChange}
+                onConfirm={() => toggleTour(true, 'onConfirm')}
                 is_mobile_full_width
                 className={'dc-dialog onboarding-tour-guide'}
                 has_close_icon={false}

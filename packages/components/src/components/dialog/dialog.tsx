@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon';
@@ -8,19 +7,41 @@ import Button from '../button/button';
 import Text from '../text';
 import { useOnClickOutside } from '../../hooks';
 
+type TDialog = {
+    cancel_button_text?: string;
+    className?: string;
+    confirm_button_text?: string;
+    dismissable?: boolean;
+    disableApp?: () => void;
+    enableApp?: () => void;
+    has_close_icon?: boolean;
+    is_closed_on_cancel?: boolean;
+    is_closed_on_confirm?: boolean;
+    is_content_centered?: boolean;
+    is_loading?: boolean;
+    is_mobile_full_width?: boolean;
+    is_visible?: boolean;
+    onCancel?: () => void;
+    onClose?: () => void;
+    onConfirm: () => void;
+    onEscapeButtonCancel?: () => void;
+    portal_element_id?: string;
+    title?: string;
+};
+
 const Dialog = ({
     disableApp,
     dismissable,
     enableApp,
-    is_closed_on_cancel,
-    is_closed_on_confirm,
+    is_closed_on_cancel = true,
+    is_closed_on_confirm = true,
     is_visible,
     onCancel,
     onClose,
     onConfirm,
     onEscapeButtonCancel,
     ...other_props
-}) => {
+}: React.PropsWithChildren<TDialog>) => {
     const {
         cancel_button_text,
         className,
@@ -34,7 +55,7 @@ const Dialog = ({
         has_close_icon,
     } = other_props;
 
-    const wrapper_ref = React.useRef();
+    const wrapper_ref = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
@@ -43,7 +64,7 @@ const Dialog = ({
     }, [is_visible, disableApp]);
 
     React.useEffect(() => {
-        const close = e => {
+        const close = (e: { key: string }) => {
             if (e.key === 'Escape') {
                 onEscapeButtonCancel?.();
             }
@@ -57,7 +78,7 @@ const Dialog = ({
         if (is_closed_on_cancel && enableApp) {
             enableApp();
         }
-        onCancel();
+        onCancel?.();
     };
 
     const handleConfirm = () => {
@@ -84,8 +105,10 @@ const Dialog = ({
     const content_classes = classNames('dc-dialog__content', {
         'dc-dialog__content--centered': is_content_centered,
     });
-
-    const is_text = typeof children === 'string' || typeof children?.props?.i18n_default_text === 'string';
+    //
+    const is_text =
+        typeof children === 'string' ||
+        (React.isValidElement(children) && typeof children?.props?.i18n_default_text === 'string');
     const dialog = (
         <CSSTransition
             appear
@@ -164,34 +187,11 @@ const Dialog = ({
     );
 
     if (portal_element_id) {
-        return ReactDOM.createPortal(dialog, document.getElementById(portal_element_id));
+        const target_element = document.getElementById(portal_element_id);
+        if (target_element) return ReactDOM.createPortal(dialog, target_element);
     }
 
     return dialog;
-};
-
-Dialog.defaultProps = {
-    is_closed_on_cancel: true,
-    is_closed_on_confirm: true,
-};
-
-Dialog.propTypes = {
-    cancel_button_text: PropTypes.string,
-    confirm_button_text: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    has_close_icon: PropTypes.bool,
-    is_closed_on_cancel: PropTypes.bool,
-    is_closed_on_confirm: PropTypes.bool,
-    is_content_centered: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_mobile_full_width: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onEscapeButtonCancel: PropTypes.func,
-    onConfirm: PropTypes.func,
-    portal_element_id: PropTypes.string,
-    title: PropTypes.string,
 };
 
 export default Dialog;

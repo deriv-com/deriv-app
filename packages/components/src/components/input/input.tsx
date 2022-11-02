@@ -70,7 +70,7 @@ const Input = React.forwardRef(
             data_testId,
             ...props
         }: TInputProps,
-        ref?: React.LegacyRef<HTMLInputElement | HTMLTextAreaElement>
+        ref?: React.Ref<HTMLInputElement & HTMLTextAreaElement>
     ) => {
         const [counter, setCounter] = React.useState(0);
 
@@ -108,7 +108,7 @@ const Input = React.forwardRef(
                         })}
                     {props.type === 'textarea' ? (
                         <textarea
-                            ref={ref as React.LegacyRef<HTMLTextAreaElement>}
+                            ref={ref}
                             data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field dc-input__textarea', {
@@ -120,7 +120,7 @@ const Input = React.forwardRef(
                         />
                     ) : (
                         <input
-                            ref={ref as React.LegacyRef<HTMLInputElement>}
+                            ref={ref}
                             data-testid={data_testId}
                             {...props}
                             className={classNames('dc-input__field', field_className, {

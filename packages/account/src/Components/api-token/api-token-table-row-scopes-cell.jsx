@@ -1,11 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-type TApiTokenTableRowScopesCell = {
-    scopes: string[];
-};
-
-const ApiTokenTableRowScopesCell = ({ scopes }: TApiTokenTableRowScopesCell) => {
+const ApiTokenTableRowScopesCell = ({ scopes }) => {
     return (
         <div className='da-api-token__table-scopes-cell-block'>
             {scopes.map(scope => (
@@ -20,6 +17,10 @@ const ApiTokenTableRowScopesCell = ({ scopes }: TApiTokenTableRowScopesCell) => 
             ))}
         </div>
     );
+};
+
+ApiTokenTableRowScopesCell.propTypes = {
+    scopes: PropTypes.array.isRequired,
 };
 
 export default ApiTokenTableRowScopesCell;

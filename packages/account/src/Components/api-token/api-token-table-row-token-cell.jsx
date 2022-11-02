@@ -1,12 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ApiTokenClipboard from './api-token-clipboard';
-
-type TApiTokenTableRowTokenCell = {
-    token: string;
-    scopes: string[];
-};
+import ApiTokenClipboard from './api-token-clipboard.jsx';
 
 const HiddenPasswordDots = () => (
     <div className='da-api-token__pass-dot-container'>
@@ -16,7 +12,7 @@ const HiddenPasswordDots = () => (
     </div>
 );
 
-const ApiTokenTableRowTokenCell = ({ token, scopes }: TApiTokenTableRowTokenCell) => {
+const ApiTokenTableRowTokenCell = ({ token, scopes }) => {
     const [should_show_token, setShouldShowToken] = React.useState(false);
 
     const toggleTokenVisibility = () => {
@@ -54,6 +50,11 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }: TApiTokenTableRowTokenCell
             </Popover>
         </div>
     );
+};
+
+ApiTokenTableRowTokenCell.propTypes = {
+    token: PropTypes.string.isRequired,
+    scopes: PropTypes.array.isRequired,
 };
 
 export default ApiTokenTableRowTokenCell;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
-import ApiToken, { TApiToken } from '../api-token';
+import ApiToken from '../api-token';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -48,7 +48,7 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    const mock_props: TApiToken = {
+    const mock_props = {
         footer_ref: undefined,
         is_app_settings: false,
         is_switching: false,
@@ -170,18 +170,18 @@ describe('<ApiToken/>', () => {
 
         expect(screen.queryByText('New token name')).not.toBeInTheDocument();
 
-        const checkboxes: HTMLInputElement[] = await screen.findAllByRole('checkbox');
+        const checkboxes = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read') as HTMLInputElement; // Typecasting it since find can return undefined as well
-        const token_name_input: HTMLInputElement = await screen.findByLabelText('Token name');
+        const read_checkbox = checkboxes.find(card => card.name === 'read');
+        const token_name_input = await screen.findByLabelText('Token name');
 
         expect(checkboxes.length).toBe(5);
         expect(create_btn).toBeDisabled();
-        expect(read_checkbox?.checked).toBeFalsy();
-        expect(token_name_input?.value).toBe('');
+        expect(read_checkbox.checked).toBeFalsy();
+        expect(token_name_input.value).toBe('');
 
         fireEvent.click(read_checkbox);
-        expect(read_checkbox?.checked).toBeTruthy();
+        expect(read_checkbox.checked).toBeTruthy();
 
         fireEvent.change(token_name_input, { target: { value: '@#$' } });
         expect(await screen.findByText('Only letters, numbers, and underscores are allowed.')).toBeInTheDocument();

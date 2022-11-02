@@ -305,6 +305,17 @@ export default class NotificationStore extends BaseStore {
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
+
+            // Acuity notification only for desktop and non EU clients
+            // For both Demo and Real accounts
+            if (!is_eu && isDesktop()) {
+                this.addNotificationMessage(this.client_notifications.acuity);
+                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                this.removeNotificationByKey(this.client_notifications.acuity_mt5_download.key);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -414,14 +425,6 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
-                // Acuity notification only for desktop and non EU clients
-                if (!is_eu && isDesktop()) {
-                    this.addNotificationMessage(this.client_notifications.acuity);
-                    this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
-                } else {
-                    this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
-                    this.removeNotificationByKey(this.client_notifications.acuity_mt5_download.key);
-                }
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
@@ -628,7 +631,6 @@ export default class NotificationStore extends BaseStore {
                     },
                 },
                 platform: [platform_name.DTrader],
-                is_disposable: true,
                 img_src: getUrlBase('/public/images/common/acuity_banner.png'),
                 img_alt: 'Acuity',
                 className: 'acuity',

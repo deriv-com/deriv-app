@@ -22,4 +22,5 @@ packages/p2p/lib/
 packages/appstore/dist/
 packages/appstore/lib/
 .env
+nx-cloud.env
 

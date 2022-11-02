@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import Button from '../button/button.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Button from '../button/button';
 
 const PopupOverlay = ({ title, descriptions, overlay_ref, toggleOverlay, done_text }) =>
     createPortal(

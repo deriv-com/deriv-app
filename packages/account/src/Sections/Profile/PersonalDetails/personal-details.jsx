@@ -127,6 +127,7 @@ export const PersonalDetailsForm = ({
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
+        form_initial_values: {},
     });
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({
@@ -1083,10 +1084,7 @@ export const PersonalDetailsForm = ({
                                     <>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
-                                            <FormSubHeader
-                                                className='account-form__red-header'
-                                                title={localize('Professional Client')}
-                                            />
+                                            <FormSubHeader title={localize('Professional Client')} />
                                             <FormBodySection>
                                                 <fieldset className='account-form__fieldset'>
                                                     <div>

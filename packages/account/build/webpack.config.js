@@ -8,7 +8,7 @@ module.exports = function (env) {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
-            account: path.resolve(__dirname, '../src', 'index.js'),
+            account: path.resolve(__dirname, '../src', 'index.tsx'),
             'accept-risk-config': 'Configs/accept-risk-config',
             'account-limits': 'Components/account-limits',
             'address-details': 'Components/address-details',
@@ -58,7 +58,7 @@ module.exports = function (env) {
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
             'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
-            'poi-poa-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
+            'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

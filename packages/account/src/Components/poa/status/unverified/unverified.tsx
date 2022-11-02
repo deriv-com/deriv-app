@@ -3,9 +3,14 @@ import { PlatformContext } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
+import { TPlatformContext } from 'Types';
 
-export const Unverified = ({ onClick }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+type TUnverified = {
+    onClick: () => void;
+};
+
+export const Unverified = ({ onClick }: TUnverified) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             message={localize('We could not verify your proof of address')}

@@ -190,6 +190,10 @@
                 justify-content: center;
                 flex-wrap: wrap;
 
+                &--column {
+                    flex-direction: column;
+                }
+
                 & > a {
                     display: inline-block;
                     margin: 0.4rem;
@@ -625,7 +629,7 @@
     width: 30.4em;
     position: relative;
     @include desktop {
-        height: fit-content;
+        height: 100%;
     }
 
     &__balance {
@@ -694,6 +698,7 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
+        height: 100%;
 
         @include mobile {
             grid-template-rows: 1fr;
@@ -1250,6 +1255,11 @@
                 }
                 &-links {
                     display: flex;
+
+                    a {
+                        margin: 0.4rem;
+                    }
+
                     @include mobile {
                         flex-direction: column;
                     }
@@ -2254,6 +2264,14 @@
         padding: 8px;
         width: 276px;
         border-radius: 4px;
+    }
+}
+
+.switch-to-real-account-modal {
+    .dc-dialog__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 

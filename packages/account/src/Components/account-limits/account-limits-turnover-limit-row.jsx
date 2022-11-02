@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { formatMoney } from '@deriv/shared';
-import AccountLimitsTableCell from './account-limits-table-cell.jsx';
+import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsContext from './account-limits-context';
 
 const AccountLimitsTurnoverLimitRow = ({ collection, title }) => {

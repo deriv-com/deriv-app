@@ -27,7 +27,7 @@ const SignupWizard = ({ closeWizard }: TSignupWizardProps) => {
 
     return (
         <Wizard
-            has_dark_background={false}
+            has_dark_background
             lock_final_step={false}
             onClose={onClose}
             onComplete={onComplete}

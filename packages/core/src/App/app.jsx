@@ -64,13 +64,13 @@ const AppWithoutTranslation = ({ root_store }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const checkInputClick = React.useCallback(() => {
-        if (document.activeElement.tagName === 'INPUT' && isMobile()) {
-            root_store.ui.setIsInputClicked(true);
-        } else {
-            root_store.ui.setIsInputClicked(false);
-        }
-    }, [root_store.ui]);
+    // const checkInputClick = React.useCallback(() => {
+    //     if (document.activeElement.tagName === 'INPUT' && isMobile()) {
+    //         root_store.ui.setIsInputClicked(true);
+    //     } else {
+    //         root_store.ui.setIsInputClicked(false);
+    //     }
+    // }, [root_store.ui]);
 
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
@@ -78,7 +78,7 @@ const AppWithoutTranslation = ({ root_store }) => {
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height || root_store.ui.is_input_clicked) {
+            if (view_width <= view_height) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -90,14 +90,14 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
-        window.addEventListener('resize', debouncedHandleResize);
-        window.addEventListener('click', checkInputClick);
+        window.visualViewport.addEventListener('resize', debouncedHandleResize);
+        // window.addEventListener('click', checkInputClick);
 
         return () => {
-            window.removeEventListener('resize', debouncedHandleResize);
-            window.removeEventListener('click', checkInputClick);
+            window.visualViewport.removeEventListener('resize', debouncedHandleResize);
+            // window.removeEventListener('click', checkInputClick);
         };
-    }, [checkInputClick, handleResize]);
+    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

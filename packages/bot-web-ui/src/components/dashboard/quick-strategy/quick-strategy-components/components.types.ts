@@ -77,7 +77,6 @@ export type TQuickStrategyFields = {
 
 export type TQuickStrategyFooter = {
     is_onscreen_keyboard_active: boolean;
-    is_mobile: boolean;
     is_submit_enabled: boolean;
     is_stop_button_visible: boolean;
     setFieldValue: TSetFieldValue;

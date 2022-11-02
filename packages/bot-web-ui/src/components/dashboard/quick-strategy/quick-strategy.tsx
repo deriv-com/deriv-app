@@ -14,24 +14,9 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
     }, []);
 
     return (
-        <>
-            {is_mobile ? (
-                <MobileFullPageModal
-                    is_modal_open={is_strategy_modal_open}
-                    className='quick-strategy__wrapper'
-                    header={localize('Quick Strategy')}
-                    onClickClose={toggleStrategyModal}
-                    height_offset='80px'
-                    page_overlay
-                >
-                    <QuickStrategyContainer {...props} />
-                </MobileFullPageModal>
-            ) : (
-                <div className='quick-strategy__container'>
-                    <QuickStrategyContainer {...props} />
-                </div>
-            )}
-        </>
+        <div className='quick-strategy__container'>
+            <QuickStrategyContainer {...props} />
+        </div>
     );
 };
 

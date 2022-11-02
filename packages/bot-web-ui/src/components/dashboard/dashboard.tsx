@@ -18,9 +18,10 @@ type TDashboard = {
     setActiveTab: (active_tab: number) => void;
     toggleStrategyModal: () => void;
     is_drawer_open: boolean;
+    is_mobile: boolean;
 };
 
-const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open }: TDashboard) => {
+const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_open, is_mobile }: TDashboard) => {
     const [tour_run, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -68,7 +69,7 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
                 </div>
             </div>
             <div className='dashboard__run-strategy-wrapper'>
-                <RunStrategy />
+                {!(is_mobile && active_tab === 2) && <RunStrategy />}
                 {/*
                     1. Bot-Builder
                     2. Quick Strategy
@@ -80,9 +81,10 @@ const Dashboard = ({ active_tab, setActiveTab, toggleStrategyModal, is_drawer_op
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel, ui }: RootStore) => ({
     active_tab: dashboard.active_tab,
     setActiveTab: dashboard.setActiveTab,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     is_drawer_open: run_panel.is_drawer_open,
+    is_mobile: ui.is_mobile,
 }))(Dashboard);

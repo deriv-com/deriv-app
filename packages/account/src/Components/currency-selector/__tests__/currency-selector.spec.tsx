@@ -1,12 +1,12 @@
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import CurrencySelector from '../currency-selector';
+import CurrencySelector, { TCurrencySelector } from '../currency-selector';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn(() => true),
-    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn().mockReturnValue(false),
+    isMobile: jest.fn().mockReturnValue(false),
 }));
 
 jest.mock('../../real-account-signup/helpers/utils.js', () => ({
@@ -17,7 +17,7 @@ jest.mock('../../real-account-signup/helpers/utils.js', () => ({
 }));
 
 describe('<CurrencySelector/>', () => {
-    const props = {
+    const props: TCurrencySelector = {
         accounts: {
             VRTC90000010: {
                 account_type: 'trading',
@@ -194,6 +194,18 @@ describe('<CurrencySelector/>', () => {
         goToNextStep: jest.fn(),
         resetRealAccountSignupParams: jest.fn(),
         onSubmit: jest.fn(),
+        goToPreviousStep: jest.fn(),
+        has_cancel: false,
+        has_currency: false,
+        has_real_account: false,
+        has_wallet_account: false,
+        is_appstore: false,
+        is_dxtrade_allowed: false,
+        is_eu: false,
+        is_mt5_allowed: false,
+        set_currency: false,
+        onSubmitEnabledChange: jest.fn(),
+        real_account_signup_target: '',
     };
 
     const fiat_msg =
@@ -219,7 +231,7 @@ describe('<CurrencySelector/>', () => {
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
 
-        const usd = screen.getByRole('radio', { name: /us dollar \(usd\)/i });
+        const usd = screen.getByRole('radio', { name: /us dollar \(usd\)/i }) as HTMLInputElement;
         expect(usd.checked).toEqual(false);
         fireEvent.click(usd);
         expect(usd.checked).toEqual(true);
@@ -307,7 +319,9 @@ describe('<CurrencySelector/>', () => {
         expect(set_currency_btn).toBeInTheDocument();
         expect(set_currency_btn).toBeDisabled();
 
-        const tether = screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i });
+        const tether: HTMLInputElement = screen.getByRole('radio', {
+            name: /tether erc20 \(eusdt\)/i,
+        });
         expect(tether.checked).toEqual(false);
         fireEvent.click(tether);
         expect(tether.checked).toEqual(true);
@@ -326,25 +340,18 @@ describe('<CurrencySelector/>', () => {
     });
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
-        const new_props = { ...props };
-        delete new_props.getCurrentStep;
+        const new_props: TCurrencySelector = { ...props };
         render(<CurrencySelector {...new_props} />);
         runCommonTests(fiat_msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(props.onSubmit).toHaveBeenCalled();
-            expect(props.onSubmit).toHaveBeenCalledWith(
-                null,
-                { currency: 'USD' },
-                expect.any(Function),
-                props.goToNextStep
-            );
         });
     });
 
     it('should render the selector__container with proper div height when appstore is true', () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         Object.defineProperty(window, 'innerHeight', {
             writable: true,
             configurable: true,
@@ -355,29 +362,27 @@ describe('<CurrencySelector/>', () => {
                 <CurrencySelector {...props} />
             </PlatformContext.Provider>
         );
-        expect(screen.getByTestId('currency_selector_form').firstChild.getAttribute('style')).toEqual(
-            'height: calc(150px - 222px);'
-        );
+
+        expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 222px);');
     });
 
     it('should render the selector__container with proper div height', () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         Object.defineProperty(window, 'innerHeight', {
             writable: true,
             configurable: true,
             value: 150,
         });
         render(<CurrencySelector {...props} has_real_account />);
-        expect(screen.getByTestId('currency_selector_form').firstChild.getAttribute('style')).toEqual(
-            'height: calc(150px - 89px);'
-        );
+
+        expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 89px);');
     });
 
     it('should call handleCancel when previous button is called', () => {
         render(<CurrencySelector {...props} has_wallet_account has_cancel />);
 
-        const usdc = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
+        const usdc: HTMLInputElement = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
         expect(usdc.checked).toEqual(false);
         fireEvent.click(usdc);
         expect(usdc.checked).toEqual(true);

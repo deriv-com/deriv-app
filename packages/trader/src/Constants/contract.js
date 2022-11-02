@@ -200,6 +200,7 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
+// Config to display trade button and their position
 export const getSupportedContracts = is_high_low => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
@@ -255,6 +256,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
         position: 'bottom',
     },
 });

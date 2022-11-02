@@ -1940,7 +1940,7 @@ $MIN_HEIGHT_FLOATING: calc(
                         margin-bottom: 32px;
 
                         button {
-                            width: 85px;
+                            min-width: 85px;
                             height: 40px;
                         }
 

@@ -39,7 +39,6 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_popup = false;
     @observable user_blocked_count = 0;
     @observable user_blocked_until = null;
-    @observable is_high_risk_fully_authed_without_fa = false;
     @observable is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
@@ -89,7 +88,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get should_show_dp2p_blocked() {
-        return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+        return this.is_blocked || this.is_high_risk;
     }
 
     @action.bound
@@ -268,7 +267,6 @@ export default class GeneralStore extends BaseStore {
         this.setIsLoading(true);
         this.setIsBlocked(false);
         this.setIsHighRisk(false);
-        this.setIsHighRiskFullyAuthedWithoutFa(false);
         this.setIsP2pBlockedForPa(false);
 
         this.disposeUserBarredReaction = reaction(
@@ -292,33 +290,25 @@ export default class GeneralStore extends BaseStore {
 
             if (error) {
                 this.setIsHighRisk(false);
-                this.setIsHighRiskFullyAuthedWithoutFa(false);
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);
             } else if (get_account_status.risk_classification === 'high') {
                 this.setIsHighRisk(true);
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
 
-                const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
                 const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
 
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
-                const is_fully_authed_but_needs_fa =
-                    is_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
 
                 const is_not_fully_authenticated_and_fa_not_completed =
                     is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
 
-                if (is_fully_authed_but_needs_fa) {
-                    // First priority: Send user to Financial Assessment if they have to submit it.
-                    this.setIsHighRiskFullyAuthedWithoutFa(true);
-                } else if (
+                if (
                     is_cashier_locked ||
                     is_not_fully_authenticated ||
                     is_fully_authed_but_poi_expired ||
                     is_not_fully_authenticated_and_fa_not_completed
                 ) {
-                    // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
                 }
             }
@@ -472,11 +462,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsHighRisk(is_high_risk) {
         this.is_high_risk = is_high_risk;
-    }
-
-    @action.bound
-    setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
-        this.is_high_risk_fully_authed_without_fa = is_high_risk_fully_authed_without_fa;
     }
 
     @action.bound

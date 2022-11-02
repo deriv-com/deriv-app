@@ -7,7 +7,7 @@ import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (
-    <React.Fragment>
+    <div style={{ display: 'flex' }}>
         <div className='trade-container__price-info-value'>
             {!has_error_or_not_loaded && (
                 <Money
@@ -25,7 +25,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                 <Icon icon='IcLoss' />
             )}
         </div>
-    </React.Fragment>
+    </div>
 );
 
 const ContractInfo = ({
@@ -34,6 +34,7 @@ const ContractInfo = ({
     has_increased,
     is_loading,
     is_multiplier,
+    is_vanilla,
     should_fade,
     proposal_info,
     type,
@@ -51,11 +52,16 @@ const ContractInfo = ({
         }
     };
 
+    const setBasisText = () => {
+        if (is_vanilla) {
+            return 'Payout per 1%';
+        }
+        return proposal_info.obj_contract_basis.text;
+    };
+
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded
-        ? stakeOrPayout()
-        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
 
     const { message, obj_contract_basis, stake } = proposal_info;
 

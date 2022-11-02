@@ -293,6 +293,7 @@ export default class TradeStore extends BaseStore {
             chartStateChange: action.bound,
             has_alternative_source: computed,
             is_multiplier: computed,
+            is_vanilla: computed,
             getFirstOpenMarket: action.bound,
         });
 
@@ -1348,6 +1349,10 @@ export default class TradeStore extends BaseStore {
 
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    get is_vanilla() {
+        return this.contract_type === 'vanilla';
     }
 
     async getFirstOpenMarket(markets_to_search) {

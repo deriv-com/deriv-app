@@ -101,6 +101,19 @@
                     opacity: 0;
                 }
             }
+
+            #dt_purchase_vanillalongcall_button,
+            #dt_purchase_vanillalongput_button {
+                @include desktop {
+                    .btn-purchase__info--left {
+                        width: 80%;
+                    }
+
+                    .btn-purchase__effect-detail--arrow {
+                        left: 120px;
+                    }
+                }
+            }
         }
         .dc-datepicker {
             .dc-input {
@@ -172,6 +185,18 @@
             padding: 0 30px;
         }
     }
+
+    &__price {
+        #dt_purchase_vanillalongcall_price,
+        #dt_purchase_vanillalongput_price {
+            display: block;
+
+            .trade-container__price-info-currency {
+                margin-left: unset;
+            }
+        }
+    }
+
     &__price,
     &__order-input {
         line-height: 0.9rem;

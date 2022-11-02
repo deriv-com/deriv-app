@@ -11,6 +11,7 @@ const Purchase = ({
     currency,
     has_cancellation,
     is_multiplier,
+    is_vanilla,
     is_mobile,
     is_purchase_enabled,
     is_market_closed,
@@ -59,6 +60,7 @@ const Purchase = ({
                 is_market_closed={is_market_closed}
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
+                is_vanilla={is_vanilla}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -115,6 +117,7 @@ export default connect(({ modules, ui }) => ({
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,
+    is_vanilla: modules.trade.is_vanilla,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,
     proposal_info: modules.trade.proposal_info,

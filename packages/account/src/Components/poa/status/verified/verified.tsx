@@ -7,13 +7,9 @@ import { PoiButton } from 'Components/poi/poi-button/poi-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import { TPlatformContext } from 'Types';
+import { TPoaStatusProps } from 'Components/poa/status/poa-types/common-poa-prop.type';
 
-type TVerified = {
-    needs_poi: boolean;
-    is_description_enabled?: boolean;
-};
-
-export const Verified = ({ needs_poi, is_description_enabled = true }: TVerified) => {
+export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
     const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
 
     const message = localize('Your proof of address is verified');

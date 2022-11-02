@@ -1,8 +1,6 @@
-type T_poa_status_codes = Readonly<
-    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
->;
+type TPoaStatusCodes = Readonly<Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>>;
 
-export const poa_status_codes: T_poa_status_codes = {
+export const poa_status_codes: TPoaStatusCodes = {
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',

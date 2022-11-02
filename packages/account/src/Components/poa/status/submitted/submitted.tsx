@@ -7,13 +7,9 @@ import { TPlatformContext } from 'Types';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import PoiButton from 'Components/poi/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
+import { TPoaStatusProps } from 'Components/poa/status/poa-types/common-poa-prop.type';
 
-type TSubmitted = {
-    needs_poi: boolean;
-    is_description_enabled?: boolean;
-};
-
-export const Submitted = ({ needs_poi, is_description_enabled = true }: TSubmitted) => {
+export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
     const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {

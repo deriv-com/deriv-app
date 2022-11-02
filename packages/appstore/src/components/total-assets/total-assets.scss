@@ -5,9 +5,26 @@
         color: var(--text-profit-success);
     }
 
+    &-no-amount {
+        color: var(--general-section-2);
+    }
+
     &-currency {
         margin-left: 0.4rem;
         color: var(--text-profit-success);
+    }
+
+    &-real {
+        color: var(--text-profit-success);
+    }
+
+    &-demo {
+        color: var(--text-profit-success);
+    }
+
+    &-no-currency {
+        margin-left: 0.4rem;
+        color: var(--general-section-2);
     }
 
     &-tooltip {

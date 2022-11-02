@@ -12,7 +12,7 @@ import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-va
 const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
     const { floating_rate_store, general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
-    const market_feed = floating_rate_store.rate_type === ad_type.FLOAT ? floating_rate_store.exchange_rate : null;
+    const market_feed = floating_rate_store.rate_type === ad_type.FLOAT ? floating_rate_store.market_rate : null;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
     let display_price_rate = '';

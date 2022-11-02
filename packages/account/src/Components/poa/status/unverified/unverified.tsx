@@ -10,7 +10,7 @@ type TUnverified = {
 };
 
 export const Unverified = ({ onClick }: TUnverified) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
     return (
         <IconMessageContent
             message={localize('We could not verify your proof of address')}

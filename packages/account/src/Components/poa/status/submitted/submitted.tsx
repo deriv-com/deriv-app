@@ -10,7 +10,7 @@ import IconMessageContent from 'Components/icon-message-content';
 import { TPoaStatusProps } from 'Components/poa/status/poa-types/common-poa-prop.type';
 
 export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (

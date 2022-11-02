@@ -7,7 +7,7 @@ import { PoaButton } from '../poa-button';
 
 describe('<PoaButton/>', () => {
     const history = createBrowserHistory();
-    const renderWithRouter = (component: React.ReactNode) => {
+    const renderWithRouter = (component: React.ReactElement) => {
         return render(<Router history={history}>{component}</Router>);
     };
 

@@ -1,69 +1,36 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
-import ApiTokenArticle from './api-token-article';
-import ApiTokenCard from './api-token-card';
-import ApiTokenFooter from './api-token-footer';
-import ApiTokenOverlay from './api-token-overlay';
-import ApiTokenTable from './api-token-table';
+import ApiTokenArticle from './api-token-article.jsx';
+import ApiTokenCard from './api-token-card.jsx';
+import ApiTokenFooter from './api-token-footer.jsx';
+import ApiTokenOverlay from './api-token-overlay.jsx';
+import ApiTokenTable from './api-token-table.jsx';
 import ApiTokenContext from './api-token-context';
-import { TToken } from 'Types';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
 
-type AptTokenState = {
-    api_tokens: NonNullable<TToken[]>;
-    is_loading: boolean;
-    is_success: boolean;
-    is_overlay_shown: boolean;
-    error_message: string;
-    show_delete: boolean;
-    dispose_token: string;
-    is_delete_loading: boolean;
-    is_delete_success: boolean;
-};
-
-export type TApiToken = {
-    footer_ref: Element | DocumentFragment | undefined;
-    is_app_settings: boolean;
-    is_switching: boolean;
-    overlay_ref:
-        | undefined
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
-    setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ws: any;
-};
-
-const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setIsOverlayShown, ws }: TApiToken) => {
+const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setIsOverlayShown, ws }) => {
     const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
-    const [state, setState] = React.useReducer(
-        (prev_state: Partial<AptTokenState>, value: Partial<AptTokenState>) => ({
-            ...prev_state,
-            ...value,
-        }),
-        {
-            api_tokens: [],
-            is_loading: true,
-            is_success: false,
-            is_overlay_shown: false,
-            error_message: '',
-            show_delete: false,
-            dispose_token: '',
-            is_delete_loading: false,
-            is_delete_success: false,
-        }
-    );
+    const [state, setState] = React.useReducer((prev_state, value) => ({ ...prev_state, ...value }), {
+        api_tokens: [],
+        is_loading: true,
+        is_success: false,
+        is_overlay_shown: false,
+        error_message: '',
+        show_delete: false,
+        dispose_token: '',
+        is_delete_loading: false,
+        is_delete_success: false,
+    });
 
     React.useEffect(() => {
         getApiTokens();
@@ -97,8 +64,8 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
 
     const toggleOverlay = () => setState({ is_overlay_shown: !state.is_overlay_shown });
 
-    const validateFields = (values: FormikValues) => {
-        const errors: FormikErrors<FormikValues> = {};
+    const validateFields = values => {
+        const errors = {};
         const token_name = values.token_name && values.token_name.trim();
 
         if (!token_name) {
@@ -120,10 +87,9 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
         return errors;
     };
 
-    const selectedTokenScope = (values: FormikValues) =>
-        Object.keys(values).filter(item => item !== 'token_name' && values[item]);
+    const selectedTokenScope = values => Object.keys(values).filter(item => item !== 'token_name' && values[item]);
 
-    const handleSubmit = async (values: FormikValues, { setSubmitting, setFieldError, resetForm }: any) => {
+    const handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
         const token_response = await ws.apiToken({
             api_token: 1,
             new_token: values.token_name,
@@ -146,7 +112,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
         setSubmitting(false);
     };
 
-    const populateTokenResponse = (response: import('@deriv/api-types').APITokenResponse) => {
+    const populateTokenResponse = response => {
         if (!isMounted()) return;
         if (response.error) {
             setState({
@@ -167,7 +133,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
         populateTokenResponse(token_response);
     };
 
-    const deleteToken = async (token: string) => {
+    const deleteToken = async token => {
         setState({ is_delete_loading: true });
 
         const token_response = await ws.authorized.apiToken({ api_token: 1, delete_token: token });
@@ -177,7 +143,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
         if (isMounted()) setState({ is_delete_loading: false, is_delete_success: true });
 
         setTimeout(() => {
-            if (isMounted()) setState({ is_delete_success: false });
+            if (isMounted) setState({ is_delete_success: false });
         }, 500);
     };
 
@@ -291,7 +257,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                             >
                                                 <div className='da-api-token__input-group'>
                                                     <Field name='token_name'>
-                                                        {({ field }: FieldProps<string | boolean>) => (
+                                                        {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
@@ -354,6 +320,15 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
             </ApiTokenContext.Provider>
         </React.Fragment>
     );
+};
+
+ApiToken.propTypes = {
+    footer_ref: PropTypes.shape({ current: PropTypes.any }),
+    is_app_settings: PropTypes.bool,
+    is_switching: PropTypes.bool,
+    overlay_ref: PropTypes.shape({ current: PropTypes.any }),
+    setIsOverlayShown: PropTypes.func,
+    ws: PropTypes.any.isRequired,
 };
 
 export default ApiToken;

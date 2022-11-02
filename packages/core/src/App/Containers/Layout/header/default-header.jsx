@@ -59,7 +59,6 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     changeCurrentLanguage,
-    is_social_signup,
     is_trading_assessment_for_existing_user_enabled,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
@@ -140,7 +139,6 @@ const DefaultHeader = ({
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
                             }
-                            is_social_signup={is_social_signup}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
@@ -237,7 +235,6 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
@@ -294,6 +291,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
 }))(withRouter(DefaultHeader));

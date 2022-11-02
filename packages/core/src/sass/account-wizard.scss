@@ -475,6 +475,12 @@
     }
 }
 
+.emp-status {
+    @include mobile() {
+        padding-right: 2rem;
+    }
+}
+
 .trading-assessment {
     display: flex;
     flex-direction: column;
@@ -575,7 +581,7 @@
             padding-bottom: 0.5rem;
             @include mobile() {
                 width: 90%;
-                white-space: break-spaces;
+                white-space: normal;
             }
         }
     }
@@ -626,7 +632,7 @@
         }
 
         .dc-dropdown__display-placeholder--is-left-text.dc-dropdown__display-placeholder--is-title {
-            white-space: break-spaces !important;
+            white-space: normal !important;
             line-height: 1.6rem;
         }
     }

@@ -24,6 +24,7 @@ import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformCont
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list.js';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
+import classNames from 'classnames';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>
@@ -494,7 +495,9 @@ const PersonalDetails = ({
                                                     </Field>
                                                 )}
                                                 {'employment_status' in props.value && (
-                                                    <fieldset className='account-form__fieldset'>
+                                                    <fieldset
+                                                        className={classNames('account-form__fieldset', 'emp-status')}
+                                                    >
                                                         <DesktopWrapper>
                                                             <Dropdown
                                                                 placeholder={localize('Employment status')}

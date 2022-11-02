@@ -17,7 +17,7 @@ const MobileDialog = props => {
         renderTitle,
         wrapper_classname,
         footer,
-        has_close_icon,
+        has_close_icon = true,
         header_classname,
     } = props;
 
@@ -124,10 +124,6 @@ const MobileDialog = props => {
         </CSSTransition>,
         document.getElementById(portal_element_id)
     );
-};
-
-MobileDialog.defaultProps = {
-    has_close_icon: true,
 };
 
 MobileDialog.propTypes = {

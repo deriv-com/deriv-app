@@ -1115,6 +1115,7 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    // CFD score is the computed points based on the CFD related questions that the user answers in trading-assessment.
     setCFDScore(score) {
         this.cfd_score = score;
     }

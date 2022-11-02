@@ -6,16 +6,19 @@ import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
-const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (
+const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
     <div style={{ display: 'flex' }}>
         <div className='trade-container__price-info-value'>
             {!has_error_or_not_loaded && (
-                <Money
-                    amount={proposal_info.obj_contract_basis.value}
-                    className='trade-container__price-info-currency'
-                    currency={currency}
-                    show_currency
-                />
+                <span className='per-point--multiplier'>
+                    {is_vanilla && <span>x</span>}
+                    <Money
+                        amount={proposal_info.obj_contract_basis.value}
+                        className='trade-container__price-info-currency'
+                        currency={currency}
+                        show_currency
+                    />
+                </span>
             )}
         </div>
         <div className='trade-container__price-info-movement'>
@@ -101,6 +104,7 @@ const ContractInfo = ({
                                     proposal_info={proposal_info}
                                     currency={getCurrencyDisplayCode(currency)}
                                     has_increased={has_increased}
+                                    is_vanilla={is_vanilla}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
@@ -110,6 +114,7 @@ const ContractInfo = ({
                                         proposal_info={proposal_info}
                                         currency={getCurrencyDisplayCode(currency)}
                                         has_increased={has_increased}
+                                        is_vanilla={is_vanilla}
                                     />
                                 </div>
                             </MobileWrapper>

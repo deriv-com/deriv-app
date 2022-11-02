@@ -259,6 +259,11 @@
                 opacity: 1;
                 transition: 0.3s;
 
+                .per-point--multiplier {
+                    gap: 1rem;
+                    display: flex;
+                }
+
                 @include mobile {
                     color: var(--text-colored-background);
                 }

@@ -6,7 +6,7 @@ type TApiTokenCard = {
     description: string;
     display_name: string;
     name: string;
-    value: string | boolean;
+    value: boolean;
     setFieldValue: (name: string, value: boolean) => void;
 };
 

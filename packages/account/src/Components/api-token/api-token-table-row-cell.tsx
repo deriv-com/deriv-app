@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
 type TApiTokenTableRowCell = {
-    className: string;
+    className?: string;
     should_bypass_text: boolean;
 };
 

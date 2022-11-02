@@ -1,9 +1,13 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 
-const AccountLimitsExtraInfo = ({ message, ...props }) => {
+type TAccountLimitsExtraInfo = {
+    message: string;
+    className?: string;
+};
+
+const AccountLimitsExtraInfo = ({ message, ...props }: TAccountLimitsExtraInfo) => {
     if (isMobile()) {
         return (
             <Text color='less-prominent' line_height='s' size='xxxs'>
@@ -14,6 +18,7 @@ const AccountLimitsExtraInfo = ({ message, ...props }) => {
 
     return (
         <Popover
+            data_testid='dt_acc_limits_popover'
             alignment='right'
             className='da-account-limits__popover'
             icon='info'
@@ -23,10 +28,6 @@ const AccountLimitsExtraInfo = ({ message, ...props }) => {
             {...props}
         />
     );
-};
-
-AccountLimitsExtraInfo.propTypes = {
-    message: PropTypes.string.isRequired,
 };
 
 export default AccountLimitsExtraInfo;

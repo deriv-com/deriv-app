@@ -1,3 +1,5 @@
+/** Add types that are shared between components */
+
 import { Authorize } from '@deriv/api-types';
 import { Requireable, InferProps } from 'prop-types';
 
@@ -7,8 +9,6 @@ export type TToken = {
     scopes: string[];
     token: string;
 };
-
-/** Add types that are shared between components */
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;

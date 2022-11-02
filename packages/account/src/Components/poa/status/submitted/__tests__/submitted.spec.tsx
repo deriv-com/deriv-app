@@ -8,7 +8,7 @@ jest.mock('Components/poa/continue-trading-button/continue-trading-button', () =
 }));
 
 describe('<Submitted />', () => {
-    const renderWithRouter = component => {
+    const renderWithRouter = (component: React.ReactNode) => {
         return render(<BrowserRouter>{component}</BrowserRouter>);
     };
 

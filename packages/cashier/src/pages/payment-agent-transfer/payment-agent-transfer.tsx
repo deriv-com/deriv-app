@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -9,6 +8,21 @@ import { Virtual } from 'Components/cashier-container';
 import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
+import { TServerError, TRootStore } from 'Types';
+
+type PaymentAgentTransferProps = {
+    balance: string;
+    container: string;
+    error: TServerError & { is_show_full_page: boolean };
+    is_cashier_locked: boolean;
+    is_loading: boolean;
+    is_transfer_successful: boolean;
+    is_try_transfer_successful: boolean;
+    is_virtual: boolean;
+    onMount: () => void;
+    onUnMount: () => void;
+    setActiveTab: (container: string) => void;
+};
 
 const PaymentAgentTransfer = ({
     balance,
@@ -22,7 +36,7 @@ const PaymentAgentTransfer = ({
     onMount,
     onUnMount,
     setActiveTab,
-}) => {
+}: PaymentAgentTransferProps) => {
     React.useEffect(() => {
         setActiveTab(container);
         if (!is_virtual) {
@@ -62,21 +76,7 @@ const PaymentAgentTransfer = ({
     return <PaymentAgentTransferForm error={error} />;
 };
 
-PaymentAgentTransfer.propTypes = {
-    balance: PropTypes.string,
-    container: PropTypes.string,
-    error: PropTypes.object,
-    is_cashier_locked: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_transfer_successful: PropTypes.bool,
-    is_try_transfer_successful: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     balance: client.balance,
     is_virtual: client.is_virtual,
     container: modules.cashier.payment_agent_transfer.container,

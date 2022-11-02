@@ -1,9 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { PaymentAgentTransferRequest } from '@deriv/api-types';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { TRootStore, TServerError } from 'Types';
 import TransferConfirm from 'Components/transfer-confirm';
+
+type PaymentAgentTransferConfirmProps = {
+    amount: number;
+    currency: string;
+    description: string;
+    error: TServerError;
+    loginid: string;
+    requestPaymentAgentTransfer: (arg: PaymentAgentTransferRequest) => void;
+    setIsTryTransferSuccessful: (status: boolean) => void;
+    transfer_to: string;
+    transfer_to_name: string;
+};
 
 const PaymentAgentTransferConfirm = ({
     amount,
@@ -15,7 +28,7 @@ const PaymentAgentTransferConfirm = ({
     setIsTryTransferSuccessful,
     transfer_to,
     transfer_to_name,
-}) => {
+}: PaymentAgentTransferConfirmProps) => {
     return (
         <TransferConfirm
             data={[
@@ -33,30 +46,23 @@ const PaymentAgentTransferConfirm = ({
                 { label: localize('Description'), value: description, key: 'description' },
             ]}
             error={error}
-            is_payment_agent_transfer
             onClickBack={() => {
                 setIsTryTransferSuccessful(false);
             }}
             onClickConfirm={() => {
-                requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+                requestPaymentAgentTransfer({
+                    paymentagent_transfer: 1,
+                    amount,
+                    currency,
+                    description,
+                    transfer_to,
+                });
             }}
         />
     );
 };
 
-PaymentAgentTransferConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    requestPaymentAgentTransfer: PropTypes.func,
-    setIsTryTransferSuccessful: PropTypes.func,
-    transfer_to: PropTypes.string,
-    transfer_to_name: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     currency: client.currency,
     loginid: client.loginid,
     amount: modules.cashier.payment_agent_transfer.confirm.amount,

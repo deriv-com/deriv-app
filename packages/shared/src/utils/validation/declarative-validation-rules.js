@@ -39,7 +39,6 @@ export const validNumber = (value, opts) => {
     if (options.allow_empty && value.length === 0) {
         return { is_ok };
     }
-
     if ('min' in options && typeof options.min === 'function') {
         options.min = options.min();
     }

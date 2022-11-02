@@ -1,9 +1,9 @@
 import React from 'react';
-import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
+import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -13,32 +13,29 @@ jest.mock('Stores/connect', () => ({
 
 describe('<PaymentAgentTransferReceipt />', () => {
     const history = createBrowserHistory();
-    const currency = 'currency';
-    const receipt = {
-        amount_transferred: '1',
-        client_id: 'CR9000000',
+    const props = {
+        currency: 'currency',
+        receipt: {
+            amount_transferred: '1',
+            client_id: 'CR9000000',
+        },
+        resetPaymentAgentTransfer: jest.fn(),
     };
 
     it('component should render', () => {
-        const { container } = render(
+        render(
             <Router history={history}>
-                <PaymentAgentTransferReceipt currency={currency} receipt={receipt} />
+                <PaymentAgentTransferReceipt {...props} />
             </Router>
         );
 
-        expect(container.querySelector('.payment-agent-transfer-receipt__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_agent_transfer_receipt_wrapper')).toBeInTheDocument();
     });
 
     it(`should redirect to statement page when click on 'View in statement' button`, () => {
-        const resetPaymentAgentTransfer = jest.fn();
-
         render(
             <Router history={history}>
-                <PaymentAgentTransferReceipt
-                    currency={currency}
-                    receipt={receipt}
-                    resetPaymentAgentTransfer={resetPaymentAgentTransfer}
-                />
+                <PaymentAgentTransferReceipt {...props} />
             </Router>
         );
 
@@ -49,21 +46,15 @@ describe('<PaymentAgentTransferReceipt />', () => {
     });
 
     it(`resetPaymentAgentTransfer func should be triggered when click on 'Make a new transfer' button`, () => {
-        const resetPaymentAgentTransfer = jest.fn();
-
         render(
             <Router history={history}>
-                <PaymentAgentTransferReceipt
-                    currency={currency}
-                    receipt={receipt}
-                    resetPaymentAgentTransfer={resetPaymentAgentTransfer}
-                />
+                <PaymentAgentTransferReceipt {...props} />
             </Router>
         );
 
         const btn = screen.getByText('Make a new transfer');
         fireEvent.click(btn);
 
-        expect(resetPaymentAgentTransfer).toBeCalledTimes(1);
+        expect(props.resetPaymentAgentTransfer).toBeCalledTimes(1);
     });
 });

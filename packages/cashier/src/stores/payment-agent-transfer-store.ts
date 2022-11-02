@@ -26,9 +26,14 @@ export default class PaymentAgentTransferStore {
     @observable is_payment_agent = false;
     @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;
-    @observable confirm: TPaymentAgentTransferConfirm = {};
-    @observable receipt: TPaymentAgentTransferReceipt = {};
-    @observable transfer_limit: TTransferLimit = {};
+    @observable confirm = {
+        amount: 0,
+        client_id: '',
+        client_name: '',
+        description: '',
+    };
+    @observable receipt = {};
+    @observable transfer_limit = {};
     @observable onRemount: VoidFunction | null = null;
 
     @computed

@@ -32,8 +32,8 @@ module.exports = {
     webpackFinal: async config => {
         config.module.rules.forEach(rule => {
             const regex_string = rule.test.toString();
-            if (regex_string.includes('svg|')) {
-                rule.test = new RegExp(regex_string.replace('svg|', ''));
+            if (regex_string.includes('svg')) {
+                rule.test = new RegExp(regex_string.replace('svg', ''));
             }
         });
 

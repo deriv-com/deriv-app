@@ -9,7 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    isSafari,
+    // isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -65,7 +65,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, []);
 
     const checkInputClick = React.useCallback(() => {
-        if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
+        if (document.activeElement.tagName === 'INPUT' && isMobile()) {
             root_store.ui.setIsInputClicked(true);
         } else {
             root_store.ui.setIsInputClicked(false);

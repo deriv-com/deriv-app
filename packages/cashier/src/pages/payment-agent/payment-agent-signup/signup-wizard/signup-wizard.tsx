@@ -4,19 +4,21 @@ import { Localize, localize } from '@deriv/translations';
 import { Wizard } from '@deriv/ui';
 
 type TSignupWizardProps = {
-    onClose: VoidFunction;
+    closeWizard: VoidFunction;
 };
 
-const SignupWizard = ({ onClose }: TSignupWizardProps) => {
+const SignupWizard = ({ closeWizard }: TSignupWizardProps) => {
     const [current_step_key, setCurrentStepKey] = React.useState<string>();
     const is_final_step = current_step_key === 'complete_step';
 
-    const closeWizardHandler = () => {
-        onClose();
+    const onClose = () => {
+        //handle some logic
+        closeWizard();
     };
 
-    const handleComplete = () => {
-        onClose();
+    const onComplete = () => {
+        //handle some logic
+        closeWizard();
     };
 
     const onChangeStep = (_current_step: number, _current_step_key?: string) => {
@@ -25,10 +27,10 @@ const SignupWizard = ({ onClose }: TSignupWizardProps) => {
 
     return (
         <Wizard
-            has_dark_background
+            has_dark_background={false}
             lock_final_step={false}
-            onClose={closeWizardHandler}
-            onComplete={handleComplete}
+            onClose={onClose}
+            onComplete={onComplete}
             wizard_title={localize('Become a payment agent')}
             primary_button_label={is_final_step ? localize('Submit') : localize('Next')}
             secondary_button_label={localize('Back')}

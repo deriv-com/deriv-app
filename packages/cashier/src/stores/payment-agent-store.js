@@ -338,6 +338,11 @@ export default class PaymentAgentStore {
     }
 
     resetPaymentAgent = () => {
+        const { client, modules } = this.root_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
+
+        client.setVerificationCode('', container);
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);

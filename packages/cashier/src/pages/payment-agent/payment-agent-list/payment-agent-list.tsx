@@ -5,12 +5,12 @@ import { Tabs } from '@deriv/components';
 import { useStore } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
+import SideNote from 'Components/side-note';
+import { TSideNotesProps } from 'Types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
-import './payment-agent-list.scss';
-import SideNote from 'Components/side-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import { TSideNotesProps } from 'Types';
+import './payment-agent-list.scss';
 
 type TProps = {
     setSideNotes: (notes: TSideNotesProps) => void;

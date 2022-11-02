@@ -116,6 +116,7 @@ const Withdrawal = ({
     setSideNotes,
     tab_index,
     verification_code,
+    willMountWithdraw,
     recentTransactionOnMount,
 }: TWithdrawalProps) => {
     React.useEffect(() => {
@@ -134,6 +135,11 @@ const Withdrawal = ({
     React.useEffect(() => {
         check10kLimit();
     }, [check10kLimit]);
+
+    React.useEffect(() => {
+        return () => willMountWithdraw(verification_code);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [willMountWithdraw]);
 
     React.useEffect(() => {
         if (isDesktop()) {
@@ -242,4 +248,5 @@ export default connect(({ client, modules }: TRootStore) => ({
     setErrorMessage: modules.cashier.withdraw.error.setErrorMessage,
     tab_index: modules.cashier.general_store.cashier_route_tab_index,
     verification_code: client.verification_code.payment_withdraw,
+    willMountWithdraw: modules.cashier.withdraw.willMountWithdraw,
 }))(Withdrawal);

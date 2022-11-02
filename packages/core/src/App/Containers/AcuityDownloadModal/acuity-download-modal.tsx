@@ -38,7 +38,7 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, setIsAcuityModalOpen }: TAc
                 <div className='acuity-download-modal__body--description'>
                     <Text as='p' line_height='m' align='center'>
                         <Localize
-                            i18n_default_text="We/'ve partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
+                            i18n_default_text="We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
                     Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>
                     This suite is only available for Windows, and is most recommended for financial assets."
                             components={[<br key={0} />, <Text key={1} weight='bold' />]}

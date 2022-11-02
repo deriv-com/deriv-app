@@ -89,12 +89,23 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [root_store.ui]);
 
     React.useEffect(() => {
-        const debouncedHandleResize = debounce(handleResize, 400);
-        visualViewport.addEventListener('resize', debouncedHandleResize);
+        // const debouncedHandleResize = debounce(handleResize, 400);
+        // visualViewport.addEventListener('resize', debouncedHandleResize);
+        window.addEventListener('orientationchange', event => {
+            const { angle } = event.target.screen.orientation;
+            const el_landscape_blocker = document.getElementById('landscape_blocker');
+            if (angle === 0 || angle === 180) {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
+                el_landscape_blocker.classList.remove('landscape-blocker--visible');
+            } else {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
+                el_landscape_blocker.classList.add('landscape-blocker--visible');
+            }
+        });
         // window.addEventListener('click', checkInputClick);
 
         return () => {
-            visualViewport.removeEventListener('resize', debouncedHandleResize);
+            // visualViewport.removeEventListener('resize', debouncedHandleResize);
             // window.removeEventListener('click', checkInputClick);
         };
     }, [handleResize]);

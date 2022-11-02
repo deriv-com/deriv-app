@@ -23,7 +23,7 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, setIsAcuityModalOpen }: TAc
         <Modal
             is_open={is_acuity_modal_open}
             title=' '
-            has_close_icon={true}
+            has_close_icon
             className='acuity-download-modal'
             width='44rem'
             toggleModal={closeModal}

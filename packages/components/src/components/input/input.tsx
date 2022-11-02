@@ -26,10 +26,10 @@ type TInputProps = {
     max_characters?: number;
     maxLength?: number;
     name?: string;
-    onBlur?: <T>(e: React.FocusEvent<T>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onFocus?: <T>(e: React.FocusEvent<T>) => void;
-    onPaste?: <T>(e: React.ClipboardEvent<T>) => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;

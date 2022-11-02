@@ -28,6 +28,7 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from 'Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
@@ -482,6 +483,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Real account')} hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
@@ -527,6 +529,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Demo account')} hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
@@ -579,6 +582,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 openPasswordModal={openRealPasswordModal}
                                 is_real_enabled={is_real_enabled}
                             />
+                            <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
                                 current_list={current_list}

@@ -20,17 +20,16 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 const ALIASES = {
     Assets: path.resolve(__dirname, '../src/Assets'),
     Components: path.resolve(__dirname, '../src/Components'),
-    Containers: path.resolve(__dirname, '../src/Containers'),
-    Constants: path.resolve(__dirname, '../src/Constants'),
     Configs: path.resolve(__dirname, '../src/Configs'),
-    Duplicated: path.resolve(__dirname, '../src/Duplicated'),
+    Constants: path.resolve(__dirname, '../src/Constants'),
+    Containers: path.resolve(__dirname, '../src/Containers'),
     Helpers: path.resolve(__dirname, '../src/Helpers'),
-    Layout: path.resolve(__dirname, '../src/Layout'),
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sections: path.resolve(__dirname, '../src/Sections'),
     Services: path.resolve(__dirname, '../src/Services'),
     Stores: path.resolve(__dirname, '../src/Stores'),
     Styles: path.resolve(__dirname, '../src/Styles'),
+    Types: path.resolve(__dirname, '../src/Types'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

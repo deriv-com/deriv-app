@@ -3,32 +3,20 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TCryptoTransactionDetails } from 'Types';
+import { observer } from 'mobx-react-lite';
 import RecentTransaction from 'Components/recent-transaction';
+import { useStore } from '../../../hooks';
 import './crypto-deposit.scss';
 
-type TCryptoDeposit = {
-    api_error: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
-    currency: TClientStore['currency'];
-    deposit_address: string;
-    is_deposit_address_loading: boolean;
-    recentTransactionOnMount: () => void;
-    pollApiForDepositAddress: (poll: boolean) => void;
-    setIsDeposit: (is_deposit: boolean) => void;
-};
+const CryptoDeposit = () => {
+    const { client, modules } = useStore();
+    const { cashier } = modules;
+    const { currency } = client;
+    const { onramp, transaction_history, general_store } = cashier;
+    const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+    const { setIsDeposit } = general_store;
 
-const CryptoDeposit = ({
-    api_error,
-    currency,
-    crypto_transactions,
-    deposit_address,
-    is_deposit_address_loading,
-    recentTransactionOnMount,
-    pollApiForDepositAddress,
-    setIsDeposit,
-}: TCryptoDeposit) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -256,13 +244,4 @@ const CryptoDeposit = ({
     );
 };
 
-export default connect(({ modules, client }: TRootStore) => ({
-    api_error: modules.cashier.onramp.api_error,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    deposit_address: modules.cashier.onramp.deposit_address,
-    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-}))(CryptoDeposit);
+export default observer(CryptoDeposit);

@@ -559,6 +559,7 @@ export const getDummyProposalInfoForACCU = (growth_rate, response) => {
 
 export const dummy_accu_in_contracts_for_available = {
     growth_rate_range: [0.01, 0.02, 0.03, 0.04, 0.05],
+    growth_rate: 0.03,
     barrier_category: 'american',
     barriers: 2,
     contract_category: 'accumulator',
@@ -566,11 +567,11 @@ export const dummy_accu_in_contracts_for_available = {
     contract_display: 'Accumulate',
     contract_type: 'ACCU',
     exchange_name,
-    expiry_type: 'tick',
+    expiry_type: 'no_expiry',
     market,
-    max_contract_duration: '1d',
-    min_contract_duration: '1s',
-    sentiment: 'inside',
+    max_contract_duration: 0,
+    min_contract_duration: 0,
+    sentiment: 'low_vol',
     start_type: 'spot',
     submarket,
     underlying_symbol: symbol,

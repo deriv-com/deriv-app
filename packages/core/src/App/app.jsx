@@ -12,7 +12,7 @@ import {
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
-    mobileOSDetect,
+    // mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
 } from '@deriv/shared';
@@ -64,12 +64,13 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
+        // console.log(screen.height, screen.width);
         if (isTouchDevice() && (isMobile() || isTablet())) {
-            const is_android_device = mobileOSDetect() === 'Android';
-            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
-            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
+            // const is_android_device = mobileOSDetect() === 'Android';
+            // const view_width = is_android_device ? screen.availWidth : screen.width;
+            // const view_height = is_android_device ? screen.availHeight : screen.height;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height) {
+            if (screen.width <= screen.height) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {

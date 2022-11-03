@@ -65,7 +65,8 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.types_strategies_dropdown, this.selected_type_strategy.value) || '',
             'quick-strategy__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
             'quick-strategy__trade-type':
-                this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) || '',
+                this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) ||
+                this.trade_type_dropdown[0],
             'quick-strategy__duration-unit':
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',

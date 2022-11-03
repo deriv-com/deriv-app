@@ -33,8 +33,11 @@ const Passwords = ({
 
     return (
         <div className='account__passwords'>
-            {/* Todo: remove the condition after unlinking the email with social account is fully functional */}
-            {!is_social_signup && <DerivEmail email={email} />}
+            <DerivEmail
+                email={email}
+                social_identity_provider={social_identity_provider}
+                is_social_signup={is_social_signup}
+            />
             <DerivPassword
                 email={email}
                 is_dark_mode_on={is_dark_mode_on}

@@ -21,7 +21,7 @@ import {
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list.js';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 import classNames from 'classnames';

@@ -44,7 +44,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list.js';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {

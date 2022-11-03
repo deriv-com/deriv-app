@@ -16,6 +16,7 @@ const ResetEmailModal = ({
     is_visible,
     toggleResetEmailModal,
     verification_code,
+    is_social_signup,
 }) => {
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
@@ -49,6 +50,7 @@ const ResetEmailModal = ({
                 prev_email={email}
                 setErrorMessage={setEmailErrorMsg}
                 verification_code={verification_code}
+                is_social_signup={is_social_signup}
             />
         );
     }
@@ -145,6 +147,7 @@ ResetEmailModal.propTypes = {
     is_visible: PropTypes.bool,
     verification_code: PropTypes.string,
     toggleResetEmailModal: PropTypes.func,
+    is_social_signup: PropTypes.bool,
 };
 
 export default connect(({ ui, client }) => ({
@@ -155,4 +158,5 @@ export default connect(({ ui, client }) => ({
     is_visible: ui.is_reset_email_modal_visible,
     toggleResetEmailModal: ui.toggleResetEmailModal,
     verification_code: client.verification_code.request_email,
+    is_social_signup: client.is_social_signup,
 }))(ResetEmailModal);

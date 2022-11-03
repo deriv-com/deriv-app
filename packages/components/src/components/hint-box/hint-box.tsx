@@ -1,9 +1,17 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Icon from '../icon/icon';
 
-const HintBox = ({ className, icon, is_info, is_warn, is_danger, message }) => {
+type THintBox = {
+    className?: string;
+    icon: string;
+    is_info?: boolean;
+    is_warn?: boolean;
+    is_danger?: boolean;
+    message: string | React.ReactElement;
+};
+
+const HintBox = ({ className, icon, is_info, is_warn, is_danger, message }: THintBox) => {
     return (
         <div
             className={classNames(
@@ -25,15 +33,6 @@ const HintBox = ({ className, icon, is_info, is_warn, is_danger, message }) => {
             <div className='dc-hint-box__message'>{message}</div>
         </div>
     );
-};
-
-HintBox.propTypes = {
-    className: PropTypes.string,
-    icon: PropTypes.string,
-    is_info: PropTypes.bool,
-    is_warn: PropTypes.bool,
-    is_danger: PropTypes.bool,
-    message: PropTypes.string,
 };
 
 export default HintBox;

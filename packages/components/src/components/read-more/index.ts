@@ -1,4 +1,4 @@
-import ReadMore from './read-more.jsx';
+import ReadMore from './read-more';
 import './read-more.scss';
 
 export default ReadMore;

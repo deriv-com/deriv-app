@@ -50,7 +50,7 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                             onChange(e, question.form_control, setFieldValue);
                                         }}
                                         value={values[question.form_control]}
-                                        hide_top_placeholder={true}
+                                        hide_top_placeholder
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

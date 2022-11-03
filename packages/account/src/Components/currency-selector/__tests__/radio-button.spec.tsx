@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import RadioButton from '../radio-button.jsx';
+import RadioButton, { TRadioButton } from '../radio-button';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -13,7 +13,7 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('<RadioButton />', () => {
-    const props = {
+    const props: TRadioButton = {
         field: { name: 'test_radio', value: 'test_value', onChange: jest.fn(), onBlur: jest.fn() },
         id: 'test_radio_button',
     };

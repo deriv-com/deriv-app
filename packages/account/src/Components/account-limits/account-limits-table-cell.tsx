@@ -1,9 +1,19 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
-const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) => {
+type TAccountLimitsTableCell = {
+    align: 'right' | 'left';
+    is_hint: boolean;
+    renderExtraInfo: () => React.ReactElement;
+};
+
+const AccountLimitsTableCell = ({
+    align,
+    children,
+    is_hint,
+    renderExtraInfo,
+}: React.PropsWithChildren<Partial<TAccountLimitsTableCell>>) => {
     const text_size = is_hint ? 'xxxs' : 'xxs';
 
     return (
@@ -31,13 +41,6 @@ const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) =
             </td>
         </React.Fragment>
     );
-};
-
-AccountLimitsTableCell.propTypes = {
-    align: PropTypes.oneOf(['right', 'left']),
-    children: PropTypes.any,
-    is_hint: PropTypes.bool,
-    renderExtraInfo: PropTypes.func,
 };
 
 export default AccountLimitsTableCell;

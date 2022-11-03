@@ -1,14 +1,24 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
+import { TPlatformContext } from 'Types';
 
-const LeaveConfirmMessage = ({ back, leave }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+type TLeaveConfirmMessage = {
+    back: () => void;
+    leave: () => void;
+};
+
+type TTransitionBlocker = {
+    dirty: boolean;
+    onDirty: (prop: boolean) => void;
+};
+
+const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     return (
         <IconMessageContent
             className='leave-confirm'
@@ -47,9 +57,9 @@ const LeaveConfirmMessage = ({ back, leave }) => {
  * Blocks routing if Formik form is dirty
  * Has to be a child of <Formik> for FormikConsumer to work
  */
-export const TransitionBlocker = ({ dirty, onDirty }) => {
+export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const [show, setShow] = React.useState(false);
-    const [next_location, setNextLocation] = React.useState(null);
+    const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
 
     React.useEffect(() => {
@@ -57,7 +67,7 @@ export const TransitionBlocker = ({ dirty, onDirty }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const unblock = history.block(location => {
+    const unblock = history.block((location: { pathname: string }) => {
         if (dirty) {
             if (onDirty) onDirty(false);
 
@@ -70,10 +80,11 @@ export const TransitionBlocker = ({ dirty, onDirty }) => {
     });
 
     const leave = () => {
-        const { pathname } = next_location;
-
-        unblock();
-        history.push(pathname);
+        if (next_location?.pathname) {
+            const { pathname } = next_location;
+            unblock();
+            history.push(pathname);
+        } else history.push(null);
     };
 
     const back = () => {
@@ -98,14 +109,10 @@ export const TransitionBlocker = ({ dirty, onDirty }) => {
 };
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
-const LeaveConfirm = ({ onDirty }) => (
+const LeaveConfirm = ({ onDirty }: { onDirty: (prop: boolean) => void }) => (
     <FormikConsumer>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );
-
-LeaveConfirm.propTypes = {
-    onDirty: PropTypes.func,
-};
 
 export default LeaveConfirm;

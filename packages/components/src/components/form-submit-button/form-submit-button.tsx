@@ -1,23 +1,36 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Button from '../button/button';
 import Text from '../text';
+
+type FormSubmitButton = {
+    className: string;
+    has_cancel: boolean;
+    is_absolute: boolean;
+    is_center: boolean;
+    is_disabled: boolean;
+    label: string;
+    cancel_label: string;
+    form_error: string;
+    cancel_icon: React.ReactElement;
+    is_loading: boolean;
+    onCancel: () => void;
+};
 
 const FormSubmitButton = ({
     cancel_label,
     className,
-    has_cancel,
-    form_error,
+    has_cancel = false,
+    form_error = '',
     cancel_icon,
-    is_center,
-    is_disabled,
-    is_absolute,
+    is_center = false,
+    is_disabled = false,
+    is_absolute = false,
     is_loading,
     label,
     onCancel,
     ...props
-}) => {
+}: Partial<FormSubmitButton>) => {
     return (
         <div
             className={classNames('dc-form-submit-button', className, {
@@ -59,29 +72,6 @@ const FormSubmitButton = ({
             />
         </div>
     );
-};
-
-FormSubmitButton.defaultProps = {
-    className: undefined,
-    has_cancel: false,
-    form_error: '',
-    is_disabled: false,
-    is_center: false,
-    is_absolute: false,
-};
-
-FormSubmitButton.propTypes = {
-    className: PropTypes.string,
-    has_cancel: PropTypes.bool,
-    is_absolute: PropTypes.bool,
-    is_center: PropTypes.bool,
-    is_disabled: PropTypes.bool,
-    label: PropTypes.string,
-    cancel_label: PropTypes.string,
-    form_error: PropTypes.string,
-    cancel_icon: PropTypes.node,
-    is_loading: PropTypes.bool,
-    onCancel: PropTypes.func,
 };
 
 export default FormSubmitButton;

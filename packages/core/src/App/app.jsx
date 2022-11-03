@@ -9,7 +9,6 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    // isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -64,14 +63,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // const checkInputClick = React.useCallback(() => {
-    //     if (document.activeElement.tagName === 'INPUT' && isMobile()) {
-    //         root_store.ui.setIsInputClicked(true);
-    //     } else {
-    //         root_store.ui.setIsInputClicked(false);
-    //     }
-    // }, [root_store.ui]);
-
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
@@ -89,24 +80,11 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [root_store.ui]);
 
     React.useEffect(() => {
-        // const debouncedHandleResize = debounce(handleResize, 400);
-        // visualViewport.addEventListener('resize', debouncedHandleResize);
-        window.addEventListener('orientationchange', event => {
-            const { angle } = event.target.screen.orientation;
-            const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (angle === 0 || angle === 180) {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
-                el_landscape_blocker.classList.remove('landscape-blocker--visible');
-            } else {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
-                el_landscape_blocker.classList.add('landscape-blocker--visible');
-            }
-        });
-        // window.addEventListener('click', checkInputClick);
+        const debouncedHandleResize = debounce(handleResize, 400);
+        visualViewport.addEventListener('resize', debouncedHandleResize);
 
         return () => {
-            // visualViewport.removeEventListener('resize', debouncedHandleResize);
-            // window.removeEventListener('click', checkInputClick);
+            visualViewport.removeEventListener('resize', debouncedHandleResize);
         };
     }, [handleResize]);
 

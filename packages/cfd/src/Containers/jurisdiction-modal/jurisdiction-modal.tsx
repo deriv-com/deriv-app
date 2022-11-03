@@ -102,7 +102,12 @@ const JurisdictionModal = ({
         if (is_svg_selected) {
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
-            if (poi_acknowledged_for_vanuatu && !poi_or_poa_not_submitted && has_submitted_cfd_personal_details) {
+            if (
+                poi_acknowledged_for_vanuatu &&
+                !poi_or_poa_not_submitted &&
+                poa_acknowledged &&
+                has_submitted_cfd_personal_details
+            ) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -112,6 +117,7 @@ const JurisdictionModal = ({
                 poi_acknowledged_for_bvi_labuan_maltainvest &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
+                poa_acknowledged &&
                 has_submitted_cfd_personal_details
             ) {
                 openPasswordModal(type_of_account);

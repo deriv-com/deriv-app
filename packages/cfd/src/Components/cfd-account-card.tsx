@@ -386,13 +386,7 @@ const CFDAccountCardComponent = ({
                                 <p className='cfd-account-card--paragraph'>{descriptor}</p>
                             )
                         ) : (
-                            <p
-                                className={classNames('cfd-account-card--paragraph', {
-                                    'cfd-account-card--paragraph--is_mt5': platform === CFD_PLATFORMS.MT5,
-                                })}
-                            >
-                                {descriptor}
-                            </p>
+                            <p className='cfd-account-card--paragraph'>{descriptor}</p>
                         )}
                         {existing_data?.display_balance && is_logged_in && platform === CFD_PLATFORMS.DXTRADE && (
                             <Text size='xxl' className='cfd-account-card__balance--value'>

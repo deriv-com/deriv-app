@@ -337,7 +337,8 @@ const DMT5CompareModalContent = ({
                     poi_acknowledged_for_bvi_labuan_maltainvest &&
                     !poi_or_poa_not_submitted &&
                     !should_restrict_bvi_account_creation &&
-                    has_submitted_personal_details
+                    has_submitted_personal_details &&
+                    poa_acknowledged
                 ) {
                     openPasswordModal(type_of_account);
                 } else {
@@ -346,7 +347,12 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_vanuatu':
                 setJurisdictionSelectedShortcode('vanuatu');
-                if (poi_acknowledged_for_vanuatu && !poi_or_poa_not_submitted && has_submitted_personal_details) {
+                if (
+                    poi_acknowledged_for_vanuatu &&
+                    !poi_or_poa_not_submitted &&
+                    has_submitted_personal_details &&
+                    poa_acknowledged
+                ) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();

@@ -69,6 +69,12 @@ const CFDDbViOnBoarding = ({
                 ) {
                     setShowSubmittedModal(false);
                 } else if (
+                    jurisdiction_selected_shortcode === 'maltainvest' &&
+                    poi_acknowledged_for_bvi_labuan_maltainvest &&
+                    poa_acknowledged
+                ) {
+                    setShowSubmittedModal(true);
+                } else if (
                     poi_acknowledged_for_bvi_labuan_maltainvest &&
                     poa_acknowledged &&
                     has_submitted_cfd_personal_details
@@ -82,17 +88,20 @@ const CFDDbViOnBoarding = ({
         });
         setIsLoading(false);
     };
+
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
             setIsLoading(true);
             getAccountStatusFromAPI();
             fetchAccountSettings();
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
     const getModalContent = () => {
+        if (is_virtual) {
+            return <SwitchToRealAccountMessage />;
+        }
         return showSubmittedModal ? (
             <PoiPoaDocsSubmitted
                 onClickOK={toggleCFDVerificationModal}
@@ -133,7 +142,7 @@ const CFDDbViOnBoarding = ({
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
-                    {is_virtual ? <SwitchToRealAccountMessage /> : getModalContent()}
+                    {getModalContent()}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>

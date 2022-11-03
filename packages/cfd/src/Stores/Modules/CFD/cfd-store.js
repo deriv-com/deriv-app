@@ -140,12 +140,7 @@ export default class CFDStore extends BaseStore {
     get has_submitted_cfd_personal_details() {
         const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
             this.root_store.client.account_settings;
-
-        if (citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason) {
-            return true;
-        }
-
-        return false;
+        return !!(citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason);
     }
 
     get current_list() {

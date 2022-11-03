@@ -750,7 +750,8 @@ const CFDPasswordModal = ({
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
                             platform: getCFDPlatformLabel(platform),
                             category: category_label,
-                            jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
+                            jurisdiction_selected_shortcode:
+                                platform === CFD_PLATFORMS.MT5 && !is_eu ? jurisdiction_label : '',
                         }}
                         components={[<strong className='cfd-account__platform' key={0} />]}
                     />

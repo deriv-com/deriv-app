@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import FormSubmitErrorMessage from '../form-submit-error-message.jsx';
+import FormSubmitErrorMessage from '../form-submit-error-message';
 
 describe('<FormSubmitErrorMessage/>', () => {
     it('should render the message passed along with the icon', () => {

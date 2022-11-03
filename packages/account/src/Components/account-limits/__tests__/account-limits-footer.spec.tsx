@@ -4,16 +4,23 @@ import { screen, render } from '@testing-library/react';
 import AccountLimitsContext from '../account-limits-context';
 import AccountLimitsFooterPortal from '../account-limits-footer';
 
-const AccountLimitsFooterPortalComponent = () => (
-    <AccountLimitsContext.Provider
-        value={{
-            footer_ref: <div data-testid='mocked_footer_ref' />,
-            toggleOverlay: jest.fn(),
-        }}
-    >
-        <AccountLimitsFooterPortal />
-    </AccountLimitsContext.Provider>
-);
+const AccountLimitsFooterPortalComponent = () => {
+    const footer = React.useRef<HTMLDivElement>(null);
+    return (
+        <React.Fragment>
+            <div ref={footer} data-testid='mocked_footer_ref' />
+            <AccountLimitsContext.Provider
+                value={{
+                    currency: 'USD',
+                    footer_ref: footer,
+                    toggleOverlay: jest.fn(),
+                }}
+            >
+                <AccountLimitsFooterPortal />
+            </AccountLimitsContext.Provider>
+        </React.Fragment>
+    );
+};
 
 describe('<AccountLimitsFooterPortal/>', () => {
     beforeAll(() => {

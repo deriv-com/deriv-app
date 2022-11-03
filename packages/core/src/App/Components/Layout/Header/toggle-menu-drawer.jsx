@@ -374,7 +374,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </a>
                                             </MobileDrawer.Item>
                                         )}
-                                        <MobileDrawer.Item>
+                                        <MobileDrawer.Item className='header__menu-mobile-livechat'>
                                             {is_appstore ? null : <LiveChat is_mobile_drawer />}
                                         </MobileDrawer.Item>
                                         {secondary_routes_config.map(route_config =>

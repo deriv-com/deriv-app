@@ -1,6 +1,16 @@
 /** Add types that are shared between components */
 
-export type TAuthAccountInfo = NonNullable<import('@deriv/api-types').Authorize['account_list']>[0] & {
+import { Authorize } from '@deriv/api-types';
+import { Requireable, InferProps } from 'prop-types';
+
+export type TToken = {
+    display_name: string;
+    last_used: string;
+    scopes: string[];
+    token: string;
+};
+
+export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };
 
@@ -42,9 +52,16 @@ export type TRealAccount = {
     error_code: number;
 };
 
-export type TToken = {
-    display_name: string;
-    last_used: string;
-    scopes: string[];
-    token: string;
+export type TApiContext = {
+    api_tokens: NonNullable<TToken[]> | undefined;
+    deleteToken: (token: string) => Promise<void>;
+    footer_ref: Element | DocumentFragment | undefined;
+    overlay_ref:
+        | ((...args: unknown[]) => unknown)
+        | InferProps<{
+              current: Requireable<unknown>;
+          }>;
+    toggleOverlay: () => void;
 };
+
+export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';

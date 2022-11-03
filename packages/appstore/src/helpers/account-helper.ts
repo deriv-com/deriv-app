@@ -1,6 +1,6 @@
 import { isCryptocurrency } from '@deriv/shared';
 
-type Taccount_props = {
+type TAccountProps = {
     a_currency: string;
     b_currency: string;
     a_is_crypto?: boolean;
@@ -12,15 +12,15 @@ type Taccount_props = {
     icon?: string;
     is_disabled?: boolean;
 }[];
-type Taccounts = {
+type TAccounts = {
     currency: string;
 }[];
-export const getSortedAccountList = (account_list: Taccount_props, accounts: Taccounts) => {
+export const getSortedAccountList = (account_list: TAccountProps, accounts: TAccounts) => {
     // sort accounts as follows:
     // top is fiat, then crypto (each alphabetically by currency), then demo
     return [...account_list].sort((a, b) => {
-        const a_currency = accounts[a.loginid as any].currency;
-        const b_currency = accounts[b.loginid as any].currency;
+        const a_currency = accounts[a.loginid as unknown as number].currency;
+        const b_currency = accounts[b.loginid as unknown as number].currency;
         const a_is_crypto = isCryptocurrency(a_currency);
         const b_is_crypto = isCryptocurrency(b_currency);
         const a_is_fiat = !a_is_crypto;

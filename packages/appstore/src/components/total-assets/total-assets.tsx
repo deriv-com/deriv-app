@@ -73,7 +73,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     },
                     mt5_account: DetailsOfEachMT5Loginid
                 ) => {
-                    total.balance += (mt5_account?.balance ?? 1) * exchange_rate;
+                    total.balance += (mt5_account?.balance ?? 0) * exchange_rate;
                     return total;
                 },
                 { balance: 0 }

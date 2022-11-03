@@ -13,12 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const {
-    // copyConfig,
-    cssConfig,
-    // htmlOutputConfig,
-    stylelintConfig,
-} = require('./config');
+const { cssConfig, stylelintConfig } = require('./config');
 const {
     css_loaders,
     file_loaders,

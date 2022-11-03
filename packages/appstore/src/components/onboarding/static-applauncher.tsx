@@ -48,7 +48,7 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
             </div>
             <div className='static-applauncher__details'>
                 {icon_type === 'USD' && (
-                    <>
+                    <React.Fragment>
                         <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('US Dollar')}
                         </Text>
@@ -60,10 +60,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                             '0',
                             true
                         )} USD`}</Text>
-                    </>
+                    </React.Fragment>
                 )}
                 {icon_type === 'Bitcoin' && (
-                    <>
+                    <React.Fragment>
                         <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Bitcoin')}
                         </Text>
@@ -75,10 +75,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                             '0',
                             true
                         )} BTC`}</Text>
-                    </>
+                    </React.Fragment>
                 )}
                 {icon_type === 'Ethereum' && (
-                    <>
+                    <React.Fragment>
                         <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Ethereum')}
                         </Text>
@@ -90,10 +90,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                             '0',
                             true
                         )} ETH`}</Text>
-                    </>
+                    </React.Fragment>
                 )}
                 {icon_type === 'Litecoin' && (
-                    <>
+                    <React.Fragment>
                         <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                             {localize('Litecoin')}
                         </Text>
@@ -105,12 +105,12 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
                             '0',
                             true
                         )} LTC`}</Text>
-                    </>
+                    </React.Fragment>
                 )}
             </div>
             <div className='static-applauncher__buttons'>
                 <Button secondary small className='static-applauncher__buttons-topup'>
-                    <Localize i18n_default_text='deposit' />
+                    <Localize i18n_default_text='Deposit' />
                 </Button>
             </div>
         </div>

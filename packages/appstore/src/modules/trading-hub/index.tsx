@@ -48,7 +48,7 @@ const TradingHub: React.FC = () => {
     const { is_tour_open, toggleIsTourOpen } = trading_hub_store;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
-    const [platform_type, setPlatformType] = React.useState<any>('cfd');
+    const [platform_type, setPlatformType] = React.useState<string>('cfd');
 
     const history = useHistory();
 

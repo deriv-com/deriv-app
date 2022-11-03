@@ -37,7 +37,7 @@ const CFDRealAccounts = ({
     const { isEligibleForMoreRealMt5 } = client;
     const history = useHistory();
 
-    const available_real_accounts: Array<TStaticAccountProps> = [
+    const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),

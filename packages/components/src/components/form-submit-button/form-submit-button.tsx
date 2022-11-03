@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Button from '../button/button';
 import Text from '../text';
 
-type FormSubmitButton = {
+type FormSubmitButton = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     className: string;
     has_cancel: boolean;
     is_absolute: boolean;

@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { InputHTMLAttributes, AllHTMLAttributes, ReactElement } from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Popover, Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 
-const USTPopover = ({ id }) => {
-    let popover_message;
+export type TUSTPopover = {
+    id: string;
+};
+
+type TRadioButtonExtend = {
+    field: InputHTMLAttributes<HTMLInputElement>;
+    icon?: string;
+    second_line_label?: string;
+};
+
+export type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;
+
+const USTPopover = ({ id }: TUSTPopover) => {
+    let popover_message: ReactElement | undefined;
     if (/^UST$/i.test(id)) {
         popover_message = (
             <Localize
@@ -44,17 +56,15 @@ const USTPopover = ({ id }) => {
     );
 };
 
-// Radio input
 const RadioButton = ({
     field: { name, value, onChange, onBlur },
     icon,
     id,
     label,
     second_line_label,
-    className,
     onClick,
     ...props
-}) => {
+}: TRadioButton) => {
     return (
         <React.Fragment>
             <input
@@ -87,8 +97,8 @@ const RadioButton = ({
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                        {/^(UST|eUSDT|tUSDT)$/i.test(id) && <USTPopover id={id} />}
+                        <Icon className='currency-list__icon' icon={`IcCurrency-${id?.toLowerCase()}`} />
+                        {id && /^(UST|eUSDT|tUSDT)$/i.test(id) && <USTPopover id={id} />}
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
                             <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
-import RadioButtonGroup from '../radio-button-group.jsx';
+import RadioButtonGroup, { TRadioButtonGroup } from '../radio-button-group';
 
 describe('<RadioButtonGroup/>', () => {
-    const props = {
+    const props: TRadioButtonGroup = {
         label: 'samplelable',
         className: 'sampleclass',
         item_count: 2,
@@ -18,7 +18,7 @@ describe('<RadioButtonGroup/>', () => {
     });
 
     it('should not display label if is_title_enabled is false', () => {
-        render(<RadioButtonGroup is_title_enabled='false' />);
+        render(<RadioButtonGroup {...props} is_title_enabled={false} />);
         expect(screen.queryByText('samplelable')).not.toBeInTheDocument();
     });
 

@@ -1,11 +1,24 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { PageError } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 
-const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh = true }) => {
-    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
+type TErrorComponent = {
+    header: React.ReactElement;
+    message: React.ReactNode;
+    redirect_label: React.ReactElement;
+    redirectOnClick: () => void;
+    should_show_refresh: boolean;
+};
+
+const ErrorComponent = ({
+    header,
+    message,
+    redirect_label,
+    redirectOnClick,
+    should_show_refresh = true,
+}: Partial<TErrorComponent>) => {
+    const refresh_message: string = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     return (
         <PageError
@@ -20,15 +33,6 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );
-};
-
-ErrorComponent.propTypes = {
-    header: PropTypes.element,
-    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirect_label: PropTypes.element,
-    redirectOnClick: PropTypes.func,
-    should_show_refresh: PropTypes.bool,
-    type: PropTypes.string,
 };
 
 export default ErrorComponent;

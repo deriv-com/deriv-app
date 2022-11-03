@@ -1,9 +1,8 @@
 import React from 'react';
-import Routes from './Containers/routes';
-import ResetTradingPassword from './Containers/reset-trading-password';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './Stores/init-store';
 import TCoreStore from './Stores/index';
+import { ProofOfAddress, ProofOfIdentity } from '@deriv/poa';
 
 // TODO: add correct types for stores and WS after implementing them
 type TAppProps = {
@@ -19,8 +18,19 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <Routes />
-            <ResetTradingPassword />
+            <div
+                style={{
+                    flex: 1,
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    display: 'flex',
+                    height: '90vh',
+                }}
+            >
+                <ProofOfAddress />
+                <ProofOfIdentity />
+            </div>
         </MobxContentProvider>
     );
 };

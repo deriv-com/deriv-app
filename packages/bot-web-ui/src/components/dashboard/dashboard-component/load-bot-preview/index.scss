@@ -134,7 +134,11 @@
     &__recent {
         display: flex;
         gap: 1.6rem;
+
         &-preview-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: var(--text-general);
         }
 
@@ -209,7 +213,9 @@
                 }
             }
         }
-
+        &__empty {
+            text-align: center;
+        }
         &-item {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;

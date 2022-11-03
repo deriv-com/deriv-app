@@ -1,33 +1,58 @@
 @import './sidebar.scss';
 @import './dialog.scss';
 
+@mixin position-center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .tutorials-wrap {
+    &--placeholder {
+        width: 28rem;
+    }
+    &--tour {
+        cursor: pointer;
+    }
     &__group {
         display: flex;
         margin-top: 2.4rem;
+        margin-bottom: 5.2rem;
+        &__nosearch {
+            @include position-center;
+            width: 100%;
+            word-break: break-all;
+        }
         &__cards {
             display: flex;
             text-align: center;
             flex-direction: column;
-            width: 27rem;
             margin-right: 2.4rem;
         }
     }
 
     &__placeholder {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include align-center;
         background: var(--checkbox-disabled-grey);
         margin-bottom: 0.8rem;
         margin-right: 2.4rem;
         height: 16rem;
         width: 28rem;
+        &__tours {
+            height: 13.5rem;
+            width: 21.5rem;
+            background-position: center center;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+        }
 
         &__button-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @include align-center;
             width: 20rem;
             height: 7rem;
             border-radius: 1rem;
@@ -44,15 +69,18 @@
         overflow: auto;
         height: 100vh;
         padding-bottom: 20rem;
-
+        &__nosearch {
+            @include position-center;
+            width: 100%;
+            word-break: break-all;
+        }
         &__content {
             width: 85%;
         }
         .dc-accordion {
             &__item-header {
-                display: flex;
+                @include position-center;
                 justify-content: space-between;
-                align-items: center;
             }
             &__item {
                 border: unset;

@@ -51,11 +51,13 @@ const FAQContent = ({ faq_list, faq_search_value }: TFAQContent) => {
                 {faq_list?.length ? (
                     <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                 ) : (
-                    <Text as='h1' weight='bold' line_height='xxs'>
-                        {localize('No results found "{{ faq_search_value }}"', {
-                            faq_search_value,
-                        })}
-                    </Text>
+                    <div className='faq__wrapper__nosearch'>
+                        <Text as='h1' weight='bold' line_height='xxs'>
+                            {localize('No results found "{{ faq_search_value }}"', {
+                                faq_search_value,
+                            })}
+                        </Text>
+                    </div>
                 )}
             </div>
         </div>

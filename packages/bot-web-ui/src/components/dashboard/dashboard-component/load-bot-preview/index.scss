@@ -106,7 +106,7 @@
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
         min-height: calc(100vh - 30rem);
-        height: calc(100% - 30rem); // TODO: What is 37px?
+        height: calc(100% - 40rem); // TODO: What is 37px?
         position: relative;
         overflow: hidden;
         margin-bottom: 1.6rem;
@@ -149,6 +149,7 @@
                 overflow: auto;
                 /* TODO: ThemedScrollbars! */
                 height: calc(100% - 5.2rem); // 100% - Title height
+                padding-bottom: 5rem;
             }
         }
 

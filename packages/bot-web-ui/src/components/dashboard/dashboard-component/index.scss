@@ -84,6 +84,12 @@
                     width: 100%;
                     overflow-x: auto;
                 }
+                &--dashboard {
+                    &__tabs {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
             }
 
             &__item {
@@ -236,6 +242,7 @@
 .tab {
     &__dashboard {
         display: flex;
+        width: 100%;
 
         &__content {
             min-width: 70%;
@@ -245,6 +252,7 @@
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
+            overflow: hidden;
 
             @include mobile {
                 height: var(--tab-content-height-mobile);
@@ -257,7 +265,7 @@
             align-items: center;
             justify-content: center;
             width: 50%;
-            margin-top: 8rem;
+            margin-top: -3rem;
         }
 
         &__preview {
@@ -275,6 +283,7 @@
                     @include align-center;
                     cursor: pointer;
                 }
+
                 &__text {
                     margin-left: 0.4rem;
                 }
@@ -286,12 +295,10 @@
         }
 
         &__description {
-            max-width: 44rem;
             text-align: center;
             margin-bottom: 4rem;
 
             &__loaded {
-                max-width: 65rem;
                 text-align: left;
                 margin-top: 4rem;
             }
@@ -306,7 +313,7 @@
 
             &--active {
                 display: block;
-                width: 35rem;
+                width: 30%;
             }
         }
 

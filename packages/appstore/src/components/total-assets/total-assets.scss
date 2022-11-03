@@ -16,15 +16,17 @@
 
     &-real {
         color: var(--text-profit-success);
+        padding-left: 0.5rem;
     }
 
     &-demo {
         color: var(--text-profit-success);
+        padding-left: 0.5rem;
     }
 
     &-no-currency {
-        margin-left: 0.4rem;
         color: var(--general-section-2);
+        padding-left: 0.5rem;
     }
 
     &-tooltip {

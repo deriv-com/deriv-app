@@ -22,9 +22,9 @@ const FormProgress = ({ steps = [], current_step }: TFormProgress) => {
             clientWidth: 1,
         };
         const each = 100 / steps.length;
-        if (el_completed_bar) {
-            el_completed_bar.current!.style.width = `${current_step * each}%`;
-            el_completed_bar.current!.style.transform = `translateX(${
+        if (el_completed_bar.current) {
+            el_completed_bar.current.style.width = `${current_step * each}%`;
+            el_completed_bar.current.style.transform = `translateX(${
                 el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
             }px)`;
         }

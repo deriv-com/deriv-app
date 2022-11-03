@@ -65,8 +65,7 @@ export default class QuickStrategyStore {
                 this.getFieldValue(this.types_strategies_dropdown, this.selected_type_strategy.value) || '',
             'quick-strategy__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
             'quick-strategy__trade-type':
-                this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) ||
-                this.trade_type_dropdown[0],
+                this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) || '',
             'quick-strategy__duration-unit':
                 this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
@@ -225,14 +224,10 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async toggleStrategyModal() {
+    async loadDataStrategy() {
         this.root_store.flyout.setVisibility(false);
-        this.is_strategy_modal_open = !this.is_strategy_modal_open;
-
-        if (this.is_strategy_modal_open) {
-            await this.updateSymbolDropdown();
-            await this.updateTypesStrategiesDropdown();
-        }
+        await this.updateSymbolDropdown();
+        await this.updateTypesStrategiesDropdown();
     }
 
     @action.bound
@@ -334,7 +329,7 @@ export default class QuickStrategyStore {
 
         this.setSymbolDropdown(symbol_options);
 
-        if (!this.selected_symbol && symbol_options.length) {
+        if (!this.selected_symbol.value && symbol_options.length) {
             this.selected_symbol = symbol_options[0];
         }
 

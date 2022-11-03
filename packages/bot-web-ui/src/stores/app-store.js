@@ -198,7 +198,7 @@ export default class AppStore {
             summary_card,
         } = this.root_store;
         const { handleFileChange } = load_modal;
-        const { toggleStrategyModal } = quick_strategy;
+        const { loadDataStrategy } = quick_strategy;
         const { startLoading, endLoading } = blockly_store;
         const { populateConfig, setContractUpdateConfig } = summary_card;
 
@@ -212,7 +212,7 @@ export default class AppStore {
             startLoading,
             setContractUpdateConfig,
             endLoading,
-            toggleStrategyModal,
+            loadDataStrategy,
             handleFileChange,
         };
 

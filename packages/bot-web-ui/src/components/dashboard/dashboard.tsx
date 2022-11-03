@@ -24,14 +24,14 @@ type TDashboard = {
     has_onboard_tour_started: boolean;
     setTourActive: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    toggleStrategyModal: () => void;
+    loadDataStrategy: () => void;
     is_mobile: boolean;
 };
 
 const Dashboard = ({
     active_tab,
     setActiveTab,
-    toggleStrategyModal,
+    loadDataStrategy,
     onEntered,
     setTourActive,
     has_tour_started,
@@ -40,12 +40,11 @@ const Dashboard = ({
     setOnBoardTourRunState,
     is_mobile,
 }: TDashboard) => {
-    const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         setTourRun(true);
-        toggleStrategyModal();
+        loadDataStrategy();
     };
 
     React.useEffect(() => {
@@ -131,7 +130,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     active_tab: dashboard.active_tab,
     is_drawer_open: run_panel.is_drawer_open,
     setActiveTab: dashboard.setActiveTab,
-    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
     onEntered: load_modal.onEntered,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,

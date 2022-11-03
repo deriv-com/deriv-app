@@ -9,13 +9,13 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
+    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
-    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';

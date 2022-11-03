@@ -13,8 +13,10 @@ export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
+    @observable advertiser_info = {};
     @observable block_unblock_user_error = '';
     @observable balance;
+    @observable cancels_remaining = null;
     @observable contact_info = '';
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
@@ -431,8 +433,18 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setAdvertiserInfo(advertiser_info) {
+        this.advertiser_info = advertiser_info;
+    }
+
+    @action.bound
     setAppProps(props) {
         this.props = props;
+    }
+
+    @action.bound
+    setBlockUnblockUserError(block_unblock_user_error) {
+        this.block_unblock_user_error = block_unblock_user_error;
     }
 
     @action.bound
@@ -441,8 +453,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setBlockUnblockUserError(block_unblock_user_error) {
-        this.block_unblock_user_error = block_unblock_user_error;
+    setDefaultAdvertDescription(default_advert_description) {
+        this.default_advert_description = default_advert_description;
     }
 
     @action.bound
@@ -632,20 +644,24 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     updateAdvertiserInfo(response) {
         const {
+            blocked_by_count,
             blocked_until,
             contact_info,
-            blocked_by_count,
+            default_advert_description,
             id,
             is_approved,
             is_blocked,
             is_listed,
             name,
             payment_info,
+            show_name,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserInfo(response.p2p_advertiser_info);
             this.setContactInfo(contact_info);
+            this.setDefaultAdvertDescription(default_advert_description);
             this.setIsAdvertiser(!!is_approved);
             this.setIsAdvertiserBlocked(!!is_blocked);
             this.setIsListed(!!is_listed);
@@ -653,11 +669,13 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedUntil(blocked_until);
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
+            this.setShouldShowRealName(!!show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 
             this.setContactInfo('');
             this.setPaymentInfo('');
+            this.setDefaultAdvertDescription('');
 
             if (response.error.code === 'RestrictedCountry') {
                 this.setIsRestricted(true);

@@ -1,10 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { TPopoverAlignment } from 'Types';
 
-const WarningNoteBullet = ({ message }) => (
+type TApiTokenClipboard = {
+    scopes: string[];
+    text_copy: string;
+    info_message: string;
+    success_message: string;
+    popover_alignment?: TPopoverAlignment;
+};
+
+type TWarningNoteBullet = {
+    message: string;
+};
+
+const WarningNoteBullet = ({ message }: TWarningNoteBullet) => (
     <div className='da-api-token__bullet-wrapper'>
         <div className='da-api-token__bullet' />
         <Text as='p' color='prominent ' size='xs' line_height='m'>
@@ -14,7 +26,7 @@ const WarningNoteBullet = ({ message }) => (
 );
 
 const WarningDialogMessage = () => (
-    <>
+    <React.Fragment>
         <Text as='p' color='prominent ' size='xs' line_height='m'>
             {localize(
                 'Be careful who you share this token with. Anyone with this token can perform the following actions on your account behalf'
@@ -25,16 +37,21 @@ const WarningDialogMessage = () => (
             <WarningNoteBullet message={localize('Create or delete API tokens for trading and withdrawals')} />
             <WarningNoteBullet message={localize('Modify account settings')} />
         </div>
-    </>
+    </React.Fragment>
 );
 
-const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popover_alignment = 'bottom' }) => {
+const ApiTokenClipboard = ({
+    scopes,
+    text_copy,
+    info_message,
+    success_message,
+    popover_alignment = 'bottom',
+}: TApiTokenClipboard) => {
     const [is_copied, setIsCopied] = React.useState(false);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
-    let timeout_clipboard = null;
-    let timeout_clipboard_2 = null;
+    let timeout_clipboard: NodeJS.Timeout | undefined, timeout_clipboard_2: NodeJS.Timeout | undefined;
     const has_admin_scope = scopes.includes('Admin');
 
     const onMouseEnterHandler = () => {
@@ -45,7 +62,7 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
         if (!is_copied) setIsPopoverOpen(false);
     };
 
-    const copyToClipboard = async text => {
+    const copyToClipboard = async (text: string) => {
         const textField = document.createElement('textarea');
         textField.innerText = text;
         document.body.appendChild(textField);
@@ -129,14 +146,6 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
             </Popover>
         </>
     );
-};
-
-ApiTokenClipboard.propTypes = {
-    scopes: PropTypes.array.isRequired,
-    text_copy: PropTypes.string,
-    info_message: PropTypes.string,
-    success_message: PropTypes.string,
-    popover_alignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 
 export default ApiTokenClipboard;

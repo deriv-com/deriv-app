@@ -186,6 +186,10 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
+            {/* 
+                Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by 
+                removing the parent element from DOM 
+            */}
             {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />

@@ -12,9 +12,10 @@ import {
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
-    // mobileOSDetect,
+    mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
+    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -64,13 +65,22 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
-        // console.log(screen.height, screen.width);
         if (isTouchDevice() && (isMobile() || isTablet())) {
-            // const is_android_device = mobileOSDetect() === 'Android';
-            // const view_width = is_android_device ? screen.availWidth : screen.width;
-            // const view_height = is_android_device ? screen.availHeight : screen.height;
+            let view_width, view_height;
+
+            if (mobileOSDetect() === 'Android') {
+                view_width = screen.availWidth;
+                view_height = screen.availHeight;
+            } else if (mobileOSDetect() === 'iOS' && isSafari()) {
+                view_width = visualViewport.width;
+                view_height = visualViewport.height;
+            } else {
+                view_width = window.innerWidth;
+                view_height = window.innerHeight;
+            }
+
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (screen.width <= screen.height) {
+            if (view_width <= view_height) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {

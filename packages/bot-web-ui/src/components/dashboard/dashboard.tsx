@@ -38,7 +38,6 @@ const Dashboard = ({
     is_drawer_open,
     setOnBoardTourRunState,
 }: TDashboard) => {
-    const [show_side_bar, setShowSideBar] = React.useState<boolean>(true);
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();

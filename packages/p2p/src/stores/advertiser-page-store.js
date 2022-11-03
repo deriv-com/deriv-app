@@ -1,16 +1,13 @@
 import { action, computed, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
-import { getShortNickname } from 'Utils/string';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;
     @observable ad = null;
-    @observable advertiser_first_name = '';
-    @observable advertiser_last_name = '';
-    @observable advertiser_info = {};
     @observable adverts = [];
+    @observable counterparty_advertiser_info = {};
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
     @observable form_error_message = '';
@@ -22,6 +19,8 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
+
+    advertiser_info_subscription = {};
 
     @computed
     get account_currency() {
@@ -46,16 +45,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @computed
     get advertiser_details_name() {
         return this.advert?.advertiser_details?.name;
-    }
-
-    @computed
-    get advertiser_full_name() {
-        return `${this.advertiser_first_name} ${this.advertiser_last_name}`;
-    }
-
-    @computed
-    get short_name() {
-        return getShortNickname(this.advertiser_details_name);
     }
 
     loadMoreAdvertiserAdverts({ startIndex }) {
@@ -83,23 +72,16 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    getAdvertiserInfo() {
-        this.setIsLoading(true);
-        requestWS({
-            p2p_advertiser_info: 1,
-            id: this.advertiser_details_id,
-        }).then(response => {
-            if (!response.error) {
-                const { p2p_advertiser_info } = response;
-                this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
-                this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
-                this.setAdvertiserLastName(p2p_advertiser_info.last_name);
-            } else {
-                this.setErrorMessage(response.error);
-            }
-            this.setIsLoading(false);
-        });
+    setAdvertiserInfo(response) {
+        if (response.error) {
+            this.setErrorMessage(response.error);
+        } else {
+            const { p2p_advertiser_info } = response;
+            this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
+            this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+        }
+
+        this.setIsLoading(false);
     }
 
     @action.bound
@@ -131,7 +113,16 @@ export default class AdvertiserPageStore extends BaseStore {
 
     @action.bound
     onMount() {
-        this.getAdvertiserInfo();
+        this.setIsLoading(true);
+
+        this.advertiser_info_subscription = subscribeWS(
+            {
+                p2p_advertiser_info: 1,
+                id: this.advertiser_details_id,
+                subscribe: 1,
+            },
+            [this.setAdvertiserInfo]
+        );
     }
 
     @action.bound
@@ -143,9 +134,17 @@ export default class AdvertiserPageStore extends BaseStore {
         this.setIsDropdownMenuVisible(false);
     }
 
+    @action.bound
     onTabChange() {
         this.setAdverts([]);
         this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+    }
+
+    @action.bound
+    onUnmount() {
+        if (this.advertiser_info_subscription.unsubscribe) {
+            this.advertiser_info_subscription.unsubscribe();
+        }
     }
 
     @action.bound
@@ -159,28 +158,13 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    setAdvertiserFirstName(advertiser_first_name) {
-        this.advertiser_first_name = advertiser_first_name;
-    }
-
-    @action.bound
-    setAdvertiserLastName(advertiser_last_name) {
-        this.advertiser_last_name = advertiser_last_name;
-    }
-
-    @action.bound
-    setAdvertiserInfo(advertiser_info) {
-        this.advertiser_info = advertiser_info;
-    }
-
-    @action.bound
     setAdverts(adverts) {
         this.adverts = adverts;
     }
 
     @action.bound
-    setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
-        this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
+    setCounterpartyAdvertiserInfo(counterparty_advertiser_info) {
+        this.counterparty_advertiser_info = counterparty_advertiser_info;
     }
 
     @action.bound
@@ -201,6 +185,11 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
         this.has_more_adverts_to_load = has_more_adverts_to_load;
+    }
+
+    @action.bound
+    setIsCounterpartyAdvertiserBlocked(is_counterparty_advertiser_blocked) {
+        this.is_counterparty_advertiser_blocked = is_counterparty_advertiser_blocked;
     }
 
     @action.bound
@@ -246,7 +235,7 @@ export default class AdvertiserPageStore extends BaseStore {
     showBlockUserModal() {
         if (
             !this.is_counterparty_advertiser_blocked &&
-            this.advertiser_info.id !== this.root_store.general_store.advertiser_id
+            this.counterparty_advertiser_info.id !== this.root_store.general_store.advertiser_id
         ) {
             this.root_store.general_store.setIsBlockUserModalOpen(true);
         }

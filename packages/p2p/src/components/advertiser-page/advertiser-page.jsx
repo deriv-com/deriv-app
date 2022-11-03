@@ -92,7 +92,7 @@ const AdvertiserPage = () => {
                     advertiser_page_store.onCancel();
                     general_store.setBlockUnblockUserError('');
                 }}
-                small
+                width={isMobile() ? '90rem' : '40rem'}
             />
             <BlockUserModal
                 advertiser_name={name}

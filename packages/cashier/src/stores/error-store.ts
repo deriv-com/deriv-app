@@ -1,19 +1,39 @@
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
 import { TServerError } from 'Types';
 
 export default class ErrorStore {
-    @observable message = '';
-    @observable code = '';
-    @observable fields = '';
-    @observable is_show_full_page = false;
-    @observable onClickButton: VoidFunction | null = null;
-    @observable is_ask_uk_funds_protection = false;
-    @observable is_self_exclusion_max_turnover_set = false;
-    @observable is_ask_authentication = false;
-    @observable is_ask_financial_risk_approval = false;
+    message = '';
+    code = '';
+    fields = '';
+    is_show_full_page = false;
+    onClickButton: VoidFunction | null = null;
+    is_ask_uk_funds_protection = false;
+    is_self_exclusion_max_turnover_set = false;
+    is_ask_authentication = false;
+    is_ask_financial_risk_approval = false;
 
-    @action.bound
+    constructor() {
+        makeObservable(this, {
+            message: observable,
+            code: observable,
+            fields: observable,
+            is_show_full_page: observable,
+            onClickButton: observable,
+            is_ask_uk_funds_protection: observable,
+            is_self_exclusion_max_turnover_set: observable,
+            is_ask_authentication: observable,
+            is_ask_financial_risk_approval: observable,
+            setErrorMessage: action.bound,
+            handleCashierError: action.bound,
+            setMessage: action.bound,
+            setIsAskUkFundsProtection: action.bound,
+            setIsSelfExclusionMaxTurnoverSet: action.bound,
+            setIsAskAuthentication: action.bound,
+            setIsAskFinancialRiskApproval: action.bound,
+        });
+    }
+
     setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
         // for errors that need to show a button, reset the form
         const error_object = {
@@ -37,7 +57,6 @@ export default class ErrorStore {
         this.is_ask_financial_risk_approval = error_object?.is_ask_financial_risk_approval;
     }
 
-    @action.bound
     handleCashierError(error: TServerError): void {
         switch (error.code) {
             case 'ASK_TNC_APPROVAL':
@@ -68,27 +87,22 @@ export default class ErrorStore {
         }
     }
 
-    @action.bound
     setMessage(value: string): void {
         this.message = value;
     }
 
-    @action.bound
     setIsAskUkFundsProtection(value: boolean): void {
         this.is_ask_uk_funds_protection = value;
     }
 
-    @action.bound
     setIsSelfExclusionMaxTurnoverSet(value: boolean): void {
         this.is_self_exclusion_max_turnover_set = value;
     }
 
-    @action.bound
     setIsAskAuthentication(value: boolean): void {
         this.is_ask_authentication = value;
     }
 
-    @action.bound
     setIsAskFinancialRiskApproval(value: boolean): void {
         this.is_ask_financial_risk_approval = value;
     }

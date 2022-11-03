@@ -9,3 +9,8 @@ export type TToken = {
     scopes: string[];
     token: string;
 };
+
+export type TPoaStatusProps = {
+    needs_poi: boolean;
+    is_description_enabled?: boolean;
+};

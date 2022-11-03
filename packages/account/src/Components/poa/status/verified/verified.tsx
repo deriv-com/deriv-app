@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TPlatformContext, TPoaStatusProps } from 'Types';
 import { PoiButton } from 'Components/poi/poi-button/poi-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
-import { TPlatformContext } from 'Types';
-import { TPoaStatusProps } from 'Components/poa/status/poa-types/common-poa-prop.type';
 
 export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
     const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);

@@ -4,7 +4,7 @@ import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 import PoiButton from 'Components/poi/poi-button';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
-import { TPoaStatusProps } from 'Components/poa/status/poa-types/common-poa-prop.type';
+import { TPoaStatusProps } from 'Types';
 
 export const NeedsReview = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
     const message = localize('Your proof of address was submitted successfully');

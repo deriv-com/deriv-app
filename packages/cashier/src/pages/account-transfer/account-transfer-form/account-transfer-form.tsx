@@ -13,7 +13,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TReactChangeEvent, TAccount, TAccountsList } from 'Types';
+import { TReactChangeEvent, TAccount, TAccountsList, TSideNotesProps } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -25,7 +25,7 @@ import { useStore } from '../../../hooks';
 
 type TAccountTransferFormProps = {
     error: object;
-    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
+    setSideNotes: (notes: TSideNotesProps) => void;
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {

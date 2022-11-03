@@ -361,9 +361,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </div>
                                             </MobileDrawer.Item>
                                         }
-                                        <MobileDrawer.Item>
-                                            {is_appstore ? null : <LiveChat is_mobile_drawer />}
-                                        </MobileDrawer.Item>
                                         {liveChat.isReady && (
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                                 <Icon icon='IcWhatsApp' className='drawer-icon' />
@@ -377,7 +374,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </a>
                                             </MobileDrawer.Item>
                                         )}
-
+                                        <MobileDrawer.Item>
+                                            {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                        </MobileDrawer.Item>
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)
                                         )}

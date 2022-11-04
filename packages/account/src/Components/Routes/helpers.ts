@@ -1,10 +1,10 @@
 import { matchPath, RouteProps } from 'react-router';
 import { routes } from '@deriv/shared';
+import { TRouteConfig } from 'Types';
 
 export const normalizePath: (path: string) => string = path => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const findRouteByPath = (path: string, routes_config?: any[]): RouteProps | undefined => {
+export const findRouteByPath = (path: string, routes_config?: TRouteConfig[]): RouteProps | undefined => {
     let result;
 
     routes_config?.some(route_info => {

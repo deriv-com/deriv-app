@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 import {
     alternateLinkTagChange,
@@ -11,13 +11,15 @@ import {
     default_title,
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
+import { TRouteConfig } from 'Types';
 
-type TGeneric = {
-    [key: string]: any;
+type TRouteWithSubRoutesProps = TRouteConfig & {
+    is_logged_in: boolean;
+    is_logging_in: boolean;
 };
 
-const RouteWithSubRoutes = (route: TGeneric) => {
-    const renderFactory = (props: TGeneric) => {
+const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
+    const renderFactory = (props: RouteComponentProps) => {
         let result = null;
 
         if (route.component === Redirect) {
@@ -33,9 +35,9 @@ const RouteWithSubRoutes = (route: TGeneric) => {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = (route.routes ?? []).reduce(
-                (acc: any, cur: { subroutes: any[] }) => ({
+                (acc, cur) => ({
                     ...acc,
-                    ...cur.subroutes.find(subroute => subroute.default),
+                    ...cur.subroutes?.find(subroute => subroute.default),
                 }),
                 {}
             );

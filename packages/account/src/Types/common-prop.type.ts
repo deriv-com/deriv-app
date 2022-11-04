@@ -2,6 +2,7 @@
 
 import { Authorize } from '@deriv/api-types';
 import { Requireable, InferProps } from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 export type TToken = {
     display_name: string;
@@ -70,3 +71,22 @@ export type TApiContext = {
 };
 
 export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';
+
+export type TRoute = {
+    default?: boolean;
+    exact?: boolean;
+    id?: string;
+    icon_component?: string;
+    is_invisible?: boolean;
+    path?: string;
+    to?: string;
+    component: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    getTitle: () => string;
+    subroutes?: TRoute[];
+};
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
+};

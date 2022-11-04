@@ -6,8 +6,12 @@ import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes';
 import { TPlatformContext } from 'Types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const BinaryRoutes = (props: { [key: string]: any }) => {
+type TBinaryRoutesProps = {
+    is_logged_in: boolean;
+    is_logging_in: boolean;
+};
+
+const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
 
     return (

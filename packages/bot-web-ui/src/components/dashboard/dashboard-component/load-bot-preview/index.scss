@@ -32,7 +32,7 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 13rem);
 
             &--has-footer {
                 height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);

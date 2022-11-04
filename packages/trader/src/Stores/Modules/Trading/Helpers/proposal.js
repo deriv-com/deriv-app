@@ -43,6 +43,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const cancellation = proposal.cancellation;
     const accumulators_details = {
         ...proposal.contract_details,
+        growth_rate: store.growth_rate,
         spot_time: proposal.spot_time,
     };
 

@@ -4,6 +4,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+import { getGrowthRatePercentage } from '@deriv/shared';
 
 // TODO [lazy-loading-required] Responsive related components
 const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
@@ -85,8 +86,12 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier || is_accumulator ? (
-                            <Text size={is_accumulator ? 'xxs' : 'xs'} weight='bold' color='colored-background'>
-                                <Money amount={info.stake} currency={currency} show_currency />
+                            <Text size='xs' weight='bold' color='colored-background'>
+                                {is_multiplier ? (
+                                    <Money amount={info.stake} currency={currency} show_currency />
+                                ) : (
+                                    !(is_loading || is_disabled) && `${getGrowthRatePercentage(info.growth_rate)}%`
+                                )}
                             </Text>
                         ) : (
                             <Text size='xs' weight='bold' color='colored-background'>

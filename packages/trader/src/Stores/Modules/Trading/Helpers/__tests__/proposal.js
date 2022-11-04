@@ -47,6 +47,7 @@ describe('Proposal', () => {
                     text: 'Stake',
                     value: '',
                 },
+                growth_rate: undefined,
                 spot_time: undefined,
             });
         });
@@ -84,6 +85,7 @@ describe('Proposal', () => {
                     text: 'Stake',
                     value: 200,
                 },
+                growth_rate: undefined,
                 spot_time: undefined,
             });
         });

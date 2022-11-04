@@ -22,7 +22,7 @@ import {
     OtherInstrumentsTradingExperience,
     OtherInstrumentsTradingFrequency,
     SourceOfWealth,
-} from './financial-details-partials';
+} from './financial-details-partials.jsx';
 import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 

@@ -30,7 +30,7 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client, trading_hub_store } = useStores();
+    const { ui, modules, common, client, tradinghub } = useStores();
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
         client;
     const {
@@ -45,7 +45,7 @@ const TradingHub: React.FC = () => {
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen } = trading_hub_store;
+    const { is_tour_open, toggleIsTourOpen } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>('real');
     const [platform_type, setPlatformType] = React.useState<string>('cfd');

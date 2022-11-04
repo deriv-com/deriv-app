@@ -12,6 +12,60 @@ type TStaticAppLauncher = {
     is_grey?: boolean;
 };
 
+const crypto_icon_config = {
+    USD: 'Usd',
+    Bitcoin: 'Btc',
+    Ethereum: 'Eth',
+    Litecoin: 'Ltc',
+};
+
+const crypto_config = {
+    USD: 'US Dollar',
+    Bitcoin: 'Bitcoin',
+    Ethereum: 'Ethereum',
+    Litecoin: 'Litecoin',
+};
+
+type TCryptoIcon = {
+    currency: keyof typeof crypto_icon_config;
+};
+
+type TCryptoConfig = {
+    currency: keyof typeof crypto_config;
+    is_item_blurry?: boolean;
+};
+
+const CryptoIcon = ({ currency }: TCryptoIcon) => {
+    return currency === 'USD' ? (
+        <Icon icon={`IcCurrency${crypto_icon_config[currency]}`} is_item_blurry size={38} />
+    ) : (
+        <Icon
+            icon={`IcCurrency${crypto_icon_config[currency]}`}
+            is_item_blurry
+            size={38}
+            className={'static-applauncher__icon--blurry'}
+        />
+    );
+};
+
+const CurrencyIcon = ({ currency, is_item_blurry }: TCryptoConfig) => {
+    return (
+        <React.Fragment>
+            <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                {localize(`${crypto_config[currency]}`)}
+            </Text>
+            <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+                {localize('CR5236585')}
+            </Text>
+            <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                { currency },
+                '0',
+                true
+            )} ${currency}`}</Text>
+        </React.Fragment>
+    );
+};
+
 const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLauncher) => {
     return (
         <div
@@ -20,93 +74,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
             })}
         >
             <div className='static-applauncher__icon'>
-                {icon_type === 'USD' && <Icon icon='IcCurrencyUsd' is_item_blurry size={38} />}
-                {icon_type === 'Bitcoin' && (
-                    <Icon
-                        icon='IcCurrencyBtc'
-                        is_item_blurry
-                        size={38}
-                        className={'static-applauncher__icon--blurry'}
-                    />
-                )}
-                {icon_type === 'Ethereum' && (
-                    <Icon
-                        icon='IcCurrencyEth'
-                        is_item_blurry
-                        size={38}
-                        className={'static-applauncher__icon--blurry'}
-                    />
-                )}
-                {icon_type === 'Litecoin' && (
-                    <Icon
-                        icon='IcCurrencyLtc'
-                        is_item_blurry
-                        size={38}
-                        className={'static-applauncher__icon--blurry'}
-                    />
-                )}
+                <CryptoIcon currency={icon_type} />
             </div>
             <div className='static-applauncher__details'>
-                {icon_type === 'USD' && (
-                    <React.Fragment>
-                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('US Dollar')}
-                        </Text>
-                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('CR5236585')}
-                        </Text>
-                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                            'USD',
-                            '0',
-                            true
-                        )} USD`}</Text>
-                    </React.Fragment>
-                )}
-                {icon_type === 'Bitcoin' && (
-                    <React.Fragment>
-                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('Bitcoin')}
-                        </Text>
-                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('CR5236585')}
-                        </Text>
-                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                            'BTC',
-                            '0',
-                            true
-                        )} BTC`}</Text>
-                    </React.Fragment>
-                )}
-                {icon_type === 'Ethereum' && (
-                    <React.Fragment>
-                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('Ethereum')}
-                        </Text>
-                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('CR5236585')}
-                        </Text>
-                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                            'ETH',
-                            '0',
-                            true
-                        )} ETH`}</Text>
-                    </React.Fragment>
-                )}
-                {icon_type === 'Litecoin' && (
-                    <React.Fragment>
-                        <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('Litecoin')}
-                        </Text>
-                        <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                            {localize('CR5236585')}
-                        </Text>
-                        <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                            'LTC',
-                            '0',
-                            true
-                        )} LTC`}</Text>
-                    </React.Fragment>
-                )}
+                <CurrencyIcon is_item_blurry={is_item_blurry} currency={icon_type} />
             </div>
             <div className='static-applauncher__buttons'>
                 <Button secondary small className='static-applauncher__buttons-topup'>

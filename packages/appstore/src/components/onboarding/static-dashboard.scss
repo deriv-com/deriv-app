@@ -62,7 +62,7 @@
 
             &--animated {
                 position: inherit;
-                animation: triggerAnimation 2s linear infinite;
+                animation: triggerAnimation 0.5s linear infinite alternate;
             }
         }
         &__body {

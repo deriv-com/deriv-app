@@ -12,31 +12,10 @@ main {
 }
 
 @keyframes triggerAnimation {
-    10% {
+    from {
         transform: rotate(10deg);
     }
-    20% {
+    to {
         transform: rotate(-10deg);
-    }
-    30% {
-        transform: rotate(10deg);
-    }
-    40% {
-        transform: rotate(-10deg);
-    }
-    50% {
-        transform: rotate(10deg);
-    }
-    60% {
-        transform: rotate(-10deg);
-    }
-    70% {
-        transform: rotate(10deg);
-    }
-    80% {
-        transform: rotate(-10deg);
-    }
-    90% {
-        transform: rotate(10deg);
     }
 }

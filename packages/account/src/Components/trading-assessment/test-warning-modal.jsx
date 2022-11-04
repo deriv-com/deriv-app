@@ -1,6 +1,6 @@
+import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import React from 'react';
 
 const TestWarningModal = ({ show_risk_modal, body_content, footer_content }) => (
     <React.Fragment>

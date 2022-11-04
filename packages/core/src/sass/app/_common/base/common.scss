@@ -173,6 +173,7 @@ html,
 
 /** @define deriv-app */
 .deriv-app {
-    height: 100%;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
     overflow: hidden;
 }

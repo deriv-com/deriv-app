@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { screen, render } from '@testing-library/react';
+import { screen, render, fireEvent } from '@testing-library/react';
 import AccountLimitsContext from '../account-limits-context';
 import AccountLimitsFooterPortal from '../account-limits-footer';
 
@@ -8,7 +8,6 @@ const AccountLimitsFooterPortalComponent = () => {
     const footer = React.useRef<HTMLDivElement>(null);
     return (
         <React.Fragment>
-            <div ref={footer} data-testid='mocked_footer_ref' />
             <AccountLimitsContext.Provider
                 value={{
                     currency: 'USD',
@@ -41,9 +40,8 @@ describe('<AccountLimitsFooterPortal/>', () => {
         render(<AccountLimitsFooterPortalComponent />);
         expect(screen.getAllByTestId('footer_text').length).toBe(1);
     });
-
-    it('should render AppSettings.Footer components correctly', () => {
+    it('should trigger toggleOverlay', () => {
         render(<AccountLimitsFooterPortalComponent />);
-        expect(screen.queryByTestId('dt_app_settings_footer')).toHaveTextContent('Learn more about account limits');
+        fireEvent.click(screen.getByText(/learn more about account limits/i));
     });
 });

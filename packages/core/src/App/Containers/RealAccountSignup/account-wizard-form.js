@@ -9,7 +9,7 @@ import {
     proofOfIdentityConfig,
     ProofOfIdentityFormOnSignup,
 } from '@deriv/account';
-import CurrencySelector from './currency-selector.jsx';
+import CurrencySelector from './currency-selector';
 import FinancialDetails from './financial-details.jsx';
 import AddressDetails from './address-details.jsx';
 

@@ -31,9 +31,11 @@ const Popover = ({
     should_show_cursor,
     window_border,
     zIndex = '1',
+    data_testid,
 }: React.PropsWithChildren<Partial<TPopoverProps>>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
+
     const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
@@ -173,7 +175,7 @@ const Popover = ({
                         );
                     }}
                 >
-                    <div className={classNames('dc-popover', className)} id={id}>
+                    <div data-testid={data_testid} className={classNames('dc-popover', className)} id={id}>
                         <div className={classNames(classNameTarget, 'dc-popover__target')}>
                             {!disable_target_icon && (
                                 <i

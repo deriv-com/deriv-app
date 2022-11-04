@@ -1,4 +1,5 @@
 import AccountLimits from 'Components/account-limits/account-limits.jsx';
+import 'Components/account-limits/account-limits.scss';
 import { connect } from 'Stores/connect';
 
 export default connect(({ client, common, ui }) => ({

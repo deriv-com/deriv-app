@@ -1,28 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
-import { connect } from 'Stores/connect';
 import { TPlatformContext } from 'Types';
 
 type TBinaryLink = {
     active_class: string;
     to: string;
-    is_social_signup: boolean;
 };
 
-const BinaryLink = ({
-    active_class,
-    to,
-    children,
-    is_social_signup,
-    ...props
-}: React.PropsWithChildren<Partial<TBinaryLink>>) => {
+const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
-    const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }, is_social_signup));
+    const path = normalizePath(to as string);
+    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
 
     if (!route) {
         throw new Error(`Route not found: ${to}`);
@@ -37,13 +28,4 @@ const BinaryLink = ({
     );
 };
 
-BinaryLink.propTypes = {
-    active_class: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-    is_social_signup: PropTypes.bool,
-    to: PropTypes.string,
-};
-
-export default connect(({ client }) => ({
-    is_social_signup: client.is_social_signup,
-}))(BinaryLink);
+export default BinaryLink;

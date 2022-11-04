@@ -66,20 +66,26 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
-            let view_width, view_height;
+            const is_android_device = mobileOSDetect() === 'Android';
+            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
+
+            if (mobileOSDetect() === 'iOS' && isSafari()) window.resizeTo(view_width, view_height);
+
+            // let view_width, view_height;
+
+            // if (mobileOSDetect() === 'Android') {
+            //     view_width = screen.availWidth;
+            //     view_height = screen.availHeight;
+            // } else if (mobileOSDetect() === 'iOS' && isSafari()) {
+            //     view_width = visualViewport.width;
+            //     view_height = visualViewport.height;
+            // } else {
+            //     view_width = window.innerWidth;
+            //     view_height = window.innerHeight;
+            // }
+
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-            if (mobileOSDetect() === 'Android') {
-                view_width = screen.availWidth;
-                view_height = screen.availHeight;
-            } else if (mobileOSDetect() === 'iOS' && isSafari()) {
-                view_width = window.outerWidth;
-                view_height = window.outerHeight;
-            } else {
-                view_width = window.innerWidth;
-                view_height = window.innerHeight;
-            }
-
             if (view_width <= view_height) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');

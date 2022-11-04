@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 
 type TCommonFinancialDetailsPartials = {
     handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+    setFieldValue: (field: string, value: React.ReactNode, shouldValidate?: boolean) => void;
 };
 
 type TEmploymentStatus = {

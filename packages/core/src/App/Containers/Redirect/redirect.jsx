@@ -28,7 +28,6 @@ const Redirect = ({
     const code_param = url_params.get('code') || verification_code[action_param];
 
     setVerificationCode(code_param, action_param);
-
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
@@ -51,6 +50,10 @@ const Redirect = ({
         }
         case 'request_email': {
             toggleResetEmailModal(true);
+            break;
+        }
+        case 'social_email_change': {
+            toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {

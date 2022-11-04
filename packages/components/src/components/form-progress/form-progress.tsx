@@ -1,25 +1,33 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Text from '../text';
 
-const FormProgress = ({ steps, current_step }) => {
+type TStep = { header: { active_title: string; title: string } };
+
+type TFormProgress = {
+    steps: TStep[];
+    current_step: number;
+};
+
+const FormProgress = ({ steps = [], current_step }: TFormProgress) => {
     React.useEffect(() => {
         animateCompleteBar();
     });
 
-    const el_completed_bar = React.useRef(null);
+    const el_completed_bar = React.useRef<HTMLDivElement | null>(null);
 
     const animateCompleteBar = () => {
-        const el_first_identifier = document.querySelector('.identifier') || {
+        const el_first_identifier = (document.querySelector('.identifier') as HTMLSpanElement) || {
             offsetLeft: 0,
             clientWidth: 1,
         };
         const each = 100 / steps.length;
-        el_completed_bar.current.style.width = `${current_step * each}%`;
-        el_completed_bar.current.style.transform = `translateX(${
-            el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
-        }px)`;
+        if (el_completed_bar.current) {
+            el_completed_bar.current.style.width = `${current_step * each}%`;
+            el_completed_bar.current.style.transform = `translateX(${
+                el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
+            }px)`;
+        }
     };
 
     let active = false;
@@ -38,7 +46,7 @@ const FormProgress = ({ steps, current_step }) => {
                         }}
                     />
                     {steps.map((item, idx) => (
-                        <React.Fragment key={idx + 1}>
+                        <React.Fragment key={item.header.title}>
                             {(active = idx === current_step)}
                             <div className='dc-form-progress__step'>
                                 <Text
@@ -70,12 +78,5 @@ const FormProgress = ({ steps, current_step }) => {
         </div>
     );
 };
-
-FormProgress.propTypes = {
-    current_step: PropTypes.any,
-    steps: PropTypes.array,
-};
-
-FormProgress.defaultProps = { steps: [] };
 
 export default React.memo(FormProgress);

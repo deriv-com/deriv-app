@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon, Loading } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
-import IconMessageContent from 'Components/icon-message-content';
+import IconWithMessage from 'Components/icon-with-message';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
 import { service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
@@ -49,9 +49,10 @@ const ProofOfIdentityContainerForMt5 = ({
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return (
-            <IconMessageContent
+            <IconWithMessage
+                icon={'IcPoaVerified'}
                 message={localize('Switch to your real account to submit your documents')}
-                icon={<Icon icon='IcPoaVerified' size={128} />}
+                has_button
             />
         );
     } else if (api_error) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { Verified } from '../verified';
 
-jest.mock('Components/poa/continue-trading-button/continue-trading-button.jsx', () => ({
+jest.mock('Components/poa/continue-trading-button/continue-trading-button', () => ({
     ContinueTradingButton: jest.fn(() => <div>ContinueTradingButton</div>),
 }));
 jest.mock('Components/poi/poi-button/poi-button.jsx', () => ({

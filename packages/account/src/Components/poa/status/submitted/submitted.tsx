@@ -1,14 +1,15 @@
-import { Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import React from 'react';
 import classNames from 'classnames';
+import { Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import { PlatformContext } from '@deriv/shared';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
+import { TPlatformContext, TPoaStatusProps } from 'Types';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import PoiButton from 'Components/poi/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
+    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (
@@ -19,7 +20,8 @@ export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
             >
                 <IconMessageContent
                     message={message}
-                    icon={<Icon icon='IcPoaVerified' size={128} full_width={is_appstore} />}
+                    icon={<Icon icon='IcPoaVerified' size={128} />}
+                    full_width={is_appstore}
                 >
                     <div className='account-management__text-container'>
                         <Text align='center' size='xs' as='p'>

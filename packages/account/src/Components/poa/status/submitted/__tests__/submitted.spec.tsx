@@ -3,12 +3,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import { Submitted } from '../submitted';
 
-jest.mock('Components/poa/continue-trading-button/continue-trading-button.jsx', () => ({
+jest.mock('Components/poa/continue-trading-button/continue-trading-button', () => ({
     ContinueTradingButton: jest.fn(() => <div data-testid='continue-trading-button' />),
 }));
 
 describe('<Submitted />', () => {
-    const renderWithRouter = component => {
+    const renderWithRouter = (component: React.ReactNode) => {
         return render(<BrowserRouter>{component}</BrowserRouter>);
     };
 

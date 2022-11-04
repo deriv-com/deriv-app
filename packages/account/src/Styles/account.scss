@@ -1581,6 +1581,110 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+/** @define unlink-account; weak */
+.unlink-account {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-row-gap: 1.6rem;
+    max-width: 40rem;
+    margin: 2.4rem auto 0;
+    color: var(--text-prominent);
+    font-size: var(--text-size-xxs);
+    line-height: 1.5;
+
+    &__content {
+        display: grid;
+        grid-template-columns: 3.2rem auto;
+        grid-gap: 8px;
+
+        .inline-icon {
+            width: 3.2rem;
+            height: 3.2rem;
+            margin-right: 0.8rem;
+        }
+    }
+
+    &__modal {
+        &-content {
+            display: grid;
+            grid-gap: 8px;
+        }
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 1.2rem;
+            cursor: pointer;
+        }
+        &-title {
+            margin: 0.8rem 2.4rem;
+            text-align: center;
+        }
+        &-description {
+            text-align: center;
+        }
+        &-icon {
+            text-align: center;
+            margin-top: 0;
+            padding-top: 0;
+            padding-bottom: 1.6rem;
+        }
+    }
+    &__footer {
+        justify-content: center !important;
+    }
+}
+
+/* @define reset-email */
+.reset-email {
+    &__email-selection {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-flow: nowrap column;
+        .reset-email__heading {
+            margin-bottom: 1.6rem;
+        }
+        .reset-email__descripton {
+            margin-bottom: 2rem;
+        }
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__text {
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__btn {
+        margin: 0;
+        background-color: var(--button-primary-default);
+        font-weight: bold;
+        align-self: flex-end;
+        color: var(--text-colored-background);
+        font-size: 1.2rem;
+
+        &:hover {
+            background-color: var(--button-primary-hover);
+        }
+        &--disabled {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+    }
+    &__fieldset {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    &__email-field {
+        /* postcss-bem-linter: ignore */
+        & > label {
+            top: 0.9rem;
+            background-color: var(--general-main-2);
+        }
+    }
+}
+
 /** @define sent-email; weak */
 .sent-email {
     display: grid;

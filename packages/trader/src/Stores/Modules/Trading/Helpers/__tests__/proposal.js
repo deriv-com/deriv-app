@@ -47,6 +47,7 @@ describe('Proposal', () => {
                     text: 'Stake',
                     value: '',
                 },
+                spot_time: undefined,
             });
         });
         it('should return profit and return calculated if proposal has no error', () => {
@@ -83,6 +84,7 @@ describe('Proposal', () => {
                     text: 'Stake',
                     value: 200,
                 },
+                spot_time: undefined,
             });
         });
     });

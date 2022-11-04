@@ -48,7 +48,7 @@ const Trade = ({
     prepareTradeStore,
     setContractTypes,
     setMobileDigitView,
-    show_accumulators_stats,
+    is_accumulator,
     show_digits_stats,
     should_show_multipliers_onboarding,
     symbol,
@@ -145,7 +145,7 @@ const Trade = ({
         <div
             id='trade_container'
             className={classNames('trade-container', {
-                'trade-container--accumulators': show_accumulators_stats,
+                'trade-container--accumulators': is_accumulator,
             })}
         >
             <DesktopWrapper>
@@ -158,7 +158,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset={show_accumulators_stats ? '317px' : '259px'}
+                height_offset={is_accumulator ? '317px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -170,7 +170,7 @@ const Trade = ({
                             <ChartTrade
                                 topWidgets={topWidgets}
                                 charts_ref={charts_ref}
-                                show_accumulators_stats={show_accumulators_stats}
+                                is_accumulator={is_accumulator}
                             />
                         </div>
                     </DesktopWrapper>
@@ -197,7 +197,7 @@ const Trade = ({
                                 topWidgets={topWidgets}
                                 charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                show_accumulators_stats={show_accumulators_stats}
+                                is_accumulator={is_accumulator}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -230,6 +230,7 @@ const Trade = ({
 
 export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
+    is_accumulator: modules.trade.is_accumulator,
     is_eu: client.is_eu,
     is_synthetics_available: modules.trade.is_synthetics_available,
     network_status: common.network_status,
@@ -242,7 +243,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_trade_enabled: modules.trade.is_trade_enabled,
     prepareTradeStore: modules.trade.prepareTradeStore,
     setMobileDigitView: modules.trade.setMobileDigitView,
-    show_accumulators_stats: modules.trade.show_accumulators_stats,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
@@ -303,13 +303,13 @@ const Chart = props => {
         end_epoch,
         granularity,
         has_alternative_source,
+        is_accumulator,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
         refToAddTick,
         setChartStatus,
         settings,
-        show_accumulators_stats,
         show_digits_stats,
         symbol,
         wsForget,
@@ -320,14 +320,9 @@ const Chart = props => {
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
-            <ChartBottomWidgets
-                digits={digits}
-                tick={tick}
-                show_accumulators_stats={show_accumulators_stats}
-                is_trade_page
-            />
+            <ChartBottomWidgets digits={digits} tick={tick} show_accumulators_stats={is_accumulator} is_trade_page />
         ),
-        [show_accumulators_stats]
+        [is_accumulator]
     );
 
     const getMarketsOrder = active_symbols => {
@@ -365,15 +360,13 @@ const Chart = props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
-            bottomWidgets={
-                (show_accumulators_stats || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets
-            }
+            bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
-            chartType={show_accumulators_stats ? 'mountain' : chart_type}
+            chartType={is_accumulator ? 'mountain' : chart_type}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -388,7 +381,7 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={show_accumulators_stats ? 0 : granularity}
+            granularity={is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}
@@ -413,7 +406,7 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
-            {show_accumulators_stats &&
+            {is_accumulator &&
                 accumulators_positions.map(({ contract_info }) => {
                     return (
                         !!contract_info.is_sold && (
@@ -436,6 +429,7 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
+    is_accumulator: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -443,7 +437,6 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
-    show_accumulators_stats: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,

@@ -22,8 +22,6 @@ import {
     getBarrierPipSize,
     isBarrierSupported,
     removeBarrier,
-    getDummyProposalResponseForACCU,
-    isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -283,7 +281,6 @@ export default class TradeStore extends BaseStore {
             enablePurchase: action.bound,
             updateStore: action.bound,
             is_synthetics_available: computed,
-            show_accumulators_stats: computed,
             show_digits_stats: computed,
             setMobileDigitView: action.bound,
             pushPurchaseDataToGtm: action.bound,
@@ -691,6 +688,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
         const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
+
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
@@ -943,10 +941,6 @@ export default class TradeStore extends BaseStore {
         return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
     }
 
-    get show_accumulators_stats() {
-        return isAccumulatorContract(this.contract_type);
-    }
-
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
     }
@@ -1007,6 +1001,7 @@ export default class TradeStore extends BaseStore {
         if (!isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
+
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -1024,28 +1019,20 @@ export default class TradeStore extends BaseStore {
     }
 
     onProposalResponse(response) {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyProposalResponseForACCU(Date.now());
-        let proposal_response;
-        if (this.is_accumulator) {
-            proposal_response = dummy_response;
-        } else {
-            proposal_response = response;
-        }
-        const contract_type = proposal_response.echo_req.contract_type;
+        const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         // add/update expiration or date_expiry for crypto indices from proposal
-        const date_expiry = proposal_response.proposal?.date_expiry;
+        const date_expiry = response.proposal?.date_expiry;
 
-        if (!proposal_response.error && !!date_expiry && this.is_crypto_multiplier) {
+        if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;
         }
 
         this.proposal_info = {
             ...this.proposal_info,
-            [contract_type]: getProposalInfo(this, proposal_response, obj_prev_contract_basis),
+            [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
@@ -1070,7 +1057,7 @@ export default class TradeStore extends BaseStore {
                 low_barrier,
                 spot_time,
             } = this.proposal_info.ACCU;
-            this.root_store.contract_trade.current_spot_time = spot_time;
+            this.root_store.contract_trade.current_symbol_spot_time = spot_time;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
@@ -1084,11 +1071,11 @@ export default class TradeStore extends BaseStore {
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {
-            this.setMainBarrier(proposal_response.echo_req);
+            this.setMainBarrier(response.echo_req);
         }
 
         if (this.hovered_contract_type === contract_type) {
-            this.addTickByProposal(proposal_response);
+            this.addTickByProposal(response);
             setLimitOrderBarriers({
                 barriers: this.root_store.portfolio.barriers,
                 contract_info: this.proposal_info[this.hovered_contract_type],
@@ -1097,16 +1084,16 @@ export default class TradeStore extends BaseStore {
             });
         }
 
-        if (proposal_response.error) {
-            const error_id = getProposalErrorField(proposal_response);
+        if (response.error) {
+            const error_id = getProposalErrorField(response);
             if (error_id) {
-                this.setValidationErrorMessages(error_id, [proposal_response.error.message]);
+                this.setValidationErrorMessages(error_id, [response.error.message]);
             }
             // Commission for multipliers is normally set from proposal response.
             // But when we change the multiplier and if it is invalid, we don't get the proposal response to set the commission. We only get error message.
             // This is a work around to set the commission from error message.
             if (this.is_multiplier) {
-                const { message, details } = proposal_response.error;
+                const { message, details } = response.error;
                 const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
                 if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
@@ -1117,7 +1104,7 @@ export default class TradeStore extends BaseStore {
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
             // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the existing subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
-            if (proposal_response.error.code === 'AlreadySubscribed') {
+            if (response.error.code === 'AlreadySubscribed') {
                 this.refresh();
 
                 if (this.is_trade_component_mounted) {

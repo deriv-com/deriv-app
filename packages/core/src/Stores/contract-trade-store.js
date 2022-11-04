@@ -7,7 +7,6 @@ import {
     switch_to_tick_chart,
     isCallPut,
     getContractTypesConfig,
-    getDummyPOCResponseForACCU,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -17,7 +16,6 @@ export default class ContractTradeStore extends BaseStore {
     contracts = [];
     contracts_map = {};
     has_error = false;
-    current_spot_time = null;
     error_message = '';
 
     // Chart specific observables
@@ -27,6 +25,7 @@ export default class ContractTradeStore extends BaseStore {
     // Accumulators data:
     accumulators_high_barrier = '';
     accumulators_low_barrier = '';
+    current_symbol_spot_time = null;
 
     constructor(root_store) {
         super({ root_store });
@@ -34,7 +33,7 @@ export default class ContractTradeStore extends BaseStore {
         makeObservable(this, {
             accumulators_high_barrier: observable,
             accumulators_low_barrier: observable,
-            current_spot_time: observable,
+            current_symbol_spot_time: observable,
             contracts: observable.shallow,
             has_error: observable,
             error_message: observable,
@@ -131,7 +130,7 @@ export default class ContractTradeStore extends BaseStore {
                 contract_info: { is_accumulators_trade_without_contract: true },
                 key: 'accumulators_barriers_without_contract',
                 price_array: [this.accumulators_high_barrier, this.accumulators_low_barrier],
-                epoch_array: [this.current_spot_time, this.current_spot_time],
+                epoch_array: [this.current_symbol_spot_time],
             });
         }
         return markers;
@@ -189,15 +188,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     // Called from portfolio
-    updateProposal(_response) {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACCU(Date.now());
-        let response;
-        if (this.root_store.portfolio.is_accumulator) {
-            response = dummy_response;
-        } else {
-            response = _response;
-        }
+    updateProposal(response) {
         if ('error' in response) {
             this.has_error = true;
             this.error_message = response.error.message;

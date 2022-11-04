@@ -220,7 +220,7 @@ const TickContract = RawMarkerMaker(
     ({
         ctx: context,
         canvas_height: canvas_fixed_height,
-        points: [start, current_spot_time, ...ticks],
+        points: [start, ...ticks],
         prices: [barrier, barrier_2], // TODO: support two barrier contracts
         is_last_contract,
         is_dark_theme,
@@ -230,6 +230,7 @@ const TickContract = RawMarkerMaker(
             contract_type,
             // exit_tick_time,
             currency,
+            current_spot_time,
             status,
             profit,
             profit_percentage,
@@ -271,7 +272,7 @@ const TickContract = RawMarkerMaker(
             // draw 2 barriers with a shade in-between only
             draw_partial_shade({
                 ctx,
-                start_left: current_spot_time.left,
+                start_left: start.left,
                 fill_color: getColor({ status: 'open', is_dark_theme }),
                 stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                 top: barrier,

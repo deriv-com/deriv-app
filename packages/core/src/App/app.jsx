@@ -9,7 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    isSafari,
+    // isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -69,8 +69,6 @@ const AppWithoutTranslation = ({ root_store }) => {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
-
-            if (mobileOSDetect() === 'iOS' && isSafari()) window.resizeTo(view_width, view_height);
 
             // let view_width, view_height;
 

@@ -27,7 +27,7 @@ const TradingExperienceModal = ({
         >
             <Modal.Body>
                 <Icon icon='IcCurrencyEurCheck' size={95} />
-                <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
+                <Text as='p' align='center' weight='bold' className='verified-account__text'>
                     <Localize i18n_default_text='Trading Experience Assessment<0/>' components={[<br key={0} />]} />
                 </Text>
                 <Text as='p' size='xs' align='center'>

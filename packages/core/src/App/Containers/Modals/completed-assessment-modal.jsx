@@ -17,7 +17,7 @@ const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setSh
         >
             <Modal.Body>
                 <Icon icon='IcVerificationSuccess' color='green' size={80} />
-                <Text as='p' size='s' align='center' weight='bold' className='verified-account__text'>
+                <Text as='p' align='center' weight='bold' className='verified-account__text'>
                     <Localize i18n_default_text='Assessment Completed<0/><0/>' components={[<br key={0} />]} />
                 </Text>
                 <Text as='p' size='xs' align='center'>

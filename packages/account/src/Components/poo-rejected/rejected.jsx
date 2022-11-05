@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 import PooRejectedIcon from '../../Assets/ic-poo-rejected.svg';
 
-export const POORejetced = ({ handleRequireSubmission }) => {
+export const POORejetced = ({ onTryAgain }) => {
     return (
         <div className='proof-of-ownership__container'>
             <PooRejectedIcon className='icon' size={128} />
@@ -12,7 +12,7 @@ export const POORejetced = ({ handleRequireSubmission }) => {
             <Button
                 type='button'
                 className='proof-of-ownership__try-again-button'
-                onClick={handleRequireSubmission}
+                onClick={onTryAgain}
                 large
                 text={localize('Try again')}
                 primary

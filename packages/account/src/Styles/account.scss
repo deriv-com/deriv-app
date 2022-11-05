@@ -2643,7 +2643,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &-desc {
                 line-height: 2rem;
                 margin: 8px 0;
-
                 &-link {
                     color: var(--text-red);
                 }
@@ -2674,14 +2673,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     @include mobile {
                         width: 100%;
                     }
-                }
-                .dc-input {
-                    color: var(--text-general);
-                    -webkit-text-fill-color: var(--text-general);
-                }
-                .dc-input__field {
-                    color: var(--text-general);
-                    -webkit-text-fill-color: var(--text-general);
                 }
                 .dc-field.dc-field--error {
                     color: var(--text-loss-danger);
@@ -2772,6 +2763,25 @@ $MIN_HEIGHT_FLOATING: calc(
             position: relative;
         }
     }
+    &__container {
+        text-align: center;
+        padding: 2rem auto;
+        width: 100%;
+        > * {
+            text-align: center;
+            display: block;
+            margin: 2rem auto;
+            text-align: center;
+        }
+    }
+    &-link {
+        font-weight: 400;
+        font-size: 1.4rem;
+    }
+    &-valid-identifier {
+        -webkit-text-fill-color: $color-green-1 !important;
+        border-color: $color-green-1 !important;
+    }
 }
 .sample_credit_card_modal {
     &-text {
@@ -2797,18 +2807,5 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 .remove-element {
     display: none;
-}
-.proof-of-ownership {
-    &__container {
-        text-align: center;
-        padding: 2rem auto;
-        width: 100%;
-        > * {
-            text-align: center;
-            display: block;
-            margin: 2rem auto;
-            text-align: center;
-        }
-    }
 }
 /* stylelint-enable */

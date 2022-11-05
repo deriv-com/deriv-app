@@ -11,19 +11,23 @@ import FormBodySection from '../../../Components/form-body-section';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import Card from './Card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { VALIDATIONS } from './constants/constants';
+import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants';
 
 const getScrollOffset = (items_count = 0) => {
     if (isMobile()) return '200px';
     if (items_count <= 2) return '0px';
     return '80px';
 };
-const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifications, updateAccountStatus }) => {
+const ProofOfOwnershipForm = ({
+    client_email,
+    grouped_payment_method_data,
+    refreshNotifications,
+    total_documents_required,
+    updateAccountStatus,
+}) => {
+    const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data);
     const initial_values = {};
-    const [is_disabled, setIsDisabled] = React.useState(true);
-    initial_values.data = cards?.map(item => {
-        return { id: item.id, files: [], payment_method_identifier: '', files_required: 1, is_generic_pm: false };
-    });
+    const [is_submit_button_disabled, setIsSubmitButtonDisabled] = React.useState(true);
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
     const form_ref = useRef();
     const [document_upload_errors, setDocumentUploadErrors] = useState();
@@ -33,70 +37,80 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
     const fileReadErrorMessage = filename => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
+
     const validateFields = values => {
-        const checked_indices = [];
         const errors = {};
         errors.data = [...document_upload_errors];
-        let is_file_uploaded;
-        values.data.map((element, index) => {
-            const payment_identifier_length = element?.payment_method_identifier?.length;
-            const is_pm_identifier_provided = element?.is_generic_pm || payment_identifier_length > 0;
-            is_file_uploaded = false;
-            element.files.forEach((file, i) => {
-                if (file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.type)) {
-                    errors.data[index] = {};
-                    errors.data[index].files = [];
-                    errors.data[index].files[i] = localize(
-                        "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
-                    );
+        let total_documents_uploaded = 0;
+        let has_errors = false;
+        const cards = values?.data;
+        Object.keys(cards)?.forEach?.(card_key => {
+            const items = cards?.[card_key] ?? {};
+            errors.data[card_key] = errors.data?.[card_key] ?? [];
+            Object.keys(items)?.forEach?.(item_key => {
+                errors.data[card_key][item_key] = errors.data?.[card_key]?.[item_key] ?? {};
+                const payment_method = items?.[item_key];
+                const payment_method_identifier = payment_method?.payment_method_identifier?.trim();
+                const is_pm_identifier_provided =
+                    payment_method?.is_generic_pm || payment_method_identifier?.length > 0;
+                const is_credit_or_debit_card = payment_method?.identifier_type === IDENTIFIER_TYPES.card_number;
+                total_documents_uploaded += payment_method?.files?.filter(Boolean)?.length ?? 0;
+                payment_method?.files?.forEach((file, i) => {
+                    errors.data[card_key][item_key].files = errors?.data?.[card_key]?.[item_key]?.files ?? [];
+                    if (file?.type && !/(image|application)\/(jpe?g|pdf|png)$/.test(file?.type)) {
+                        errors.data[card_key][item_key].files[i] = localize(
+                            "That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only."
+                        );
+                    }
+                    if (file?.size / 1024 > 8000) {
+                        errors.data[card_key][item_key].files[i] = localize(
+                            'That file is too big (only up to 8MB allowed). Please upload another file.'
+                        );
+                    }
+                    if (!is_pm_identifier_provided) {
+                        errors.data[card_key][item_key].payment_method_identifier =
+                            localize('Please complete this field.');
+                    }
+                });
+                if (
+                    (is_credit_or_debit_card &&
+                        payment_method_identifier?.length !== 0 &&
+                        (payment_method_identifier?.length !== 16 || payment_method_identifier?.length > 19) &&
+                        !VALIDATIONS.formated_card_number_regex.test(payment_method_identifier)) ||
+                    (is_credit_or_debit_card &&
+                        payment_method_identifier?.length === 16 &&
+                        VALIDATIONS.invalid_characters_regex.test(payment_method_identifier))
+                ) {
+                    errors.data[card_key][item_key].payment_method_identifier = localize('Enter your full card number');
                 }
-                if (file?.size / 1024 > 8000) {
-                    errors.data[index] = {};
-                    errors.data[index].files = [];
-                    errors.data[index].files[i] = localize(
-                        'That file is too big (only up to 8MB allowed). Please upload another file.'
-                    );
-                }
+                has_errors =
+                    errors?.data?.[card_key]?.[item_key]?.payment_method_identifier?.trim?.()?.length > 0 ||
+                    errors?.data?.[card_key]?.[item_key]?.files?.length > 0;
             });
-            if (element.files_required === element.files.filter(Boolean).length) {
-                if (!is_pm_identifier_provided) {
-                    errors.data[index] = typeof errors.data[index] === 'object' ? errors.data[index] : {};
-                    errors.data[index].payment_method_identifier = localize('Please complete this field.');
-                }
-                checked_indices.push(index);
-            }
-            if (
-                (element?.is_credit_or_debit_card &&
-                    payment_identifier_length !== 0 &&
-                    (payment_identifier_length !== 16 || payment_identifier_length > 19) &&
-                    !VALIDATIONS.formated_card_number_regex.test(element?.payment_method_identifier)) ||
-                (payment_identifier_length === 16 &&
-                    VALIDATIONS.invalid_characters_regex.test(element?.payment_method_identifier))
-            ) {
-                errors.data[index] = {};
-                errors.data[index].payment_method_identifier = localize('Enter your full card number');
-            }
         });
-        is_file_uploaded = checked_indices.length === values?.data?.length;
-        if (errors?.data?.every(element => element === undefined)) {
-            errors.data = [];
-            setDocumentUploadErrors(errors?.data);
-        }
-        setIsDisabled(!is_file_uploaded || errors?.data?.length > 0);
+        setIsSubmitButtonDisabled(total_documents_required !== total_documents_uploaded || has_errors);
         return errors;
     };
-    const updateErrors = (index, sub_index) => {
+
+    const updateErrors = (index, item_index, sub_index) => {
+        let error_count = 0;
         const errors = {};
         errors.data = [...document_upload_errors];
         if (typeof errors.data[index] === 'object') {
-            errors.data[index].files[sub_index] = undefined;
-            const other_files = errors?.data[index]?.files?.some(file => file !== undefined);
-            if (!other_files) {
-                errors.data[index] = undefined;
+            delete errors.data[index][item_index].files[sub_index];
+            const has_other_errors = errors?.data[index]?.[item_index]?.files?.some(error => error !== null);
+            if (!has_other_errors) {
+                delete errors?.data[index]?.[item_index];
+            }
+            document_upload_errors.forEach(e => {
+                error_count += Object.keys(e).length;
+            });
+            if (error_count === 0) {
+                errors.data = [];
             }
         }
         setDocumentUploadErrors(errors?.data);
-        setIsDisabled(true);
+        setIsSubmitButtonDisabled(true);
     };
     const handleSubmit = async () => {
         try {
@@ -107,50 +121,54 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
                 // Only upload if no errors and a file has been attached
                 return;
             }
-            formValues.forEach(async (values, index) => {
-                if (values.files.length > 0) {
-                    const processed_files = await readFiles(values.files, fileReadErrorMessage, {
-                        documentType: DOCUMENT_TYPE.proof_of_ownership,
-                        proof_of_ownership: {
-                            details: {
-                                email: client_email,
-                                payment_identifier: values.payment_method_identifier,
+            Object.keys(formValues).forEach(async card_key => {
+                Object.keys(formValues[card_key]).forEach(async card_item_key => {
+                    const payment_method_details = formValues[card_key][card_item_key];
+                    if (payment_method_details.files.length > 0) {
+                        const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
+                            documentType: DOCUMENT_TYPE.proof_of_ownership,
+                            proof_of_ownership: {
+                                details: {
+                                    email: client_email,
+                                    payment_identifier: payment_method_details.payment_method_identifier,
+                                },
+                                id: payment_method_details.id,
                             },
-                            id: values.id,
-                        },
-                    });
-                    if (typeof processed_files === 'string') {
-                        // eslint-disable-next-line no-console
-                        console.warn(processed_files);
-                    }
-                    processed_files.forEach(async (processed_file, sub_index) => {
-                        const response = await uploader.upload(processed_file);
-                        if (response.warning) {
-                            if (response.warning.trim() === 'DuplicateUpload') {
-                                form_ref.current.errors.data = document_upload_errors;
-                                const { data: form_errors } = form_ref?.current?.errors;
-                                if (typeof form_errors[index] !== 'object') {
-                                    form_errors[index] = {};
-                                }
-                                form_errors[index].files = Array.isArray(form_errors[index].files)
-                                    ? form_errors[index].files
-                                    : [];
-                                form_errors[index].files[sub_index] = localize(response.message); // Document already uploaded
-                                setDocumentUploadErrors(form_errors);
-                                form_ref.current.setErrors(form_errors);
-                                form_ref.current.validateForm();
-                                setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                            } else {
-                                setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                                // eslint-disable-next-line no-console
-                                console.warn(response);
-                            }
-                        } else {
-                            updateAccountStatus();
-                            refreshNotifications();
+                        });
+                        if (typeof processed_files === 'string') {
+                            // eslint-disable-next-line no-console
+                            console.warn(processed_files);
                         }
-                    });
-                }
+                        processed_files.forEach(async (processed_file, sub_index) => {
+                            const response = await uploader.upload(processed_file);
+                            if (response.warning) {
+                                if (response.warning.trim() === 'DuplicateUpload') {
+                                    form_ref.current.errors.data = document_upload_errors;
+                                    const { data: form_errors } = form_ref?.current?.errors;
+                                    if (typeof form_errors[card_key] !== 'object') {
+                                        form_errors[card_key] = {};
+                                    }
+                                    form_errors[card_key][card_item_key] =
+                                        form_errors?.[card_key]?.[card_item_key] ?? {};
+                                    form_errors[card_key][card_item_key].files =
+                                        form_errors?.[card_key]?.[card_item_key]?.files ?? [];
+                                    form_errors[card_key][card_item_key].files[sub_index] = localize(response.message); // Document already uploaded
+                                    setDocumentUploadErrors(form_errors);
+                                    form_ref.current.setErrors(form_errors);
+                                    form_ref.current.validateForm();
+                                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                                } else {
+                                    setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                                    // eslint-disable-next-line no-console
+                                    console.warn(response);
+                                }
+                            } else {
+                                updateAccountStatus();
+                                refreshNotifications();
+                            }
+                        });
+                    }
+                });
             });
         } catch (err) {
             setFormState({ ...form_state, ...{ is_btn_loading: false } });
@@ -162,6 +180,7 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
         <Formik initialValues={initial_values} validate={validateFields} innerRef={form_ref}>
             {({ values, errors, handleChange, handleBlur, setFieldValue, validateField }) => (
                 <form
+                    data-testid='dt_poo_form'
                     className='proof-of-ownership'
                     onSubmit={e => {
                         e.preventDefault();
@@ -169,34 +188,34 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
                         e.nativeEvent.stopImmediatePropagation();
                     }}
                 >
-                    <FormBody scroll_offset={getScrollOffset(cards.length)}>
+                    <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
                         <FormBodySection>
                             <fieldset>
-                                {cards.map((card, index) => {
-                                    return (
-                                        <div className='proof-of-ownership__form-content' key={card.id}>
-                                            <div className='proof-of-ownership__progress'>
-                                                <div className='proof-of-ownership__progress-number'>{index + 1}</div>
-                                                {index !== cards.length - 1 && (
-                                                    <div className='proof-of-ownership__progress-bar' />
-                                                )}
-                                            </div>
-                                            <Card
-                                                error={errors?.data?.[index]}
-                                                index={index}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                values={values}
-                                                card={card}
-                                                setFieldValue={setFieldValue}
-                                                validateField={validateField}
-                                                updateErrors={updateErrors}
-                                                is_dark_mode={is_dark_mode}
-                                            />
+                                {grouped_payment_method_data_keys?.map((grouped_payment_method_data_key, index) => (
+                                    <div
+                                        className='proof-of-ownership__form-content'
+                                        key={grouped_payment_method_data_key}
+                                    >
+                                        <div className='proof-of-ownership__progress'>
+                                            <div className='proof-of-ownership__progress-number'>{index + 1}</div>
+                                            {index !== grouped_payment_method_data_keys.length - 1 && (
+                                                <div className='proof-of-ownership__progress-bar' />
+                                            )}
                                         </div>
-                                    );
-                                })}
+                                        <Card
+                                            error={errors?.data?.[index]}
+                                            index={index}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            values={values}
+                                            card={grouped_payment_method_data[grouped_payment_method_data_key]}
+                                            setFieldValue={setFieldValue}
+                                            validateField={validateField}
+                                            updateErrors={updateErrors}
+                                        />
+                                    </div>
+                                ))}
                             </fieldset>
                         </FormBodySection>
                     </FormBody>
@@ -204,7 +223,7 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}
-                            is_disabled={is_disabled}
+                            is_disabled={is_submit_button_disabled}
                             data-testid={'submit-button'}
                             has_effect
                             text={localize('Submit')}
@@ -221,10 +240,11 @@ const ProofOfOwnershipForm = ({ cards, client_email, is_dark_mode, refreshNotifi
 };
 
 ProofOfOwnershipForm.propTypes = {
-    cards: PropTypes.array,
     client_email: PropTypes.string,
     is_dark_mode: PropTypes.bool,
+    grouped_payment_method_data: PropTypes.object,
     refreshNotifications: PropTypes.func,
+    total_documents_required: PropTypes.number,
     updateAccountStatus: PropTypes.func,
 };
 

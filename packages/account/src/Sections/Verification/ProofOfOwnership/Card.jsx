@@ -1,41 +1,15 @@
 import { Button, Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import ExpandedCard from './ExpandedCard.jsx';
 import PropTypes from 'prop-types';
-import paymentMethodConfig from './payment-method-config';
-import { IDENTIFIER_TYPES } from './constants/constants.js';
 
-const Card = ({
-    card,
-    error,
-    handleBlur,
-    handleChange,
-    index,
-    is_dark_mode,
-    setFieldValue,
-    updateErrors,
-    validateField,
-    values,
-}) => {
-    const [show_browse_button, setShowBrowseButton] = React.useState([]);
-    const card_details = paymentMethodConfig[card?.payment_method?.toLowerCase()] ?? paymentMethodConfig.other;
-    card_details.icon = is_dark_mode ? card_details?.icon_dark : card_details?.icon_light;
-    values.data[index].files_required = card?.documents_required ?? card_details?.documents_required;
-    values.data[index].is_generic_pm = !card_details?.input_label;
-    card_details.id = card?.id;
-    values.data[index].is_credit_or_debit_card = card_details?.identifier_type === IDENTIFIER_TYPES.card_number;
-
-    const updateShowBrowseButton = (sub_index, value) => {
-        const show_browse_button_state = [...show_browse_button];
-        show_browse_button_state[sub_index] = value;
-        setShowBrowseButton(show_browse_button_state);
-    };
+const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, updateErrors, validateField, values }) => {
+    const [is_open, setIsOpen] = React.useState(false);
     const onClickHandler = e => {
         e.preventDefault();
         setIsOpen(!is_open);
     };
-    const [is_open, setIsOpen] = React.useState(false);
     const icon = (
         <Icon
             icon={'IcChevronUpBold'}
@@ -49,13 +23,13 @@ const Card = ({
     return (
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
-            data-testid={card.id}
+            data-testid={card.payment_method}
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon icon={card_details?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
+                <Icon icon={card?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {card?.payment_method || '[Payment Method Name]'}
+                    {card.payment_method || '[Payment Method Name]'}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -68,7 +42,7 @@ const Card = ({
             </div>
             {is_open && (
                 <ExpandedCard
-                    card_details={card_details}
+                    card_details={card}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     values={values}
@@ -77,8 +51,6 @@ const Card = ({
                     error={error}
                     validateField={validateField}
                     updateErrors={updateErrors}
-                    show_browse_button={show_browse_button}
-                    updateShowBrowseButton={updateShowBrowseButton}
                 />
             )}
         </div>
@@ -87,11 +59,10 @@ const Card = ({
 
 Card.propTypes = {
     card: PropTypes.object,
-    error: PropTypes.object,
+    error: PropTypes.array,
     handleBlur: PropTypes.func,
     handleChange: PropTypes.func,
     index: PropTypes.number,
-    is_dark_mode: PropTypes.bool,
     setFieldValue: PropTypes.func,
     updateErrors: PropTypes.func,
     validateField: PropTypes.func,

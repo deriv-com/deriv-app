@@ -77,6 +77,6 @@ describe('proof-of-ownership.jsx', () => {
                 updateAccountStatus={jest.fn()}
             />
         );
-        expect(screen.getByTestId(ownership_temp.requests[0].id, { exact: true })).toBeInTheDocument();
+        expect(screen.getByTestId('dt_poo_form', { exact: true })).toBeInTheDocument();
     });
 });

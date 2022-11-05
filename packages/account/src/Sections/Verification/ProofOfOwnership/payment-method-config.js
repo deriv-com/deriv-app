@@ -9,8 +9,6 @@ const paymentMethodConfig = {
             localize('Upload a screenshot of your name and email address from the personal information section.'),
         ],
         input_label: localize('Email address'),
-        title: 'AdvCash',
-        documents_required: 1,
         identifier_type: 'email_address',
     },
     astropay: {
@@ -19,11 +17,11 @@ const paymentMethodConfig = {
         instructions: [
             <Localize
                 key={0}
-                i18n_default_text='Upload 2 separate screenshots from the personal details page and the account page <0>via</0>'
+                i18n_default_text='Upload 2 separate screenshots from the personal details page and the account page via <0>https://app.astropay.com/profile</0>'
                 components={[
                     <a
                         key={0}
-                        className='link'
+                        className='link  proof-of-ownership-link'
                         target='_blank'
                         rel='noreferrer'
                         href='https://app.astropay.com/profile'
@@ -32,8 +30,6 @@ const paymentMethodConfig = {
             />,
         ],
         input_label: localize('Account number'),
-        title: 'AstroPay',
-        documents_required: 2,
         identifier_type: 'account_number',
     },
     beyonic: {
@@ -41,8 +37,6 @@ const paymentMethodConfig = {
         icon_dark: 'IcBeyonic',
         instructions: [localize('Upload your mobile bill statement showing your name and phone number.')],
         input_label: localize('Mobile number'),
-        title: 'Beyonic',
-        documents_required: 1,
         identifier_type: 'mobile_number',
     },
     'boleto (d24 voucher)': {
@@ -50,8 +44,6 @@ const paymentMethodConfig = {
         icon_dark: 'IcBoletoD24VoucherDark',
         instructions: [localize('Upload your bank statement showing your name and account details.')],
         input_label: localize('Bank account number'),
-        title: 'Boleto (D24 Voucher)',
-        documents_required: 1,
         identifier_type: 'bank_account_number',
     },
     visa: {
@@ -63,8 +55,6 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Card number'),
-        title: 'VISA',
-        documents_required: 1,
         identifier_type: 'card_number',
     },
     mastercard: {
@@ -76,8 +66,6 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Card number'),
-        title: 'MasterCard',
-        documents_required: 1,
         identifier_type: 'card_number',
     },
     pix: {
@@ -90,8 +78,6 @@ const paymentMethodConfig = {
             localize('- your account details of the bank linked to your account'),
         ],
         input_label: localize('User ID'),
-        title: 'PIX',
-        documents_required: 1,
         identifier_type: 'user_id',
     },
     skrill: {
@@ -103,8 +89,6 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Email address'),
-        title: 'Skrill',
-        documents_required: 1,
         identifier_type: 'email_address',
     },
     neteller: {
@@ -116,8 +100,6 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Email address'),
-        title: 'Neteller',
-        documents_required: 1,
         identifier_type: 'email_address',
     },
     onlinenaira: {
@@ -126,34 +108,32 @@ const paymentMethodConfig = {
         instructions: [
             <Localize
                 key={0}
-                i18n_default_text='Upload a screenshot of your username on the General Information page <0>at</0>'
+                i18n_default_text='Upload a screenshot of your username on the General Information page at <0>https://onlinenaira.com/members/index.htm</0>'
                 components={[
                     <a
                         key={0}
-                        className='link'
+                        className='link proof-of-ownership-link'
                         target='_blank'
                         rel='noreferrer'
-                        href='https://onlinenaira.com/members/index.html'
+                        href='https://onlinenaira.com/members/index.htm'
                     />,
                 ]}
             />,
             <Localize
                 key={1}
-                i18n_default_text='Upload a screenshot of your account number and phone number on the Bank Account/Mobile wallet page <0>at</0>'
+                i18n_default_text='Upload a screenshot of your account number and phone number on the Bank Account/Mobile wallet page at <0>https://onlinenaira.com/members/bank.htm</0>'
                 components={[
                     <a
                         key={0}
-                        className='link'
+                        className='link  proof-of-ownership-link'
                         target='_blank'
                         rel='noreferrer'
-                        href='https://onlinenaira.com/members/bank.html'
+                        href='https://onlinenaira.com/members/bank.htm'
                     />,
                 ]}
             />,
         ],
         input_label: localize('Account ID'),
-        title: 'OnlineNaira',
-        documents_required: 2,
         identifier_type: 'account_id',
     },
     webmoney: {
@@ -165,8 +145,6 @@ const paymentMethodConfig = {
             ),
         ],
         input_label: localize('Account number'),
-        title: 'WebMoney',
-        documents_required: 1,
         identifier_type: 'account_number',
     },
     zingpay: {
@@ -176,8 +154,6 @@ const paymentMethodConfig = {
             localize('Upload your bank statement showing your name, account number, and transaction history.'),
         ],
         input_label: localize('Bank account number'),
-        title: 'ZingPay',
-        documents_required: 1,
         identifier_type: 'bank_account_number',
     },
     sticpay: {
@@ -187,8 +163,6 @@ const paymentMethodConfig = {
             localize('Upload a screenshot of your name and email address from the personal details section.'),
         ],
         input_label: localize('Email address'),
-        title: 'SticPay',
-        documents_required: 1,
         identifier_type: 'email_address',
     },
     jeton: {
@@ -198,8 +172,6 @@ const paymentMethodConfig = {
             localize('Upload a screenshot of your name and account number from the personal details section.'),
         ],
         input_label: localize('Account number'),
-        title: 'Jeton',
-        documents_required: 1,
         identifier_type: 'account_number',
     },
     other: {
@@ -207,8 +179,6 @@ const paymentMethodConfig = {
         icon_dark: 'IcOtherPaymentMethod',
         instructions: [localize('Upload a document showing your name and bank account number or account details.')],
         input_label: null,
-        title: '[Payment Method Name]',
-        documents_required: 1,
         identifier_type: 'none',
     },
 };

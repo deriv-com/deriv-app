@@ -1,71 +1,68 @@
 export default {
     requests: [
         {
-            id: '3',
+            id: '1',
             payment_method: 'beyonic',
-            payment_method_identifier: '1234565465467456456456',
-            title: 'Beyonic',
+            documents_required: 1,
         },
         {
-            id: '4',
+            id: '2',
             payment_method: 'boleto (d24 voucher)',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '5',
-            payment_method: 'zingpay',
-            payment_method_identifier: '123213423453453555',
-        },
-        {
-            id: '6',
-            payment_method: 'visa',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '7',
-            payment_method: 'mastercard',
-            payment_method_identifier: '12343323234242412324234',
-        },
-        {
-            id: '9',
-            payment_method: 'pix',
-            payment_method_identifier: '1231234235354634534646',
-        },
-        {
-            id: '10',
-            payment_method: 'skrill',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '11',
-            payment_method: 'neteller',
-            payment_method_identifier: '1231232343454758578678',
-        },
-        {
-            id: '12',
-            payment_method: 'onlinenaira',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '13',
-            payment_method: 'webmoney',
-            payment_method_identifier: '1231343534564745675',
-        },
-        {
-            id: '14',
-            payment_method: 'sticpay',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '15',
-            payment_method: 'jeton',
-            payment_method_identifier: '1239990908079896967213',
-        },
-        {
-            id: '16',
-            payment_method: 'generic pm trx',
-            payment_method_identifier: '1239990908079896967213',
+            documents_required: 1,
         },
     ],
     status: 'pending',
+};
+
+export const grouped_payment_method_data = {
+    beyonic: {
+        icon: 'IcBeyonic',
+        payment_method: 'beyonic',
+        items: [
+            {
+                id: '1',
+                payment_method: 'beyonic',
+                documents_required: 1,
+            },
+        ],
+        instructions: ['Upload your mobile bill statement showing your name and phone number.'],
+        input_label: 'Mobile number',
+        identifier_type: 'mobile_number',
+        is_generic_pm: false,
+    },
+    visa: {
+        icon: 'IcVisaLight',
+        payment_method: 'visa',
+        items: [
+            {
+                id: '4',
+                payment_method: 'visa',
+                documents_required: 1,
+            },
+        ],
+        instructions: [
+            'Upload a photo showing your name and the first six and last four digits of your card number. If the card does not display your name, upload the bank statement showing your name and card number in the transaction history.',
+        ],
+        input_label: 'Card number',
+        identifier_type: 'card_number',
+        is_generic_pm: false,
+    },
+    onlinenaira: {
+        icon: 'IcOnlineNaira',
+        payment_method: 'onlinenaira',
+        items: [
+            {
+                id: '9',
+                payment_method: 'onlinenaira',
+                documents_required: 2,
+            },
+        ],
+        instructions: [
+            'Upload a screenshot of your username on the General Information page at https://onlinenaira.com/members/index.htm',
+            'Upload a screenshot of your account number and phone number on the Bank Account/Mobile wallet page at https://onlinenaira.com/members/bank.htm',
+        ],
+        input_label: 'Account ID',
+        identifier_type: 'account_id',
+        is_generic_pm: false,
+    },
 };

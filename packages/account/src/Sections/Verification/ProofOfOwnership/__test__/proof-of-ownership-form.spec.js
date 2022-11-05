@@ -1,26 +1,48 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ProofOfOwnershipForm from '../proof-of-ownership-form.jsx';
-import test_data from './test-data';
+import { grouped_payment_method_data } from './test-data';
 import { act } from 'react-test-renderer';
 
 describe('proof-of-ownership-form.jsx', () => {
-    let cards;
-    beforeAll(() => {
-        cards = test_data;
-    });
     it('should render a single card item inside the form', () => {
-        render(<ProofOfOwnershipForm cards={[cards.requests[0]]} updateAccountStatus={jest.fn()} />);
+        render(
+            <ProofOfOwnershipForm
+                grouped_payment_method_data={{ beyonic: grouped_payment_method_data.beyonic }}
+                total_documents_required={1}
+                updateAccountStatus={jest.fn()}
+                refreshNotifications={jest.fn()}
+                is_dark_mode={false}
+                client_email={'test@testing.com'}
+            />
+        );
         const cardItems = screen.getAllByRole('card-item');
         expect(cardItems.length).toEqual(1);
     });
     it('should render multiple card items inside the form', () => {
-        render(<ProofOfOwnershipForm cards={cards.requests} updateAccountStatus={jest.fn()} />);
+        render(
+            <ProofOfOwnershipForm
+                grouped_payment_method_data={grouped_payment_method_data}
+                total_documents_required={7}
+                updateAccountStatus={jest.fn()}
+                refreshNotifications={jest.fn()}
+                is_dark_mode={false}
+                client_email={'test@testing.com'}
+            />
+        );
         const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems.length).toEqual(cards.requests.length);
+        expect(cardItems.length).toEqual(Object.keys(grouped_payment_method_data).length);
     });
     it('should format identifier', async () => {
-        render(<ProofOfOwnershipForm cards={[cards.requests[3]]} updateAccountStatus={jest.fn()} />);
+        render(
+            <ProofOfOwnershipForm
+                grouped_payment_method_data={{ visa: grouped_payment_method_data.visa }}
+                updateAccountStatus={jest.fn()}
+                refreshNotifications={jest.fn()}
+                is_dark_mode={false}
+                client_email={'test@testing.com'}
+            />
+        );
         const poo_dropdown_button = await screen.findByTestId('proof-of-ownership-button');
         fireEvent.click(poo_dropdown_button);
         const identifier_input = await screen.findByTestId('payment_method_identifier');

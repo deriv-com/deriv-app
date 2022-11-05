@@ -3,6 +3,7 @@ import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
 import classNames from 'classnames';
 import { compressImageFiles } from '@deriv/shared';
+import PropTypes from 'prop-types';
 
 const FileUploader = ({
     class_name,
@@ -11,13 +12,13 @@ const FileUploader = ({
     file_name,
     handleFile,
     index,
+    item_index,
     name,
-    show_browse_button,
     sub_index,
     updateErrors,
-    updateShowBrowseButton,
     validateField,
 }) => {
+    const [show_browse_button, setShowBrowseButton] = React.useState(!file_name);
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const handleClick = e => {
@@ -31,15 +32,15 @@ const FileUploader = ({
         event.nativeEvent.stopImmediatePropagation();
         const files_to_upload = await compressImageFiles([...event.target.files]);
         handleFile(name, files_to_upload[0]);
-        updateShowBrowseButton(sub_index, !show_browse_button);
+        setShowBrowseButton(!files_to_upload[0]);
     };
     const handleIconClick = e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        updateShowBrowseButton(sub_index, !show_browse_button);
         hidden_file_input.current.value = '';
         handleFile(name, '');
-        updateErrors(index, sub_index);
+        setShowBrowseButton(prevState => !prevState);
+        updateErrors(index, item_index, sub_index);
         validateField('files');
     };
     return (
@@ -87,4 +88,19 @@ const FileUploader = ({
         </div>
     );
 };
+
+FileUploader.propTypes = {
+    class_name: PropTypes.string,
+    data_test_id: PropTypes.string,
+    error: PropTypes.string,
+    file_name: PropTypes.string,
+    handleFile: PropTypes.func,
+    index: PropTypes.number,
+    item_index: PropTypes.number,
+    name: PropTypes.string,
+    sub_index: PropTypes.number,
+    updateErrors: PropTypes.func,
+    validateField: PropTypes.func,
+};
+
 export default FileUploader;

@@ -112,7 +112,7 @@ const ProofOfOwnershipForm = ({
         setDocumentUploadErrors(errors?.data);
         setIsSubmitButtonDisabled(true);
     };
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         try {
             setFormState({ ...form_state, ...{ is_btn_loading: true } });
             const { data: formValues } = form_ref.current.values;
@@ -121,7 +121,7 @@ const ProofOfOwnershipForm = ({
                 // Only upload if no errors and a file has been attached
                 return;
             }
-            Object.keys(formValues).forEach(async card_key => {
+            Object.keys(formValues).forEach(card_key => {
                 Object.keys(formValues[card_key]).forEach(async card_item_key => {
                     const payment_method_details = formValues[card_key][card_item_key];
                     if (payment_method_details.files.length > 0) {

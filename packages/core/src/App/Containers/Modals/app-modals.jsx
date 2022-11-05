@@ -18,6 +18,11 @@ const CloseMxMltAccountModal = React.lazy(() =>
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
+
+const UnlinkPasswordModal = React.lazy(() =>
+    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
+);
+
 const RedirectToLoginModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
@@ -71,6 +76,9 @@ const AppModals = ({
             break;
         case 'request_email':
             ComponentToLoad = <ResetEmailModal />;
+            break;
+        case 'social_email_change':
+            ComponentToLoad = <UnlinkPasswordModal />;
             break;
         case 'system_email_change':
             ComponentToLoad = <UpdateEmailModal />;

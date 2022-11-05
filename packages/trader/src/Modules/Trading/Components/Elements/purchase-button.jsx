@@ -48,6 +48,7 @@ const PurchaseButton = ({
     };
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
+    const non_multiplier_info_right = is_accumulator ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
 
     return (
         <button
@@ -85,17 +86,13 @@ const PurchaseButton = ({
                 <div className='btn-purchase__effect-detail--arrow' />
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
-                        {is_multiplier || is_accumulator ? (
+                        {is_multiplier ? (
                             <Text size='xs' weight='bold' color='colored-background'>
-                                {is_multiplier ? (
-                                    <Money amount={info.stake} currency={currency} show_currency />
-                                ) : (
-                                    !(is_loading || is_disabled) && `${getGrowthRatePercentage(info.growth_rate)}%`
-                                )}
+                                <Money amount={info.stake} currency={currency} show_currency />
                             </Text>
                         ) : (
                             <Text size='xs' weight='bold' color='colored-background'>
-                                {!(is_loading || is_disabled) ? info.returns : ''}
+                                {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
                             </Text>
                         )}
                     </div>

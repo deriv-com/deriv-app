@@ -17,7 +17,7 @@ const output = {
 };
 
 module.exports = function (env) {
-    const base = env && env.base && env.base !== true ? `/${  env.base  }/` : '/';
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
         entry: [path.join(__dirname, 'src', 'app', 'app.js')],

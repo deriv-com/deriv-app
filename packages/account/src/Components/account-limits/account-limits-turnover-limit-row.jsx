@@ -13,7 +13,7 @@ const AccountLimitsTurnoverLimitRow = ({ collection, title }) => {
 
     return collection.map(item => (
         <tr key={item.name} data-testid='account-limits-turnover-limit-row'>
-            <AccountLimitsTableCell>
+            <AccountLimitsTableCell level={item.level}>
                 {title && `${title} - `}
                 {item.name}
             </AccountLimitsTableCell>

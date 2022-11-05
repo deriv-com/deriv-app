@@ -258,9 +258,13 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
+        const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.acuity_mt5_download.key
+        );
         let has_missing_required_field;
 
         if (is_logged_in) {
+            if (isEmptyObject(account_status)) return;
             const {
                 authentication: { document, identity, needs_verification },
                 status,
@@ -305,10 +309,11 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
 
-            // Acuity notification only for desktop clients
-            // For both Demo and Real accounts
+            // Acuity notification is available for both Demo and Real desktop clients
             this.addNotificationMessage(this.client_notifications.acuity);
-            this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
+                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
 
             const client = accounts[loginid];
             if (client && !client.is_virtual) {

@@ -7,7 +7,6 @@ import {
     getStaticUrl,
     getUrlBase,
     isCryptocurrency,
-    isDesktop,
     isEmptyObject,
     isMobile,
     isMultiplierContract,
@@ -306,15 +305,10 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
 
-            // Acuity notification only for desktop and non EU clients
+            // Acuity notification only for desktop clients
             // For both Demo and Real accounts
-            if (!is_eu && isDesktop()) {
-                this.addNotificationMessage(this.client_notifications.acuity);
-                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
-            } else {
-                this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
-                this.removeNotificationByKey(this.client_notifications.acuity_mt5_download.key);
-            }
+            this.addNotificationMessage(this.client_notifications.acuity);
+            this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
 
             const client = accounts[loginid];
             if (client && !client.is_virtual) {

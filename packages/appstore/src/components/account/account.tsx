@@ -13,20 +13,20 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import WalletIcon from 'Assets/svgs/wallet';
 
-type TcountryStandpoint = {
+type TCountryStandpoint = {
     is_united_kingdom: boolean;
     is_isle_of_man: boolean;
 };
 
-type Tgeolocation = {
+type TGeoLocation = {
     region: any;
     sequence: number;
 };
-type Tserver_info = {
-    geolocation: Tgeolocation;
+type TServerInfo = {
+    geolocation: TGeoLocation;
 };
-type Tserver = {
-    server_info: Tserver_info;
+type TServer = {
+    server_info: TServerInfo;
 };
 
 type TOptionsAccountprops = RouteComponentProps & {
@@ -41,10 +41,10 @@ type TOptionsAccountprops = RouteComponentProps & {
     is_disabled?: boolean;
     is_virtual?: boolean;
     title?: string;
-    country_standpoint: TcountryStandpoint;
+    country_standpoint: TCountryStandpoint;
     is_eu?: string;
     market_type?: string;
-    server?: Tserver;
+    server?: TServer;
     sub_account_type?: string;
     has_error?: string;
     platform?: string;
@@ -61,7 +61,7 @@ type TOptionsAccountprops = RouteComponentProps & {
 };
 
 type TCurrentDisplay = {
-    country_standpoint: TcountryStandpoint;
+    country_standpoint: TCountryStandpoint;
     currency?: string;
     loginid: string;
     is_virtual?: boolean;
@@ -70,7 +70,7 @@ type TCurrentDisplay = {
 type TAccountDisplay = {
     is_eu?: string;
     market_type?: string;
-    server?: Tserver;
+    server?: TServer;
     sub_account_type?: string;
     has_error?: string;
     platform?: string;

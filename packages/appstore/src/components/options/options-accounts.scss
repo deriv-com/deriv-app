@@ -22,6 +22,7 @@
             }
             .account-container {
                 width: 20%;
+                min-width: 24rem;
                 @include mobile {
                     width: 70%;
                 }
@@ -42,14 +43,15 @@
             }
         }
         &--add-options {
-            width: 20%;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0 1.6rem;
             @include mobile {
                 height: auto;
                 position: absolute;
                 right: 0;
+                margin: 0;
             }
         }
         &--account__loader {
@@ -66,11 +68,13 @@
         background: var(--general-section-5);
         border-radius: 0rem 0.6rem 0.6rem;
         padding: 1.6rem 2.4rem;
+        overflow-x: auto;
         &--item {
             display: flex;
             flex-direction: row;
             align-items: center;
             width: 20%;
+            min-width: 24rem;
             &_divider {
                 width: 4rem;
                 height: 0.1rem;

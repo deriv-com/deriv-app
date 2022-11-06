@@ -6,6 +6,7 @@ import { Popover, Text } from '@deriv/components';
 import { TAccountCategory } from 'Types';
 import { useStores } from 'Stores';
 import React from 'react';
+import classNames from 'classnames';
 
 type TTotalAssets = {
     category: TAccountCategory;
@@ -14,7 +15,14 @@ type TTotalAssets = {
 
 const TotalAssets = ({ category }: TTotalAssets) => {
     const { client, common } = useStores();
-    const { account_list, accounts, dxtrade_accounts_list, mt5_login_list, obj_total_balance } = client;
+    const {
+        account_list,
+        accounts,
+        dxtrade_accounts_list,
+        mt5_login_list,
+        obj_total_balance,
+        has_active_real_account,
+    } = client;
     const { getExchangeRate } = common;
 
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
@@ -65,7 +73,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     },
                     mt5_account: DetailsOfEachMT5Loginid
                 ) => {
-                    total.balance += (mt5_account?.balance ?? 1) * exchange_rate;
+                    total.balance += (mt5_account?.balance ?? 0) * exchange_rate;
                     return total;
                 },
                 { balance: 0 }
@@ -102,10 +110,29 @@ const TotalAssets = ({ category }: TTotalAssets) => {
 
     return (
         <div className='total-assets'>
-            <Text weight='bold' size={isMobile() ? 'xsm' : 'm'} className='total-assets-amount'>
+            <Text
+                weight='bold'
+                size={isMobile() ? 'xsm' : 'm'}
+                className={classNames({
+                    'total-assets-amount': category === 'demo' && !has_active_real_account,
+                    'total-assets-no-amount': category === 'real' && !has_active_real_account,
+                    'total-assets-real': category === 'real' && has_active_real_account,
+                    'total-assets-demo': category === 'demo' && has_active_real_account,
+                })}
+            >
                 {formatMoney(currency, total_assets, true)}
             </Text>
-            <Text weight='bold' size={isMobile() ? 'xsm' : 'm'} color='prominent' className='total-assets-currency'>
+            <Text
+                weight='bold'
+                size={isMobile() ? 'xsm' : 'm'}
+                color='prominent'
+                className={classNames({
+                    'total-assets-currency': category === 'demo' && !has_active_real_account,
+                    'total-assets-no-currency': category === 'real' && !has_active_real_account,
+                    'total-assets-real': category === 'real' && has_active_real_account,
+                    'total-assets-demo': category === 'demo' && has_active_real_account,
+                })}
+            >
                 {currency}
             </Text>
             <div>

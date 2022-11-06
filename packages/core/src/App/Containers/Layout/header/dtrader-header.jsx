@@ -46,6 +46,11 @@ const RedirectToOldInterface = () => {
                 <Text as='p' size='xs'>
                     <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
+                <Icon
+                    className='trading-hub-header__dtrader--redirect--beta'
+                    icon='IcAppstoreTradingHubBeta'
+                    size={45}
+                />
                 <Icon icon='IcArrowRight' size={18} color='red' />
             </BinaryLink>
         </div>

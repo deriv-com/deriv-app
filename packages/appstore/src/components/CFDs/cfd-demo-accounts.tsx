@@ -7,7 +7,7 @@ import { useStores } from 'Stores/index';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
-    const available_demo_accounts: Array<TStaticAccountProps> = [
+    const available_demo_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),

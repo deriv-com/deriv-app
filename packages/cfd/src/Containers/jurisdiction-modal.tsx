@@ -78,7 +78,6 @@ const JurisdictionModal = ({
     toggleCFDVerificationModal,
     account_status,
     updateAccountStatus,
-
     mt5_login_list,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
@@ -101,8 +100,8 @@ const JurisdictionModal = ({
 
     const poi_poa_pending = poi_status === 'pending' && poa_status === 'pending';
     const poi_poa_verified = poi_status === 'verified' && poa_status === 'verified';
-    const poi_failed = poi_status === 'suspected' || poi_status === 'rejected' || poi_status === 'expired';
-    const poa_failed = poa_status === 'suspected' || poa_status === 'rejected' || poa_status === 'expired';
+    const poi_failed = ['suspected', 'rejected', 'expired'].some(status => status === poi_status);
+    const poa_failed = ['suspected', 'rejected', 'expired'].some(status => status === poi_status);
     const poi_poa_not_submitted = poi_status === 'none' || poa_status === 'none';
 
     const selectSVGJurisdiction = () => {

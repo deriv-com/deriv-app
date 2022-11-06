@@ -7,14 +7,15 @@ import { jurisdiction_contents } from '../Constants/jurisdiction-contents';
 import RootStore from '../Stores/index';
 import { connect } from '../Stores/connect';
 import { TExistingData } from '../Components/props.types';
+import { poa_status_codes as StatusCodes } from '@deriv/account';
 
 type TAvailableAccountAPI = [
     {
         market_type: string;
         name: string;
         requirements: {
-            signup: Array<string>;
-            withdrawal: Array<string>;
+            signup: string[];
+            withdrawal: string[];
         };
         shortcode: string;
         sub_account_type: string;
@@ -75,14 +76,6 @@ type TJurisdictionCard = {
     need_poi_for_bvi_labuan: boolean;
     poi_acknowledged_for_vanuatu: boolean;
 };
-const StatusCodes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    expired: 'expired',
-    suspected: 'suspected',
-};
 
 const JurisdictionCard = ({
     jurisdiction_selected_shortcode,
@@ -118,11 +111,7 @@ const JurisdictionCard = ({
     );
 
     const cardSelection = (cardType: string) => {
-        if (jurisdiction_selected_shortcode === cardType) {
-            setJurisdictionSelectedShortcode('');
-        } else {
-            setJurisdictionSelectedShortcode(cardType);
-        }
+        setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
     const Checkmark = () => (
@@ -405,10 +394,9 @@ const JurisdictionModalContent = ({
     const poi_poa_verified = poi_status === StatusCodes.verified && poa_status === StatusCodes.verified;
 
     const cardsToBeShown = (type_of_card: string) => {
-        const is_available =
-            account_type === 'synthetic'
-                ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-                : financial_available_accounts?.some(account => account.shortcode === type_of_card);
+        const is_available = (
+            account_type === 'synthetic' ? synthetic_available_accounts : financial_available_accounts
+        )?.some(account => account.shortcode === type_of_card);
         return is_available;
     };
 
@@ -416,12 +404,10 @@ const JurisdictionModalContent = ({
         if (is_virtual && type_of_card !== 'svg') {
             return true;
         }
-        const is_available =
-            account_type === 'synthetic'
-                ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
-                : real_financial_accounts_existing_data?.some(
-                      account => account.landing_company_short === type_of_card
-                  );
+
+        const is_available = (
+            account_type === 'synthetic' ? real_synthetic_accounts_existing_data : real_financial_accounts_existing_data
+        )?.some(account => account.landing_company_short === type_of_card);
 
         return is_available;
     };
@@ -430,7 +416,7 @@ const JurisdictionModalContent = ({
         const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
 
         return (
-            <>
+            <React.Fragment>
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
@@ -572,9 +558,7 @@ const JurisdictionModalContent = ({
                 {poa_failed &&
                     !poa_acknowledged &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' ||
-                        jurisdiction_selected_shortcode === 'labuan' ||
-                        jurisdiction_selected_shortcode === 'maltainvest') &&
+                    ['bvi', 'labuan', 'maltainvest'].some(code => code === jurisdiction_selected_shortcode) &&
                     need_poi_for_bvi_labuan && (
                         <Text
                             as='p'
@@ -605,16 +589,14 @@ const JurisdictionModalContent = ({
                     poi_acknowledged_for_bvi_labuan &&
                     !poi_poa_verified &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' ||
-                        jurisdiction_selected_shortcode === 'labuan' ||
-                        jurisdiction_selected_shortcode === 'maltainvest') && (
+                    ['bvi', 'labuan', 'maltainvest'].some(code => code === jurisdiction_selected_shortcode) && (
                         <div className={`${card_classname}__footnote--pending`}>
                             <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
                                 <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />
                             </Text>
                         </div>
                     )}
-            </>
+            </React.Fragment>
         );
     };
 
@@ -675,7 +657,7 @@ const JurisdictionModalContent = ({
     };
 
     return (
-        <>
+        <React.Fragment>
             <div className={`${card_classname}__wrapper`}>
                 {cardsToBeShown('svg') && (
                     <JurisdictionCard
@@ -820,7 +802,7 @@ const JurisdictionModalContent = ({
             </div>
             <ModalFootNote />
             {showCheckBox() && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
-        </>
+        </React.Fragment>
     );
 };
 

@@ -132,7 +132,7 @@ export default connect(({ client, modules }: TRootStore) => ({
     is_loading: modules.cashier.general_store.is_loading,
     is_switching: client.is_switching,
     is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
-    is_transfer_locked: modules.cashier.general_store.is_transfer_locked,
+    is_transfer_locked: modules.cashier.account_transfer.is_transfer_locked,
     is_virtual: client.is_virtual,
     onMount: modules.cashier.account_transfer.onMountAccountTransfer,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,

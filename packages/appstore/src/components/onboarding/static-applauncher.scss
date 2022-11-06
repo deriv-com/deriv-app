@@ -18,7 +18,7 @@
     }
 
     &__icon {
-        margin-right: 0.5rem;
+        margin-right: 1rem;
         &--blurry {
             opacity: 0.2;
         }
@@ -38,7 +38,7 @@
         width: auto;
 
         &--animated {
-            animation: triggerAnimation 2s linear infinite;
+            animation: triggerAnimation 0.5s linear infinite alternate;
         }
 
         &-topup {

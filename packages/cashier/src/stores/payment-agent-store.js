@@ -1,5 +1,6 @@
 import { action, computed, observable, makeObservable } from 'mobx';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
+import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import VerificationStore from './verification-store';
@@ -169,7 +170,9 @@ export default class PaymentAgentStore {
                     urls: payment_agent?.urls || payment_agent?.url,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
-                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
+                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank =>
+                    getNormalizedPaymentMethod(bank.payment_method, Constants.payment_methods)
+                );
                 supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
             shuffleArray(this.list);
@@ -192,15 +195,14 @@ export default class PaymentAgentStore {
             this.list.forEach(payment_agent => {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
-                    const is_string = typeof supported_banks === 'string';
-                    const bank_index = is_string
-                        ? supported_banks
-                              .toLowerCase()
-                              .split(',')
-                              .indexOf(bank || this.selected_bank)
-                        : supported_banks
-                              .map(supported_bank => supported_bank.payment_method.toLowerCase())
-                              .indexOf(bank || this.selected_bank);
+                    const bank_index = supported_banks
+                        .map(supported_bank =>
+                            getNormalizedPaymentMethod(
+                                supported_bank.payment_method,
+                                Constants.payment_methods
+                            ).toLowerCase()
+                        )
+                        .indexOf(bank || this.selected_bank);
 
                     if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }

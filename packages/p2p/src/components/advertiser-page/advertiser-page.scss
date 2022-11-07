@@ -199,26 +199,6 @@
         }
     }
 
-    &__status {
-        display: flex;
-        flex-direction: row;
-        padding-bottom: 0.7rem;
-
-        &--row {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            border-left: 1px solid var(--general-section-1);
-            padding: 0 0.8rem;
-
-            &:first-child {
-                padding-left: unset;
-                border-left: unset;
-            }
-        }
-    }
-
     &__row {
         display: flex;
         flex-direction: row;

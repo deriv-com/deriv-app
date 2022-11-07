@@ -34,9 +34,4 @@ describe('<AccountLimitsFooterPortal/>', () => {
         render(<AccountLimitsFooterPortalComponent />);
         expect(screen.getAllByTestId('footer_text').length).toBe(1);
     });
-
-    it('should render AppSettings.Footer components correctly', () => {
-        const { container } = render(<AccountLimitsFooterPortalComponent />);
-        expect(container.getElementsByClassName('dc-app-settings__footer').length).toBe(1);
-    });
 });

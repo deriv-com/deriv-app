@@ -10,6 +10,11 @@ export type TToken = {
     token: string;
 };
 
+export type TPoaStatusProps = {
+    needs_poi: boolean;
+    is_description_enabled?: boolean;
+};
+
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };

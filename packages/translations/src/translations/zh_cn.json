@@ -353,7 +353,6 @@
     "478280278": "此程序块块显示使用定制的消息来提示输入的对话框。输入可以是文本字符串或数字，并且可以分配给变量。显示对话框时，您的策略将暂停，并且仅在您输入响应并单击“确定”后才能恢复。",
     "479420576": "三级",
     "481276888": "处于区间之外",
-    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "删除所有 {{ delete_count }} 程序块?",
     "485379166": "查看交易",
     "487239607": "将指定的真或假转换为相反的值",

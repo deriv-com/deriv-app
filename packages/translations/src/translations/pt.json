@@ -353,7 +353,6 @@
     "478280278": "Este bloco exibe uma caixa de diálogo que usa uma mensagem personalizada para solicitar uma entrada. A entrada pode ser uma sequência de texto ou um número e pode ser atribuída a uma variável. Quando a caixa de diálogo é exibida, sua estratégia é pausada e só será retomada depois que você inserir uma resposta e clicar em \"OK\".",
     "479420576": "Terciário",
     "481276888": "Sai fora",
-    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "Deletar todos {{ delete_count }} blocos?",
     "485379166": "Exibir transações",
     "487239607": "Converte um dado Verdadeiro ou Falso para o valor oposto",

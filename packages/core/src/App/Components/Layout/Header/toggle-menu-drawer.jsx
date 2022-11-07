@@ -22,7 +22,7 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
-    const derivStaticUrl = /(deriv.com)/.test(link_to);
+    const deriv_static_url = /(deriv.com)/.test(link_to);
 
     if (is_language) {
         return (
@@ -54,7 +54,7 @@ const MenuLink = ({
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
         );
-    } else if (derivStaticUrl) {
+    } else if (deriv_static_url) {
         return (
             <a
                 className={classNames('header__menu-mobile-link', {

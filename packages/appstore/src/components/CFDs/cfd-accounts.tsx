@@ -59,9 +59,8 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
 
     const isDerivedVisible = (platform: TPlatform) => {
         // Hiding card for logged out EU users
-        if (!is_logged_in && is_eu_country) return false;
 
-        if (is_eu && hasAccount(platform, 'synthetic')) return false;
+        if ((!is_logged_in && is_eu_country) || (is_eu && hasAccount(platform, 'synthetic'))) return false;
 
         return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     };

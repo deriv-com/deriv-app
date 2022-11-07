@@ -96,7 +96,7 @@ const StaticCFDAccountManager = ({
                     {appname}
                 </Text>
                 {has_account ? (
-                    <>
+                    <React.Fragment>
                         <Text
                             size='xs'
                             color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}
@@ -108,7 +108,7 @@ const StaticCFDAccountManager = ({
                         <Text size='xs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
                             {loginid}
                         </Text>
-                    </>
+                    </React.Fragment>
                 ) : (
                     <Text size='xxxs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
                         {description}
@@ -117,7 +117,7 @@ const StaticCFDAccountManager = ({
             </div>
             <div className='static-cfd-account-manager__buttons'>
                 {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
-                    <>
+                    <React.Fragment>
                         <Button
                             secondary
                             className={classNames('static-cfd-account-manager__buttons-topup', {
@@ -136,7 +136,7 @@ const StaticCFDAccountManager = ({
                         >
                             <Localize i18n_default_text='Trade' />
                         </Button>
-                    </>
+                    </React.Fragment>
                 ) : (
                     <Button
                         primary_light

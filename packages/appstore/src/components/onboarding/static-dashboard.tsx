@@ -73,15 +73,11 @@ const StaticDashboard = ({
     const [index, setIndex] = React.useState(0);
 
     React.useEffect(() => {
-        const changeIndex = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
-            }
+        const change_index_interval_id = setInterval(() => {
+            setIndex(index === 0 ? 1 : 0);
         }, 5000);
 
-        return () => clearInterval(changeIndex);
+        return () => clearInterval(change_index_interval_id);
     }, [index]);
     return (
         <div className='static-dashboard'>

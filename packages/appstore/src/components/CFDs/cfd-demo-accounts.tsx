@@ -78,14 +78,15 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const openCFDAccount = (account_type: string) => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-        } else {
-            createCFDAccount({
-                category: 'demo',
-                type: account_type,
-                platform,
-            });
-            enableCFDPasswordModal();
+            return;
         }
+
+        createCFDAccount({
+            category: 'demo',
+            type: account_type,
+            platform,
+        });
+        enableCFDPasswordModal();
     };
 
     const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
@@ -111,8 +112,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                     existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
                                         const non_eu_accounts =
                                             existing_account.landing_company_short &&
-                                            existing_account.landing_company_short !== 'svg' &&
-                                            existing_account.landing_company_short !== 'bvi'
+                                            !['svg', 'bvi'].includes(existing_account.landing_company_short)
                                                 ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
                                                   existing_account.landing_company_short?.slice(1)
                                                 : existing_account.landing_company_short?.toUpperCase();

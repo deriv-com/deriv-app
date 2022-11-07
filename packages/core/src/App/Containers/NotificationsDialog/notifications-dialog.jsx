@@ -93,7 +93,12 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog 
     const is_empty = !notifications.length;
     const { is_pre_appstore } = React.useContext(PlatformContext);
     return (
-        <div className={`notifications-dialog ${is_pre_appstore && 'notifications-dialog--pre-appstore'}`} ref={ref}>
+        <div
+            className={classNames('notifications-dialog', {
+                'notifications-dialog--pre-appstore': is_pre_appstore,
+            })}
+            ref={ref}
+        >
             <div className='notifications-dialog__header'>
                 <Text
                     as='h2'

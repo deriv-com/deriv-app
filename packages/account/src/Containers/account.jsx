@@ -57,6 +57,7 @@ const PageOverlayWrapper = ({
     onClickClose,
     selected_route,
     subroutes,
+    history,
 }) => {
     if (isMobile() && selected_route) {
         return (

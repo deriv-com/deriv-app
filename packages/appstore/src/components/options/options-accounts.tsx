@@ -99,11 +99,11 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                 </Text>
             </div>
 
-            <div className='options-accounts-container__appLuncher'>
+            <div className='options-accounts-container__appLauncher'>
                 {!is_logging_in ? (
                     <React.Fragment>
                         {props.accountType === 'demo' && (
-                            <div className='options-accounts-container__appLuncher--account-demo'>
+                            <div className='options-accounts-container__appLauncher--account-demo'>
                                 {getSortedAccountList(account_list, accounts)
                                     .filter(account => account.is_virtual)
                                     .map(account => (
@@ -143,8 +143,8 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                         )}
                         {has_any_real_account && props.accountType === 'real' && (
                             <div
-                                className={classNames('options-accounts-container__appLuncher--account-real', {
-                                    'options-accounts-container__appLuncher--account-real--scroller':
+                                className={classNames('options-accounts-container__appLauncher--account-real', {
+                                    'options-accounts-container__appLauncher--account-real--scroller':
                                         !isMobile() && sortedAccountList.length >= 5 && props.accountType === 'real',
                                 })}
                             >
@@ -219,7 +219,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                 )}
                                 {props.accountType === 'real' && (
                                     <div
-                                        className={`options-accounts-container__appLuncher--add-options${
+                                        className={`options-accounts-container__appLauncher--add-options${
                                             sortedAccountList.length >= 4 ? '-scroller' : ''
                                         }`}
                                     >
@@ -245,12 +245,12 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                             </div>
                         )}
                         {!has_any_real_account && (
-                            <span className='options-accounts-container__appLuncher--account--divider' />
+                            <span className='options-accounts-container__appLauncher--account--divider' />
                         )}
                     </React.Fragment>
                 ) : (
                     <Loading
-                        className='options-accounts-container__appLuncher--account__loader'
+                        className='options-accounts-container__appLauncher--account__loader'
                         is_fullscreen={false}
                     />
                 )}
@@ -308,13 +308,13 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                     ))}
                 </MobileDialog>
             </div>
-            <div className='options-accounts-container__platformLuncher'>
+            <div className='options-accounts-container__platformLauncher'>
                 {props.platformlauncherprops.map((item, index) => {
                     return (
-                        <div className='options-accounts-container__platformLuncher--item' key={item.app_title}>
+                        <div className='options-accounts-container__platformLauncher--item' key={item.app_title}>
                             <PlatformLauncher {...item} has_real_account={has_any_real_account} />
                             {!isMobile() && props.platformlauncherprops.length - 1 !== index && (
-                                <span className='options-accounts-container__platformLuncher--item_divider' />
+                                <span className='options-accounts-container__platformLauncher--item_divider' />
                             )}
                         </div>
                     );

@@ -21,6 +21,7 @@ import BlockUserModal from 'Components/block-user/block-user-modal';
 import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import './advertiser-page.scss';
+import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();
@@ -141,7 +142,57 @@ const AdvertiserPage = () => {
                                     </div>
                                 )}
                             </div>
+
+                            {isMobile() && (
+                                <div className='advertiser-page__row'>
+                                    <div className='advertiser-page__rating--row'>
+                                        <OnlineStatusIcon />
+                                        <OnlineStatusLabel />
+                                    </div>
+                                    <div className='advertiser-page__rating--row'>
+                                        <Text
+                                            className='advertiser-page__joined-since'
+                                            color='less-prominent'
+                                            size={isMobile() ? 'xxxs' : 'xs'}
+                                        >
+                                            {joined_since > 0 ? (
+                                                <Localize
+                                                    i18n_default_text='Joined {{days_since_joined}}d'
+                                                    values={{ days_since_joined: joined_since }}
+                                                />
+                                            ) : (
+                                                <Localize i18n_default_text='Joined today' />
+                                            )}
+                                        </Text>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className='advertiser-page__rating'>
+                                {!isMobile() && (
+                                    <React.Fragment>
+                                        <div className='advertiser-page__rating--row'>
+                                            <OnlineStatusIcon />
+                                            <OnlineStatusLabel />
+                                        </div>
+                                        <div className='advertiser-page__rating--row'>
+                                            <Text
+                                                className='advertiser-page__joined-since'
+                                                color='less-prominent'
+                                                size={isMobile() ? 'xxxs' : 'xs'}
+                                            >
+                                                {joined_since > 0 ? (
+                                                    <Localize
+                                                        i18n_default_text='Joined {{days_since_joined}}d'
+                                                        values={{ days_since_joined: joined_since }}
+                                                    />
+                                                ) : (
+                                                    <Localize i18n_default_text='Joined today' />
+                                                )}
+                                            </Text>
+                                        </div>
+                                    </React.Fragment>
+                                )}
                                 {rating_average ? (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
@@ -189,37 +240,8 @@ const AdvertiserPage = () => {
                                         </Text>
                                     </div>
                                 )}
-                                {!isMobile() && (
-                                    <div className='advertiser-page__rating--row'>
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {joined_since > 0 ? (
-                                                <Localize
-                                                    i18n_default_text='Joined {{days_since_joined}}d'
-                                                    values={{ days_since_joined: joined_since }}
-                                                />
-                                            ) : (
-                                                <Localize i18n_default_text='Joined today' />
-                                            )}
-                                        </Text>
-                                    </div>
-                                )}
                             </div>
-                            {isMobile() && (
-                                <Text
-                                    className='advertiser-page__joined-since'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                >
-                                    {joined_since > 0 ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
-                                </Text>
-                            )}
+
                             <div className='advertiser-page__row'>
                                 <TradeBadge
                                     is_poa_verified={!!full_verification}

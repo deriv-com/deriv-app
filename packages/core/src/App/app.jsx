@@ -9,7 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    // isSafari,
+    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -64,27 +64,22 @@ const AppWithoutTranslation = ({ root_store }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // const checkInputClick = React.useCallback(() => {
+    //     if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
+    //         root_store.ui.setIsInputClicked(true);
+    //     } else {
+    //         root_store.ui.setIsInputClicked(false);
+    //     }
+    // }, [root_store.ui]);
+
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
-
-            // let view_width, view_height;
-
-            // if (mobileOSDetect() === 'Android') {
-            //     view_width = screen.availWidth;
-            //     view_height = screen.availHeight;
-            // } else if (mobileOSDetect() === 'iOS' && isSafari()) {
-            //     view_width = visualViewport.width;
-            //     view_height = visualViewport.height;
-            // } else {
-            //     view_width = window.innerWidth;
-            //     view_height = window.innerHeight;
-            // }
-
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height) {
+
+            if (view_width <= view_height || isSafari()) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -97,9 +92,11 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
         window.addEventListener('resize', debouncedHandleResize);
+        // window.addEventListener('click', checkInputClick);
 
         return () => {
             window.removeEventListener('resize', debouncedHandleResize);
+            // window.removeEventListener('click', checkInputClick);
         };
     }, [handleResize]);
 

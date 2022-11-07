@@ -32,10 +32,10 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+            height: calc(80vh - 24rem);
 
             &--has-footer {
-                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+                height: calc(80vh - 24rem);
             }
 
             > * {
@@ -45,10 +45,10 @@
         }
 
         @include tablet {
-            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+            height: calc(80vh - 24rem);
 
             &--has-footer {
-                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+                height: calc(80vh - 24rem);
             }
 
             > * {
@@ -274,6 +274,7 @@
 
             &__button {
                 display: flex;
+                cursor: pointer;
 
                 &__edit {
                     margin-right: 0.8rem;

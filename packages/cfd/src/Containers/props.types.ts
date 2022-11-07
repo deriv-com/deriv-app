@@ -234,3 +234,18 @@ export type TJurisdictionModalFootNoteProps = {
     card_classname: string;
     jurisdiction_selected_shortcode: string;
 };
+
+export type TCFDDbViOnBoardingProps = {
+    disableApp: () => void;
+    enableApp: () => void;
+    is_cfd_verification_modal_visible: boolean;
+    toggleCFDVerificationModal: () => void;
+    jurisdiction_selected_shortcode: string;
+    updateAccountStatus: () => void;
+    account_status: GetAccountStatus;
+    openPasswordModal: () => void;
+    has_submitted_cfd_personal_details: boolean;
+    fetchAccountSettings: () => void;
+    is_virtual: boolean;
+    has_created_account_for_selected_jurisdiction: boolean;
+};

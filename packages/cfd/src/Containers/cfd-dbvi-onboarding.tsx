@@ -1,27 +1,13 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading, Text, Icon } from '@deriv/components';
+import { DesktopWrapper, Icon, Loading, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
-import { WS, getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
-import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
+import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
+import { AccountStatusResponse } from '@deriv/api-types';
+import { TCFDDbViOnBoardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
-
-type TVerificationModalProps = {
-    disableApp: () => void;
-    enableApp: () => void;
-    is_cfd_verification_modal_visible: boolean;
-    toggleCFDVerificationModal: () => void;
-    jurisdiction_selected_shortcode: string;
-    updateAccountStatus: () => void;
-    account_status: GetAccountStatus;
-    has_created_account_for_selected_jurisdiction: boolean;
-    openPasswordModal: () => void;
-    has_submitted_cfd_personal_details: boolean;
-    fetchAccountSettings: () => void;
-    is_virtual: boolean;
-};
 
 const SwitchToRealAccountMessage = () => (
     <div className='da-icon-with-message'>
@@ -39,26 +25,25 @@ const SwitchToRealAccountMessage = () => (
     </div>
 );
 const CFDDbViOnBoarding = ({
+    account_status,
     disableApp,
     enableApp,
-    is_cfd_verification_modal_visible,
-    toggleCFDVerificationModal,
-    jurisdiction_selected_shortcode,
-    updateAccountStatus,
-    account_status,
-    has_created_account_for_selected_jurisdiction,
-    openPasswordModal,
-    has_submitted_cfd_personal_details,
     fetchAccountSettings,
+    has_created_account_for_selected_jurisdiction,
+    has_submitted_cfd_personal_details,
+    is_cfd_verification_modal_visible,
     is_virtual,
-}: TVerificationModalProps) => {
+    jurisdiction_selected_shortcode,
+    openPasswordModal,
+    toggleCFDVerificationModal,
+    updateAccountStatus,
+}: TCFDDbViOnBoardingProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
 
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
-
             if (get_account_status?.authentication) {
                 const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
@@ -114,16 +99,20 @@ const CFDDbViOnBoarding = ({
         ) : (
             <CFDFinancialStpRealAccountSignup
                 onFinish={() => {
-                    toggleCFDVerificationModal();
                     if (has_created_account_for_selected_jurisdiction) {
                         setShowSubmittedModal(true);
                     } else {
+                        toggleCFDVerificationModal();
                         openPasswordModal();
                     }
                 }}
             />
         );
     };
+    const getModalTitle = () =>
+        has_created_account_for_selected_jurisdiction
+            ? localize('Submit your proof of identity and address')
+            : localize('Add a real MT5 account');
 
     return is_loading ? (
         <Loading is_fullscreen={false} />
@@ -135,7 +124,7 @@ const CFDDbViOnBoarding = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
-                    title={localize('Add a real MT5 account')}
+                    title={getModalTitle()}
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
@@ -148,7 +137,7 @@ const CFDDbViOnBoarding = ({
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={localize('Add a real MT5 account')}
+                    title={getModalTitle()}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
@@ -160,17 +149,19 @@ const CFDDbViOnBoarding = ({
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
+    account_status: client.account_status,
+    account_type: cfd.account_type,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
-    updateAccountStatus: client.updateAccountStatus,
-    account_status: client.account_status,
-    has_created_account_for_selected_jurisdiction: modules.cfd.has_created_account_for_selected_jurisdiction,
-    openPasswordModal: modules.cfd.enableCFDPasswordModal,
-    has_submitted_cfd_personal_details: modules.cfd.has_submitted_cfd_personal_details,
     fetchAccountSettings: client.fetchAccountSettings,
+    has_created_account_for_selected_jurisdiction: cfd.has_created_account_for_selected_jurisdiction,
+    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
+    is_cfd_verification_modal_visible: cfd.is_cfd_verification_modal_visible,
     is_virtual: client.is_virtual,
+    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
+    mt5_login_list: client.mt5_login_list,
+    openPasswordModal: cfd.enableCFDPasswordModal,
+    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
+    updateAccountStatus: client.updateAccountStatus,
 }))(CFDDbViOnBoarding);

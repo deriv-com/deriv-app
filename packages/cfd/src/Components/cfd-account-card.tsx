@@ -194,6 +194,8 @@ const CFDAccountCardComponent = ({
     toggleShouldShowRealAccountsList,
     setMT5TradeAccount,
     toggleCFDVerificationModal,
+    setJurisdictionSelectedShortcode,
+    setAccountType,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -280,50 +282,58 @@ const CFDAccountCardComponent = ({
         } = getAuthenticationStatusInfo(account_status);
 
         const { landing_company_short, status } = account;
-        const is_vanuatu = landing_company_short === 'vanuatu';
-        const is_bvi = landing_company_short === 'bvi';
-        const is_labuan_or_maltainvest =
-            landing_company_short && ['labuan', 'maltainvest'].includes(landing_company_short);
 
-        if (
-            (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
-            (is_vanuatu && poi_resubmit_for_vanuatu) ||
-            ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest) ||
-            (status && ['proof_failed', 'poa_failed'].includes(status))
-        ) {
-            return (
-                <Button
-                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                    type='button'
-                    onClick={() => {
-                        toggleCFDVerificationModal();
-                    }}
-                    primary
-                    large
-                >
-                    <Localize i18n_default_text='Resubmit document' />
-                </Button>
-            );
-        } else if (
-            (is_vanuatu && poi_pending_for_vanuatu) ||
-            (is_bvi && poi_pending_for_bvi_labuan_maltainvest) ||
-            (is_labuan_or_maltainvest &&
-                poi_acknowledged_for_bvi_labuan_maltainvest &&
-                poa_acknowledged &&
-                !poi_poa_verified_for_bvi_labuan_maltainvest) ||
-            status === 'verification_pending'
-        ) {
-            return (
-                <Button
-                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                    type='button'
-                    disabled
-                    primary
-                    large
-                >
-                    <Localize i18n_default_text='Pending verification' />
-                </Button>
-            );
+        if (landing_company_short) {
+            const is_vanuatu = landing_company_short === 'vanuatu';
+            const is_bvi = landing_company_short === 'bvi';
+            const is_labuan_or_maltainvest = ['labuan', 'maltainvest'].includes(landing_company_short);
+
+            if (
+                (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
+                (is_vanuatu && poi_resubmit_for_vanuatu) ||
+                ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest) ||
+                (status && ['proof_failed', 'poa_failed'].includes(status))
+            ) {
+                return (
+                    <Button
+                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                        type='button'
+                        onClick={() => {
+                            setAccountType({
+                                category: type.category,
+                                type: type.type,
+                            });
+                            setJurisdictionSelectedShortcode(landing_company_short);
+                            toggleCFDVerificationModal();
+                        }}
+                        primary
+                        large
+                    >
+                        <Localize i18n_default_text='Resubmit document' />
+                    </Button>
+                );
+            } else if (
+                (is_vanuatu && poi_pending_for_vanuatu) ||
+                (is_bvi && poi_pending_for_bvi_labuan_maltainvest) ||
+                (is_labuan_or_maltainvest &&
+                    poi_acknowledged_for_bvi_labuan_maltainvest &&
+                    poa_acknowledged &&
+                    !poi_poa_verified_for_bvi_labuan_maltainvest) ||
+                status === 'verification_pending'
+            ) {
+                return (
+                    <Button
+                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                        type='button'
+                        disabled
+                        primary
+                        large
+                    >
+                        <Localize i18n_default_text='Pending verification' />
+                    </Button>
+                );
+            }
+            return null;
         }
         return null;
     };
@@ -769,6 +779,8 @@ const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
     setMT5TradeAccount: cfd.setMT5TradeAccount,
     account_status: client.account_status,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
+    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
+    setAccountType: cfd.setAccountType,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

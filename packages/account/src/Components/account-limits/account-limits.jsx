@@ -96,11 +96,8 @@ const AccountLimits = ({
     }
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-    const forex_ordered = forex?.slice().sort((a, b) => (a.name < b.name ? 1 : -1));
-
-    if (forex_ordered && forex_ordered.push) {
-        forex_ordered.push(forex_ordered.shift());
-    }
+    const forex_ordered = forex?.slice().sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+    const derived_ordered = synthetic_index?.slice().sort((b, a) => (a.level < b.level ? 1 : -1));
 
     const context_value = {
         currency,
@@ -207,12 +204,9 @@ const AccountLimits = ({
                                 </thead>
                                 <tbody>
                                     <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                    <AccountLimitsTurnoverLimitRow
-                                        collection={forex_ordered}
-                                        title={localize('Forex')}
-                                    />
+                                    <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
                                     <AccountLimitsTurnoverLimitRow collection={indices} />
-                                    <AccountLimitsTurnoverLimitRow collection={synthetic_index} />
+                                    <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
                                 </tbody>
                             </table>
                             {/* We only show "Withdrawal Limits" on account-wide settings pages. */}

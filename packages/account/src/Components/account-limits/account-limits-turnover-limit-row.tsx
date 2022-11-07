@@ -4,6 +4,7 @@ import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 type TAccountLimits = {
+    level: string;
     name: string;
     payout_limit: number;
     profile_name: string;
@@ -20,9 +21,9 @@ const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurn
 
     return (
         <React.Fragment>
-            {collection?.map(({ name, turnover_limit }) => (
+            {collection?.map(({ name, turnover_limit, level }) => (
                 <tr key={name} data-testid='account-limits-turnover-limit-row'>
-                    <AccountLimitsTableCell>
+                    <AccountLimitsTableCell level={level}>
                         {title && `${title} - `}
                         {name}
                     </AccountLimitsTableCell>

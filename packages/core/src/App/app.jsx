@@ -9,11 +9,11 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    isSafari,
+    // isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
-    // mobileOSDetect,
+    mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
 } from '@deriv/shared';
@@ -70,11 +70,12 @@ const AppWithoutTranslation = ({ root_store }) => {
             // const view_width = is_android_device ? screen.availWidth : window.screen.width;
             // const view_height = is_android_device ? screen.availHeight : window.screen.height;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            const is_media_landscape = isSafari()
-                ? window.matchMedia('(orientation:portrait)').matches
-                : screen.availWidth <= screen.availHeight;
+            const is_landscape =
+                mobileOSDetect() === 'iOS'
+                    ? window.matchMedia('(orientation:portrait)').matches
+                    : screen.availWidth <= screen.availHeight;
 
-            if (is_media_landscape) {
+            if (is_landscape) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {

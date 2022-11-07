@@ -18,16 +18,28 @@ type TStaticCFDAccountManager = {
     has_account?: boolean;
     is_last_step?: boolean;
     derived_amount?: string;
-    is_icon_blurry?: boolean;
-    is_item_blurry?: boolean;
-    is_text_blurry?: boolean;
-    is_get_blurry?: boolean;
-    is_topup_blurry?: boolean;
-    is_trade_blurry?: boolean;
+    is_blurry: {
+        icon: boolean;
+        item: boolean;
+        text: boolean;
+        get: boolean;
+        topup: boolean;
+        trade: boolean;
+        cfd_item: boolean;
+        cfd_text: boolean;
+        options_item: boolean;
+        options_text: boolean;
+        cfd_description: boolean;
+        options_description: boolean;
+        platformlauncher: boolean;
+    };
     financial_amount?: string;
-    is_topup_animated?: boolean;
-    is_trade_animated?: boolean;
-    is_button_animated?: boolean;
+    is_onboarding_animated: {
+        text: boolean;
+        trade: boolean;
+        topup: boolean;
+        button: boolean;
+    };
     is_derivx_last_step?: boolean;
     platform: TPlatform | 'options';
     is_financial_last_step?: boolean;
@@ -42,16 +54,10 @@ const StaticCFDAccountManager = ({
     has_account,
     description,
     is_last_step,
-    is_icon_blurry,
-    is_get_blurry,
-    is_item_blurry,
     derived_amount,
-    is_trade_blurry,
-    is_topup_blurry,
+    is_blurry,
     financial_amount,
-    is_trade_animated,
-    is_topup_animated,
-    is_button_animated,
+    is_onboarding_animated,
     is_derivx_last_step,
     is_financial_last_step,
 }: TStaticCFDAccountManager) => {
@@ -64,14 +70,14 @@ const StaticCFDAccountManager = ({
                             icon='Financial'
                             size={64}
                             className={classNames('', {
-                                'static-cfd-account-manager__icon--blurry': is_icon_blurry || is_last_step,
+                                'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
                             })}
                         />
                     ) : (
                         <WalletIcon
                             icon='Derived'
                             size={64}
-                            className={is_icon_blurry ? 'static-cfd-account-manager__icon--blurry' : ''}
+                            className={is_blurry.icon ? 'static-cfd-account-manager__icon--blurry' : ''}
                         />
                     ))}
                 {platform === CFD_PLATFORMS.DXTRADE && (
@@ -79,7 +85,7 @@ const StaticCFDAccountManager = ({
                         icon='DerivX'
                         size={58}
                         className={classNames('', {
-                            'static-cfd-account-manager__icon--blurry': is_icon_blurry || is_last_step,
+                            'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
                         })}
                     />
                 )}
@@ -87,30 +93,30 @@ const StaticCFDAccountManager = ({
                     <WalletIcon
                         icon='Options'
                         size={58}
-                        className={is_item_blurry || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        className={is_blurry.item || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}
             </div>
             <div className='static-cfd-account-manager__details'>
-                <Text size='xs' weight='bold' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
+                <Text size='xs' weight='bold' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
                     {appname}
                 </Text>
                 {has_account ? (
                     <React.Fragment>
                         <Text
                             size='xs'
-                            color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}
+                            color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
                         >{`${formatMoney(
                             currency,
                             type === 'financial' ? financial_amount : derived_amount,
                             true
                         )} ${currency}`}</Text>
-                        <Text size='xs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
+                        <Text size='xs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
                             {loginid}
                         </Text>
                     </React.Fragment>
                 ) : (
-                    <Text size='xxxs' color={is_item_blurry || is_last_step ? 'less-prominent' : 'prominent'}>
+                    <Text size='xxxs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
                         {description}
                     </Text>
                 )}
@@ -121,8 +127,8 @@ const StaticCFDAccountManager = ({
                         <Button
                             secondary
                             className={classNames('static-cfd-account-manager__buttons-topup', {
-                                'static-cfd-account-manager__buttons-topup--blurry': is_topup_blurry,
-                                'static-cfd-account-manager__buttons-topup--animated': is_topup_animated,
+                                'static-cfd-account-manager__buttons-topup--blurry': is_blurry.topup,
+                                'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.topup,
                             })}
                         >
                             <Localize i18n_default_text='Top-up' />
@@ -130,8 +136,8 @@ const StaticCFDAccountManager = ({
                         <Button
                             primary
                             className={classNames('static-cfd-account-manager__buttons-trade', {
-                                'static-cfd-account-manager__buttons-trade--blurry': is_trade_blurry,
-                                'static-cfd-account-manager__buttons-topup--animated': is_trade_animated,
+                                'static-cfd-account-manager__buttons-trade--blurry': is_blurry.trade,
+                                'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.trade,
                             })}
                         >
                             <Localize i18n_default_text='Trade' />
@@ -142,8 +148,8 @@ const StaticCFDAccountManager = ({
                         primary_light
                         className={classNames('static-cfd-account-manager__buttons-get', {
                             'static-cfd-account-manager__buttons--animated':
-                                is_button_animated || is_financial_last_step || is_derivx_last_step,
-                            'static-cfd-account-manager__buttons-get--blurry': is_get_blurry,
+                                is_onboarding_animated.button || is_financial_last_step || is_derivx_last_step,
+                            'static-cfd-account-manager__buttons-get--blurry': is_blurry.get,
                         })}
                     >
                         <Localize i18n_default_text='Get' />

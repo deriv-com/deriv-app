@@ -104,12 +104,13 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     return (
         <div className='cfd-demo-account'>
             <div className='cfd-demo-account__accounts'>
-                {available_demo_accounts.map(
-                    account =>
+                {available_demo_accounts.map(account => {
+                    const existing_demo_accounts = existingDemoAccounts(account.platform, account.type);
+                    return (
                         account.is_visible && (
                             <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
-                                {existingDemoAccounts(account.platform, account.type) ? (
-                                    existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
+                                {existing_demo_accounts ? (
+                                    existing_demo_accounts.map(existing_account => {
                                         const non_eu_accounts =
                                             existing_account.landing_company_short &&
                                             !['svg', 'bvi'].includes(existing_account.landing_company_short)
@@ -172,7 +173,8 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                 )}
                             </div>
                         )
-                )}
+                    );
+                })}
             </div>
         </div>
     );

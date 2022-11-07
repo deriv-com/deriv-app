@@ -45,7 +45,7 @@ type TInputWrapper = {
 const InputWrapper = ({ children, has_footer }: React.PropsWithChildren<TInputWrapper>) =>
     has_footer ? <div className='dc-input__wrapper'>{children}</div> : <React.Fragment>{children}</React.Fragment>;
 
-const Input = React.forwardRef(
+const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputProps>(
     (
         {
             bottom_label,
@@ -68,9 +68,10 @@ const Input = React.forwardRef(
             trailing_icon,
             warn,
             data_testId,
+            maxLength = 30,
             ...props
-        }: TInputProps,
-        ref?: React.Ref<HTMLInputElement & HTMLTextAreaElement>
+        },
+        ref?
     ) => {
         const [counter, setCounter] = React.useState(0);
 
@@ -90,7 +91,7 @@ const Input = React.forwardRef(
             props.onChange?.(e);
         };
 
-        const has_footer: boolean = !!has_character_counter || (!!hint && !!is_relative_hint);
+        const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
 
         return (
             <InputWrapper has_footer={has_footer}>
@@ -117,6 +118,7 @@ const Input = React.forwardRef(
                             onChange={changeHandler}
                             disabled={disabled}
                             id={input_id}
+                            maxLength={maxLength}
                         />
                     ) : (
                         <input
@@ -134,6 +136,7 @@ const Input = React.forwardRef(
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}
                             aria-label={label as string}
+                            maxLength={maxLength}
                         />
                     )}
                     {trailing_icon &&

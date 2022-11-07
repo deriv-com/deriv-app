@@ -123,7 +123,6 @@ export default class UIStore extends BaseStore {
     is_cfd_page = false;
     is_nativepicker_visible = false;
     is_landscape = false;
-    is_input_clicked = false;
 
     prompt_when = false;
     promptFn = () => {};
@@ -243,7 +242,6 @@ export default class UIStore extends BaseStore {
             is_cfd_page: observable,
             is_nativepicker_visible: observable,
             is_landscape: observable,
-            is_input_clicked: observable,
             prompt_when: observable,
             promptFn: observable,
             is_account_needed_modal_on: observable,
@@ -322,7 +320,6 @@ export default class UIStore extends BaseStore {
             setCurrentFocus: action.bound,
             addToast: action.bound,
             removeToast: action.bound,
-            setIsInputClicked: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
@@ -726,10 +723,6 @@ export default class UIStore extends BaseStore {
         if (index > -1) {
             this.toasts.splice(index, 1);
         }
-    }
-
-    setIsInputClicked(is_input_clicked) {
-        this.is_input_clicked = is_input_clicked;
     }
 
     setIsNativepickerVisible(is_nativepicker_visible) {

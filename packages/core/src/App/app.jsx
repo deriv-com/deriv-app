@@ -13,7 +13,7 @@ import {
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
-    // mobileOSDetect,
+    mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
 } from '@deriv/shared';
@@ -64,22 +64,17 @@ const AppWithoutTranslation = ({ root_store }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // const checkInputClick = React.useCallback(() => {
-    //     if (document.activeElement.tagName === 'INPUT' && isMobile() && isSafari()) {
-    //         root_store.ui.setIsInputClicked(true);
-    //     } else {
-    //         root_store.ui.setIsInputClicked(false);
-    //     }
-    // }, [root_store.ui]);
-
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
-            // const is_android_device = mobileOSDetect() === 'Android';
+            const is_android_device = mobileOSDetect() === 'Android';
             // const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             // const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
+            const is_media_landscape = is_android_device
+                ? screen.availWidth <= screen.availHeight
+                : window.matchMedia('(orientation:portrait)').matches;
 
-            if (window.matchMedia('(orientation:portrait)').matches) {
+            if (is_media_landscape) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -92,11 +87,9 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         const debouncedHandleResize = debounce(handleResize, 400);
         window.addEventListener('resize', debouncedHandleResize);
-        // window.addEventListener('click', checkInputClick);
 
         return () => {
             window.removeEventListener('resize', debouncedHandleResize);
-            // window.removeEventListener('click', checkInputClick);
         };
     }, [handleResize]);
 

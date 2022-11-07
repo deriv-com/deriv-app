@@ -9,7 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    // isSafari,
+    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -67,12 +67,12 @@ const AppWithoutTranslation = ({ root_store }) => {
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
             const is_android_device = mobileOSDetect() === 'Android';
-            // const view_width = is_android_device ? screen.availWidth : window.innerWidth;
-            // const view_height = is_android_device ? screen.availHeight : window.innerHeight;
+            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            const is_media_landscape = is_android_device
-                ? screen.availWidth <= screen.availHeight
-                : window.matchMedia('(orientation:portrait)').matches;
+            const is_media_landscape = isSafari()
+                ? window.matchMedia('(orientation:portrait)').matches
+                : view_width <= view_height;
 
             if (is_media_landscape) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });

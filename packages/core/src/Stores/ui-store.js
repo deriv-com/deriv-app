@@ -694,10 +694,6 @@ export default class UIStore extends BaseStore {
         this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
     }
 
-    setCurrentOrientation(current_orientation) {
-        this.current_orientation = current_orientation;
-    }
-
     setCurrentFocus(value) {
         this.current_focus = value;
         this.toggleOnScreenKeyboard();

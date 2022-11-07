@@ -4,7 +4,7 @@ import { screen, render, fireEvent } from '@testing-library/react';
 import AccountLimitsContext from '../account-limits-context';
 import AccountLimitsFooterPortal from '../account-limits-footer';
 
-const AccountLimitsFooterPortalComponent = () => {
+const AccountLimitsFooterPortalComponent = ({ onClick }: any) => {
     const footer = React.useRef<HTMLDivElement>(null);
     return (
         <React.Fragment>
@@ -12,7 +12,7 @@ const AccountLimitsFooterPortalComponent = () => {
                 value={{
                     currency: 'USD',
                     footer_ref: footer,
-                    toggleOverlay: jest.fn(),
+                    toggleOverlay: onClick,
                 }}
             >
                 <AccountLimitsFooterPortal />
@@ -40,8 +40,11 @@ describe('<AccountLimitsFooterPortal/>', () => {
         render(<AccountLimitsFooterPortalComponent />);
         expect(screen.getAllByTestId('footer_text').length).toBe(1);
     });
-    it('should trigger toggleOverlay', () => {
-        render(<AccountLimitsFooterPortalComponent />);
-        fireEvent.click(screen.getByText(/learn more about account limits/i));
+    it('should trigger toggleOverlay', async () => {
+        const toggleOverlay = jest.fn();
+        render(<AccountLimitsFooterPortalComponent onClick={toggleOverlay} />);
+        const footer_text = await screen.findByText(/learn more about account limits/i);
+        fireEvent.click(footer_text);
+        expect(toggleOverlay).toHaveBeenCalled();
     });
 });

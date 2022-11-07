@@ -4,20 +4,6 @@ import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 
-// Todo: Should move this declaration into a .d.ts file.
-declare global {
-    interface Window {
-        LiveChatWidget: {
-            on: (key: string, callback: VoidFunction) => void;
-            get: (key: string) => any;
-            call: (key: string, value?: any) => void;
-        };
-        LC_API: {
-            on_chat_ended: VoidFunction;
-        };
-    }
-}
-
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);

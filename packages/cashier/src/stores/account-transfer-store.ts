@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, makeObservable } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -21,28 +21,68 @@ import { TRootStore, TWebSocket, TAccount, TTransferAccount, TTransferBetweensAc
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
-    // eslint-disable-next-line no-useless-constructor
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {}
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+        makeObservable(this, {
+            accounts_list: observable,
+            container: observable,
+            error: observable,
+            has_no_account: observable,
+            has_no_accounts_balance: observable,
+            is_transfer_confirm: observable,
+            is_transfer_successful: observable,
+            is_mt5_transfer_in_progress: observable,
+            minimum_fee: observable,
+            receipt: observable,
+            selected_from: observable,
+            selected_to: observable,
+            account_transfer_amount: observable,
+            transfer_fee: observable,
+            transfer_limit: observable,
+            is_account_transfer_visible: computed,
+            is_transfer_locked: computed,
+            setBalanceByLoginId: action.bound,
+            setBalanceSelectedFrom: action.bound,
+            setBalanceSelectedTo: action.bound,
+            onMountAccountTransfer: action.bound,
+            setHasNoAccountsBalance: action.bound,
+            setHasNoAccount: action.bound,
+            setTransferFee: action.bound,
+            setMinimumFee: action.bound,
+            setTransferLimit: action.bound,
+            sortAccountsTransfer: action.bound,
+            setSelectedFrom: action.bound,
+            setSelectedTo: action.bound,
+            setAccounts: action.bound,
+            setIsTransferConfirm: action.bound,
+            setAccountTransferAmount: action.bound,
+            setIsTransferSuccessful: action.bound,
+            setIsMT5TransferInProgress: action.bound,
+            setReceiptTransfer: action.bound,
+            onChangeTransferFrom: action.bound,
+            onChangeTransferTo: action.bound,
+            resetAccountTransfer: action.bound,
+            setTransferPercentageSelectorResult: action.bound,
+            validateTransferFromAmount: action.bound,
+            validateTransferToAmount: action.bound,
+        });
+    }
 
-    @observable accounts_list: Array<TAccount> = [];
-    @observable container = Constants.containers.account_transfer;
-    @observable error = new ErrorStore();
-    @observable has_no_account = false;
-    @observable has_no_accounts_balance = false;
-    @observable is_transfer_confirm = false;
-    @observable is_transfer_successful = false;
-    @observable is_mt5_transfer_in_progress = false;
-    @observable minimum_fee = '';
-    @observable receipt = {
-        amount_transferred: 0,
-    };
-    @observable selected_from: TAccount = {};
-    @observable selected_to: TAccount = {};
-    @observable account_transfer_amount = 0;
-    @observable transfer_fee: number | undefined | null = null;
-    @observable transfer_limit: { min?: string | null; max?: string | null } = {};
+    accounts_list: Array<TAccount> = [];
+    container = Constants.containers.account_transfer;
+    error = new ErrorStore();
+    has_no_account = false;
+    has_no_accounts_balance = false;
+    is_transfer_confirm = false;
+    is_transfer_successful = false;
+    is_mt5_transfer_in_progress = false;
+    minimum_fee = null;
+    receipt = {};
+    selected_from: TAccount = {};
+    selected_to: TAccount = {};
+    account_transfer_amount = '';
+    transfer_fee: number | undefined | null = null;
+    transfer_limit: { min?: string | null; max?: string | null } = {};
 
-    @computed
     get is_account_transfer_visible() {
         const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
         // cashier Transfer account tab is hidden for iom clients
@@ -50,7 +90,6 @@ export default class AccountTransferStore {
         return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
     }
 
-    @computed
     get is_transfer_locked() {
         const {
             is_financial_account,
@@ -67,18 +106,15 @@ export default class AccountTransferStore {
         return need_financial_assessment && this.error.is_ask_financial_risk_approval;
     }
 
-    @action.bound
     setBalanceByLoginId(loginid: string, balance: string | number) {
         const account = this.accounts_list.find(acc => loginid === acc.value);
         if (account) account.balance = balance;
     }
 
-    @action.bound
     setBalanceSelectedFrom(balance: string | number): void {
         this.selected_from.balance = balance;
     }
 
-    @action.bound
     setBalanceSelectedTo(balance: string | number): void {
         this.selected_to.balance = balance;
     }
@@ -87,7 +123,6 @@ export default class AccountTransferStore {
     // 1. fiat to crypto & vice versa
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
-    @action.bound
     async onMountAccountTransfer() {
         const { client, modules } = this.root_store;
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
@@ -167,17 +202,14 @@ export default class AccountTransferStore {
         return can_transfer;
     }
 
-    @action.bound
     setHasNoAccountsBalance(has_no_accounts_balance: boolean): void {
         this.has_no_accounts_balance = has_no_accounts_balance;
     }
 
-    @action.bound
     setHasNoAccount(has_no_account: boolean): void {
         this.has_no_account = has_no_account;
     }
 
-    @action.bound
     setTransferFee() {
         const transfer_fee = getPropertyValue(getCurrencies(), [
             this.selected_from.currency,
@@ -188,14 +220,12 @@ export default class AccountTransferStore {
         this.transfer_fee = Number(transfer_fee || 0);
     }
 
-    @action.bound
     setMinimumFee() {
         const decimals = getDecimalPlaces(this.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
 
-    @action.bound
     setTransferLimit() {
         const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
         const is_dxtrade_transfer = this.selected_from.is_dxtrade || this.selected_to.is_dxtrade;
@@ -226,7 +256,6 @@ export default class AccountTransferStore {
         };
     }
 
-    @action.bound
     async sortAccountsTransfer(response_accounts?: TTransferBetweensAccounts) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
@@ -384,49 +413,40 @@ export default class AccountTransferStore {
         this.setAccounts(arr_accounts);
     }
 
-    @action.bound
     setSelectedFrom(obj_values: TAccount): void {
         this.selected_from = obj_values;
     }
 
-    @action.bound
     setSelectedTo(obj_values: TAccount): void {
         this.selected_to = obj_values;
     }
 
-    @action.bound
     setAccounts(arr_accounts: Array<TAccount>): void {
         this.accounts_list = arr_accounts;
     }
 
-    @action.bound
     setIsTransferConfirm(is_transfer_confirm: boolean): void {
         this.is_transfer_confirm = is_transfer_confirm;
     }
 
-    @action.bound
     setAccountTransferAmount(amount: number): void {
         this.account_transfer_amount = amount;
     }
 
-    @action.bound
     setIsTransferSuccessful(is_transfer_successful: boolean): void {
         this.is_transfer_successful = is_transfer_successful;
     }
 
-    @action.bound
     setIsMT5TransferInProgress(is_mt5_transfer_in_progress: boolean): void {
         this.is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
     }
 
-    @action.bound
     setReceiptTransfer({ amount }: { amount: number }): void {
         this.receipt = {
             amount_transferred: amount,
         };
     }
 
-    @action.bound
     onChangeTransferFrom({ target }: { target: { value: string } }) {
         this.error.setErrorMessage({ message: '', code: '' });
         this.selected_from.error = '';
@@ -461,7 +481,6 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     }
 
-    @action.bound
     onChangeTransferTo({ target }: { target: { value: string | undefined } }) {
         this.error.setErrorMessage({ message: '', code: '' });
         this.selected_to.error = '';
@@ -559,13 +578,11 @@ export default class AccountTransferStore {
         return transfer_between_accounts;
     };
 
-    @action.bound
     resetAccountTransfer = async () => {
         this.setIsTransferConfirm(false);
         this.setTransferLimit();
     };
 
-    @action.bound
     setTransferPercentageSelectorResult(amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
@@ -587,7 +604,6 @@ export default class AccountTransferStore {
         general_store.percentageSelectorSelectionStatus(false);
     }
 
-    @action.bound
     validateTransferFromAmount() {
         const { converter_from_amount, setConverterFromError } = this.root_store.modules.cashier.crypto_fiat_converter;
 
@@ -610,7 +626,6 @@ export default class AccountTransferStore {
         }
     }
 
-    @action.bound
     validateTransferToAmount() {
         const { converter_to_amount, setConverterToError } = this.root_store.modules.cashier.crypto_fiat_converter;
 

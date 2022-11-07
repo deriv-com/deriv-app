@@ -13,15 +13,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import {
-    TRootStore,
-    TClientStore,
-    TUiStore,
-    TReactChangeEvent,
-    TAccount,
-    TAccountsList,
-    TCryptoTransactionDetails,
-} from 'Types';
+import { TRootStore, TClientStore, TReactChangeEvent, TAccount, TAccountsList, TCryptoTransactionDetails } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -53,10 +45,8 @@ type TAccountTransferFormProps = {
     crypto_transactions: Array<TCryptoTransactionDetails>;
     error: object;
     is_crypto: boolean;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
     is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
     minimum_fee: string;
-    mt5_login_list: TClientStore['mt5_login_list'];
     onChangeConverterFromAmount: () => void;
     onChangeConverterToAmount: () => void;
     onChangeTransferFrom: (event: TReactChangeEvent) => void;
@@ -82,13 +72,7 @@ type TAccountTransferFormProps = {
     validateTransferToAmount: () => void;
 };
 
-const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountsList) => {
-    let server;
-
-    if (account.is_mt) {
-        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-    }
-
+const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
@@ -109,18 +93,11 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
                 </Text>
             </div>
 
-            {server?.market_type === 'synthetic' && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.server_info?.geolocation?.region}&nbsp;
-                    {server.server_info?.geolocation?.sequence !== 1 ? server.server_info?.geolocation?.sequence : ''}
-                </Text>
-            )}
-
             <span className='account-transfer-form__balance'>
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={account.balance && account.balance < 0}
+                    has_sign={!!account.balance && account.balance < 0}
                     show_currency
                 />
             </span>
@@ -149,9 +126,7 @@ const AccountTransferForm = ({
     error,
     is_crypto,
     is_dxtrade_allowed,
-    is_dark_mode_on,
     minimum_fee,
-    mt5_login_list,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
     onChangeTransferFrom,
@@ -237,35 +212,19 @@ const AccountTransferForm = ({
         dxtrade_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = (
-                <AccountOption
-                    mt5_login_list={mt5_login_list}
-                    idx={idx}
-                    account={account}
-                    is_dark_mode_on={is_dark_mode_on}
-                />
-            );
+            const text = <AccountOption idx={idx} account={account} />;
             const value = account.value;
-            const account_server = mt5_login_list.find(server => server.login === account.value);
 
             const is_cfd_account = account.is_mt || account.is_dxtrade;
-            let server_region = '';
-            if (account_server?.market_type === 'synthetic') {
-                server_region = `[${account_server.server_info?.geolocation?.region}${
-                    account_server.server_info?.geolocation?.sequence !== 1
-                        ? account_server.server_info?.geolocation?.sequence
-                        : ''
-                }]`;
-            }
 
             getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
                 is_dxtrade: account.is_dxtrade,
-                nativepicker_text: `${
-                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
 
@@ -287,9 +246,9 @@ const AccountTransferForm = ({
                     is_mt: account.is_mt,
                     is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
-                    nativepicker_text: `${
-                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                    nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                        account.balance
+                    } ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });
@@ -626,7 +585,7 @@ const AccountTransferForm = ({
     );
 };
 
-export default connect(({ client, modules, ui }: TRootStore) => ({
+export default connect(({ client, modules }: TRootStore) => ({
     account_limits: client.account_limits,
     account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
     accounts_list: modules.cashier.account_transfer.accounts_list,
@@ -637,10 +596,8 @@ export default connect(({ client, modules, ui }: TRootStore) => ({
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     is_crypto: modules.cashier.general_store.is_crypto,
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.account_transfer.minimum_fee,
-    mt5_login_list: client.mt5_login_list,
     onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
     onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
     onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,

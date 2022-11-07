@@ -77,7 +77,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                 if (isSafari()) {
                     is_landscape = window.matchMedia('(orientation:portrait)').matches;
                 } else {
-                    is_landscape = window.outerWidth <= window.outerHeight;
+                    is_landscape = screen.width <= screen.height;
                 }
             } else if (mobileOSDetect() === 'Android') {
                 is_landscape = screen.availWidth <= screen.availHeight;

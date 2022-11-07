@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { getUrlBase } from '@deriv/shared';
 import { useStores } from 'Stores';
 
@@ -29,7 +29,6 @@ const IntroducingFloatingRatesModal = () => {
 
     return (
         <Modal
-            has_close_icon
             width='540px'
             is_open={is_open}
             title={<Localize i18n_default_text='Introducing floating rates' />}
@@ -58,7 +57,7 @@ const IntroducingFloatingRatesModal = () => {
                 <Checkbox
                     className='introducing-floating-rates-modal__checkbox'
                     classNameLabel='introducing-floating-rates-modal__checkbox--label'
-                    label="Don't show me this message again."
+                    label={localize("Don't show me this message again.")}
                     onChange={onCheckboxChange}
                     value={should_not_show_modal_again.current}
                 />

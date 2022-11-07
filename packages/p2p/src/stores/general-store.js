@@ -337,6 +337,7 @@ export default class GeneralStore extends BaseStore {
 
         this.updateP2pNotifications(notifications);
     }
+
     redirectToOrderDetails(order_id) {
         const { order_store } = this.root_store;
         this.redirectTo('orders');
@@ -367,7 +368,7 @@ export default class GeneralStore extends BaseStore {
                             <Localize
                                 i18n_default_text='Please switch your ads to floating rates by {{end_date}}.'
                                 values={{
-                                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                                    end_date: floating_rate_store.fixed_rate_adverts_end_date,
                                 }}
                             />
                         ),

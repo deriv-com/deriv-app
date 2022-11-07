@@ -127,6 +127,7 @@ export const PersonalDetailsForm = ({
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
+        form_initial_values: {},
     });
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({

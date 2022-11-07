@@ -66,11 +66,11 @@ module.exports = function () {
                         'style-loader',
                         ...(is_publishing
                             ? [
-                                {
-                                    loader: MiniCssExtractPlugin.loader,
-                                },
-                                '@deriv/publisher/utils/css-unit-loader.js',
-                            ]
+                                  {
+                                      loader: MiniCssExtractPlugin.loader,
+                                  },
+                                  '@deriv/publisher/utils/css-unit-loader.js',
+                              ]
                             : []),
                         'css-loader',
                         {
@@ -123,12 +123,12 @@ module.exports = function () {
             minimize: is_release,
             minimizer: is_release
                 ? [
-                    new TerserPlugin({
-                        test: /\.js$/,
-                        parallel: 2,
-                    }),
-                    new CssMinimizerPlugin(),
-                ]
+                      new TerserPlugin({
+                          test: /\.js$/,
+                          parallel: 2,
+                      }),
+                      new CssMinimizerPlugin(),
+                  ]
                 : [],
         },
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',

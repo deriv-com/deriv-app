@@ -6,10 +6,7 @@ import { CallBackProps } from 'react-joyride';
 import { Text } from '@deriv/components';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<
-    'showProgress' | 'showSkipButton' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay',
-    boolean
->;
+type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
 
 type TStep = {
     label?: string;
@@ -17,17 +14,17 @@ type TStep = {
 };
 
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
-    if (type === 'token') {
-        return storeSetting('onboard_tour_token', param);
+    if (type === `${tourType.key}token`) {
+        return storeSetting(`${tourType.key}token`, param);
     }
-    return storeSetting('onboard_tour_status', param);
+    return storeSetting(`${tourType.key}status`, param);
 };
 
 export const getTourSettings = (type: string) => {
     if (type === 'token') {
-        return getSetting('onboard_tour_token');
+        return getSetting(`${tourType.key}token`);
     }
-    return getSetting('onboard_tour_status');
+    return getSetting(`${tourType.key}status`);
 };
 
 export const Step = ({ label, content }: TStep) => {
@@ -49,23 +46,32 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
-let onboarding_tour: { [key: string]: string } = {};
+export const tourType = {
+    key: 'onboard_tour_',
+};
+
+export const setTourType = (param: string) => {
+    tourType.key = param;
+};
+
+let tour: { [key: string]: string } = {};
 let current_target: number;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
     if (current_target && current_target !== index) {
-        onboarding_tour = {};
-        onboarding_tour.status = status;
-        onboarding_tour.action = action;
+        tour = {};
+        tour.status = status;
+        tour.action = action;
     }
     current_target = index;
-    setTourSettings(onboarding_tour, 'tour');
-    if (!getTourSettings('token')) setTourSettings(new Date().getTime(), 'token');
+    setTourSettings(tour, 'tour');
+    //added trigger to create new listner on local storage
+    window.dispatchEvent(new Event('storage'));
+    if (!getTourSettings(`${tourType.key}token`)) setTourSettings(new Date().getTime(), `${tourType.key}token`);
 };
 
 const joyride_props: TJoyrideConfig = {
     showProgress: false,
-    showSkipButton: true,
     spotlightClicks: true,
     disableBeacon: true,
     disableOverlay: true,
@@ -108,7 +114,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Start with a template')}
                 content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
@@ -136,7 +142,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Start with a tutorials')}
                 content={localize(
-                    'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+                    "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}

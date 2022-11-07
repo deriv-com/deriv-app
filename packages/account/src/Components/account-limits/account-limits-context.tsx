@@ -4,7 +4,7 @@ export type TAccountLimitsContext = {
     currency: string;
     footer_ref?: React.RefObject<HTMLElement>;
     overlay_ref?: React.RefObject<HTMLElement>;
-    toggleOverlay?: () => boolean;
+    toggleOverlay?: () => void;
 };
 
 const AccountLimitsContext = React.createContext<TAccountLimitsContext>({ currency: '' });

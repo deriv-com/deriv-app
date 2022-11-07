@@ -1,4 +1,4 @@
-import HintBox from './hint-box.jsx';
+import HintBox from './hint-box';
 import './hint-box.scss';
 
 export default HintBox;

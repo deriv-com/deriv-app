@@ -16,7 +16,6 @@ import {
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
-    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -73,12 +72,10 @@ const AppWithoutTranslation = ({ root_store }) => {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
             let is_landscape;
 
+            // const isFirefox = typeof InstallTrigger !== 'undefined';
+
             if (mobileOSDetect() === 'iOS') {
-                if (isSafari()) {
-                    is_landscape = window.matchMedia('(orientation:portrait)').matches;
-                } else {
-                    is_landscape = window.width <= window.height;
-                }
+                is_landscape = window.matchMedia('(orientation:portrait)').matches;
             } else if (mobileOSDetect() === 'Android') {
                 is_landscape = screen.availWidth <= screen.availHeight;
             } else {

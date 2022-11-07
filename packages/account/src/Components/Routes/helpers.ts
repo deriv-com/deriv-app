@@ -1,14 +1,14 @@
-import { matchPath, RouteProps } from 'react-router';
+import { match, matchPath, RouteProps } from 'react-router';
 import { routes } from '@deriv/shared';
 import { TRouteConfig } from 'Types';
 
 export const normalizePath = (path: string): string => (/^\//.test(path) ? path : `/${path || ''}`); // Default to '/'
 
 export const findRouteByPath = (path: string, routes_config?: TRouteConfig[]): RouteProps | undefined => {
-    let result;
+    let result: RouteProps | undefined;
 
     routes_config?.some(route_info => {
-        let match_path;
+        let match_path: match | null = null;
         try {
             match_path = matchPath(path, route_info);
         } catch (e: unknown) {

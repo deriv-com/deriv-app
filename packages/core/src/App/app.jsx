@@ -16,6 +16,7 @@ import {
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
+    isSafari,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -67,13 +68,22 @@ const AppWithoutTranslation = ({ root_store }) => {
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
             // const is_android_device = mobileOSDetect() === 'Android';
-            // const view_width = is_android_device ? screen.availWidth : window.screen.width;
-            // const view_height = is_android_device ? screen.availHeight : window.screen.height;
+            // const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            // const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            const is_landscape =
-                mobileOSDetect() === 'iOS'
-                    ? window.matchMedia('(orientation:portrait)').matches
-                    : screen.availWidth <= screen.availHeight;
+            let is_landscape;
+
+            if (mobileOSDetect() === 'iOS') {
+                if (isSafari()) {
+                    is_landscape = window.matchMedia('(orientation:portrait)').matches;
+                } else {
+                    is_landscape = window.outerWidth <= window.outerHeight;
+                }
+            } else if (mobileOSDetect() === 'Android') {
+                is_landscape = screen.availWidth <= screen.availHeight;
+            } else {
+                is_landscape = window.innerWidth <= window.innerHeight;
+            }
 
             if (is_landscape) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });

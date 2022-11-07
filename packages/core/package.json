@@ -103,7 +103,7 @@
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
-        "@deriv/deriv-charts": "1.0.0",
+        "@deriv/deriv-charts": "1.0.1",
         "@deriv/p2p": "^0.7.3",
         "@deriv/reports": "^1.0.0",
         "@deriv/shared": "^1.0.0",

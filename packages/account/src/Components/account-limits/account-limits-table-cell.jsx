@@ -3,7 +3,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 
-const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) => {
+const AccountLimitsTableCell = ({ align, children, is_hint, level, renderExtraInfo }) => {
     const text_size = is_hint ? 'xxxs' : 'xxs';
 
     return (
@@ -12,6 +12,7 @@ const AccountLimitsTableCell = ({ align, children, is_hint, renderExtraInfo }) =
                 className={classNames('da-account-limits__table-cell', {
                     'da-account-limits__table-cell--left': align !== 'right',
                     'da-account-limits__table-cell--right': align === 'right',
+                    'da-account-limits__table-cell--submarket': level === 'submarket',
                 })}
                 data-testid='account_limit_table_cell'
             >

@@ -12,42 +12,38 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
 
 export type TAccountLimits = {
     account_limits: {
         api_initial_load_error?: string;
         open_positions?: any;
-        account_balance?: number;
+        account_balance: string | number;
         daily_transfers?: object;
-        payout?: number;
+        payout: string | number;
         lifetime_limit?: number;
-        market_specific?: {
-            commodities?: Array<object>;
-            cryptocurrency?: Array<object>;
-            forex?: Array<object | undefined>;
-            indices?: Array<object>;
-            synthetic_index?: Array<object>;
+        market_specific: {
+            commodities: TAccountLimitsCollection[];
+            cryptocurrency: TAccountLimitsCollection[];
+            forex: TAccountLimitsCollection[];
+            indices: TAccountLimitsCollection[];
+            synthetic_index: TAccountLimitsCollection[];
         };
         num_of_days?: number;
-        num_of_days_limit?: number;
-        remainder?: number;
+        num_of_days_limit: string | number;
+        remainder: string | number;
         withdrawal_for_x_days_monetary?: number;
-        withdrawal_since_inception_monetary?: number;
+        withdrawal_since_inception_monetary: string | number;
     };
     currency: string;
-    footer_ref?: Element | DocumentFragment | object;
+    footer_ref?: React.RefObject<HTMLElement>;
     is_app_settings?: boolean;
     getLimits: () => Promise<{ data: object }>;
     is_fully_authenticated: boolean;
     is_from_derivgo?: boolean;
     is_switching: boolean;
     is_virtual: boolean;
-    overlay_ref?:
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
+    overlay_ref?: React.RefObject<HTMLElement>;
     setIsOverlayShown?: (is_overlay_shown: boolean | undefined) => void;
     setIsPopupOverlayShown?: (is_popup_overlay_shown: boolean) => void;
     should_bypass_scrollbars?: boolean;
@@ -140,11 +136,8 @@ const AccountLimits = ({
     }
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-    const forex_ordered = forex?.slice().sort((a: any, b: any) => (a?.name < b?.name ? 1 : -1));
-
-    if (forex_ordered && forex_ordered.push) {
-        forex_ordered.push(forex_ordered.shift());
-    }
+    const forex_ordered = forex?.slice().sort((a: any, b: any) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+    const derived_ordered = synthetic_index?.slice().sort((a: any, b: any) => (a.level < b.level ? 1 : -1));
 
     const context_value = {
         currency,
@@ -251,12 +244,9 @@ const AccountLimits = ({
                                 </thead>
                                 <tbody>
                                     <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                    <AccountLimitsTurnoverLimitRow
-                                        collection={forex_ordered}
-                                        title={localize('Forex')}
-                                    />
+                                    <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
                                     <AccountLimitsTurnoverLimitRow collection={indices} />
-                                    <AccountLimitsTurnoverLimitRow collection={synthetic_index} />
+                                    <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
                                 </tbody>
                             </table>
                             {/* We only show "Withdrawal Limits" on account-wide settings pages. */}

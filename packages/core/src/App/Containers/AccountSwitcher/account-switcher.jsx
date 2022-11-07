@@ -560,7 +560,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_demo_visible}
                         toggleVisibility={() => {
                             toggleVisibility('demo_dmt5');
@@ -774,7 +774,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dmt5');
@@ -902,7 +902,10 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {/* TODO: Remove the below condition once Deriv X update is released */}
+                                            {account.title === localize('Derived')
+                                                ? localize('Synthetic')
+                                                : account.title}
                                         </Text>
                                         <Button
                                             onClick={() => openDXTradeRealAccount(account.type)}

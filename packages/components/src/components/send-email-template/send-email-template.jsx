@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
-import Button from '../button/button.jsx';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
+import Button from '../button/button';
 import Text from '../text';
 
 const SendEmailTemplate = ({
@@ -117,7 +117,7 @@ SendEmailTemplate.propTypes = {
     is_disabled: PropTypes.bool,
     lbl_no_receive: PropTypes.string,
     onClickSendEmail: PropTypes.func,
-    subtitle: PropTypes.string,
+    subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     txt_resend: PropTypes.string,
     txt_resend_in: PropTypes.string,
     title: PropTypes.string,

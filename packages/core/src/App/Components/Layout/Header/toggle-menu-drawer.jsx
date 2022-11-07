@@ -22,7 +22,7 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
-    const deriv_static_url = /(deriv.com)/.test(link_to);
+    const deriv_static_url = getStaticUrl(link_to);
 
     if (is_language) {
         return (

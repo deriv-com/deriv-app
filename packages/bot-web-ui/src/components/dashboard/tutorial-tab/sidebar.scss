@@ -1,4 +1,5 @@
 .tutorials-wrapper {
+    width: 100%;
     background: var(--general-main-1);
     .dc-tabs {
         &__wrapper {
@@ -37,7 +38,7 @@
 
             .dc-tabs {
                 &__content {
-                    margin: -6.5rem 0 0 2.4rem;
+                    margin: -6.5rem 2.4rem;
                     width: 100%;
                 }
                 &--top {

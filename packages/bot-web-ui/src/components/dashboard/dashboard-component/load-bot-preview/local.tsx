@@ -1,5 +1,6 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
+import { Text, DesktopWrapper, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
@@ -19,13 +20,13 @@ type TLocalComponent = {
     previewRecentStrategy: () => void;
     loadFileFromRecent: () => void;
     setFileLoaded: (param: boolean) => void;
+    setTourDialogVisibility: (param: boolean) => boolean;
 };
 
 const LocalComponent = ({
     handleFileChange,
     is_mobile,
     loaded_local_file,
-    setLoadedLocalFile,
     onConfirmSave,
     setActiveTab,
     loadFileFromLocal,
@@ -48,6 +49,28 @@ const LocalComponent = ({
                 <div className='load-strategy__recent-preview'>
                     <div className='load-strategy__title load-strategy__recent-preview-title'>
                         <Localize i18n_default_text='Preview' />
+                        <div className='tab__dashboard__preview__retrigger'>
+                            <button
+                                onClick={() => {
+                                    setActiveTab(4);
+                                }}
+                            >
+                                <Icon
+                                    className='tab__dashboard__preview__retrigger__icon'
+                                    width='2.4rem'
+                                    height='2.4rem'
+                                    icon={'IcDbotUserGuide'}
+                                />
+                                <Text
+                                    color='prominent'
+                                    size='xs'
+                                    line_height='s'
+                                    className={'tab__dashboard__preview__retrigger__text'}
+                                >
+                                    {localize('UserGuide')}
+                                </Text>
+                            </button>
+                        </div>
                     </div>
                     <div className='load-strategy__preview-workspace'>
                         <div

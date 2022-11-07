@@ -147,7 +147,6 @@ export const icons =
         'IcCashierPaymentAgent',
         'IcCashierPaypalDark',
         'IcCashierPaypalLight',
-        'IcCashierPaymentAgent',
         'IcCashierPerfectMoneyDark',
         'IcCashierPerfectMoneyLight',
         'IcCashierPermatabankDark',
@@ -246,7 +245,6 @@ export const icons =
         'IcBotBuilderArrow',
         'IcBotBuilderTabIcon',
         'IcBotBuilder',
-        'IcBotbuilderTabIcon',
         'IcBox',
         'IcButtonBack',
         'IcCalendarDatefrom',
@@ -297,6 +295,7 @@ export const icons =
         'IcCross',
         'IcDashboardComponentTab',
         'IcDashboardDbotIcon',
+        'IcDbotUserGuide',
         'IcDelete',
         'IcDemo',
         'IcDerivOutline',
@@ -891,4 +890,4 @@ export const icons =
         'IcWalletZingpayDark',
         'IcWalletZingpayLight',
     ],
-};
+}

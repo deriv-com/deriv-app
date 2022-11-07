@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import GuideContent from './guide-content';
 import FAQContent from './faq-content';
 import debounce from 'lodash.debounce';
-import { faq_content, guide_content } from './tutorial-content';
+import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 import './sidebar.scss';
 
 type TSidebarProps = {
@@ -28,21 +28,20 @@ const Sidebar = ({
             setFAQSearchValue(value);
         }, 700)();
     };
-
-    const [search_filtered_list, setsearchFilteredList] = React.useState<TContentArray[]>(guide_content);
-    const [search_faq_list, setsearchFAQList] = React.useState<TContentArray[]>(faq_content);
+    const guide_tab_content = [...user_guide_content, ...guide_content];
+    const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
+    const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
-
     React.useEffect(() => {
         setsearchFAQList((search_input.current.value = ''));
-        setsearchFilteredList(guide_content);
+        setsearchFilteredList(guide_tab_content);
         setsearchFAQList(faq_content);
     }, [active_tab_tutorials]);
 
     React.useEffect(() => {
-        const content_list = active_tab_tutorials === 0 ? guide_content : faq_content;
+        const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
         const filtered_list = content_list.filter(data => {
-            return content_list === guide_content
+            return content_list === guide_tab_content
                 ? data.content.toLowerCase().includes(faq_search_value)
                 : data.title.toLowerCase().includes(faq_search_value);
         });

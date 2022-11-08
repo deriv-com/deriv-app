@@ -194,7 +194,6 @@ export default class OrderStore {
         });
     }
 
-    @action.bound
     getP2POrderList() {
         requestWS({ p2p_order_list: 1 }).then(response => {
             if (response) {

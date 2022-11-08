@@ -75,7 +75,7 @@ const AppWithoutTranslation = ({ root_store }) => {
 
             if (mobileOSDetect() === 'iOS') {
                 if (isFirefox()) {
-                    is_portrait = window.orientation === 'portrait';
+                    is_portrait = visualViewport.width <= visualViewport.height;
                 } else is_portrait = window.matchMedia('(orientation:portrait)').matches;
             } else if (mobileOSDetect() === 'Android') {
                 is_portrait = screen.availWidth <= screen.availHeight;

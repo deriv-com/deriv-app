@@ -73,11 +73,10 @@ const AppWithoutTranslation = ({ root_store }) => {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
             let is_landscape;
 
-            // const isFirefox = typeof InstallTrigger !== 'undefined';
-
-            if (mobileOSDetect() === 'iOS' && !isFirefox()) {
-                is_landscape = window.matchMedia('(orientation:portrait)').matches;
-            } else if (mobileOSDetect() === 'Android' || isFirefox()) {
+            if (mobileOSDetect() === 'iOS') {
+                if (isFirefox()) is_landscape = window.orientation === 0 || window.orientation === 180;
+                else is_landscape = window.matchMedia('(orientation:portrait)').matches;
+            } else if (mobileOSDetect() === 'Android') {
                 is_landscape = screen.availWidth <= screen.availHeight;
             } else {
                 is_landscape = window.innerWidth <= window.innerHeight;

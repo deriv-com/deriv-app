@@ -71,18 +71,21 @@ const AppWithoutTranslation = ({ root_store }) => {
             // const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             // const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            let is_landscape;
+            let is_portrait;
 
             if (mobileOSDetect() === 'iOS') {
-                if (isFirefox()) is_landscape = window.orientation === 0 || window.orientation === 180;
-                else is_landscape = window.matchMedia('(orientation:portrait)').matches;
+                if (isFirefox()) {
+                    is_portrait =
+                        screen.orientation.type === 'landscape-primary' ||
+                        screen.orientation.type === 'landscape-secondary';
+                } else is_portrait = window.matchMedia('(orientation:portrait)').matches;
             } else if (mobileOSDetect() === 'Android') {
-                is_landscape = screen.availWidth <= screen.availHeight;
+                is_portrait = screen.availWidth <= screen.availHeight;
             } else {
-                is_landscape = window.innerWidth <= window.innerHeight;
+                is_portrait = window.innerWidth <= window.innerHeight;
             }
 
-            if (is_landscape) {
+            if (is_portrait) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {

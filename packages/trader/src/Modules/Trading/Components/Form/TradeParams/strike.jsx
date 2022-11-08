@@ -33,7 +33,10 @@ const Strike = ({
                     className='trade-container__fieldset trade-container__barriers'
                     header={localize('Strike')}
                     header_tooltip={
-                        <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
+                        <Localize
+                            i18n_default_text='<0>For Call:</0> You will earn a payout if the market is above this price at the expiry time. Otherwise, your payout will be zero.<1/><1/><0>For Put:</0> You will earn a payout if the market is below this price at the expiry time. Otherwise, your payout will be zero.'
+                            components={[<strong key={0} />, <br key={1} />]}
+                        />
                     }
                 >
                     {advanced_duration_unit === 'd' ? (

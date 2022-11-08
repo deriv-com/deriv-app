@@ -1,4 +1,4 @@
-import { getPlatformSettingsAppstore, routes } from '@deriv/shared';
+import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const platform_config = [
@@ -35,7 +35,7 @@ const platform_config = [
         app_title: getPlatformSettingsAppstore('go').name,
         name: getPlatformSettingsAppstore('go').name,
         app_desc: localize('Trade on the go with our mobile app.'),
-        link_to: routes.dxtrade,
+        href: getStaticUrl('/deriv-go'),
     },
 ];
 

@@ -430,7 +430,7 @@ const AccountTransferForm = ({
                                         {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e: { target: { value: string } }) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
@@ -458,7 +458,7 @@ const AccountTransferForm = ({
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize

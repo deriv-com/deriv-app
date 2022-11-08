@@ -134,30 +134,19 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_partial_shade = ({
-    ctx,
-    start_left,
-    top,
-    bottom,
-    is_between_shade,
-    is_bottom_shade,
-    stroke_color,
-    fill_color,
-    scale,
-}) => {
+const draw_partial_shade = ({ ctx, start_left, top, bottom, stroke_color, fill_color, scale }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
     const is_top_visible = top < end_top;
     const is_bottom_visible = bottom < end_top;
     const displayed_top = is_top_visible ? top : end_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
-    const gradient = ctx.createLinearGradient(start_left, top, start_left, bottom);
     const is_start_left_visible = start_left < end_left;
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
 
-    if (is_top_visible && (is_between_shade || is_bottom_shade)) {
+    if (is_top_visible) {
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.arc(start_left, top, 1.5, 0, Math.PI * 2);
@@ -169,7 +158,7 @@ const draw_partial_shade = ({
         ctx.lineTo(end_left, top);
         ctx.stroke();
     }
-    if (is_bottom_visible && (is_between_shade || !is_bottom_shade)) {
+    if (is_bottom_visible) {
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.arc(start_left, bottom, 1.5, 0, Math.PI * 2);
@@ -182,12 +171,7 @@ const draw_partial_shade = ({
         ctx.stroke();
     }
 
-    if (!is_between_shade) {
-        gradient.addColorStop(0.01, is_bottom_shade ? 'rgba(0, 167, 158, 0.16)' : 'rgba(0, 167, 158, 0)');
-        gradient.addColorStop(0.98, is_bottom_shade ? 'rgba(0, 167, 158, 0)' : 'rgba(0, 167, 158, 0.16)');
-    }
-
-    ctx.fillStyle = fill_color || is_between_shade ? 'rgba(0, 167, 158, 0.08)' : gradient;
+    ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
 };
 
@@ -233,7 +217,6 @@ const TickContract = RawMarkerMaker(
             current_spot_time,
             status,
             profit,
-            profit_percentage,
             is_accumulators_trade_without_contract,
             is_sold,
             is_expired,
@@ -273,11 +256,10 @@ const TickContract = RawMarkerMaker(
             draw_partial_shade({
                 ctx,
                 start_left: start.left,
-                fill_color: getColor({ status: 'open', is_dark_theme }),
+                fill_color: 'rgba(55, 124, 252, 0.08)',
                 stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                 top: barrier,
                 bottom: barrier_2,
-                is_between_shade: true,
                 scale,
             });
             ctx.restore();
@@ -292,10 +274,10 @@ const TickContract = RawMarkerMaker(
                     draw_partial_shade({
                         ctx,
                         start_left: previous_tick.left,
+                        fill_color: getColor({ status: 'open', is_dark_theme }),
                         stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                         top: barrier,
                         bottom: barrier_2,
-                        is_between_shade: true,
                         scale,
                     });
                 }
@@ -339,12 +321,6 @@ const TickContract = RawMarkerMaker(
                             font: '10px IBM Plex Sans',
                             left: current_spot_time.left + 35,
                             top: current_spot_time.top + 1.5,
-                        },
-                        {
-                            text: `${sign}${profit_percentage}%`,
-                            font: '12px IBM Plex Sans',
-                            left: current_spot_time.left + 32,
-                            top: current_spot_time.top + 16,
                         },
                     ].forEach(({ text, font, left, top }) => {
                         shadowed_text({

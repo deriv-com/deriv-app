@@ -16,6 +16,7 @@ import {
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
+    isFirefox,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -74,9 +75,9 @@ const AppWithoutTranslation = ({ root_store }) => {
 
             // const isFirefox = typeof InstallTrigger !== 'undefined';
 
-            if (mobileOSDetect() === 'iOS') {
+            if (mobileOSDetect() === 'iOS' && !isFirefox()) {
                 is_landscape = window.matchMedia('(orientation:portrait)').matches;
-            } else if (mobileOSDetect() === 'Android') {
+            } else if (mobileOSDetect() === 'Android' || isFirefox()) {
                 is_landscape = screen.availWidth <= screen.availHeight;
             } else {
                 is_landscape = window.innerWidth <= window.innerHeight;

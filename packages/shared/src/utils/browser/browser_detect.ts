@@ -13,3 +13,9 @@ export const isSafari = () => {
         })(!window.safari || (typeof window.safari !== 'undefined' && window.safari.pushNotification))
     );
 };
+
+export const isFirefox = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return typeof InstallTrigger !== 'undefined';
+};

@@ -17,7 +17,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\"",
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
         "storybook": "start-storybook -p 6006",
         "storybook:build": "build-storybook --output-dir .out"
     },
@@ -31,7 +31,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/ui": "^0.0.6",
+        "@deriv/ui": "^0.0.15",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^6.6.1",

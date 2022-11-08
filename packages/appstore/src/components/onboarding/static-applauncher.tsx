@@ -13,10 +13,10 @@ type TStaticAppLauncher = {
 };
 
 const crypto_icon_config = {
-    USD: 'Usd',
-    Bitcoin: 'Btc',
-    Ethereum: 'Eth',
-    Litecoin: 'Ltc',
+    USD: 'USD',
+    Bitcoin: 'BTC',
+    Ethereum: 'ETH',
+    Litecoin: 'LTC',
 };
 
 const crypto_config = {
@@ -54,14 +54,14 @@ const CurrencyIcon = ({ currency, is_item_blurry }: TCryptoConfig) => {
             <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                 {localize(`${crypto_config[currency]}`)}
             </Text>
-            <Text size='xxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
+            <Text size='xxxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                 {localize('CR5236585')}
             </Text>
-            <Text size='xxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                { currency },
+            <Text size='xxxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
+                crypto_icon_config[currency],
                 '0',
                 true
-            )} ${currency}`}</Text>
+            )} ${crypto_icon_config[currency]}`}</Text>
         </React.Fragment>
     );
 };

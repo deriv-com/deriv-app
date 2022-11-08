@@ -276,7 +276,7 @@ const StaticDashboard = ({
                                     has_rounded_button
                                     is_animated
                                     name='Options'
-                                    value={'Options'}
+                                    value={'Options and Multipliers'}
                                 />
                             ) : (
                                 <Text
@@ -285,7 +285,7 @@ const StaticDashboard = ({
                                     color={is_options_text_blurry ? 'less-prominent' : 'prominent'}
                                     className={is_text_animated ? 'static-dashboard-wrapper__header--animated' : ''}
                                 >
-                                    {localize('Options')}
+                                    {localize('Options and Multipliers')}
                                 </Text>
                             )}
                         </div>

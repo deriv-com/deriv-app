@@ -74,6 +74,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_options_text_blurry
                 has_applauncher_account
                 is_last_step
+                is_get_blurry
                 is_derivx_last_step
                 is_financial_last_step
             />
@@ -96,6 +97,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_options_text_blurry
                 has_applauncher_account
                 is_last_step
+                is_get_blurry
                 is_derivx_last_step
                 is_financial_last_step
             />

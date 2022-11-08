@@ -50,6 +50,7 @@ const AddressDetails = ({
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
+    disabled_items,
     ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -157,6 +158,7 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('First line of address')}
+                                            disabled={disabled_items.includes('address_line_1')}
                                         />
                                         <InputField
                                             name='address_line_2'
@@ -168,6 +170,7 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
+                                            disabled={disabled_items.includes('address_line_2')}
                                         />
                                         <InputField
                                             name='address_city'
@@ -176,6 +179,7 @@ const AddressDetails = ({
                                                 is_svg || is_appstore ? localize('Town/City*') : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
+                                            disabled={disabled_items.includes('address_city')}
                                         />
                                         {!has_fetched_states_list && (
                                             <div className='details-form__loader'>
@@ -206,6 +210,7 @@ const AddressDetails = ({
                                                                     setAddressStateToDisplay('');
                                                                 }}
                                                                 list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                disabled={disabled_items.includes('address_state')}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -223,6 +228,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
+                                                                disabled={disabled_items.includes('address_state')}
                                                             />
                                                         </MobileWrapper>
                                                     </>
@@ -247,6 +253,7 @@ const AddressDetails = ({
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);
                                             }}
+                                            disabled={disabled_items.includes('address_postcode')}
                                         />
                                     </div>
                                 </ThemedScrollbars>

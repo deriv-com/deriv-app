@@ -137,6 +137,7 @@ const addressDetailsConfig = (
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
+    const disabled_items = account_settings.immutable_fields;
     return {
         header: {
             active_title: is_appstore ? localize('Where do you live?') : localize('Complete your address details'),
@@ -150,6 +151,7 @@ const addressDetailsConfig = (
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
             is_svg,
+            disabled_items,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
         icon: 'IcDashboardAddress',

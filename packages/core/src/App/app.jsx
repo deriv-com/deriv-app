@@ -9,6 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
+    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -68,7 +69,7 @@ const AppWithoutTranslation = ({ root_store }) => {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
             let is_portrait;
 
-            if (mobileOSDetect() === 'iOS') {
+            if (isSafari()) {
                 is_portrait = window.matchMedia('(orientation:portrait)').matches;
             } else if (mobileOSDetect() === 'Android') {
                 is_portrait = screen.availWidth <= screen.availHeight;

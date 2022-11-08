@@ -14,17 +14,17 @@ type TStep = {
 };
 
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
-    if (type === `${tourType.key}token`) {
-        return storeSetting(`${tourType.key}token`, param);
+    if (type === `${tour_type.key}token`) {
+        return storeSetting(`${tour_type.key}token`, param);
     }
-    return storeSetting(`${tourType.key}status`, param);
+    return storeSetting(`${tour_type.key}status`, param);
 };
 
 export const getTourSettings = (type: string) => {
     if (type === 'token') {
-        return getSetting(`${tourType.key}token`);
+        return getSetting(`${tour_type.key}token`);
     }
-    return getSetting(`${tourType.key}status`);
+    return getSetting(`${tour_type.key}status`);
 };
 
 export const Step = ({ label, content }: TStep) => {
@@ -46,12 +46,12 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
-export const tourType = {
+export const tour_type = {
     key: 'onboard_tour_',
 };
 
 export const setTourType = (param: string) => {
-    tourType.key = param;
+    tour_type.key = param;
 };
 
 let tour: { [key: string]: string } = {};
@@ -67,7 +67,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     setTourSettings(tour, 'tour');
     //added trigger to create new listner on local storage
     window.dispatchEvent(new Event('storage'));
-    if (!getTourSettings(`${tourType.key}token`)) setTourSettings(new Date().getTime(), `${tourType.key}token`);
+    if (!getTourSettings(`${tour_type.key}token`)) setTourSettings(new Date().getTime(), `${tour_type.key}token`);
 };
 
 const joyride_props: TJoyrideConfig = {

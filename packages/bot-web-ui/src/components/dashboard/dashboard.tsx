@@ -3,7 +3,7 @@ import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings, setTourType, tourType } from './joyride-config';
+import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings, setTourType, tour_type } from './joyride-config';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -60,11 +60,11 @@ const Dashboard = ({
             const { action } = tour_status;
             let actions = ['skip', 'close', 'reset'];
 
-            if (tourType.key === 'bot_builder_') {
+            if (tour_type.key === 'bot_builder_') {
                 actions = ['skip', 'close'];
             }
             if (actions.includes(action)) {
-                if (tourType.key === 'bot_builder_') {
+                if (tour_type.key === 'bot_builder_') {
                     setBotBuilderTourState(false);
                 } else {
                     setOnBoardTourRunState(false);

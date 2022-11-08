@@ -36,6 +36,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: false,
                     button: false,
+                    get: false,
                 }}
             />
         ),
@@ -66,6 +67,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: false,
                     button: true,
+                    get: true,
                 }}
             />
         ),
@@ -98,6 +100,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: false,
                     button: false,
+                    get: false,
                 }}
             />
         ),
@@ -128,6 +131,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: false,
                     button: true,
+                    get: false,
                 }}
             />
         ),
@@ -158,6 +162,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: true,
                     button: false,
+                    get: false,
                 }}
                 is_grey
                 has_account
@@ -197,6 +202,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: true,
                     topup: false,
                     button: false,
+                    get: false,
                 }}
                 is_grey
                 has_account

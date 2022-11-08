@@ -39,6 +39,7 @@ type TStaticCFDAccountManager = {
         trade: boolean;
         topup: boolean;
         button: boolean;
+        get: boolean;
     };
     is_derivx_last_step?: boolean;
     platform: TPlatform | 'options';
@@ -147,8 +148,7 @@ const StaticCFDAccountManager = ({
                     <Button
                         primary_light
                         className={classNames('static-cfd-account-manager__buttons-get', {
-                            'static-cfd-account-manager__buttons--animated':
-                                is_onboarding_animated.button || is_financial_last_step || is_derivx_last_step,
+                            'static-cfd-account-manager__buttons--animated': is_onboarding_animated.get,
                             'static-cfd-account-manager__buttons-get--blurry': is_blurry.get,
                         })}
                     >

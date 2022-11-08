@@ -37,6 +37,7 @@ type TStaticDashboard = {
         trade: boolean;
         topup: boolean;
         button: boolean;
+        get: boolean;
     };
     is_derivx_last_step?: boolean;
     is_financial_last_step?: boolean;

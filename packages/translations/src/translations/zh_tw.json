@@ -353,7 +353,6 @@
     "478280278": "此區塊顯示使用自訂的消息來提示輸入的對話方塊。輸入可以是文字串或數字，並且可以分配給變數。顯示對話方塊時，您的策略將暫停，並且僅在輸入響應並點選「確定」後才能恢復。",
     "479420576": "三級",
     "481276888": "處於區間之外",
-    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483591040": "刪除所有 {{ delete_count }} 區塊？",
     "485379166": "檢視交易",
     "487239607": "將指定的真或假轉換為相反的值",

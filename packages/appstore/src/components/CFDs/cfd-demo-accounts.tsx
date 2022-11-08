@@ -10,7 +10,9 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const available_demo_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
-            description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+            description: localize(
+                'Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
+            ),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,
@@ -18,7 +20,9 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
         {
             name: 'Financial',
-            description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
+            description: localize(
+                'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+            ),
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,
@@ -78,14 +82,15 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const openCFDAccount = (account_type: string) => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-        } else {
-            createCFDAccount({
-                category: 'demo',
-                type: account_type,
-                platform,
-            });
-            enableCFDPasswordModal();
+            return;
         }
+
+        createCFDAccount({
+            category: 'demo',
+            type: account_type,
+            platform,
+        });
+        enableCFDPasswordModal();
     };
 
     const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
@@ -103,16 +108,16 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     return (
         <div className='cfd-demo-account'>
             <div className='cfd-demo-account__accounts'>
-                {available_demo_accounts.map(
-                    account =>
+                {available_demo_accounts.map(account => {
+                    const existing_demo_accounts = existingDemoAccounts(account.platform, account.type);
+                    return (
                         account.is_visible && (
                             <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
-                                {existingDemoAccounts(account.platform, account.type) ? (
-                                    existingDemoAccounts(account.platform, account.type)?.map(existing_account => {
+                                {existing_demo_accounts ? (
+                                    existing_demo_accounts.map(existing_account => {
                                         const non_eu_accounts =
                                             existing_account.landing_company_short &&
-                                            existing_account.landing_company_short !== 'svg' &&
-                                            existing_account.landing_company_short !== 'bvi'
+                                            !['svg', 'bvi'].includes(existing_account.landing_company_short)
                                                 ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
                                                   existing_account.landing_company_short?.slice(1)
                                                 : existing_account.landing_company_short?.toUpperCase();
@@ -172,7 +177,8 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                 )}
                             </div>
                         )
-                )}
+                    );
+                })}
             </div>
         </div>
     );

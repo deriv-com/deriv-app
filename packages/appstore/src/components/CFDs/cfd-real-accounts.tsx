@@ -40,7 +40,9 @@ const CFDRealAccounts = ({
     const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
-            description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+            description: localize(
+                'Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
+            ),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
             disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
             platform: CFD_PLATFORMS.MT5,
@@ -48,7 +50,9 @@ const CFDRealAccounts = ({
         },
         {
             name: 'Financial',
-            description: localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'),
+            description: localize(
+                'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+            ),
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
             disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
             platform: CFD_PLATFORMS.MT5,

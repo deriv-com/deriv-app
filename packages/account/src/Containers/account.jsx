@@ -57,6 +57,7 @@ const PageOverlayWrapper = ({
     onClickClose,
     selected_route,
     subroutes,
+    history,
 }) => {
     if (isMobile() && selected_route) {
         return (
@@ -96,7 +97,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} history={history} />}
+                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} />}
             />
         </PageOverlay>
     );
@@ -189,6 +190,7 @@ const Account = ({
                     platform={platform}
                     selected_route={selected_route}
                     subroutes={subroutes}
+                    history={history}
                 />
             </div>
         </FadeWrapper>

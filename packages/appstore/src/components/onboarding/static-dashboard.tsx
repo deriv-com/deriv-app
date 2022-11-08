@@ -16,52 +16,45 @@ type TStaticDashboard = {
     has_account?: boolean;
     is_last_step?: boolean;
     derived_amount?: string;
-    is_get_blurry?: boolean;
     financial_amount?: string;
-    is_icon_blurry?: boolean;
-    is_trade_blurry?: boolean;
-    is_topup_blurry?: boolean;
-    is_text_animated?: boolean;
-    is_trade_animated?: boolean;
-    is_topup_animated?: boolean;
-    is_button_animated?: boolean;
-    is_cfd_item_blurry?: boolean;
-    is_cfd_text_blurry?: boolean;
-    is_options_item_blurry?: boolean;
-    is_options_text_blurry?: boolean;
+    is_blurry: {
+        icon: boolean;
+        item: boolean;
+        text: boolean;
+        get: boolean;
+        topup: boolean;
+        trade: boolean;
+        cfd_item: boolean;
+        cfd_text: boolean;
+        options_item: boolean;
+        options_text: boolean;
+        cfd_description: boolean;
+        options_description: boolean;
+        platformlauncher: boolean;
+    };
+    is_onboarding_animated: {
+        text: boolean;
+        trade: boolean;
+        topup: boolean;
+        button: boolean;
+    };
     is_derivx_last_step?: boolean;
     is_financial_last_step?: boolean;
     has_applauncher_account?: boolean;
-    is_cfd_description_blurry?: boolean;
-    is_platformlauncher_blurry?: boolean;
-    is_options_description_blurry?: boolean;
 };
 
 const StaticDashboard = ({
-    loginid,
-    is_grey,
     currency,
-    has_account,
-    is_last_step,
-    is_get_blurry,
-    is_icon_blurry,
-    is_topup_blurry,
-    is_trade_blurry,
     financial_amount,
-    is_text_animated,
-    is_trade_animated,
-    is_topup_animated,
-    is_button_animated,
-    is_cfd_item_blurry,
-    is_cfd_text_blurry,
+    has_account,
+    has_applauncher_account,
+    is_blurry,
     is_derivx_last_step,
     is_financial_last_step,
-    is_options_item_blurry,
-    is_options_text_blurry,
-    has_applauncher_account,
-    is_cfd_description_blurry,
-    is_platformlauncher_blurry,
-    is_options_description_blurry,
+    is_grey,
+    is_last_step,
+    is_onboarding_animated,
+    loginid,
 }: TStaticDashboard) => {
     const Divider = () => <div className='divider' />;
 
@@ -73,16 +66,14 @@ const StaticDashboard = ({
     const [index, setIndex] = React.useState(0);
 
     React.useEffect(() => {
-        const changeIndex = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
-            }
+        const change_index_interval_id = setInterval(() => {
+            setIndex(index === 0 ? 1 : 0);
         }, 5000);
 
-        return () => clearInterval(changeIndex);
-    }, [index]);
+        return () => clearInterval(change_index_interval_id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className='static-dashboard'>
             <div className='static-dashboard-wrapper'>
@@ -102,8 +93,10 @@ const StaticDashboard = ({
                                 <Text
                                     as='h2'
                                     weight='bold'
-                                    color={is_cfd_text_blurry ? 'less-prominent' : 'prominent'}
-                                    className={is_text_animated ? 'static-dashboard-wrapper__header--animated' : ''}
+                                    color={is_blurry.cfd_text ? 'less-prominent' : 'prominent'}
+                                    className={
+                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                    }
                                 >
                                     <Localize
                                         i18n_default_text='CFD <0>Compare accounts</0>'
@@ -117,7 +110,7 @@ const StaticDashboard = ({
                                                     'static-dashboard-wrapper__header-compare-accounts',
                                                     {
                                                         'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                            is_cfd_description_blurry || is_cfd_text_blurry,
+                                                            is_blurry.cfd_description || is_blurry.cfd_text,
                                                     }
                                                 )}
                                             />,
@@ -130,7 +123,7 @@ const StaticDashboard = ({
                             <Text
                                 as='p'
                                 size='xxs'
-                                color={is_cfd_text_blurry || is_cfd_description_blurry ? 'less-prominent' : 'prominent'}
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
                             >
                                 <Localize
                                     i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
@@ -142,7 +135,7 @@ const StaticDashboard = ({
                                             weight='bold'
                                             className={classNames('static-dashboard-wrapper__header--underlined', {
                                                 'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                    is_cfd_description_blurry || is_cfd_text_blurry,
+                                                    is_blurry.cfd_description || is_blurry.cfd_text,
                                             })}
                                         />,
                                     ]}
@@ -155,7 +148,7 @@ const StaticDashboard = ({
                                     weight='bold'
                                     className={classNames('static-dashboard-wrapper__header', {
                                         'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                            is_cfd_description_blurry || is_cfd_text_blurry,
+                                            is_blurry.cfd_description || is_blurry.cfd_text,
                                     })}
                                 >
                                     {localize('Compare accounts')}
@@ -168,18 +161,12 @@ const StaticDashboard = ({
                                     type='synthetic'
                                     platform='mt5'
                                     appname='Derived'
-                                    description='Trade CFDs on MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
+                                    description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
-                                    is_get_blurry={is_get_blurry}
-                                    is_icon_blurry={is_icon_blurry}
-                                    is_topup_blurry={is_topup_blurry}
-                                    is_trade_blurry={is_trade_blurry}
-                                    is_item_blurry={is_cfd_item_blurry}
-                                    is_trade_animated={is_trade_animated}
-                                    is_topup_animated={is_topup_animated}
-                                    is_button_animated={is_button_animated}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
                                 />
                                 {has_account && (
                                     <div className='static-dashboard-wrapper__body--add-button'>
@@ -204,20 +191,14 @@ const StaticDashboard = ({
                                     type='financial'
                                     platform='mt5'
                                     appname='Financial'
-                                    description='Trade CFDs on MT5 with Derived indices that simulate areal-world market movement'
+                                    description='Trade CFDs on Deriv MT5 with Derived indices that simulate areal-world market movement'
                                     financial_amount={financial_amount}
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
                                     is_last_step={is_last_step}
-                                    is_get_blurry={is_get_blurry}
-                                    is_icon_blurry={is_icon_blurry}
-                                    is_trade_blurry={is_trade_blurry}
-                                    is_topup_blurry={is_topup_blurry}
-                                    is_item_blurry={is_cfd_item_blurry}
-                                    is_trade_animated={is_trade_animated}
-                                    is_topup_animated={is_topup_animated}
-                                    is_button_animated={is_button_animated}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
                                     is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                 />
@@ -249,14 +230,8 @@ const StaticDashboard = ({
                                     currency={currency}
                                     has_account={has_account}
                                     is_last_step={is_last_step}
-                                    is_get_blurry={is_get_blurry}
-                                    is_icon_blurry={is_icon_blurry}
-                                    is_topup_blurry={is_topup_blurry}
-                                    is_trade_blurry={is_trade_blurry}
-                                    is_item_blurry={is_cfd_item_blurry}
-                                    is_trade_animated={is_trade_animated}
-                                    is_topup_animated={is_topup_animated}
-                                    is_button_animated={is_button_animated}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
                                     is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                 />
@@ -282,8 +257,10 @@ const StaticDashboard = ({
                                 <Text
                                     as='h2'
                                     weight='bold'
-                                    color={is_options_text_blurry ? 'less-prominent' : 'prominent'}
-                                    className={is_text_animated ? 'static-dashboard-wrapper__header--animated' : ''}
+                                    color={is_blurry.options_text ? 'less-prominent' : 'prominent'}
+                                    className={
+                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                    }
                                 >
                                     {localize('Options and Multipliers')}
                                 </Text>
@@ -294,7 +271,7 @@ const StaticDashboard = ({
                                 as='p'
                                 size='xxs'
                                 color={
-                                    is_options_text_blurry || is_options_description_blurry
+                                    is_blurry.options_text || is_blurry.options_description
                                         ? 'less-prominent'
                                         : 'prominent'
                                 }
@@ -308,7 +285,7 @@ const StaticDashboard = ({
                                             color='red'
                                             className={classNames('static-dashboard-wrapper__header--underlined', {
                                                 'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_options_description_blurry,
+                                                    is_blurry.options_description,
                                             })}
                                         />,
                                         <Text
@@ -317,7 +294,7 @@ const StaticDashboard = ({
                                             color='red'
                                             className={classNames('static-dashboard-wrapper__header--underlined', {
                                                 'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_options_description_blurry,
+                                                    is_blurry.options_description,
                                             })}
                                         />,
                                     ]}
@@ -333,14 +310,8 @@ const StaticDashboard = ({
                                     description='Get a real Options account, start trading and manage your funds.'
                                     currency={currency}
                                     has_account={has_account}
-                                    is_get_blurry={is_get_blurry}
-                                    is_icon_blurry={is_icon_blurry}
-                                    is_topup_blurry={is_topup_blurry}
-                                    is_trade_blurry={is_trade_blurry}
-                                    is_trade_animated={is_trade_animated}
-                                    is_topup_animated={is_topup_animated}
-                                    is_item_blurry={is_options_item_blurry}
-                                    is_button_animated={is_button_animated}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
                                 />
                             ) : (
                                 <div
@@ -377,7 +348,7 @@ const StaticDashboard = ({
                                 app_icon={`DTrader`}
                                 app_title={'DTrader'}
                                 app_desc={'Options & multipliers trading platform.'}
-                                is_item_blurry={is_platformlauncher_blurry}
+                                is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
                             <StaticPlatformLauncher
@@ -385,7 +356,7 @@ const StaticDashboard = ({
                                 app_icon={`DBot`}
                                 app_title={'DBot'}
                                 app_desc={'Automate your trading, no coding needed.'}
-                                is_item_blurry={is_platformlauncher_blurry}
+                                is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
                             <StaticPlatformLauncher
@@ -393,7 +364,7 @@ const StaticDashboard = ({
                                 app_icon={`SmartTraderBlue`}
                                 app_title={'SmartTrader'}
                                 app_desc={'Our legacy options trading platform.'}
-                                is_item_blurry={is_platformlauncher_blurry}
+                                is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
                             <StaticPlatformLauncher
@@ -401,7 +372,7 @@ const StaticDashboard = ({
                                 app_icon={`BinaryBotBlue`}
                                 app_title={'Binary Bot'}
                                 app_desc={'Our legacy automated trading platform.'}
-                                is_item_blurry={is_platformlauncher_blurry}
+                                is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
                             <StaticPlatformLauncher
@@ -409,7 +380,7 @@ const StaticDashboard = ({
                                 app_icon={`DerivGoBlack`}
                                 app_title={'Deriv Go'}
                                 app_desc={'Trade on the go with our mobile app.'}
-                                is_item_blurry={is_platformlauncher_blurry}
+                                is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
                         </div>

@@ -85,10 +85,20 @@ const TradingHub: React.FC = () => {
         enableCFDPasswordModal();
     };
 
-    const accountTypeChange = (event: any) => {
-        setTabAccountType(event.target.value);
+    const accountTypeChange = (event: {
+        target: {
+            value: string;
+            name: string;
+        };
+    }) => {
+        setTabAccountType(event.target.value as TAccountCategory);
     };
-    const platformTypeChange = (event: any) => {
+    const platformTypeChange = (event: {
+        target: {
+            value: string;
+            name: string;
+        };
+    }) => {
         setPlatformType(event.target.value);
     };
 
@@ -137,7 +147,12 @@ const TradingHub: React.FC = () => {
                     <TotalAssets category={tab_account_type} className='trading-hub_header--account_assets' />
                     <DesktopWrapper>
                         <ToggleAccountType
-                            accountTypeChange={(event: any) => accountTypeChange(event)}
+                            accountTypeChange={(event: {
+                                target: {
+                                    value: string;
+                                    name: string;
+                                };
+                            }) => accountTypeChange(event)}
                             value={tab_account_type}
                         />
                     </DesktopWrapper>

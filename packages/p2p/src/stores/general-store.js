@@ -476,7 +476,7 @@ export default class GeneralStore extends BaseStore {
             };
 
             this.disposeLocalCurrencyReaction = reaction(
-                () => this.root_store.buy_sell_store.local_currency,
+                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
                 () => {
                     this.subscribeToLocalCurrency();
                 }
@@ -490,6 +490,7 @@ export default class GeneralStore extends BaseStore {
 
     subscribeToLocalCurrency() {
         const { floating_rate_store, buy_sell_store } = this.root_store;
+        const client_currency = this.client.local_currency_config?.currency;
 
         this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
         this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
@@ -497,7 +498,8 @@ export default class GeneralStore extends BaseStore {
                 exchange_rates: 1,
                 base_currency: this.client.currency,
                 subscribe: 1,
-                target_currency: buy_sell_store.local_currency ?? this.client.local_currency_config?.currency,
+                target_currency:
+                    this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
             },
             [floating_rate_store.fetchExchangeRate]
         );

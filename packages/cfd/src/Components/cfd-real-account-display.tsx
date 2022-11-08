@@ -61,6 +61,7 @@ type TCFDRealAccountDisplayProps = {
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 const CFDRealAccountDisplay = ({
@@ -88,6 +89,7 @@ const CFDRealAccountDisplay = ({
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
+    setIsAcuityModalOpen,
 }: TCFDRealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -231,6 +233,7 @@ const CFDRealAccountDisplay = ({
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
             toggleMT5TradeModal={toggleMT5TradeModal}
+            setIsAcuityModalOpen={setIsAcuityModalOpen}
         />
     );
 

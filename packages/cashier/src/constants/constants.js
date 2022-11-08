@@ -92,7 +92,7 @@ const payment_methods = {
     ATM: ['ATM', 'ATMDeposits', 'ATM transfer', 'ATM Transfer', 'BanktransferATM'],
     'Bank Alfalah': ['AlfalahBank', 'bank alfalfa'],
     'Bank BRI': ['BankBri', 'BankBRI', 'BRI'],
-    Banks: [
+    'Bank (Wire, Transfer, Deposit)': [
         'All Local Bank payment Accept',
         'All local bank payments',
         'All local banks',

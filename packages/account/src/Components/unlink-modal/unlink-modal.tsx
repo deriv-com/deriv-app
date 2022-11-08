@@ -2,7 +2,14 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-export const UnlinkModal = ({ onClose, identifier_title, is_open, onClickSendEmail }) => {
+export type TUnlinkModal = {
+    identifier_title: string;
+    is_open: boolean;
+    onClose: () => void;
+    onClickSendEmail: () => void;
+};
+
+export const UnlinkModal = ({ identifier_title, is_open, onClickSendEmail, onClose }: TUnlinkModal) => {
     return (
         <Modal
             is_open={is_open}

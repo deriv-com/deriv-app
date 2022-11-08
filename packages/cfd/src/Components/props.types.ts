@@ -108,6 +108,7 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {

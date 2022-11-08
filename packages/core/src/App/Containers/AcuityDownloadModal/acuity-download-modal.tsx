@@ -8,14 +8,19 @@ import 'Sass/app/modules/acuity-download.scss';
 
 type TAcuityDownloadModal = {
     is_acuity_modal_open: boolean;
+    is_eu: boolean;
     setIsAcuityModalOpen: (value: boolean) => void;
 };
 
-const AcuityDownloadModal = ({ is_acuity_modal_open, setIsAcuityModalOpen }: TAcuityDownloadModal) => {
+const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen }: TAcuityDownloadModal) => {
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
-        window.open('https://deriv.link/3WhYxq1', '_blank', 'noopener,noreferrer');
+        window.open(
+            is_eu ? 'https://deriv.link/3hgxv2m' : 'https://deriv.link/3WhYxq1',
+            '_blank',
+            'noopener,noreferrer'
+        );
         closeModal();
     };
 
@@ -59,7 +64,8 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, setIsAcuityModalOpen }: TAc
     );
 };
 
-export default connect(({ ui }: RootStore) => ({
+export default connect(({ client, ui }: RootStore) => ({
     is_acuity_modal_open: ui.is_acuity_modal_open,
+    is_eu: client.is_eu,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
 }))(AcuityDownloadModal);

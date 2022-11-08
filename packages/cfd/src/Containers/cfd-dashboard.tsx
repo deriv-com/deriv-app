@@ -172,6 +172,8 @@ export type TCFDDashboardProps = RouteComponentProps & {
         getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
     ) => void;
     openDerivRealAccountNeededModal: () => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
+    refreshNotifications: () => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -199,6 +201,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
+        props.refreshNotifications();
         props.onMount();
         return () => {
             props.onUnmount();
@@ -392,6 +395,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen,
     } = props;
 
     const should_show_missing_real_account =
@@ -523,6 +527,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 residence={residence}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
+                                                setIsAcuityModalOpen={setIsAcuityModalOpen}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -666,7 +671,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }: RootStore) => ({
+    connect(({ client, modules, notifications, ui }: RootStore) => ({
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
@@ -714,6 +719,7 @@ export default withRouter(
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.cfd.onMount,
         onUnmount: modules.cfd.onUnmount,
+        refreshNotifications: notifications.refreshNotifications,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
@@ -726,5 +732,6 @@ export default withRouter(
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
         mt5_status_server: client.website_status.mt5_status,
         openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     }))(CFDDashboard)
 );

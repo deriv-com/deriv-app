@@ -112,6 +112,7 @@ export type TCFDAccountCard = {
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {

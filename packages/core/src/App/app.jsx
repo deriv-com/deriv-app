@@ -9,14 +9,12 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    // isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
     setSharedCFDText,
     useOnLoadTranslation,
-    isFirefox,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -67,16 +65,11 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
-            // const is_android_device = mobileOSDetect() === 'Android';
-            // const view_width = is_android_device ? screen.availWidth : window.innerWidth;
-            // const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
             let is_portrait;
 
             if (mobileOSDetect() === 'iOS') {
-                if (isFirefox()) {
-                    is_portrait = visualViewport.width <= visualViewport.height;
-                } else is_portrait = window.matchMedia('(orientation:portrait)').matches;
+                is_portrait = window.matchMedia('(orientation:portrait)').matches;
             } else if (mobileOSDetect() === 'Android') {
                 is_portrait = screen.availWidth <= screen.availHeight;
             } else {

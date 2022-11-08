@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import platform_config from 'Constants/platform-config';
+import { platform_config, mf_platform_config } from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
 import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
@@ -31,8 +31,14 @@ import './trading-hub.scss';
 const TradingHub: React.FC = () => {
     const store = useStores();
     const { ui, modules, common, client, tradinghub } = useStores();
-    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
-        client;
+    const {
+        is_logged_in,
+        is_eu,
+        is_eu_country,
+        is_populating_mt5_account_list,
+        is_populating_dxtrade_account_list,
+        loginid,
+    } = client;
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -133,6 +139,8 @@ const TradingHub: React.FC = () => {
 
     const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
 
+    const is_mf = loginid.startsWith('MF');
+
     if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 
     return (
@@ -176,7 +184,10 @@ const TradingHub: React.FC = () => {
                 <DesktopWrapper>
                     <CFDAccounts account_type={tab_account_type} />
                     <Divider horizontal className='trading-hub_body--divider' />
-                    <OptionsAccounts platformlauncherprops={platform_config} accountType={tab_account_type} />
+                    <OptionsAccounts
+                        platformlauncherprops={is_mf ? mf_platform_config : platform_config}
+                        accountType={tab_account_type}
+                    />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <ButtonToggle
@@ -190,7 +201,10 @@ const TradingHub: React.FC = () => {
                     />
                     {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
                     {platform_type === 'options' && (
-                        <OptionsAccounts platformlauncherprops={platform_config} accountType={tab_account_type} />
+                        <OptionsAccounts
+                            platformlauncherprops={is_mf ? mf_platform_config : platform_config}
+                            accountType={tab_account_type}
+                        />
                     )}
                 </MobileWrapper>
             </div>

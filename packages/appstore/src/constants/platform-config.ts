@@ -1,7 +1,7 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const platform_config = [
+export const platform_config = [
     {
         app_icon: getPlatformSettingsAppstore('trader').icon,
         app_title: getPlatformSettingsAppstore('trader').name,
@@ -39,4 +39,12 @@ const platform_config = [
     },
 ];
 
-export default platform_config;
+export const mf_platform_config = [
+    {
+        app_icon: getPlatformSettingsAppstore('trader').icon,
+        app_title: getPlatformSettingsAppstore('trader').name,
+        name: getPlatformSettingsAppstore('trader').name,
+        app_desc: localize('Options & multipliers trading platform.'),
+        link_to: routes.trade,
+    },
+];

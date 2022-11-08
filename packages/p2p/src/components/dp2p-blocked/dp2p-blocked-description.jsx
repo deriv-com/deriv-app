@@ -12,7 +12,7 @@ const Dp2pBlockedDescription = () => {
             return (
                 <Localize i18n_default_text='P2P transactions are locked. This feature is not available for payment agents.' />
             );
-        } else if (general_store.is_high_risk) {
+        } else if (general_store.is_high_risk && !general_store.is_blocked) {
             return <Localize i18n_default_text='To enable this feature you must complete the following:' />;
         }
         return <Localize i18n_default_text='Please use live chat to contact our Customer Support team for help.' />;

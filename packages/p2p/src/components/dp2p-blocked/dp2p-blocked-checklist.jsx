@@ -9,7 +9,7 @@ const Dp2pBlockedChecklist = () => {
     const { general_store } = useStores();
     const { history } = general_store.props;
 
-    if (general_store.is_high_risk) {
+    if (general_store.is_high_risk && !general_store.is_blocked) {
         const checklist_items = [
             {
                 content: localize('Complete the financial assessment form'),

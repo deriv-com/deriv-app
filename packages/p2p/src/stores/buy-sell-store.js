@@ -1,6 +1,7 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
@@ -543,7 +544,9 @@ export default class BuySellStore extends BaseStore {
                 component: (
                     <div className='currency-dropdown__list-item'>
                         <div>{symbol}</div>
-                        <div>{display_name}</div>
+                        <Text as='div' align='right' size='xs' line_height='xxs'>
+                            {display_name}
+                        </Text>
                     </div>
                 ),
                 has_adverts,

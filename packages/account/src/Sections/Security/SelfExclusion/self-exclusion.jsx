@@ -2,6 +2,7 @@ import React from 'react';
 import { PlatformContext, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
+import 'Components/self-exclusion/self-exclusion.scss';
 
 const SelfExclusion = props => {
     const { is_appstore } = React.useContext(PlatformContext);

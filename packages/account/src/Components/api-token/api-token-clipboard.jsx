@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
-import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
+import { Button, Icon, Modal, Text, Popover, useCopyToClipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const WarningNoteBullet = ({ message }) => (
@@ -29,7 +29,7 @@ const WarningDialogMessage = () => (
 );
 
 const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, popover_alignment = 'bottom' }) => {
-    const [is_copied, setIsCopied] = React.useState(false);
+    const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
@@ -45,15 +45,6 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
         if (!is_copied) setIsPopoverOpen(false);
     };
 
-    const copyToClipboard = text => {
-        const textField = document.createElement('textarea');
-        textField.innerText = text;
-        document.body.appendChild(textField);
-        textField.select();
-        document.execCommand('copy');
-        textField.remove();
-    };
-
     /* two timeouts help to prevent popup window blinking. 
     without early hiding the popup we will see shortly the description message like during hovering. 
     this bug appears when popup is handled outside like here
@@ -61,11 +52,11 @@ const ApiTokenClipboard = ({ scopes, text_copy, info_message, success_message, p
     const onClick = () => {
         setIsModalOpen(false);
         copyToClipboard(text_copy);
-        setIsCopied(true);
         setIsPopoverOpen(true);
         timeout_clipboard = setTimeout(() => {
             if (isMounted()) {
                 setIsPopoverOpen(false);
+                setIsCopied(false);
             }
         }, 1900);
         timeout_clipboard_2 = setTimeout(() => {

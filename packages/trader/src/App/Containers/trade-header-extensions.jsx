@@ -1,86 +1,40 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
 import { isMobile, routes, WS } from '@deriv/shared';
-import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect, MobxContentProvider } from 'Stores/connect';
+import PopulateHeader from './populate-header';
 
-const TradeHeaderExtensions = props => {
-    const {
-        disableApp,
-        enableApp,
-        onMountCashier,
-        onMountPositions,
-        onPositionsCancel,
-        onPositionsRemove,
-        onPositionsSell,
-        populateHeaderExtensions,
-        setAccountSwitchListener,
-        store,
-    } = props;
-
-    const props_ref = React.useRef();
-    props_ref.current = props;
-
+const TradeHeaderExtensions = ({
+    populateHeaderExtensions,
+    store,
+    is_logged_in,
+    is_populating_account_list,
+    onMountPositions,
+    onMountCashier,
+    setAccountSwitchListener,
+}) => {
     const show_positions_toggle = location.pathname !== routes.mt5;
+    const show_component = is_logged_in && show_positions_toggle;
 
-    const populateHeader = React.useCallback(() => {
-        const {
-            is_logged_in,
-            active_positions_count,
-            positions,
-            positions_currency,
-            positions_error,
-            trade_contract_type,
-            symbol,
-        } = props_ref.current;
-
-        const symbol_positions = positions.filter(
-            p =>
-                p.contract_info &&
-                symbol === p.contract_info.underlying &&
-                filterByContractType(p.contract_info, trade_contract_type)
-        );
-        const header_items = is_logged_in && show_positions_toggle && (
+    const populateHeaderfunction = React.useCallback(() => {
+        const header_items = show_component && (
             <MobileWrapper>
                 <MobxContentProvider store={store}>
-                    <TogglePositionsMobile
-                        active_positions_count={active_positions_count}
-                        all_positions={positions}
-                        currency={positions_currency}
-                        disableApp={disableApp}
-                        is_empty={!symbol_positions.length}
-                        enableApp={enableApp}
-                        error={positions_error}
-                        onClickSell={onPositionsSell}
-                        onClickRemove={onPositionsRemove}
-                        onClickCancel={onPositionsCancel}
-                    />
+                    <PopulateHeader />
                 </MobxContentProvider>
             </MobileWrapper>
         );
 
         populateHeaderExtensions(header_items);
-    }, [
-        disableApp,
-        enableApp,
-        onPositionsCancel,
-        onPositionsRemove,
-        onPositionsSell,
-        populateHeaderExtensions,
-        store,
-        show_positions_toggle,
-    ]);
+    }, [populateHeaderExtensions, store, show_positions_toggle]);
 
     React.useEffect(() => {
         const waitForLogin = async () => {
             if (isMobile() && show_positions_toggle) {
-                const { client } = store;
-                // Waits for login to complete
-                await when(() => !client.is_populating_account_list);
-                if (props_ref.current.is_logged_in) {
+                await when(() => !is_populating_account_list); // Waits for login to complete
+                if (is_logged_in) {
                     await WS.wait('authorize');
                     onMountPositions();
                     onMountCashier(true);
@@ -88,18 +42,16 @@ const TradeHeaderExtensions = props => {
                 }
             }
 
-            populateHeader();
+            populateHeaderfunction();
         };
 
         waitForLogin();
 
-        return () => {
-            populateHeaderExtensions(null);
-        };
+        return () => populateHeaderExtensions(null);
     }, [
         onMountCashier,
         onMountPositions,
-        populateHeader,
+        populateHeaderfunction,
         populateHeaderExtensions,
         setAccountSwitchListener,
         store,
@@ -107,42 +59,27 @@ const TradeHeaderExtensions = props => {
     ]);
 
     React.useEffect(() => {
-        populateHeader();
+        populateHeaderfunction();
     });
 
     return null;
 };
 
 TradeHeaderExtensions.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_logged_in: PropTypes.bool,
-    onMountCashier: PropTypes.func,
-    onMountPositions: PropTypes.func,
-    onPositionsCancel: PropTypes.func,
-    onPositionsRemove: PropTypes.func,
-    onPositionsSell: PropTypes.func,
     populateHeaderExtensions: PropTypes.func,
-    setAccountSwitchListener: PropTypes.func,
     store: PropTypes.object,
+    is_logged_in: PropTypes.bool,
+    is_populating_account_list: PropTypes.bool,
+    onMountPositions: PropTypes.func,
+    onMountCashier: PropTypes.func,
+    setAccountSwitchListener: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui, portfolio }) => ({
-    positions_currency: client.currency,
-    is_logged_in: client.is_logged_in,
-    positions: portfolio.all_positions,
-    onPositionsSell: portfolio.onClickSell,
-    positions_error: portfolio.error,
-    onPositionsRemove: portfolio.removePositionById,
-    onPositionsCancel: portfolio.onClickCancel,
-    onMountCashier: modules.cashier.general_store.onMountCommon,
-    onMountPositions: portfolio.onMount,
-    active_positions_count: portfolio.active_positions_count,
-    trade_contract_type: modules.trade.contract_type,
-    symbol: modules.trade.symbol,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
-    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
+    is_logged_in: client.is_logged_in,
+    is_populating_account_list: client.is_populating_account_list,
+    onMountPositions: portfolio.onMount,
+    onMountCashier: modules.cashier.general_store.onMountCommon,
     setAccountSwitchListener: modules.cashier.general_store.setAccountSwitchListener,
 }))(TradeHeaderExtensions);

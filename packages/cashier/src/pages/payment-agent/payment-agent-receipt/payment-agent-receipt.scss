@@ -1,74 +1,81 @@
 .payment-agent-receipt {
-    @include mobile {
-        margin: 0 1.6rem;
-        width: calc(100% - 3.2rem);
-
-        .cashier {
-            &__done-button {
-                width: 100%;
-            }
-            &__transferred-amount {
-                margin-top: 1.6rem;
-                margin-bottom: 0;
-            }
-            &__transferred-details-wrapper {
-                display: none;
-            }
-            &__success {
-                width: 100%;
-                margin: 0 auto;
-                background-color: var(--general-main-1);
-            }
-        }
-        .payment-agent-receipt {
-            &__explanation {
-                padding-left: 0;
-            }
-            &__transferred-contact {
-                margin: 0.8rem;
-
-                &-wrapper {
-                    margin: 0.8rem;
-                }
-                .payment-agent__contact {
-                    padding-left: 0;
-                }
-            }
-            &__paragraph {
-                padding-left: 0;
-            }
-        }
-        .cashier__form-submit {
-            row-gap: 1rem;
-        }
-    }
-
     & .cashier__form-submit {
-        display: flex;
+        text-align: center;
         justify-content: center;
-        align-items: center;
-        column-gap: 0.8rem;
-        margin: 2.4rem 0 3.2rem;
-
+        flex-flow: row;
+        margin: 0 0 3.2rem;
         &-button {
             margin: 0;
-            max-width: 18rem;
+            max-width: 20rem;
+            &:first-child {
+                margin-right: 0.4rem;
+            }
+            &:last-child {
+                margin-left: 0.4rem;
+            }
+        }
+        @include mobile {
+            &-button {
+                width: unset;
+                max-width: 18rem;
+                padding: 0 1rem;
+            }
+        }
+    }
+    &__header {
+        margin-top: 9.6rem;
+        @include mobile {
+            margin-top: 3.2rem;
+        }
+        &-listed {
+            margin-bottom: 4.8rem;
+            @include mobile {
+                margin-bottom: 1.6rem;
+            }
+        }
+        &-unlisted {
+            margin-bottom: 7.4rem;
         }
     }
     &__transferred-contact {
-        margin: 0.8rem 0;
-
-        &-wrapper {
-            margin: 2.4rem 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        column-gap: 1.6rem;
+        margin: 0.8rem 0 3.2rem;
+        @include mobile {
+            flex-direction: column;
+            align-items: center;
+            row-gap: 0.8rem;
+        }
+        .payment-agent-detail {
+            align-items: center;
+            &__icon-wrapper {
+                margin-right: 0.5rem;
+                @include mobile {
+                    margin-right: 0.9rem;
+                }
+            }
+            &__desc-wrapper {
+                display: flex;
+                flex-direction: column;
+            }
+            &__link {
+                word-break: normal;
+                font-weight: normal;
+            }
+            &__paragraph {
+                font-weight: normal;
+            }
         }
     }
     &__explanation {
-        margin-top: 0.8rem;
-    }
-    &__paragraph {
-        align-self: flex-start;
-    }
-    &__text--end {
-        align-self: flex-end;
+        margin: 0.8rem 0 2.4rem;
+        @include mobile {
+            width: 32rem;
+        }
+        &-unlisted {
+            margin-bottom: 7.4rem;
+        }
     }
 }

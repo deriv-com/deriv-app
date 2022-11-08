@@ -141,7 +141,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_blurry={{
                     icon: false,
                     item: false,
-                    get: false,
+                    get: true,
                     text: false,
                     topup: false,
                     trade: true,
@@ -166,7 +166,6 @@ export const trading_hub_contents: TTradingHubContents = {
                 loginid={'20884385'}
                 has_applauncher_account
                 is_last_step
-                is_get_blurry
                 is_derivx_last_step
                 is_financial_last_step
             />
@@ -181,7 +180,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_blurry={{
                     icon: false,
                     item: false,
-                    get: false,
+                    get: true,
                     text: false,
                     topup: true,
                     trade: false,
@@ -206,7 +205,6 @@ export const trading_hub_contents: TTradingHubContents = {
                 loginid={'20884385'}
                 has_applauncher_account
                 is_last_step
-                is_get_blurry
                 is_derivx_last_step
                 is_financial_last_step
             />

@@ -46,14 +46,6 @@ class PromiseClass {
     }
 }
 
-const copyToClipboard = text => {
-    const textField = document.createElement('textarea');
-    textField.innerText = text;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
-};
 // TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
@@ -104,4 +96,4 @@ const getAccountText = account => {
     return account_text;
 };
 
-export { copyToClipboard, createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };
+export { createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };

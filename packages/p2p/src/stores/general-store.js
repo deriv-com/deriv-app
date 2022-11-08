@@ -67,6 +67,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_sell_limit: observable,
             block_unblock_user_error: observable,
             balance: observable,
+            feature_level: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,

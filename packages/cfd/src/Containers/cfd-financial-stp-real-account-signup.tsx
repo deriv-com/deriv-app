@@ -141,7 +141,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     React.useEffect(() => {
         fetchStatesList();
-    }, []);
+    }, [fetchStatesList]);
 
     const unmount = () => {
         is_mounted = false;

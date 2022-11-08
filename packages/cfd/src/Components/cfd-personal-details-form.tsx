@@ -22,13 +22,13 @@ import { Localize, localize } from '@deriv/translations';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
+    form_error?: string;
+    index: number;
     is_loading: boolean;
     landing_company: LandingCompany;
-    residence_list: ResidenceList;
     onSubmit: TOnSubmit;
+    residence_list: ResidenceList;
     value: TFormValues;
-    index: number;
-    form_error?: string;
 };
 
 type TValidatePersonalDetailsParams = {

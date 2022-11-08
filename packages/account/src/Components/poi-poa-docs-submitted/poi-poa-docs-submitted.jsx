@@ -24,10 +24,8 @@ const PoiPoaDocsSubmitted = ({
     }, []);
 
     const onSubmit = () => {
-        if (has_created_account_for_selected_jurisdiction) {
-            onClickOK();
-        } else {
-            onClickOK();
+        onClickOK();
+        if (!has_created_account_for_selected_jurisdiction) {
             openPasswordModal();
         }
     };

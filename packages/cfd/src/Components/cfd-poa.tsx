@@ -198,17 +198,6 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
             return;
         }
 
-        // Store newly stored values in the component.
-        // const { _address_line_1, _address_line_2, _address_city, _address_state, _address_postcode } = get_settings;
-
-        // setFormValues({
-        //     _address_line_1,
-        //     _address_line_2,
-        //     _address_city,
-        //     _address_postcode,
-        //     _address_state,
-        // });
-
         setFormState({ ...form_state, ...{ form_error: '' } });
 
         try {

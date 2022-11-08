@@ -177,25 +177,25 @@ const CFDAccountCardComponent = ({
     is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
+    is_eu,
     is_logged_in,
     is_virtual,
-    is_eu,
     isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5,
-    platform,
-    title,
-    type,
-    specs,
-    onSelectAccount,
     onClickFund,
     onPasswordManager,
+    onSelectAccount,
+    platform,
+    setAccountType,
+    setJurisdictionSelectedShortcode,
+    setMT5TradeAccount,
+    specs,
+    title,
     toggleAccountsDialog,
+    toggleCFDVerificationModal,
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
-    setMT5TradeAccount,
-    toggleCFDVerificationModal,
-    setJurisdictionSelectedShortcode,
-    setAccountType,
+    type,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -599,7 +599,7 @@ const CFDAccountCardComponent = ({
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
-                                        {(acc.landing_company_short && getBannerStatus(acc)) ?? (
+                                        {getBannerStatus(acc) ?? (
                                             <React.Fragment>
                                                 {existing_data && is_logged_in && (
                                                     <Button
@@ -773,14 +773,14 @@ const CFDAccountCardComponent = ({
 };
 
 const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
+    account_status: client.account_status,
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
-    setMT5TradeAccount: cfd.setMT5TradeAccount,
-    account_status: client.account_status,
-    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
-    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     setAccountType: cfd.setAccountType,
+    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
+    setMT5TradeAccount: cfd.setMT5TradeAccount,
+    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

@@ -4,11 +4,11 @@ import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 export type TAccountLimitsCollection = {
-    level: string;
+    level?: string;
     name: string;
-    payout_limit: number;
+    payout_limit: string | number;
     profile_name: string;
-    turnover_limit: number;
+    turnover_limit: string | number;
 };
 
 type TAccountLimitsTurnoverLimitRow = {

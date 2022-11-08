@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, within } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import AccountLimits, { TAccountLimits } from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
@@ -131,7 +131,24 @@ describe('<AccountLimits/>', () => {
 
     it('should render LoadErrorMessage component if there is api_initial_load_error', () => {
         render(
-            <AccountLimits {...props} account_limits={{ api_initial_load_error: 'error in fetching data from API' }} />
+            <AccountLimits
+                {...props}
+                account_limits={{
+                    api_initial_load_error: 'error in fetching data from API',
+                    account_balance: '',
+                    payout: '',
+                    market_specific: {
+                        commodities: [],
+                        cryptocurrency: [],
+                        forex: [],
+                        indices: [],
+                        synthetic_index: [],
+                    },
+                    num_of_days_limit: '',
+                    remainder: '',
+                    withdrawal_since_inception_monetary: '',
+                }}
+            />
         );
         expect(screen.getByText('mockedLoadErrorMessage')).toBeInTheDocument();
     });

@@ -356,17 +356,9 @@ const CFDAccountCardComponent = ({
     );
 
     return (
-        <div
-            ref={wrapper_ref}
-            className={classNames('cfd-account-card__wrapper', {
-                'cfd-account-card__wrapper--is_mt5': platform === CFD_PLATFORMS.MT5,
-            })}
-        >
+        <div ref={wrapper_ref} className={classNames('cfd-account-card__wrapper')}>
             <div
-                className={classNames('cfd-account-card', {
-                    'cfd-account-card--is_mt5': platform === CFD_PLATFORMS.MT5,
-                    'cfd-account-card__logged-out': !is_logged_in,
-                })}
+                className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
             >
                 {has_popular_banner && (

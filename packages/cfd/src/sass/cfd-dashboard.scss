@@ -660,11 +660,6 @@
     @include desktop {
         height: 100%;
     }
-    &--is_mt5 {
-        @include desktop {
-            height: fit-content;
-        }
-    }
 
     &__balance {
         margin-bottom: 0.8rem;

@@ -99,7 +99,7 @@ const PaymentAgentUnlistedWithdrawForm = ({
                                         hint={localize('Example: CR123456789')}
                                         required
                                         autoComplete='off'
-                                        maxLength='30'
+                                        maxLength={30}
                                         trailing_icon={
                                             errors.account_number ===
                                             localize('Please enter a valid account number. Example: CR123456789') ? (
@@ -124,7 +124,7 @@ const PaymentAgentUnlistedWithdrawForm = ({
                                             error={touched.amount && errors.amount}
                                             required
                                             autoComplete='off'
-                                            maxLength='30'
+                                            maxLength={30}
                                             trailing_icon={
                                                 <span
                                                     className={classNames(

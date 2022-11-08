@@ -5,6 +5,7 @@ import { Text } from '@deriv/components';
 type TAccountLimitsTableCell = {
     align: 'right' | 'left';
     is_hint: boolean;
+    level: string;
     renderExtraInfo: () => React.ReactElement;
 };
 
@@ -12,6 +13,7 @@ const AccountLimitsTableCell = ({
     align,
     children,
     is_hint,
+    level,
     renderExtraInfo,
 }: React.PropsWithChildren<Partial<TAccountLimitsTableCell>>) => {
     const text_size = is_hint ? 'xxxs' : 'xxs';
@@ -22,6 +24,7 @@ const AccountLimitsTableCell = ({
                 className={classNames('da-account-limits__table-cell', {
                     'da-account-limits__table-cell--left': align !== 'right',
                     'da-account-limits__table-cell--right': align === 'right',
+                    'da-account-limits__table-cell--submarket': level === 'submarket',
                 })}
                 data-testid='account_limit_table_cell'
             >

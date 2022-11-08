@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIsMounted } from '@deriv/shared';
-import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
+import { Button, Icon, Modal, Text, Popover, useCopyToClipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TPopoverAlignment } from 'Types';
 
@@ -47,7 +47,7 @@ const ApiTokenClipboard = ({
     success_message,
     popover_alignment = 'bottom',
 }: TApiTokenClipboard) => {
-    const [is_copied, setIsCopied] = React.useState(false);
+    const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
@@ -62,19 +62,6 @@ const ApiTokenClipboard = ({
         if (!is_copied) setIsPopoverOpen(false);
     };
 
-    const copyToClipboard = async (text: string) => {
-        const textField = document.createElement('textarea');
-        textField.innerText = text;
-        document.body.appendChild(textField);
-        textField.select();
-        if ('clipboard' in navigator) {
-            await navigator.clipboard.writeText(text);
-        } else {
-            document.execCommand('copy');
-        }
-        textField.remove();
-    };
-
     /* two timeouts help to prevent popup window blinking. 
     without early hiding the popup we will see shortly the description message like during hovering. 
     this bug appears when popup is handled outside like here
@@ -82,11 +69,11 @@ const ApiTokenClipboard = ({
     const onClick = () => {
         setIsModalOpen(false);
         copyToClipboard(text_copy);
-        setIsCopied(true);
         setIsPopoverOpen(true);
         timeout_clipboard = setTimeout(() => {
             if (isMounted()) {
                 setIsPopoverOpen(false);
+                setIsCopied(false);
             }
         }, 1900);
         timeout_clipboard_2 = setTimeout(() => {
@@ -131,7 +118,7 @@ const ApiTokenClipboard = ({
                 classNameBubble='dc-clipboard__popover'
                 message={is_copied ? success_message : info_message}
                 is_open={is_popover_open}
-                zIndex={9999}
+                zIndex={'9999'}
             >
                 <Icon
                     icon={`${is_copied ? 'IcCheckmarkCircle' : 'IcClipboard'}`}

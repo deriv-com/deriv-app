@@ -13,6 +13,7 @@ const PaymentMethods = ({ formik_ref }) => {
     const { my_profile_store } = useStores();
 
     React.useEffect(() => {
+        my_profile_store.setIsLoading(true);
         my_profile_store.getAdvertiserPaymentMethods();
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setShouldShowEditPaymentMethodForm(false);

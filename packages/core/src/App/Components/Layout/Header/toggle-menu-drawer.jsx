@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { getPlatformSettings, routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -93,12 +93,10 @@ const ToggleMenuDrawer = React.forwardRef(
             is_account_transfer_visible,
             is_virtual,
             logoutClient,
-            platform_header,
             platform_switcher,
             should_allow_authentication,
             title,
             toggleTheme,
-            is_social_signup,
         },
         ref
     ) => {
@@ -111,7 +109,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore }, is_social_signup);
+                const routes_config = getRoutesConfig({ is_appstore });
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -137,7 +135,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, account_status, should_allow_authentication, is_social_signup]);
+        }, [is_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -340,7 +338,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
                                         {getLanguageRoutes()}
-                                        {platform_header !== getPlatformSettings('dbot').name && (
+                                        {
                                             <MobileDrawer.Item
                                                 className='header__menu-mobile-theme'
                                                 onClick={e => {
@@ -360,7 +358,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     />
                                                 </div>
                                             </MobileDrawer.Item>
-                                        )}
+                                        }
 
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)

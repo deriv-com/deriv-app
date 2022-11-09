@@ -302,6 +302,7 @@ export const icons =
         'IcDrivingLicenseDashboard',
         'IcDrivingLicense',
         'IcEdit',
+        'IcEmailChanged',
         'IcEmailFirewall',
         'IcEmailOutlineNew',
         'IcEmailOutline',

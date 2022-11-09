@@ -49,9 +49,6 @@ export default class TransactionHistoryStore {
             setLoading: action.bound,
             setIsCryptoTransactionsVisible: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
     crypto_transactions: Array<TTransactionItem> = [];
     is_crypto_transactions_cancel_modal_visible = false;

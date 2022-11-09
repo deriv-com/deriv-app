@@ -11,7 +11,12 @@ import {
     TransferBetweenAccountsResponse,
     PaymentAgentWithdrawRequest,
 } from '@deriv/api-types';
-import { TExtendedPaymentAgentListResponse, TMT5LoginAccount, TPaymentAgentTransferRequest } from 'Types';
+import {
+    TExtendedPaymentAgentListResponse,
+    TMT5LoginAccount,
+    TPaymentAgentTransferRequest,
+    TPartialPaymentAgentList,
+} from 'Types';
 
 type TCashierPayments = {
     provider: string;
@@ -79,7 +84,7 @@ type TWebSocketCall = {
 };
 
 export type TWebSocket = {
-    allPaymentAgentList: (residence: string) => Promise<TExtendedPaymentAgentListResponse>;
+    allPaymentAgentList: (residence: string) => Promise<TPartialPaymentAgentList>;
     authorized: TWebSocketCall;
     cryptoConfig: () => { crypto_config: CryptoConfig };
     cryptoWithdraw: (

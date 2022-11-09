@@ -141,8 +141,8 @@ beforeEach(() => {
                     onMountCommon: jest.fn(),
                 },
                 crypto_fiat_converter: {
-                    converter_from_amount: 10,
-                    converter_to_amount: 10,
+                    converter_from_amount: '10',
+                    converter_to_amount: '10',
                     onChangeConverterFromAmount: jest.fn(),
                     resetConverter: jest.fn(),
                     setConverterFromAmount: jest.fn(),
@@ -492,7 +492,7 @@ describe('AccountTransferStore', () => {
     it('should set account transfer amount', () => {
         account_transfer_store.setAccountTransferAmount(100);
 
-        expect(account_transfer_store.account_transfer_amount).toBe(100);
+        expect(account_transfer_store.account_transfer_amount).toBe('100');
     });
 
     it('should change value of the variable is_transfer_successful', () => {

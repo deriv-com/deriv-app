@@ -1,12 +1,12 @@
 export type TPaymentAgentTransferConfirm = {
-    amount?: string;
-    client_id?: string;
+    amount: number;
+    client_id: string;
     client_name?: string;
-    description?: string;
+    description: string;
 };
 
 export type TPaymentAgentTransferReceipt = {
-    amount_transferred?: string;
+    amount_transferred?: number;
     client_id?: string;
     client_name?: string;
 };
@@ -17,7 +17,7 @@ export type TTransferLimit = {
 };
 
 export type TPaymentAgentTransferRequest = {
-    amount: string;
+    amount: number;
     currency: string;
     description: string;
     dry_run?: number;

@@ -8,6 +8,10 @@ import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
 import { TRootStore, TWebSocket } from 'Types';
 
+type TNotification = {
+    is_seen: boolean;
+};
+
 export default class GeneralStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
@@ -129,13 +133,15 @@ export default class GeneralStore extends BaseStore {
      */
     get p2p_unseen_notifications() {
         const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-        const local_storage_settings = p2p_settings[this.root_store.client.loginid];
+        const local_storage_settings = p2p_settings[this.root_store.client.loginid!];
 
         if (isEmptyObject(local_storage_settings)) {
             return 0;
         }
 
-        const unseen_notifications = local_storage_settings.notifications.filter(notification => !notification.is_seen);
+        const unseen_notifications = local_storage_settings.notifications.filter(
+            (notification: TNotification) => !notification.is_seen
+        );
 
         return unseen_notifications.length;
     }
@@ -146,7 +152,7 @@ export default class GeneralStore extends BaseStore {
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
-            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+            account => !isCryptocurrency(account.title || '') && account.title !== 'Real'
         );
 
         if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
@@ -225,9 +231,11 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
+            this.percentage = Number(
+                ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
+            );
         } else {
-            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
+            this.percentage = Number(((Number(amount) / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;

@@ -28,7 +28,7 @@ type TCryptoWithdrawReceiptProps = {
     is_switching: TClientStore['is_switching'];
     tab_index: number;
     withdraw_amount: string;
-    resetWithrawForm: () => void;
+    resetWithdrawForm: () => void;
     recentTransactionOnMount: () => void;
     setIsCryptoTransactionsVisible: (value: boolean) => void;
     setIsWithdrawConfirmed: (value: boolean) => void;
@@ -127,7 +127,7 @@ const CryptoWithdrawReceipt = ({
     currency,
     is_switching,
     recentTransactionOnMount,
-    resetWithrawForm,
+    resetWithdrawForm,
     setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed,
     tab_index,
@@ -140,7 +140,7 @@ const CryptoWithdrawReceipt = ({
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
-            resetWithrawForm();
+            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, tab_index]);
@@ -208,7 +208,7 @@ export default connect(({ client, modules }: TRootStore) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     is_switching: client.is_switching,
-    resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
+    resetWithdrawForm: modules.cashier.withdraw.resetWithdrawForm,
     recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,

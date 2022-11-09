@@ -75,8 +75,10 @@ export default class AccountTransferStore {
     is_transfer_confirm = false;
     is_transfer_successful = false;
     is_mt5_transfer_in_progress = false;
-    minimum_fee = null;
-    receipt = {};
+    minimum_fee = '';
+    receipt = {
+        amount_transferred: 0,
+    };
     selected_from: TAccount = {};
     selected_to: TAccount = {};
     account_transfer_amount = '';
@@ -212,16 +214,16 @@ export default class AccountTransferStore {
 
     setTransferFee() {
         const transfer_fee = getPropertyValue(getCurrencies(), [
-            this.selected_from.currency,
+            this.selected_from.currency || '',
             'transfer_between_accounts',
             'fees',
-            this.selected_to.currency,
+            this.selected_to.currency || '',
         ]);
         this.transfer_fee = Number(transfer_fee || 0);
     }
 
     setMinimumFee() {
-        const decimals = getDecimalPlaces(this.selected_from.currency);
+        const decimals = getDecimalPlaces(this.selected_from.currency || '');
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
@@ -240,12 +242,12 @@ export default class AccountTransferStore {
         }
 
         const transfer_limit = getPropertyValue(getCurrencies(), [
-            this.selected_from.currency,
+            this.selected_from.currency || '',
             'transfer_between_accounts',
             limits_key,
         ]);
         const balance = this.selected_from.balance;
-        const decimal_places = getDecimalPlaces(this.selected_from.currency);
+        const decimal_places = getDecimalPlaces(this.selected_from.currency || '');
         const has_max_transfer_limit =
             !transfer_limit?.max ||
             (balance && +balance >= (transfer_limit?.min || 0) && (balance && +balance) <= transfer_limit?.max);
@@ -307,8 +309,8 @@ export default class AccountTransferStore {
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
                 const a_currency = a.currency ? a.currency : '';
                 const b_currency = b.currency ? b.currency : '';
-                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency!);
+                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency!);
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
                 const b_is_fiat = !b_is_mt && !b_is_crypto;
                 if (a_is_mt && b_is_mt) {
@@ -378,7 +380,7 @@ export default class AccountTransferStore {
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
-                is_crypto: isCryptocurrency(account.currency),
+                is_crypto: isCryptocurrency(account.currency || ''),
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 ...(is_cfd && {
@@ -430,7 +432,7 @@ export default class AccountTransferStore {
     }
 
     setAccountTransferAmount(amount: number): void {
-        this.account_transfer_amount = amount;
+        this.account_transfer_amount = String(amount);
     }
 
     setIsTransferSuccessful(is_transfer_successful: boolean): void {
@@ -537,7 +539,7 @@ export default class AccountTransferStore {
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: Number(formatMoney(currency, amount, true)) });
+            this.setReceiptTransfer({ amount: Number(formatMoney(currency || '', amount, true)) });
             transfer_between_accounts.accounts?.forEach((account: TTransferAccount) => {
                 if (account.loginid && account.balance) {
                     this.setBalanceByLoginId(account.loginid, account.balance);
@@ -612,7 +614,7 @@ export default class AccountTransferStore {
         } else {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(this.selected_from.currency),
+                decimals: getDecimalPlaces(this.selected_from.currency || ''),
                 min: this.transfer_limit.min,
                 max: this.transfer_limit.max,
             });
@@ -633,7 +635,7 @@ export default class AccountTransferStore {
             const currency = this.selected_to.currency;
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(currency),
+                decimals: getDecimalPlaces(currency || ''),
             });
             if (!is_ok) {
                 setConverterToError(message);

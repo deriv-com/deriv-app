@@ -25,9 +25,10 @@ export type TTransferAccount = {
     demo_account?: 0 | 1;
     landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
     loginid?: string;
-    market_type?: 'financial' | 'synthetic';
+    market_type?: 'financial' | 'synthetic' | 'all';
     mt5_group?: string;
-    sub_account_type?: string;
+    status?: string;
+    sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
 };
 
 export type TTransferBetweensAccounts = TransferBetweenAccountsResponse;
@@ -42,10 +43,11 @@ export type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
 
 export type TAccountsList = {
     account: TAccount;
-    loginid?: string;
-    mt5_login_list: TMt5LoginList;
     icon?: string;
     idx: string | number;
     is_dark_mode_on: boolean;
+    is_virtual?: boolean;
+    loginid?: string;
+    mt5_login_list: TMt5LoginList;
     title?: string;
 };

@@ -24,7 +24,7 @@ describe('<CryptoWithdrawReceipt />', () => {
         currency: 'BTC',
         recentTransactionOnMount: jest.fn(),
         setIsWithdrawConfirmed: jest.fn(),
-        resetWithrawForm: jest.fn(),
+        resetWithdrawForm: jest.fn(),
         setIsCryptoTransactionsVisible: jest.fn(),
     });
 

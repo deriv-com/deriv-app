@@ -32,7 +32,6 @@
     &-item {
         width: 100%;
         max-width: 58.8rem;
-        height: 10.4rem;
         display: flex;
         flex-direction: row;
         border-radius: 0.8rem;
@@ -43,7 +42,7 @@
 
         @media (min-width: 992px) {
             border: 2px solid transparent;
-            height: 11.2rem;
+            height: 11rem;
         }
 
         &:hover {

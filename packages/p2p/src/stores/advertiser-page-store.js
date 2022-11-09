@@ -26,9 +26,6 @@ export default class AdvertiserPageStore extends BaseStore {
         makeObservable(this, {
             active_index: observable,
             ad: observable,
-            advertiser_first_name: observable,
-            advertiser_last_name: observable,
-            advertiser_info: observable,
             adverts: observable,
             counterparty_type: observable,
             api_error_message: observable,
@@ -46,7 +43,6 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
-            advertiser_full_name: computed,
             short_name: computed,
             getAdvertiserInfo: action.bound,
             handleTabItemClick: action.bound,

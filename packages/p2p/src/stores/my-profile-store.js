@@ -46,7 +46,6 @@ export default class MyProfileStore extends BaseStore {
         makeObservable(this, {
             active_tab: observable,
             add_payment_method_error_message: observable,
-            advertiser_info: observable,
             advertiser_payment_methods: observable,
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,

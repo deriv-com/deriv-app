@@ -1,6 +1,7 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
@@ -71,14 +72,18 @@ export default class BuySellStore extends BaseStore {
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
             items: observable,
+            local_currencies: observable,
+            local_currency: observable,
             payment_info: observable,
             receive_amount: observable,
             search_results: observable,
             search_term: observable,
             selected_ad_state: observable,
+            selected_local_currency: observable,
             selected_payment_method_value: observable,
             selected_payment_method_text: observable,
             selected_value: observable,
+            should_show_currency_selector_modal: observable,
             should_show_popup: observable,
             should_show_verification: observable,
             should_use_client_limits: observable,
@@ -542,7 +547,9 @@ export default class BuySellStore extends BaseStore {
                 component: (
                     <div className='currency-dropdown__list-item'>
                         <div>{symbol}</div>
-                        <div>{display_name}</div>
+                        <Text as='div' align='right' size='xs' line_height='xxs'>
+                            {display_name}
+                        </Text>
                     </div>
                 ),
                 has_adverts,

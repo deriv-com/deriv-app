@@ -32,10 +32,10 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+            height: calc(80vh - 24rem);
 
             &--has-footer {
-                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+                height: calc(80vh - 24rem);
             }
 
             > * {
@@ -45,10 +45,10 @@
         }
 
         @include tablet {
-            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+            height: calc(80vh - 24rem);
 
             &--has-footer {
-                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+                height: calc(80vh - 24rem);
             }
 
             > * {
@@ -106,7 +106,7 @@
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
         min-height: calc(100vh - 30rem);
-        height: calc(100% - 30rem); // TODO: What is 37px?
+        height: calc(100% - 40rem);
         position: relative;
         overflow: hidden;
         margin-bottom: 1.6rem;
@@ -134,7 +134,11 @@
     &__recent {
         display: flex;
         gap: 1.6rem;
+
         &-preview-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: var(--text-general);
         }
 
@@ -145,6 +149,7 @@
                 overflow: auto;
                 /* TODO: ThemedScrollbars! */
                 height: calc(100% - 5.2rem); // 100% - Title height
+                padding-bottom: 5rem;
             }
         }
 
@@ -209,7 +214,9 @@
                 }
             }
         }
-
+        &__empty {
+            text-align: center;
+        }
         &-item {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -267,6 +274,7 @@
 
             &__button {
                 display: flex;
+                cursor: pointer;
 
                 &__edit {
                     margin-right: 0.8rem;

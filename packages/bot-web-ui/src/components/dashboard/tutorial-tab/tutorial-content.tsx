@@ -5,17 +5,36 @@ export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
 
 export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src'>;
 
-export type TGuideContent = Omit<TContent, 'title' | 'description' | 'src'>;
+export type TGuideContent = Omit<TContent, 'title' | 'description'>;
+
+export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TContent = {
     description: TDescription[];
     content?: string;
     src?: string;
     title: string;
+    subtype?: string;
     id: number;
     type: string;
     url?: string;
 };
+export const user_guide_content: TUserGuideContent[] = [
+    {
+        id: 1,
+        type: 'Tour',
+        subtype: 'OnBoard',
+        content: localize('Get started on DBot'),
+        src: getImageLocation('onboard-tour.png'),
+    },
+    {
+        id: 2,
+        type: 'Tour',
+        subtype: 'BotBuilder',
+        content: localize('Let’s build a bot!'),
+        src: getImageLocation('builder-tour.png'),
+    },
+];
 
 export const guide_content: TGuideContent[] = [
     {
@@ -23,6 +42,7 @@ export const guide_content: TGuideContent[] = [
         type: 'DBotVideo',
         content: localize('DBot -- your automated trading partner'),
         url: 'https://www.youtube.com/embed/Bb0HnaYNUx4',
+        src: getImageLocation('video_dbot.png'),
     },
     {
         id: 2,

@@ -3,7 +3,7 @@ import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings } from './joyride-config';
+import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings, setTourType, tour_type } from './joyride-config';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -23,22 +23,29 @@ type TDashboard = {
     has_tour_started: boolean;
     has_onboard_tour_started: boolean;
     setTourActive: (param: boolean) => void;
+    setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     loadDataStrategy: () => void;
     is_mobile: boolean;
+    setTourDialogVisibility: (param: boolean) => void;
+    is_tour_dialog_visible: boolean;
 };
 
 const Dashboard = ({
     active_tab,
-    setActiveTab,
-    loadDataStrategy,
-    onEntered,
-    setTourActive,
-    has_tour_started,
-    has_file_loaded,
     is_drawer_open,
+    setActiveTab,
+    onEntered,
+    has_file_loaded,
+    has_tour_started,
+    has_onboard_tour_started,
+    setTourActive,
+    setBotBuilderTourState,
     setOnBoardTourRunState,
+    loadDataStrategy,
     is_mobile,
+    setTourDialogVisibility,
+    is_tour_dialog_visible,
 }: TDashboard) => {
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
@@ -47,26 +54,51 @@ const Dashboard = ({
         loadDataStrategy();
     };
 
+    let tour_status: { [key: string]: string };
+    const setTourStatus = (param: { [key: string]: string }) => {
+        if (tour_status) {
+            const { action } = tour_status;
+            let actions = ['skip', 'close', 'reset'];
+
+            if (tour_type.key === 'bot_builder_') {
+                actions = ['skip', 'close'];
+            }
+            if (actions.includes(action)) {
+                if (tour_type.key === 'bot_builder_') {
+                    setBotBuilderTourState(false);
+                } else {
+                    setOnBoardTourRunState(false);
+                }
+                setTourActive(false);
+            }
+        }
+    };
+
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
         }
-        const tour_status = getTourSettings('status');
-
-        if (tour_status) {
-            const { action } = tour_status;
-            const actions = ['skip', 'close', 'reset'];
-            if (actions.includes(action)) {
-                setOnBoardTourRunState(false);
-                setTourActive(false);
-            }
+        if (active_tab === 1 && !has_onboard_tour_started) {
+            setTourType('bot_builder_');
+            setTourDialogVisibility(true);
         }
-    }, [active_tab, handleJoyrideCallback]);
+
+        tour_status = getTourSettings('onboard_tour_status');
+        setTourStatus(tour_status);
+    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started]);
+
+    //TODO: added addeventlistner because the useeffect does not trigger
+    window.addEventListener('storage', () => {
+        tour_status = getTourSettings('bot_builder_status');
+        setTourStatus(tour_status);
+    });
+
     return (
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    <TourTriggrerDialog />
+                    {active_tab === 0 && <TourTriggrerDialog />}
+                    {active_tab === 1 && !is_tour_dialog_visible && <TourTriggrerDialog />}
                     {has_tour_started && (
                         <ReactJoyride
                             steps={DBOT_ONBOARDING}
@@ -129,6 +161,7 @@ const Dashboard = ({
 export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
     active_tab: dashboard.active_tab,
     is_drawer_open: run_panel.is_drawer_open,
+    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     setActiveTab: dashboard.setActiveTab,
     loadDataStrategy: quick_strategy.loadDataStrategy,
     onEntered: load_modal.onEntered,
@@ -137,4 +170,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setTourActive: dashboard.setTourActive,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     is_mobile: ui.is_mobile,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    setBotBuilderTourState: dashboard.setBotBuilderTourState,
 }))(Dashboard);

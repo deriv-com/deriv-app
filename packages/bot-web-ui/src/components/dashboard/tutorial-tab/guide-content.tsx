@@ -12,6 +12,8 @@ type TGuideContent = {
     onOkButtonClick: () => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     guide_list: [];
+    setActiveTab: (tab_title: number) => void;
+    setTourDialogVisibility: (param: boolean) => boolean;
 };
 
 const GuideContent = ({
@@ -21,50 +23,103 @@ const GuideContent = ({
     onOkButtonClick,
     showVideoDialog,
     guide_list,
+    setActiveTab,
+    setTourDialogVisibility,
 }: TGuideContent) => {
-    return (
-        <div className='tutorials-wrap'>
-            <Text align='center' weight='bold' color='prominent' line_height='s'>
-                Guides
-            </Text>
-            <div className='tutorials-wrap__group'>
-                {guide_list?.length ? (
-                    guide_list.map(({ id, content, url }) => {
-                        return (
-                            <div className='tutorials-wrap__group__cards' key={id}>
-                                <div
-                                    className={classNames('tutorials-wrap__placeholder', {
-                                        'tutorials-wrap__placeholder--disabled': !url,
-                                    })}
-                                >
-                                    <div className='tutorials-wrap__placeholder__button-group'>
-                                        <Icon
-                                            className='tutorials-wrap__placeholder__button-group--play'
-                                            width='4rem'
-                                            height='4rem'
-                                            icon={'IcPlayOutline'}
-                                            onClick={() =>
-                                                showVideoDialog({
-                                                    type: 'url',
-                                                    url,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                                <Text align='center' color='prominent' line_height='s' size='s'>
-                                    {content}
-                                </Text>
-                            </div>
-                        );
-                    })
-                ) : (
-                    <Text as='h1' weight='bold' line_height='xxs'>
-                        {localize('No results found "{{ faq_search_value }}"', {
-                            faq_search_value,
-                        })}
+    const triggerTour = (type: string) => {
+        if (type === 'OnBoard') {
+            setActiveTab(0);
+            setTourDialogVisibility(true);
+        } else {
+            setActiveTab(1);
+        }
+    };
+
+    return React.useMemo(
+        () => (
+            <div className='tutorials-wrap'>
+                {guide_list && (
+                    <Text align='center' weight='bold' color='prominent' line_height='s'>
+                        User Guides
                     </Text>
                 )}
+                <div className='tutorials-wrap__group'>
+                    {guide_list &&
+                        guide_list.map(({ id, content, src, type, subtype }) => {
+                            return (
+                                type === 'Tour' && (
+                                    <div
+                                        className='tutorials-wrap__group__cards tutorials-wrap--tour'
+                                        key={id}
+                                        onClick={() => triggerTour(subtype)}
+                                    >
+                                        <div
+                                            className={classNames('tutorials-wrap__placeholder__tours', {
+                                                'tutorials-wrap__placeholder--disabled': !src,
+                                            })}
+                                            style={{
+                                                backgroundImage: `url(${src})`,
+                                            }}
+                                        />
+                                        <Text align='center' color='prominent' line_height='s'>
+                                            {content}
+                                        </Text>
+                                    </div>
+                                )
+                            );
+                        })}
+                </div>
+                {guide_list && (
+                    <Text align='center' weight='bold' color='prominent' line_height='s'>
+                        Guides
+                    </Text>
+                )}
+                <div className='tutorials-wrap__group'>
+                    {guide_list &&
+                        guide_list.map(({ id, content, url, type, src }) => {
+                            return (
+                                type !== 'Tour' && (
+                                    <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
+                                        <div
+                                            className={classNames('tutorials-wrap__placeholder', {
+                                                'tutorials-wrap__placeholder--disabled': !url,
+                                            })}
+                                            style={{
+                                                backgroundImage: `url(${src})`,
+                                            }}
+                                        >
+                                            <div className='tutorials-wrap__placeholder__button-group'>
+                                                <Icon
+                                                    className='tutorials-wrap__placeholder__button-group--play'
+                                                    width='4rem'
+                                                    height='4rem'
+                                                    icon={'IcPlayOutline'}
+                                                    onClick={() =>
+                                                        showVideoDialog({
+                                                            type: 'url',
+                                                            url,
+                                                        })
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <Text align='center' color='prominent' line_height='s'>
+                                            {content}
+                                        </Text>
+                                    </div>
+                                )
+                            );
+                        })}
+                    {!guide_list.length && (
+                        <div className='tutorials-wrap__group__nosearch'>
+                            <Text as='h1' weight='bold' line_height='xxs'>
+                                {localize('No results found "{{ faq_search_value }}"', {
+                                    faq_search_value,
+                                })}
+                            </Text>
+                        </div>
+                    )}
+                </div>
                 <Dialog
                     title={dialog_options.title}
                     is_visible={is_dialog_open}
@@ -80,7 +135,8 @@ const GuideContent = ({
                     <iframe width='100%' height='100%' src={dialog_options.url} frameBorder='0' allowFullScreen />
                 </Dialog>
             </div>
-        </div>
+        ),
+        [guide_list]
     );
 };
 
@@ -91,4 +147,6 @@ export default connect(({ dashboard, load_modal }: RootStore) => ({
     showVideoDialog: dashboard.showVideoDialog,
     dialog_options: dashboard.dialog_options,
     toggleLoadModal: load_modal.toggleLoadModal,
+    setActiveTab: dashboard.setActiveTab,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
 }))(GuideContent);

@@ -1,10 +1,18 @@
+@mixin align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .bot-dashboard {
     position: relative;
     height: calc(100vh - 8.4rem);
     overflow: hidden;
+
     @include mobile {
         height: calc(100vh - 3.4rem);
     }
+
     .toolbar__section {
         justify-content: end;
     }
@@ -33,22 +41,28 @@
         border: none;
         max-width: 100%;
         width: 100%;
+
         .dc-tabs {
             &__active-line {
                 background-color: var(--general-main-1);
                 transition: none;
             }
+
             &__active {
                 background: var(--general-main-1);
             }
+
             &__list {
                 background: var(--general-section-1);
                 justify-content: start;
+
                 @include mobile {
                     overflow-x: auto;
+
                     &::-webkit-scrollbar {
                         display: none;
                     }
+
                     -ms-overflow-style: none;
                     scrollbar-width: none;
                 }
@@ -70,7 +84,14 @@
                     width: 100%;
                     overflow-x: auto;
                 }
+                &--dashboard {
+                    &__tabs {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
             }
+
             &__item {
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
@@ -91,64 +112,6 @@
                     height: 1.6rem;
                     padding-right: 0;
                     margin-right: 0.8rem;
-                }
-            }
-
-            &__dashboard-cards-wrapper {
-                display: flex;
-                margin-top: 4rem;
-            }
-            &__dashboard-card {
-                margin-right: 4.2rem;
-                display: flex;
-                flex-direction: column;
-
-                svg {
-                    margin-bottom: 0.8rem;
-                    border-radius: 0.8rem;
-
-                    &:hover {
-                        transition: all 100ms ease-in;
-                        box-shadow: rgba(0, 0, 0, 0.35) 0 0.5rem 1.5rem;
-                        font-weight: 700;
-                    }
-                }
-
-                span {
-                    text-align: center;
-                }
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                &:last-child {
-                    margin-right: 0;
-                }
-
-                &__image {
-                    background: var(--general-section-1);
-                }
-                img {
-                    margin-bottom: 0.8rem;
-                }
-            }
-
-            &__content-group {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: calc(100vh - 20rem);
-                margin-top: 1rem;
-
-                &__header {
-                    margin-bottom: 1.3rem;
-                }
-
-                &__description {
-                    max-width: 44rem;
-                    text-align: center;
                 }
             }
         }
@@ -199,6 +162,7 @@
 
     &__card {
         margin-bottom: 1.6rem;
+
         h1 {
             font-size: 2.4rem;
             margin-bottom: 0.8rem;
@@ -218,6 +182,7 @@
 .tab {
     &__dashboard {
         display: flex;
+        width: 100%;
 
         &__content {
             min-width: 70%;
@@ -227,6 +192,8 @@
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
+            overflow: hidden;
+
             @include mobile {
                 height: var(--tab-content-height-mobile);
             }
@@ -238,11 +205,29 @@
             align-items: center;
             justify-content: center;
             width: 50%;
+            margin-top: -3rem;
         }
 
         &__preview {
             width: 50%;
             height: 100%;
+
+            &__retrigger {
+                button {
+                    background: $color-grey-2;
+                    border-radius: 2.4rem;
+                    outline: none;
+                    border: none;
+                    height: 4rem;
+                    width: 12.8rem;
+                    @include align-center;
+                    cursor: pointer;
+                }
+
+                &__text {
+                    margin-left: 0.4rem;
+                }
+            }
         }
 
         &__header {
@@ -250,12 +235,11 @@
         }
 
         &__description {
-            max-width: 44rem;
             text-align: center;
             margin-bottom: 4rem;
+            padding: 0 5rem;
 
             &__loaded {
-                max-width: 65rem;
                 text-align: left;
                 margin-top: 4rem;
             }
@@ -270,7 +254,7 @@
 
             &--active {
                 display: block;
-                width: 35rem;
+                width: 30%;
             }
         }
 
@@ -300,6 +284,7 @@
             &__images {
                 background-color: var(--general-section-1);
                 margin-bottom: 0.8rem;
+                border-radius: 0.8rem;
             }
         }
     }

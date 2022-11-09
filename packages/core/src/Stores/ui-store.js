@@ -137,6 +137,9 @@ export default class UIStore extends BaseStore {
 
     manage_real_account_tab_index = 0;
 
+    //traders-hub
+    is_real_tab_enabled = false;
+
     // onboarding
     should_show_multipliers_onboarding = false;
     choose_crypto_currency_target = null;
@@ -251,6 +254,7 @@ export default class UIStore extends BaseStore {
             choose_crypto_currency_target: observable,
             should_show_cancel: observable,
             app_contents_scroll_ref: observable,
+            is_real_tab_enabled: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_switch_to_deriv_account_modal_visible: observable,
             is_warning_scam_message_modal_visible: computed,
@@ -331,6 +335,7 @@ export default class UIStore extends BaseStore {
             continueRouteAfterChooseCrypto: action.bound,
             openDerivRealAccountNeededModal: action.bound,
             openSwitchToRealAccountModal: action.bound,
+            setIsRealTabEnabled: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -355,6 +360,10 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    setIsRealTabEnabled(is_real_tab_enabled) {
+        this.is_real_tab_enabled = is_real_tab_enabled;
     }
 
     setScamMessageLocalStorage() {

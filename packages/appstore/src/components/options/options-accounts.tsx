@@ -128,9 +128,9 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                             is_dark_mode_on={is_dark_mode_on}
                                             shortcode={shortcode}
                                             should_show_server_name={should_show_server_name}
-                                            redirectAccount={() =>
-                                                account.is_disabled ? undefined : () => doSwitch(account.loginid)
-                                            }
+                                            redirectAccount={() => {
+                                                return !account.is_disabled && doSwitch(account.loginid);
+                                            }}
                                             onClickResetVirtualBalance={resetBalance}
                                             selected_loginid={account.loginid}
                                             history={props.history}

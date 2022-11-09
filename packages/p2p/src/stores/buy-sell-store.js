@@ -48,7 +48,7 @@ export default class BuySellStore extends BaseStore {
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
         // For sell orders we require extra information.
-        ...(this.is_sell_advert ? { contact_info: this.contact_info } : {}),
+        ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
     filter_payment_methods = [];
     payment_method_ids = [];
@@ -59,7 +59,6 @@ export default class BuySellStore extends BaseStore {
 
         makeObservable(this, {
             api_error_message: observable,
-            contact_info: observable,
             error_message: observable,
             form_error_code: observable,
             has_more_items_to_load: observable,
@@ -72,7 +71,6 @@ export default class BuySellStore extends BaseStore {
             items: observable,
             local_currencies: observable,
             local_currency: observable,
-            payment_info: observable,
             receive_amount: observable,
             search_results: observable,
             search_term: observable,
@@ -101,7 +99,6 @@ export default class BuySellStore extends BaseStore {
             modal_title: computed,
             rendered_items: computed,
             should_filter_by_payment_method: computed,
-            getAdvertiserInfo: action.bound,
             getSupportedPaymentMethods: action.bound,
             getWebsiteStatus: action.bound,
             handleChange: action.bound,
@@ -116,7 +113,6 @@ export default class BuySellStore extends BaseStore {
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
-            setContactInfo: action.bound,
             setErrorMessage: action.bound,
             setFormErrorCode: action.bound,
             setFormProps: action.bound,
@@ -130,7 +126,6 @@ export default class BuySellStore extends BaseStore {
             setItems: action.bound,
             setLocalCurrency: action.bound,
             setLocalCurrencies: action.bound,
-            setPaymentInfo: action.bound,
             setInitialReceiveAmount: action.bound,
             setReceiveAmount: action.bound,
             setSearchResults: action.bound,
@@ -168,7 +163,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     get has_payment_info() {
-        return this.contact_info.length;
+        return this.root_store.general_store.contact_info.length;
     }
 
     get is_buy() {

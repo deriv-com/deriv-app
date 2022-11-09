@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import CFDs from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
-import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';
-import Multipliers from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
-import NotSure from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
+import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
+import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
+import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
+import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';
+import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
+import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
+import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
+import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_account, can_have_mlt_account }) => {
@@ -66,7 +70,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     }
                     onClick={() => switchPlatform({ route: routes.mt5 })}
                     icon={<CFDs />}
-                    mobileIcon={<CFDs />}
+                    mobileIcon={<CFDsMobile />}
                     options={cfdOptions()}
                 />
                 <WelcomeItem
@@ -79,7 +83,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
                     title={localize('Multipliers')}
                     icon={<Multipliers />}
-                    mobileIcon={<Multipliers />}
+                    mobileIcon={<MultipliersMobile />}
                     options={mfOptions()}
                 />
                 {shouldShowOptions() && (
@@ -93,7 +97,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         onClick={() => switchPlatform({ route: routes.trade })}
                         title={localize('Options')}
                         icon={<DigitalOptions />}
-                        mobileIcon={<DigitalOptions />}
+                        mobileIcon={<DigitalOptionsMobile />}
                         options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
                     />
                 )}
@@ -103,7 +107,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                     title={localize('Not sure?')}
                     onClick={() => switchPlatform({ route: routes.trade })}
                     icon={<NotSure />}
-                    mobileIcon={<NotSure />}
+                    mobileIcon={<NotSureMobile />}
                 />
             </div>
         </>

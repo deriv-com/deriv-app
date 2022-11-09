@@ -61,7 +61,6 @@ const ApiTokenClipboard = ({
     const onMouseLeaveHandler = () => {
         if (!is_copied) setIsPopoverOpen(false);
     };
-
     /* two timeouts help to prevent popup window blinking. 
     without early hiding the popup we will see shortly the description message like during hovering. 
     this bug appears when popup is handled outside like here

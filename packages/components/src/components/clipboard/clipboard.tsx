@@ -16,7 +16,6 @@ type TClipboard = {
     popoverAlignment?: 'top' | 'right' | 'bottom' | 'left';
     popover_props?: Partial<TPopoverProps>;
 };
-
 const Clipboard = ({
     text_copy,
     info_message,
@@ -33,7 +32,6 @@ const Clipboard = ({
 
     const onClick = (event: { stopPropagation: () => void }) => {
         copyToClipboard(text_copy);
-
         timeout_clipboard = setTimeout(() => {
             if (isMounted()) {
                 setIsCopied(false);

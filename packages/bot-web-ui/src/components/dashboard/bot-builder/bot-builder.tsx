@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import ReactJoyride from 'react-joyride';
 import classNames from 'classnames';
 import WorkspaceWrapper from './workspace-wrapper';
-import { BOT_BUILDER_TOUR } from '../joyride-config';
+import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import LoadModal from 'Components/load-modal';
 import TourTriggrerDialog from '../tour-trigger-dialog';
 
@@ -34,11 +34,6 @@ const BotBuilder = ({
         return () => onUnmount();
     }, []);
 
-    React.useEffect(() => {
-        if (active_tab === 1 && !has_onboard_tour_started) {
-            setTourDialogVisibility(true);
-        }
-    }, [active_tab, has_onboard_tour_started]);
     return (
         <div
             className={classNames('bot-builder', {
@@ -61,6 +56,7 @@ const BotBuilder = ({
                             steps={BOT_BUILDER_TOUR}
                             continuous
                             showProgress
+                            callback={handleJoyrideCallback}
                             styles={{
                                 options: {
                                     arrowColor: 'var(--general-section-7)',

@@ -45,8 +45,7 @@
     &__text {
         margin: 1.5rem 0;
         @include mobile {
-            display: flex;
-            justify-content: center;
+            @include position-center;
         }
     }
 

@@ -136,7 +136,7 @@ export default class WithdrawStore {
     }
 
     willMountWithdraw(verification_code) {
-        if (verification_code) {
+        if (this && this.root_store && verification_code) {
             const { client, modules } = this.root_store;
             const { active_container } = modules.cashier.general_store;
             const container = Constants.map_action[active_container];

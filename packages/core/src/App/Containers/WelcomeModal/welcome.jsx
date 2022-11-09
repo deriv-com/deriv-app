@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { DesktopWrapper, MobileWrapper, StaticUrl, Text } from '@deriv/components';
-import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
-import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
-import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
-import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';
-import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
-import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
-import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
-import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import CFDs from 'Assets/PngComponents/onboarding/cfds.png';
+import CFDsMobile from 'Assets/PngComponents/onboarding/cfds-mobile.png';
+import DigitalOptions from 'Assets/PngComponents/onboarding/digital-options.png';
+import DigitalOptionsMobile from 'Assets/PngComponents/onboarding/digital-options-mobile.png';
+import Multipliers from 'Assets/PngComponents/onboarding/multipliers.png';
+import MultipliersMobile from 'Assets/PngComponents/onboarding/multipliers-mobile.png';
+import NotSure from 'Assets/PngComponents/onboarding/not-sure.png';
+import NotSureMobile from 'Assets/PngComponents/onboarding/not-sure-mobile.png';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_account, can_have_mlt_account }) => {
@@ -30,20 +30,20 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
         if (is_uk) {
             country_options = ['Forex', 'Stocks', 'Stock indices', 'Commodities'];
         } else if (is_eu) {
-            country_options = ['Forex', 'Derived', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
+            country_options = ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
         } else {
-            country_options = ['Forex', 'Derived', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
+            country_options = ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
         }
         return country_options;
     };
     const mfOptions = () => {
         let mf_options;
         if (is_mlt_mf || is_mf_only) {
-            mf_options = ['Forex', 'Derived', 'Cryptocurrencies'];
+            mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies'];
         } else if (is_uk) {
             mf_options = ['Forex'];
         } else {
-            mf_options = ['Forex', 'Derived'];
+            mf_options = ['Forex', 'Synthetics'];
         }
         return mf_options;
     };
@@ -98,27 +98,17 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         title={localize('Options')}
                         icon={<DigitalOptions />}
                         mobileIcon={<DigitalOptionsMobile />}
-                        options={is_eu ? ['Derived'] : ['Forex', 'Derived', 'Stocks and indices', 'Commodities']}
+                        options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
                     />
                 )}
-                {!is_eu && (
-                    <WelcomeItem
-                        description={
-                            <Localize
-                                i18n_default_text='Get more info on <0>CFDs</0>, <1>multipliers</1>, and <2>options</2>.'
-                                components={[
-                                    <StaticUrl key={0} className='link' href='/trade-types/cfds/' />,
-                                    <StaticUrl key={1} className='link' href='/trade-types/multiplier/' />,
-                                    <StaticUrl key={2} className='link' href='/trade-types/options/' />,
-                                ]}
-                            />
-                        }
-                        title={localize('Not sure where to start?')}
-                        icon={<NotSure />}
-                        mobileIcon={<NotSureMobile />}
-                        small
-                    />
-                )}
+
+                <WelcomeItem
+                    description={<Localize i18n_default_text='Let us introduce you to trading on Deriv.' />}
+                    title={localize('Not sure?')}
+                    onClick={() => switchPlatform({ route: routes.trade })}
+                    icon={<NotSure />}
+                    mobileIcon={<NotSureMobile />}
+                />
             </div>
         </>
     );

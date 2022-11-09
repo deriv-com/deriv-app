@@ -79,6 +79,7 @@ export default class BuySellStore extends BaseStore {
             selected_payment_method_value: observable,
             selected_payment_method_text: observable,
             selected_value: observable,
+            should_show_currency_selector_modal: observable,
             should_show_popup: observable,
             should_show_verification: observable,
             should_use_client_limits: observable,

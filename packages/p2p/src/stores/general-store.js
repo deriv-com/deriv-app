@@ -182,7 +182,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     get should_show_dp2p_blocked() {
-        return this.is_blocked || this.is_high_risk;
+        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
@@ -408,24 +408,24 @@ export default class GeneralStore extends BaseStore {
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);
             } else if (get_account_status.risk_classification === 'high') {
-                this.setIsHighRisk(true);
+                const is_authenticated = hasStatuses(['authenticated']);
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
-
                 const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
-
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
-
                 const is_not_fully_authenticated_and_fa_not_completed =
                     is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
 
                 if (
-                    is_cashier_locked ||
-                    is_not_fully_authenticated ||
-                    is_fully_authed_but_poi_expired ||
-                    is_not_fully_authenticated_and_fa_not_completed
+                    is_authenticated &&
+                    (is_cashier_locked ||
+                        is_not_fully_authenticated ||
+                        is_fully_authed_but_poi_expired ||
+                        is_not_fully_authenticated_and_fa_not_completed)
                 ) {
                     this.setIsBlocked(true);
                 }
+
+                this.setIsHighRisk(true);
             }
 
             if (is_blocked_for_pa) {

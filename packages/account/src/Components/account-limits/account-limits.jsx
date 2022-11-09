@@ -96,11 +96,8 @@ const AccountLimits = ({
     }
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-    const forex_ordered = forex?.slice().sort((a, b) => (a.name < b.name ? 1 : -1));
-
-    if (forex_ordered && forex_ordered.push) {
-        forex_ordered.push(forex_ordered.shift());
-    }
+    const forex_ordered = forex?.slice().sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+    const derived_ordered = synthetic_index?.slice().sort((b, a) => (a.level < b.level ? 1 : -1));
 
     const context_value = {
         currency,
@@ -159,7 +156,12 @@ const AccountLimits = ({
                                             <Localize i18n_default_text='*Maximum account cash balance' />
                                         </AccountLimitsTableCell>
                                         <AccountLimitsTableCell align='right'>
-                                            {formatMoney(currency, account_balance, true)}
+                                            {/* null or 0 are expected form BE when max balance limit is not set */}
+                                            {account_balance ? (
+                                                formatMoney(currency, account_balance, true)
+                                            ) : (
+                                                <Localize i18n_default_text='Not set' />
+                                            )}
                                         </AccountLimitsTableCell>
                                     </tr>
                                     <tr>
@@ -207,12 +209,9 @@ const AccountLimits = ({
                                 </thead>
                                 <tbody>
                                     <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                    <AccountLimitsTurnoverLimitRow
-                                        collection={forex_ordered}
-                                        title={localize('Forex')}
-                                    />
+                                    <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
                                     <AccountLimitsTurnoverLimitRow collection={indices} />
-                                    <AccountLimitsTurnoverLimitRow collection={synthetic_index} />
+                                    <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
                                 </tbody>
                             </table>
                             {/* We only show "Withdrawal Limits" on account-wide settings pages. */}

@@ -172,7 +172,7 @@ const CryptoWithdrawForm = ({
                                             }}
                                         />
                                     }
-                                    error={touched.address && errors.address}
+                                    error={touched.address ? errors.address : ''}
                                     required
                                     autoComplete='off'
                                 />

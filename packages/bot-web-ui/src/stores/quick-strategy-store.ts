@@ -224,10 +224,10 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async loadDataStrategy() {
+    loadDataStrategy() {
         this.root_store.flyout.setVisibility(false);
-        await this.updateSymbolDropdown();
-        await this.updateTypesStrategiesDropdown();
+        this.updateSymbolDropdown();
+        this.updateTypesStrategiesDropdown();
     }
 
     @action.bound
@@ -524,6 +524,9 @@ export default class QuickStrategyStore {
     };
 
     getFieldMap = (type: TDropdownItems): TFieldMapData => {
+        /* eslint-disable no-console */
+        console.log('hi3');
+
         const field_mapping = {
             symbol: {
                 field_name: 'quick-strategy__symbol',

@@ -27,6 +27,8 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
                     <PaymentAgentDisclaimer />
                 </SideNote>,
             ]);
+        } else {
+            setSideNotes([]);
         }
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
 

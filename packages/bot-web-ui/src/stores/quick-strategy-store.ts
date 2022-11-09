@@ -524,9 +524,6 @@ export default class QuickStrategyStore {
     };
 
     getFieldMap = (type: TDropdownItems): TFieldMapData => {
-        /* eslint-disable no-console */
-        console.log('hi3');
-
         const field_mapping = {
             symbol: {
                 field_name: 'quick-strategy__symbol',

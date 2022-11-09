@@ -50,12 +50,12 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on, is_real_tab_enabled, setIsRealTabEnabled } = ui;
+    const { is_dark_mode_on } = ui;
     const { is_tour_open, toggleIsTourOpen } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
-    const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>(
-        is_real_tab_enabled ? 'real' : 'demo'
-    );
+    const login_id = window.localStorage.getItem('active_loginid') ?? '';
+    const real_active = !/^VRT/.test(login_id);
+    const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>(real_active ? 'real' : 'demo');
     const [platform_type, setPlatformType] = React.useState<string>('cfd');
 
     const history = useHistory();
@@ -93,6 +93,8 @@ const TradingHub: React.FC = () => {
         enableCFDPasswordModal();
     };
 
+    // setIsRealTabEnabled(!demo_active);
+
     const accountTypeChange = (event: {
         target: {
             value: string;
@@ -100,7 +102,6 @@ const TradingHub: React.FC = () => {
         };
     }) => {
         setTabAccountType(event.target.value as TAccountCategory);
-        setIsRealTabEnabled(event.target.value === 'real');
     };
     const platformTypeChange = (event: {
         target: {
@@ -163,7 +164,9 @@ const TradingHub: React.FC = () => {
                                     value: string;
                                     name: string;
                                 };
-                            }) => accountTypeChange(event)}
+                            }) => {
+                                accountTypeChange(event);
+                            }}
                             value={tab_account_type}
                         />
                     </DesktopWrapper>

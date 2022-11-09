@@ -12,6 +12,7 @@
     &-active {
         background: var(--general-section-5);
     }
+
     @include mobile {
         gap: 0.4rem;
         width: 22rem;

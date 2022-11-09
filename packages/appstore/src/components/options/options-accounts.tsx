@@ -136,7 +136,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                             history={props.history}
                                             location={props.location}
                                             match={props.match}
-                                            activeAccount={account.loginid}
+                                            activeAccount={loginid}
                                         />
                                     ))}
                             </div>

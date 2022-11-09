@@ -304,7 +304,6 @@ const AccountSwitcher = props => {
 
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
-    props.setIsRealTabEnabled(active_tab_index === 0);
 
     const getDemoMT5 = () => {
         return getSortedCFDList(props.mt5_login_list).filter(isDemo);
@@ -1058,8 +1057,6 @@ AccountSwitcher.propTypes = {
     trading_platform_available_accounts: PropTypes.array,
     upgradeable_landing_companies: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
-    setIsRealTabEnabled: PropTypes.func,
-    is_real_tab_enabled: PropTypes.bool,
 };
 
 const account_switcher = withRouter(
@@ -1119,8 +1116,6 @@ const account_switcher = withRouter(
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
-        setIsRealTabEnabled: ui.setIsRealTabEnabled,
-        is_real_tab_enabled: ui.is_real_tab_enabled,
     }))(AccountSwitcher)
 );
 

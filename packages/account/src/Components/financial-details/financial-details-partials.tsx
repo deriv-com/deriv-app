@@ -1,24 +1,18 @@
-import { Field, FormikValues } from 'formik';
+import { Field, FormikErrors, FormikHelpers, FormikTouched, FormikValues } from 'formik';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 type TCommonFinancialDetailsPartials = {
     handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    setFieldValue: (field: string, value: React.ReactNode, shouldValidate?: boolean) => void;
+    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'];
+    handleBlur: () => boolean;
+    values: FormikValues;
+    touched: FormikTouched<FormikValues>;
+    errors: FormikErrors<FormikValues>;
 };
 
 type TEmploymentStatus = {
-    values: {
-        employment_status: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        employment_status: string;
-    };
-    errors: {
-        employment_status: string;
-    };
     employment_status_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -71,16 +65,6 @@ export const EmploymentStatus = ({
 );
 
 type TIncomeSource = {
-    values: {
-        income_source: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        income_source: string;
-    };
-    errors: {
-        income_source: string;
-    };
     income_source_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -133,16 +117,6 @@ export const IncomeSource = ({
 );
 
 type TEmploymentIndustry = {
-    values: {
-        employment_industry: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        employment_industry: string;
-    };
-    errors: {
-        employment_industry: string;
-    };
     employment_industry_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -195,16 +169,6 @@ export const EmploymentIndustry = ({
 );
 
 type TOccupation = {
-    values: {
-        occupation: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        occupation: string;
-    };
-    errors: {
-        occupation: string;
-    };
     occupation_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -257,16 +221,6 @@ export const Occupation = ({
 );
 
 type TSourceOfWealth = {
-    values: {
-        source_of_wealth: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        source_of_wealth: string;
-    };
-    errors: {
-        source_of_wealth: string;
-    };
     source_of_wealth_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -319,16 +273,6 @@ export const SourceOfWealth = ({
 );
 
 type TEducationLevel = {
-    values: {
-        education_level: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        education_level: string;
-    };
-    errors: {
-        education_level: string;
-    };
     education_level_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -381,16 +325,6 @@ export const EducationLevel = ({
 );
 
 type TNetIncome = {
-    values: {
-        net_income: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        net_income: string;
-    };
-    errors: {
-        net_income: string;
-    };
     net_income_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -443,16 +377,6 @@ export const NetIncome = ({
 );
 
 type TEstimatedWorth = {
-    values: {
-        estimated_worth: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        estimated_worth: string;
-    };
-    errors: {
-        estimated_worth: string;
-    };
     estimated_worth_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -505,16 +429,6 @@ export const EstimatedWorth = ({
 );
 
 type TAccountTurnover = {
-    values: {
-        account_turnover: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        account_turnover: string;
-    };
-    errors: {
-        account_turnover: string;
-    };
     account_turnover_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -567,16 +481,6 @@ export const AccountTurnover = ({
 );
 
 type TForexTradingExperience = {
-    values: {
-        forex_trading_experience: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        forex_trading_experience: string;
-    };
-    errors: {
-        forex_trading_experience: string;
-    };
     forex_trading_experience_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -629,16 +533,6 @@ export const ForexTradingExperience = ({
 );
 
 type TForexTradingFrequency = {
-    values: {
-        forex_trading_frequency: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        forex_trading_frequency: string;
-    };
-    errors: {
-        forex_trading_frequency: string;
-    };
     forex_trading_frequency_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -691,16 +585,6 @@ export const ForexTradingFrequency = ({
 );
 
 type TBinaryOptionsTradingExperience = {
-    values: {
-        binary_options_trading_experience: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        binary_options_trading_experience: string;
-    };
-    errors: {
-        binary_options_trading_experience: string;
-    };
     binary_options_trading_experience_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -753,16 +637,6 @@ export const BinaryOptionsTradingExperience = ({
 );
 
 type TBinaryOptionsTradingFrequency = {
-    values: {
-        binary_options_trading_frequency: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        binary_options_trading_frequency: string;
-    };
-    errors: {
-        binary_options_trading_frequency: string;
-    };
     binary_options_trading_frequency_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -815,16 +689,6 @@ export const BinaryOptionsTradingFrequency = ({
 );
 
 type TCFDTradingExperience = {
-    values: {
-        cfd_trading_experience: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        cfd_trading_experience: string;
-    };
-    errors: {
-        cfd_trading_experience: string;
-    };
     cfd_trading_experience_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -877,16 +741,6 @@ export const CFDTradingExperience = ({
 );
 
 type TCFDTradingFrequency = {
-    values: {
-        cfd_trading_frequency: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        cfd_trading_frequency: string;
-    };
-    errors: {
-        cfd_trading_frequency: string;
-    };
     cfd_trading_frequency_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -939,16 +793,6 @@ export const CFDTradingFrequency = ({
 );
 
 type TOtherInstrumentsTradingExperience = {
-    values: {
-        other_instruments_trading_experience: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        other_instruments_trading_experience: string;
-    };
-    errors: {
-        other_instruments_trading_experience: string;
-    };
     other_instruments_trading_experience_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 
@@ -1005,16 +849,6 @@ export const OtherInstrumentsTradingExperience = ({
 );
 
 type TOtherInstrumentsTradingFrequency = {
-    values: {
-        other_instruments_trading_frequency: string;
-    };
-    handleBlur: () => boolean;
-    touched: {
-        other_instruments_trading_frequency: string;
-    };
-    errors: {
-        other_instruments_trading_frequency: string;
-    };
     other_instruments_trading_frequency_enum: Array<object>;
 } & TCommonFinancialDetailsPartials;
 

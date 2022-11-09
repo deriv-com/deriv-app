@@ -11,12 +11,12 @@ export type TOptions = {
     regex?: RegExp;
 };
 
-const validRequired = (value?: string /* , options, field */) => {
+const validRequired = (value?: string | number /* , options, field */) => {
     if (value === undefined || value === null) {
         return false;
     }
 
-    const str = value.replace(/\s/g, '');
+    const str = value.toString().replace(/\s/g, '');
     return str.length > 0;
 };
 export const validAddress = (value: string) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);

@@ -42,7 +42,6 @@ export default class QuickStrategyStore {
             selected_duration_unit: observable,
             input_duration_value: observable,
             input_stake: observable,
-            input_size: observable,
             input_alembert_unit: observable,
             input_martingale_size: observable,
             input_oscar_unit: observable,
@@ -55,8 +54,7 @@ export default class QuickStrategyStore {
             duration_unit_dropdown: observable,
             description: observable,
             initial_values: computed,
-            initial_errors: computed,
-            types_strategies_dropdown: computed,
+            types_strategies_dropdown: observable,
             onScrollStopDropdownList: action.bound,
             getSizeDesc: action.bound,
             getFieldMap: action.bound,
@@ -64,7 +62,6 @@ export default class QuickStrategyStore {
             getQuickStrategyFields: action.bound,
             setDescription: action.bound,
             setActiveTypeStrategyIndex: action.bound,
-            setActiveTabIndex: action.bound,
             setDurationUnitDropdown: action.bound,
             setSymbolDropdown: action.bound,
             setTradeTypeDropdown: action.bound,
@@ -84,7 +81,6 @@ export default class QuickStrategyStore {
             updateTradeTypeDropdown: action.bound,
             updateDurationDropdown: action.bound,
             updateDurationValue: action.bound,
-            validateQuickStrategy: action.bound,
         });
 
         this.root_store = root_store;

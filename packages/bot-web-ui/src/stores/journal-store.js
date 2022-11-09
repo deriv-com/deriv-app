@@ -22,7 +22,7 @@ export default class JournalStore {
             filtered_messages: computed,
             getServerTime: action.bound,
             playAudio: action.bound,
-            checked_filters: action.bound,
+            checked_filters: computed,
             filterMessage: action.bound,
             clear: action.bound,
             welcomeBackUser: action.bound,

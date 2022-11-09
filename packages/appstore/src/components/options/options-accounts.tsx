@@ -90,7 +90,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                 <Text size={isMobile() ? 'xxs' : 's'} line_height={isMobile() ? 'l' : 'xxl'}>
                     <Localize
                         key={1}
-                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simpliciy of Options with <1>Multipliers</1>.'
+                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the limited downside of options with <1>Multipliers</1>.'
                         components={[
                             <StaticUrl key={0} className='link' href='trade-types/options/' />,
                             <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,

@@ -164,35 +164,6 @@ describe('OnRampStore', () => {
     //     expect(spyDisposeGetWidgetHtmlReaction).toBeCalledTimes(1);
     // });
 
-    // it('should show and hide deposit address popover when deposit address is copied', async () => {
-    //     jest.useFakeTimers();
-    //     jest.spyOn(document, 'createRange').mockImplementation(() => ({
-    //         selectNodeContents: jest.fn(),
-    //     }));
-    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-    //         getSelection: () => ({
-    //             addRange: jest.fn(),
-    //             removeAllRanges: jest.fn(),
-    //         }),
-    //     }));
-    //     Object.assign(navigator, {
-    //         clipboard: {
-    //             writeText: jest.fn(() => Promise.resolve()),
-    //         },
-    //     });
-    //     const spySetIsDepositAddressPopoverOpen = jest.spyOn(onramp_store, 'setIsDepositAddressPopoverOpen');
-    //     onramp_store.onClickCopyDepositAddress();
-
-    //     expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(true);
-    //     jest.runAllTimers();
-    //     expect(setTimeout).toHaveBeenCalledTimes(1);
-    //     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
-    //     expect(await spySetIsDepositAddressPopoverOpen).toHaveBeenCalledWith(false);
-
-    //     jest.restoreAllMocks();
-    //     jest.useRealTimers();
-    // });
-
     it('should show widget when onClickDisclaimerContinue method was called', () => {
         onramp_store.onClickDisclaimerContinue();
 
@@ -277,7 +248,6 @@ describe('OnRampStore', () => {
 
         expect(onramp_store.api_error).toBeNull();
         expect(onramp_store.deposit_address).toBeNull();
-        expect(onramp_store.deposit_address_ref).toBeNull();
         expect(onramp_store.is_deposit_address_loading).toBeTruthy();
         expect(onramp_store.selected_provider).toBeNull();
         expect(onramp_store.should_show_widget).toBeFalsy();
@@ -303,22 +273,10 @@ describe('OnRampStore', () => {
         expect(onramp_store.deposit_address).toBe('deposit address');
     });
 
-    it('should set deposit address ref', () => {
-        onramp_store.setDepositAddressRef('deposit address ref');
-
-        expect(onramp_store.deposit_address_ref).toBe('deposit address ref');
-    });
-
     it('should change value of the variable is_deposit_address_loading', () => {
         onramp_store.setIsDepositAddressLoading(true);
 
         expect(onramp_store.is_deposit_address_loading).toBeTruthy();
-    });
-
-    it('should change value of the variable is_deposit_address_popover_open', () => {
-        onramp_store.setIsDepositAddressPopoverOpen(true);
-
-        expect(onramp_store.is_deposit_address_popover_open).toBeTruthy();
     });
 
     it('should change value of the variable is_onramp_modal_open', () => {

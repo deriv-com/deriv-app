@@ -8,7 +8,7 @@ const AccountLimitsFooterPortal = () => {
     const { footer_ref, toggleOverlay } = React.useContext<TAccountLimitsContext>(AccountLimitsContext);
 
     return createPortal(
-        <a className='link link--prominent' onClick={toggleOverlay} data-testid='footer_text'>
+        <a className='link link--prominent' onClick={toggleOverlay} data-testid='dt_footer_text'>
             <Text size='xxs' line_height='m' weight='bold'>
                 <Localize i18n_default_text='Learn more about account limits' />
             </Text>

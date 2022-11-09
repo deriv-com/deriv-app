@@ -38,7 +38,7 @@ describe('<AccountLimitsFooterPortal/>', () => {
     });
     it('should render anchor tag', () => {
         render(<AccountLimitsFooterPortalComponent />);
-        expect(screen.getAllByTestId('footer_text').length).toBe(1);
+        expect(screen.getAllByTestId('dt_footer_text').length).toBe(1);
     });
     it('should trigger toggleOverlay', async () => {
         const toggleOverlay = jest.fn();

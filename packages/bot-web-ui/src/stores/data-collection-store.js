@@ -1,10 +1,28 @@
-import { reaction } from 'mobx';
+import { reaction, makeObservable, observable, action } from 'mobx';
 import crc32 from 'crc-32/crc32';
 import { isProduction, cloneObject } from '@deriv/shared';
 import { DBot } from '@deriv/bot-skeleton';
 
 export default class DataCollectionStore {
     constructor(root_store) {
+        makeObservable(this, {
+            IS_PENDING: observable,
+            IS_PROCESSED: observable,
+            endpoint: observable,
+            run_id: observable,
+            run_start: observable,
+            should_post_xml: observable,
+            strategy_content: observable,
+            transaction_ids: observable,
+            trackRun: action.bound,
+            trackTransaction: action.bound,
+            setRunId: action.bound,
+            setRunStart: action.bound,
+            setStrategyContent: action.bound,
+            cleanXmlDom: action.bound,
+            getHash: action.bound,
+        });
+        this.root_store = root_store;
         if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 

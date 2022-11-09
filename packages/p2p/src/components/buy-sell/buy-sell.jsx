@@ -10,6 +10,7 @@ import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
+import { CurrencySelectorModal } from 'Components/buy-sell/currency-selector';
 import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
@@ -20,6 +21,7 @@ const BuySell = () => {
     React.useEffect(() => {
         const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
         const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+        buy_sell_store.setLocalCurrency(buy_sell_store.selected_local_currency);
 
         return () => {
             disposeIsListedReaction();
@@ -61,6 +63,7 @@ const BuySell = () => {
                 table_type={buy_sell_store.table_type}
             />
             <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
+            <CurrencySelectorModal is_modal_open={buy_sell_store.should_show_currency_selector_modal} />
         </div>
     );
 };

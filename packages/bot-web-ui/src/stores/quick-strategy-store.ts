@@ -1,7 +1,7 @@
+import { computed, observable, action, runInAction, makeObservable } from 'mobx';
+import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { localize } from '@deriv/translations';
-import { action, computed, observable, runInAction } from 'mobx';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
@@ -35,30 +35,80 @@ export default class QuickStrategyStore {
     qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
 
     constructor(root_store: RootStore) {
+        makeObservable(this, {
+            selected_symbol: observable,
+            selected_trade_type: observable,
+            selected_type_strategy: observable,
+            selected_duration_unit: observable,
+            input_duration_value: observable,
+            input_stake: observable,
+            input_size: observable,
+            input_alembert_unit: observable,
+            input_martingale_size: observable,
+            input_oscar_unit: observable,
+            input_loss: observable,
+            input_profit: observable,
+            is_strategy_modal_open: observable,
+            active_index: observable,
+            symbol_dropdown: observable,
+            trade_type_dropdown: observable,
+            duration_unit_dropdown: observable,
+            description: observable,
+            initial_values: computed,
+            initial_errors: computed,
+            types_strategies_dropdown: computed,
+            onScrollStopDropdownList: action.bound,
+            getSizeDesc: action.bound,
+            getFieldMap: action.bound,
+            getFieldValue: action.bound,
+            getQuickStrategyFields: action.bound,
+            setDescription: action.bound,
+            setActiveTypeStrategyIndex: action.bound,
+            setActiveTabIndex: action.bound,
+            setDurationUnitDropdown: action.bound,
+            setSymbolDropdown: action.bound,
+            setTradeTypeDropdown: action.bound,
+            setTypesStrategiesDropdown: action.bound,
+            setSelectedTypeStrategy: action.bound,
+            setSelectedDurationUnit: action.bound,
+            setSelectedSymbol: action.bound,
+            setSelectedTradeType: action.bound,
+            setDurationInputValue: action.bound,
+            onChangeDropdownItem: action.bound,
+            onChangeInputValue: action.bound,
+            onHideDropdownList: action.bound,
+            toggleStrategyModal: action.bound,
+            createStrategy: action.bound,
+            updateSymbolDropdown: action.bound,
+            updateTypesStrategiesDropdown: action.bound,
+            updateTradeTypeDropdown: action.bound,
+            updateDurationDropdown: action.bound,
+            updateDurationValue: action.bound,
+            validateQuickStrategy: action.bound,
+        });
+
         this.root_store = root_store;
     }
-    @observable selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
-    @observable selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
-    @observable selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
-    @observable selected_duration_unit: TDurationOptions =
-        (this.qs_cache.selected_duration_unit as TDurationOptions) || {};
-    @observable input_duration_value: string | number = this.qs_cache.input_duration_value || '';
-    @observable input_stake: string = this.qs_cache.input_stake || '';
-    @observable input_martingale_size: string = this.qs_cache.input_martingale_size || '';
-    @observable input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
-    @observable input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
-    @observable input_loss: string = this.qs_cache.input_loss || '';
-    @observable input_profit: string = this.qs_cache.input_profit || '';
+    selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
+    selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
+    selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
+    selected_duration_unit: TDurationOptions = (this.qs_cache.selected_duration_unit as TDurationOptions) || {};
+    input_duration_value: string | number = this.qs_cache.input_duration_value || '';
+    input_stake: string = this.qs_cache.input_stake || '';
+    input_martingale_size: string = this.qs_cache.input_martingale_size || '';
+    input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
+    input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
+    input_loss: string = this.qs_cache.input_loss || '';
+    input_profit: string = this.qs_cache.input_profit || '';
 
-    @observable is_strategy_modal_open = false;
-    @observable active_index: number = this.selected_type_strategy.index || 0;
-    @observable description: string = this.qs_cache.selected_type_strategy?.description || '';
-    @observable types_strategies_dropdown: TTypeStrategiesDropdown = [];
-    @observable symbol_dropdown: TSymbolDropdown = [];
-    @observable trade_type_dropdown: TTradeTypeDropdown = [];
-    @observable duration_unit_dropdown: TDurationUnitDropdown = [];
+    is_strategy_modal_open = false;
+    active_index: number = this.selected_type_strategy.index || 0;
+    description: string = this.qs_cache.selected_type_strategy?.description || '';
+    types_strategies_dropdown: TTypeStrategiesDropdown = [];
+    symbol_dropdown: TSymbolDropdown = [];
+    trade_type_dropdown: TTradeTypeDropdown = [];
+    duration_unit_dropdown: TDurationUnitDropdown = [];
 
-    @computed
     get initial_values() {
         const init = {
             'quick-strategy__type-strategy':
@@ -82,51 +132,42 @@ export default class QuickStrategyStore {
         return init;
     }
 
-    @action.bound
     setActiveTypeStrategyIndex(index: number): void {
         this.active_index = index;
     }
 
-    @action.bound
     setDescription(type_strategy: TTypeStrategy): void {
         this.description =
             this.types_strategies_dropdown?.find(strategy => strategy.value === type_strategy.value)?.description || '';
     }
 
-    @action.bound
     setDurationUnitDropdown(duration_unit_options: TDurationUnitDropdown): void {
         this.duration_unit_dropdown = duration_unit_options;
     }
 
-    @action.bound
     setSymbolDropdown(symbol_options: TSymbolDropdown): void {
         this.symbol_dropdown = symbol_options;
     }
 
-    @action.bound
     setTradeTypeDropdown(trade_type_options: TTradeTypeDropdown): void {
         this.trade_type_dropdown = trade_type_options;
     }
 
-    @action.bound
     setSelectedDurationUnit(duration_unit: TDurationOptions): void {
         this.qs_cache.selected_duration_unit = duration_unit;
         this.selected_duration_unit = duration_unit;
     }
 
-    @action.bound
     setTypesStrategiesDropdown(types_strategies_options: TTypeStrategiesDropdown): void {
         this.types_strategies_dropdown = types_strategies_options;
     }
 
-    @action.bound
     setSelectedTypeStrategy(type_strategy: TTypeStrategy): void {
         this.qs_cache.selected_type_strategy = type_strategy;
         this.selected_type_strategy = type_strategy;
         this.setDescription(type_strategy);
     }
 
-    @action.bound
     setSelectedSymbol(symbol: TMarketOption): void {
         this.qs_cache.selected_symbol = symbol;
         this.selected_symbol = symbol;
@@ -135,7 +176,6 @@ export default class QuickStrategyStore {
         delete this.qs_cache.selected_trade_type;
     }
 
-    @action.bound
     setSelectedTradeType(trade_type: TTradeType): void {
         this.qs_cache.selected_trade_type = trade_type;
         this.selected_trade_type = trade_type;
@@ -143,13 +183,11 @@ export default class QuickStrategyStore {
         delete this.qs_cache.input_duration_value;
     }
 
-    @action.bound
     setDurationInputValue(duration_value: string | number): void {
         this.qs_cache.input_duration_value = duration_value;
         this.input_duration_value = duration_value;
     }
 
-    @action.bound
     onChangeDropdownItem(type: TDropdownItems, value: string, setFieldValue: TSetFieldValue): void {
         if (!value) {
             return;
@@ -194,14 +232,12 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     onChangeInputValue(field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>): void {
         this.qs_cache[field] = event.currentTarget.value;
         this[field] = event.currentTarget.value;
         storeSetting('quick_strategy', this.qs_cache);
     }
 
-    @action.bound
     onHideDropdownList(type: TDropdownItems, value: TSelectsFieldNames, setFieldValue: TSetFieldValue): void {
         const field_map = this.getFieldMap(type);
         const item =
@@ -223,7 +259,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async toggleStrategyModal() {
         this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
@@ -234,7 +269,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async createStrategy({ button }: Record<'button', 'run' | 'edit'>) {
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
@@ -320,7 +354,6 @@ export default class QuickStrategyStore {
         }, 3000);
     }
 
-    @action.bound
     async updateSymbolDropdown() {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
@@ -340,7 +373,6 @@ export default class QuickStrategyStore {
         await this.updateTradeTypeDropdown(this.selected_symbol.value);
     }
 
-    @action.bound
     async updateTradeTypeDropdown(symbol: string, setFieldValue?: TSetFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const trade_type_options: TTradeTypeDropdown = [];
@@ -417,7 +449,7 @@ export default class QuickStrategyStore {
                 first_trade_type.text = this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value);
             });
         } else {
-            delete this.qs_cache.selected_trade_type;
+            delete this.qs_cache?.selected_trade_type;
         }
         if (first_trade_type) {
             this.setSelectedTradeType(first_trade_type);
@@ -433,7 +465,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateTypesStrategiesDropdown() {
         const { strategies } = config;
         const types_strategies = Object.values(strategies as TStrategies).map(strategy => ({
@@ -458,7 +489,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateDurationDropdown(symbol: string, trade_type: string, setFieldValue?: TSetFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const durations = await contracts_for.getDurations(symbol, trade_type);
@@ -477,7 +507,7 @@ export default class QuickStrategyStore {
                 first_duration_unit.text = this.getFieldValue(duration_options, this.selected_duration_unit.value);
             });
         } else {
-            delete this.qs_cache.selected_duration_unit;
+            delete this.qs_cache?.selected_duration_unit;
         }
         if (first_duration_unit) {
             this.setSelectedDurationUnit(first_duration_unit);
@@ -489,7 +519,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateDurationValue(duration_type: string, setFieldValue?: TSetFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const durations = await contracts_for.getDurations(this.selected_symbol.value, this.selected_trade_type.value);
@@ -500,7 +529,7 @@ export default class QuickStrategyStore {
             if (cache_unit && cache_unit < min_duration.max && cache_unit > min_duration.min) {
                 duration_input_value = cache_unit;
             } else {
-                delete this.qs_cache.input_duration_value;
+                delete this.qs_cache?.input_duration_value;
             }
             this.setDurationInputValue(duration_input_value);
 

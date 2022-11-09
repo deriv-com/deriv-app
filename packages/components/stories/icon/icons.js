@@ -284,6 +284,7 @@ export const icons =
         'IcClock',
         'IcCloseCircleRed',
         'IcCloseCircle',
+        'IcCloseDark',
         'IcCloseIconDbot',
         'IcCloseLight',
         'IcCloudUpload',
@@ -310,6 +311,7 @@ export const icons =
         'IcDrivingLicenseDashboard',
         'IcDrivingLicense',
         'IcEdit',
+        'IcEmailChanged',
         'IcEmailFirewall',
         'IcEmailOutlineNew',
         'IcEmailOutline',
@@ -568,6 +570,7 @@ export const icons =
         'IcFlagZhTw',
     ],
     'mt5': [
+        'IcMt5Acuity',
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
         'IcMt5Derived',

@@ -12,7 +12,6 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -59,7 +58,6 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     changeCurrentLanguage,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -67,6 +65,10 @@ const DefaultHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
+
+    React.useEffect(() => {
+        if (is_logged_in) replaceCashierMenuOnclick();
+    }, [is_logged_in]);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
@@ -134,13 +136,11 @@ const DefaultHeader = ({
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
                             }
-                            is_social_signup={is_social_signup}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
@@ -186,7 +186,6 @@ const DefaultHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
-            <TempAppSettings />
         </header>
     );
 };
@@ -231,7 +230,6 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
@@ -287,5 +285,4 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
 }))(withRouter(DefaultHeader));

@@ -56,7 +56,7 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const getModules = ({ is_appstore }, is_social_signup) => {
+const getModules = ({ is_appstore }) => {
     const modules = [
         {
             path: routes.bot,
@@ -155,8 +155,7 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () =>
-                                is_social_signup ? localize('Passwords') : localize('Email and passwords'),
+                            getTitle: () => localize('Email and passwords'),
                         },
                         {
                             path: routes.self_exclusion,
@@ -297,7 +296,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
+const initRoutesConfig = ({ is_appstore }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -308,7 +307,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_appstore }, is_social_signup),
+    ...getModules({ is_appstore }),
 ];
 
 let routesConfig;
@@ -317,9 +316,11 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_appstore = true }, is_social_signup) => {
-    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
-    routesConfig.push(route_default);
+const getRoutesConfig = ({ is_appstore = true }) => {
+    if (!routesConfig) {
+        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig.push(route_default);
+    }
     return routesConfig;
 };
 

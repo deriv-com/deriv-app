@@ -170,9 +170,16 @@ export default class PaymentAgentStore {
                     urls: payment_agent?.urls || payment_agent?.url,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
-                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank =>
-                    getNormalizedPaymentMethod(bank.payment_method, Constants.payment_methods)
-                );
+                const supported_banks_array = payment_agent?.supported_payment_methods
+                    .map(bank => {
+                        const payment_method = getNormalizedPaymentMethod(
+                            bank.payment_method,
+                            Constants.payment_methods
+                        );
+                        //remove Skrill and Neteller from payment methods list (dropdown menu) as per mandate from Paysafe
+                        return ['Neteller', 'Skrill'].includes(payment_method) ? '' : payment_method;
+                    })
+                    .filter(Boolean);
                 supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
             shuffleArray(this.list);

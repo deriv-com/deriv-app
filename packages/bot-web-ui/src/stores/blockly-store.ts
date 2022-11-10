@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from 'Constants/bot-contents';
 import { storeSetting, getSetting } from 'Utils/settings';
@@ -20,50 +20,54 @@ export default class BlocklyStore implements IBlocklyStore {
     root_store: RootStore;
 
     constructor(root_store: RootStore) {
+        makeObservable(this, {
+            is_loading: observable,
+            active_tab: observable,
+            setActiveTab: action.bound,
+            setContainerSize: action.bound,
+            onMount: action.bound,
+            getCachedActiveTab: action.bound,
+            onUnmount: action.bound,
+            startLoading: action.bound,
+            endLoading: action.bound,
+        });
         this.root_store = root_store;
     }
 
-    @observable is_loading = false;
+    is_loading = false;
 
-    @observable active_tab = tabs_title.WORKSPACE;
+    active_tab = tabs_title.WORKSPACE;
 
-    @action.bound
     setActiveTab(tab: string): void {
         this.active_tab = tab;
         storeSetting('active_tab', this.active_tab);
     }
 
-    @action.bound
     setContainerSize(): void {
         if (this.active_tab === tabs_title.WORKSPACE) {
             onWorkspaceResize();
         }
     }
 
-    @action.bound
     onMount(): void {
         window.addEventListener('resize', this.setContainerSize);
     }
 
-    @action.bound
     getCachedActiveTab(): void {
         if (getSetting('active_tab')) {
             this.active_tab = getSetting('active_tab');
         }
     }
 
-    @action.bound
     onUnmount(): void {
         window.removeEventListener('resize', this.setContainerSize);
     }
 
     // TODO: add setLoading method and pass such as setLoading(true/false), remove startLoading & endLoading
-    @action.bound
     startLoading(): void {
         this.is_loading = true;
     }
 
-    @action.bound
     endLoading(): void {
         this.is_loading = false;
     }

@@ -1,16 +1,29 @@
-import { action, reaction } from 'mobx';
+import { action, reaction, makeObservable } from 'mobx';
 import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store) {
+        makeObservable(this, {
+            onMount: action.bound,
+            onUnmount: action.bound,
+            onBeforeUnload: action.bound,
+            registerReloadOnLanguageChange: action.bound,
+            registerCurrencyReaction: action.bound,
+            registerOnAccountSwitch: action.bound,
+            registerLandingCompanyChangeReaction: action.bound,
+            registerResidenceChangeReaction: action.bound,
+            setDBotEngineStores: action.bound,
+            onClickOutsideBlockly: action.bound,
+            showDigitalOptionsMaltainvestError: action.bound,
+        });
+
         this.root_store = root_store;
         this.dbot_store = null;
         this.api_helpers_store = null;
     }
 
-    @action.bound
     onMount() {
         const { blockly_store, core } = this.root_store;
         const { client, common, ui } = core;
@@ -33,7 +46,6 @@ export default class AppStore {
         blockly_store.getCachedActiveTab();
     }
 
-    @action.bound
     onUnmount() {
         DBot.terminateBot();
 

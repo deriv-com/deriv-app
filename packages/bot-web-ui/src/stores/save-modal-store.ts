@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
@@ -18,15 +18,25 @@ interface ISaveModalStore {
 export default class SaveModalStore implements ISaveModalStore {
     root_store: RootStore;
 
-    @observable is_save_modal_open = false;
-    @observable button_status = button_status.NORMAL;
-    @observable bot_name = '';
-
     constructor(root_store: RootStore) {
+        makeObservable(this, {
+            is_save_modal_open: observable,
+            button_status: observable,
+            bot_name: observable,
+            toggleSaveModal: action.bound,
+            validateBotName: action.bound,
+            onConfirmSave: action.bound,
+            updateBotName: action.bound,
+            onDriveConnect: action.bound,
+            setButtonStatus: action.bound,
+        });
+
         this.root_store = root_store;
     }
+    is_save_modal_open = false;
+    button_status = button_status.NORMAL;
+    bot_name = '';
 
-    @action.bound
     toggleSaveModal = (): void => {
         if (!this.is_save_modal_open) {
             this.setButtonStatus(button_status.NORMAL);
@@ -45,7 +55,6 @@ export default class SaveModalStore implements ISaveModalStore {
         return errors;
     };
 
-    @action.bound
     async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
@@ -72,13 +81,11 @@ export default class SaveModalStore implements ISaveModalStore {
         this.toggleSaveModal();
     }
 
-    @action.bound
     updateBotName = (bot_name: { [key: string]: string } | string): void => {
         this.bot_name = bot_name;
         updateWorkspaceName();
     };
 
-    @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
 
@@ -89,7 +96,6 @@ export default class SaveModalStore implements ISaveModalStore {
         }
     }
 
-    @action.bound
     setButtonStatus = (status: { [key: string]: string } | string | number): void => {
         this.button_status = status;
     };

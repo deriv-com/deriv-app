@@ -8,8 +8,11 @@
     &--grey {
         background: var(--general-section-1);
         width: 22rem;
-        height: 100%;
         margin-left: 0;
+
+        @include desktop {
+            height: 6rem;
+        }
 
         @include mobile {
             width: 70%;

@@ -12,7 +12,7 @@
     &-wrapper {
         border-radius: $BORDER_RADIUS;
         border: 2rem solid var(--general-section-1);
-        padding: 5rem;
+        padding: 3rem;
 
         @include mobile {
             border: none;
@@ -21,6 +21,7 @@
 
         &__description {
             margin-left: 1.2rem;
+            margin-bottom: 1rem;
         }
 
         &__header {

@@ -96,7 +96,7 @@ const StaticCFDAccountManager = ({
                     <WalletIcon
                         icon='Options'
                         size={58}
-                        className={is_blurry.item || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        className={is_blurry.icon || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}
             </div>

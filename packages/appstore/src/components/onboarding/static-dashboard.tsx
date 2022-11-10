@@ -317,8 +317,8 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='all'
                                     platform='options'
-                                    appname='Options account'
-                                    description='Get a real Options account, start trading and manage your funds.'
+                                    appname='Options and Multipliers account'
+                                    description='Get a real Options and Multipliers account, start trading and manage your funds.'
                                     currency={currency}
                                     has_account={has_account}
                                     is_blurry={is_blurry}

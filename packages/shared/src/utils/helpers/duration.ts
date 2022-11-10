@@ -18,10 +18,10 @@ type TUnit = {
     value: string;
 };
 
-type TDurations = {
+export type TDurations = {
     min_max: {
-        spot?: Partial<Record<'tick' | 'intraday' | 'daily', TMaxMin>>;
-        forward?: Record<'intraday', TMaxMin>;
+        spot: Partial<Record<'tick' | 'intraday' | 'daily', TMaxMin>>;
+        forward: Partial<Record<'intraday', TMaxMin>>;
     };
     units_display: Partial<Record<'spot' | 'forward', TUnit[]>>;
 };
@@ -34,34 +34,31 @@ type TDurationMinMax = {
 };
 
 const getDurationMaps = () => ({
-    t: { display: localize('Ticks'), order: 1, to_second: 0 },
+    t: { display: localize('Ticks'), order: 1, to_second: null },
     s: { display: localize('Seconds'), order: 2, to_second: 1 },
     m: { display: localize('Minutes'), order: 3, to_second: 60 },
     h: { display: localize('Hours'), order: 4, to_second: 60 * 60 },
     d: { display: localize('Days'), order: 5, to_second: 60 * 60 * 24 },
 });
-
-export const buildDurationConfig = (
-    contract: TContract,
-    durations: TDurations = { min_max: {}, units_display: {} }
-) => {
+// please pass duration = { min_max: { spot: {}, forward: {} }, units_display: {} } when you call this function
+export const buildDurationConfig = (contract: TContract, durations: TDurations) => {
     type TDurationMaps = keyof typeof duration_maps;
-    let duration_min_max = durations.min_max[contract.start_type as keyof typeof durations.min_max];
-    let duration_units = durations.units_display[contract.start_type as keyof typeof durations.units_display];
+    durations.units_display[contract.start_type as keyof typeof durations.units_display] =
+        durations.units_display[contract.start_type as keyof typeof durations.units_display] || [];
 
-    duration_min_max = duration_min_max || {};
-    duration_units = duration_units || [];
-
+    const duration_min_max = durations.min_max[contract.start_type as keyof typeof durations.min_max];
     const obj_min = getDurationFromString(contract.min_contract_duration);
     const obj_max = getDurationFromString(contract.max_contract_duration);
 
-    duration_min_max[contract.expiry_type as keyof typeof duration_min_max] = {
+    durations.min_max[contract.start_type as keyof typeof durations.min_max][
+        contract.expiry_type as keyof typeof duration_min_max
+    ] = {
         min: convertDurationUnit(obj_min.duration, obj_min.unit, 's') || 0,
         max: convertDurationUnit(obj_max.duration, obj_max.unit, 's') || 0,
     };
 
     const arr_units: string[] = [];
-    duration_units.forEach(obj => {
+    durations?.units_display?.[contract.start_type as keyof typeof durations.units_display]?.forEach?.(obj => {
         arr_units.push(obj.value);
     });
 
@@ -84,10 +81,9 @@ export const buildDurationConfig = (
         });
     }
 
-    duration_units = arr_units
+    durations.units_display[contract.start_type as keyof typeof durations.units_display] = arr_units
         .sort((a, b) => (duration_maps[a as TDurationMaps].order > duration_maps[b as TDurationMaps].order ? 1 : -1))
         .reduce((o, c) => [...o, { text: duration_maps[c as TDurationMaps].display, value: c }], [] as TUnit[]);
-
     return durations;
 };
 
@@ -98,13 +94,13 @@ export const convertDurationUnit = (value: number, from_unit: string, to_unit: s
 
     const duration_maps = getDurationMaps();
 
-    if (from_unit === to_unit || !('to_second' in duration_maps[from_unit as keyof typeof duration_maps])) {
+    if (from_unit === to_unit || duration_maps[from_unit as keyof typeof duration_maps].to_second === null) {
         return value;
     }
 
     return (
-        (value * duration_maps[from_unit as keyof typeof duration_maps].to_second) /
-        duration_maps[to_unit as keyof typeof duration_maps].to_second
+        (value * (duration_maps[from_unit as keyof typeof duration_maps]?.to_second ?? 1)) /
+        (duration_maps[to_unit as keyof typeof duration_maps]?.to_second ?? 1)
     );
 };
 

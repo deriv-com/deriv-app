@@ -16,6 +16,8 @@ export interface IDashboardStore {
     has_bot_builder_tour_started: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
+    has_builder_token: string | number;
+    has_onboarding_token: string | number;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
@@ -53,6 +55,18 @@ export default class DashboardStore implements IDashboardStore {
     @observable has_onboard_tour_started = false;
     @observable is_preview_on_popup = false;
     @observable has_bot_builder_tour_started = false;
+    @observable has_builder_token = '';
+    @observable has_onboarding_token = '';
+
+    @action.bound
+    setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
+        this.has_builder_token = has_builder_token;
+    };
+
+    @action.bound
+    setOnBoardingTokenCheck = (has_onboarding_token: string | number): void => {
+        this.has_onboarding_token = has_onboarding_token;
+    };
 
     @action.bound
     setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {

@@ -1,6 +1,6 @@
 import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import React from 'react';
-import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container.jsx';
+import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container';
 
 export const FormBody = ({ children, scroll_offset }) => (
     <React.Fragment>

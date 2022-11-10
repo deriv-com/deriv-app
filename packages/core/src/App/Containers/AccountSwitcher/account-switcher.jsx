@@ -32,7 +32,7 @@ import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
+        !props.is_virtual || props.should_show_real_accounts_list || props.is_real_tab_enabled ? 0 : 1
     );
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);

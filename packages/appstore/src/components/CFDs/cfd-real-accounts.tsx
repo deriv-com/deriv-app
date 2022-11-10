@@ -22,7 +22,7 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client, modules, common }: TRootStore = useStores();
+    const { client, modules, common, ui }: TRootStore = useStores();
     const {
         dxtrade_tokens,
         setAccountType,
@@ -35,6 +35,7 @@ const CFDRealAccounts = ({
     } = modules.cfd;
     const { setAppstorePlatform, platform } = common;
     const { isEligibleForMoreRealMt5 } = client;
+    const { openDerivRealAccountNeededModal } = ui;
     const history = useHistory();
 
     const available_real_accounts: TStaticAccountProps[] = [
@@ -118,6 +119,30 @@ const CFDRealAccounts = ({
         });
     };
 
+    const OnClickGetAccount = (account: TStaticAccountProps) => {
+        if (has_real_account && account.platform === CFD_PLATFORMS.MT5) {
+            toggleJurisdictionModal();
+            setAccountType({
+                category: 'real',
+                type: account.type,
+            });
+            setAppstorePlatform(account.platform);
+        } else if (!has_real_account) {
+            openDerivRealAccountNeededModal();
+        } else {
+            setAccountType({
+                category: 'real',
+                type: account.type,
+            });
+            setAppstorePlatform(account.platform);
+            createCFDAccount({
+                category: 'real',
+                type: account.type,
+            });
+            enableCFDPasswordModal();
+        }
+    };
+
     const existingRealAccounts = (existing_platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.real.${market_type}`))
             ? Object.keys(current_list)
@@ -196,29 +221,9 @@ const CFDRealAccounts = ({
                                             appname={account.name}
                                             platform={account.platform}
                                             disabled={account.disabled}
-                                            onClickGet={
-                                                account.platform === CFD_PLATFORMS.MT5
-                                                    ? () => {
-                                                          toggleJurisdictionModal();
-                                                          setAccountType({
-                                                              category: 'real',
-                                                              type: account.type,
-                                                          });
-                                                          setAppstorePlatform(account.platform);
-                                                      }
-                                                    : () => {
-                                                          setAccountType({
-                                                              category: 'real',
-                                                              type: account.type,
-                                                          });
-                                                          setAppstorePlatform(account.platform);
-                                                          createCFDAccount({
-                                                              category: 'real',
-                                                              type: account.type,
-                                                          });
-                                                          enableCFDPasswordModal();
-                                                      }
-                                            }
+                                            onClickGet={() => {
+                                                OnClickGetAccount(account);
+                                            }}
                                             description={account.description}
                                         />
                                     </React.Fragment>

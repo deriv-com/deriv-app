@@ -210,7 +210,7 @@ const OptionsAccount = ({
                 'account-container-disabled': activeAccount !== loginid_text,
                 'account-container-modal': is_modal,
             })}
-            onClick={activeAccount !== loginid_text ? redirectAccount : undefined}
+            onClick={redirectAccount}
         >
             <div className='account-container__icon'>
                 <Icon

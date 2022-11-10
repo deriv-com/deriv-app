@@ -100,21 +100,21 @@
             }
         }
     }
-}
 
-.divider {
-    width: calc(100% - 3.2rem);
-    border-top: 1px solid var(--general-section-1);
-    margin: 1rem 0 1.6rem 1.6rem;
-}
+    .divider {
+        width: calc(100% - 3.2rem);
+        border-top: 1px solid var(--general-section-1);
+        margin: 1rem 0 1.6rem 1.6rem;
+    }
 
-.Add-Square {
-    display: flex;
-    align-self: center;
-    margin-left: 1rem;
-    opacity: 0.2;
-}
+    .Add-Square {
+        display: flex;
+        align-self: center;
+        margin-left: 1rem;
+        opacity: 0.2;
+    }
 
-.Add-Rounded {
-    opacity: 0.2;
+    .Add-Rounded {
+        opacity: 0.2;
+    }
 }

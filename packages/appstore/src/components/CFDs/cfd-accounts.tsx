@@ -81,7 +81,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
 
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(website_status.mt5_status?.demo);
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(website_status.mt5_status?.real);
-
     return (
         <div className='cfd-accounts-container'>
             <div className='cfd-accounts__title'>
@@ -142,7 +141,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                     context={store}
                     is_demo_tab={is_demo_tab}
                     openPasswordModal={openRealPasswordModal}
-                    is_real_enabled={has_active_real_account}
+                    is_real_enabled={has_active_real_account || !is_demo_tab}
                 />
             )}
         </div>

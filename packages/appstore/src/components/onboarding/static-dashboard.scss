@@ -2,7 +2,6 @@
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS;
     padding: 3rem;
-    height: 72vh;
 
     @include mobile {
         width: 80%;
@@ -11,17 +10,17 @@
     }
 
     &-wrapper {
-        height: 90%;
         border-radius: $BORDER_RADIUS;
         border: 2rem solid var(--general-section-1);
+        padding: 5rem;
 
         @include mobile {
             border: none;
+            padding: 0;
         }
 
         &__description {
             margin-left: 1.2rem;
-            margin-bottom: 1rem;
         }
 
         &__header {
@@ -92,9 +91,11 @@
 
             &--apps {
                 display: flex;
+                margin-bottom: 1rem;
 
                 @include mobile {
                     flex-direction: column;
+                    margin-bottom: 0;
                 }
             }
         }

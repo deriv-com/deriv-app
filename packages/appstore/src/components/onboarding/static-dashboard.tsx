@@ -60,20 +60,24 @@ const StaticDashboard = ({
     const Divider = () => <div className='divider' />;
 
     const toggle_options = [
-        { text: 'CFDs', value: 'CFDs' },
-        { text: 'Options', value: 'Options' },
+        { text: 'CFDs', value: 0 },
+        { text: 'Options', value: 1 },
     ];
 
     const [index, setIndex] = React.useState(0);
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
-            setIndex(index === 0 ? 1 : 0);
+            if (index === 0) {
+                setIndex(1);
+            } else {
+                setIndex(0);
+            }
         }, 5000);
 
         return () => clearInterval(change_index_interval_id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [index]);
 
     return (
         <div className='static-dashboard'>
@@ -87,6 +91,9 @@ const StaticDashboard = ({
                                     className='static-dashboard-wrapper__header--toggle-account'
                                     has_rounded_button
                                     is_animated
+                                    onChange={(item: { target: { text: string; value: number } }) => {
+                                        setIndex(item.target.value);
+                                    }}
                                     name='CFDs'
                                     value={'CFDs'}
                                 />
@@ -251,6 +258,9 @@ const StaticDashboard = ({
                                     className='static-dashboard-wrapper__header--toggle-account'
                                     has_rounded_button
                                     is_animated
+                                    onChange={(item: { target: { text: string; value: number } }) => {
+                                        setIndex(item.target.value);
+                                    }}
                                     name='Options'
                                     value={'Options and Multipliers'}
                                 />

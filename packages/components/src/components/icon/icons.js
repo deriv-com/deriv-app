@@ -296,6 +296,7 @@ import './common/ic-driving-licence-front.svg';
 import './common/ic-driving-license-dashboard.svg';
 import './common/ic-driving-license.svg';
 import './common/ic-edit.svg';
+import './common/ic-email-changed.svg';
 import './common/ic-email-firewall.svg';
 import './common/ic-email-outline-new.svg';
 import './common/ic-email-outline.svg';

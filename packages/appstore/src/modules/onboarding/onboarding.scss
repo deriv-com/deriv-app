@@ -19,11 +19,21 @@
     display: flex;
     justify-content: center;
     color: var(--general-main-1);
+
+    @include mobile {
+        overflow-y: scroll;
+        height: 42rem;
+    }
 }
 
 .onboarding-footer {
     background-color: var(--general-main-1);
     width: 100%;
+
+    @include mobile {
+        position: fixed;
+        top: 75%;
+    }
 
     &__progress-bar {
         margin-top: 2rem;

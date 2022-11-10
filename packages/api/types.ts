@@ -31,6 +31,8 @@ import type {
     TransferBetweenAccountsResponse,
     VerifyEmailRequest,
     VerifyEmailResponse,
+    AccountStatusRequest,
+    AccountStatusResponse,
 } from '@deriv/api-types';
 
 export type TSocketEndpoints = {
@@ -97,6 +99,10 @@ export type TSocketEndpoints = {
     new_account_virtual: {
         request: NewVirtualMoneyAccountRequest;
         response: NewVirtualMoneyAccountResponse;
+    };
+    get_account_status: {
+        request: AccountStatusRequest;
+        response: AccountStatusResponse;
     };
 };
 

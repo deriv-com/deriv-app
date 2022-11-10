@@ -2,7 +2,7 @@ import React from 'react';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './Stores/init-store';
 import TCoreStore from './Stores/index';
-import { ProofOfAddress, ProofOfIdentity } from '@deriv/poa';
+import { ProofOfAddress } from '@deriv/poa';
 
 // TODO: add correct types for stores and WS after implementing them
 type TAppProps = {
@@ -18,19 +18,13 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <div
-                style={{
-                    flex: 1,
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    display: 'flex',
-                    height: '90vh',
-                }}
-            >
-                <ProofOfAddress />
-                <ProofOfIdentity />
-            </div>
+            <ProofOfAddress
+                is_mx_mlt={
+                    root_store.client.landing_company_shortcode === 'iom' ||
+                    root_store.client.landing_company_shortcode === 'malta'
+                }
+                has_restricted_mt5_account={root_store.client.has_restricted_mt5_account}
+            />
         </MobxContentProvider>
     );
 };

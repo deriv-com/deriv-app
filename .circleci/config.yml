@@ -71,6 +71,7 @@ commands:
             - "packages/cfd/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
+            - "packages/poa/node_modules"
             - "packages/reports/node_modules"
             - "packages/shared/node_modules"
             - "packages/stores/node_modules"

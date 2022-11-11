@@ -1,20 +1,11 @@
-import { Field, FormikErrors, FormikHelpers, FormikTouched, FormikValues } from 'formik';
+import { Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-type TCommonFinancialDetailsPartials = {
-    handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'];
-    handleBlur: () => boolean;
-    values: FormikValues;
-    touched: FormikTouched<FormikValues>;
-    errors: FormikErrors<FormikValues>;
-};
-
 type TEmploymentStatus = {
     employment_status_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const EmploymentStatus = ({
     values,
@@ -24,7 +15,7 @@ export const EmploymentStatus = ({
     errors,
     setFieldValue,
     employment_status_enum,
-}: TEmploymentStatus) => (
+}: Partial<FormikProps<{ employment_status: string }>> & TEmploymentStatus) => (
     <Field name='employment_status'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -34,10 +25,10 @@ export const EmploymentStatus = ({
                         is_align_text_left
                         name={field.name}
                         list={employment_status_enum}
-                        value={values.employment_status}
+                        value={values?.employment_status}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.employment_status && errors.employment_status}
+                        error={touched?.employment_status && errors?.employment_status}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -49,11 +40,15 @@ export const EmploymentStatus = ({
                         name={field.name}
                         label={localize('Employment Status')}
                         list_items={employment_status_enum}
-                        value={values.employment_status}
-                        error={touched.employment_status && errors.employment_status}
+                        value={values?.employment_status}
+                        error={touched?.employment_status && errors?.employment_status}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('employment_status', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('employment_status', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -66,7 +61,7 @@ export const EmploymentStatus = ({
 
 type TIncomeSource = {
     income_source_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const IncomeSource = ({
     values,
@@ -76,7 +71,7 @@ export const IncomeSource = ({
     errors,
     setFieldValue,
     income_source_enum,
-}: TIncomeSource) => (
+}: Partial<FormikProps<{ income_source: string }>> & TIncomeSource) => (
     <Field name='income_source'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -86,10 +81,10 @@ export const IncomeSource = ({
                         is_align_text_left
                         name={field.name}
                         list={income_source_enum}
-                        value={values.income_source}
+                        value={values?.income_source}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.income_source && errors.income_source}
+                        error={touched?.income_source && errors?.income_source}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -101,11 +96,15 @@ export const IncomeSource = ({
                         name={field.name}
                         label={localize('Source of income')}
                         list_items={income_source_enum}
-                        value={values.income_source}
-                        error={touched.income_source && errors.income_source}
+                        value={values?.income_source}
+                        error={touched?.income_source && errors?.income_source}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('income_source', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('income_source', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -118,7 +117,7 @@ export const IncomeSource = ({
 
 type TEmploymentIndustry = {
     employment_industry_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const EmploymentIndustry = ({
     values,
@@ -128,7 +127,7 @@ export const EmploymentIndustry = ({
     errors,
     setFieldValue,
     employment_industry_enum,
-}: TEmploymentIndustry) => (
+}: Partial<FormikProps<{ employment_industry: string }>> & TEmploymentIndustry) => (
     <Field name='employment_industry'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -138,10 +137,10 @@ export const EmploymentIndustry = ({
                         is_align_text_left
                         name={field.name}
                         list={employment_industry_enum}
-                        value={values.employment_industry}
+                        value={values?.employment_industry}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.employment_industry && errors.employment_industry}
+                        error={touched?.employment_industry && errors?.employment_industry}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -153,11 +152,15 @@ export const EmploymentIndustry = ({
                         name={field.name}
                         label={localize('Industry of employment')}
                         list_items={employment_industry_enum}
-                        value={values.employment_industry}
-                        error={touched.employment_industry && errors.employment_industry}
+                        value={values?.employment_industry}
+                        error={touched?.employment_industry && errors?.employment_industry}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('employment_industry', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('employment_industry', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -170,7 +173,7 @@ export const EmploymentIndustry = ({
 
 type TOccupation = {
     occupation_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const Occupation = ({
     values,
@@ -180,7 +183,7 @@ export const Occupation = ({
     errors,
     setFieldValue,
     occupation_enum,
-}: TOccupation) => (
+}: Partial<FormikProps<{ occupation: string }>> & TOccupation) => (
     <Field name='occupation'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -190,10 +193,10 @@ export const Occupation = ({
                         is_align_text_left
                         name={field.name}
                         list={occupation_enum}
-                        value={values.occupation}
+                        value={values?.occupation}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.occupation && errors.occupation}
+                        error={touched?.occupation && errors?.occupation}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -205,11 +208,15 @@ export const Occupation = ({
                         name={field.name}
                         label={localize('Occupation')}
                         list_items={occupation_enum}
-                        value={values.occupation}
-                        error={touched.occupation && errors.occupation}
+                        value={values?.occupation}
+                        error={touched?.occupation && errors?.occupation}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('occupation', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('occupation', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -222,7 +229,7 @@ export const Occupation = ({
 
 type TSourceOfWealth = {
     source_of_wealth_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const SourceOfWealth = ({
     values,
@@ -232,7 +239,7 @@ export const SourceOfWealth = ({
     errors,
     setFieldValue,
     source_of_wealth_enum,
-}: TSourceOfWealth) => (
+}: Partial<FormikProps<{ source_of_wealth: string }>> & TSourceOfWealth) => (
     <Field name='source_of_wealth'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -242,10 +249,10 @@ export const SourceOfWealth = ({
                         is_align_text_left
                         name={field.name}
                         list={source_of_wealth_enum}
-                        value={values.source_of_wealth}
+                        value={values?.source_of_wealth}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.source_of_wealth && errors.source_of_wealth}
+                        error={touched?.source_of_wealth && errors?.source_of_wealth}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -257,11 +264,15 @@ export const SourceOfWealth = ({
                         name={field.name}
                         label={localize('Source of wealth')}
                         list_items={source_of_wealth_enum}
-                        value={values.source_of_wealth}
-                        error={touched.source_of_wealth && errors.source_of_wealth}
+                        value={values?.source_of_wealth}
+                        error={touched?.source_of_wealth && errors?.source_of_wealth}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('source_of_wealth', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('source_of_wealth', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -274,7 +285,7 @@ export const SourceOfWealth = ({
 
 type TEducationLevel = {
     education_level_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const EducationLevel = ({
     values,
@@ -284,7 +295,7 @@ export const EducationLevel = ({
     errors,
     setFieldValue,
     education_level_enum,
-}: TEducationLevel) => (
+}: Partial<FormikProps<{ education_level: string }>> & TEducationLevel) => (
     <Field name='education_level'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -294,10 +305,10 @@ export const EducationLevel = ({
                         is_align_text_left
                         name={field.name}
                         list={education_level_enum}
-                        value={values.education_level}
+                        value={values?.education_level}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.education_level && errors.education_level}
+                        error={touched?.education_level && errors?.education_level}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -309,11 +320,15 @@ export const EducationLevel = ({
                         name={field.name}
                         label={localize('Level of education')}
                         list_items={education_level_enum}
-                        value={values.education_level}
-                        error={touched.education_level && errors.education_level}
+                        value={values?.education_level}
+                        error={touched?.education_level && errors?.education_level}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('education_level', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('education_level', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -326,7 +341,7 @@ export const EducationLevel = ({
 
 type TNetIncome = {
     net_income_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const NetIncome = ({
     values,
@@ -336,7 +351,7 @@ export const NetIncome = ({
     errors,
     setFieldValue,
     net_income_enum,
-}: TNetIncome) => (
+}: Partial<FormikProps<{ net_income: string }>> & TNetIncome) => (
     <Field name='net_income'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -346,10 +361,10 @@ export const NetIncome = ({
                         is_align_text_left
                         name={field.name}
                         list={net_income_enum}
-                        value={values.net_income}
+                        value={values?.net_income}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.net_income && errors.net_income}
+                        error={touched?.net_income && errors?.net_income}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -361,11 +376,15 @@ export const NetIncome = ({
                         name={field.name}
                         label={localize('Net annual income')}
                         list_items={net_income_enum}
-                        value={values.net_income}
-                        error={touched.net_income && errors.net_income}
+                        value={values?.net_income}
+                        error={touched?.net_income && errors?.net_income}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('net_income', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('net_income', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -378,7 +397,7 @@ export const NetIncome = ({
 
 type TEstimatedWorth = {
     estimated_worth_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const EstimatedWorth = ({
     values,
@@ -388,7 +407,7 @@ export const EstimatedWorth = ({
     errors,
     setFieldValue,
     estimated_worth_enum,
-}: TEstimatedWorth) => (
+}: Partial<FormikProps<{ estimated_worth: string }>> & TEstimatedWorth) => (
     <Field name='estimated_worth'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -398,10 +417,10 @@ export const EstimatedWorth = ({
                         is_align_text_left
                         name={field.name}
                         list={estimated_worth_enum}
-                        value={values.estimated_worth}
+                        value={values?.estimated_worth}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.estimated_worth && errors.estimated_worth}
+                        error={touched?.estimated_worth && errors?.estimated_worth}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -413,11 +432,15 @@ export const EstimatedWorth = ({
                         name={field.name}
                         label={localize('Estimated net worth')}
                         list_items={estimated_worth_enum}
-                        value={values.estimated_worth}
-                        error={touched.estimated_worth && errors.estimated_worth}
+                        value={values?.estimated_worth}
+                        error={touched?.estimated_worth && errors?.estimated_worth}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('estimated_worth', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('estimated_worth', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -430,7 +453,7 @@ export const EstimatedWorth = ({
 
 type TAccountTurnover = {
     account_turnover_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const AccountTurnover = ({
     values,
@@ -440,7 +463,7 @@ export const AccountTurnover = ({
     errors,
     setFieldValue,
     account_turnover_enum,
-}: TAccountTurnover) => (
+}: Partial<FormikProps<{ account_turnover: string }>> & TAccountTurnover) => (
     <Field name='account_turnover'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -450,10 +473,10 @@ export const AccountTurnover = ({
                         is_align_text_left
                         name={field.name}
                         list={account_turnover_enum}
-                        value={values.account_turnover}
+                        value={values?.account_turnover}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.account_turnover && errors.account_turnover}
+                        error={touched?.account_turnover && errors?.account_turnover}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -465,11 +488,15 @@ export const AccountTurnover = ({
                         name={field.name}
                         label={localize('Anticipated annual turnover')}
                         list_items={account_turnover_enum}
-                        value={values.account_turnover}
-                        error={touched.account_turnover && errors.account_turnover}
+                        value={values?.account_turnover}
+                        error={touched?.account_turnover && errors?.account_turnover}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('account_turnover', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('account_turnover', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -482,7 +509,7 @@ export const AccountTurnover = ({
 
 type TForexTradingExperience = {
     forex_trading_experience_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const ForexTradingExperience = ({
     values,
@@ -492,7 +519,7 @@ export const ForexTradingExperience = ({
     errors,
     setFieldValue,
     forex_trading_experience_enum,
-}: TForexTradingExperience) => (
+}: Partial<FormikProps<{ forex_trading_experience: string }>> & TForexTradingExperience) => (
     <Field name='forex_trading_experience'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -502,10 +529,10 @@ export const ForexTradingExperience = ({
                         is_align_text_left
                         name={field.name}
                         list={forex_trading_experience_enum}
-                        value={values.forex_trading_experience}
+                        value={values?.forex_trading_experience}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.forex_trading_experience && errors.forex_trading_experience}
+                        error={touched?.forex_trading_experience && errors?.forex_trading_experience}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -517,11 +544,15 @@ export const ForexTradingExperience = ({
                         name={field.name}
                         label={localize('Forex trading experience')}
                         list_items={forex_trading_experience_enum}
-                        value={values.forex_trading_experience}
-                        error={touched.forex_trading_experience && errors.forex_trading_experience}
+                        value={values?.forex_trading_experience}
+                        error={touched?.forex_trading_experience && errors?.forex_trading_experience}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('forex_trading_experience', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('forex_trading_experience', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -534,7 +565,7 @@ export const ForexTradingExperience = ({
 
 type TForexTradingFrequency = {
     forex_trading_frequency_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const ForexTradingFrequency = ({
     values,
@@ -544,7 +575,7 @@ export const ForexTradingFrequency = ({
     errors,
     setFieldValue,
     forex_trading_frequency_enum,
-}: TForexTradingFrequency) => (
+}: Partial<FormikProps<{ forex_trading_frequency: string }>> & TForexTradingFrequency) => (
     <Field name='forex_trading_frequency'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -554,10 +585,10 @@ export const ForexTradingFrequency = ({
                         is_align_text_left
                         name={field.name}
                         list={forex_trading_frequency_enum}
-                        value={values.forex_trading_frequency}
+                        value={values?.forex_trading_frequency}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.forex_trading_frequency && errors.forex_trading_frequency}
+                        error={touched?.forex_trading_frequency && errors?.forex_trading_frequency}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -569,11 +600,15 @@ export const ForexTradingFrequency = ({
                         name={field.name}
                         label={localize('Forex trading frequency')}
                         list_items={forex_trading_frequency_enum}
-                        value={values.forex_trading_frequency}
-                        error={touched.forex_trading_frequency && errors.forex_trading_frequency}
+                        value={values?.forex_trading_frequency}
+                        error={touched?.forex_trading_frequency && errors?.forex_trading_frequency}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('forex_trading_frequency', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('forex_trading_frequency', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -586,7 +621,7 @@ export const ForexTradingFrequency = ({
 
 type TBinaryOptionsTradingExperience = {
     binary_options_trading_experience_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const BinaryOptionsTradingExperience = ({
     values,
@@ -596,7 +631,7 @@ export const BinaryOptionsTradingExperience = ({
     errors,
     setFieldValue,
     binary_options_trading_experience_enum,
-}: TBinaryOptionsTradingExperience) => (
+}: Partial<FormikProps<{ binary_options_trading_experience: string }>> & TBinaryOptionsTradingExperience) => (
     <Field name='binary_options_trading_experience'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -606,10 +641,10 @@ export const BinaryOptionsTradingExperience = ({
                         is_align_text_left
                         name={field.name}
                         list={binary_options_trading_experience_enum}
-                        value={values.binary_options_trading_experience}
+                        value={values?.binary_options_trading_experience}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.binary_options_trading_experience && errors.binary_options_trading_experience}
+                        error={touched?.binary_options_trading_experience && errors?.binary_options_trading_experience}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -621,11 +656,15 @@ export const BinaryOptionsTradingExperience = ({
                         name={field.name}
                         label={localize('Digital options trading experience')}
                         list_items={binary_options_trading_experience_enum}
-                        value={values.binary_options_trading_experience}
-                        error={touched.binary_options_trading_experience && errors.binary_options_trading_experience}
+                        value={values?.binary_options_trading_experience}
+                        error={touched?.binary_options_trading_experience && errors?.binary_options_trading_experience}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('binary_options_trading_experience', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('binary_options_trading_experience', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -638,7 +677,7 @@ export const BinaryOptionsTradingExperience = ({
 
 type TBinaryOptionsTradingFrequency = {
     binary_options_trading_frequency_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const BinaryOptionsTradingFrequency = ({
     values,
@@ -648,7 +687,7 @@ export const BinaryOptionsTradingFrequency = ({
     errors,
     setFieldValue,
     binary_options_trading_frequency_enum,
-}: TBinaryOptionsTradingFrequency) => (
+}: Partial<FormikProps<{ binary_options_trading_frequency: string }>> & TBinaryOptionsTradingFrequency) => (
     <Field name='binary_options_trading_frequency'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -658,10 +697,10 @@ export const BinaryOptionsTradingFrequency = ({
                         is_align_text_left
                         name={field.name}
                         list={binary_options_trading_frequency_enum}
-                        value={values.binary_options_trading_frequency}
+                        value={values?.binary_options_trading_frequency}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.binary_options_trading_frequency && errors.binary_options_trading_frequency}
+                        error={touched?.binary_options_trading_frequency && errors?.binary_options_trading_frequency}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -673,11 +712,15 @@ export const BinaryOptionsTradingFrequency = ({
                         name={field.name}
                         label={localize('Digital options trading frequency')}
                         list_items={binary_options_trading_frequency_enum}
-                        value={values.binary_options_trading_frequency}
-                        error={touched.binary_options_trading_frequency && errors.binary_options_trading_frequency}
+                        value={values?.binary_options_trading_frequency}
+                        error={touched?.binary_options_trading_frequency && errors?.binary_options_trading_frequency}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('binary_options_trading_frequency', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('binary_options_trading_frequency', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -690,7 +733,7 @@ export const BinaryOptionsTradingFrequency = ({
 
 type TCFDTradingExperience = {
     cfd_trading_experience_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const CFDTradingExperience = ({
     values,
@@ -700,7 +743,7 @@ export const CFDTradingExperience = ({
     errors,
     setFieldValue,
     cfd_trading_experience_enum,
-}: TCFDTradingExperience) => (
+}: Partial<FormikProps<{ cfd_trading_experience: string }>> & TCFDTradingExperience) => (
     <Field name='cfd_trading_experience'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -710,10 +753,10 @@ export const CFDTradingExperience = ({
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_experience_enum}
-                        value={values.cfd_trading_experience}
+                        value={values?.cfd_trading_experience}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.cfd_trading_experience && errors.cfd_trading_experience}
+                        error={touched?.cfd_trading_experience && errors?.cfd_trading_experience}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -725,11 +768,15 @@ export const CFDTradingExperience = ({
                         name={field.name}
                         label={localize('CFD trading experience')}
                         list_items={cfd_trading_experience_enum}
-                        value={values.cfd_trading_experience}
-                        error={touched.cfd_trading_experience && errors.cfd_trading_experience}
+                        value={values?.cfd_trading_experience}
+                        error={touched?.cfd_trading_experience && errors?.cfd_trading_experience}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('cfd_trading_experience', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('cfd_trading_experience', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -742,7 +789,7 @@ export const CFDTradingExperience = ({
 
 type TCFDTradingFrequency = {
     cfd_trading_frequency_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const CFDTradingFrequency = ({
     values,
@@ -752,7 +799,7 @@ export const CFDTradingFrequency = ({
     errors,
     setFieldValue,
     cfd_trading_frequency_enum,
-}: TCFDTradingFrequency) => (
+}: Partial<FormikProps<{ cfd_trading_frequency: string }>> & TCFDTradingFrequency) => (
     <Field name='cfd_trading_frequency'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -762,10 +809,10 @@ export const CFDTradingFrequency = ({
                         is_align_text_left
                         name={field.name}
                         list={cfd_trading_frequency_enum}
-                        value={values.cfd_trading_frequency}
+                        value={values?.cfd_trading_frequency}
                         onChange={handleChange}
                         handleBlur={handleBlur}
-                        error={touched.cfd_trading_frequency && errors.cfd_trading_frequency}
+                        error={touched?.cfd_trading_frequency && errors?.cfd_trading_frequency}
                         list_portal_id='modal_root'
                         {...field}
                         required
@@ -777,11 +824,15 @@ export const CFDTradingFrequency = ({
                         name={field.name}
                         label={localize('CFD trading frequency')}
                         list_items={cfd_trading_frequency_enum}
-                        value={values.cfd_trading_frequency}
-                        error={touched.cfd_trading_frequency && errors.cfd_trading_frequency}
+                        value={values?.cfd_trading_frequency}
+                        error={touched?.cfd_trading_frequency && errors?.cfd_trading_frequency}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('cfd_trading_frequency', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('cfd_trading_frequency', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -794,7 +845,7 @@ export const CFDTradingFrequency = ({
 
 type TOtherInstrumentsTradingExperience = {
     other_instruments_trading_experience_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const OtherInstrumentsTradingExperience = ({
     values,
@@ -804,7 +855,7 @@ export const OtherInstrumentsTradingExperience = ({
     errors,
     setFieldValue,
     other_instruments_trading_experience_enum,
-}: TOtherInstrumentsTradingExperience) => (
+}: Partial<FormikProps<{ other_instruments_trading_experience: string }>> & TOtherInstrumentsTradingExperience) => (
     <Field name='other_instruments_trading_experience'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -814,11 +865,12 @@ export const OtherInstrumentsTradingExperience = ({
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_experience_enum}
-                        value={values.other_instruments_trading_experience}
+                        value={values?.other_instruments_trading_experience}
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={
-                            touched.other_instruments_trading_experience && errors.other_instruments_trading_experience
+                            touched?.other_instruments_trading_experience &&
+                            errors?.other_instruments_trading_experience
                         }
                         list_portal_id='modal_root'
                         {...field}
@@ -831,13 +883,18 @@ export const OtherInstrumentsTradingExperience = ({
                         name={field.name}
                         label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
-                        value={values.other_instruments_trading_experience}
+                        value={values?.other_instruments_trading_experience}
                         error={
-                            touched.other_instruments_trading_experience && errors.other_instruments_trading_experience
+                            touched?.other_instruments_trading_experience &&
+                            errors?.other_instruments_trading_experience
                         }
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('other_instruments_trading_experience', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('other_instruments_trading_experience', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required
@@ -850,7 +907,7 @@ export const OtherInstrumentsTradingExperience = ({
 
 type TOtherInstrumentsTradingFrequency = {
     other_instruments_trading_frequency_enum: Array<object>;
-} & TCommonFinancialDetailsPartials;
+};
 
 export const OtherInstrumentsTradingFrequency = ({
     values,
@@ -860,7 +917,7 @@ export const OtherInstrumentsTradingFrequency = ({
     errors,
     setFieldValue,
     other_instruments_trading_frequency_enum,
-}: TOtherInstrumentsTradingFrequency) => (
+}: Partial<FormikProps<{ other_instruments_trading_frequency: string }>> & TOtherInstrumentsTradingFrequency) => (
     <Field name='other_instruments_trading_frequency'>
         {({ field }: FormikValues) => (
             <React.Fragment>
@@ -870,11 +927,11 @@ export const OtherInstrumentsTradingFrequency = ({
                         is_align_text_left
                         name={field.name}
                         list={other_instruments_trading_frequency_enum}
-                        value={values.other_instruments_trading_frequency}
+                        value={values?.other_instruments_trading_frequency}
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={
-                            touched.other_instruments_trading_frequency && errors.other_instruments_trading_frequency
+                            touched?.other_instruments_trading_frequency && errors?.other_instruments_trading_frequency
                         }
                         list_portal_id='modal_root'
                         {...field}
@@ -887,13 +944,17 @@ export const OtherInstrumentsTradingFrequency = ({
                         name={field.name}
                         label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}
-                        value={values.other_instruments_trading_frequency}
+                        value={values?.other_instruments_trading_frequency}
                         error={
-                            touched.other_instruments_trading_frequency && errors.other_instruments_trading_frequency
+                            touched?.other_instruments_trading_frequency && errors?.other_instruments_trading_frequency
                         }
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            handleChange(e);
-                            setFieldValue('other_instruments_trading_frequency', e.target.value, true);
+                            if (typeof handleChange === 'function') {
+                                handleChange(e);
+                            }
+                            if (typeof setFieldValue === 'function') {
+                                setFieldValue('other_instruments_trading_frequency', e.target.value, true);
+                            }
                         }}
                         {...field}
                         required

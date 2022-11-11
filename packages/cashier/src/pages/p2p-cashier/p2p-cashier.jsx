@@ -72,6 +72,8 @@ const P2PCashier = ({
         }
 
         return () => setQueryOrder(null);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setQueryOrder]);
 
     const setQueryOrder = React.useCallback(
@@ -110,7 +112,9 @@ const P2PCashier = ({
                 setOrderId(input_order_id);
             }
         },
-        [history, location.hash, location.search, order_id]
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [history, location.hash, location.search]
     );
 
     if (is_logging_in) {

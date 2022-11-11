@@ -1,4 +1,7 @@
 import React from 'react';
+// TODO Remove this after smartcharts is replaced
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
@@ -46,7 +49,7 @@ const Chart = ({
     wsSendRequest,
     wsSubscribe,
 }: TChartProps) => {
-    const barriers = [];
+    const barriers: [] = [];
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {

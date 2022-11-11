@@ -3,6 +3,7 @@ import { Dialog, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { tour_type, getTourSettings, setTourSettings } from './joyride-config';
 
 type TourTriggrerDialog = {
     setTourActive: (param: boolean) => void;
@@ -32,6 +33,12 @@ const TourTriggrerDialog = ({
         if (type === 'onConfirm') {
             setTourDialogVisibility(!value);
         }
+        if (active_tab === 1 && tour_type.key === 'bot_builder_') {
+            if (!getTourSettings(`${tour_type.key}token`))
+                setTourSettings(new Date().getTime(), `${tour_type.key}token`);
+        }
+
+        if (!getTourSettings(`${tour_type.key}token`)) localStorage.removeItem('dbot_settings');
     };
 
     const getTourContent = () => {

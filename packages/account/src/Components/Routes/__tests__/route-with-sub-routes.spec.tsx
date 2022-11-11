@@ -8,9 +8,9 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Route: jest.fn(({ exact, path }) => (
         <div>
-            <span>Route loaded</span>
-            <span>{String(exact)}</span>
-            <span> {path}</span>
+            <span>
+                Route loaded {String(exact)} {path}`
+            </span>
         </div>
     )),
 }));
@@ -37,7 +37,6 @@ describe('<RouteWithSubRoutes />', () => {
                 <RouteWithSubRoutesRender {...route} />
             </PlatformContext.Provider>
         );
-        expect(screen.getByText(/\/test/)).toBeInTheDocument();
-        expect(screen.getByText('true')).toBeInTheDocument();
+        expect(screen.getByText(/route loaded true \/test/i)).toBeInTheDocument();
     });
 });

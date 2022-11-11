@@ -110,20 +110,14 @@ const Dashboard = ({
             setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
     });
-    let token = false;
+    const token = false;
     let storage = '';
     if (localStorage?.dbot_settings !== undefined) {
         storage = JSON.parse(localStorage?.dbot_settings);
     }
 
     const checkToken = () => {
-        if (active_tab === 0 && !storage.onboard_tour_token) {
-            token = true;
-        }
-        if (active_tab === 1 && !storage.bot_builder_token) {
-            token = true;
-        }
-        return token;
+        return (active_tab === 0 && !storage.onboard_tour_token) || (active_tab === 1 && !storage.bot_builder_token);
     };
     return (
         <React.Fragment>

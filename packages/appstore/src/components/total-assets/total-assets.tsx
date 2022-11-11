@@ -61,7 +61,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
 
     const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
     const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
-    const account_total_balance_currency = obj_total_balance.currency;
+    const account_total_balance_currency = category === 'demo' ? vrtc_currency : obj_total_balance.currency;
 
     const getTotalBalanceCfd = (mt5_accounts: Mt5LoginList, is_demo: boolean, exchange_rate: number) => {
         return mt5_accounts

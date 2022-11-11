@@ -1,37 +1,17 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
+import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';
 import RecentTransaction from 'Components/recent-transaction';
+import { useStore } from '../../../hooks';
 import './crypto-withdraw-receipt.scss';
 
-type TAccount = {
-    balance: string;
-    currency: string;
-    is_crypto: boolean;
-    is_dxtrade: boolean;
-    is_mt: boolean;
-    market_type: string;
-    platform_icon: string;
-    text: string;
-    value: string;
-};
-
-type TCryptoWithdrawReceiptProps = {
+type TWalletInformationProps = {
     account: TAccount;
     blockchain_address: string;
-    crypto_transactions: TCryptoTransactionDetails[];
-    currency: TClientStore['currency'];
-    is_switching: TClientStore['is_switching'];
-    tab_index: number;
-    withdraw_amount: string;
-    resetWithrawForm: () => void;
-    recentTransactionOnMount: () => void;
-    setIsCryptoTransactionsVisible: (value: boolean) => void;
-    setIsWithdrawConfirmed: (value: boolean) => void;
 };
 
 const Status = () => {
@@ -48,7 +28,7 @@ const Status = () => {
     );
 };
 
-const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceiptProps, 'account'>) => {
+const AcountInformation = ({ account }: { account: TAccount }) => {
     return (
         <div className='crypto-withdraw-receipt__account-info'>
             <div className='crypto-withdraw-receipt__account-info-detail'>
@@ -75,10 +55,7 @@ const AcountInformation = ({ account }: Pick<TCryptoWithdrawReceiptProps, 'accou
     );
 };
 
-const WalletInformation = ({
-    account,
-    blockchain_address,
-}: Pick<TCryptoWithdrawReceiptProps, 'account' | 'blockchain_address'>) => {
+const WalletInformation = ({ account, blockchain_address }: TWalletInformationProps) => {
     const text = getAccountText(account);
     return (
         <div className='crypto-withdraw-receipt__account-info'>
@@ -120,19 +97,28 @@ const WalletInformation = ({
     );
 };
 
-const CryptoWithdrawReceipt = ({
-    account,
-    blockchain_address,
-    crypto_transactions,
-    currency,
-    is_switching,
-    recentTransactionOnMount,
-    resetWithrawForm,
-    setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed,
-    tab_index,
-    withdraw_amount,
-}: TCryptoWithdrawReceiptProps) => {
+const CryptoWithdrawReceipt = () => {
+    const {
+        client,
+        modules: {
+            cashier: { account_transfer, general_store, transaction_history, withdraw },
+        },
+    } = useStore();
+
+    const { selected_from: account } = account_transfer;
+
+    const { currency, is_switching } = client;
+
+    const { cashier_route_tab_index: tab_index } = general_store;
+
+    const {
+        crypto_transactions,
+        onMount: recentTransactionOnMount,
+        setIsCryptoTransactionsVisible,
+    } = transaction_history;
+
+    const { blockchain_address, resetWithrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -201,16 +187,4 @@ const CryptoWithdrawReceipt = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    account: modules.cashier.account_transfer.selected_from,
-    blockchain_address: modules.cashier.withdraw.blockchain_address,
-    withdraw_amount: modules.cashier.withdraw.withdraw_amount,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    is_switching: client.is_switching,
-    resetWithrawForm: modules.cashier.withdraw.resetWithrawForm,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsWithdrawConfirmed: modules.cashier.withdraw.setIsWithdrawConfirmed,
-    tab_index: modules.cashier.general_store.cashier_route_tab_index,
-}))(CryptoWithdrawReceipt);
+export default observer(CryptoWithdrawReceipt);

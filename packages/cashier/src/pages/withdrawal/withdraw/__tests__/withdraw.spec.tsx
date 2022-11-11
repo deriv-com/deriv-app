@@ -1,34 +1,43 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Withdraw from '../withdraw';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 
 describe('<Withdraw />', () => {
-    it('should render the cashier container component', () => {
-        const clearIframe = jest.fn();
-        const onMount = jest.fn();
-        const setActiveTab = jest.fn();
-        const verification_code = '9fOzRypP';
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                verification_code: { payment_withdraw: 'code' },
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: 'https://cashier.deriv.com',
+                        clearIframe: jest.fn(),
+                    },
+                    withdraw: {
+                        container: 'withdraw',
+                        onMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        };
+    });
 
+    it('should render the cashier container component', () => {
         render(
-            <Withdraw
-                clearIframe={clearIframe}
-                container={'withdraw'}
-                iframe_url={'https://cashier.deriv.com'}
-                onMount={onMount}
-                setActiveTab={setActiveTab}
-                verification_code={verification_code}
-            />
+            <StoreProvider store={mockRootStore}>
+                <Withdraw />
+            </StoreProvider>
         );
 
-        expect(onMount).toHaveBeenCalledWith(verification_code);
+        expect(mockRootStore.modules.cashier.withdraw.onMountWithdraw).toHaveBeenCalledWith('code');
         expect(screen.getByText('mockedReal')).toBeInTheDocument();
     });
 });

@@ -70,7 +70,7 @@ const AppWithoutTranslation = ({ root_store }) => {
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
-            if (view_width <= view_height || root_store.modules.cashier.general_store.is_p2p_page_showing) {
+            if (view_width <= view_height || root_store.modules.cashier.general_store.is_user_on_p2p) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {

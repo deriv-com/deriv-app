@@ -66,8 +66,8 @@ export const trading_hub_contents: TTradingHubContents = {
                     text: false,
                     trade: false,
                     topup: false,
-                    button: true,
-                    get: true,
+                    button: false,
+                    get: false,
                 }}
             />
         ),
@@ -82,7 +82,7 @@ export const trading_hub_contents: TTradingHubContents = {
             <StaticDashboard
                 is_blurry={{
                     icon: true,
-                    item: false,
+                    item: true,
                     get: true,
                     text: false,
                     topup: false,
@@ -131,7 +131,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     trade: false,
                     topup: false,
                     button: true,
-                    get: false,
+                    get: true,
                 }}
             />
         ),

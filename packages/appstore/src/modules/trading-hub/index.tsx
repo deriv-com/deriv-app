@@ -143,7 +143,7 @@ const TradingHub: React.FC = () => {
 
     const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
 
-    const is_mf = loginid.startsWith('MF');
+    const is_mf = loginid?.startsWith('MF');
 
     if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 

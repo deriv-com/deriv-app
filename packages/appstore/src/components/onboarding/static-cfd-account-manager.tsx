@@ -70,7 +70,7 @@ const StaticCFDAccountManager = ({
                         <WalletIcon
                             icon='Financial'
                             size={64}
-                            className={classNames('', {
+                            className={classNames('static-cfd-account-manager--cfds', {
                                 'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
                             })}
                         />
@@ -78,14 +78,16 @@ const StaticCFDAccountManager = ({
                         <WalletIcon
                             icon='Derived'
                             size={64}
-                            className={is_blurry.icon ? 'static-cfd-account-manager__icon--blurry' : ''}
+                            className={classNames('static-cfd-account-manager--cfds', {
+                                'static-cfd-account-manager__icon--blurry': is_blurry.icon,
+                            })}
                         />
                     ))}
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <WalletIcon
                         icon='DerivX'
                         size={58}
-                        className={classNames('', {
+                        className={classNames('static-cfd-account-manager--cfds', {
                             'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
                         })}
                     />
@@ -94,7 +96,7 @@ const StaticCFDAccountManager = ({
                     <WalletIcon
                         icon='Options'
                         size={58}
-                        className={is_blurry.item || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
+                        className={is_blurry.icon || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}
             </div>

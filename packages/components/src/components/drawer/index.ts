@@ -1,4 +1,4 @@
-import Drawer from './drawer.jsx';
+import Drawer from './drawer';
 import './drawer.scss';
 
 export default Drawer;

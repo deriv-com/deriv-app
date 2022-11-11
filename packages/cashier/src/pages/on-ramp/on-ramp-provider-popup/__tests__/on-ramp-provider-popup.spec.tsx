@@ -18,7 +18,6 @@ describe('<OnRampProviderPopup />', () => {
         api_error: '',
         deposit_address: 'tb1qhux20f7h42ya9nqdntl6r9p7p264a2ct8t3n6p',
         is_deposit_address_loading: false,
-        is_deposit_address_popover_open: false,
         is_requesting_widget_html: false,
         selected_provider: {
             name: 'Changelly',
@@ -29,7 +28,6 @@ describe('<OnRampProviderPopup />', () => {
         should_show_widget: false,
         widget_error: '',
         widget_html: 'Widget HTML',
-        onClickCopyDepositAddress: jest.fn(),
         onClickDisclaimerContinue: jest.fn(),
         onClickGoToDepositPage: jest.fn(),
         setIsOnRampModalOpen: jest.fn(),
@@ -112,26 +110,11 @@ describe('<OnRampProviderPopup />', () => {
         expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
     });
 
-    it('should trigger onClick callback when the user clicks on copy icon', () => {
-        render(<OnRampProviderPopup {...props} />);
-
-        const copy_icon = screen.getByTestId('dti_deposit_address_icon');
-        fireEvent.click(copy_icon);
-
-        expect(props.onClickCopyDepositAddress).toHaveBeenCalledTimes(1);
-    });
-
     it('should trigger onFocus method when the user clicks on deposit address field', () => {
         render(<OnRampProviderPopup {...props} />);
 
         const deposit_address_input = screen.getByRole('textbox');
         expect(fireEvent.focus(deposit_address_input)).toBeTruthy();
-    });
-
-    it('should show "Copied!" message', () => {
-        render(<OnRampProviderPopup {...props} is_deposit_address_popover_open />);
-
-        expect(screen.getByText('Copied!')).toBeInTheDocument();
     });
 
     it('should trigger onClick calbacks when the user clicks on "Cancel" and "Continue" buttons', () => {

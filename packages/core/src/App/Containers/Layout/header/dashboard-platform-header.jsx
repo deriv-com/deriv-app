@@ -121,7 +121,6 @@ const DashboardPlatformHeader = ({
     should_allow_authentication,
     toggleNotifications,
     toggleSettingsModal,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
@@ -162,7 +161,6 @@ const DashboardPlatformHeader = ({
                                 toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                             />
                         }
-                        is_social_signup={is_social_signup}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -226,7 +224,6 @@ DashboardPlatformHeader.propTypes = {
     setDarkMode: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
     settings_extension: PropTypes.array,
@@ -256,5 +253,4 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
 }))(withRouter(DashboardPlatformHeader));

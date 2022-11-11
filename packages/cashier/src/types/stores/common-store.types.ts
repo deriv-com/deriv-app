@@ -1,6 +1,6 @@
 import { RouteComponentProps } from 'react-router';
 
-type TError = {
+type TCommonStoreError = {
     header: string | JSX.Element;
     message: string | JSX.Element;
     type?: string;
@@ -9,11 +9,11 @@ type TError = {
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
     redirectOnClick: () => void;
-    setError: (has_error: boolean, error: TError | null) => void;
+    setError: (has_error: boolean, error: TCommonStoreError | null) => void;
 };
 
 export type TCommonStore = {
-    error: TError;
+    error: TCommonStoreError;
     is_from_derivgo: boolean;
     has_error: boolean;
     platform: string;

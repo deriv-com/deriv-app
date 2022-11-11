@@ -141,7 +141,9 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                                         openAccountTransfer(
                                                             current_list[
                                                                 Object.keys(current_list).find((key: string) =>
-                                                                    key.startsWith(`${platform}.demo.${account.type}`)
+                                                                    key.startsWith(
+                                                                        `${account.platform}.demo.${account.type}`
+                                                                    )
                                                                 ) || ''
                                                             ],
                                                             {

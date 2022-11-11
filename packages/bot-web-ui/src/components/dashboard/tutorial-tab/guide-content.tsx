@@ -30,7 +30,7 @@ const GuideContent = ({
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
-            if (storage.onboard_tour_token !== undefined) {
+            if (storage.onboard_tour_token) {
                 const onBoardingToken = storage.onboard_tour_token;
                 removeKeyValue('onboard_tour_token');
                 removeKeyValue('onboard_tour_status');
@@ -39,7 +39,7 @@ const GuideContent = ({
             setTourDialogVisibility(true);
             setActiveTab(0);
         } else {
-            if (storage.bot_builder_token !== undefined) {
+            if (storage.bot_builder_token) {
                 const builderToken = storage.bot_builder_token;
                 removeKeyValue('bot_builder_token');
                 removeKeyValue('bot_builder_status');

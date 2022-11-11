@@ -1,5 +1,15 @@
 import React from 'react';
-import { DesktopWrapper, Icon, Loading, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import {
+    Button,
+    DesktopWrapper,
+    Icon,
+    Loading,
+    MobileDialog,
+    MobileWrapper,
+    Modal,
+    Text,
+    UILoader,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RootStore from 'Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
@@ -9,21 +19,36 @@ import { AccountStatusResponse } from '@deriv/api-types';
 import { TCFDDbViOnBoardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
-const SwitchToRealAccountMessage = () => (
-    <div className='da-icon-with-message'>
-        <Icon icon={'IcPoaLock'} size={128} />
-        <Text
-            className='da-icon-with-message__text'
-            as='p'
-            color='general'
-            size={isMobile() ? 'xs' : 's'}
-            line_height='m'
-            weight='bold'
-        >
-            {localize('Switch to your real account to submit your documents')}
-        </Text>
-    </div>
-);
+type TSwitchToRealAccountMessage = {
+    onClickOK: () => void;
+};
+
+const SwitchToRealAccountMessage = ({ onClickOK }: TSwitchToRealAccountMessage) => {
+    return (
+        <div className='da-icon-with-message'>
+            <Icon icon={'IcPoaLock'} size={128} />
+            <Text
+                className='da-icon-with-message__text'
+                as='p'
+                color='general'
+                size={isMobile() ? 'xs' : 's'}
+                line_height='m'
+                weight='bold'
+            >
+                {localize('Switch to your real account to submit your documents')}
+            </Text>
+            <Button
+                has_effect
+                text={localize('Ok')}
+                onClick={() => {
+                    onClickOK();
+                }}
+                style={{ margin: '2rem' }}
+                primary
+            />
+        </div>
+    );
+};
 const CFDDbViOnBoarding = ({
     account_status,
     disableApp,
@@ -37,6 +62,7 @@ const CFDDbViOnBoarding = ({
     openPasswordModal,
     toggleCFDVerificationModal,
     updateAccountStatus,
+    responseMt5LoginList,
 }: TCFDDbViOnBoardingProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -74,18 +100,21 @@ const CFDDbViOnBoarding = ({
         setIsLoading(false);
     };
 
+    const updateMt5LoginList = async () => {
+        const mt5_login_list_response = await WS.authorized.mt5LoginList();
+        responseMt5LoginList(mt5_login_list_response);
+    };
+
     React.useEffect(() => {
-        if (is_cfd_verification_modal_visible) {
-            setIsLoading(true);
-            getAccountStatusFromAPI();
-            fetchAccountSettings();
-        }
+        setIsLoading(true);
+        getAccountStatusFromAPI();
+        fetchAccountSettings();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
     const getModalContent = () => {
         if (is_virtual) {
-            return <SwitchToRealAccountMessage />;
+            return <SwitchToRealAccountMessage onClickOK={toggleCFDVerificationModal} />;
         }
         return showSubmittedModal ? (
             <PoiPoaDocsSubmitted
@@ -99,6 +128,7 @@ const CFDDbViOnBoarding = ({
         ) : (
             <CFDFinancialStpRealAccountSignup
                 onFinish={() => {
+                    updateMt5LoginList();
                     if (has_created_account_for_selected_jurisdiction) {
                         setShowSubmittedModal(true);
                     } else {
@@ -164,4 +194,5 @@ export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
     openPasswordModal: cfd.enableCFDPasswordModal,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     updateAccountStatus: client.updateAccountStatus,
+    responseMt5LoginList: client.responseMt5LoginList,
 }))(CFDDbViOnBoarding);

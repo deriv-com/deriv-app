@@ -6,6 +6,7 @@ import {
     LandingCompany,
     ResidenceList,
     VerifyEmailResponse,
+    MT5AccountsListResponse,
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
@@ -248,4 +249,5 @@ export type TCFDDbViOnBoardingProps = {
     fetchAccountSettings: () => void;
     is_virtual: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
+    responseMt5LoginList: (response: MT5AccountsListResponse) => void;
 };

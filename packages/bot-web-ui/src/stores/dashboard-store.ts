@@ -1,4 +1,4 @@
-import { observable, action, reaction } from 'mobx';
+import { observable, action, reaction, makeObservable } from 'mobx';
 import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
@@ -31,6 +31,38 @@ export default class DashboardStore implements IDashboardStore {
     root_store: RootStore;
 
     constructor(root_store: RootStore) {
+        makeObservable(this, {
+            active_tab: observable,
+            active_tab_tutorials: observable,
+            faq_search_value: observable,
+            dialog_options: observable,
+            is_dialog_open: observable,
+            getFileArray: observable,
+            has_file_loaded: observable,
+            is_info_panel_visible: observable,
+            has_tour_started: observable,
+            is_tour_dialog_visible: observable,
+            has_onboard_tour_started: observable,
+            is_preview_on_popup: observable,
+            has_bot_builder_tour_started: observable,
+            has_builder_token: observable,
+            has_onboarding_token: observable,
+
+            setBotBuilderTourState: action.bound,
+            setPreviewOnPopup: action.bound,
+            setOnBoardTourRunState: action.bound,
+            setTourDialogVisibility: action.bound,
+            setTourActive: action.bound,
+            setFileLoaded: action.bound,
+            onCloseDialog: action.bound,
+            setActiveTab: action.bound,
+            setActiveTabTutorial: action.bound,
+            setFAQSearchValue: action.bound,
+            showVideoDialog: action.bound,
+            setInfoPanelVisibility: action.bound,
+            setBotBuilderTokenCheck: action.bound,
+            setOnBoardingTokenCheck: action.bound,
+        });
         this.root_store = root_store;
         reaction(
             () => this.is_preview_on_popup,
@@ -42,83 +74,71 @@ export default class DashboardStore implements IDashboardStore {
         );
     }
 
-    @observable active_tab = 0;
-    @observable active_tab_tutorials = 0;
-    @observable faq_search_value = null || '';
-    @observable dialog_options = {};
-    @observable is_dialog_open = false;
-    @observable getFileArray = [];
-    @observable has_file_loaded = false;
-    @observable is_info_panel_visible = true;
-    @observable has_tour_started = false;
-    @observable is_tour_dialog_visible = true;
-    @observable has_onboard_tour_started = false;
-    @observable is_preview_on_popup = false;
-    @observable has_bot_builder_tour_started = false;
-    @observable has_builder_token = '';
-    @observable has_onboarding_token = '';
+    active_tab = 0;
+    active_tab_tutorials = 0;
+    faq_search_value = null || '';
+    dialog_options = {};
+    is_dialog_open = false;
+    getFileArray = [];
+    has_file_loaded = false;
+    is_info_panel_visible = true;
+    has_tour_started = false;
+    is_tour_dialog_visible = true;
+    has_onboard_tour_started = false;
+    is_preview_on_popup = false;
+    has_bot_builder_tour_started = false;
+    has_builder_token = '';
+    has_onboarding_token = '';
 
-    @action.bound
     setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
         this.has_builder_token = has_builder_token;
     };
 
-    @action.bound
     setOnBoardingTokenCheck = (has_onboarding_token: string | number): void => {
         this.has_onboarding_token = has_onboarding_token;
     };
 
-    @action.bound
     setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {
         this.has_bot_builder_tour_started = has_bot_builder_tour_started;
     };
 
-    @action.bound
     setPreviewOnPopup = (is_preview_on_popup: boolean): void => {
         this.is_preview_on_popup = is_preview_on_popup;
     };
 
-    @action.bound
     setOnBoardTourRunState = (has_onboard_tour_started: boolean): void => {
         this.has_onboard_tour_started = has_onboard_tour_started;
     };
 
-    @action.bound
     setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {
         this.is_tour_dialog_visible = is_tour_dialog_visible;
     };
 
-    @action.bound
     setTourActive = (has_tour_started: boolean): void => {
         this.has_tour_started = has_tour_started;
     };
 
-    @action.bound
     setFileLoaded = (has_file_loaded: boolean): void => {
         this.has_file_loaded = has_file_loaded;
         clearInjectionDiv();
     };
 
-    @action.bound
     onCloseDialog = (): void => {
         this.is_dialog_open = false;
     };
 
-    @action.bound
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
     };
 
-    @action.bound
     setActiveTabTutorial = (active_tab_tutorials: number): void => {
         this.active_tab_tutorials = active_tab_tutorials;
     };
-    @action.bound
+
     setFAQSearchValue = (faq_search_value: string): void => {
         this.faq_search_value = faq_search_value;
     };
 
-    @action.bound
     showVideoDialog = (param: { [key: string]: string }): void => {
         const { url, type } = param;
         const dialog_type = ['google', 'url'];
@@ -134,7 +154,6 @@ export default class DashboardStore implements IDashboardStore {
         }
     };
 
-    @action.bound
     setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
         this.is_info_panel_visible = is_info_panel_visible;
     };

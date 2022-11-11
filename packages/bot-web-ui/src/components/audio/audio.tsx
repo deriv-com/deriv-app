@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Audio: React.FC = () => (
+const Audio = () => (
     <>
         <audio id='announcement' src={`${__webpack_public_path__}media/announcement.mp3`} />
         <audio id='earned-money' src={`${__webpack_public_path__}media/coins.mp3`} />

@@ -1,10 +1,26 @@
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import { localize, getLanguage } from '@deriv/translations';
 import { importExternal, config } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
 
 export default class GoogleDriveStore {
     constructor(root_store) {
+        makeObservable(this, {
+            is_authorised: observable,
+            updateSigninStatus: action.bound,
+            saveFile: action.bound,
+            loadFile: action.bound,
+            setKey: action.bound,
+            initialise: action.bound,
+            signIn: action.bound,
+            signOut: action.bound,
+            getPickerLanguage: action.bound,
+            checkFolderExists: action.bound,
+            createSaveFilePicker: action.bound,
+            createLoadFilePicker: action.bound,
+            showGoogleDriveFilePicker: action.bound,
+        });
+
         this.root_store = root_store;
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.google_auth = null;
@@ -13,7 +29,7 @@ export default class GoogleDriveStore {
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
-    @observable is_authorised = false;
+    is_authorised = false;
 
     setKey = () => {
         const { aid, cid, api } = config.gd;
@@ -48,7 +64,6 @@ export default class GoogleDriveStore {
         });
     }
 
-    @action.bound
     updateSigninStatus(is_signed_in) {
         this.is_authorised = is_signed_in;
     }
@@ -86,14 +101,12 @@ export default class GoogleDriveStore {
         return language;
     }
 
-    @action.bound
     async saveFile(options) {
         await this.signIn();
         await this.checkFolderExists();
         await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
     }
 
-    @action.bound
     async loadFile() {
         await this.signIn();
         const xml_doc = await this.createLoadFilePicker(

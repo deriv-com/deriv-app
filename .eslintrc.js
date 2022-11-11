@@ -81,6 +81,7 @@ module.exports = {
         'import/prefer-default-export': 0,
         'import/extensions': [0, { jsx: 'always', json: 'always' }],
         'no-sequences': ['warn'],
+        'react/no-unknown-property': 1,
         'import/no-unresolved': [2, { ignore: ['@deriv/components', '@deriv/shared'] }],
 
         // react rules

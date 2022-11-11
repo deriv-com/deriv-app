@@ -36,9 +36,9 @@ const DummyComponent = props => (
         messages={props.messages}
         classNameImage='may-class'
         image_url={props.image_url}
-        redirect_label={props.redirect_label}
+        redirect_labels={props.redirect_labels}
         buttonOnClick={props.buttonOnClick}
-        redirect_url={props.redirect_url}
+        redirect_urls={props.redirect_urls}
     />
 );
 ```

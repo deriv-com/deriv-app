@@ -20,8 +20,8 @@ const DummyComponent = props => (
 | messages                    | {array}           | null    | Array of strings as error text                                                              |
 | image_url                   | {string}          | null    | This image will be shown beside the error text                                              |
 | classNameImage              | {string}          | null    |                                                                                             |
-| redirect_label              | {string}          | null    | Redirect button text                                                                        |
-| redirect_url                | {string}          | null    | Where you want to land user after clicking on redirect button                               |
+| redirect_labels             | {array}           | null    | Redirect button text                                                                        |
+| redirect_urls               | {array}           | null    | Where you want to land user after clicking on redirect button                               |
 | setError                    | {function}        | null    | Function to remove error on the parent component                                            |
 | should_clear_error_on_click | {boolean}         | null    | Set it to true to disable error on parent component on redirect. `setError` must be defined |
 

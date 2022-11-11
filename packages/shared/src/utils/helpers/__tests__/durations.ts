@@ -21,7 +21,7 @@ describe('buildDurationConfig', () => {
         underlying_symbol: 'frxAUDJPY',
     };
 
-    const durations: Duration.TDurations = {
+    const durations = {
         min_max: {
             spot: {
                 daily: {
@@ -42,21 +42,11 @@ describe('buildDurationConfig', () => {
     };
 
     it('Returns correct value when durations is not passed', () => {
-        expect(
-            Duration.buildDurationConfig(
-                contract,
-                durations ?? { min_max: { spot: {}, forward: {} }, units_display: {} }
-            )
-        ).to.eql(durations);
+        expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
     });
 
     it('Returns correct value when durations passed', () => {
-        expect(
-            Duration.buildDurationConfig(
-                contract,
-                durations ?? { min_max: { spot: {}, forward: {} }, units_display: {} }
-            )
-        ).to.eql(durations);
+        expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
     });
 });
 

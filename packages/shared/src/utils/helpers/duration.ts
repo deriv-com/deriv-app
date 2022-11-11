@@ -40,8 +40,11 @@ const getDurationMaps = () => ({
     h: { display: localize('Hours'), order: 4, to_second: 60 * 60 },
     d: { display: localize('Days'), order: 5, to_second: 60 * 60 * 24 },
 });
-// please pass duration = { min_max: { spot: {}, forward: {} }, units_display: {} } when you call this function
-export const buildDurationConfig = (contract: TContract, durations: TDurations) => {
+
+export const buildDurationConfig = (
+    contract: TContract,
+    durations: TDurations = { min_max: { spot: {}, forward: {} }, units_display: {} }
+) => {
     type TDurationMaps = keyof typeof duration_maps;
     durations.units_display[contract.start_type as keyof typeof durations.units_display] =
         durations.units_display[contract.start_type as keyof typeof durations.units_display] || [];

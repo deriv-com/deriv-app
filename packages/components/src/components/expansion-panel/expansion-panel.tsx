@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 import ArrayRenderer from './array-renderer';
 import Icon from '../icon';
+import { TItem } from '../types/common.types';
 
 type TExpansionPanel = {
-    message: { header: React.ReactNode; content: Array<React.ReactNode> };
+    message: { header: React.ReactNode; content: Array<React.ReactNode> & Array<TItem> };
     onResize: () => void;
 };
 

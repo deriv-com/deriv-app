@@ -1,11 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import Icon from '../icon';
-
-type TItem = {
-    id: string;
-    value: Array<TItem> | string;
-};
+import { TItem } from '../types/common.types';
 
 type TArrayRenderer = {
     array: Array<TItem>;

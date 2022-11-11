@@ -13,6 +13,7 @@ export default class GeneralStore extends BaseStore {
         makeObservable(this, {
             is_loading: observable,
             is_p2p_visible: observable,
+            is_p2p_page_showing: observable,
             p2p_notification_count: observable,
             cashier_route_tab_index: observable,
             is_deposit: observable,
@@ -54,6 +55,7 @@ export default class GeneralStore extends BaseStore {
             onMountCommon: action.bound,
             setCashierTabIndex: action.bound,
             setNotificationCount: action.bound,
+            setIsP2pPageShowing: action.bound,
             setIsP2pVisible: action.bound,
             is_cashier_locked: computed,
             is_system_maintenance: computed,
@@ -90,6 +92,7 @@ export default class GeneralStore extends BaseStore {
 
     is_loading = false;
     is_p2p_visible = false;
+    is_p2p_page_showing = false;
     p2p_notification_count = 0;
     cashier_route_tab_index = 0;
     is_deposit = false;
@@ -384,6 +387,10 @@ export default class GeneralStore extends BaseStore {
 
     setNotificationCount(notification_count) {
         this.p2p_notification_count = notification_count;
+    }
+
+    setIsP2pPageShowing(is_p2p_page_showing) {
+        this.is_p2p_page_showing = is_p2p_page_showing;
     }
 
     setIsP2pVisible(is_p2p_visible) {

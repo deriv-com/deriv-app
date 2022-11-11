@@ -9,7 +9,6 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     setUrlLanguage,
     isMobile,
-    isSafari,
     isTablet,
     isTouchDevice,
     initFormErrorMessages,
@@ -66,18 +65,12 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && (isMobile() || isTablet())) {
+            const is_android_device = mobileOSDetect() === 'Android';
+            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            let is_portrait;
 
-            if (isSafari()) {
-                is_portrait = window.matchMedia('(orientation:portrait)').matches;
-            } else if (mobileOSDetect() === 'Android') {
-                is_portrait = screen.availWidth <= screen.availHeight;
-            } else {
-                is_portrait = window.innerWidth <= window.innerHeight;
-            }
-
-            if (is_portrait) {
+            if (view_width <= view_height || root_store.modules.cashier.general_store.is_p2p_page_showing) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -85,29 +78,17 @@ const AppWithoutTranslation = ({ root_store }) => {
                 el_landscape_blocker.classList.add('landscape-blocker--visible');
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [root_store.ui]);
 
     React.useEffect(() => {
-        // const debouncedHandleResize = debounce(handleResize, 400);
-        // window.addEventListener('resize', debouncedHandleResize);
-
-        const mediaQueryList = window.matchMedia('(orientation:portrait)');
-        const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-        mediaQueryList.addEventListener('change', event => {
-            if (event.matches) {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
-                el_landscape_blocker.classList.remove('landscape-blocker--visible');
-            } else {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
-                el_landscape_blocker.classList.add('landscape-blocker--visible');
-            }
-        });
+        const debouncedHandleResize = debounce(handleResize, 400);
+        window.addEventListener('resize', debouncedHandleResize);
 
         return () => {
-            window.removeEventListener('change');
+            window.removeEventListener('resize', debouncedHandleResize);
         };
-    }, [root_store.ui]);
+    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

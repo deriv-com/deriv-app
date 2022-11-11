@@ -383,6 +383,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
         this.setIsP2pBlockedForPa(false);
+        this.props.setIsP2pPageShowing(true);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -519,6 +520,7 @@ export default class GeneralStore extends BaseStore {
         this.setActiveIndex(0);
         this.props.refreshNotifications();
         this.props.filterNotificationMessages();
+        this.props.setIsP2pPageShowing(false);
     }
 
     onNicknamePopupClose() {

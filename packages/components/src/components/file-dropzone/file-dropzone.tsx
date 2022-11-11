@@ -19,7 +19,6 @@ type TPreviewSingle = {
 
 type TFileDropzone = {
     className?: string;
-    noClick?: boolean;
     validation_error_message: ReactNode & ((open?: () => void) => ReactNode);
     max_size?: number;
     value: Array<{ name: string }>;

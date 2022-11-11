@@ -44,10 +44,10 @@
             width: 100%;
         }
         &--number {
-            color: $color-grey-1;
+            color: var(--text-less-prominent);
         }
         &--balance {
-            color: $color-black-1;
+            color: var(--text-general);
         }
     }
     &__button-wrapper {

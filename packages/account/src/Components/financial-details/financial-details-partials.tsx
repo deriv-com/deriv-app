@@ -4,7 +4,7 @@ import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/co
 import { localize } from '@deriv/translations';
 
 type TEmploymentStatus = {
-    employment_status_enum: Array<object>;
+    employment_status_enum: object[];
 };
 
 export const EmploymentStatus = ({
@@ -60,7 +60,7 @@ export const EmploymentStatus = ({
 );
 
 type TIncomeSource = {
-    income_source_enum: Array<object>;
+    income_source_enum: object[];
 };
 
 export const IncomeSource = ({
@@ -116,7 +116,7 @@ export const IncomeSource = ({
 );
 
 type TEmploymentIndustry = {
-    employment_industry_enum: Array<object>;
+    employment_industry_enum: object[];
 };
 
 export const EmploymentIndustry = ({
@@ -172,7 +172,7 @@ export const EmploymentIndustry = ({
 );
 
 type TOccupation = {
-    occupation_enum: Array<object>;
+    occupation_enum: object[];
 };
 
 export const Occupation = ({
@@ -228,7 +228,7 @@ export const Occupation = ({
 );
 
 type TSourceOfWealth = {
-    source_of_wealth_enum: Array<object>;
+    source_of_wealth_enum: object[];
 };
 
 export const SourceOfWealth = ({
@@ -284,7 +284,7 @@ export const SourceOfWealth = ({
 );
 
 type TEducationLevel = {
-    education_level_enum: Array<object>;
+    education_level_enum: object[];
 };
 
 export const EducationLevel = ({
@@ -340,7 +340,7 @@ export const EducationLevel = ({
 );
 
 type TNetIncome = {
-    net_income_enum: Array<object>;
+    net_income_enum: object[];
 };
 
 export const NetIncome = ({
@@ -396,7 +396,7 @@ export const NetIncome = ({
 );
 
 type TEstimatedWorth = {
-    estimated_worth_enum: Array<object>;
+    estimated_worth_enum: object[];
 };
 
 export const EstimatedWorth = ({
@@ -452,7 +452,7 @@ export const EstimatedWorth = ({
 );
 
 type TAccountTurnover = {
-    account_turnover_enum: Array<object>;
+    account_turnover_enum: object[];
 };
 
 export const AccountTurnover = ({
@@ -508,7 +508,7 @@ export const AccountTurnover = ({
 );
 
 type TForexTradingExperience = {
-    forex_trading_experience_enum: Array<object>;
+    forex_trading_experience_enum: object[];
 };
 
 export const ForexTradingExperience = ({
@@ -564,7 +564,7 @@ export const ForexTradingExperience = ({
 );
 
 type TForexTradingFrequency = {
-    forex_trading_frequency_enum: Array<object>;
+    forex_trading_frequency_enum: object[];
 };
 
 export const ForexTradingFrequency = ({
@@ -620,7 +620,7 @@ export const ForexTradingFrequency = ({
 );
 
 type TBinaryOptionsTradingExperience = {
-    binary_options_trading_experience_enum: Array<object>;
+    binary_options_trading_experience_enum: object[];
 };
 
 export const BinaryOptionsTradingExperience = ({
@@ -676,7 +676,7 @@ export const BinaryOptionsTradingExperience = ({
 );
 
 type TBinaryOptionsTradingFrequency = {
-    binary_options_trading_frequency_enum: Array<object>;
+    binary_options_trading_frequency_enum: object[];
 };
 
 export const BinaryOptionsTradingFrequency = ({
@@ -732,7 +732,7 @@ export const BinaryOptionsTradingFrequency = ({
 );
 
 type TCFDTradingExperience = {
-    cfd_trading_experience_enum: Array<object>;
+    cfd_trading_experience_enum: object[];
 };
 
 export const CFDTradingExperience = ({
@@ -788,7 +788,7 @@ export const CFDTradingExperience = ({
 );
 
 type TCFDTradingFrequency = {
-    cfd_trading_frequency_enum: Array<object>;
+    cfd_trading_frequency_enum: object[];
 };
 
 export const CFDTradingFrequency = ({
@@ -844,7 +844,7 @@ export const CFDTradingFrequency = ({
 );
 
 type TOtherInstrumentsTradingExperience = {
-    other_instruments_trading_experience_enum: Array<object>;
+    other_instruments_trading_experience_enum: object[];
 };
 
 export const OtherInstrumentsTradingExperience = ({
@@ -906,7 +906,7 @@ export const OtherInstrumentsTradingExperience = ({
 );
 
 type TOtherInstrumentsTradingFrequency = {
-    other_instruments_trading_frequency_enum: Array<object>;
+    other_instruments_trading_frequency_enum: object[];
 };
 
 export const OtherInstrumentsTradingFrequency = ({

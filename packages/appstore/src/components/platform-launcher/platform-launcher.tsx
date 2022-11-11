@@ -12,6 +12,7 @@ type TPlatformLauncherProps = {
     link_to?: string;
     href?: string;
     has_real_account: boolean;
+    account_type: string;
 };
 
 const PlatformLauncher = ({
@@ -21,6 +22,7 @@ const PlatformLauncher = ({
     link_to,
     href,
     has_real_account,
+    account_type,
 }: TPlatformLauncherProps) => {
     return (
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
@@ -46,7 +48,7 @@ const PlatformLauncher = ({
                     </Text>
                 </div>
             </div>
-            {has_real_account && (
+            {((has_real_account && account_type === 'real') || account_type === 'demo') && (
                 <React.Fragment>
                     {link_to ? (
                         <Link to={link_to}>

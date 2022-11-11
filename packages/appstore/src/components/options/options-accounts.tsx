@@ -312,7 +312,11 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                 {props.platformlauncherprops.map((item, index) => {
                     return (
                         <div className='options-accounts-container__platformLauncher--item' key={item.app_title}>
-                            <PlatformLauncher {...item} has_real_account={has_any_real_account} />
+                            <PlatformLauncher
+                                {...item}
+                                has_real_account={has_any_real_account}
+                                account_type={props.accountType}
+                            />
                             {!isMobile() && props.platformlauncherprops.length - 1 !== index && (
                                 <span className='options-accounts-container__platformLauncher--item_divider' />
                             )}

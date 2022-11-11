@@ -1,7 +1,7 @@
 import React from 'react';
 import { Authorize, GetAccountStatus } from '@deriv/api-types';
+import { EmptyState } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
 import { TRootStore } from 'Types';
 

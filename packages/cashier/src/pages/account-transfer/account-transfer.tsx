@@ -1,8 +1,8 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TAccountsList, TSideNotesProps } from 'Types';
+import { TSideNotesProps } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
 import { Virtual } from 'Components/cashier-container';
@@ -12,49 +12,39 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
-import ErrorStore from 'Stores/error-store';
+import { useStore } from '../../hooks';
 
 type TAccountTransferProps = {
-    accounts_list: Array<TAccountsList>;
-    container: string;
-    error: ErrorStore;
-    has_no_account: boolean;
-    has_no_accounts_balance: boolean;
-    is_cashier_locked: boolean;
-    is_crypto_transactions_visible: boolean;
-    is_loading: boolean;
-    is_switching: TClientStore['is_switching'];
-    is_transfer_confirm: boolean;
-    is_transfer_locked: boolean;
-    is_virtual: TClientStore['is_virtual'];
-    onMount: () => void;
-    recentTransactionOnMount: () => void;
-    setAccountTransferAmount: (amount: number | string) => void;
-    setActiveTab: (container: string) => void;
-    setIsTransferConfirm: (status: boolean) => void;
     setSideNotes: (notes: TSideNotesProps) => void;
 };
 
-const AccountTransfer = ({
-    accounts_list,
-    container,
-    error,
-    has_no_account,
-    has_no_accounts_balance,
-    is_cashier_locked,
-    is_crypto_transactions_visible,
-    is_loading,
-    is_switching,
-    is_transfer_confirm,
-    is_transfer_locked,
-    is_virtual,
-    onMount,
-    recentTransactionOnMount,
-    setAccountTransferAmount,
-    setActiveTab,
-    setIsTransferConfirm,
-    setSideNotes,
-}: TAccountTransferProps) => {
+const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
+    const {
+        modules: {
+            cashier: { account_transfer, general_store, transaction_history },
+        },
+        client,
+    } = useStore();
+
+    const {
+        accounts_list,
+        container,
+        error,
+        has_no_account,
+        has_no_accounts_balance,
+        is_transfer_confirm,
+        is_transfer_locked,
+        onMountAccountTransfer: onMount,
+        setAccountTransferAmount,
+        setIsTransferConfirm,
+    } = account_transfer;
+
+    const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+
+    const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
+
+    const { is_switching, is_virtual } = client;
+
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
@@ -119,22 +109,4 @@ const AccountTransfer = ({
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    accounts_list: modules.cashier.account_transfer.accounts_list,
-    container: modules.cashier.account_transfer.container,
-    error: modules.cashier.account_transfer.error,
-    has_no_account: modules.cashier.account_transfer.has_no_account,
-    has_no_accounts_balance: modules.cashier.account_transfer.has_no_accounts_balance,
-    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
-    is_loading: modules.cashier.general_store.is_loading,
-    is_switching: client.is_switching,
-    is_transfer_confirm: modules.cashier.account_transfer.is_transfer_confirm,
-    is_transfer_locked: modules.cashier.account_transfer.is_transfer_locked,
-    is_virtual: client.is_virtual,
-    onMount: modules.cashier.account_transfer.onMountAccountTransfer,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
-    setActiveTab: modules.cashier.general_store.setActiveTab,
-    setIsTransferConfirm: modules.cashier.account_transfer.setIsTransferConfirm,
-}))(AccountTransfer);
+export default observer(AccountTransfer);

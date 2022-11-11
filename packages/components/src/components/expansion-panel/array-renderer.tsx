@@ -1,10 +1,20 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 
-const ArrayRenderer = ({ array, open_ids, setOpenIds }) => {
-    const onArrayItemClick = id => {
+type TItem = {
+    id: string;
+    value: Array<TItem> | string;
+};
+
+type TArrayRenderer = {
+    array: Array<TItem>;
+    open_ids: Array<string>;
+    setOpenIds: (props: Array<string>) => void;
+};
+
+const ArrayRenderer = ({ array, open_ids, setOpenIds }: TArrayRenderer) => {
+    const onArrayItemClick = (id: string) => {
         if (open_ids.includes(id)) {
             setOpenIds(open_ids.filter(open_id => open_id !== id));
         } else {
@@ -46,12 +56,6 @@ const ArrayRenderer = ({ array, open_ids, setOpenIds }) => {
             })}
         </React.Fragment>
     );
-};
-
-ArrayRenderer.propTypes = {
-    array: PropTypes.Array,
-    open_ids: PropTypes.array,
-    setOpenIds: PropTypes.func,
 };
 
 export default ArrayRenderer;

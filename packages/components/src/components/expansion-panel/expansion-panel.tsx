@@ -1,11 +1,15 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ArrayRenderer from './array-renderer.jsx';
+import ArrayRenderer from './array-renderer';
 import Icon from '../icon';
 
-const ExpansionPanel = ({ message, onResize }) => {
-    const [open_ids, setOpenIds] = React.useState([]);
+type TExpansionPanel = {
+    message: { header: React.ReactNode; content: Array<React.ReactNode> };
+    onResize: () => void;
+};
+
+const ExpansionPanel = ({ message, onResize }: TExpansionPanel) => {
+    const [open_ids, setOpenIds] = React.useState<string[]>([]);
     const [is_open, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
@@ -37,11 +41,6 @@ const ExpansionPanel = ({ message, onResize }) => {
                 ))}
         </React.Fragment>
     );
-};
-
-ExpansionPanel.propTypes = {
-    message: PropTypes.object,
-    onResize: PropTypes.func,
 };
 
 export default ExpansionPanel;

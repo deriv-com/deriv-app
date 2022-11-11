@@ -2,16 +2,44 @@ import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getSavedWorkspaces } from '@deriv/bot-skeleton';
+import LZString from 'lz-string';
+import localForage from 'localforage';
 
 type TDeleteDialog = {
     is_running: boolean;
     is_delete_modal_open: boolean;
-    onToggleDeleteDialog: (type: string, param: boolean) => void;
+    onToggleDeleteDialog: (param: boolean) => void;
+    removeBotStratagy: (param: string) => void;
+    selected_strategy_id: string;
+    setStrategies: (param: string[]) => void;
 };
 
-const DeleteDialog = ({ is_delete_modal_open, is_running, onToggleDeleteDialog }: TDeleteDialog) => {
+const DeleteDialog = ({
+    is_delete_modal_open,
+    is_running,
+    selected_strategy_id,
+    onToggleDeleteDialog,
+    setStrategies,
+}: TDeleteDialog) => {
+    const removeBotStratagy = async (strategy_id: string) => {
+        const workspaces = await getSavedWorkspaces();
+        workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
+            if (strategy_from_workspace.id === strategy_id) {
+                if (index > -1) {
+                    workspaces.splice(index, 1);
+                }
+                setStrategies(workspaces);
+                localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
+                onToggleDeleteDialog(false);
+            }
+        });
+    };
+
     const onHandleChange = (type: string, param: boolean) => {
-        onToggleDeleteDialog(type, false);
+        if (type === 'confirm') {
+            removeBotStratagy(selected_strategy_id);
+        }
     };
 
     return (

@@ -28,7 +28,7 @@ interface ILoadModalStore {
     onDriveOpen: () => void;
     onEntered: () => void;
     onLoadModalClose: () => void;
-    onToggleDeleteDialog: (type: string, is_delete_modal_open: boolean) => void;
+    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
     setActiveTabIndex: (index: number) => void;
@@ -101,14 +101,6 @@ export default class LoadModalStore implements ILoadModalStore {
             () => this.load_recent_strategies,
             async load_recent_strategies => {
                 if (load_recent_strategies) {
-                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
-                }
-            }
-        );
-        reaction(
-            () => this.is_delete_modal_open,
-            async is_delete_modal_open => {
-                if (!is_delete_modal_open) {
                     this.setRecentStrategies((await getSavedWorkspaces()) || []);
                 }
             }
@@ -318,6 +310,8 @@ export default class LoadModalStore implements ILoadModalStore {
             });
         }
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+        const { updateBotName } = this.root_store.save_modal;
+        updateBotName(this.selected_strategy.name);
     };
 
     setActiveTabIndex = (index: number): void => {
@@ -378,10 +372,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
     };
 
-    onToggleDeleteDialog = (type: string, is_delete_modal_open: boolean): void => {
-        if (type === 'confirm') {
-            removeExistingWorkspace(this.selected_strategy.id);
-        }
+    onToggleDeleteDialog = (is_delete_modal_open: boolean): void => {
         this.is_delete_modal_open = is_delete_modal_open;
     };
 

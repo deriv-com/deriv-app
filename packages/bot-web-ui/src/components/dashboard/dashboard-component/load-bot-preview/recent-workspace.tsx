@@ -18,7 +18,7 @@ type TRecentWorkspace = {
     has_file_loaded: boolean;
     recent_strategies: boolean;
     toggleSaveModal: () => void;
-    onToggleDeleteDialog: (type: string, is_delete_modal_open: boolean) => void;
+    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     loadFileFromRecent: () => void;
     setActiveTab: (active_tab: number) => void;
     toggleStrategies: (param: boolean) => void;
@@ -94,8 +94,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button__delete'
                         onClick={() => {
-                            onToggleDeleteDialog('delete', true);
-                            toggleStrategies(true);
+                            onToggleDeleteDialog(true);
                         }}
                     >
                         <Icon icon='IcDelete' />

@@ -13,12 +13,7 @@ type TRecentComponent = {
     is_explanation_expand: boolean;
     recent_strategies: [];
     toggleExplanationExpand: boolean;
-    is_strategy_removed: boolean;
-    load_recent_strategies: boolean;
-    is_delete_modal_open: boolean;
-    handleFileChange: () => void;
     toggleStrategies: (param: boolean) => void;
-    setRecentStrategies: () => void;
 };
 const explanation_list = [
     localize('1. Logged in from a different device'),
@@ -30,17 +25,16 @@ const RecentComponent = ({
     is_explanation_expand,
     recent_strategies,
     toggleExplanationExpand,
-    is_delete_modal_open,
     toggleStrategies,
 }: TRecentComponent) => {
     const [get_strategies, setStrategies] = React.useState([]);
 
     React.useEffect(() => {
         toggleStrategies(true);
-        getSavedWorkspaces().then((load_recent_strategies: []) => {
+        getSavedWorkspaces().then(load_recent_strategies => {
             setStrategies(load_recent_strategies);
         });
-    }, [!is_delete_modal_open]);
+    }, [recent_strategies]);
 
     if (get_strategies?.length) {
         return (
@@ -51,11 +45,11 @@ const RecentComponent = ({
                             <Localize i18n_default_text='Your Bots' />
                         </div>
                         <div className='load-strategy__recent__files__list'>
-                            {recent_strategies.map((workspace, index) => {
+                            {get_strategies.map((workspace, index) => {
                                 return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
                             })}
                         </div>
-                        <DeleteDialog />
+                        <DeleteDialog setStrategies={setStrategies} />
                     </div>
                 </div>
             </div>

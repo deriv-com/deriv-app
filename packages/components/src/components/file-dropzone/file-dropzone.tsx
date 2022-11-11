@@ -1,11 +1,43 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactElement, ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Dropzone from 'react-dropzone';
+import Dropzone, { DropzoneOptions } from 'react-dropzone';
 import { truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
-const FadeInMessage = ({ is_visible, color, children, key, timeout, no_text }) => (
+type TFadeInMessage = {
+    is_visible: boolean;
+    color?: string;
+    key?: string;
+    timeout: number;
+    no_text?: boolean;
+};
+
+type TPreviewSingle = {
+    dropzone_ref: RefObject<HTMLElement>;
+} & TFileDropzone;
+
+type TFileDropzone = {
+    className?: string;
+    noClick?: boolean;
+    validation_error_message: (open?: () => void) => ReactNode | null;
+    max_size?: number;
+    value: Array<{ name: string }>;
+    message: (open?: () => void) => ReactNode;
+    filename_limit?: number;
+    error_message: string;
+    hover_message: string;
+    preview_single?: ReactElement;
+} & DropzoneOptions;
+
+const FadeInMessage = ({
+    is_visible,
+    color,
+    children,
+    key,
+    timeout,
+    no_text,
+}: React.PropsWithChildren<TFadeInMessage>) => (
     <CSSTransition
         appear
         key={key}
@@ -38,7 +70,7 @@ const FadeInMessage = ({ is_visible, color, children, key, timeout, no_text }) =
     </CSSTransition>
 );
 
-const PreviewSingle = props => {
+const PreviewSingle = (props: TPreviewSingle) => {
     if (props.preview_single) {
         return <div className='dc-file-dropzone__message'>{props.preview_single}</div>;
     }
@@ -57,7 +89,7 @@ const PreviewSingle = props => {
     );
 };
 
-const FileDropzone = ({ className, noClick = false, ...props }) => {
+const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const dropzone_ref = React.useRef(null);
     return (
         <Dropzone
@@ -98,7 +130,7 @@ const FileDropzone = ({ className, noClick = false, ...props }) => {
                             timeout={150}
                             no_text={noClick}
                         >
-                            {noClick ? props.message(open) : props.message}
+                            {props.message(open)}
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
@@ -140,9 +172,7 @@ const FileDropzone = ({ className, noClick = false, ...props }) => {
                             timeout={150}
                             color='loss-danger'
                         >
-                            {noClick && typeof props.validation_error_message === 'function'
-                                ? props.validation_error_message(open)
-                                : props.validation_error_message}
+                            {props.validation_error_message(open)}
                         </FadeInMessage>
                     </div>
                 </div>

@@ -148,7 +148,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.markets,
                     ];
                     secondary_routes = [];
-                } else if ((is_pre_appstore && location === routes.trading_hub) || location !== routes.trade) {
+                } else if ((is_pre_appstore && location === routes.trading_hub) || is_trading_hub_category) {
                     primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
@@ -392,7 +392,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        {is_logged_in && route === routes.trade && (
+                                        {is_logged_in && !is_trading_hub_category && (
                                             <MobileDrawer.Item className='header__menu--back-to-old-ui--dtrader'>
                                                 <Button
                                                     className={`header__menu--back-to-ui${
@@ -467,7 +467,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             </div>
                                         </MobileDrawer.Item>
                                         {is_logged_in && (
-                                            <>
+                                            <React.Fragment>
                                                 <MobileDrawer.Item>
                                                     <MenuLink
                                                         link_to={getStaticUrl('/help-centre')}
@@ -530,7 +530,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     <ServerTime is_mobile />
                                                     <NetworkStatus is_mobile />
                                                 </MobileDrawer.Footer>
-                                            </>
+                                            </React.Fragment>
                                         )}
                                     </MobileDrawer.Body>
                                 </React.Fragment>

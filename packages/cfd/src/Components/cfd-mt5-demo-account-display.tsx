@@ -107,7 +107,7 @@ const CFDMT5DemoAccountDisplay = ({
     }, [is_logged_in, is_eu, is_eu_country, residence, platform]);
 
     return (
-        <div className='cfd-demo-accounts-display' data-testid='dt_cfd_demo_accounts_display'>
+        <React.Fragment>
             {is_loading ? (
                 <Loading />
             ) : (
@@ -176,7 +176,7 @@ const CFDMT5DemoAccountDisplay = ({
                     )}
                 </div>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

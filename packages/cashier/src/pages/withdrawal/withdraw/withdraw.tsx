@@ -1,29 +1,26 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Real } from 'Components/cashier-container';
-import { connect } from 'Stores/connect';
-import { TClientStore, TRootStore } from 'Types';
+import { useStore } from '../../../hooks';
 
-type TWithdrawProps = {
-    container: string;
-    iframe_height: number | string;
-    iframe_url: string;
-    is_loading: boolean;
-    verification_code: string;
-    clearIframe: () => void;
-    onMount: (verification_code: TClientStore['verification_code']['payment_withdraw']) => void;
-    setActiveTab: (container: string) => void;
-};
+const Withdraw = () => {
+    const {
+        client,
+        modules: {
+            cashier: { iframe, general_store, withdraw },
+        },
+    } = useStore();
 
-const Withdraw = ({
-    container,
-    iframe_height,
-    iframe_url,
-    clearIframe,
-    is_loading,
-    onMount,
-    setActiveTab,
-    verification_code,
-}: TWithdrawProps) => {
+    const {
+        verification_code: { payment_withdraw: verification_code },
+    } = client;
+
+    const { is_loading, setActiveTab } = general_store;
+
+    const { iframe_height, iframe_url, clearIframe } = iframe;
+
+    const { container, onMountWithdraw: onMount } = withdraw;
+
     React.useEffect(() => {
         setActiveTab(container);
         onMount(verification_code);
@@ -35,13 +32,4 @@ const Withdraw = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    container: modules.cashier.withdraw.container,
-    iframe_height: modules.cashier.iframe.iframe_height,
-    iframe_url: modules.cashier.iframe.iframe_url,
-    clearIframe: modules.cashier.iframe.clearIframe,
-    is_loading: modules.cashier.general_store.is_loading,
-    onMount: modules.cashier.withdraw.onMountWithdraw,
-    setActiveTab: modules.cashier.general_store.setActiveTab,
-    verification_code: client.verification_code.payment_withdraw,
-}))(Withdraw);
+export default observer(Withdraw);

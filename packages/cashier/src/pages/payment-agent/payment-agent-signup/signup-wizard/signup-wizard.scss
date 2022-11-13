@@ -2,4 +2,25 @@
     &--is-cancel-dialog-active {
         display: none;
     }
+
+    &__step {
+        &-text {
+            margin-top: 2.4rem;
+        }
+        &-hint {
+            margin-top: 0.8rem;
+        }
+        &-country-dropdown {
+            margin-top: 3.2rem;
+
+            @include mobile {
+                margin-top: 2.4rem;
+            }
+
+            .is-desktop {
+                margin: 0 auto;
+                width: 422px;
+            }
+        }
+    }
 }

@@ -1,8 +1,16 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 import { useHover } from '../../hooks/use-hover';
+
+type TTooltip = {
+    alignment: string;
+    className?: string;
+    classNameIcon: string;
+    has_error?: boolean;
+    icon?: string;
+    message?: string;
+};
 
 const Tooltip = ({
     alignment,
@@ -12,7 +20,7 @@ const Tooltip = ({
     has_error,
     icon, // only question, info and dot accepted
     message,
-}) => {
+}: React.PropsWithChildren<TTooltip>) => {
     const [hover_ref, show_tooltip_balloon_icon_on_hover] = useHover();
 
     const icon_class = classNames(classNameIcon, icon);
@@ -39,16 +47,6 @@ const Tooltip = ({
             {children}
         </span>
     );
-};
-
-Tooltip.propTypes = {
-    alignment: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    classNameIcon: PropTypes.string,
-    has_error: PropTypes.bool,
-    icon: PropTypes.string,
-    message: PropTypes.string,
 };
 
 export default Tooltip;

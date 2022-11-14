@@ -106,9 +106,11 @@ const CFDDbViOnBoarding = ({
     };
 
     React.useEffect(() => {
-        setIsLoading(true);
-        getAccountStatusFromAPI();
-        fetchAccountSettings();
+        if (is_cfd_verification_modal_visible) {
+            setIsLoading(true);
+            getAccountStatusFromAPI();
+            fetchAccountSettings();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
@@ -128,6 +130,7 @@ const CFDDbViOnBoarding = ({
         ) : (
             <CFDFinancialStpRealAccountSignup
                 onFinish={() => {
+                    getAccountStatusFromAPI();
                     updateMt5LoginList();
                     if (has_created_account_for_selected_jurisdiction) {
                         setShowSubmittedModal(true);

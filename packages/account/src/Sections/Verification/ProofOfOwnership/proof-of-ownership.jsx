@@ -43,7 +43,7 @@ export const ProofOfOwnership = ({
         });
         return { groups, total_documents_required };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [cards]);
     useEffect(() => {
         setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());
     }, [account_status]);

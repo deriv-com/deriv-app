@@ -11,7 +11,7 @@ type TRemainingTimeProps = {
 
 const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {
     if (!end_time || start_time.unix() > +end_time) {
-        return <React.Fragment />;
+        return <React.Fragment>{''}</React.Fragment>;
     }
 
     const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), end_time), format);

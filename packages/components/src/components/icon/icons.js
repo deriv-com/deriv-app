@@ -501,6 +501,7 @@ import './common/ic-web-money-dark.svg';
 import './common/ic-web-money-light.svg';
 import './common/ic-web-terminal.svg';
 import './common/ic-website.svg';
+import './common/ic-whats-app.svg';
 import './common/ic-windows-logo.svg';
 import './common/ic-windows.svg';
 import './common/ic-wip.svg';

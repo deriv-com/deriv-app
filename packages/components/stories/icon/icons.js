@@ -509,6 +509,7 @@ export const icons =
         'IcWebMoneyLight',
         'IcWebTerminal',
         'IcWebsite',
+        'IcWhatsApp',
         'IcWindowsLogo',
         'IcWindows',
         'IcWip',

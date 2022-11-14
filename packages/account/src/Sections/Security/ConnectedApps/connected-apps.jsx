@@ -123,7 +123,7 @@ const ConnectedApps = () => {
                     </React.Fragment>
                 )}
 
-                {!!connected_apps.length && <ConnectedAppsArticle />}
+                {!is_loading && !!connected_apps.length && <ConnectedAppsArticle />}
             </div>
 
             <Modal is_open={is_modal_open} className='connected-apps' toggleModal={handleToggleModal}>

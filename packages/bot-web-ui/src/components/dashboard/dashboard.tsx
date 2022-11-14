@@ -3,7 +3,14 @@ import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings, setTourType, tour_type } from './joyride-config';
+import {
+    DBOT_ONBOARDING,
+    handleJoyrideCallback,
+    getTourSettings,
+    setTourType,
+    tour_type,
+    tour_status_ended,
+} from './joyride-config';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -16,24 +23,24 @@ import TourTriggrerDialog from './tour-trigger-dialog';
 
 type TDashboard = {
     active_tab: number;
-    is_drawer_open: boolean;
-    setActiveTab: (active_tab: number) => void;
-    onEntered: () => void;
     has_file_loaded: boolean;
     has_tour_started: boolean;
     has_onboard_tour_started: boolean;
     has_bot_builder_tour_started: boolean;
+    is_drawer_open: boolean;
+    is_tour_dialog_visible: boolean;
+    onEntered: () => void;
+    setActiveTab: (active_tab: number) => void;
     setTourActive: (param: boolean) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    toggleStrategyModal: () => void;
     setTourDialogVisibility: (param: boolean) => void;
-    is_tour_dialog_visible: boolean;
+    setIsTourEnded: (param: boolean) => void;
+    toggleStrategyModal: () => void;
 };
 
 const Dashboard = ({
     active_tab,
-    has_bot_builder_tour_started,
     has_tour_started,
     has_file_loaded,
     has_onboard_tour_started,
@@ -46,6 +53,7 @@ const Dashboard = ({
     setBotBuilderTourState,
     setTourDialogVisibility,
     toggleStrategyModal,
+    setIsTourEnded,
 }: TDashboard) => {
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
@@ -92,11 +100,23 @@ const Dashboard = ({
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
     });
+    let tour_ended = false;
+    if (tour_status_ended.key === 'finished') {
+        tour_ended = true;
+    }
+
+    React.useEffect(() => {
+        if (tour_ended) {
+            setTourDialogVisibility(true);
+            setIsTourEnded(true);
+        }
+    }, [tour_ended]);
 
     return (
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
+                    {active_tab === 0 && tour_ended && <TourTriggrerDialog />}
                     {active_tab === 0 && <TourTriggrerDialog />}
                     {active_tab === 1 && !is_tour_dialog_visible && <TourTriggrerDialog />}
                     {has_tour_started && (
@@ -173,4 +193,5 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    setIsTourEnded: dashboard.setIsTourEnded,
 }))(Dashboard);

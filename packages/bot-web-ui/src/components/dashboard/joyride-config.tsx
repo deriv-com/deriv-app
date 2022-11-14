@@ -56,8 +56,16 @@ export const setTourType = (param: string) => {
 
 let tour: { [key: string]: string } = {};
 let current_target: number;
+export const tour_status_ended = {
+    key: '',
+    type: `${tour_type.key}status`,
+};
+
 export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status, type } = data;
+    const { action, index, status, type, size } = data;
+    if (status === 'finished') {
+        tour_status_ended.key = status;
+    }
     if (current_target && current_target !== index) {
         tour = {};
         tour.status = status;
@@ -118,7 +126,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={2}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -131,7 +139,7 @@ export const DBOT_ONBOARDING = [
                 content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={3}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -146,7 +154,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={4}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -173,19 +181,6 @@ export const DBOT_ONBOARDING = [
                 img={getImageLocation('ic-new-user-step-six.png')}
                 className={'dbot-onboarding__container'}
                 dashboardTabIndex={1}
-            />
-        ),
-        ...joyride_props,
-    },
-
-    {
-        target: 'body',
-        content: (
-            <TourGuide
-                label={localize('Want to take retake the tour?')}
-                content={localize('If yes, go to Tutorials.')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,

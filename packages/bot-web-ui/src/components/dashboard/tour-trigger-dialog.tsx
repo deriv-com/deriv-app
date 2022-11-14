@@ -6,26 +6,33 @@ import RootStore from 'Stores/index';
 import { tour_type, getTourSettings, setTourSettings } from './joyride-config';
 
 type TourTriggrerDialog = {
-    setTourActive: (param: boolean) => void;
+    active_tab: number;
     is_tour_dialog_visible: boolean;
+    is_tour_ended: boolean;
+    setTourActive: (param: boolean) => void;
+    setIsTourEnded: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     setBotBuilderTourState: (param: boolean) => void;
-    active_tab: number;
 };
 
 const TourTriggrerDialog = ({
+    active_tab,
     is_tour_dialog_visible,
+    is_tour_ended,
     setTourDialogVisibility,
     setBotBuilderTourState,
     setOnBoardTourRunState,
     setTourActive,
-    active_tab,
+    setIsTourEnded,
 }: TourTriggrerDialog) => {
     const toggleTour = (value: boolean, type: string) => {
         if (active_tab === 0) {
             setTourActive(value);
             setOnBoardTourRunState(value);
+            if (is_tour_ended) {
+                setIsTourEnded(false);
+            }
         } else {
             setBotBuilderTourState(value);
         }
@@ -40,11 +47,10 @@ const TourTriggrerDialog = ({
 
         if (!getTourSettings(`${tour_type.key}token`)) localStorage.removeItem('dbot_settings');
     };
-
     const getTourContent = () => {
         return (
             <>
-                {active_tab === 0 && (
+                {active_tab === 0 && !is_tour_ended ? (
                     <Localize
                         key={0}
                         i18n_default_text={
@@ -52,8 +58,14 @@ const TourTriggrerDialog = ({
                         }
                         components={[<strong key={1} />, <i key={2} />]}
                     />
+                ) : (
+                    <Localize
+                        key={0}
+                        i18n_default_text={'If yes, go to <0>Tutorials</0>.'}
+                        components={[<strong key={0} />]}
+                    />
                 )}
-                {active_tab === 1 && (
+                {active_tab === 1 && !is_tour_ended ? (
                     <>
                         <div className='dc-dialog__content__description__text'>
                             <Localize
@@ -76,6 +88,8 @@ const TourTriggrerDialog = ({
                             />
                         </div>
                     </>
+                ) : (
+                    <></>
                 )}
             </>
         );
@@ -86,7 +100,7 @@ const TourTriggrerDialog = ({
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
-                confirm_button_text={localize('Start')}
+                confirm_button_text={is_tour_ended ? localize('Got it, thanks!') : localize('Start')}
                 onConfirm={() => toggleTour(true, 'onConfirm')}
                 is_mobile_full_width
                 className={'dc-dialog onboarding-tour-guide'}
@@ -94,7 +108,12 @@ const TourTriggrerDialog = ({
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent'>
-                        {active_tab === 1 ? localize("Let's build a Bot") : localize('Get started on DBot')}
+                        {!is_tour_ended &&
+                            (active_tab === 1 ? localize("Let's build a Bot") : localize('Get started on DBot'))}
+                        {is_tour_ended &&
+                            (active_tab === 1
+                                ? localize('Want to take retake the tour?')
+                                : localize('Congratulations!'))}
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
@@ -108,8 +127,10 @@ const TourTriggrerDialog = ({
 export default connect(({ dashboard }: RootStore) => ({
     active_tab: dashboard.active_tab,
     setTourActive: dashboard.setTourActive,
+    is_tour_ended: dashboard.is_tour_ended,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    setIsTourEnded: dashboard.setIsTourEnded,
 }))(TourTriggrerDialog);

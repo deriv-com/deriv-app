@@ -16,6 +16,7 @@ export interface IDashboardStore {
     has_bot_builder_tour_started: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
+    is_tour_ended: boolean;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
@@ -38,6 +39,7 @@ export default class DashboardStore implements IDashboardStore {
             getFileArray: observable,
             has_file_loaded: observable,
             is_info_panel_visible: observable,
+            is_tour_ended: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
             has_onboard_tour_started: observable,
@@ -80,6 +82,11 @@ export default class DashboardStore implements IDashboardStore {
     has_onboard_tour_started = false;
     is_preview_on_popup = false;
     has_bot_builder_tour_started = false;
+    is_tour_ended = false;
+
+    setIsTourEnded = (is_tour_ended: boolean): void => {
+        this.is_tour_ended = is_tour_ended;
+    };
 
     setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {
         this.has_bot_builder_tour_started = has_bot_builder_tour_started;

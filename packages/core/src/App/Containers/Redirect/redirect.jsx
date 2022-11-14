@@ -28,7 +28,6 @@ const Redirect = ({
     const code_param = url_params.get('code') || verification_code[action_param];
 
     setVerificationCode(code_param, action_param);
-
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
@@ -51,6 +50,10 @@ const Redirect = ({
         }
         case 'request_email': {
             toggleResetEmailModal(true);
+            break;
+        }
+        case 'social_email_change': {
+            toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {
@@ -142,6 +145,14 @@ const Redirect = ({
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            redirected_to_route = true;
+            break;
+        }
+        case 'p2p_order_confirm': {
+            history.push({
+                pathname: routes.cashier_p2p,
+                search: url_query_string,
+            });
             redirected_to_route = true;
             break;
         }

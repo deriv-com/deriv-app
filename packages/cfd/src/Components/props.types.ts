@@ -1,5 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+export type TCFDPlatform = 'dxtrade' | 'mt5';
+
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
@@ -21,6 +23,16 @@ export type TType = {
     category: string;
     type: string;
     platform: string;
+};
+
+export type TCFDDashboardContainer = {
+    platform: TCFDPlatform;
+    active_index: number;
+    is_dark_mode_on: boolean;
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TCFDAccountCardActionProps = {
@@ -96,6 +108,7 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {
@@ -127,7 +140,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
     /**
      * Login of DXTrade account.
      */

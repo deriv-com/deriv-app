@@ -9,6 +9,7 @@ import SelfExclusionContext from './self-exclusion-context';
 export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_app_settings }) => {
     const platform_name_trader = getPlatformSettings('trader').name;
     const platform_name_dbot = getPlatformSettings('dbot').name;
+    const platform_name_bbot = getPlatformSettings('bbot').name;
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
 
     const getEuItems = () => {
@@ -87,7 +88,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         {
             component: (
                 <Localize
-                    i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. The limits you set here will help you exercise <0>responsible trading</0>.'
+                    i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. The limits you set here will help you exercise <0>responsible trading</0>.'
                     components={[
                         <a
                             key={0}
@@ -97,7 +98,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
                             href={getStaticUrl('/responsible', { is_deriv_crypto })}
                         />,
                     ]}
-                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }}
+                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_bbot }}
                 />
             ),
         },
@@ -109,8 +110,8 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         {
             component: (
                 <Localize
-                    i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, and {{platform_name_smarttrader}}. For example, the losses made on all three platforms will add up and be counted towards the loss limit you set.'
-                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader }}
+                    i18n_default_text='When you set your limits, they will be aggregated across all your account types in {{platform_name_trader}}, {{platform_name_dbot}}, {{platform_name_smarttrader}} and {{platform_name_bbot}} on Deriv. For example, the losses made on all four platforms will add up and be counted towards the loss limit you set.'
+                    values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_bbot }}
                 />
             ),
         },

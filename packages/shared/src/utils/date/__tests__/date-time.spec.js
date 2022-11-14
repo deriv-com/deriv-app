@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
+import 'moment/min/locales';
 import * as DateTime from '../date-time.js';
 
 describe('toMoment', () => {

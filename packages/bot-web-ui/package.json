@@ -15,7 +15,7 @@
         ]
     },
     "engines": {
-        "node": "^14.17.1"
+        "node": "^16.16.0"
     },
     "scripts": {
         "start": "npm run test && npm run serve",
@@ -37,6 +37,8 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "@types/react": "^18.0.7",
+        "@types/react-dom": "^18.0.0",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "clean-webpack-plugin": "^3.0.0",
@@ -60,13 +62,14 @@
         "sass-resources-loader": "^2.1.1",
         "stylelint-webpack-plugin": "^2.1.1",
         "svg-sprite-loader": "^5.2.1",
+        "typescript": "^4.6.3",
         "webpack": "^5.46.0",
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "^0.6.3",
+        "@deriv/deriv-charts": "1.0.1",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
@@ -75,13 +78,13 @@
         "gh-pages": "^2.1.1",
         "immutable": "^3.8.2",
         "lz-string": "^1.4.4",
-        "mobx": "^5.15.7",
-        "mobx-react": "6.3.1",
+        "mobx": "^6.6.1",
+        "mobx-react": "^7.5.1",
         "pako": "^1.0.11",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.14.0",
-        "react-transition-group": "^4.3.0"
+        "react-transition-group": "4.4.2"
     }
 }

@@ -56,12 +56,12 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
-            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+            return <Localize i18n_default_text='Add a Derived account' />;
         case 'iom':
             if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
             }
-            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+            return <Localize i18n_default_text='Add a Derived account' />;
         case 'maltainvest':
             if (
                 country_standpoint.is_united_kingdom ||
@@ -192,7 +192,9 @@ const RealAccountSignup = ({
         {
             body: local_props => (
                 <SignupErrorContent
-                    message={local_props.state_value.error_message}
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
                     code={local_props.state_value.error_code}
                     onConfirm={onErrorConfirm}
                 />

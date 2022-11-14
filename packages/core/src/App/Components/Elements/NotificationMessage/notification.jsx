@@ -10,6 +10,7 @@ import { default_delay, types } from './constants';
 import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
 import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
+import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
@@ -41,6 +42,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
+                    icon={data.icon}
                 />
             );
         case 'trustpilot':
@@ -75,6 +77,10 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     message={data.message}
                     onClose={destroy}
                 />
+            );
+        case 'p2p_completed_order':
+            return (
+                <NotificationOrder action={data.action} header={data.header} message={data.message} onClose={destroy} />
             );
         default:
             return (
@@ -171,6 +177,7 @@ Notification.propTypes = {
         img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
         key: PropTypes.string,
+        icon: PropTypes.string,
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         message_popup: PropTypes.string,
         primary_btn: PropTypes.object,
@@ -190,6 +197,7 @@ Notification.propTypes = {
             'announce',
             'promotions',
             'close_mx_mlt',
+            'p2p_completed_order',
         ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,

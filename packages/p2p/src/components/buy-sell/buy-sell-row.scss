@@ -114,6 +114,18 @@
         }
     }
 
+    &__rating {
+        margin-top: 0.1rem;
+
+        &--star {
+            pointer-events: none;
+
+            > svg {
+                margin-right: 0.1rem;
+            }
+        }
+    }
+
     &__table-cell {
         &--left {
             align-items: flex-start;

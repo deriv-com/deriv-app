@@ -27,10 +27,10 @@ const POISubmission = ({
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
-    const [selected_country, setSelectedCountry] = React.useState();
+    const [selected_country, setSelectedCountry] = React.useState({});
 
     const handleSelectionNext = () => {
-        if (selected_country) {
+        if (Object.keys(selected_country).length) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;

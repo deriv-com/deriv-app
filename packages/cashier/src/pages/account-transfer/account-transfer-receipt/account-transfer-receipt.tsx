@@ -1,52 +1,32 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TUiStore, TCommonStore } from 'Types';
+import { useStore } from '../../../hooks';
 import './account-transfer-receipt.scss';
-
-type TSelect = {
-    currency: string;
-    value: string;
-    is_mt: boolean;
-    is_dxtrade: boolean;
-    platform_icon: string;
-    text: string;
-};
 
 type TSwitch = {
     value?: string;
     currency?: string;
 };
 
-type TAccountTransferReceiptProps = RouteComponentProps & {
-    disableApp: TUiStore['disableApp'];
-    enableApp: TUiStore['enableApp'];
-    is_from_derivgo: TCommonStore['is_from_derivgo'];
-    loginid: TClientStore['loginid'];
-    receipt: {
-        amount_transferred: number | string;
-    };
-    resetAccountTransfer: () => void;
-    selected_from: TSelect;
-    selected_to: TSelect;
-    switchAccount: TClientStore['switchAccount'];
-};
+const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
+    const {
+        ui,
+        common,
+        client,
+        modules: {
+            cashier: { account_transfer },
+        },
+    } = useStore();
 
-const AccountTransferReceipt = ({
-    disableApp,
-    enableApp,
-    history,
-    is_from_derivgo,
-    loginid,
-    receipt,
-    resetAccountTransfer,
-    selected_from,
-    selected_to,
-    switchAccount,
-}: TAccountTransferReceiptProps) => {
+    const { disableApp, enableApp } = ui;
+    const { is_from_derivgo } = common;
+    const { loginid, switchAccount } = client;
+    const { receipt, resetAccountTransfer, selected_from, selected_to } = account_transfer;
+
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
 
@@ -185,16 +165,4 @@ const AccountTransferReceipt = ({
     );
 };
 
-export default withRouter(
-    connect(({ client, common, modules, ui }: TRootStore) => ({
-        disableApp: ui.disableApp,
-        enableApp: ui.enableApp,
-        is_from_derivgo: common.is_from_derivgo,
-        loginid: client.loginid,
-        receipt: modules.cashier.account_transfer.receipt,
-        resetAccountTransfer: modules.cashier.account_transfer.resetAccountTransfer,
-        selected_from: modules.cashier.account_transfer.selected_from,
-        selected_to: modules.cashier.account_transfer.selected_to,
-        switchAccount: client.switchAccount,
-    }))(AccountTransferReceipt)
-);
+export default withRouter(observer(AccountTransferReceipt));

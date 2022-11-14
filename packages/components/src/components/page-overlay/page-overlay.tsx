@@ -1,13 +1,29 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
 import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
 
-const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onClickClose, portal_id }) => {
-    const page_overlay_ref = React.useRef();
+type TPageOverlay = {
+    header?: React.ReactNode;
+    id?: string;
+    is_from_app?: boolean;
+    is_open?: boolean;
+    onClickClose?: MouseEventHandler;
+    portal_id?: string;
+};
+
+const PageOverlay = ({
+    children,
+    header,
+    id,
+    is_from_app = false,
+    is_open,
+    onClickClose,
+    portal_id,
+}: React.PropsWithChildren<TPageOverlay>) => {
+    const page_overlay_ref = React.useRef<HTMLDivElement>(null);
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
 
@@ -55,21 +71,11 @@ const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onCli
             >
                 {el_page_overlay}
             </CSSTransition>,
-            document.getElementById(portal_id)
+            document.getElementById(portal_id) as HTMLElement
         );
     }
 
-    return <>{el_page_overlay}</>;
-};
-
-PageOverlay.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    is_from_app: PropTypes.bool,
-    is_open: PropTypes.bool,
-    onClickClose: PropTypes.func,
-    portal_id: PropTypes.string,
+    return <React.Fragment>{el_page_overlay}</React.Fragment>;
 };
 
 export default PageOverlay;

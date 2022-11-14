@@ -11,19 +11,19 @@ export type TOptions = {
     regex?: RegExp;
 };
 
-const validRequired = (value?: string /* , options, field */) => {
+const validRequired = (value?: string | number /* , options, field */) => {
     if (value === undefined || value === null) {
         return false;
     }
 
-    const str = value.replace(/\s/g, '');
+    const str = value.toString().replace(/\s/g, '');
     return str.length > 0;
 };
 export const validAddress = (value: string) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
-export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z\.' -])*[a-zA-Z\.' -]+$/.test(value);
+export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/.test(value);
 export const validLength = (value = '', options: TOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = (value: string) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Duration from '../duration.js';
+import * as Duration from '../duration';
 import moment from 'moment';
 
 describe('buildDurationConfig', () => {
@@ -29,6 +29,7 @@ describe('buildDurationConfig', () => {
                     max: 31536000,
                 },
             },
+            forward: {},
         },
         units_display: {
             spot: [
@@ -41,7 +42,7 @@ describe('buildDurationConfig', () => {
     };
 
     it('Returns correct value when durations is not passed', () => {
-        expect(Duration.buildDurationConfig(contract)).to.eql(durations);
+        expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
     });
 
     it('Returns correct value when durations passed', () => {

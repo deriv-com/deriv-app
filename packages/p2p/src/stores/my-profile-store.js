@@ -524,7 +524,7 @@ export default class MyProfileStore extends BaseStore {
             this.setIsConfirmDeleteModalOpen(true);
         }
     }
-  
+
     onSubmit() {
         const { general_store } = this.root_store;
 

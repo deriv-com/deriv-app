@@ -135,7 +135,7 @@ const TradingDatePicker = ({
         [isMounted, symbol]
     );
 
-    const has_error = !!validation_errors[name].length;
+    const has_error = !!validation_errors?.[name]?.length;
 
     return (
         <div
@@ -154,7 +154,7 @@ const TradingDatePicker = ({
                     alignment='left'
                     display_format='DD MMM YYYY'
                     show_leading_icon
-                    error={validation_errors[name].length ? '' : undefined}
+                    error={validation_errors?.[name]?.length ? '' : undefined}
                     mode={mode}
                     max_date={getMaxDateDuration()}
                     min_date={getMinDateExpiry()}

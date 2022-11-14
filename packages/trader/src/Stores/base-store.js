@@ -1,4 +1,4 @@
-import { action, intercept, observable, reaction, toJS, when, makeObservable, isObservable } from 'mobx';
+import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
 import { isProduction, isEmptyObject } from '@deriv/shared';
 
 import Validator from 'Utils/Validator';
@@ -118,7 +118,14 @@ export default class BaseStore {
         this.root_store = root_store;
         this.local_storage_properties = local_storage_properties || [];
         this.session_storage_properties = session_storage_properties || [];
-        this.init(validation_rules);
+
+        setTimeout(() => {
+            this.setValidationRules(validation_rules);
+
+            this.setupReactionForLocalStorage();
+            this.setupReactionForSessionStorage();
+            this.retrieveFromStorage();
+        }, 0);
     }
 
     /**
@@ -140,13 +147,6 @@ export default class BaseStore {
         }
 
         return snapshot;
-    }
-
-    async init(validation_rules) {
-        await this.setValidationRules(validation_rules);
-        await this.setupReactionForLocalStorage();
-        await this.setupReactionForSessionStorage();
-        await this.retrieveFromStorage();
     }
 
     /**
@@ -249,12 +249,10 @@ export default class BaseStore {
     addRule(property, rules) {
         this.validation_rules[property] = rules;
 
-        if (isObservable(this[property])) {
-            intercept(this, property, change => {
-                this.validateProperty(property, change.newValue);
-                return change;
-            });
-        }
+        intercept(this, property, change => {
+            this.validateProperty(property, change.newValue);
+            return change;
+        });
     }
 
     /**

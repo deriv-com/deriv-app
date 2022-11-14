@@ -175,17 +175,18 @@ const CFDAccountCardComponent = ({
     is_eu,
     isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5,
-    platform,
-    title,
-    type,
-    specs,
-    onSelectAccount,
     onClickFund,
     onPasswordManager,
+    onSelectAccount,
+    platform,
+    setIsAcuityModalOpen,
+    setMT5TradeAccount,
+    specs,
+    title,
     toggleAccountsDialog,
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
-    setMT5TradeAccount,
+    type,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -329,6 +330,22 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
+                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !isMobile() && is_logged_in && (
+                    <Button
+                        onClick={() => setIsAcuityModalOpen(true)}
+                        className='cfd-account-card__acuity-banner'
+                        type='button'
+                        transparent
+                    >
+                        <div className='cfd-account-card__acuity-banner--wrapper'>
+                            <Icon icon='icMt5Acuity' />
+                            <Text as='p' size='xxs' weight='bold' color='prominent'>
+                                <Localize i18n_default_text='Get Acuity trading tools' />
+                            </Text>
+                            <Icon icon='IcAddOutline' color='secondary' />
+                        </div>
+                    </Button>
+                )}
                 {existing_data && <div className='cfd-account-card__divider' />}
 
                 <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>
@@ -676,10 +693,11 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
+    setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
 }))(CFDAccountCardComponent);
 

@@ -264,6 +264,7 @@ export default class ClientStore extends BaseStore {
             can_have_mlt_account: computed,
             can_have_mx_account: computed,
             can_have_mf_account: computed,
+            can_have_whatsapp: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -855,6 +856,14 @@ export default class ClientStore extends BaseStore {
             'lv',
         ].includes(this.residence);
         return countries;
+    }
+
+    get can_have_whatsapp() {
+        const country = this.residence || this.clients_country;
+        const allowed_countries = ['za', 'ng'];
+        const is_allowed_country = allowed_countries.includes(country);
+
+        return is_allowed_country;
     }
 
     get can_upgrade() {
@@ -1975,7 +1984,7 @@ export default class ClientStore extends BaseStore {
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
                 is_pre_appstore === 'true' &&
-                redirect_url.endsWith('/') &&
+                redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
                 window.history.replaceState({}, document.title, '/appstore/trading-hub');

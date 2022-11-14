@@ -96,6 +96,7 @@ const AccountBalance = ({ balance, currency }) => {
 
 const DashboardPlatformHeader = ({
     account_status,
+    can_have_whatsapp,
     app_routing_history,
     balance,
     currency,
@@ -139,6 +140,7 @@ const DashboardPlatformHeader = ({
                         ref={toggle_menu_drawer_ref}
                         should_allow_authentication={should_allow_authentication}
                         account_status={account_status}
+                        can_have_whatsapp={can_have_whatsapp}
                         enableApp={enableApp}
                         disableApp={disableApp}
                         location={location}
@@ -203,6 +205,7 @@ const DashboardPlatformHeader = ({
 
 DashboardPlatformHeader.propTypes = {
     account_status: PropTypes.object,
+    can_have_whatsapp: PropTypes.bool,
     app_routing_history: PropTypes.array,
     balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
@@ -232,6 +235,7 @@ DashboardPlatformHeader.propTypes = {
 
 export default connect(({ client, common, modules, notifications, ui }) => ({
     account_status: client.account_status,
+    can_have_whatsapp: client.can_have_whatsapp,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     currency: client.currency,

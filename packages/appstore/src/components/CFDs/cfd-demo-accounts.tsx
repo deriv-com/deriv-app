@@ -80,11 +80,10 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     };
 
     const openCFDAccount = (account_type: string) => {
-        if (is_eu && !has_maltainvest_account && standpoint.iom) {
+        if (is_eu && !has_maltainvest_account && standpoint?.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
-
         createCFDAccount({
             category: 'demo',
             type: account_type,
@@ -141,7 +140,9 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                                         openAccountTransfer(
                                                             current_list[
                                                                 Object.keys(current_list).find((key: string) =>
-                                                                    key.startsWith(`${platform}.demo.${account.type}`)
+                                                                    key.startsWith(
+                                                                        `${account.platform}.demo.${account.type}`
+                                                                    )
                                                                 ) || ''
                                                             ],
                                                             {

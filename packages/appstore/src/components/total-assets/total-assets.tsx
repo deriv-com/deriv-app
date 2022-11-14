@@ -39,6 +39,10 @@ const TotalAssets = ({ category }: TTotalAssets) => {
         mt5_login_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency ||
         dxtrade_accounts_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency;
 
+    const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
+    const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
+    const account_total_balance_currency = category === 'demo' ? vrtc_currency : obj_total_balance.currency;
+
     React.useEffect(() => {
         const getCurrentExchangeRate = (
             currency: string,
@@ -48,20 +52,15 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                 setExchangeRate(res);
             });
         };
-        if (cfd_real_currency !== account_total_balance_currency) {
+        if (category === 'real' && cfd_real_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
-        }
-        if (vrtc_currency !== account_total_balance_currency) {
+        } else if (category === 'demo' && vrtc_currency) {
             getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
-        }
-        if (cfd_demo_currency !== account_total_balance_currency) {
+        } else if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
-    const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
-    const account_total_balance_currency = obj_total_balance.currency;
 
     const getTotalBalanceCfd = (mt5_accounts: Mt5LoginList, is_demo: boolean, exchange_rate: number) => {
         return mt5_accounts

@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { PlatformContext } from '@deriv/shared';
 import { findRouteByPath } from '../helpers';
-import BinaryLink from '../binary-link.jsx';
+import BinaryLink from '../binary-link';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -12,12 +12,12 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('../helpers.js', () => ({
+jest.mock('../helpers', () => ({
     findRouteByPath: jest.fn(() => '/test/path'),
     normalizePath: jest.fn(() => '/test/path'),
 }));
 
-jest.mock('Constants/routes-config.js', () => () => ({
+jest.mock('Constants/routes-config', () => () => ({
     getRoutesConfig: jest.fn(() => []),
 }));
 

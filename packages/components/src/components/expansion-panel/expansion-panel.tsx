@@ -6,7 +6,7 @@ import { TItem } from '../types/common.types';
 
 type TExpansionPanel = {
     message: { header: React.ReactNode; content: Array<React.ReactNode> & Array<TItem> };
-    onResize: () => void;
+    onResize?: () => void;
 };
 
 const ExpansionPanel = ({ message, onResize }: TExpansionPanel) => {

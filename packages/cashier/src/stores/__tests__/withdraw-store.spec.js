@@ -269,6 +269,11 @@ describe('WithdrawStore', () => {
         expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
     });
 
+    it('should set crypto_config', () => {
+        withdraw_store.setCryptoConfig();
+        expect(withdraw_store.crypto_config).toBeTruthy();
+    });
+
     // it('should set percentage selector result', () => {
     //     const { resetConverter, setConverterFromAmount, setIsTimerVisible } =
     //         withdraw_store.root_store.modules.cashier.crypto_fiat_converter;

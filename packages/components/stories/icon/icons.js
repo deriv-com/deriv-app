@@ -477,6 +477,7 @@ export const icons =
         'IcVerification',
         'IcWebTerminal',
         'IcWebsite',
+        'IcWhatsApp',
         'IcWindowsLogo',
         'IcWindows',
         'IcWip',

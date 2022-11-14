@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
+import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -14,7 +15,82 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     isMobile: jest.fn(),
 }));
 
+let mockRootStore;
+
 describe('<AccountTransferForm />', () => {
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                account_limits: {
+                    daily_transfers: {
+                        dxtrade: {},
+                        internal: {},
+                        mt5: {},
+                    },
+                },
+                mt5_login_list: [
+                    {
+                        login: 'value',
+                        market_type: 'gaming',
+                        server_info: {
+                            geolocation: {
+                                region: 'region',
+                                sequence: 0,
+                            },
+                        },
+                    },
+                ],
+                getLimits: jest.fn(),
+                is_dxtrade_allowed: false,
+            },
+            ui: {
+                is_dark_mode_on: false,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                    },
+                    account_transfer: {
+                        accounts_list: [
+                            {
+                                currency: 'USD',
+                                is_mt: false,
+                                is_dxtrade: false,
+                                market_type: 'gaming',
+                                value: 'value',
+                            },
+                        ],
+                        minimum_fee: '0',
+                        selected_from: {
+                            currency: 'USD',
+                            is_mt: false,
+                            is_crypto: false,
+                            is_dxtrade: false,
+                            balance: 0,
+                        },
+                        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+                        transfer_fee: 2,
+                        transfer_limit: {
+                            min: 0,
+                            max: 1000,
+                        },
+                        requestTransferBetweenAccounts: jest.fn(),
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        setAccountTransferAmount: jest.fn(),
+                    },
+                    crypto_fiat_converter: {
+                        resetConverter: jest.fn(),
+                    },
+                    transaction_history: {
+                        onMount: jest.fn(),
+                    },
+                },
+            },
+        };
+    });
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -25,8 +101,38 @@ describe('<AccountTransferForm />', () => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.removeChild(modal_root_el);
     });
-    const mockProps = () => ({
-        accounts_list: [
+
+    const props = {
+        setSideNotes: jest.fn(),
+        error: {
+            code: 'testCode',
+            message: 'testMessage',
+        },
+    };
+
+    const renderAccountTransferForm = () => {
+        render(<AccountTransferForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
+    };
+
+    it('component should be rendered', () => {
+        renderAccountTransferForm();
+
+        expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
+        expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
+    });
+
+    it('should show loader if account_list.length === 0', () => {
+        mockRootStore.modules.cashier.account_transfer.accounts_list = [];
+
+        renderAccountTransferForm();
+
+        expect(screen.getByTestId('dt_cashier_loader_wrapper')).toBeInTheDocument();
+    });
+
+    it('should show <Form /> component if account_list.length > 0', () => {
+        mockRootStore.modules.cashier.account_transfer.accounts_list = [
             {
                 currency: 'USD',
                 is_mt: false,
@@ -34,68 +140,9 @@ describe('<AccountTransferForm />', () => {
                 market_type: 'gaming',
                 value: 'value',
             },
-        ],
-        account_limits: {
-            daily_transfers: {
-                dxtrade: {},
-                internal: {},
-                mt5: {},
-            },
-        },
-        error: {
-            code: 'testCode',
-            message: 'testMessage',
-        },
-        minimum_fee: '0',
-        mt5_login_list: [
-            {
-                login: 'value',
-                market_type: 'gaming',
-                server_info: {
-                    geolocation: {
-                        region: 'region',
-                        sequence: 0,
-                    },
-                },
-            },
-        ],
-        selected_from: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
-        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
-        transfer_fee: 2,
-        transfer_limit: {
-            min: 0,
-            max: 1000,
-        },
-        onMount: jest.fn(),
-        resetConverter: jest.fn(),
-        recentTransactionOnMount: jest.fn(),
-        requestTransferBetweenAccounts: jest.fn(),
-        setErrorMessage: jest.fn(),
-        setAccountTransferAmount: jest.fn(),
-    });
+        ];
 
-    it('component should be rendered', () => {
-        const props = mockProps();
-
-        render(<AccountTransferForm {...props} />);
-
-        expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
-        expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
-    });
-
-    it('should show loader if account_list.length === 0', () => {
-        const props = mockProps();
-        props.accounts_list = [];
-
-        render(<AccountTransferForm {...props} />);
-
-        expect(screen.getByTestId('dt_cashier_loader_wrapper')).toBeInTheDocument();
-    });
-
-    it('should show <Form /> component if account_list.length > 0', () => {
-        const props = mockProps();
-
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('From')).toBeInTheDocument();
         expect(screen.getByText('To')).toBeInTheDocument();
@@ -107,11 +154,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show an error if amount is not provided', async () => {
-        const props = mockProps();
-        props.setErrorMessage = jest.fn();
-        props.setAccountTransferAmount = jest.fn();
-
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
@@ -122,14 +165,9 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show an error if transfer amount is greater than balance', async () => {
-        const props = mockProps();
-        props.setAccountTransferAmount = jest.fn();
-        props.setErrorMessage = jest.fn();
-        props.requestTransferBetweenAccounts = jest.fn();
-        props.setAccountTransferAmount = jest.fn();
-        props.selected_from.balance = 100;
+        mockRootStore.modules.cashier.account_transfer.selected_from.balance = 100;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         const submit_button = screen.getByRole('button', { name: 'Transfer' });
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '200' } });
@@ -140,58 +178,50 @@ describe('<AccountTransferForm />', () => {
 
     it('should not allow to do transfer if accounts from and to are same', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.accounts_list[0].is_mt = true;
-        props.selected_from.is_mt = true;
-        props.selected_from.balance = 200;
-        props.setAccountTransferAmount = jest.fn();
-        props.setErrorMessage = jest.fn();
+        mockRootStore.modules.cashier.account_transfer.accounts_list[0].is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.balance = 200;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Transfer' }));
 
-        expect(props.requestTransferBetweenAccounts).not.toHaveBeenCalled();
+        expect(mockRootStore.modules.cashier.account_transfer.requestTransferBetweenAccounts).not.toHaveBeenCalled();
     });
 
     it('should show input if same currency', () => {
-        const props = mockProps();
-
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_input')).toBeInTheDocument();
     });
 
     it("should show 'Please verify your identity' error if error.code is Fiat2CryptoTransferOverLimit", () => {
-        const props = mockProps();
         props.error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'testMessage',
         };
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
     });
 
     it("should show 'Cashier error' error if error.code is unexpected", () => {
-        const props = mockProps();
         props.error = {
             code: 'testCode',
             message: 'testMessage',
         };
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 
     it('should show <AccountTransferNote /> component', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('Transfer limits may vary depending on the exchange rates.')).toBeInTheDocument();
         expect(
@@ -203,8 +233,7 @@ describe('<AccountTransferForm />', () => {
 
     it('should show proper hint about mt5 remained transfers', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.account_limits = {
+        mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {},
                 internal: {},
@@ -213,18 +242,18 @@ describe('<AccountTransferForm />', () => {
                 },
             },
         };
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
     it('should show proper hint about dxtrade remained transfers', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.account_limits = {
+
+        mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {
                     available: 1,
@@ -233,20 +262,19 @@ describe('<AccountTransferForm />', () => {
                 mt5: {},
             },
         };
-        props.selected_from.is_dxtrade = true;
-        props.selected_from.currency = 'USD';
-        props.selected_to.is_dxtrade = true;
-        props.selected_to.currency = 'USD';
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_dxtrade = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.currency = 'USD';
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_dxtrade = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'USD';
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
     it('should show proper hint about internal remained transfers', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.account_limits = {
+        mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {},
                 internal: {
@@ -256,21 +284,20 @@ describe('<AccountTransferForm />', () => {
             },
         };
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
     it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_crypto = true;
-        props.selected_from.currency = 'BTC';
-        props.selected_to.is_crypto = true;
-        props.selected_to.currency = 'BTC';
-        props.transfer_fee = 2;
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_crypto = true;
+        mockRootStore.modules.cashier.account_transfer.selected_from.currency = 'BTC';
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_crypto = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'BTC';
+        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -281,12 +308,11 @@ describe('<AccountTransferForm />', () => {
 
     it('should show proper note if transfer fee is 2%, is_mt_transfer, and is_dxtrade_allowed is false', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.selected_from.is_mt = true;
-        props.selected_to.is_mt = true;
-        props.transfer_fee = 2;
+        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
+        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} is_dxtrade_allowed={false} />);
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -297,10 +323,9 @@ describe('<AccountTransferForm />', () => {
 
     it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.transfer_fee = 2;
+        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(
             screen.getByText(
@@ -311,10 +336,9 @@ describe('<AccountTransferForm />', () => {
 
     it('should show proper note if transfer fee is null', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const props = mockProps();
-        props.transfer_fee = null;
+        mockRootStore.modules.cashier.account_transfer.transfer_fee = null;
 
-        render(<AccountTransferForm {...props} />);
+        renderAccountTransferForm();
 
         expect(screen.getByText('Please bear in mind that some transfers may not be possible.')).toBeInTheDocument();
     });

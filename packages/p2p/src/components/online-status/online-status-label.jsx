@@ -3,6 +3,7 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 const LastSeenLabel = ({ is_online, last_online_time }) => {
@@ -49,12 +50,18 @@ const LastSeenLabel = ({ is_online, last_online_time }) => {
     return <Localize i18n_default_text='Online' />;
 };
 
-const OnlineStatusLabel = ({ is_online, last_online_time }) => {
+const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'xxxs' : 'xs' }) => {
     return (
-        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+        <Text color='less-prominent' size={size}>
             <LastSeenLabel is_online={is_online} last_online_time={last_online_time} />
         </Text>
     );
+};
+
+OnlineStatusLabel.propTypes = {
+    is_online: PropTypes.bool.isRequired,
+    last_online_time: PropTypes.number,
+    size: PropTypes.string,
 };
 
 export default observer(OnlineStatusLabel);

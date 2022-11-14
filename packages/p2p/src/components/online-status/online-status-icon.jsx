@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 
 const OnlineStatusIcon = ({ is_online }) => {
@@ -11,6 +12,10 @@ const OnlineStatusIcon = ({ is_online }) => {
             })}
         />
     );
+};
+
+OnlineStatusIcon.propTypes = {
+    is_online: PropTypes.bool.isRequired,
 };
 
 export default observer(OnlineStatusIcon);

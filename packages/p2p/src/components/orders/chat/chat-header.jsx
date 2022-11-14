@@ -5,20 +5,21 @@ import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import ExtendedOrderDetails from 'Utils/orders';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { OnlineStatusAvatar, OnlineStatusLabel } from 'Components/online-status';
 
 const ChatHeaderBody = observer(() => {
     const { order_store, sendbird_store } = useStores();
     const { other_user_details } = order_store.order_information;
-    const icon_background_colour = generateHexColourFromNickname(other_user_details.name);
-    const short_nickname = getShortNickname(other_user_details.name);
 
     return (
         <React.Fragment>
-            <div className='order-chat__header-icon' style={{ backgroundColor: icon_background_colour }}>
-                <Text size='xs' color='colored-background' line_height='m'>
-                    {short_nickname}
-                </Text>
+            <div className='order-chat__header-icon'>
+                <OnlineStatusAvatar
+                    is_online={other_user_details.is_online}
+                    nickname={other_user_details.name}
+                    text_size='xs'
+                    large
+                />
             </div>
             <div className='order-chat__header-user'>
                 <Text
@@ -31,6 +32,11 @@ const ChatHeaderBody = observer(() => {
                 >
                     {other_user_details.name}
                 </Text>
+                <OnlineStatusLabel
+                    is_online={other_user_details.is_online}
+                    last_online_time={other_user_details.last_online_time}
+                    size='xs'
+                />
                 {sendbird_store.last_other_user_activity && (
                     <Text
                         as='p'

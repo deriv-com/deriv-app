@@ -48,7 +48,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
         if (identifier_type === IDENTIFIER_TYPES.card_number) {
             if (
                 formatted_id.length !== 16 ||
-                (formatted_id.length === 16 && VALIDATIONS.invalid_characters_regex.test(formatted_id))
+                (formatted_id.length === 16 && VALIDATIONS.has_invalid_characters(formatted_id))
             ) {
                 return formatted_id;
             }

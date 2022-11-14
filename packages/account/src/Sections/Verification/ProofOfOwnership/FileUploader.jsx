@@ -30,9 +30,9 @@ const FileUploader = ({
     const handleChange = async event => {
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
-        const files_to_upload = await compressImageFiles([...event.target.files]);
-        handleFile(name, files_to_upload[0]);
-        setShowBrowseButton(!files_to_upload[0]);
+        const file_to_upload = await compressImageFiles([event.target.files[0]]);
+        handleFile(name, file_to_upload[0]);
+        setShowBrowseButton(!file_to_upload[0]);
     };
     const handleIconClick = e => {
         e.stopPropagation();

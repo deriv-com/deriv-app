@@ -79,7 +79,7 @@ export const ProofOfOwnership = ({
 
 export default connect(({ client, notifications, ui }) => ({
     account_status: client.account_status,
-    client_email: client.client_email,
+    client_email: client.email,
     is_dark_mode: ui.is_dark_mode_on,
     refreshNotifications: notifications.refreshNotifications,
     updateAccountStatus: client.updateAccountStatus,

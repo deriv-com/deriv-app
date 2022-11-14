@@ -27,7 +27,7 @@ const Icon = React.forwardRef(
         let category: keyof TIconsManifest = 'common';
         const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
         if (category_match?.[1]) {
-            category = getKebabCase(category_match[1]);
+            category = getKebabCase(category_match[1]) as keyof TIconsManifest;
         }
 
         const sprite_id = icon.startsWith('IcUnderlying')

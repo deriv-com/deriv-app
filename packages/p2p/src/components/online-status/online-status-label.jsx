@@ -3,13 +3,9 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import moment from 'moment';
 
-const LastSeenLabel = () => {
-    const { advertiser_page_store } = useStores();
-    const { is_online, last_online_time } = advertiser_page_store.advertiser_info;
-
+const LastSeenLabel = ({ is_online, last_online_time }) => {
     if (!is_online) {
         if (last_online_time) {
             const current_date = new Date();
@@ -53,10 +49,10 @@ const LastSeenLabel = () => {
     return <Localize i18n_default_text='Online' />;
 };
 
-const OnlineStatusLabel = () => {
+const OnlineStatusLabel = ({ is_online, last_online_time }) => {
     return (
         <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-            <LastSeenLabel />
+            <LastSeenLabel is_online={is_online} last_online_time={last_online_time} />
         </Text>
     );
 };

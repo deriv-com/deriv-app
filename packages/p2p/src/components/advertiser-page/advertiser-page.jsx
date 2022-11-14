@@ -33,7 +33,9 @@ const AdvertiserPage = () => {
         first_name,
         full_verification,
         id,
+        is_online,
         last_name,
+        last_online_time,
         name,
         rating_average,
         rating_count,
@@ -146,8 +148,8 @@ const AdvertiserPage = () => {
                             {isMobile() && (
                                 <div className='advertiser-page__row'>
                                     <div className='advertiser-page__rating--row'>
-                                        <OnlineStatusIcon />
-                                        <OnlineStatusLabel />
+                                        <OnlineStatusIcon is_online={is_online} />
+                                        <OnlineStatusLabel is_online={is_online} last_online_time={last_online_time} />
                                     </div>
                                     <div className='advertiser-page__rating--row'>
                                         <Text
@@ -172,8 +174,11 @@ const AdvertiserPage = () => {
                                 {!isMobile() && (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
-                                            <OnlineStatusIcon />
-                                            <OnlineStatusLabel />
+                                            <OnlineStatusIcon is_online={is_online} />
+                                            <OnlineStatusLabel
+                                                is_online={is_online}
+                                                last_online_time={last_online_time}
+                                            />
                                         </div>
                                         <div className='advertiser-page__rating--row'>
                                             <Text

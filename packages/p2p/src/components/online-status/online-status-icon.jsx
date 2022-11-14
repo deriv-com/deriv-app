@@ -1,11 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 
-const OnlineStatusIcon = () => {
-    const { advertiser_page_store } = useStores();
-    const { is_online } = advertiser_page_store.advertiser_info;
+const OnlineStatusIcon = ({ is_online }) => {
     return (
         <div
             className={classNames('online-status__icon', {

@@ -1,15 +1,20 @@
 .online-status {
     &__icon {
-        background: var(--general-section-1);
         width: 1em;
         height: 1em;
-        margin: auto 0.8rem auto 0rem;
+        margin: auto 0.5rem auto 0rem;
         border-radius: 50%;
+
+        @include mobile {
+            width: 0.8rem;
+            height: 0.8rem;
+        }
+
         &--online {
             background: var(--text-profit-success);
         }
         &--offline {
-            background: var(--text-less-prominent);
+            background: var(--checkbox-disabled-grey);
         }
     }
 }

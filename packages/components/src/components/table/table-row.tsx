@@ -1,8 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-const Row = ({ children, className, has_hover }) => {
+type TRow = {
+    children: React.ReactNode;
+    className?: string;
+    has_hover?: boolean;
+};
+
+const Row = ({ children, className, has_hover }: TRow) => {
     return (
         <div
             role='row'
@@ -13,12 +18,6 @@ const Row = ({ children, className, has_hover }) => {
             {children}
         </div>
     );
-};
-
-Row.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    has_hover: PropTypes.bool,
 };
 
 export default Row;

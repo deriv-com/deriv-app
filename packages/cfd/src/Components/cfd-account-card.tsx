@@ -265,41 +265,31 @@ const CFDAccountCardComponent = ({
 
     const getBannerStatus = (account: DetailsOfEachMT5Loginid) => {
         const { landing_company_short, status } = account;
-
-        if (landing_company_short && status) {
-            if (['proof_failed', 'poa_failed'].includes(status)) {
-                return (
-                    <Button
-                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                        type='button'
-                        onClick={() => {
-                            setAccountType({
-                                category: type.category,
-                                type: type.type,
-                            });
-                            setJurisdictionSelectedShortcode(landing_company_short);
-                            toggleCFDVerificationModal();
-                        }}
-                        primary
-                        large
-                    >
-                        <Localize i18n_default_text='Resubmit document' />
-                    </Button>
-                );
-            } else if (status === 'verification_pending') {
-                return (
-                    <Button
-                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                        type='button'
-                        disabled
-                        primary
-                        large
-                    >
+        if (landing_company_short && status && ['proof_failed', 'verification_pending'].includes(status)) {
+            const shouldShowPendingButton = status === 'verification_pending';
+            return (
+                <Button
+                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                    type='button'
+                    onClick={() => {
+                        setAccountType({
+                            category: type.category,
+                            type: type.type,
+                        });
+                        setJurisdictionSelectedShortcode(landing_company_short);
+                        toggleCFDVerificationModal();
+                    }}
+                    primary
+                    large
+                    disabled={shouldShowPendingButton}
+                >
+                    {shouldShowPendingButton ? (
                         <Localize i18n_default_text='Pending verification' />
-                    </Button>
-                );
-            }
-            return null;
+                    ) : (
+                        <Localize i18n_default_text='Resubmit document' />
+                    )}
+                </Button>
+            );
         }
         return null;
     };

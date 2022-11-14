@@ -231,9 +231,11 @@ export type TJurisdictionModalContentProps = {
 };
 
 export type TJurisdictionModalFootNoteProps = {
+    account_status: GetAccountStatus;
     account_type: string;
     card_classname: string;
     jurisdiction_selected_shortcode: string;
+    should_restrict_bvi_account_creation: boolean;
 };
 
 export type TCFDDbViOnBoardingProps = {

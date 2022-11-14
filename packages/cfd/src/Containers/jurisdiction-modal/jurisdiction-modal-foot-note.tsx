@@ -1,10 +1,19 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
-const FooterNote = ({ account_type, jurisdiction_selected_shortcode }: TJurisdictionModalFootNoteProps) => {
+const FooterNote = ({
+    account_status,
+    account_type,
+    card_classname,
+    jurisdiction_selected_shortcode,
+    should_restrict_bvi_account_creation,
+}: TJurisdictionModalFootNoteProps) => {
     const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
+
+    const { poa_pending } = getAuthenticationStatusInfo(account_status);
 
     if (jurisdiction_selected_shortcode === 'svg') {
         return (
@@ -13,14 +22,24 @@ const FooterNote = ({ account_type, jurisdiction_selected_shortcode }: TJurisdic
                 values={{ account_type_name }}
             />
         );
-    } else if (jurisdiction_selected_shortcode === 'bvi')
+    } else if (jurisdiction_selected_shortcode === 'bvi') {
+        if (should_restrict_bvi_account_creation) {
+            return poa_pending ? (
+                <Localize
+                    i18n_default_text='<0>You can open this account once your submitted documents have been verified.</0>'
+                    components={[<span key={0} className={`${card_classname}__footnote--pending`} />]}
+                />
+            ) : (
+                <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
+            );
+        }
         return (
             <Localize
                 i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
                 values={{ account_type_name }}
             />
         );
-    else if (jurisdiction_selected_shortcode === 'vanuatu')
+    } else if (jurisdiction_selected_shortcode === 'vanuatu')
         return (
             <Localize
                 i18n_default_text='Add Your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'

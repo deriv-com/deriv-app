@@ -293,7 +293,7 @@ export default class AccountTransferStore {
             }
         }
 
-        if (!is_from_derivgo) {
+        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
             transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
                 account => account.account_type !== CFD_PLATFORMS.DERIVEZ
             );

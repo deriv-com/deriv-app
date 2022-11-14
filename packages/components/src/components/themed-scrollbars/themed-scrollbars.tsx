@@ -35,6 +35,7 @@ const ThemedScrollbars = ({
     const [hoverRef, isHovered] = useHover<HTMLDivElement>(refSetter, false);
 
     if (is_bypassed) return children as JSX.Element;
+
     return (
         <div
             data-testid='dt_themed_scrollbars'

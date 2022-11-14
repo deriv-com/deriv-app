@@ -19,3 +19,5 @@ export const deriv_urls = Object.freeze({
     BINARYBOT_PRODUCTION: `https://bot.${domain_url}`,
     BINARYBOT_STAGING: `https://staging-bot.${domain_url}`,
 });
+
+export const whatsapp_url = 'https://wa.me/35699578341';

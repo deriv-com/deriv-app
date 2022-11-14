@@ -1,36 +1,56 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '../../../../hooks';
 
 describe('<CryptoWithdrawReceipt />', () => {
-    const mockProps = () => ({
-        account: {
-            balance: '1.00000000',
-            currency: 'BTC',
-            is_crypto: true,
-            is_dxtrade: false,
-            is_mt: false,
-            text: 'BTC',
-            value: 'CR90000118',
-        },
-        blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-        withdraw_amount: 0.0002,
-        currency: 'BTC',
-        recentTransactionOnMount: jest.fn(),
-        setIsWithdrawConfirmed: jest.fn(),
-        resetWithrawForm: jest.fn(),
-        setIsCryptoTransactionsVisible: jest.fn(),
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    account_transfer: {
+                        selected_from: {
+                            balance: '1.00000000',
+                            currency: 'BTC',
+                            is_crypto: true,
+                            is_dxtrade: false,
+                            is_mt: false,
+                            text: 'BTC',
+                            value: 'CR90000118',
+                        },
+                    },
+                    general_store: {
+                        percentageSelectorSelectionStatus: jest.fn(),
+                    },
+                    transaction_history: {
+                        onMount: jest.fn(),
+                        setIsCryptoTransactionsVisible: jest.fn(),
+                    },
+                    withdraw: {
+                        blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        resetWithrawForm: jest.fn(),
+                        setIsWithdrawConfirmed: jest.fn(),
+                        withdraw_amount: 0.0002,
+                    },
+                },
+            },
+        };
     });
 
+    const renderCryptoWithdrawReceipt = () => {
+        return render(
+            <StoreProvider store={mockRootStore}>
+                <CryptoWithdrawReceipt />
+            </StoreProvider>
+        );
+    };
+
     it('should show the proper text/messages', () => {
-        const props = mockProps();
-        render(<CryptoWithdrawReceipt {...props} />);
+        renderCryptoWithdrawReceipt();
 
         expect(screen.getByText('Your withdrawal will be processed within 24 hours')).toBeInTheDocument();
         expect(screen.getByText('In review')).toBeInTheDocument();
@@ -44,20 +64,20 @@ describe('<CryptoWithdrawReceipt />', () => {
     });
 
     it('should trigger onClick callback when the "View transaction history" button is clicked', () => {
-        const props = mockProps();
-        render(<CryptoWithdrawReceipt {...props} />);
+        renderCryptoWithdrawReceipt();
 
         const view_transaction_history_btn = screen.getByText('View transaction history');
         fireEvent.click(view_transaction_history_btn);
-        expect(props.setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.transaction_history.setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(
+            1
+        );
     });
 
     it('should trigger onClick callback when the "Make a new withdrawal" button is clicked', () => {
-        const props = mockProps();
-        render(<CryptoWithdrawReceipt {...props} />);
+        renderCryptoWithdrawReceipt();
 
         const make_new_withdrawal_btn = screen.getByText('Make a new withdrawal');
         fireEvent.click(make_new_withdrawal_btn);
-        expect(props.setIsWithdrawConfirmed).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.withdraw.setIsWithdrawConfirmed).toHaveBeenCalledTimes(1);
     });
 });

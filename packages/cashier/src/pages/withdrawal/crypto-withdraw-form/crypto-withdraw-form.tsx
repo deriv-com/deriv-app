@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
@@ -7,47 +8,12 @@ import { localize, Localize } from '@deriv/translations';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TReactChangeEvent, TRootStore } from 'Types';
+import { TReactChangeEvent } from 'Types';
+import { useStore } from '../../../hooks';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
     currency: string;
-};
-
-type TCryptoWithdrawFormProps = {
-    account_platform_icon: string;
-    balance: TClientStore['balance'];
-    blockchain_address: string;
-    crypto_currency: TClientStore['currency'];
-    crypto_transactions: TCryptoTransactionDetails[];
-    converter_to_error: string;
-    converter_from_error: string;
-    currency: TClientStore['currency'];
-    current_fiat_currency: TClientStore['current_fiat_currency'];
-    is_loading: boolean;
-    percentage: number;
-    should_percentage_reset: boolean;
-    verification_code: TClientStore['verification_code']['payment_withdraw'];
-    onChangeConverterFromAmount: (
-        e: React.ChangeEvent<HTMLInputElement>,
-        from_currency: string,
-        to_currency: string
-    ) => void;
-    onChangeConverterToAmount: (
-        e: React.ChangeEvent<HTMLInputElement>,
-        from_currency: string,
-        to_currency: string
-    ) => void;
-    onMountWithdraw: (verification_code: string) => void;
-    percentageSelectorSelectionStatus: (should_percentage_reset: boolean) => void;
-    recentTransactionOnMount: () => void;
-    requestWithdraw: (verification_code: string) => void;
-    resetConverter: () => void;
-    setBlockchainAddress: (address: string) => void;
-    setWithdrawPercentageSelectorResult: (amount: string) => void;
-    validateWithdrawFromAmount: () => void;
-    validateWithdrawToAmount: () => void;
 };
 
 type TFormValues = {
@@ -81,32 +47,46 @@ const Header = ({ currency }: THeaderProps) => {
     );
 };
 
-const CryptoWithdrawForm = ({
-    account_platform_icon,
-    balance,
-    blockchain_address,
-    crypto_currency,
-    crypto_transactions,
-    converter_from_error,
-    converter_to_error,
-    currency,
-    current_fiat_currency,
-    is_loading,
-    onChangeConverterFromAmount,
-    onChangeConverterToAmount,
-    onMountWithdraw,
-    percentage,
-    percentageSelectorSelectionStatus,
-    recentTransactionOnMount,
-    requestWithdraw,
-    resetConverter,
-    setBlockchainAddress,
-    setWithdrawPercentageSelectorResult,
-    should_percentage_reset,
-    validateWithdrawFromAmount,
-    validateWithdrawToAmount,
-    verification_code,
-}: TCryptoWithdrawFormProps) => {
+const CryptoWithdrawForm = () => {
+    const {
+        client,
+        modules: {
+            cashier: { crypto_fiat_converter, general_store, transaction_history, withdraw },
+        },
+    } = useStore();
+
+    const {
+        balance,
+        currency,
+        current_fiat_currency,
+        verification_code: { payment_withdraw: verification_code },
+    } = client;
+
+    const crypto_currency = currency;
+
+    const {
+        account_platform_icon,
+        blockchain_address,
+        onMountCryptoWithdraw: onMountWithdraw,
+        requestWithdraw,
+        setBlockchainAddress,
+        setWithdrawPercentageSelectorResult,
+        validateWithdrawFromAmount,
+        validateWithdrawToAmount,
+    } = withdraw;
+
+    const {
+        converter_from_error,
+        converter_to_error,
+        onChangeConverterFromAmount,
+        onChangeConverterToAmount,
+        resetConverter,
+    } = crypto_fiat_converter;
+
+    const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
+
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -225,29 +205,4 @@ const CryptoWithdrawForm = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    account_platform_icon: modules.cashier.withdraw.account_platform_icon,
-    balance: client.balance,
-    blockchain_address: modules.cashier.withdraw.blockchain_address,
-    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
-    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
-    crypto_currency: client.currency,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    current_fiat_currency: client.current_fiat_currency,
-    is_loading: modules.cashier.general_store.is_loading,
-    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
-    onMountWithdraw: modules.cashier.withdraw.onMountCryptoWithdraw,
-    percentage: modules.cashier.general_store.percentage,
-    percentageSelectorSelectionStatus: modules.cashier.general_store.percentageSelectorSelectionStatus,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    requestWithdraw: modules.cashier.withdraw.requestWithdraw,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
-    setBlockchainAddress: modules.cashier.withdraw.setBlockchainAddress,
-    setWithdrawPercentageSelectorResult: modules.cashier.withdraw.setWithdrawPercentageSelectorResult,
-    should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
-    validateWithdrawFromAmount: modules.cashier.withdraw.validateWithdrawFromAmount,
-    validateWithdrawToAmount: modules.cashier.withdraw.validateWithdrawToAmount,
-    verification_code: client.verification_code.payment_withdraw,
-}))(CryptoWithdrawForm);
+export default observer(CryptoWithdrawForm);

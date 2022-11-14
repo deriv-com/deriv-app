@@ -1,34 +1,28 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCryptoTransactionDetails, TRootStore } from 'Types';
 import RecentTransaction from 'Components/recent-transaction';
 import VerificationEmail from 'Components/verification-email';
+import { useStore } from '../../../hooks';
 import './withdrawal-verification-email.scss';
 
-type TWithdrawalVerificationEmailProps = {
-    crypto_transactions: TCryptoTransactionDetails[];
-    currency: TClientStore['currency'];
-    is_email_sent: boolean;
-    is_resend_clicked: boolean;
-    recentTransactionOnMount: () => void;
-    resendVerificationEmail: () => void;
-    setIsResendClicked: (value: boolean) => void;
-    sendVerificationEmail: () => void;
-};
+const WithdrawalVerificationEmail = () => {
+    const {
+        client,
+        modules: {
+            cashier: { transaction_history, withdraw },
+        },
+    } = useStore();
 
-const WithdrawalVerificationEmail = ({
-    crypto_transactions,
-    currency,
-    is_email_sent,
-    is_resend_clicked,
-    recentTransactionOnMount,
-    resendVerificationEmail,
-    setIsResendClicked,
-    sendVerificationEmail,
-}: TWithdrawalVerificationEmailProps) => {
+    const { currency } = client;
+
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+
+    const { is_email_sent, is_resend_clicked, resendVerificationEmail, sendVerificationEmail, setIsResendClicked } =
+        withdraw.verification;
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -71,13 +65,4 @@ const WithdrawalVerificationEmail = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    is_email_sent: modules.cashier.withdraw.verification.is_email_sent,
-    is_resend_clicked: modules.cashier.withdraw.verification.is_resend_clicked,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    resendVerificationEmail: modules.cashier.withdraw.verification.resendVerificationEmail,
-    sendVerificationEmail: modules.cashier.withdraw.verification.sendVerificationEmail,
-    setIsResendClicked: modules.cashier.withdraw.verification.setIsResendClicked,
-}))(WithdrawalVerificationEmail);
+export default observer(WithdrawalVerificationEmail);

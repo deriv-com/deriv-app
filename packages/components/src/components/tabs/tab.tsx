@@ -1,29 +1,49 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Counter from '../counter';
 import Icon from '../icon';
 
+type TTabProps = {
+    active_icon_color: string;
+    active_tab_ref?: React.RefObject<HTMLLIElement> | null;
+    bottom: boolean;
+    className?: string;
+    count: number;
+    header_content: React.ReactElement;
+    header_fit_content: boolean;
+    icon_color: string;
+    icon_size: number;
+    icon: string;
+    id?: string;
+    is_active: boolean;
+    is_label_hidden: boolean;
+    is_scrollable: boolean;
+    label: string;
+    onClick: React.MouseEventHandler<HTMLLIElement>;
+    setActiveLineStyle: () => void;
+    top: boolean;
+};
+
 const Tab = ({
-    active_tab_ref,
     active_icon_color,
+    active_tab_ref,
     bottom,
     className,
     count,
     header_content,
     header_fit_content,
-    icon,
     icon_color,
     icon_size,
+    icon,
     id,
     is_active,
-    is_scrollable,
     is_label_hidden,
+    is_scrollable,
     label,
     onClick,
     setActiveLineStyle,
     top,
-}) => {
+}: TTabProps) => {
     React.useEffect(() => {
         setActiveLineStyle();
     }, [count, label, header_content, setActiveLineStyle]);
@@ -46,27 +66,6 @@ const Tab = ({
             {!!count && <Counter className='dc-tabs__item__counter' count={count} />}
         </li>
     );
-};
-
-Tab.propTypes = {
-    active_tab_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    active_icon_color: PropTypes.string,
-    bottom: PropTypes.bool,
-    className: PropTypes.string,
-    count: PropTypes.number,
-    header_content: PropTypes.object,
-    header_fit_content: PropTypes.bool,
-    icon: PropTypes.string,
-    icon_color: PropTypes.string,
-    icon_size: PropTypes.number,
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_active: PropTypes.bool,
-    is_label_hidden: PropTypes.bool,
-    label: PropTypes.string,
-    onClick: PropTypes.func,
-    setActiveLineStyle: PropTypes.func,
-    top: PropTypes.bool,
-    is_scrollable: PropTypes.bool,
 };
 
 export default Tab;

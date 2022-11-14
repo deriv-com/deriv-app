@@ -95,8 +95,8 @@ describe('<ErrorDialog />', () => {
             const error = {
                 code: error_code,
                 message: 'Error is occured',
-                setErrorMessage(value) {
-                    this.message = value;
+                setErrorMessage({ code, message }) {
+                    this.message = message;
                 },
             };
             const { unmount } = render(

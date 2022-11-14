@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -9,6 +9,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
     changeCurrentLanguage,
@@ -97,9 +98,11 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
+            can_have_whatsapp,
         },
         ref
     ) => {
+        const liveChat = useLiveChat();
         const [is_open, setIsOpen] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
@@ -298,7 +301,6 @@ const ToggleMenuDrawer = React.forwardRef(
                     enableApp={enableApp}
                     disableApp={disableApp}
                     title={title || title === '' ? title : localize('Menu')}
-                    livechat={is_appstore ? null : <LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >
@@ -359,7 +361,22 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </div>
                                             </MobileDrawer.Item>
                                         }
-
+                                        {can_have_whatsapp && liveChat.isReady && (
+                                            <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                                <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                                <a
+                                                    className='header__menu-mobile-whatsapp-link'
+                                                    href={whatsapp_url}
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                >
+                                                    {localize('WhatsApp')}
+                                                </a>
+                                            </MobileDrawer.Item>
+                                        )}
+                                        <MobileDrawer.Item className='header__menu-mobile-livechat'>
+                                            {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                        </MobileDrawer.Item>
                                         {secondary_routes_config.map(route_config =>
                                             getRoutesWithSubMenu(route_config)
                                         )}
@@ -387,5 +404,7 @@ const ToggleMenuDrawer = React.forwardRef(
         );
     }
 );
+
 ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
+
 export default ToggleMenuDrawer;

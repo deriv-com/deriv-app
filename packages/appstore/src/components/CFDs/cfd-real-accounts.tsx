@@ -127,8 +127,6 @@ const CFDRealAccounts = ({
                 type: account.type,
             });
             setAppstorePlatform(account.platform);
-        } else if (!has_real_account) {
-            openDerivRealAccountNeededModal();
         } else {
             setAccountType({
                 category: 'real',
@@ -220,7 +218,7 @@ const CFDRealAccounts = ({
                                             type={account.type || ''}
                                             appname={account.name}
                                             platform={account.platform}
-                                            disabled={account.disabled}
+                                            disabled={!has_real_account}
                                             onClickGet={() => {
                                                 OnClickGetAccount(account);
                                             }}

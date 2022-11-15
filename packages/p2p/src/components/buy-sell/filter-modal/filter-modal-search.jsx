@@ -14,7 +14,7 @@ const FilterModalSearch = () => {
     const returnedFunction = debounce(() => {
         my_profile_store.getPaymentMethodsList();
         buy_sell_store.setIsFilterModalLoading(false);
-    }, 400);
+    }, 1000);
 
     const onSearch = ({ search }) => {
         my_profile_store.setSearchTerm(search.trim());

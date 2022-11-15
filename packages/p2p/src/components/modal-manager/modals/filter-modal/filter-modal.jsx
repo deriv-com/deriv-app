@@ -6,9 +6,11 @@ import { useStores } from 'Stores';
 import FilterModalHeader from './filter-modal-header.jsx';
 import FilterModalSearch from './filter-modal-search.jsx';
 import FilterModalNoResults from './filter-modal-no-results.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [selected_methods_text, setSelectedMethodsText] = React.useState([]);
@@ -85,8 +87,8 @@ const FilterModal = () => {
             has_close_icon
             height={'56rem'}
             title={<FilterModalHeader />}
-            is_open={buy_sell_store.is_filter_modal_open}
-            toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}
+            is_open={is_modal_open}
+            toggleModal={hideModal}
             width='44rem'
         >
             <Modal.Body>
@@ -167,7 +169,10 @@ const FilterModal = () => {
                         <Button
                             large
                             primary
-                            onClick={() => buy_sell_store.onClickApply(selected_methods, selected_methods_text)}
+                            onClick={() => {
+                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                hideModal();
+                            }}
                         >
                             {localize('Apply')}
                         </Button>

@@ -113,7 +113,7 @@ const CFDRealAccounts = ({
             type: getCFDAccountKey({
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
-                platform: 'mt5',
+                platform: CFD_PLATFORMS.MT5,
             }),
         });
     };
@@ -142,14 +142,14 @@ const CFDRealAccounts = ({
 
     const existingRealAccounts = (existing_platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => {
-            if (existing_platform === 'mt5') {
+            if (existing_platform === CFD_PLATFORMS.MT5) {
                 return key.startsWith(`${existing_platform}.real.${market_type}`);
             }
             return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
         })
             ? Object.keys(current_list)
                   .filter(key => {
-                      if (existing_platform === 'mt5') {
+                      if (existing_platform === CFD_PLATFORMS.MT5) {
                           return key.startsWith(`${existing_platform}.real.${market_type}`);
                       }
                       return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);

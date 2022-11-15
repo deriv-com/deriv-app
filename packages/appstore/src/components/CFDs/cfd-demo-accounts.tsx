@@ -36,7 +36,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             ),
             disabled: false,
             platform: CFD_PLATFORMS.DXTRADE,
-            type: 'synthetic',
+            type: 'all',
             // ToDo: deriv x should have type of all in new API
             // type: 'all'
         },
@@ -93,9 +93,19 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     };
 
     const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
+        const acc = Object.keys(current_list).some(key => {
+            if (existing_platform === 'mt5') {
+                return key.startsWith(`${existing_platform}.demo.${market_type}`);
+            }
+            return key.startsWith(`${existing_platform}.demo.${existing_platform}@${market_type}`);
+        })
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${existing_platform}.demo.${market_type}`))
+                  .filter(key => {
+                      if (existing_platform === 'mt5') {
+                          return key.startsWith(`${existing_platform}.demo.${market_type}`);
+                      }
+                      return key.startsWith(`${existing_platform}.demo.${existing_platform}@${market_type}`);
+                  })
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -109,6 +119,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             <div className='cfd-demo-account__accounts'>
                 {available_demo_accounts.map(account => {
                     const existing_demo_accounts = existingDemoAccounts(account.platform, account.type);
+
                     return (
                         account.is_visible && (
                             <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>

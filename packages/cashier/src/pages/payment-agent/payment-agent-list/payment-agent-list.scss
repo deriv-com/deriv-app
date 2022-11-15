@@ -1,69 +1,43 @@
 .payment-agent-list {
+    padding: 0 4.2rem 1.6rem;
+    @include mobile {
+        padding: 0;
+    }
+    .side-note--mobile {
+        padding: 0;
+        margin: 0;
+    }
     &__instructions {
-        margin-top: 2.4rem;
         @include mobile {
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
-        }
-
-        &-section {
-            border: 1px solid var(--border-normal);
-            flex: 1;
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS;
-            @include desktop {
-                &:not(:first-child) {
-                    margin-left: 24px;
-                    margin-left: 1.6rem;
+            .dc-tabs__list--header--tabs--desktop {
+                @include mobile {
+                    position: fixed;
+                    background-color: var(--general-main-1);
+                    width: 100%;
+                    left: 0;
+                    z-index: 1000;
+                    padding: 1.6rem 5rem;
                 }
             }
-            @include mobile {
-                display: flex;
-
-                &:first-child {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-                /* postcss-bem-linter: ignore */
-                &:last-child {
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-
-                    & h2 {
-                        margin: 0;
-                    }
-                    & .dc-btn {
-                        margin: 0 0 0 auto;
-                        padding: 0.3rem 0.8rem;
-                        height: 3rem;
-
-                        &__text {
-                            font-size: 1.2rem;
-                        }
-                        /* iPhone SE screen height fixes due to UI space restrictions */
-                        @media only screen and (max-height: 480px) {
-                            height: 4.8rem;
-
-                            &__text {
-                                width: 14rem;
-                                white-space: normal;
-                            }
-                        }
-                    }
-                }
-                /* postcss-bem-linter: ignore */
-                & .cashier__paragraph {
-                    padding-left: 0;
-                }
+            .dc-tabs__content {
+                margin-top: 7.2rem;
             }
         }
-        .dc-tabs__list--header--tabs--desktop {
-            margin: 0 auto;
+        &-hide-tabs {
+            & .dc-tabs__list {
+                display: none;
+            }
 
-            @include mobile {
-                margin: 0 3.5rem;
+            & .dc-tabs__content {
+                margin-top: 0;
+            }
+
+            & .dc-tabs__list--header--tabs--desktop {
+                display: none;
+                padding: 1.6rem 5rem;
             }
         }
         .verification-email__icon {
@@ -72,34 +46,36 @@
     }
     &__list {
         &-header {
-            margin-top: 2.8rem;
-            margin-bottom: 1.8rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            &-text {
-                min-width: 12rem;
-            }
-
-            &-line {
-                border-bottom: 1px solid var(--general-section-1);
-                width: 100%;
-                height: 1px;
+            margin-top: 2.4rem;
+            margin-bottom: 1.6rem;
+            @include mobile {
+                margin-top: 1.6rem;
             }
         }
         &-selector {
-            margin-bottom: 1rem;
+            margin-bottom: 2.4rem;
             display: flex;
             justify-content: space-between;
-
-            .cashier {
-                &__paragraph {
-                    margin-right: 0.8rem;
+            & .dc-dropdown {
+                &__container {
+                    width: 18rem;
                 }
-            }
-            .dc-dropdown__display-text {
-                color: var(--text-less-prominent);
+                &-container {
+                    margin-top: 0;
+                    min-width: unset;
+                    width: unset;
+                }
+                &__display {
+                    justify-content: flex-start;
+                    &-text {
+                        padding-left: 0.8rem;
+                        padding-right: 3.2rem;
+                        color: var(--text-less-prominent);
+                    }
+                }
+                &__select-arrow {
+                    right: 10px;
+                }
             }
         }
         @include mobile {
@@ -108,68 +84,67 @@
                 z-index: 1;
             }
             &-selector {
-                margin-bottom: 1.8rem;
-
+                margin-bottom: 1.6rem;
+                flex-direction: column;
                 /* postcss-bem-linter: ignore */
-                & .dc-input {
-                    width: 18rem;
-                    margin-left: auto;
-                }
-                /* postcss-bem-linter: ignore */
-                & .dc-select-native__placeholder {
-                    background-color: var(--general-main-1);
-                }
-            }
-        }
-    }
-    &__filter {
-        min-width: 22.8rem;
-        margin-top: 0;
-
-        &-display {
-            min-height: 3.2rem;
-            min-width: 22.8rem;
-        }
-    }
-    &__disclaimer {
-        background-color: var(--general-section-1);
-        margin-top: 2.4rem;
-        margin-bottom: 2.4rem;
-        padding: 1.6rem;
-    }
-    @include mobile {
-        &__accordion {
-            & .dc-accordion {
-                &__item {
-                    font-size: 1.2rem;
-                    position: relative;
-                    user-select: none;
-                    -webkit-touch-callout: none;
-                    -webkit-tap-highlight-color: transparent;
-
-                    &-header {
-                        max-width: calc(100% - 3.2rem);
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        padding-right: 0;
-
-                        &-icon-wrapper {
-                            top: 0;
-                            right: 0;
-                            width: 36px;
-                            height: 3.4rem;
-                            padding-left: 0;
-                            float: unset;
-                            display: flex;
-                            position: absolute;
-                            align-items: center;
-                            justify-content: center;
-                            border-bottom: 1px solid var(--general-section-1);
+                & .dc-select-native {
+                    margin-top: 1.6rem;
+                    &__arrow {
+                        top: unset;
+                        --fill-color1: var(--text-general);
+                    }
+                    &__placeholder {
+                        padding: 0 0.8rem;
+                        background-color: var(--general-main-1);
+                        color: var(--text-general);
+                        top: unset;
+                        left: unset;
+                    }
+                    &__display {
+                        height: 3.2rem;
+                        &-text {
+                            line-height: 3.2rem;
                         }
+                    }
+                    &__picker {
+                        height: 3.2rem;
+                    }
+                    &__wrapper {
+                        height: 3.2rem;
                     }
                 }
             }
+        }
+    }
+    &__search-warning {
+        row-gap: 1.6rem;
+        margin-top: 6.4rem;
+    }
+    &__error-dialog {
+        .dc-dialog {
+            &__content {
+                font-size: var(--text-size-s);
+            }
+            &__header--title {
+                font-size: var(--text-size-sm);
+            }
+            @include mobile {
+                &__dialog {
+                    width: 100%;
+                    margin: 0 1.6rem;
+                }
+                &__content {
+                    font-size: var(--text-size-xxs);
+                }
+                &__header--title {
+                    font-size: var(--text-size-xs);
+                }
+            }
+        }
+    }
+    &__search-loader {
+        @include mobile {
+            height: unset;
         }
     }
 }

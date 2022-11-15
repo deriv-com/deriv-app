@@ -96,6 +96,7 @@ const AccountBalance = ({ balance, currency }) => {
 
 const DashboardPlatformHeader = ({
     account_status,
+    can_have_whatsapp,
     app_routing_history,
     balance,
     currency,
@@ -121,7 +122,6 @@ const DashboardPlatformHeader = ({
     should_allow_authentication,
     toggleNotifications,
     toggleSettingsModal,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
@@ -140,6 +140,7 @@ const DashboardPlatformHeader = ({
                         ref={toggle_menu_drawer_ref}
                         should_allow_authentication={should_allow_authentication}
                         account_status={account_status}
+                        can_have_whatsapp={can_have_whatsapp}
                         enableApp={enableApp}
                         disableApp={disableApp}
                         location={location}
@@ -162,7 +163,6 @@ const DashboardPlatformHeader = ({
                                 toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                             />
                         }
-                        is_social_signup={is_social_signup}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -205,6 +205,7 @@ const DashboardPlatformHeader = ({
 
 DashboardPlatformHeader.propTypes = {
     account_status: PropTypes.object,
+    can_have_whatsapp: PropTypes.bool,
     app_routing_history: PropTypes.array,
     balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
@@ -226,7 +227,6 @@ DashboardPlatformHeader.propTypes = {
     setDarkMode: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
     settings_extension: PropTypes.array,
@@ -235,6 +235,7 @@ DashboardPlatformHeader.propTypes = {
 
 export default connect(({ client, common, modules, notifications, ui }) => ({
     account_status: client.account_status,
+    can_have_whatsapp: client.can_have_whatsapp,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     currency: client.currency,
@@ -256,5 +257,4 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
 }))(withRouter(DashboardPlatformHeader));

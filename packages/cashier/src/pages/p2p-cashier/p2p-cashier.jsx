@@ -28,6 +28,7 @@ const P2PCashier = ({
     removeNotificationByKey,
     removeNotificationMessage,
     residence,
+    setP2POrderProps,
     setNotificationCount,
     setCurrentFocus,
     balance,
@@ -71,6 +72,8 @@ const P2PCashier = ({
         }
 
         return () => setQueryOrder(null);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setQueryOrder]);
 
     const setQueryOrder = React.useCallback(
@@ -109,7 +112,9 @@ const P2PCashier = ({
                 setOrderId(input_order_id);
             }
         },
-        [history, location.hash, location.search, order_id]
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [history, location.hash, location.search]
     );
 
     if (is_logging_in) {
@@ -140,6 +145,7 @@ const P2PCashier = ({
             setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
+            setP2POrderProps={setP2POrderProps}
             should_show_verification={/verification/.test(location.hash)}
             verification_action={action_param}
             verification_code={code_param}
@@ -169,6 +175,7 @@ P2PCashier.propTypes = {
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
     setCurrentFocus: PropTypes.func,
+    setP2POrderProps: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui }) => ({
@@ -189,6 +196,7 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     residence: client.residence,
     setNotificationCount: modules.cashier.general_store.setNotificationCount,
     setOnRemount: modules.cashier.general_store.setOnRemount,
+    setP2POrderProps: notifications.setP2POrderProps,
     is_mobile: ui.is_mobile,
     setCurrentFocus: ui.setCurrentFocus,
     current_focus: ui.current_focus,

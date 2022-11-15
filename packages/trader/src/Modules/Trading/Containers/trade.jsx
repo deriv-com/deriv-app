@@ -381,7 +381,7 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={is_accumulator ? 0 : granularity}
+            granularity={!is_accumulator && granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}

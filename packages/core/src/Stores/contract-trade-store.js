@@ -61,11 +61,15 @@ export default class ContractTradeStore extends BaseStore {
     // -------------------
 
     updateChartType(type) {
+        const { contract_type } = JSON.parse(LocalStore.get('trade_store'));
+        if (contract_type === 'accumulator') return;
         LocalStore.set('contract_trade.chart_type', type);
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
+        const { contract_type } = JSON.parse(LocalStore.get('trade_store'));
+        if (contract_type === 'accumulator') return;
         const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
             this.chart_type = 'mountain';

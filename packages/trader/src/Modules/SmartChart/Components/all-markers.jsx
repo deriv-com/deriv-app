@@ -274,7 +274,7 @@ const TickContract = RawMarkerMaker(
                     draw_partial_shade({
                         ctx,
                         start_left: previous_tick.left,
-                        fill_color: getColor({ status: 'open', is_dark_theme }),
+                        fill_color: 'rgba(0, 167, 158, 0.08)',
                         stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                         top: barrier,
                         bottom: barrier_2,
@@ -306,7 +306,7 @@ const TickContract = RawMarkerMaker(
                     }
                     return 0;
                 };
-                if (current_spot_time.visible && !is_sold) {
+                if (current_spot_time?.visible && !is_sold) {
                     // draw 3 text items with different font size and weight:
                     let profit_text_width = 0;
                     [

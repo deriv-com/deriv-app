@@ -51,6 +51,13 @@
         width: 90%;
         margin-bottom: 2rem;
 
+        &--eu {
+            margin-bottom: 2rem;
+            display: flex;
+            margin-left: 1rem;
+            width: 20%;
+        }
+
         @include mobile {
             width: auto;
             margin-right: 1rem;

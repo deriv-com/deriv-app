@@ -94,6 +94,12 @@
                 display: flex;
                 margin-bottom: 1rem;
 
+                &--eu {
+                    display: flex;
+                    width: 95.6rem;
+                    margin-bottom: 1rem;
+                }
+
                 @include mobile {
                     flex-direction: column;
                     margin-bottom: 0;

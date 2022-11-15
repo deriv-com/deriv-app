@@ -1,5 +1,7 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, Icon } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -58,6 +60,11 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const Divider = () => <div className='divider' />;
+
+    const { client } = useStores();
+    const { loginid: logid } = client;
+
+    const is_mf = logid?.startsWith('MF');
 
     const toggle_options = [
         { text: 'CFDs', value: 0 },
@@ -164,36 +171,39 @@ const StaticDashboard = ({
                             )}
                         </div>
                         <div className='static-dashboard-wrapper__body'>
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='synthetic'
-                                    platform='mt5'
-                                    appname='Derived'
-                                    description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                />
-                                {has_account && (
-                                    <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon
-                                            icon='icAppstoreAddRounded'
-                                            width='24'
-                                            height='24'
-                                            className='Add-Rounded'
-                                        />
-                                        <Text
-                                            size='xs'
-                                            color='less-prominent'
-                                            className='static-dashboard-wrapper__body--add-button-text'
-                                        >
-                                            {localize('More derived accounts')}
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                            {!is_mf && (
+                                <div>
+                                    <StaticCFDAccountManager
+                                        type='synthetic'
+                                        platform='mt5'
+                                        appname='Derived'
+                                        description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities and cryptocurrencies.'
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                    />
+                                    {has_account && (
+                                        <div className='static-dashboard-wrapper__body--add-button'>
+                                            <Icon
+                                                icon='icAppstoreAddRounded'
+                                                width='24'
+                                                height='24'
+                                                className='Add-Rounded'
+                                            />
+                                            <Text
+                                                size='xs'
+                                                color='less-prominent'
+                                                className='static-dashboard-wrapper__body--add-button-text'
+                                            >
+                                                {localize('More derived accounts')}
+                                            </Text>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             <div>
                                 <StaticCFDAccountManager
                                     type='financial'
@@ -228,22 +238,24 @@ const StaticDashboard = ({
                                     </div>
                                 )}
                             </div>
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='all'
-                                    platform='dxtrade'
-                                    appname='Deriv X'
-                                    description='Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_financial_last_step={is_financial_last_step}
-                                />
-                            </div>
+                            {!is_mf && (
+                                <div>
+                                    <StaticCFDAccountManager
+                                        type='all'
+                                        platform='dxtrade'
+                                        appname='Deriv X'
+                                        description='Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_financial_last_step={is_financial_last_step}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </>
                 )}
@@ -353,7 +365,11 @@ const StaticDashboard = ({
                         </div>
                         {!has_applauncher_account && <Divider />}
 
-                        <div className='static-dashboard-wrapper__body--apps'>
+                        <div
+                            className={classNames('static-dashboard-wrapper__body--apps', {
+                                'static-dashboard-wrapper__body--apps--eu': is_mf,
+                            })}
+                        >
                             <StaticPlatformLauncher
                                 is_grey={is_grey}
                                 app_icon={`DTrader`}
@@ -362,38 +378,46 @@ const StaticDashboard = ({
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`DBot`}
-                                app_title={'DBot'}
-                                app_desc={'Automate your trading, no coding needed.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`SmartTraderBlue`}
-                                app_title={'SmartTrader'}
-                                app_desc={'Our legacy options trading platform.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`BinaryBotBlue`}
-                                app_title={'Binary Bot'}
-                                app_desc={'Our legacy automated trading platform.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`DerivGoBlack`}
-                                app_title={'Deriv Go'}
-                                app_desc={'Trade on the go with our mobile app.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
+                            {!is_mf && (
+                                <StaticPlatformLauncher
+                                    is_grey={is_grey}
+                                    app_icon={`DBot`}
+                                    app_title={'DBot'}
+                                    app_desc={'Automate your trading, no coding needed.'}
+                                    is_item_blurry={is_blurry.platformlauncher}
+                                    has_applauncher_account={has_applauncher_account}
+                                />
+                            )}
+                            {!is_mf && (
+                                <StaticPlatformLauncher
+                                    is_grey={is_grey}
+                                    app_icon={`SmartTraderBlue`}
+                                    app_title={'SmartTrader'}
+                                    app_desc={'Our legacy options trading platform.'}
+                                    is_item_blurry={is_blurry.platformlauncher}
+                                    has_applauncher_account={has_applauncher_account}
+                                />
+                            )}
+                            {!is_mf && (
+                                <StaticPlatformLauncher
+                                    is_grey={is_grey}
+                                    app_icon={`BinaryBotBlue`}
+                                    app_title={'Binary Bot'}
+                                    app_desc={'Our legacy automated trading platform.'}
+                                    is_item_blurry={is_blurry.platformlauncher}
+                                    has_applauncher_account={has_applauncher_account}
+                                />
+                            )}
+                            {!is_mf && (
+                                <StaticPlatformLauncher
+                                    is_grey={is_grey}
+                                    app_icon={`DerivGoBlack`}
+                                    app_title={'Deriv Go'}
+                                    app_desc={'Trade on the go with our mobile app.'}
+                                    is_item_blurry={is_blurry.platformlauncher}
+                                    has_applauncher_account={has_applauncher_account}
+                                />
+                            )}
                         </div>
                     </>
                 )}
@@ -402,4 +426,4 @@ const StaticDashboard = ({
     );
 };
 
-export default StaticDashboard;
+export default observer(StaticDashboard);

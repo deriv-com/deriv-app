@@ -2164,9 +2164,9 @@
         }
         &--instruments {
             grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
-        }
-        &__pre-appstore--instruments {
-            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
+            &__pre-appstore {
+                grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
+            }
         }
     }
 
@@ -2181,6 +2181,7 @@
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
         &__pre-appstore {
             grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+            height: 5.8rem;
         }
         height: 5.8rem;
         &__item {

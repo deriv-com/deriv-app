@@ -478,7 +478,7 @@ const DMT5CompareModalContent = ({
             className={
                 show_eu_related
                     ? 'cfd-real-compare-accounts-row-eu'
-                    : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}--instruments`, {
+                    : classNames(`cfd-real-compare-accounts__table-row--instruments${pre_appstore_class}`, {
                           [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
                               available_accounts_count < 6,
                       })

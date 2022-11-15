@@ -17,7 +17,7 @@ import {
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable, observe } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable } from 'mobx';
 import moment from 'moment';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -62,7 +62,6 @@ export default class ClientStore extends BaseStore {
     website_status = {};
     account_settings = {};
     account_status = {};
-    previous_account_status = {};
     device_data = {};
     is_logging_in = false;
     has_logged_out = false;
@@ -166,7 +165,6 @@ export default class ClientStore extends BaseStore {
             website_status: observable,
             account_settings: observable,
             account_status: observable,
-            previous_account_status: observable,
             device_data: observable,
             is_logging_in: observable,
             has_logged_out: observable,
@@ -358,10 +356,6 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
-        });
-
-        observe(this, 'account_status', change => {
-            this.previous_account_status = change.oldValue;
         });
 
         reaction(

@@ -1244,20 +1244,13 @@ export default class NotificationStore extends BaseStore {
     }
 
     handlePOAAddressMismatchNotifications() {
-        const { account_status, previous_account_status } = this.root_store.client;
+        const { client } = this.root_store;
+        const { account_status } = client;
         const { status } = account_status;
-        const { status: previous_status } = previous_account_status;
         const { poa_address_mismatch } = getStatusValidations(status || []);
-        const { poa_address_mismatch: previous_poa_address_mismatch } = getStatusValidations(previous_status || []);
 
         if (poa_address_mismatch) {
             this.showPOAAddressMismatchWarningNotification();
-        }
-
-        if (previous_poa_address_mismatch === true && previous_poa_address_mismatch === poa_address_mismatch) {
-            this.showPOAAddressMismatchFailureNotification();
-        } else if (previous_poa_address_mismatch === true && previous_poa_address_mismatch !== poa_address_mismatch) {
-            this.showPOAAddressMismatchSuccessNotification();
         }
     }
 

@@ -108,6 +108,8 @@ export const PersonalDetailsForm = ({
     states_list,
     current_landing_company,
     refreshNotifications,
+    showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification,
     Notifications,
     fetchResidenceList,
     fetchStatesList,
@@ -242,6 +244,12 @@ export const PersonalDetailsForm = ({
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
+            if (data.set_settings.notification) {
+                showPOAAddressMismatchSuccessNotification();
+            } else {
+                showPOAAddressMismatchFailureNotification();
+            }
+
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
@@ -1231,6 +1239,8 @@ PersonalDetailsForm.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
     states_list: PropTypes.array,
     refreshNotifications: PropTypes.func,
+    showPOAAddressMismatchSuccessNotification: PropTypes.func,
+    showPOAAddressMismatchFailureNotification: PropTypes.func,
     Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
@@ -1260,6 +1270,8 @@ export default connect(({ client, notifications, ui }) => ({
     fetchStatesList: client.fetchStatesList,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
+    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),

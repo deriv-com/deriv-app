@@ -43,9 +43,9 @@ describe('proof-of-ownership-form.jsx', () => {
                 client_email={'test@testing.com'}
             />
         );
-        const poo_dropdown_button = await screen.findByTestId('proof-of-ownership-button');
+        const poo_dropdown_button = await screen.findByTestId('dt_proof-of-ownership-button');
         fireEvent.click(poo_dropdown_button);
-        const identifier_input = await screen.findByTestId('payment_method_identifier');
+        const identifier_input = await screen.findByTestId('dt_payment_method_identifier');
         act(() => {
             fireEvent.change(identifier_input, { target: { value: '1234567891011121' } });
             fireEvent.blur(identifier_input);

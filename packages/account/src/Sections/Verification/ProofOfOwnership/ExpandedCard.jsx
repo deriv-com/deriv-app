@@ -106,7 +106,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                     item_index
                                                 );
                                             }}
-                                            data-testid='payment_method_identifier'
+                                            data-testid='dt_payment_method_identifier'
                                             error={error?.[item_index]?.payment_method_identifier}
                                         />
                                     </div>
@@ -148,7 +148,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                             item_index
                                                         );
                                                     }}
-                                                    data-testid='payment_method_identifier'
+                                                    data-testid='dt_payment_method_identifier'
                                                     error={error?.[item_index]?.payment_method_identifier}
                                                 />
                                             </div>
@@ -162,7 +162,6 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                             <FileUploader
                                                 handleFile={handleUploadedFile}
                                                 file_name={values?.data?.[index]?.[item_index]?.files?.[i]?.name ?? ''}
-                                                data_test_id={'uploader-field'}
                                                 class_name='proof-of-ownership__card-open-inputs-photo'
                                                 name={`data[${index}].[${item_index}].files[${i}]`}
                                                 error={error?.[item_index]?.files?.[i]}

@@ -1,12 +1,11 @@
-import { Button, Text } from '@deriv/components';
+import { Button, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
-import PooRejectedIcon from '../../Assets/ic-poo-rejected.svg';
 
 export const POORejetced = ({ onTryAgain }) => {
     return (
         <div className='proof-of-ownership__container'>
-            <PooRejectedIcon className='icon' size={128} />
+            <Icon className='icon' icon='IcPooRejected' size={128} />
             <Text weight='bold'>{localize('Proof of ownership verification failed')}</Text>
             <Text size='xs'>{localize('We were unable to verify your proof of ownership.')}</Text>
             <Button
@@ -16,7 +15,7 @@ export const POORejetced = ({ onTryAgain }) => {
                 large
                 text={localize('Try again')}
                 primary
-                data-testid='try-again-button'
+                data-testid='dt_try-again-button'
             />
         </div>
     );

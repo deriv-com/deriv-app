@@ -14,7 +14,7 @@ describe('ExpandedCard.jsx', () => {
                     data: [
                         [
                             {
-                                payment_method_identifier: '1234 56XX XXXX 1121 3',
+                                payment_method_identifier: '1234 56XX XXXX 1121',
                             },
                         ],
                     ],
@@ -22,7 +22,7 @@ describe('ExpandedCard.jsx', () => {
                 setFieldValue={jest.fn(() => {})}
             />
         );
-        const element = screen.getByDisplayValue('1234 56XX XXXX 1121 3', { exact: true });
+        const element = screen.getByDisplayValue('1234 56XX XXXX 1121', { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should show example link for credit/debit card and render the correct identifier label', () => {

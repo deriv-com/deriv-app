@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 
 const FileUploader = ({
     class_name,
-    data_test_id,
     error,
     file_name,
     handleFile,
@@ -51,7 +50,6 @@ const FileUploader = ({
                 ref={hidden_file_input}
                 onChange={handleChange}
                 className='hidden-input'
-                data-testid={data_test_id}
                 name={name}
             />
             <Input
@@ -91,7 +89,6 @@ const FileUploader = ({
 
 FileUploader.propTypes = {
     class_name: PropTypes.string,
-    data_test_id: PropTypes.string,
     error: PropTypes.string,
     file_name: PropTypes.string,
     handleFile: PropTypes.func,

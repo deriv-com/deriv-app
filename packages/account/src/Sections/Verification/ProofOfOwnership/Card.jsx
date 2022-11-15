@@ -12,7 +12,7 @@ const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, upd
     };
     const icon = (
         <Icon
-            icon={'IcChevronUpBold'}
+            icon='IcChevronUpBold'
             size={16}
             className={classNames('proof-of-ownership__card-item-icon', {
                 'proof-of-ownership__card-item-icon--invert': !is_open,
@@ -29,7 +29,7 @@ const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, upd
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
                 <Icon icon={card?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {card.payment_method || '[Payment Method Name]'}
+                    {card.payment_method}
                 </Text>
                 <Button
                     id='proof-of-ownership'
@@ -37,7 +37,7 @@ const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, upd
                     className='proof-of-ownership__card-item-icon'
                     onClick={onClickHandler}
                     transparent
-                    data-testid={'proof-of-ownership-button'}
+                    data-testid='dt_proof-of-ownership-button'
                 />
             </div>
             {is_open && (

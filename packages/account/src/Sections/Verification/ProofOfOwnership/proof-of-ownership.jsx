@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
-import POOSubmitted from 'Components/poo-submitted';
+import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
 import { Loading } from '@deriv/components';
-import POONotRequired from 'Components/poo-not-required';
-import POOVerified from 'Components/poo-verified';
-import POORejetced from 'Components/poo-rejected';
 import { POO_STATUSES } from './constants/constants';
 import paymentMethodConfig from './payment-method-config.js';
 
@@ -61,17 +58,13 @@ export const ProofOfOwnership = ({
                 total_documents_required={grouped_payment_method_data.total_documents_required}
             />
         ); // Proof of ownership is required.
-    }
-    if (status === POO_STATUSES.verified) {
+    } else if (status === POO_STATUSES.verified) {
         return <POOVerified />; // Proof of ownership verified
-    }
-    if (status === POO_STATUSES.pending) {
+    } else if (status === POO_STATUSES.pending) {
         return <POOSubmitted />; // Proof of ownership submitted pending review
-    }
-    if (status === POO_STATUSES.none) {
+    } else if (status === POO_STATUSES.none) {
         return <POONotRequired />; // Client does not need proof of ownership.
-    }
-    if (status === POO_STATUSES.rejected) {
+    } else if (status === POO_STATUSES.rejected) {
         return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;

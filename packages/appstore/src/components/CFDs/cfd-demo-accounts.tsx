@@ -37,8 +37,6 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             disabled: false,
             platform: CFD_PLATFORMS.DXTRADE,
             type: 'all',
-            // ToDo: deriv x should have type of all in new API
-            // type: 'all'
         },
     ];
 
@@ -94,14 +92,14 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
 
     const existingDemoAccounts = (existing_platform: TPlatform, market_type?: string) => {
         const acc = Object.keys(current_list).some(key => {
-            if (existing_platform === 'mt5') {
+            if (existing_platform === CFD_PLATFORMS.MT5) {
                 return key.startsWith(`${existing_platform}.demo.${market_type}`);
             }
             return key.startsWith(`${existing_platform}.demo.${existing_platform}@${market_type}`);
         })
             ? Object.keys(current_list)
                   .filter(key => {
-                      if (existing_platform === 'mt5') {
+                      if (existing_platform === CFD_PLATFORMS.MT5) {
                           return key.startsWith(`${existing_platform}.demo.${market_type}`);
                       }
                       return key.startsWith(`${existing_platform}.demo.${existing_platform}@${market_type}`);

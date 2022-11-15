@@ -6,7 +6,7 @@ import IconMessageContent from 'Components/icon-message-content';
 export const POONotRequired = () => {
     return (
         <IconMessageContent
-            message={localize('Proof of ownership not required.')}
+            message={localize("Your proof of ownership isn't required.")}
             text={localize(
                 'You are not required to submit proof of ownership at this time. We will inform you if proof of ownership is required in the future.'
             )}

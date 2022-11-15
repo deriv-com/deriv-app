@@ -20,7 +20,7 @@ describe('proof-of-ownership.jsx', () => {
                 updateAccountStatus={jest.fn()}
             />
         );
-        const element = screen.getByText('Proof of ownership not required.', { exact: true });
+        const element = screen.getByText("Your proof of ownership isn't required.", { exact: true });
         expect(element).toBeInTheDocument();
     });
     it('should render poo verified status page', () => {

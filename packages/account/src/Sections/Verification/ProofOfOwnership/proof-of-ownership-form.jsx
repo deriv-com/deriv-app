@@ -135,10 +135,6 @@ const ProofOfOwnershipForm = ({
                                 id: payment_method_details.id,
                             },
                         });
-                        if (typeof processed_files === 'string') {
-                            // eslint-disable-next-line no-console
-                            console.warn(processed_files);
-                        }
                         processed_files.forEach(async (processed_file, sub_index) => {
                             const response = await uploader.upload(processed_file);
                             if (response.warning) {
@@ -159,8 +155,6 @@ const ProofOfOwnershipForm = ({
                                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
                                 } else {
                                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                                    // eslint-disable-next-line no-console
-                                    console.warn(response);
                                 }
                             } else {
                                 updateAccountStatus();
@@ -172,8 +166,6 @@ const ProofOfOwnershipForm = ({
             });
         } catch (err) {
             setFormState({ ...form_state, ...{ is_btn_loading: false } });
-            // eslint-disable-next-line no-console
-            console.warn(err);
         }
     };
     return (

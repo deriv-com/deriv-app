@@ -9,3 +9,4 @@ export * from './use-deep-effect';
 export * from './use-state-callback';
 export * from './use-constructor';
 export * from './use-safe-state';
+export * from './use-copy-to-clipboard';

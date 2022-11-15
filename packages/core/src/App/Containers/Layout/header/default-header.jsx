@@ -180,7 +180,7 @@ const DefaultHeader = ({
                 </div>
                 {is_logged_in && (
                     <DesktopWrapper>
-                        <ExploreTradingHub />
+                        {!window.location.pathname.startsWith(routes.appstore) && <ExploreTradingHub />}
                         <Divider />
                     </DesktopWrapper>
                 )}

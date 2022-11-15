@@ -170,7 +170,9 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
-                    <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                    {window.location.pathname.startsWith(routes.appstore) && (
+                        <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                    )}
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
                         notifications_count={notifications_count}

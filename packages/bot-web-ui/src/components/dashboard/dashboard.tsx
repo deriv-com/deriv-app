@@ -3,10 +3,17 @@ import { Tabs, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
-import { DBOT_ONBOARDING, handleJoyrideCallback, getTourSettings, setTourType, tour_type } from './joyride-config';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import {
+    DBOT_ONBOARDING,
+    handleJoyrideCallback,
+    getTourSettings,
+    setTourType,
+    tour_type,
+    tour_status_ended,
+} from './joyride-config';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
@@ -17,23 +24,23 @@ import TourTriggrerDialog from './tour-trigger-dialog';
 type TDashboard = {
     active_tab: number;
     is_drawer_open: boolean;
-    setActiveTab: (active_tab: number) => void;
-    onEntered: () => void;
+    is_tour_dialog_visible: boolean;
     has_file_loaded: boolean;
     has_tour_started: boolean;
     has_onboard_tour_started: boolean;
     has_bot_builder_tour_started: boolean;
+    onEntered: () => void;
+    setActiveTab: (active_tab: number) => void;
     setTourActive: (param: boolean) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    toggleStrategyModal: () => void;
     setTourDialogVisibility: (param: boolean) => void;
-    is_tour_dialog_visible: boolean;
+    setIsTourEnded: (param: boolean) => void;
+    toggleStrategyModal: () => void;
 };
 
 const Dashboard = ({
     active_tab,
-    has_bot_builder_tour_started,
     has_tour_started,
     has_file_loaded,
     has_onboard_tour_started,
@@ -45,6 +52,7 @@ const Dashboard = ({
     setOnBoardTourRunState,
     setBotBuilderTourState,
     setTourDialogVisibility,
+    setIsTourEnded,
     toggleStrategyModal,
 }: TDashboard) => {
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
@@ -58,7 +66,7 @@ const Dashboard = ({
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
             const { action } = tour_status;
-            let actions = ['skip', 'close', 'reset'];
+            let actions = ['skip', 'close'];
 
             if (tour_type.key === 'bot_builder_') {
                 actions = ['skip', 'close'];
@@ -73,7 +81,7 @@ const Dashboard = ({
             }
         }
     };
-
+    let tour_ended = false;
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
@@ -85,12 +93,20 @@ const Dashboard = ({
 
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started]);
+    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended]);
 
     //TODO: added addeventlistner because the useeffect does not trigger
     window.addEventListener('storage', () => {
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
+        if (tour_status_ended.key === 'finished') {
+            tour_ended = true;
+        }
+
+        if (tour_ended) {
+            setTourDialogVisibility(true);
+            setIsTourEnded(true);
+        }
     });
 
     return (
@@ -173,4 +189,5 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    setIsTourEnded: dashboard.setIsTourEnded,
 }))(Dashboard);

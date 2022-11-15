@@ -54,10 +54,18 @@ export const setTourType = (param: string) => {
     tour_type.key = param;
 };
 
+export const tour_status_ended = {
+    key: '',
+    type: `${tour_type.key}status`,
+};
+
 let tour: { [key: string]: string } = {};
 let current_target: number;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
+    if (status === 'finished') {
+        tour_status_ended.key = status;
+    }
     if (current_target && current_target !== index) {
         tour = {};
         tour.status = status;
@@ -310,23 +318,6 @@ export const BOT_BUILDER_TOUR = [
                     localize('Step 6 :'),
                     localize(
                         'Finally, drag and add the whole <strong>Repeat</strong> block to the <strong>Restart trading conditions</strong> block.'
-                    ),
-                ]}
-            />,
-        ],
-        ...joyride_props,
-    },
-    {
-        target: 'header',
-        content: [
-            <Step
-                key='Congratulations'
-                label={localize('Congratulations!')}
-                content={[
-                    localize('You have successfully created your bot using a simple strategy.'),
-                    localize('Now, <strong>run the bot</strong> to test out the strategy.'),
-                    localize(
-                        'Note: If you wish to learn more about the Bot Builder, you can proceed to the <strong>Tutorials</strong> tab.'
                     ),
                 ]}
             />,

@@ -38,13 +38,34 @@
     }
 }
 
+.bot-builder-dialog,
 .onboarding-tour-guide {
+    &--ended {
+        .dc-btn--secondary {
+            display: none;
+        }
+        .dc-dialog__content {
+            &__header {
+                .dc-text {
+                    color: var(--text-colored-background);
+                }
+            }
+            &__description {
+                &__text {
+                    color: var(--text-colored-background);
+                }
+            }
+        }
+        .dc-dialog__dialog {
+            background-color: var(--general-section-7);
+        }
+    }
+
     .dc-dialog__content {
         &__header {
             text-align: left;
             margin-bottom: 2.4rem;
         }
-
         &__description {
             text-align: left;
             &__text {

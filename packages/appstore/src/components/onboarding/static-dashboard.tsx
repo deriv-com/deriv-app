@@ -1,7 +1,7 @@
 import React from 'react';
-import { useStores, useStores } from 'Stores';
+import { useStores } from 'Stores';
 import classNames from 'classnames';
-import { observer, observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, Icon } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';

@@ -60,7 +60,6 @@ export { default as InputWithCheckbox } from './components/input-wth-checkbox';
 export { default as Label } from './components/label';
 export { default as LinearProgress } from './components/linear-progress';
 export { default as Loading } from './components/loading';
-export { default as MobileCarousel } from './components/mobile-carousel';
 export { default as MobileDialog } from './components/mobile-dialog';
 export { default as MobileDrawer } from './components/mobile-drawer';
 export { default as MobileFullPageModal } from './components/mobile-full-page-modal';

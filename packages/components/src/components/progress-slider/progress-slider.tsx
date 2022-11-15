@@ -1,10 +1,21 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { getTimePercentage } from '@deriv/shared';
-import ProgressTicks from './progress-ticks.jsx';
+import ProgressTicks from './progress-ticks';
 import RemainingTime from '../remaining-time';
 import Text from '../text';
+import moment from 'moment';
+
+type TProgressSliderProps = {
+    className?: string;
+    current_tick: number;
+    expiry_time: number & string;
+    getCardLabels: () => { [key: string]: string }; // TODO Use the one from shared workspace after migration
+    is_loading: boolean;
+    server_time: moment.Moment;
+    start_time: number & string;
+    ticks_count: number;
+};
 
 const ProgressSlider = ({
     className,
@@ -15,7 +26,7 @@ const ProgressSlider = ({
     server_time,
     start_time,
     ticks_count,
-}) => {
+}: TProgressSliderProps) => {
     const percentage = getTimePercentage(server_time, start_time, expiry_time);
     return (
         <div className={classNames('dc-progress-slider', className)}>
@@ -49,16 +60,5 @@ const ProgressSlider = ({
     );
 };
 // Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
-
-ProgressSlider.propTypes = {
-    className: PropTypes.string,
-    current_tick: PropTypes.number,
-    expiry_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_loading: PropTypes.bool,
-    server_time: PropTypes.object,
-    start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    ticks_count: PropTypes.number,
-    getCardLabels: PropTypes.func,
-};
 
 export default ProgressSlider;

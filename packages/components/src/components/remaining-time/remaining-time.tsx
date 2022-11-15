@@ -5,13 +5,13 @@ import moment from 'moment';
 type TRemainingTimeProps = {
     end_time?: number;
     start_time: moment.Moment;
-    format: string;
+    format?: string;
     getCardLabels: () => { [key: string]: string }; // TODO Use the one from common after contract-card migration
 };
 
 const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {
     if (!end_time || start_time.unix() > +end_time) {
-        return '';
+        return <React.Fragment>{''}</React.Fragment>;
     }
 
     const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
@@ -21,7 +21,7 @@ const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemaini
     }
     const is_zeroes = /^00:00$/.test(remaining_time);
 
-    return !is_zeroes && <div className='dc-remaining-time'>{remaining_time}</div>;
+    return <React.Fragment>{!is_zeroes && <div className='dc-remaining-time'>{remaining_time}</div>}</React.Fragment>;
 };
 
 export default RemainingTime;

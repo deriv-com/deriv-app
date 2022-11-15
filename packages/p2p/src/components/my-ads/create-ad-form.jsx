@@ -368,7 +368,7 @@ const CreateAdForm = () => {
                                                     hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={
-                                                        my_ads_store.default_advert_description.length
+                                                        general_store.default_advert_description.length
                                                     }
                                                     has_character_counter
                                                     max_characters={300}

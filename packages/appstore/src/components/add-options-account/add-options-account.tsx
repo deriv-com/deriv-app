@@ -8,11 +8,19 @@ import { TRootStore } from 'Types';
 import { isMobile } from '@deriv/shared';
 
 const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
+    const { client } = useStores();
+    const { is_eu } = client;
+    const is_eu_country_text = is_eu
+        ? 'You need to create a Multipliers account to create a CFD account.'
+        : 'You need to create an Options account to create a CFD account.';
+
+    const is_eu_country_btn = is_eu ? localize('Get a Multipliers account') : localize('Get an Options account');
+
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
-                    <Localize i18n_default_text='You need an Options and Multipliers account to create a CFD account.' />
+                    <Localize i18n_default_text={is_eu_country_text} />
                 </Text>
             </div>
             <div className='add-options-account__button'>
@@ -25,7 +33,7 @@ const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
                     }}
                     is_disabled={false}
                     is_loading={false}
-                    text={localize('Get an Options and Multipliers account')}
+                    text={is_eu_country_btn}
                     medium
                     primary
                 />

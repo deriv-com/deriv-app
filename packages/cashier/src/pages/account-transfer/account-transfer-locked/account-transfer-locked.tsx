@@ -1,22 +1,16 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore } from 'Types';
+import { useStore } from '../../../hooks';
 
-type TAccountTransferLockedProps = {
-    is_financial_account: TClientStore['is_financial_account'];
-    is_financial_information_incomplete: TClientStore['is_financial_information_incomplete'];
-    is_trading_experience_incomplete: TClientStore['is_trading_experience_incomplete'];
-};
+const AccountTransferLocked = () => {
+    const {
+        client: { is_financial_account, is_financial_information_incomplete, is_trading_experience_incomplete },
+    } = useStore();
 
-const AccountTransferLocked = ({
-    is_financial_account,
-    is_financial_information_incomplete,
-    is_trading_experience_incomplete,
-}: TAccountTransferLockedProps) => {
     const history = useHistory();
     const items = [
         ...(is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete)
@@ -45,8 +39,4 @@ const AccountTransferLocked = ({
     );
 };
 
-export default connect(({ client }: TRootStore) => ({
-    is_financial_account: client.is_financial_account,
-    is_financial_information_incomplete: client.is_financial_information_incomplete,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-}))(AccountTransferLocked);
+export default observer(AccountTransferLocked);

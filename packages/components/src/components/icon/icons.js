@@ -469,6 +469,7 @@ import './common/ic-utility.svg';
 import './common/ic-verification.svg';
 import './common/ic-web-terminal.svg';
 import './common/ic-website.svg';
+import './common/ic-whats-app.svg';
 import './common/ic-windows-logo.svg';
 import './common/ic-windows.svg';
 import './common/ic-wip.svg';

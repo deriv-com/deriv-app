@@ -30,7 +30,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
         });
     };
     const exampleLink = () =>
-        card_details?.identifier_type === IDENTIFIER_TYPES.card_number ? (
+        card_details?.identifier_type === IDENTIFIER_TYPES.card_number && (
             <span
                 className='proof-of-ownership__card-open-desc-link'
                 key={0}
@@ -40,8 +40,6 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
             >
                 {localize('See example')}
             </span>
-        ) : (
-            ''
         );
     const formatIdentifier = (payment_method_identifier, identifier_type) => {
         let formatted_id = payment_method_identifier?.replace(/\s/g, '') ?? '';

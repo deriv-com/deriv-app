@@ -42,7 +42,7 @@ const AdvertiserPage = () => {
         recommended_average,
         recommended_count,
         sell_orders_count,
-    } = advertiser_page_store.advertiser_info;
+    } = advertiser_page_store.advertiser_info; // TODO: Refactor this once advertiser subscription PR is merged
 
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;

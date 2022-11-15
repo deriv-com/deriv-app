@@ -18,7 +18,7 @@ const ChatHeaderBody = observer(() => {
                     is_online={other_user_details.is_online}
                     nickname={other_user_details.name}
                     text_size='xs'
-                    large
+                    size={40}
                 />
             </div>
             <div className='order-chat__header-user'>
@@ -35,7 +35,7 @@ const ChatHeaderBody = observer(() => {
                 <OnlineStatusLabel
                     is_online={other_user_details.is_online}
                     last_online_time={other_user_details.last_online_time}
-                    size='xs'
+                    size={isMobile() ? 'xxs' : 'xs'}
                 />
                 {sendbird_store.last_other_user_activity && (
                     <Text

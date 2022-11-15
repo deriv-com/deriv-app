@@ -5,38 +5,37 @@ import { observer } from 'mobx-react-lite';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import OnlineStatusIcon from './online-status-icon';
 import './online-status.scss';
-import classNames from 'classnames';
 
-const OnlineStatusAvatar = ({ is_online, nickname, large, medium, small, text_size }) => {
+const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
     return (
-        <div
-            className={classNames('online-status__avatar', {
-                'online-status__avatar--large': large,
-                'online-status__avatar--medium': medium,
-                'online-status__avatar--small': small,
-            })}
-        >
-            <div
-                className='online-status__avatar-image'
-                style={{
-                    backgroundColor: generateHexColourFromNickname(nickname),
-                }}
-            >
-                <Text color='colored-background' line_height='x' size={text_size}>
-                    {getShortNickname(nickname)}
-                </Text>
-            </div>
-            <OnlineStatusIcon is_online={is_online} />
+        <div className='online-status__avatar'>
+            <Text className='online-status__avatar-text' color='colored-background' line_height='m' size={text_size}>
+                {getShortNickname(nickname)}
+            </Text>
+
+            <OnlineStatusIcon is_online={is_online} size='26%' />
+            <svg viewBox={`0 0 ${size * 2} ${size * 2}`} width={size} height={size}>
+                <mask id='circle'>
+                    <circle fill='white' cx={size} cy={size} r={size} />
+                    <circle fill='black' cx='86%' cy='86%' r={size * 0.37} />
+                </mask>
+                <rect
+                    fill={generateHexColourFromNickname(nickname)}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                    mask='url(#circle)'
+                 />
+            </svg>
         </div>
     );
 };
 
 OnlineStatusAvatar.propTypes = {
-    className: PropTypes.string,
+    is_online: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
     nickname: PropTypes.string.isRequired,
-    large: PropTypes.bool,
-    medium: PropTypes.bool,
-    small: PropTypes.bool,
+    size: PropTypes.number,
     text_size: PropTypes.string.isRequired,
 };
 

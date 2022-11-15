@@ -75,7 +75,7 @@ const BuySellRow = ({ row: advert }) => {
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}
                         nickname={advertiser_name}
-                        medium
+                        size={32}
                         text_size='s'
                     />
                     {/* <OnlineStatusAvatar nickname={advertiser_name} size={32} text_size='s' /> */}
@@ -183,7 +183,7 @@ const BuySellRow = ({ row: advert }) => {
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}
                         nickname={advertiser_name}
-                        small
+                        size={24}
                         text_size='xxs'
                     />
                     {/* <OnlineStatusAvatar nickname={advertiser_name} size={24} text_size='xxs' /> */}

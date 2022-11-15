@@ -62,47 +62,35 @@ const CFDDbViOnBoarding = ({
     openPasswordModal,
     toggleCFDVerificationModal,
     updateAccountStatus,
-    responseMt5LoginList,
+    updateMT5Status,
 }: TCFDDbViOnBoardingProps) => {
-    const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
+    const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
+
             if (get_account_status?.authentication) {
-                const { need_poi_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
+                const { poi_acknowledged_for_vanuatu, poi_acknowledged_for_bvi_labuan_maltainvest, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
-                if (
-                    jurisdiction_selected_shortcode === 'vanuatu' &&
-                    need_poi_for_vanuatu &&
-                    has_submitted_cfd_personal_details
-                ) {
-                    setShowSubmittedModal(false);
-                } else if (
-                    jurisdiction_selected_shortcode === 'maltainvest' &&
-                    poi_acknowledged_for_bvi_labuan_maltainvest &&
-                    poa_acknowledged
-                ) {
-                    setShowSubmittedModal(true);
-                } else if (
-                    poi_acknowledged_for_bvi_labuan_maltainvest &&
-                    poa_acknowledged &&
-                    has_submitted_cfd_personal_details
-                ) {
-                    setShowSubmittedModal(true);
-                } else {
-                    setShowSubmittedModal(false);
-                }
+                if (jurisdiction_selected_shortcode === 'vanuatu') {
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_vanuatu && poa_acknowledged && has_submitted_cfd_personal_details
+                    );
+                } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+                    setShowSubmittedModal(poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged);
+                } else
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_bvi_labuan_maltainvest &&
+                            poa_acknowledged &&
+                            has_submitted_cfd_personal_details
+                    );
             }
+
             setIsLoading(false);
         });
         setIsLoading(false);
-    };
-
-    const updateMt5LoginList = async () => {
-        const mt5_login_list_response = await WS.authorized.mt5LoginList();
-        responseMt5LoginList(mt5_login_list_response);
     };
 
     React.useEffect(() => {
@@ -115,7 +103,9 @@ const CFDDbViOnBoarding = ({
     }, [is_cfd_verification_modal_visible]);
 
     const getModalContent = () => {
-        if (is_virtual) {
+        if (is_loading) {
+            <Loading is_fullscreen={false} />;
+        } else if (is_virtual) {
             return <SwitchToRealAccountMessage onClickOK={toggleCFDVerificationModal} />;
         }
         return showSubmittedModal ? (
@@ -130,8 +120,7 @@ const CFDDbViOnBoarding = ({
         ) : (
             <CFDFinancialStpRealAccountSignup
                 onFinish={() => {
-                    getAccountStatusFromAPI();
-                    updateMt5LoginList();
+                    updateMT5Status();
                     if (has_created_account_for_selected_jurisdiction) {
                         setShowSubmittedModal(true);
                     } else {
@@ -147,9 +136,7 @@ const CFDDbViOnBoarding = ({
             ? localize('Submit your proof of identity and address')
             : localize('Add a real MT5 account');
 
-    return is_loading ? (
-        <Loading is_fullscreen={false} />
-    ) : (
+    return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
@@ -197,5 +184,5 @@ export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
     openPasswordModal: cfd.enableCFDPasswordModal,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     updateAccountStatus: client.updateAccountStatus,
-    responseMt5LoginList: client.responseMt5LoginList,
+    updateMT5Status: client.updateMT5Status,
 }))(CFDDbViOnBoarding);

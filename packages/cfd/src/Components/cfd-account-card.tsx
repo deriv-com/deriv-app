@@ -159,7 +159,6 @@ const CFDAccountCardAction = ({
 };
 
 const CFDAccountCardComponent = ({
-    account_status,
     button_label,
     commission_message,
     descriptor,
@@ -191,6 +190,7 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
+    updateAccountStatus,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -277,6 +277,7 @@ const CFDAccountCardComponent = ({
                             type: type.type,
                         });
                         setJurisdictionSelectedShortcode(landing_company_short);
+                        updateAccountStatus();
                         toggleCFDVerificationModal();
                     }}
                     primary
@@ -311,7 +312,7 @@ const CFDAccountCardComponent = ({
     );
 
     return (
-        <div ref={wrapper_ref} className={classNames('cfd-account-card__wrapper')}>
+        <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
@@ -737,7 +738,6 @@ const CFDAccountCardComponent = ({
 };
 
 const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => ({
-    account_status: client.account_status,
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
@@ -746,6 +746,7 @@ const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => 
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
+    updateAccountStatus: client.updateAccountStatus,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

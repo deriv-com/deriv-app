@@ -24,7 +24,7 @@ const JurisdictionModal = ({
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
     toggleCFDVerificationModal,
-    updateAccountStatus,
+    updateMT5Status,
     fetchAccountSettings,
     has_submitted_cfd_personal_details,
 }: TJurisdictionModalProps) => {
@@ -38,7 +38,7 @@ const JurisdictionModal = ({
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
-            updateAccountStatus();
+            updateMT5Status();
             setJurisdictionSelectedShortcode('');
             fetchAccountSettings();
         }
@@ -216,7 +216,7 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     toggleJurisdictionModal: cfd.toggleJurisdictionModal,
-    updateAccountStatus: client.updateAccountStatus,
+    updateMT5Status: client.updateMT5Status,
     fetchAccountSettings: client.fetchAccountSettings,
     has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
 }))(JurisdictionModal);

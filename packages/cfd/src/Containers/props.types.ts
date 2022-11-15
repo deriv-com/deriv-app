@@ -211,7 +211,7 @@ export type TJurisdictionModalProps = {
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
-    updateAccountStatus: () => void;
+    updateMT5Status: () => void;
     has_submitted_cfd_personal_details: boolean;
 };
 
@@ -239,17 +239,17 @@ export type TJurisdictionModalFootNoteProps = {
 };
 
 export type TCFDDbViOnBoardingProps = {
+    account_status: GetAccountStatus;
     disableApp: () => void;
     enableApp: () => void;
-    is_cfd_verification_modal_visible: boolean;
-    toggleCFDVerificationModal: () => void;
-    jurisdiction_selected_shortcode: string;
-    updateAccountStatus: () => void;
-    account_status: GetAccountStatus;
-    openPasswordModal: () => void;
-    has_submitted_cfd_personal_details: boolean;
     fetchAccountSettings: () => void;
-    is_virtual: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
-    responseMt5LoginList: (response: MT5AccountsListResponse) => void;
+    has_submitted_cfd_personal_details: boolean;
+    is_cfd_verification_modal_visible: boolean;
+    is_virtual: boolean;
+    jurisdiction_selected_shortcode: string;
+    openPasswordModal: () => void;
+    toggleCFDVerificationModal: () => void;
+    updateAccountStatus: () => void;
+    updateMT5Status: () => void;
 };

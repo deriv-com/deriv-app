@@ -69,7 +69,6 @@ export type TTradingPlatformAvailableAccount = {
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {
-    account_status: GetAccountStatus;
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
@@ -113,6 +112,7 @@ export type TCFDAccountCard = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
     setIsAcuityModalOpen: (value: boolean) => void;
+    updateAccountStatus: () => void;
 };
 
 export type TTradingPlatformAccounts = {

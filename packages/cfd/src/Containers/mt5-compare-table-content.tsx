@@ -56,6 +56,7 @@ type TDMT5CompareModalContentProps = {
     account_status: GetAccountStatus;
     upgradeable_landing_companies: unknown[];
     should_restrict_bvi_account_creation: boolean;
+    updateMT5Status: () => void;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -207,26 +208,27 @@ const eu_footer_button: TFooterButtonData[] = [{ label: localize('Add'), action:
 
 const DMT5CompareModalContent = ({
     account_settings,
-    setAccountSettings,
-    setAccountType,
+    account_status,
     clearCFDError,
     current_list,
     has_real_account,
-    is_logged_in,
     is_demo_tab,
+    is_logged_in,
     is_real_enabled,
     is_virtual,
     openDerivRealAccountNeededModal,
     openPasswordModal,
     openSwitchToRealAccountModal,
+    setAccountSettings,
+    setAccountType,
+    setJurisdictionSelectedShortcode,
+    should_restrict_bvi_account_creation,
+    show_eu_related,
     toggleCFDVerificationModal,
     toggleCompareAccounts,
     trading_platform_available_accounts,
-    show_eu_related,
-    setJurisdictionSelectedShortcode,
-    account_status,
+    updateMT5Status,
     upgradeable_landing_companies,
-    should_restrict_bvi_account_creation,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -255,6 +257,7 @@ const DMT5CompareModalContent = ({
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
+        updateMT5Status();
         if (!has_submitted_personal_details) {
             let get_settings_response: GetSettings = {};
             if (!account_settings) {
@@ -591,20 +594,21 @@ const DMT5CompareModalContent = ({
 };
 
 export default connect(({ modules, client, ui }: RootStore) => ({
-    account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
-    has_real_account: client.has_active_real_account,
-    setAccountSettings: client.setAccountSettings,
-    setAccountType: modules.cfd.setAccountType,
+    account_status: client.account_status,
+    account_type: modules.cfd.account_type,
     clearCFDError: modules.cfd.clearCFDError,
     current_list: modules.cfd.current_list,
+    has_real_account: client.has_active_real_account,
     has_real_mt5_login: client.has_real_mt5_login,
     is_virtual: client.is_virtual,
+    openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
+    setAccountSettings: client.setAccountSettings,
+    setAccountType: modules.cfd.setAccountType,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
+    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
-    account_status: client.account_status,
-    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    updateMT5Status: client.updateMT5Status,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
-    openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
 }))(DMT5CompareModalContent);

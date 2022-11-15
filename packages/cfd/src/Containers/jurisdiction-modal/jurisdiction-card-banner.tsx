@@ -126,7 +126,10 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_labuan_or_maltainvest && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) {
+    } else if (
+        ((is_bvi || is_labuan_or_maltainvest) && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
+        (is_vanuatu && poi_resubmit_for_vanuatu && need_poa_resubmission)
+    ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
                 <Text size='xxs' color='colored-background'>

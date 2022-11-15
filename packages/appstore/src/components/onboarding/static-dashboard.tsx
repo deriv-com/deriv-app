@@ -1,15 +1,13 @@
 import React from 'react';
-import { useStores } from 'Stores';
+import { useStores, useStores } from 'Stores';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
+import { observer, observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, Icon } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
 import StaticPlatformLauncher from './static-platform-launcher';
 import StaticAppLauncher from './static-applauncher';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 
 import './static-dashboard.scss';
 
@@ -61,14 +59,10 @@ const StaticDashboard = ({
     is_onboarding_animated,
     loginid,
 }: TStaticDashboard) => {
-    const { client } = useStores();
-
-    const { is_eu } = client;
-
     const Divider = () => <div className='divider' />;
 
     const { client } = useStores();
-    const { loginid: logid } = client;
+    const { is_eu, loginid: logid } = client;
 
     const is_mf = logid?.startsWith('MF');
 

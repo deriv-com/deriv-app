@@ -6,7 +6,7 @@ import { useHover } from '../../hooks/use-hover';
 type TTooltip = {
     alignment: string;
     className?: string;
-    classNameIcon: string;
+    classNameIcon?: string;
     has_error?: boolean;
     icon?: string;
     message?: string;

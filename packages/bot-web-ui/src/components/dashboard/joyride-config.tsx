@@ -185,20 +185,8 @@ export const DBOT_ONBOARDING = [
         ),
         ...joyride_props,
     },
-
-    {
-        target: 'body',
-        content: (
-            <TourGuide
-                label={localize('Want to take retake the tour?')}
-                content={localize('If yes, go to Tutorials.')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
-            />
-        ),
-        ...joyride_props,
-    },
 ];
+
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',

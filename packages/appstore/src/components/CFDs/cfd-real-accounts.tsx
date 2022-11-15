@@ -22,7 +22,7 @@ const CFDRealAccounts = ({
     current_list,
     has_real_account,
 }: TCFDAccountsProps) => {
-    const { client, modules, common, ui }: TRootStore = useStores();
+    const { client, modules, common }: TRootStore = useStores();
     const {
         dxtrade_tokens,
         setAccountType,
@@ -35,7 +35,6 @@ const CFDRealAccounts = ({
     } = modules.cfd;
     const { setAppstorePlatform, platform } = common;
     const { isEligibleForMoreRealMt5 } = client;
-    const { openDerivRealAccountNeededModal } = ui;
     const history = useHistory();
 
     const available_real_accounts: TStaticAccountProps[] = [
@@ -114,7 +113,7 @@ const CFDRealAccounts = ({
             type: getCFDAccountKey({
                 market_type: account.market_type,
                 sub_account_type: account.sub_account_type,
-                platform: 'mt5',
+                platform: CFD_PLATFORMS.MT5,
             }),
         });
     };
@@ -142,9 +141,19 @@ const CFDRealAccounts = ({
     };
 
     const existingRealAccounts = (existing_platform: TPlatform, market_type?: string) => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${existing_platform}.real.${market_type}`))
+        const acc = Object.keys(current_list).some(key => {
+            if (existing_platform === CFD_PLATFORMS.MT5) {
+                return key.startsWith(`${existing_platform}.real.${market_type}`);
+            }
+            return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
+        })
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${existing_platform}.real.${market_type}`))
+                  .filter(key => {
+                      if (existing_platform === CFD_PLATFORMS.MT5) {
+                          return key.startsWith(`${existing_platform}.real.${market_type}`);
+                      }
+                      return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
+                  })
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;

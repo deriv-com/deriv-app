@@ -8,6 +8,8 @@ import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
 import StaticPlatformLauncher from './static-platform-launcher';
 import StaticAppLauncher from './static-applauncher';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 
 import './static-dashboard.scss';
 
@@ -59,6 +61,10 @@ const StaticDashboard = ({
     is_onboarding_animated,
     loginid,
 }: TStaticDashboard) => {
+    const { client } = useStores();
+
+    const { is_eu } = client;
+
     const Divider = () => <div className='divider' />;
 
     const { client } = useStores();
@@ -85,6 +91,9 @@ const StaticDashboard = ({
         return () => clearInterval(change_index_interval_id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
+
+    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options');
+    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options account';
 
     return (
         <div className='static-dashboard'>
@@ -285,7 +294,7 @@ const StaticDashboard = ({
                                         is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
                                     }
                                 >
-                                    {localize('Options and Multipliers')}
+                                    {is_eu_title}
                                 </Text>
                             )}
                         </div>
@@ -299,29 +308,37 @@ const StaticDashboard = ({
                                         : 'prominent'
                                 }
                             >
-                                <Localize
-                                    i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simplicity of Options with <1>Multipliers</1> '
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            size='xs'
-                                            color='red'
-                                            className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_blurry.options_description,
-                                            })}
-                                        />,
-                                        <Text
-                                            key={1}
-                                            size='xs'
-                                            color='red'
-                                            className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_blurry.options_description,
-                                            })}
-                                        />,
-                                    ]}
-                                />
+                                {is_eu ? (
+                                    <Localize
+                                        i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                                        components={[
+                                            <Text
+                                                key={0}
+                                                size='xs'
+                                                color='red'
+                                                className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                    'static-dashboard-wrapper__header--underlined--blurry':
+                                                        is_blurry.options_description,
+                                                })}
+                                            />,
+                                        ]}
+                                    />
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>.'
+                                        components={[
+                                            <Text
+                                                key={0}
+                                                size='xs'
+                                                color='red'
+                                                className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                    'static-dashboard-wrapper__header--underlined--blurry':
+                                                        is_blurry.options_description,
+                                                })}
+                                            />,
+                                        ]}
+                                    />
+                                )}
                             </Text>
                         </div>
                         <div className='static-dashboard-wrapper__body'>
@@ -329,8 +346,8 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='all'
                                     platform='options'
-                                    appname='Options and Multipliers account'
-                                    description='Get a real Options and Multipliers account, start trading and manage your funds.'
+                                    appname={is_eu_account_title}
+                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
                                     currency={currency}
                                     has_account={has_account}
                                     is_blurry={is_blurry}

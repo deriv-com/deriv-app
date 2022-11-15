@@ -73,6 +73,10 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
         await switchAccount(loginid_selected);
     };
 
+    const is_eu_title = is_eu ? 'Multipliers' : 'Options';
+
+    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options account';
+
     return (
         <div className='options-accounts-container'>
             <div className='options-accounts-container__title'>
@@ -82,20 +86,25 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                         className='options-accounts-container__title-description-container--title'
                         weight='bold'
                     >
-                        <Localize i18n_default_text={'Options and Multipliers'} />
+                        <Localize i18n_default_text={is_eu_title} />
                     </Text>
                 )}
             </div>
             <div className='options-accounts-container__description'>
                 <Text size={isMobile() ? 'xxs' : 's'} line_height={isMobile() ? 'l' : 'xxl'}>
-                    <Localize
-                        key={1}
-                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the limited downside of options with <1>Multipliers</1>.'
-                        components={[
-                            <StaticUrl key={0} className='link' href='trade-types/options/' />,
-                            <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
-                        ]}
-                    />
+                    {is_eu ? (
+                        <Localize
+                            key={1}
+                            i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                            components={[<StaticUrl key={0} className='link' href='trade-types/multiplier/' />]}
+                        />
+                    ) : (
+                        <Localize
+                            key={1}
+                            i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>.'
+                            components={[<StaticUrl key={0} className='link' href='trade-types/options/' />]}
+                        />
+                    )}
                 </Text>
             </div>
 
@@ -237,10 +246,10 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                 <AccountManager
                                     has_account={false}
                                     type={'Options'}
-                                    appname={`Options and Multipliers account`}
+                                    appname={is_eu_account_title}
                                     disabled={false}
                                     onClickGet={() => ui.openRealAccountSignup()}
-                                    description={'Get a real Options account, start trading and manage your funds.'}
+                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
                                 />
                             </div>
                         )}

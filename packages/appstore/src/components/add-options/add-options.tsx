@@ -33,11 +33,13 @@ const AddOptions = ({ number_of_accounts, title, description, is_mf }: TAddOptio
                 {number_of_accounts < 4 ? (
                     <div className={'add-options--desktop'} onClick={onClickHandler}>
                         <div className='add-options--desktop_title'>
-                            <Icon
-                                icon='IcAppstoreAdd'
-                                width={getHeightWidthOfIcon().width}
-                                height={getHeightWidthOfIcon().height}
-                            />
+                            {!is_mf && (
+                                <Icon
+                                    icon='IcAppstoreAdd'
+                                    width={getHeightWidthOfIcon().width}
+                                    height={getHeightWidthOfIcon().height}
+                                />
+                            )}
                             <Text weight='bold' size='xxs' line_height='l'>
                                 <Localize i18n_default_text={title} />
                             </Text>

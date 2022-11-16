@@ -234,7 +234,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                     >
                                         <AddOptions
                                             number_of_accounts={sortedAccountList.length}
-                                            title={'More Options accounts'}
+                                            title={is_mf ? 'Manage account' : 'More Options accounts'}
                                             description={'Including cryptocurrencies'}
                                             is_mf={is_mf}
                                         />

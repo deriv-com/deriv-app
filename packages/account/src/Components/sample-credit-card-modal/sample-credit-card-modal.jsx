@@ -6,7 +6,7 @@ import { getUrlBase } from '@deriv/shared';
 export const SampleCreditCardModal = ({ is_open, onClose }) => {
     return (
         <Modal
-            className='sample_credit_card_modal'
+            className='sample-credit-card-modal'
             is_open={is_open}
             should_header_stick_body
             title={<Localize i18n_default_text='How to mask your card?' />}

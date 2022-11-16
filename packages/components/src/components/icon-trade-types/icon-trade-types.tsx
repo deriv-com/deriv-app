@@ -1,8 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon/icon';
+import { TIconProps } from '../types';
 
-const IconTradeTypes = ({ type, className, ...props }) => {
+type TIconTradeTypes = Omit<TIconProps, 'icon'> & {
+    type: string;
+    className?: string;
+};
+
+const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
     switch (type.toLowerCase()) {
         case 'asiand':
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
@@ -74,11 +79,6 @@ const IconTradeTypes = ({ type, className, ...props }) => {
         default:
             return <Icon icon='IcUnknown' className={className} {...props} />;
     }
-};
-
-IconTradeTypes.propTypes = {
-    type: PropTypes.string,
-    className: PropTypes.string,
 };
 
 export default IconTradeTypes;

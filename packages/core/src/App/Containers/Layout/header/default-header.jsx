@@ -69,6 +69,28 @@ const DefaultHeader = ({
         [removeNotificationMessage]
     );
 
+    const RedirectToOldInterface = () => {
+        const platform_store = React.useContext(PlatformContext);
+        const disablePreAppstore = () => {
+            platform_store.setIsPreAppStore(false);
+        };
+        return (
+            <div className='trading-hub-header__redirect'>
+                <BinaryLink
+                    to={routes.trade}
+                    className='trading-hub-header__redirect--link'
+                    onClick={disablePreAppstore}
+                >
+                    <Text as='p' size='xs' color='general'>
+                        <Localize i18n_default_text="Exit Trader's hub" />
+                    </Text>
+                    <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
+                    <Icon icon='IcArrowRight' size={18} color='red' />
+                </BinaryLink>
+            </div>
+        );
+    };
+
     React.useEffect(() => {
         if (is_logged_in) replaceCashierMenuOnclick();
     }, [is_logged_in]);
@@ -181,6 +203,7 @@ const DefaultHeader = ({
                 {is_logged_in && (
                     <DesktopWrapper>
                         {!window.location.pathname.startsWith(routes.appstore) && <ExploreTradingHub />}
+                        {window.location.pathname.startsWith(routes.appstore) && <RedirectToOldInterface />}
                         <Divider />
                     </DesktopWrapper>
                 )}

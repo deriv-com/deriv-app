@@ -18,7 +18,8 @@ describe('<PoiButton/>', () => {
     it('should navigate to proof_of_identity page after clicking', () => {
         renderWithRouter(<PoiButton />);
         const poi_button = screen.getByText('Proof of identity');
-        expect(poi_button.closest('a')).toHaveAttribute('href', '/account/proof-of-identity');
+        const link = screen.getByRole('link', { current: false });
+        expect(link).toHaveAttribute('href', '/account/proof-of-identity');
         fireEvent.click(poi_button);
         expect(history.location.pathname).toBe('/account/proof-of-identity');
     });

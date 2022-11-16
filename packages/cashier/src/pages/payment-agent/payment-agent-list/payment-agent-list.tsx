@@ -13,7 +13,7 @@ import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-list.scss';
 
 type TProps = {
-    setSideNotes: (notes: TSideNotesProps) => void;
+    setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
 const PaymentAgentList = ({ setSideNotes }: TProps) => {
@@ -22,13 +22,13 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
-            setSideNotes([
+            setSideNotes?.([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
                 </SideNote>,
             ]);
         } else {
-            setSideNotes([]);
+            setSideNotes?.([]);
         }
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
 

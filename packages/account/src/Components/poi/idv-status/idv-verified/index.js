@@ -1,3 +1,3 @@
-import IdvVerified from './idv-verified';
+import IdvVerified from './idv-verified.jsx';
 
 export default IdvVerified;

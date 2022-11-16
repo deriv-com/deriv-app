@@ -1,5 +1,4 @@
 import ConfigStore from 'Stores/config-store';
-import TradingHubStore from 'Stores/trading-hub-store';
 
 export type TRootStore = {
     ui: Record<string, any>;
@@ -8,5 +7,5 @@ export type TRootStore = {
     config: ConfigStore;
     modules: Record<string, any>;
     notifications: Record<string, any>;
-    tradinghub: TradingHubStore;
+    tradinghub: Record<string, any>;
 };

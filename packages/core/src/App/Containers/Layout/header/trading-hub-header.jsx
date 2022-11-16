@@ -45,7 +45,7 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode }) => {
+const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf }) => {
     const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
@@ -61,7 +61,11 @@ const TradingHubOnboarding = ({ is_dark_mode }) => {
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            history.push(routes.onboarding);
+                            if (is_mf) {
+                                toggleIsTourOpen(true);
+                            } else {
+                                history.push(routes.onboarding);
+                            }
                         }}
                     />
                 </Popover>
@@ -88,6 +92,7 @@ const TradingHubHeader = ({
     app_routing_history,
     disableApp,
     enableApp,
+    loginid,
     header_extension,
     is_dark_mode,
     is_logged_in,
@@ -108,7 +113,9 @@ const TradingHubHeader = ({
     is_social_signup,
     replaceCashierMenuOnclick,
     menu_items,
+    toggleIsTourOpen,
 }) => {
+    const is_mf = loginid?.startsWith('MF');
     const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
@@ -171,7 +178,11 @@ const TradingHubHeader = ({
                     <RedirectToOldInterface />
                     <Divider />
                     {window.location.pathname.startsWith(routes.appstore) && (
-                        <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                        <TradingHubOnboarding
+                            is_dark_mode={is_dark_mode}
+                            toggleIsTourOpen={toggleIsTourOpen}
+                            is_mf={is_mf}
+                        />
                     )}
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
@@ -195,7 +206,11 @@ const TradingHubHeader = ({
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
-                        <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                        <TradingHubOnboarding
+                            is_dark_mode={is_dark_mode}
+                            toggleIsTourOpen={toggleIsTourOpen}
+                            is_mf={is_mf}
+                        />
                         <ShowNotifications
                             is_notifications_visible={is_notifications_visible}
                             notifications_count={notifications_count}
@@ -233,6 +248,7 @@ TradingHubHeader.propTypes = {
     enableApp: PropTypes.func,
     header_extension: PropTypes.any,
     is_dark_mode: PropTypes.bool,
+    loginid: PropTypes.string,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
@@ -253,9 +269,10 @@ TradingHubHeader.propTypes = {
     is_settings_modal_on: PropTypes.bool,
     menu_items: PropTypes.array,
     replaceCashierMenuOnclick: PropTypes.func,
+    toggleIsTourOpen: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, notifications, ui, menu }) => ({
+export default connect(({ client, common, modules, notifications, ui, menu, tradinghub }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     disableApp: ui.disableApp,
@@ -279,4 +296,6 @@ export default connect(({ client, common, modules, notifications, ui, menu }) =>
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
+    toggleIsTourOpen: tradinghub.toggleIsTourOpen,
+    loginid: client.loginid,
 }))(withRouter(TradingHubHeader));

@@ -8,6 +8,7 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
+    loginid,
     currency,
     setVerificationCode,
     verification_code,
@@ -20,6 +21,7 @@ const Redirect = ({
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
+    const is_mf = loginid?.startsWith('MF');
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -39,6 +41,12 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            } else if (is_mf) {
+                history.push({
+                    pathname: routes.trading_hub,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
             } else {
                 history.push({
                     pathname: routes.onboarding,
@@ -179,6 +187,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     currency: PropTypes.string,
+    loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
@@ -196,6 +205,7 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
+        loginid: client.loginid,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

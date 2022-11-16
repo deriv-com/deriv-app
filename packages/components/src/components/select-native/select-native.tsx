@@ -63,7 +63,7 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
         }, {});
         const group_names = Object.keys(dropdown_items);
         return (
-            <>
+            <React.Fragment>
                 {group_names.map(option => (
                     <optgroup key={option} label={option}>
                         {dropdown_items[option].map((value: TListItem) => (
@@ -73,17 +73,17 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
                         ))}
                     </optgroup>
                 ))}
-            </>
+            </React.Fragment>
         );
     }
     return (
-        <>
+        <React.Fragment>
             {options.map(option => (
                 <option key={option.id || option.value} value={use_text ? option.text : option.value}>
                     {option.nativepicker_text || option.text}
                 </option>
             ))}
-        </>
+        </React.Fragment>
     );
 };
 

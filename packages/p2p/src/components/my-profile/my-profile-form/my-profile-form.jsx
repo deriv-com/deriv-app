@@ -16,7 +16,7 @@ const MyProfileForm = () => {
             enableReinitialize
             initialValues={{
                 contact_info: general_store.contact_info,
-                default_advert_description: my_profile_store.default_advert_description,
+                default_advert_description: general_store.default_advert_description,
                 payment_info: my_profile_store.payment_info,
             }}
             onSubmit={my_profile_store.handleSubmit}
@@ -58,7 +58,7 @@ const MyProfileForm = () => {
                                     is_relative_hint
                                     className='my-profile-form__textarea'
                                     has_character_counter
-                                    initial_character_count={my_profile_store.default_advert_description.length}
+                                    initial_character_count={general_store.default_advert_description.length}
                                     max_characters={300}
                                 />
                             )}

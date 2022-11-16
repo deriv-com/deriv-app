@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { SelectHTMLAttributes } from 'react';
+import React from 'react';
 import Field from '../field/field';
 import Text from '../text/text';
 import Icon from '../icon/icon';
@@ -19,7 +19,7 @@ type TSelectNative = {
     value: string | number;
     list_items: Array<TListItem> | { [key: string]: Array<TListItem> };
 } & Omit<TSelectNativeOptions, 'list_items'> &
-    Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>; // Default type of value in HTMLSelectElement is only string but here string | number is required
+    Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'value'>; // Default type of value in HTMLSelectElement is only string but here string | number is required
 
 type TSelectNativeOptions = {
     list_items: Array<TListItem>;

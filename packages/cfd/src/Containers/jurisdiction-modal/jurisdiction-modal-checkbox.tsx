@@ -57,7 +57,6 @@ const JurisdictionCheckBox = ({
                         value={is_checked}
                         onChange={onCheck}
                         label={getCheckboxLabel()}
-                        id='jurisdiction_checkbox'
                         defaultChecked={!!is_checked}
                     />
                 </div>

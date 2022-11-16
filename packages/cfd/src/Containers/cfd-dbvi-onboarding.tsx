@@ -16,40 +16,32 @@ import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
-import { TCFDDbViOnBoardingProps } from './props.types';
+import { TCFDDbviOnboardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
 type TSwitchToRealAccountMessage = {
     onClickOK: () => void;
 };
 
-const SwitchToRealAccountMessage = ({ onClickOK }: TSwitchToRealAccountMessage) => {
-    return (
-        <div className='da-icon-with-message'>
-            <Icon icon={'IcPoaLock'} size={128} />
-            <Text
-                className='da-icon-with-message__text'
-                as='p'
-                color='general'
-                size={isMobile() ? 'xs' : 's'}
-                line_height='m'
-                weight='bold'
-            >
-                {localize('Switch to your real account to submit your documents')}
-            </Text>
-            <Button
-                has_effect
-                text={localize('Ok')}
-                onClick={() => {
-                    onClickOK();
-                }}
-                style={{ margin: '2rem' }}
-                primary
-            />
-        </div>
-    );
-};
-const CFDDbViOnBoarding = ({
+const SwitchToRealAccountMessage = ({ onClickOK }: TSwitchToRealAccountMessage) => (
+    <div className='da-icon-with-message'>
+        <Icon icon={'IcPoaLock'} size={128} />
+        <Text className='da-icon-with-message__text' as='p' size={isMobile() ? 'xs' : 's'} weight='bold'>
+            {localize('Switch to your real account to submit your documents')}
+        </Text>
+        <Button
+            has_effect
+            text={localize('Ok')}
+            onClick={() => {
+                onClickOK();
+            }}
+            className='da-icon-with-message__button'
+            primary
+        />
+    </div>
+);
+
+const CFDDbviOnboarding = ({
     account_status,
     disableApp,
     enableApp,
@@ -63,7 +55,7 @@ const CFDDbViOnBoarding = ({
     toggleCFDVerificationModal,
     updateAccountStatus,
     updateMT5Status,
-}: TCFDDbViOnBoardingProps) => {
+}: TCFDDbviOnboardingProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
@@ -185,4 +177,4 @@ export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     updateAccountStatus: client.updateAccountStatus,
     updateMT5Status: client.updateMT5Status,
-}))(CFDDbViOnBoarding);
+}))(CFDDbviOnboarding);

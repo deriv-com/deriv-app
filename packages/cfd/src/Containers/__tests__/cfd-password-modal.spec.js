@@ -191,7 +191,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
-    it('should show transfer message on successfull dxtrade account creation', async () => {
+    it('should show transfer message on successful DerivX account creation', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,

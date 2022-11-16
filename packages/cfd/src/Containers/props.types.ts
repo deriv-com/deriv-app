@@ -237,7 +237,7 @@ export type TJurisdictionModalFootNoteProps = {
     should_restrict_bvi_account_creation: boolean;
 };
 
-export type TCFDDbViOnBoardingProps = {
+export type TCFDDbviOnboardingProps = {
     account_status: GetAccountStatus;
     disableApp: () => void;
     enableApp: () => void;

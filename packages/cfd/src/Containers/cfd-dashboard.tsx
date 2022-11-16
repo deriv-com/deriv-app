@@ -19,7 +19,7 @@ import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
 import MT5TradeModal from './mt5-trade-modal';
-import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
+import CFDDbviOnboarding from './cfd-dbvi-onboarding';
 import CFDDownloadContainer from '../Components/cfd-download-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -621,9 +621,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                         <CFDServerErrorDialog />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
-                            <>
-                                <CFDDbViOnBoarding openPasswordModal={openRealPasswordModal} />
-                            </>
+                            <CFDDbviOnboarding openPasswordModal={openRealPasswordModal} />
                         )}
                         <CFDResetPasswordModal platform={platform} />
                         <ResetTradingPasswordModal

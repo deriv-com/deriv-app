@@ -2430,8 +2430,7 @@ export default class ClientStore extends BaseStore {
 
     async updateMT5Status() {
         this.updateAccountStatus();
-        const mt5_login_list_response = await WS.authorized.mt5LoginList();
-        this.responseMt5LoginList(mt5_login_list_response);
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
     }
 }
 /* eslint-enable */

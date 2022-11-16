@@ -257,7 +257,9 @@ const DMT5CompareModalContent = ({
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
-        updateMT5Status();
+        if (is_logged_in && !is_virtual) {
+            updateMT5Status();
+        }
         if (!has_submitted_personal_details) {
             let get_settings_response: GetSettings = {};
             if (!account_settings) {

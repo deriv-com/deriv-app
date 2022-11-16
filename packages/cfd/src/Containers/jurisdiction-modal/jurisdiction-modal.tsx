@@ -37,7 +37,7 @@ const JurisdictionModal = ({
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
-        if (is_jurisdiction_modal_visible) {
+        if (is_jurisdiction_modal_visible && !is_virtual) {
             updateMT5Status();
             setJurisdictionSelectedShortcode('');
             fetchAccountSettings();

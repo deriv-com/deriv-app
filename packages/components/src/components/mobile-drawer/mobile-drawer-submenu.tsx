@@ -64,7 +64,7 @@ const SubMenu = ({
 
 type TSubmenuList = {
     has_subheader: boolean;
-    submenu_title: React.ReactElement;
+    submenu_title: string | React.ReactElement;
     collapse: () => void;
     is_expanded: boolean;
 };

@@ -83,10 +83,6 @@ const MobileDrawer = ({
     </Drawer>
 );
 
-MobileDrawer.defaultProps = {
-    alignment: 'left',
-};
-
 MobileDrawer.Body = Body;
 MobileDrawer.Footer = Footer;
 MobileDrawer.Item = Item;

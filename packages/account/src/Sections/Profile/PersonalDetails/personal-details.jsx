@@ -248,7 +248,7 @@ export const PersonalDetailsForm = ({
             setTimeout(() => {
                 if (data.set_settings.notification) {
                     showPOAAddressMismatchSuccessNotification();
-                } else {
+                } else if (has_poa_address_mismatch) {
                     showPOAAddressMismatchFailureNotification();
                 }
             }, 1000);

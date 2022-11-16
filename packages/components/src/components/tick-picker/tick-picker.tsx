@@ -9,12 +9,12 @@ import Text from '../text';
 const THROTTLE_INTERVAL_TIME = 100;
 
 type TTickPicker = {
-    default_value: string;
+    default_value: number;
     is_submit_disabled?: boolean;
     min_value: number;
     max_value: number;
     onSubmit: (props: { target: { value: number; name: string } }) => void;
-    submit_label: string | React.ReactElement;
+    submit_label: React.ReactElement;
     singular_label: string;
     plural_label: string;
     onValueChange: (tick_value: number) => void;
@@ -32,7 +32,7 @@ const TickPicker = ({
     onValueChange,
 }: TTickPicker) => {
     const normalizedTick = (tick: number) => `${tick}`.padStart(2, '0');
-    const [tick_value, setTickValue] = React.useState(parseInt(default_value));
+    const [tick_value, setTickValue] = React.useState(default_value);
 
     const handleDecrease = () => {
         if (tick_value - 1 >= min_value) {

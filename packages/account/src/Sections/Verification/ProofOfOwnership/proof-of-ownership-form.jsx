@@ -84,6 +84,7 @@ const ProofOfOwnershipForm = ({
                     errors.data[card_key][item_key].payment_method_identifier = localize('Enter your full card number');
                 }
                 has_errors =
+                    has_errors ||
                     errors?.data?.[card_key]?.[item_key]?.payment_method_identifier?.trim?.()?.length > 0 ||
                     errors?.data?.[card_key]?.[item_key]?.files?.length > 0;
             });

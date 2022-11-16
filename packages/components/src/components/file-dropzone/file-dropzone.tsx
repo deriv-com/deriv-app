@@ -1,11 +1,42 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactElement, ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Dropzone from 'react-dropzone';
+import Dropzone, { DropzoneOptions } from 'react-dropzone';
 import { truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
-const FadeInMessage = ({ is_visible, color, children, key, timeout, no_text }) => (
+type TFadeInMessage = {
+    is_visible: boolean;
+    color?: string;
+    key?: string;
+    timeout: number;
+    no_text?: boolean;
+};
+
+type TPreviewSingle = {
+    dropzone_ref: RefObject<HTMLElement>;
+} & TFileDropzone;
+
+type TFileDropzone = {
+    className?: string;
+    validation_error_message: ReactNode & ((open?: () => void) => ReactNode);
+    max_size?: number;
+    value: Array<{ name: string }>;
+    message: ReactNode & ((open?: () => void) => ReactNode);
+    filename_limit?: number;
+    error_message: string;
+    hover_message: string;
+    preview_single?: ReactElement;
+} & DropzoneOptions;
+
+const FadeInMessage = ({
+    is_visible,
+    color,
+    children,
+    key,
+    timeout,
+    no_text,
+}: React.PropsWithChildren<TFadeInMessage>) => (
     <CSSTransition
         appear
         key={key}
@@ -38,7 +69,7 @@ const FadeInMessage = ({ is_visible, color, children, key, timeout, no_text }) =
     </CSSTransition>
 );
 
-const PreviewSingle = props => {
+const PreviewSingle = (props: TPreviewSingle) => {
     if (props.preview_single) {
         return <div className='dc-file-dropzone__message'>{props.preview_single}</div>;
     }
@@ -57,8 +88,9 @@ const PreviewSingle = props => {
     );
 };
 
-const FileDropzone = ({ className, noClick = false, ...props }) => {
+const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const dropzone_ref = React.useRef(null);
+
     return (
         <Dropzone
             // sends back accepted files array

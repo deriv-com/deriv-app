@@ -37,7 +37,12 @@ type TCryptoConfig = {
 
 const CryptoIcon = ({ currency }: TCryptoIcon) => {
     return currency === 'USD' ? (
-        <Icon icon={`IcCurrency${crypto_icon_config[currency]}`} is_item_blurry size={38} />
+        <Icon
+            icon={`IcCurrency${crypto_icon_config[currency]}`}
+            is_item_blurry
+            size={38}
+            className={'static-applauncher__icon--selected'}
+        />
     ) : (
         <Icon
             icon={`IcCurrency${crypto_icon_config[currency]}`}

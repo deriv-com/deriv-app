@@ -59,8 +59,6 @@ const StaticCFDAccountManager = ({
     is_blurry,
     financial_amount,
     is_onboarding_animated,
-    is_derivx_last_step,
-    is_financial_last_step,
 }: TStaticCFDAccountManager) => {
     return (
         <div className='static-cfd-account-manager'>

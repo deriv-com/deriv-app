@@ -2,7 +2,9 @@ import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import { useStores } from 'Stores';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import WalletIcon, { Icons } from 'Assets/svgs/wallet';
 
 import './static-platform-launcher.scss';
@@ -24,6 +26,11 @@ const PlatformLauncher = ({
     is_item_blurry,
     has_applauncher_account,
 }: TPlatformLauncherProps) => {
+    const { client } = useStores();
+    const { loginid } = client;
+
+    const is_mf = loginid?.startsWith('MF');
+
     return (
         <div
             className={classNames('static-platform-launcher', {
@@ -55,7 +62,12 @@ const PlatformLauncher = ({
                 )}
             </div>
             {has_applauncher_account && !isMobile() && (
-                <Button primary className='static-platform-launcher__trade-button'>
+                <Button
+                    primary
+                    className={classNames('static-platform-launcher__trade-button', {
+                        'static-platform-launcher__trade-button--eu': is_mf,
+                    })}
+                >
                     <Localize i18n_default_text='Trade' />
                 </Button>
             )}
@@ -63,4 +75,4 @@ const PlatformLauncher = ({
     );
 };
 
-export default PlatformLauncher;
+export default observer(PlatformLauncher);

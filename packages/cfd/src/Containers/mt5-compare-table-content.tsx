@@ -471,14 +471,14 @@ const DMT5CompareModalContent = ({
         );
     };
 
-    const pre_appstore_class = should_show_derivx ? '__pre-appstore' : '';
+    const pre_appstore_class = should_show_derivx && synthetic_accounts_count ? '__pre-appstore' : '';
 
     const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
         <Table.Row
             className={
                 show_eu_related
                     ? 'cfd-real-compare-accounts-row-eu'
-                    : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}--instruments`, {
+                    : classNames(`cfd-real-compare-accounts__table-row--instruments${pre_appstore_class}`, {
                           [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
                               available_accounts_count < 6,
                       })
@@ -578,7 +578,7 @@ const DMT5CompareModalContent = ({
                                     show_eu_related
                                         ? 'cfd-real-compare-accounts-row-eu'
                                         : classNames(`cfd-real-compare-accounts__table-header${pre_appstore_class}`, {
-                                              [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}`]:
+                                              [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
                                                   available_accounts_count < 6,
                                           })
                                 }

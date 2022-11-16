@@ -21,7 +21,6 @@ import BlockUserModal from 'Components/block-user/block-user-modal';
 import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import './advertiser-page.scss';
-import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();
@@ -33,9 +32,7 @@ const AdvertiserPage = () => {
         first_name,
         full_verification,
         id,
-        is_online,
         last_name,
-        last_online_time,
         name,
         rating_average,
         rating_count,
@@ -148,10 +145,6 @@ const AdvertiserPage = () => {
                             {isMobile() && (
                                 <div className='advertiser-page__row'>
                                     <div className='advertiser-page__rating--row'>
-                                        <OnlineStatusIcon is_online={is_online} />
-                                        <OnlineStatusLabel is_online={is_online} last_online_time={last_online_time} />
-                                    </div>
-                                    <div className='advertiser-page__rating--row'>
                                         <Text
                                             className='advertiser-page__joined-since'
                                             color='less-prominent'
@@ -173,13 +166,6 @@ const AdvertiserPage = () => {
                             <div className='advertiser-page__rating'>
                                 {!isMobile() && (
                                     <React.Fragment>
-                                        <div className='advertiser-page__rating--row'>
-                                            <OnlineStatusIcon is_online={is_online} />
-                                            <OnlineStatusLabel
-                                                is_online={is_online}
-                                                last_online_time={last_online_time}
-                                            />
-                                        </div>
                                         <div className='advertiser-page__rating--row'>
                                             <Text
                                                 className='advertiser-page__joined-since'

@@ -36,7 +36,7 @@ describe('<IdvVerified />', () => {
     });
 
     it('should render the IdvVerified component when needs_poa is false and is_from_external is true in mobile', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         renderWithRouter(<IdvVerified is_from_external />);
         expect(screen.getByTestId('poi_idv_verified_container')).toBeInTheDocument();
         expect(screen.getByText(/mockedsvgicon/i)).toBeInTheDocument();

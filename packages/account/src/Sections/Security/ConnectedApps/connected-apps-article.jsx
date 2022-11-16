@@ -12,7 +12,7 @@ const openAPIManagingWebsite = () => {
 const ConnectedAppsArticle = () => (
     <AccountArticle
         className='connected-apps__article'
-        title={localize('Want to know more about APIs')}
+        title={localize('Want to know more about APIs?')}
         descriptions={[
             <Localize
                 key={0}

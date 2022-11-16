@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/triple-slash-reference: "off" */
+/// <reference path="../../../@types/react-drag-drawer/react-drag-drawer-config.d.ts" />
 import classNames from 'classnames';
 import React from 'react';
 import Drawer from 'react-drag-drawer';

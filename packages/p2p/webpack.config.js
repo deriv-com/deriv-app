@@ -15,8 +15,9 @@ module.exports = function () {
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, 'lib'),
-            filename: 'index.js',
+            chunkFilename: 'p2p/js/p2p.[name].[contenthash].js',
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'p2p/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/p2p',
             libraryTarget: 'umd',

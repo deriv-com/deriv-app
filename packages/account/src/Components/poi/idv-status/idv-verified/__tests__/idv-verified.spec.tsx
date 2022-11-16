@@ -31,10 +31,7 @@ describe('<IdvVerified />', () => {
         expect(screen.getByText(submit_text)).toBeInTheDocument();
         expect(history.location.pathname).not.toBe('/account/proof-of-address');
         fireEvent.click(screen.getByText(submit_text));
-        expect(screen.getByRole('link', { name: submit_text }).closest('a')).toHaveAttribute(
-            'href',
-            '/account/proof-of-address'
-        );
+        expect(screen.getByRole('link', { name: submit_text })).toHaveAttribute('href', '/account/proof-of-address');
         expect(history.location.pathname).toBe('/account/proof-of-address');
     });
 

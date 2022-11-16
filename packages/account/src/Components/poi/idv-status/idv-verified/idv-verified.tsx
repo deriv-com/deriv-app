@@ -5,7 +5,12 @@ import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
 import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
 
-const IdvVerified = ({ needs_poa, is_from_external }) => {
+type TIdvVerified = {
+    needs_poa: boolean;
+    is_from_external: boolean;
+};
+
+const IdvVerified = ({ needs_poa, is_from_external }: Partial<TIdvVerified>) => {
     const header_Text = needs_poa
         ? localize('Your ID is verified. You will also need to submit proof of your address.')
         : localize('ID verification passed');

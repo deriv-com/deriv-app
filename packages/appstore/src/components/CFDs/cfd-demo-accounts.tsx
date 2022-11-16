@@ -117,7 +117,6 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
             <div className='cfd-demo-account__accounts'>
                 {available_demo_accounts.map(account => {
                     const existing_demo_accounts = existingDemoAccounts(account.platform, account.type);
-
                     return (
                         account.is_visible && (
                             <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
@@ -145,21 +144,26 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                                         'demo',
                                                         dxtrade_tokens.demo
                                                     )}
-                                                    onClickTopUp={() =>
+                                                    onClickTopUp={() => {
                                                         openAccountTransfer(
                                                             current_list[
-                                                                Object.keys(current_list).find((key: string) =>
-                                                                    key.startsWith(
-                                                                        `${account.platform}.demo.${account.type}`
-                                                                    )
-                                                                ) || ''
+                                                                Object.keys(current_list).find((key: string) => {
+                                                                    if (account.platform === 'mt5') {
+                                                                        return key.startsWith(
+                                                                            `${account.platform}.demo.${account.type}`
+                                                                        );
+                                                                    }
+                                                                    return key.startsWith(
+                                                                        `${account.platform}.demo.${account.platform}@${account.type}`
+                                                                    );
+                                                                }) || ''
                                                             ],
                                                             {
                                                                 category: 'demo',
                                                                 type: account.type,
                                                             }
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                     onClickTrade={() => {
                                                         toggleMT5TradeModal();
                                                         setMT5TradeAccount(existing_account);

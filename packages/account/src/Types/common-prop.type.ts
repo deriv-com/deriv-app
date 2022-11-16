@@ -2,6 +2,7 @@
 
 import { Authorize } from '@deriv/api-types';
 import { Requireable, InferProps } from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 export type TToken = {
     display_name: string;
@@ -20,7 +21,7 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
 };
 
 export type TPlatformContext = {
-    is_appstore: boolean;
+    is_appstore?: boolean;
 };
 
 export type TCurrencyConfig = {
@@ -70,3 +71,28 @@ export type TApiContext = {
 };
 
 export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';
+
+export type TRoute = {
+    exact?: boolean;
+    id?: string;
+    icon_component?: string;
+    is_invisible?: boolean;
+    path?: string;
+    icon?: string;
+    default?: boolean;
+    to?: string;
+    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    getTitle?: () => string;
+    subroutes?: TRoute[];
+};
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
+};
+
+export type TBinaryRoutes = {
+    is_logged_in: boolean;
+    is_logging_in: boolean;
+};

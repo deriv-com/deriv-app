@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
+import { TPlatformContext } from 'Types';
 
-const BinaryLink = ({ active_class, to, children, ...props }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    const path = normalizePath(to);
+type TBinaryLink = {
+    active_class: string;
+    to: string;
+};
+
+const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const path = normalizePath(to as string);
     const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
 
     if (!route) {
@@ -21,13 +26,6 @@ const BinaryLink = ({ active_class, to, children, ...props }) => {
     ) : (
         <a {...props}>{children}</a>
     );
-};
-
-BinaryLink.propTypes = {
-    active_class: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-    is_social_signup: PropTypes.bool,
-    to: PropTypes.string,
 };
 
 export default BinaryLink;

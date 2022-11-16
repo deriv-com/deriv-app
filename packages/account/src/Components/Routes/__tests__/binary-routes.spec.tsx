@@ -11,7 +11,7 @@ jest.mock('Stores/connect', () => ({
     connect: () => Component => Component,
 }));
 
-jest.mock('../route-with-sub-routes.jsx', () => jest.fn(() => <div>RouteWithSubRoutes</div>));
+jest.mock('../route-with-sub-routes', () => jest.fn(() => <div>RouteWithSubRoutes</div>));
 
 jest.mock('Constants/routes-config', () => () => [{}]);
 

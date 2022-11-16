@@ -45,7 +45,7 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf }) => {
+const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf, is_eu, is_eu_country }) => {
     const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
@@ -61,7 +61,7 @@ const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf }) => {
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            if (is_mf) {
+                            if (is_mf || is_eu || is_eu_country) {
                                 toggleIsTourOpen(true);
                             } else {
                                 history.push(routes.onboarding);
@@ -93,6 +93,8 @@ const TradingHubHeader = ({
     disableApp,
     enableApp,
     loginid,
+    is_eu,
+    is_eu_country,
     header_extension,
     is_dark_mode,
     is_logged_in,
@@ -182,6 +184,8 @@ const TradingHubHeader = ({
                             is_dark_mode={is_dark_mode}
                             toggleIsTourOpen={toggleIsTourOpen}
                             is_mf={is_mf}
+                            is_eu={is_eu}
+                            is_eu_country={is_eu_country}
                         />
                     )}
                     <ShowNotifications
@@ -210,6 +214,8 @@ const TradingHubHeader = ({
                             is_dark_mode={is_dark_mode}
                             toggleIsTourOpen={toggleIsTourOpen}
                             is_mf={is_mf}
+                            is_eu={is_eu}
+                            is_eu_country={is_eu_country}
                         />
                         <ShowNotifications
                             is_notifications_visible={is_notifications_visible}
@@ -270,6 +276,8 @@ TradingHubHeader.propTypes = {
     menu_items: PropTypes.array,
     replaceCashierMenuOnclick: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu, tradinghub }) => ({
@@ -277,6 +285,8 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     app_routing_history: common.app_routing_history,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
     header_extension: ui.header_extension,
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,

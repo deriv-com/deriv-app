@@ -1243,7 +1243,7 @@ export default class NotificationStore extends BaseStore {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }
 
-    handlePOAAddressMismatchNotifications() {
+    handlePOAAddressMismatchNotifications = () => {
         const { client } = this.root_store;
         const { account_status } = client;
         const { status } = account_status;
@@ -1252,9 +1252,9 @@ export default class NotificationStore extends BaseStore {
         if (poa_address_mismatch) {
             this.showPOAAddressMismatchWarningNotification();
         }
-    }
+    };
 
-    showPOAAddressMismatchWarningNotification() {
+    showPOAAddressMismatchWarningNotification = () => {
         this.addNotificationMessage({
             key: 'poa_address_mismatch_warning',
             header: localize('Please update your address'),
@@ -1268,9 +1268,9 @@ export default class NotificationStore extends BaseStore {
             type: 'warning',
             should_show_again: true,
         });
-    }
+    };
 
-    showPOAAddressMismatchSuccessNotification() {
+    showPOAAddressMismatchSuccessNotification = () => {
         this.addNotificationMessage({
             key: 'poa_address_mismatch_success',
             header: localize('Your proof of address has been verified'),
@@ -1278,9 +1278,9 @@ export default class NotificationStore extends BaseStore {
             should_show_again: true,
             platform: 'Account',
         });
-    }
+    };
 
-    showPOAAddressMismatchFailureNotification() {
+    showPOAAddressMismatchFailureNotification = () => {
         this.addNotificationMessage({
             key: 'poa_address_mismatch_failure',
             header: localize('Your address doesn’t match your profile'),
@@ -1289,5 +1289,5 @@ export default class NotificationStore extends BaseStore {
             should_show_again: true,
             platform: 'Account',
         });
-    }
+    };
 }

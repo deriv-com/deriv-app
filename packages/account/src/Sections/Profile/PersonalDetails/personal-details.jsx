@@ -244,11 +244,14 @@ export const PersonalDetailsForm = ({
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
-            if (data.set_settings.notification) {
-                showPOAAddressMismatchSuccessNotification();
-            } else {
-                showPOAAddressMismatchFailureNotification();
-            }
+            // Adding a delay to show the notification after the page reload
+            setTimeout(() => {
+                if (data.set_settings.notification) {
+                    showPOAAddressMismatchSuccessNotification();
+                } else {
+                    showPOAAddressMismatchFailureNotification();
+                }
+            }, 1000);
 
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();

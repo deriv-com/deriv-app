@@ -42,15 +42,15 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         }
     }, [footer, footer_height]);
 
-    const portal_element = document.getElementById(portal_element_id) as HTMLDivElement;
+    const portal_element = document.getElementById(portal_element_id);
 
     const checkVisibility = () => {
         if (props.visible) {
             document.body.style.overflow = 'hidden';
-            portal_element.style.overflow = 'hidden';
+            if (portal_element) portal_element.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
-            portal_element.style.overflow = 'unset';
+            if (portal_element) portal_element.style.overflow = 'unset';
         }
     };
 

@@ -12,6 +12,7 @@ import { api_error_codes } from '../constants/api-error-codes';
 
 export default class BuySellStore extends BaseStore {
     api_error_message = '';
+    advert_online_statuses = {};
     contact_info = '';
     error_message = '';
     form_error_code = '';
@@ -25,6 +26,7 @@ export default class BuySellStore extends BaseStore {
     items = [];
     local_currencies = [];
     local_currency = null;
+    online_status_interval = null;
     payment_info = '';
     receive_amount = 0;
     search_results = [];
@@ -60,6 +62,7 @@ export default class BuySellStore extends BaseStore {
 
         makeObservable(this, {
             api_error_message: observable,
+            advert_online_statuses: observable,
             contact_info: observable,
             error_message: observable,
             form_error_code: observable,
@@ -71,6 +74,7 @@ export default class BuySellStore extends BaseStore {
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
             items: observable,
+            online_status_interval: observable,
             payment_info: observable,
             receive_amount: observable,
             search_results: observable,
@@ -112,7 +116,9 @@ export default class BuySellStore extends BaseStore {
             onClickReset: action.bound,
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
+            registerOnlineStatusInterval: action.bound,
             setApiErrorMessage: action.bound,
+            setAdvertOnlineStatuses: action.bound,
             setContactInfo: action.bound,
             setErrorMessage: action.bound,
             setFormErrorCode: action.bound,
@@ -149,6 +155,7 @@ export default class BuySellStore extends BaseStore {
             setSubmitFormFn: action.bound,
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
+            stopOnlineStatusInterval: action.bound,
             validatePopup: action.bound,
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
@@ -386,6 +393,7 @@ export default class BuySellStore extends BaseStore {
                             });
 
                             this.setItems([...old_items, ...new_items]);
+                            this.setAdvertOnlineStatuses(list);
 
                             const search_results = [];
 
@@ -414,6 +422,7 @@ export default class BuySellStore extends BaseStore {
                         this.setApiErrorMessage(response?.error.message);
                     }
                 }
+                this.registerOnlineStatusInterval(startIndex);
                 this.setIsLoading(false);
                 resolve();
             });
@@ -473,6 +482,19 @@ export default class BuySellStore extends BaseStore {
 
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
+    }
+
+    setAdvertOnlineStatuses(list) {
+        const advert_online_statuses = {};
+        list.map(advert => {
+            const { advertiser_details } = advert;
+            advert_online_statuses[advertiser_details.id] = advertiser_details.is_online;
+        });
+        // preserve previously loaded adverts from different startIndex
+        this.advert_online_statuses = {
+            ...this.advert_online_statuses,
+            ...advert_online_statuses,
+        };
     }
 
     setContactInfo(contact_info) {
@@ -660,6 +682,13 @@ export default class BuySellStore extends BaseStore {
         this.setShouldShowVerification(true);
     }
 
+    stopOnlineStatusInterval() {
+        if (this.online_status_interval) {
+            clearInterval(this.online_status_interval);
+        }
+        this.online_status_interval = null;
+    }
+
     validatePopup(values) {
         const validations = {
             amount: [
@@ -735,6 +764,35 @@ export default class BuySellStore extends BaseStore {
         });
 
         return errors;
+    }
+
+    registerOnlineStatusInterval(startIndex) {
+        const { general_store } = this.root_store;
+        const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
+
+        const updateAdvertList = () => {
+            requestWS({
+                p2p_advert_list: 1,
+                counterparty_type,
+                offset: startIndex,
+                limit: general_store.list_item_limit,
+                sort_by: this.sort_by,
+                use_client_limits: this.should_use_client_limits ? 1 : 0,
+                ...(this.selected_payment_method_value.length > 0
+                    ? { payment_method: this.selected_payment_method_value }
+                    : {}),
+                ...(this.selected_local_currency ? { local_currency: this.selected_local_currency } : {}),
+            }).then(response => {
+                if (response?.error) return;
+                const { list } = response.p2p_advert_list;
+                this.setAdvertOnlineStatuses(list);
+            });
+        };
+
+        if (this.has_more_items_to_load || this.online_status_interval) {
+            clearInterval(this.online_status_interval);
+        }
+        this.online_status_interval = setInterval(updateAdvertList, 60000);
     }
 
     registerAdvertIntervalReaction() {

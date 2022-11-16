@@ -23,6 +23,8 @@ export default class OrderStore {
             is_loading_modal_open: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
+            online_status: observable,
+            online_status_interval: observable,
             orders: observable,
             order_id: observable,
             order_payment_method_details: observable,
@@ -47,6 +49,7 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            registerOnlineStatusInterval: action.bound,
             setForceRerenderOrders: action.bound,
             setApiErrorMessage: action.bound,
             setCancellationBlockDuration: action.bound,
@@ -63,6 +66,7 @@ export default class OrderStore {
             setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
+            setOnlineStatus: action.bound,
             setOrderPaymentMethodDetails: action.bound,
             setOrderDetails: action.bound,
             setOrderId: action.bound,
@@ -106,6 +110,7 @@ export default class OrderStore {
     is_loading_modal_open = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
+    online_status = {};
     orders = [];
     order_id = null;
     order_payment_method_details = null;
@@ -116,6 +121,7 @@ export default class OrderStore {
     verification_link_error_message = '';
 
     interval;
+    online_status_interval = null;
     order_info_subscription = {};
     previous_orders = [];
 
@@ -320,6 +326,7 @@ export default class OrderStore {
                     const { p2p_order_info } = response;
                     if (p2p_order_info) {
                         this.setQueryDetails(p2p_order_info);
+                        this.setOnlineStatus(p2p_order_info.advertiser_details);
                     } else {
                         this.root_store.general_store.redirectTo('orders');
                     }
@@ -334,8 +341,32 @@ export default class OrderStore {
 
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
+        this.stopOnlineStatusInterval();
         this.unsubscribeFromCurrentOrder();
         this.hideDetails(false);
+    }
+
+    registerOnlineStatusInterval() {
+        const updateOrderInfo = () => {
+            requestWS({
+                p2p_order_info: 1,
+                id: this.order_id,
+            }).then(response => {
+                if (response?.error) return;
+                const { advertiser_details } = response.p2p_order_info;
+                this.setOnlineStatus(advertiser_details);
+            });
+        };
+
+        this.stopOnlineStatusInterval();
+        this.online_status_interval = setInterval(updateOrderInfo, 60000);
+    }
+
+    setOnlineStatus(advertiser_details) {
+        this.online_status = {
+            is_online: advertiser_details.is_online,
+            last_online_time: advertiser_details.last_online_time,
+        };
     }
 
     setOrderDetails(response) {
@@ -344,6 +375,7 @@ export default class OrderStore {
                 const { p2p_order_info } = response;
 
                 this.setQueryDetails(p2p_order_info);
+                this.setOnlineStatus(p2p_order_info.advertiser_details);
             } else {
                 this.unsubscribeFromCurrentOrder();
             }
@@ -425,6 +457,13 @@ export default class OrderStore {
             },
             [this.setOrderDetails]
         );
+    }
+
+    stopOnlineStatusInterval() {
+        if (this.online_status_interval) {
+            clearInterval(this.online_status_interval);
+        }
+        this.online_status_interval = null;
     }
 
     syncOrder(p2p_order_info) {

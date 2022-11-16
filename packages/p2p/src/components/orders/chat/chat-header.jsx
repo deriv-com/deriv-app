@@ -11,15 +11,19 @@ const ChatHeaderBody = observer(() => {
     const { order_store, sendbird_store } = useStores();
     const { other_user_details } = order_store.order_information;
 
+    const { is_online, last_online_time } = order_store.online_status;
+
+    React.useEffect(() => {
+        order_store.registerOnlineStatusInterval();
+
+        // return order_store.stopOnlineStatusInterval;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <React.Fragment>
             <div className='order-chat__header-icon'>
-                <OnlineStatusAvatar
-                    is_online={other_user_details.is_online}
-                    nickname={other_user_details.name}
-                    text_size='xs'
-                    size={40}
-                />
+                <OnlineStatusAvatar is_online={is_online} nickname={other_user_details.name} text_size='xs' size={40} />
             </div>
             <div className='order-chat__header-user'>
                 <Text
@@ -33,8 +37,8 @@ const ChatHeaderBody = observer(() => {
                     {other_user_details.name}
                 </Text>
                 <OnlineStatusLabel
-                    is_online={other_user_details.is_online}
-                    last_online_time={other_user_details.last_online_time}
+                    is_online={is_online}
+                    last_online_time={last_online_time}
                     size={isMobile() ? 'xxs' : 'xs'}
                 />
                 {sendbird_store.last_other_user_activity && (

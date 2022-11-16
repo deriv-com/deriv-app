@@ -73,7 +73,7 @@ const BuySellRow = ({ row: advert }) => {
                     }
                 >
                     <OnlineStatusAvatar
-                        is_online={advertiser_details.is_online}
+                        is_online={buy_sell_store.advert_online_statuses[advertiser_details.id]}
                         nickname={advertiser_name}
                         size={32}
                         text_size='s'
@@ -181,7 +181,7 @@ const BuySellRow = ({ row: advert }) => {
                     }
                 >
                     <OnlineStatusAvatar
-                        is_online={advertiser_details.is_online}
+                        is_online={buy_sell_store.advert_online_statuses[advertiser_details.id]}
                         nickname={advertiser_name}
                         size={24}
                         text_size='xxs'

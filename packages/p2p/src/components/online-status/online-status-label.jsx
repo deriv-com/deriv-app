@@ -59,7 +59,7 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
 };
 
 OnlineStatusLabel.propTypes = {
-    is_online: PropTypes.bool.isRequired,
+    is_online: PropTypes.number.isRequired,
     last_online_time: PropTypes.number,
     size: PropTypes.string,
 };

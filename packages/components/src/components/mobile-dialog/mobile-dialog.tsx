@@ -47,8 +47,8 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
             document.body.style.overflow = 'hidden';
             (document.getElementById(portal_element_id) as HTMLDivElement).style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'null';
-            (document.getElementById(portal_element_id) as HTMLDivElement).style.overflow = 'null';
+            document.body.style.overflow = 'unset';
+            (document.getElementById(portal_element_id) as HTMLDivElement).style.overflow = 'unset';
         }
     };
 

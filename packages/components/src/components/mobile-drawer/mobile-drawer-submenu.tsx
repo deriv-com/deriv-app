@@ -5,7 +5,7 @@ import Text from '../text/text';
 import Icon from '../icon/icon';
 
 type TMobileDrawerSubmenu = {
-    has_subheader: boolean;
+    has_subheader?: boolean;
     onToggle: (params: boolean) => void;
     submenu_toggle_class?: string;
     submenu_icon?: string;

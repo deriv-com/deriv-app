@@ -34,9 +34,13 @@ const CFDRealAccounts = ({
         setMT5TradeAccount,
     } = modules.cfd;
     const { setAppstorePlatform, platform } = common;
-    const { isEligibleForMoreRealMt5 } = client;
+    const { isEligibleForMoreRealMt5, loginid } = client;
     const history = useHistory();
-
+    const is_mf = loginid?.startsWith('MF');
+    const account_name = is_mf ? 'CFDs' : 'Financial';
+    const account_desc = is_mf
+        ? 'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
+        : 'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.';
     const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
@@ -49,10 +53,8 @@ const CFDRealAccounts = ({
             type: 'synthetic',
         },
         {
-            name: 'Financial',
-            description: localize(
-                'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
-            ),
+            name: account_name,
+            description: localize(account_desc),
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
             disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
             platform: CFD_PLATFORMS.MT5,
@@ -71,7 +73,6 @@ const CFDRealAccounts = ({
             // type: 'all'
         },
     ];
-
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 

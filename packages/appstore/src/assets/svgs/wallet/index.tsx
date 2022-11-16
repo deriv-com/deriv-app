@@ -15,6 +15,7 @@ import Financial from 'Assets/svgs/wallet/ic-appstore-financial.svg';
 import Options from 'Assets/svgs/wallet/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/wallet/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/wallet/ic-appstore-smarttrader-blue.svg';
+import CFDs from 'Assets/svgs/wallet/ic-appstore-cfds.svg';
 
 type TWalletIconProps = {
     icon: keyof typeof Icons;
@@ -40,6 +41,7 @@ export const Icons = {
     Options,
     SmartTrader,
     SmartTraderBlue,
+    CFDs,
 };
 
 const WalletIcon = ({ icon, className, size, onClick }: TWalletIconProps) => {

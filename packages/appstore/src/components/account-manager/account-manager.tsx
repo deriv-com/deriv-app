@@ -2,8 +2,9 @@ import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS, getStaticUrl, isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TPlatform } from 'Types';
+import { TPlatform, TRootStore } from 'Types';
 import WalletIcon from 'Assets/svgs/wallet';
+import { useStores } from 'Stores/index';
 
 type TAccountManager = {
     type?: string;
@@ -20,7 +21,6 @@ type TAccountManager = {
     disabled: boolean;
     dxtrade_link?: string;
 };
-
 const AccountManager = ({
     type,
     amount,
@@ -41,15 +41,19 @@ const AccountManager = ({
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
         else if (type === 'Options') window.open(getStaticUrl(`/trade-types/options/`));
     };
-
+    const { client }: TRootStore = useStores();
     const icon_size = isMobile() ? 48 : 64;
-
+    const is_mf = client.loginid?.startsWith('MF');
     return (
         <div className='account-manager'>
             <div className='account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
-                        <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />
+                        is_mf ? (
+                            <WalletIcon icon='CFDs' size={icon_size} onClick={openStaticPage} />
+                        ) : (
+                            <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />
+                        )
                     ) : (
                         <WalletIcon icon='Derived' size={icon_size} onClick={openStaticPage} />
                     ))}

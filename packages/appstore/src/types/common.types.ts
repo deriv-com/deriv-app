@@ -71,7 +71,7 @@ export type TCFDAccountsProps = {
 };
 
 export type TStaticAccountProps = {
-    name: 'Derived' | 'Financial' | 'Deriv X';
+    name: 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
     description: string;
     is_visible: boolean;
     disabled: boolean;

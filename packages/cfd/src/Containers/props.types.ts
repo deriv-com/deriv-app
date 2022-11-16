@@ -6,7 +6,6 @@ import {
     LandingCompany,
     ResidenceList,
     VerifyEmailResponse,
-    MT5AccountsListResponse,
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';

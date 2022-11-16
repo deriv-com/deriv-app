@@ -1,4 +1,4 @@
-import { DetailsOfEachMT5Loginid, GetAccountStatus } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 

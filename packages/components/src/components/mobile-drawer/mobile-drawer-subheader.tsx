@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 type THeader = {
-    className: string;
+    className?: string;
 };
 
 const Header = ({ className, children }: React.PropsWithChildren<THeader>) => (

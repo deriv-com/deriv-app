@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 type TFooter = {
-    className: string;
+    className?: string;
 };
 
 const Footer = ({ children, className }: React.PropsWithChildren<TFooter>) => (

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 type TItem = {
-    className: string;
+    className?: string;
     onClick: () => void;
 };
 

@@ -7,10 +7,10 @@ import Icon from '../icon/icon';
 type TMobileDrawerSubmenu = {
     has_subheader: boolean;
     onToggle: (params: boolean) => void;
-    submenu_toggle_class: string;
-    submenu_icon: string;
-    submenu_title: string | React.ReactElement;
-    submenu_suffix_icon: string;
+    submenu_toggle_class?: string;
+    submenu_icon?: string;
+    submenu_title?: string | React.ReactElement;
+    submenu_suffix_icon?: string;
     route_config_path: string;
 };
 
@@ -63,8 +63,8 @@ const SubMenu = ({
 };
 
 type TSubmenuList = {
-    has_subheader: boolean;
-    submenu_title: string | React.ReactElement;
+    has_subheader?: boolean;
+    submenu_title?: string | React.ReactElement;
     collapse: () => void;
     is_expanded: boolean;
 };

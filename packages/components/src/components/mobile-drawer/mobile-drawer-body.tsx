@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 type TBody = {
-    className: string;
+    className?: string;
 };
 
 const Body = ({ children, className }: React.PropsWithChildren<TBody>) => (

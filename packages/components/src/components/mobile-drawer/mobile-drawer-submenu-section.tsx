@@ -4,9 +4,9 @@ import Text from '../text/text';
 import Icon from '../icon/icon';
 
 type TSubMenuSection = React.PropsWithChildren<{
-    submenu_toggle_class: string;
-    section_title: string | React.ReactElement;
-    section_icon: string;
+    submenu_toggle_class?: string;
+    section_title?: string | React.ReactElement;
+    section_icon?: string;
 }>;
 const SubMenuSection = (props: TSubMenuSection) => {
     const { submenu_toggle_class, section_title, section_icon, children }: TSubMenuSection = props;

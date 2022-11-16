@@ -50,7 +50,7 @@ const ProofOfIdentityContainerForMt5 = ({
     } else if (is_virtual) {
         return (
             <IconWithMessage
-                icon={'IcPoaVerified'}
+                icon='IcPoaVerified'
                 message={localize('Switch to your real account to submit your documents')}
                 has_button
             />

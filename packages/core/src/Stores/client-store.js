@@ -2198,7 +2198,6 @@ export default class ClientStore extends BaseStore {
     }
 
     async updateMt5LoginList() {
-        console.log('here');
         if (this.is_logged_in && !this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);

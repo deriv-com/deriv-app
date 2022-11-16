@@ -99,8 +99,8 @@ const TotalAssets = ({ category }: TTotalAssets) => {
 
         let total = obj_total_balance.amount_real;
 
-        total += obj_total_balance.amount_mt5 > 0 ? obj_total_balance.amount_mt5 : mt5_total.balance;
-        total += obj_total_balance.amount_dxtrade > 0 ? obj_total_balance.amount_dxtrade : dxtrade_total.balance;
+        total += obj_total_balance.amount_mt5 > 0 ? obj_total_balance.amount_mt5 : mt5_total.balance || 0;
+        total += obj_total_balance.amount_dxtrade > 0 ? obj_total_balance.amount_dxtrade : dxtrade_total.balance || 0;
 
         return total;
     };

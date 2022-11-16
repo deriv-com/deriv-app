@@ -16,7 +16,6 @@ const ChatHeaderBody = observer(() => {
     React.useEffect(() => {
         order_store.registerOnlineStatusInterval();
 
-        // return order_store.stopOnlineStatusInterval;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

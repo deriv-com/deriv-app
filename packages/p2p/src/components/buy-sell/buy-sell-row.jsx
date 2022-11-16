@@ -78,7 +78,6 @@ const BuySellRow = ({ row: advert }) => {
                         size={32}
                         text_size='s'
                     />
-                    {/* <OnlineStatusAvatar nickname={advertiser_name} size={32} text_size='s' /> */}
                     <div className='buy-sell-row__advertiser-name'>
                         <div className='buy-sell__cell--container__row'>
                             <Text
@@ -186,7 +185,6 @@ const BuySellRow = ({ row: advert }) => {
                         size={24}
                         text_size='xxs'
                     />
-                    {/* <OnlineStatusAvatar nickname={advertiser_name} size={24} text_size='xxs' /> */}
                     <div className='buy-sell__cell--container'>
                         <div className='buy-sell__cell--container__row'>
                             <div

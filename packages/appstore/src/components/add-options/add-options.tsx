@@ -8,9 +8,10 @@ type TAddOptionsProps = {
     number_of_accounts: number;
     title: string;
     description: string;
+    is_mf: boolean;
 };
 
-const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps) => {
+const AddOptions = ({ number_of_accounts, title, description, is_mf }: TAddOptionsProps) => {
     const { ui } = useStores();
     const getHeightWidthOfIcon = () => {
         return isMobile()
@@ -32,20 +33,24 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
                 {number_of_accounts < 4 ? (
                     <div className={'add-options--desktop'} onClick={onClickHandler}>
                         <div className='add-options--desktop_title'>
-                            <Icon
-                                icon='IcAppstoreAdd'
-                                width={getHeightWidthOfIcon().width}
-                                height={getHeightWidthOfIcon().height}
-                            />
+                            {!is_mf && (
+                                <Icon
+                                    icon='IcAppstoreAdd'
+                                    width={getHeightWidthOfIcon().width}
+                                    height={getHeightWidthOfIcon().height}
+                                />
+                            )}
                             <Text weight='bold' size='xxs' line_height='l'>
                                 <Localize i18n_default_text={title} />
                             </Text>
                         </div>
-                        <div className='add-options--desktop_description'>
-                            <Text size='xxs' line_height='l' weight='lighter'>
-                                <Localize i18n_default_text={description} />
-                            </Text>
-                        </div>
+                        {!is_mf && (
+                            <div className='add-options--desktop_description'>
+                                <Text size='xxs' line_height='l' weight='lighter'>
+                                    <Localize i18n_default_text={description} />
+                                </Text>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className='add-options--mobile' onClick={onClickHandler}>

@@ -29,6 +29,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
+    const [total_assets, setTotalAssets] = React.useState(0);
 
     const isDemo = (account: DetailsOfEachMT5Loginid) => account.account_type === 'demo';
 
@@ -55,8 +56,10 @@ const TotalAssets = ({ category }: TTotalAssets) => {
         };
         if (category === 'real' && cfd_real_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
+            setTotalAssets(getTotalRealAssets());
         } else if (category === 'demo' && vrtc_currency) {
             getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
+            setTotalAssets(getTotalDemoAssets());
         } else if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
@@ -73,7 +76,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     },
                     mt5_account: DetailsOfEachMT5Loginid
                 ) => {
-                    total.balance += (mt5_account?.balance ?? 0) * exchange_rate;
+                    total.balance += (mt5_account?.balance || 0) * exchange_rate || 0;
                     return total;
                 },
                 { balance: 0 }
@@ -106,7 +109,6 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     };
 
     const currency = account_total_balance_currency;
-    const total_assets = category === 'real' ? getTotalRealAssets() : getTotalDemoAssets();
     const is_eu_popover_text = is_eu
         ? localize(`Total assets in your Multipliers and DMT5 ${category} accounts`)
         : localize(`Total assets in your Options, DMT5 and Deriv X ${category} accounts`);

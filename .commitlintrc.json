@@ -18,7 +18,8 @@
                 "revert",
                 "style",
                 "test",
-                "redeploy"
+                "redeploy",
+                "translations"
             ]
         ]
     }

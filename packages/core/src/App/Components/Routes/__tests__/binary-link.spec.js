@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { configure, mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { NavLink } from 'react-router-dom';
 import { PlatformContext, routes } from '@deriv/shared';
 import { BinaryLink } from '../index';

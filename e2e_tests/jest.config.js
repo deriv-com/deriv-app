@@ -29,6 +29,6 @@ module.exports = {
             },
         },
     },
-    transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$', '_utils/websocket.js'],
+    transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$', '_utils/websocket.js'],
     reporters: ['default', './src/_utils/cli_reporter.js'],
 };

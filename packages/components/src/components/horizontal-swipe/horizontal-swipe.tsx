@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 
 type THorizontalSwipeProps = {
     is_left_swipe: boolean;
@@ -72,8 +72,13 @@ const HorizontalSwipe = ({
         }),
     };
 
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: onSwipeLeft,
+        onSwipedRight: onSwipeRight,
+    });
+
     return (
-        <Swipeable onSwipedLeft={onSwipeLeft} onSwipedRight={onSwipeRight}>
+        <div {...swipe_handlers}>
             <div className='dc-horizontal-swipe'>
                 {visible_component_height_ref && (
                     <div
@@ -101,7 +106,7 @@ const HorizontalSwipe = ({
                     </div>
                 )}
             </div>
-        </Swipeable>
+        </div>
     );
 };
 

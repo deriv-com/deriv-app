@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import React from 'react';
 import { fake } from 'sinon';
 import { Button } from '@deriv/components';

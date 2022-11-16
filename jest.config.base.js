@@ -9,7 +9,7 @@ module.exports = {
     coverageDirectory: './coverage/',
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|tsx)?$',
     // This is needed to transform es modules imported from node_modules of the target component.
-    transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$'],
+    transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
     setupFiles: ['<rootDir>/../../jest.setup.js'],
     setupFilesAfterEnv: ['<rootDir>/../../setupTests.js'],
 };

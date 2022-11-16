@@ -5,7 +5,7 @@ import React from 'react';
 import { fake } from 'sinon';
 import ToggleButton from '../toggle-button.jsx';
 import ToggleButtonGroup from '../toggle-button-group.jsx';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 configure({ adapter: new Adapter() });
 

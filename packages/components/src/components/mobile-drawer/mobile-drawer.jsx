@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Drawer from 'react-drag-drawer';
+import Drawer from 'rc-drawer';
 import Body from './mobile-drawer-body.jsx';
 import Footer from './mobile-drawer-footer.jsx';
 import SubHeader from './mobile-drawer-subheader.jsx';
@@ -24,11 +24,11 @@ const MobileDrawer = ({
     livechat: LiveChat,
 }) => (
     <Drawer
-        direction={alignment}
+        placement={alignment}
         open={is_open}
-        onRequestClose={toggle}
-        containerElementClass='dc-mobile-drawer__wrapper'
-        modalElementClass='dc-mobile-drawer'
+        onClose={toggle}
+        wrapperClassName='dc-mobile-drawer__wrapper'
+        className='dc-mobile-drawer'
     >
         <div
             id={id}

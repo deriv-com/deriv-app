@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 import Icon from '../icon';
 
 const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
@@ -34,19 +34,24 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
         return <div className='dc-swipeable__item'>{child}</div>;
     });
 
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: swipedLeft,
+        onSwipedRight: swipedRight,
+        ...props,
+    });
+
     return (
         <div className='dc-swipeable'>
-            <Swipeable
+            <div
+                {...swipe_handlers}
                 style={{
                     transform: `translateX(${props.is_disabled ? -100 : active_index * -100}vw)`,
                 }}
                 className={classNames('dc-swipeable__view', className)}
-                onSwipedLeft={swipedLeft}
-                onSwipedRight={swipedRight}
                 {...props}
             >
                 {childrenWithWrapperDiv}
-            </Swipeable>
+            </div>
             {!props.is_disabled && (
                 <nav className='dc-swipeable__nav'>
                     <Icon

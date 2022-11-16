@@ -104,7 +104,7 @@ const CFDDbViOnBoarding = ({
 
     const getModalContent = () => {
         if (is_loading) {
-            <Loading is_fullscreen={false} />;
+            return <Loading is_fullscreen={false} />;
         } else if (is_virtual) {
             return <SwitchToRealAccountMessage onClickOK={toggleCFDVerificationModal} />;
         }

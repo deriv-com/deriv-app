@@ -25,6 +25,9 @@
         &--blurry {
             opacity: 0.2;
         }
+        &--selected {
+            margin-left: 1rem;
+        }
     }
 
     &__details {

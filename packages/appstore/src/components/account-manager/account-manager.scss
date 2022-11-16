@@ -27,6 +27,9 @@
         &-topup {
             margin-bottom: 0.5rem;
         }
+        &-get {
+            margin-left: 2rem;
+        }
     }
     @include mobile {
         max-width: 100%;

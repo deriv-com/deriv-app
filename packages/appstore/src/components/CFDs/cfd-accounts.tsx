@@ -89,11 +89,13 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                         {localize('CFDs')}
                     </Text>
                 )}
-                <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
-                    <Text weight='bold' size='xxs' color='red'>
-                        <Localize i18n_default_text='Compare accounts' />
-                    </Text>
-                </div>
+                {!is_demo_tab && (
+                    <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
+                        <Text weight='bold' size='xxs' color='red'>
+                            <Localize i18n_default_text='Compare accounts' />
+                        </Text>
+                    </div>
+                )}
             </div>
             <div className='cfd-accounts__description'>
                 <Text size={isMobile() ? 'xxs' : 's'}>

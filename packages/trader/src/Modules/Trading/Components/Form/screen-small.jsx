@@ -57,7 +57,7 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
-            {is_accumulator && <AccumulatorsStats />}
+            {is_accumulator && is_collapsed && <AccumulatorsStats />}
             <div className='trade-params__contract-type-container'>
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}

@@ -43,6 +43,12 @@
 
             &--trader {
                 grid-template-columns: 1.5fr 1fr;
+                &--accumulator {
+                    grid-template-columns: 1.2fr 1fr;
+                    &-sold {
+                        padding-top: 1rem;
+                    }
+                }
             }
             &--mobile {
                 grid-template-columns: 1fr 1fr 25%;
@@ -215,24 +221,24 @@
                 fill: var(--brand-secondary) !important;
             }
         }
-        &--accumulators {
-            @include mobile {
-                justify-content: flex-end;
-
-                .dc-contract-type__type {
-                    &-label {
-                        width: fit-content;
-                    }
-                    &-wrapper {
-                        padding: 0.5em 0.8em 0.5em 0.3em;
-                    }
-                }
-            }
-            .dc-contract-type__type-wrapper .category-type {
-                width: unset;
-                height: unset;
-            }
-        }
+        //&--accumulators {
+        //    @include mobile {
+        //        justify-content: flex-end;
+        //
+        //        .dc-contract-type__type {
+        //            &-label {
+        //                width: fit-content;
+        //            }
+        //            &-wrapper {
+        //                padding: 0.5em 0.8em 0.5em 0.3em;
+        //            }
+        //        }
+        //    }
+        //    .dc-contract-type__type-wrapper .category-type {
+        //        width: unset;
+        //        height: unset;
+        //    }
+        //}
     }
     &__symbol {
         margin-left: 0.4rem;

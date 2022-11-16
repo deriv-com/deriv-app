@@ -150,10 +150,6 @@
         &:focus {
             border-color: var(--border-active);
         }
-
-        &--accumulator {
-            padding: 0 !important;
-        }
     }
     &__error {
         justify-content: center;
@@ -605,8 +601,7 @@
         grid-column-gap: 0.5rem;
 
         &--accumulator {
-            display: block;
-
+            grid-template-areas: 'a';
             .purchase-container__option {
                 margin-bottom: 0 !important;
             }

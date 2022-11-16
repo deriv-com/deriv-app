@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
+import { getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (
@@ -81,7 +81,13 @@ const ContractInfo = ({
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
                                     <Text size='xs' weight='bold' color='colored-background'>
-                                        <Money amount={stake} currency={currency} show_currency />
+                                        {!is_accumulator ? (
+                                            <Money amount={stake} currency={currency} show_currency />
+                                        ) : !is_loading ? (
+                                            `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
+                                        ) : (
+                                            ''
+                                        )}
                                     </Text>
                                 </div>
                             </div>

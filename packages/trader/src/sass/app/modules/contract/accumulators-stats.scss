@@ -16,7 +16,7 @@
 
     @include mobile {
         position: absolute;
-        top: -4.4rem;
+        top: -4.8rem;
         left: -0.8rem;
         margin: 0 0.8rem;
         width: calc(100vw - 1.6rem);
@@ -49,7 +49,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 8.7rem;
+        gap: 1.6rem;
 
         @include mobile {
             width: unset;
@@ -57,7 +57,7 @@
         }
         &-text {
             text-align: center;
-            max-width: 5.5rem;
+            max-width: 8.1rem;
         }
         .info {
             min-width: 1.6rem;

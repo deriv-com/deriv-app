@@ -8,9 +8,10 @@ type TAddOptionsProps = {
     number_of_accounts: number;
     title: string;
     description: string;
+    is_mf: boolean;
 };
 
-const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps) => {
+const AddOptions = ({ number_of_accounts, title, description, is_mf }: TAddOptionsProps) => {
     const { ui } = useStores();
     const getHeightWidthOfIcon = () => {
         return isMobile()
@@ -41,11 +42,13 @@ const AddOptions = ({ number_of_accounts, title, description }: TAddOptionsProps
                                 <Localize i18n_default_text={title} />
                             </Text>
                         </div>
-                        <div className='add-options--desktop_description'>
-                            <Text size='xxs' line_height='l' weight='lighter'>
-                                <Localize i18n_default_text={description} />
-                            </Text>
-                        </div>
+                        {!is_mf && (
+                            <div className='add-options--desktop_description'>
+                                <Text size='xxs' line_height='l' weight='lighter'>
+                                    <Localize i18n_default_text={description} />
+                                </Text>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className='add-options--mobile' onClick={onClickHandler}>

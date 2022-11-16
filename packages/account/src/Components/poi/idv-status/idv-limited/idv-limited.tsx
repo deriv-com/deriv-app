@@ -3,7 +3,11 @@ import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IdvDocumentRejected from 'Assets/ic-idv-document-rejected.svg';
 
-const IdvNoSubmissions = ({ handleRequireSubmission }) => {
+type TIdvNoSubmission = {
+    handleRequireSubmission: () => void;
+};
+
+const IdvNoSubmissions = ({ handleRequireSubmission }: TIdvNoSubmission) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentRejected className='icon' size={128} />

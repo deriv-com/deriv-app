@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Drawer from '../drawer.jsx';
+import Drawer from '../drawer';
 
 describe('Drawer', () => {
     it('should Drawer be in the document', () => {
-        render(<Drawer />);
+        render(<Drawer is_open={false} />);
         expect(screen.getByTestId('drawer')).toBeInTheDocument();
     });
 

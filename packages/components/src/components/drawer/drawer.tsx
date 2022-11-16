@@ -1,11 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 import { isTabletDrawer } from '@deriv/shared';
 
+type TDrawer = {
+    anchor?: string;
+    className?: string;
+    contentClassName?: string;
+    footer?: React.ReactElement;
+    header?: React.ReactElement;
+    width?: number;
+    zIndex?: number;
+    is_open: boolean;
+    toggleDrawer?: (prop: boolean) => void;
+};
+
 // TODO: use-from-shared - Use this icon from icons' shared package
-const IconDrawer = ({ className }) => (
+const IconDrawer = ({ className }: { className?: string }) => (
     <svg className={className} xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
         <path
             fill='var(--text-less-prominent)'
@@ -25,7 +36,7 @@ const Drawer = ({
     width = 250,
     zIndex = 4,
     ...props
-}) => {
+}: React.PropsWithChildren<TDrawer>) => {
     const [is_open, setIsOpen] = React.useState(props.is_open);
 
     React.useEffect(() => {
@@ -53,11 +64,11 @@ const Drawer = ({
             style={{
                 zIndex,
                 transform:
-                    is_open &&
-                    !is_mobile &&
-                    (anchor === 'left'
-                        ? `translateX(calc(${width}px - 16px))`
-                        : `translateX(calc(-${width}px + 16px))`),
+                    is_open && !is_mobile
+                        ? anchor === 'left'
+                            ? `translateX(calc(${width}px - 16px))`
+                            : `translateX(calc(-${width}px + 16px))`
+                        : undefined,
             }}
         >
             <div
@@ -83,19 +94,6 @@ const Drawer = ({
             </div>
         </div>
     );
-};
-
-Drawer.propTypes = {
-    anchor: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    className: PropTypes.string,
-    contentClassName: PropTypes.string,
-    footer: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    width: PropTypes.number,
-    zIndex: PropTypes.number,
-    is_open: PropTypes.bool,
-    toggleDrawer: PropTypes.func,
 };
 
 export default Drawer;

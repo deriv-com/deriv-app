@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import Card from '../Card.jsx';
+import Card from '../card.jsx';
 import React from 'react';
 import { grouped_payment_method_data } from './test-data';
 
-describe('Card.jsx', () => {
+describe('card.jsx', () => {
     it('Should render a card', () => {
         render(<Card card={grouped_payment_method_data.visa} />);
         expect(

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ExpandedCard from '../ExpandedCard.jsx';
+import ExpandedCard from '../expanded-card.jsx';
 import { grouped_payment_method_data } from './test-data.js';
 
-describe('ExpandedCard.jsx', () => {
+describe('expanded-card.jsx', () => {
     it('should display correct identifier', () => {
         render(
             <ExpandedCard

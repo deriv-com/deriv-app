@@ -9,7 +9,7 @@ import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import { isMobile, readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
-import Card from './Card.jsx';
+import Card from './card.jsx';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants';
 

@@ -1,7 +1,7 @@
 import { Button, Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
 import React from 'react';
-import ExpandedCard from './ExpandedCard.jsx';
+import ExpandedCard from './expanded-card.jsx';
 import PropTypes from 'prop-types';
 
 const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, updateErrors, validateField, values }) => {

@@ -202,8 +202,11 @@ const DefaultHeader = ({
                 </div>
                 {is_logged_in && (
                     <DesktopWrapper>
-                        {!window.location.pathname.startsWith(routes.appstore) && <ExploreTradingHub />}
-                        {window.location.pathname.startsWith(routes.appstore) && <RedirectToOldInterface />}
+                        {window.location.pathname.startsWith(routes.appstore) ? (
+                            <RedirectToOldInterface />
+                        ) : (
+                            <ExploreTradingHub />
+                        )}
                         <Divider />
                     </DesktopWrapper>
                 )}

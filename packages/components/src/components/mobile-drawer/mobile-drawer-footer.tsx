@@ -2,7 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Footer = ({ children, className }) => (
+type TFooter = React.PropsWithChildren<{
+    className: string;
+}>;
+
+const Footer = ({ children, className }: TFooter) => (
     <div className={classNames('dc-mobile-drawer__footer', className)}>{children}</div>
 );
 

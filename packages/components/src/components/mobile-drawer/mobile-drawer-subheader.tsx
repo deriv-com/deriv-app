@@ -1,14 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Header = ({ className, children }) => (
+type THeader = React.PropsWithChildren<{
+    className: string;
+}>;
+
+const Header = ({ className, children }: THeader) => (
     <div className={classNames('dc-mobile-drawer__subheader', className)}>{children}</div>
 );
-
-Header.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-};
 
 export default Header;

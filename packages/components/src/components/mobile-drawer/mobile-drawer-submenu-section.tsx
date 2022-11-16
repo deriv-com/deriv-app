@@ -4,8 +4,13 @@ import React from 'react';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 
-const SubMenuSection = props => {
-    const { submenu_toggle_class, section_title, section_icon, children } = props;
+type TSubMenuSection = React.PropsWithChildren<{
+    submenu_toggle_class: string;
+    section_title: string | React.ReactElement;
+    section_icon: string;
+}>;
+const SubMenuSection = (props: TSubMenuSection) => {
+    const { submenu_toggle_class, section_title, section_icon, children }: TSubMenuSection = props;
     return (
         <div className={classNames('dc-mobile-drawer__submenu-section', submenu_toggle_class)}>
             <div className='dc-mobile-drawer__submenu-section-title'>
@@ -19,13 +24,6 @@ const SubMenuSection = props => {
             <div className='dc-mobile-drawer__submenu-section-content'>{children}</div>
         </div>
     );
-};
-
-SubMenuSection.propTypes = {
-    children: PropTypes.node,
-    section_icon: PropTypes.string,
-    section_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    submenu_toggle_class: PropTypes.string,
 };
 
 export default React.memo(SubMenuSection);

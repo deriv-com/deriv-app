@@ -42,13 +42,15 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         }
     }, [footer, footer_height]);
 
+    const portal_element = document.getElementById(portal_element_id) as HTMLDivElement;
+
     const checkVisibility = () => {
         if (props.visible) {
             document.body.style.overflow = 'hidden';
-            (document.getElementById(portal_element_id) as HTMLDivElement).style.overflow = 'hidden';
+            portal_element.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
-            (document.getElementById(portal_element_id) as HTMLDivElement).style.overflow = 'unset';
+            portal_element.style.overflow = 'unset';
         }
     };
 
@@ -77,7 +79,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
     };
 
     checkVisibility();
-    if (!document.getElementById(portal_element_id)) return null;
+    if (!portal_element) return null;
     return ReactDOM.createPortal(
         <CSSTransition
             appear
@@ -134,7 +136,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                 </Div100vhContainer>
             </div>
         </CSSTransition>,
-        document.getElementById(portal_element_id) as HTMLDivElement
+        portal_element
     );
 };
 

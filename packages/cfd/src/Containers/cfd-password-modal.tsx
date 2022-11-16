@@ -117,6 +117,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     form_error?: string;
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
+    is_logged_in: boolean;
     is_fully_authenticated: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
@@ -562,6 +563,7 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_eu,
+    is_logged_in,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
@@ -607,7 +609,9 @@ const CFDPasswordModal = ({
     };
 
     React.useEffect(() => {
-        updateAccountStatus();
+        if (is_logged_in) {
+            updateAccountStatus();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

@@ -113,11 +113,13 @@ const StaticDashboard = ({
                                     weight='bold'
                                     color={is_blurry.cfd_text ? 'less-prominent' : 'prominent'}
                                     className={
-                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                        is_onboarding_animated.text
+                                            ? 'static-dashboard-wrapper__header--animated'
+                                            : 'static-dashboard-wrapper__header--normal'
                                     }
                                 >
                                     <Localize
-                                        i18n_default_text='CFD <0>Compare accounts</0>'
+                                        i18n_default_text='CFDs <0>Compare accounts</0>'
                                         components={[
                                             <Text
                                                 key={0}
@@ -285,7 +287,9 @@ const StaticDashboard = ({
                                     weight='bold'
                                     color={is_blurry.options_text ? 'less-prominent' : 'prominent'}
                                     className={
-                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                        is_onboarding_animated.text
+                                            ? 'static-dashboard-wrapper__header--animated'
+                                            : 'static-dashboard-wrapper__header--normal'
                                     }
                                 >
                                     {is_eu_title}

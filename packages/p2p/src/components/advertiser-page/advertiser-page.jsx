@@ -20,8 +20,8 @@ import BlockUserOverlay from './block-user/block-user-overlay';
 import BlockUserModal from 'Components/block-user/block-user-modal';
 import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
-import './advertiser-page.scss';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
+import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();

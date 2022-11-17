@@ -35,8 +35,6 @@
             align-items: center;
             justify-content: flex-end;
             height: 7.2rem;
-            width: 20%;
-            background: linear-gradient(to right, transparent, var(--general-main-1));
             @include mobile {
                 right: 0;
                 height: auto;

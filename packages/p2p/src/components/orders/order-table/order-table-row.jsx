@@ -75,7 +75,7 @@ const OrderRow = ({ style, row: order }) => {
 
     const onRowClick = () => {
         if (should_show_order_details.current) {
-            return order_store.setQueryDetails(order);
+            return order_store.setOrderId(order.id);
         }
 
         return () => {};

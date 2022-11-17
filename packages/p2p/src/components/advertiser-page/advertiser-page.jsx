@@ -160,7 +160,7 @@ const AdvertiserPage = () => {
                                         <Text
                                             className='advertiser-page__joined-since'
                                             color='less-prominent'
-                                            size={isMobile() ? 'xxxs' : 'xs'}
+                                            size='xxxs'
                                         >
                                             {joined_since > 0 ? (
                                                 <Localize
@@ -189,7 +189,7 @@ const AdvertiserPage = () => {
                                             <Text
                                                 className='advertiser-page__joined-since'
                                                 color='less-prominent'
-                                                size={isMobile() ? 'xxxs' : 'xs'}
+                                                size='xs'
                                             >
                                                 {joined_since > 0 ? (
                                                     <Localize

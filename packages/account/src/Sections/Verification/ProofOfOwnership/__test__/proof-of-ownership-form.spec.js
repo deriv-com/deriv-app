@@ -47,9 +47,7 @@ describe('proof-of-ownership-form.jsx', () => {
         const identifier_input = await screen.findByTestId('dt_payment_method_identifier');
         fireEvent.change(identifier_input, { target: { value: '1234567891011121' } });
         fireEvent.blur(identifier_input);
-        const element = screen.getByDisplayValue('1234 56XX XXXX 1121', {
-            exact: true,
-        });
+        const element = screen.getByDisplayValue('1234 56XX XXXX 1121');
         expect(element).toBeInTheDocument();
     });
 });

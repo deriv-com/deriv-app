@@ -22,25 +22,20 @@ describe('expanded-card.jsx', () => {
                 setFieldValue={jest.fn(() => {})}
             />
         );
-        const element = screen.getByDisplayValue('1234 56XX XXXX 1121', { exact: true });
+        const element = screen.getByDisplayValue('1234 56XX XXXX 1121');
         expect(element).toBeInTheDocument();
     });
     it('should show example link for credit/debit card and render the correct identifier label', () => {
         render(<ExpandedCard card_details={grouped_payment_method_data.visa} />);
         const exampelLink = screen.getByText('See example');
         expect(exampelLink).toBeInTheDocument();
-        const element = screen.getByText('Card number', {
-            exact: true,
-        });
+        const element = screen.getByText('Card number');
         expect(element).toBeInTheDocument();
     });
     it('should render payment method link in the description', () => {
         render(<ExpandedCard card_details={grouped_payment_method_data.onlinenaira} />);
         const element = screen.getByText(
-            'Upload a screenshot of your username on the General Information page at https://onlinenaira.com/members/index.htm',
-            {
-                exact: true,
-            }
+            'Upload a screenshot of your username on the General Information page at https://onlinenaira.com/members/index.htm'
         );
         expect(element).toBeInTheDocument();
     });

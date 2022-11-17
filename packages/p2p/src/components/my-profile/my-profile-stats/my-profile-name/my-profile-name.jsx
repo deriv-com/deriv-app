@@ -12,7 +12,7 @@ import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
 
     const {
         basic_verification,
@@ -24,7 +24,7 @@ const MyProfileName = () => {
         recommended_average,
         recommended_count,
         sell_orders_count,
-    } = my_profile_store.advertiser_info;
+    } = general_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
     // rating_average_decimal converts rating_average to 1 d.p number

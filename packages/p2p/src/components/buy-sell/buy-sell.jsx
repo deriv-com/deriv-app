@@ -26,7 +26,6 @@ const BuySell = () => {
         return () => {
             disposeIsListedReaction();
             disposeAdvertIntervalReaction();
-            buy_sell_store.setLocalCurrency(null);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

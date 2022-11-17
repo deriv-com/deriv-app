@@ -142,6 +142,7 @@ describe('<CFDDashboard />', () => {
         onUnmount: jest.fn(),
         openAccountNeededModal: jest.fn(),
         openDerivRealAccountNeededModal: jest.fn(),
+        refreshNotifications: jest.fn(),
         openPasswordModal: jest.fn(),
         openTopUpModal: jest.fn(),
         platform: CFD_PLATFORMS.MT5,
@@ -179,6 +180,7 @@ describe('<CFDDashboard />', () => {
         ],
         setAccountType: jest.fn(),
         setCFDPasswordResetModal: jest.fn(),
+        setIsAcuityModalOpen: jest.fn(),
         setCurrentAccount: jest.fn(),
         standpoint: {
             financial_company: 'svg',

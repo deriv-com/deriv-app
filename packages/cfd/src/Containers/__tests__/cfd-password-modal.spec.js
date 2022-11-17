@@ -4,7 +4,6 @@ import { createBrowserHistory } from 'history';
 import { WS, validPassword } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
-import { platform } from 'os';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

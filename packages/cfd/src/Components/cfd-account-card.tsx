@@ -266,7 +266,7 @@ const CFDAccountCardComponent = ({
     const getBannerStatus = (account: DetailsOfEachMT5Loginid) => {
         const { landing_company_short, status } = account;
         if (landing_company_short && status && ['proof_failed', 'verification_pending'].includes(status)) {
-            const shouldShowPendingButton = status === 'verification_pending';
+            const should_show_pending_button = status === 'verification_pending';
             return (
                 <Button
                     className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
@@ -282,9 +282,9 @@ const CFDAccountCardComponent = ({
                     }}
                     primary
                     large
-                    disabled={shouldShowPendingButton}
+                    disabled={should_show_pending_button}
                 >
-                    {shouldShowPendingButton ? (
+                    {should_show_pending_button ? (
                         <Localize i18n_default_text='Pending verification' />
                     ) : (
                         <Localize i18n_default_text='Resubmit document' />

@@ -130,7 +130,6 @@ export default class AdvertiserPageStore extends BaseStore {
             this.setErrorMessage(response.error);
         } else {
             const { p2p_advertiser_info } = response;
-            console.log('updates from p2p_advertiser_info', p2p_advertiser_info);
             this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
             this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
         }
@@ -189,7 +188,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
     onUnmount() {
         if (this.advertiser_info_subscription.unsubscribe) {
-            console.log('unsubbed from p2p advertiser info');
             this.advertiser_info_subscription.unsubscribe();
         }
     }

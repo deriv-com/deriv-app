@@ -31,7 +31,7 @@ describe('<SentEmailModal/>', () => {
         render(<SentEmailModal identifier_title='mt5' is_open onClose={onClose} onClickSendEmail={onClickSendEmail} />);
 
         expect(
-            screen.getByText(/please click on the link in the email to change your dmt5 password./i)
+            screen.getByText(/please click on the link in the email to change your deriv mt5 password./i)
         ).toBeInTheDocument();
     });
 
@@ -105,7 +105,7 @@ describe('<SentEmailModal/>', () => {
         );
 
         expect(
-            screen.queryByText(/please click on the link in the email to change your dmt5 password./i)
+            screen.queryByText(/please click on the link in the email to change your deriv mt5 password./i)
         ).not.toBeInTheDocument();
     });
 

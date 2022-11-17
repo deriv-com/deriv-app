@@ -16,10 +16,11 @@ const PoiPoaDocsSubmitted = ({
     const [is_loading, setIsLoading] = React.useState(false);
     React.useEffect(() => {
         setIsLoading(true);
-        updateAccountStatus().then(() => {
-            setIsLoading(false);
-        });
-
+        updateAccountStatus()
+            .then(() => {
+                setIsLoading(false);
+            })
+            .finally(() => setIsLoading(false));
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

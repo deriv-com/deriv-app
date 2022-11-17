@@ -7,7 +7,14 @@ import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Lo
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
-import { tour_step_config, tour_styles, tour_step_locale, tour_styles_dark_mode } from 'Constants/tour-steps-config';
+import {
+    tour_step_config,
+    eu_tour_step_config,
+    tour_styles,
+    tour_step_locale,
+    eu_tour_step_locale,
+    tour_styles_dark_mode,
+} from 'Constants/tour-steps-config';
 import { useStores } from 'Stores';
 import { ResetTradingPasswordModal } from '@deriv/account';
 import {
@@ -220,9 +227,9 @@ const TradingHub: React.FC = () => {
                 disableScrolling
                 hideCloseButton
                 disableCloseOnEsc
-                steps={tour_step_config}
+                steps={is_eu ? eu_tour_step_config : tour_step_config}
                 styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-                locale={tour_step_locale}
+                locale={is_eu ? eu_tour_step_locale : tour_step_locale}
                 floaterProps={{
                     disableAnimation: true,
                 }}

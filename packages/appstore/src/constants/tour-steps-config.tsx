@@ -37,6 +37,35 @@ export const tour_step_config: Step[] = [
     },
 ];
 
+export const eu_tour_step_config: Step[] = [
+    {
+        title: (
+            <Text as='p' weight='bold' color='brand-red-coral'>
+                {localize('Switch accounts')}
+                <div className='toggle-account-type__divider' />
+            </Text>
+        ),
+        content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
+        target: '.toggle-account-type__button',
+        disableBeacon: true,
+        placement: 'bottom-end',
+    },
+    {
+        title: (
+            <Text as='p' weight='bold' color='brand-red-coral'>
+                {localize('Trading hub tour')}
+                <div className='toggle-account-type__divider' />
+            </Text>
+        ),
+        content: (
+            <Text as='p'>{localize(`Need help moving around?\n\nWe have a short turorial that might help.`)}</Text>
+        ),
+
+        target: '.trading-hub-header__tradinghub--onboarding--logo',
+        disableBeacon: true,
+    },
+];
+
 export const tour_styles: Styles = {
     options: {
         width: 350,
@@ -85,6 +114,13 @@ export const tour_styles_dark_mode: Styles = {
 
 export const tour_step_locale: Locale = {
     back: <Button has_effect text={localize('Repeat tour')} secondary medium />,
+    close: localize('Close'),
+    last: localize('OK'),
+    next: localize('Next'),
+    skip: localize('Skip'),
+};
+
+export const eu_tour_step_locale: Locale = {
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

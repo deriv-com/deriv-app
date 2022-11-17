@@ -137,6 +137,7 @@ const TradingAssessmentExistingUser = ({
                             form_value={form_values}
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
+                            should_move_to_next={should_move_to_next}
                         />
                     </Modal>
                 </DesktopWrapper>

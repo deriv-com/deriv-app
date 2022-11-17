@@ -18,8 +18,6 @@ export default class MyAdsStore extends BaseStore {
     api_error_message = '';
     api_table_error_message = '';
     available_balance = null;
-    contact_info = '';
-    default_advert_description = '';
     delete_error_message = '';
     edit_ad_form_error = '';
     error_message = '';
@@ -64,8 +62,6 @@ export default class MyAdsStore extends BaseStore {
             api_error_message: observable,
             api_table_error_message: observable,
             available_balance: observable,
-            contact_info: observable,
-            default_advert_description: observable,
             delete_error_message: observable,
             edit_ad_form_error: observable,
             error_message: observable,
@@ -96,7 +92,6 @@ export default class MyAdsStore extends BaseStore {
             selected_ad_type: computed,
             getAccountStatus: action.bound,
             getAdvertInfo: action.bound,
-            getAdvertiserInfo: action.bound,
             getWebsiteStatus: action.bound,
             handleSubmit: action.bound,
             hideQuickAddModal: action.bound,
@@ -120,9 +115,7 @@ export default class MyAdsStore extends BaseStore {
             setApiErrorMessage: action.bound,
             setApiTableErrorMessage: action.bound,
             setAvailableBalance: action.bound,
-            setContactInfo: action.bound,
             setApiErrorCode: action.bound,
-            setDefaultAdvertDescription: action.bound,
             setDeleteErrorMessage: action.bound,
             setEditAdFormError: action.bound,
             setErrorMessage: action.bound,
@@ -197,26 +190,6 @@ export default class MyAdsStore extends BaseStore {
                 }
             })
             .finally(() => this.setIsFormLoading(false));
-    }
-
-    getAdvertiserInfo() {
-        this.setIsFormLoading(true);
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setContactInfo(p2p_advertiser_info.contact_info);
-                    this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                    this.setAvailableBalance(p2p_advertiser_info.balance_available);
-                } else {
-                    this.setContactInfo('');
-                    this.setDefaultAdvertDescription('');
-                }
-                this.setIsFormLoading(false);
-            }
-        });
     }
 
     getWebsiteStatus(createAd = () => {}, setSubmitting) {
@@ -537,16 +510,8 @@ export default class MyAdsStore extends BaseStore {
         this.available_balance = available_balance;
     }
 
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
-    }
-
     setApiErrorCode(error_code) {
         this.error_code = error_code;
-    }
-
-    setDefaultAdvertDescription(default_advert_description) {
-        this.default_advert_description = default_advert_description;
     }
 
     setDeleteErrorMessage(delete_error_message) {
@@ -685,7 +650,7 @@ export default class MyAdsStore extends BaseStore {
             offer_amount: [
                 v => !!v,
                 v => !isNaN(v),
-                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
+                v => (values.type === buy_sell.SELL ? v <= general_store.advertiser_info.balance_available : !!v),
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
@@ -746,7 +711,7 @@ export default class MyAdsStore extends BaseStore {
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
-            localize('Max available amount is {{value}}', { value: this.available_balance }),
+            localize('Max available amount is {{value}}', { value: general_store.advertiser_info.balance_available }),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),

@@ -162,7 +162,7 @@ const AdvertiserPage = () => {
                                             color='less-prominent'
                                             size='xxxs'
                                         >
-                                            {joined_since > 0 ? (
+                                            {joined_since ? (
                                                 <Localize
                                                     i18n_default_text='Joined {{days_since_joined}}d'
                                                     values={{ days_since_joined: joined_since }}
@@ -191,7 +191,7 @@ const AdvertiserPage = () => {
                                                 color='less-prominent'
                                                 size='xs'
                                             >
-                                                {joined_since > 0 ? (
+                                                {joined_since ? (
                                                     <Localize
                                                         i18n_default_text='Joined {{days_since_joined}}d'
                                                         values={{ days_since_joined: joined_since }}

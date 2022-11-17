@@ -13,11 +13,14 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
-    advertiser_id = null;
     advertiser_buy_limit = null;
+    advertiser_id = null;
+    advertiser_info = {};
     advertiser_sell_limit = null;
     block_unblock_user_error = '';
     balance;
+    cancels_remaining = null;
+    contact_info = '';
     feature_level = null;
     inactive_notification_count = 0;
     is_advertiser = false;
@@ -25,8 +28,10 @@ export default class GeneralStore extends BaseStore {
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
+    is_high_risk_fully_authed_without_fa = false;
     is_listed = false;
     is_loading = false;
+    is_modal_open = false;
     is_p2p_blocked_for_pa = false;
     is_restricted = false;
     nickname = null;
@@ -35,6 +40,7 @@ export default class GeneralStore extends BaseStore {
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
+    payment_info = '';
     poi_status = null;
     props = {};
     review_period;
@@ -42,8 +48,6 @@ export default class GeneralStore extends BaseStore {
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
-    is_high_risk_fully_authed_without_fa = false;
-    is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -564,6 +568,10 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    setAdvertiserInfo(advertiser_info) {
+        this.advertiser_info = advertiser_info;
+    }
+
     setAdvertiserBuyLimit(advertiser_buy_limit) {
         this.advertiser_buy_limit = advertiser_buy_limit;
     }
@@ -578,6 +586,14 @@ export default class GeneralStore extends BaseStore {
 
     setBlockUnblockUserError(block_unblock_user_error) {
         this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    setContactInfo(contact_info) {
+        this.contact_info = contact_info;
+    }
+
+    setDefaultAdvertDescription(default_advert_description) {
+        this.default_advert_description = default_advert_description;
     }
 
     setFeatureLevel(feature_level) {
@@ -708,6 +724,10 @@ export default class GeneralStore extends BaseStore {
         this.parameters = parameters;
     }
 
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
+    }
+
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
     }
@@ -743,21 +763,28 @@ export default class GeneralStore extends BaseStore {
 
     updateAdvertiserInfo(response) {
         const {
+            blocked_by_count,
+            blocked_until,
+            contact_info,
             daily_buy,
             daily_buy_limit,
             daily_sell,
             daily_sell_limit,
-            blocked_until,
-            blocked_by_count,
+            default_advert_description,
             id,
             is_approved,
             is_blocked,
             is_listed,
             name,
+            payment_info,
+            show_name,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserInfo(response.p2p_advertiser_info);
+            this.setContactInfo(contact_info);
+            this.setDefaultAdvertDescription(default_advert_description);
             this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
             this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
@@ -766,8 +793,15 @@ export default class GeneralStore extends BaseStore {
             this.setNickname(name);
             this.setUserBlockedUntil(blocked_until);
             this.setUserBlockedCount(blocked_by_count);
+            this.setPaymentInfo(payment_info);
+            this.setShouldShowRealName(!!show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            this.setContactInfo('');
+            this.setPaymentInfo('');
+            this.setDefaultAdvertDescription('');
+
             if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
             } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {

@@ -1770,7 +1770,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     &__wrapper {
-        max-width: 682px;
         max-height: 560px;
         height: 100%;
         width: 100%;
@@ -1789,6 +1788,22 @@ $MIN_HEIGHT_FLOATING: calc(
             & .data-list__item {
                 box-shadow: 0 1.6rem #00000005, 0 1.6rem #0000000d;
             }
+        }
+    }
+
+    &__container {
+        display: flex;
+
+        @include mobile {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__article {
+        margin-top: -4rem;
+
+        @include mobile {
+            margin-top: -0.8rem;
         }
     }
 

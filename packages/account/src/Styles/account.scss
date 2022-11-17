@@ -189,7 +189,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
-                grid-template-rows: 5rem 1fr 4rem 1fr;
+                grid-template-rows: auto;
 
                 & .account-form__header {
                     &:first-child {
@@ -1494,6 +1494,57 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+/* @define reset-email */
+.reset-email {
+    &__email-selection {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-flow: nowrap column;
+        .reset-email__heading {
+            margin-bottom: 1.6rem;
+        }
+        .reset-email__descripton {
+            margin-bottom: 2rem;
+        }
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__text {
+        text-align: center;
+        margin-bottom: 3.3rem;
+    }
+    &__btn {
+        margin: 0;
+        background-color: var(--button-primary-default);
+        font-weight: bold;
+        align-self: flex-end;
+        color: var(--text-colored-background);
+        font-size: 1.2rem;
+
+        &:hover {
+            background-color: var(--button-primary-hover);
+        }
+        &--disabled {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+    }
+    &__fieldset {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    &__email-field {
+        /* postcss-bem-linter: ignore */
+        & > label {
+            top: 0.9rem;
+            background-color: var(--general-main-2);
+        }
+    }
+}
+
 /** @define sent-email; weak */
 .sent-email {
     display: grid;
@@ -1573,7 +1624,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     &__wrapper {
-        max-width: 682px;
         max-height: 560px;
         height: 100%;
         width: 100%;
@@ -1590,6 +1640,23 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+
+    &__container {
+        display: flex;
+
+        @include mobile {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__article {
+        margin-top: -4rem;
+
+        @include mobile {
+            margin-top: -0.8rem;
+        }
+    }
+
     .table__body .table__row {
         border-bottom: 1px solid var(--general-section-1);
     }

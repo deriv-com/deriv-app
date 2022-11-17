@@ -105,9 +105,13 @@ const AppContents = ({
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}
-                <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
-                    {children}
-                </ThemedScrollbars>
+                {window.location.pathname === routes.onboarding ? (
+                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }}>{children}</ThemedScrollbars>
+                ) : (
+                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
+                        {children}
+                    </ThemedScrollbars>
+                )}
             </DesktopWrapper>
             {show_cookie_banner && (
                 <CookieBanner

@@ -1,6 +1,15 @@
-main {
+.dashboard {
     @include desktop {
         height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
+    @include mobile {
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+    }
+}
+
+.dashboard-onboarding {
+    @include desktop {
+        height: inherit;
     }
     @include mobile {
         height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});

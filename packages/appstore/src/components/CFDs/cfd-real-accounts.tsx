@@ -180,12 +180,13 @@ const CFDRealAccounts = ({
                                                   existing_account.landing_company_short?.slice(1)
                                                 : existing_account.landing_company_short?.toUpperCase();
 
+                                        const title_shortcode = is_eu ? '' : non_eu_accounts;
                                         return (
-                                            <React.Fragment key={existing_account.name}>
+                                            <div className='existing-accounts' key={existing_account.name}>
                                                 <AccountManager
                                                     has_account={true}
                                                     type={existing_account.market_type}
-                                                    appname={`${account.name} ${non_eu_accounts}`}
+                                                    appname={`${account.name} ${title_shortcode}`}
                                                     platform={account.platform}
                                                     disabled={false}
                                                     loginid={existing_account?.display_login}
@@ -217,11 +218,11 @@ const CFDRealAccounts = ({
                                                             class_names='cfd-real-account__accounts--item__add-derived'
                                                         />
                                                     )}
-                                            </React.Fragment>
+                                            </div>
                                         );
                                     })
                                 ) : (
-                                    <React.Fragment key={account.name}>
+                                    <div className='available-accounts' key={account.name}>
                                         <AccountManager
                                             has_account={false}
                                             type={account.type || ''}
@@ -233,7 +234,7 @@ const CFDRealAccounts = ({
                                             }}
                                             description={account.description}
                                         />
-                                    </React.Fragment>
+                                    </div>
                                 )}
                             </div>
                         )

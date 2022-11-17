@@ -100,8 +100,6 @@ const TradingHub: React.FC = () => {
         enableCFDPasswordModal();
     };
 
-    // setIsRealTabEnabled(!demo_active);
-
     const accountTypeChange = (event: {
         target: {
             value: string;

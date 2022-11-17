@@ -37,6 +37,12 @@
                 &__add-derived {
                     margin-top: 1.4rem;
                 }
+                .existing-accounts,
+                .available-accounts {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.6rem;
+                }
             }
             @include mobile {
                 flex-direction: column;

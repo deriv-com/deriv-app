@@ -42,17 +42,20 @@ const AccountManager = ({
         else if (type === 'Options') window.open(getStaticUrl(`/trade-types/options/`));
     };
     const { client }: TRootStore = useStores();
+    const { is_eu } = client;
     const icon_size = isMobile() ? 48 : 64;
+    const eu_financial_icon = is_eu ? (
+        <WalletIcon icon='CFDs' size={icon_size} onClick={openStaticPage} />
+    ) : (
+        <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />
+    );
+
     return (
         <div className='account-manager'>
             <div className='account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
-                        client.is_eu ? (
-                            <WalletIcon icon='CFDs' size={icon_size} onClick={openStaticPage} />
-                        ) : (
-                            <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />
-                        )
+                        eu_financial_icon
                     ) : (
                         <WalletIcon icon='Derived' size={icon_size} onClick={openStaticPage} />
                     ))}

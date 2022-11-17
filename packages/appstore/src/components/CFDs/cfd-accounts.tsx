@@ -26,8 +26,6 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
         is_eu_country,
         landing_companies,
         is_logged_in,
-        is_populating_mt5_account_list,
-        is_populating_dxtrade_account_list,
         website_status,
         mt5_disabled_signup_types,
         dxtrade_disabled_signup_types,

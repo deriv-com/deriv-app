@@ -8,6 +8,7 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class OrderStore {
     constructor(root_store) {
         makeObservable(this, {
+            active_order: observable,
             api_error_message: observable,
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
@@ -47,6 +48,7 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            setActiveOrder: action.bound,
             setForceRerenderOrders: action.bound,
             setApiErrorMessage: action.bound,
             setCancellationBlockDuration: action.bound,
@@ -91,6 +93,7 @@ export default class OrderStore {
         );
     }
 
+    active_order = null;
     api_error_message = '';
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
@@ -124,11 +127,7 @@ export default class OrderStore {
     }
 
     get order_information() {
-        const { general_store } = this.root_store;
-        const order = this.orders.find(o => o.id === this.order_id);
-        return order
-            ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
-            : null;
+        return this.active_order;
     }
 
     get nav() {
@@ -255,6 +254,7 @@ export default class OrderStore {
             this.root_store.general_store.redirectTo(this.nav.location);
         }
         this.setOrderId(null);
+        this.setActiveOrder(null);
     }
 
     loadMoreOrders({ startIndex }) {
@@ -370,6 +370,10 @@ export default class OrderStore {
         });
     }
 
+    setActiveOrder(active_order) {
+        this.active_order = active_order;
+    }
+
     setQueryDetails(input_order) {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
@@ -386,6 +390,9 @@ export default class OrderStore {
         if (order_information?.payment_method_details) {
             this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
         }
+
+        this.setActiveOrder(order_information);
+
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
 

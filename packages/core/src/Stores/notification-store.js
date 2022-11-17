@@ -258,9 +258,13 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
+        const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.acuity_mt5_download.key
+        );
         let has_missing_required_field;
 
         if (is_logged_in) {
+            if (isEmptyObject(account_status)) return;
             const {
                 authentication: { document, identity, needs_verification },
                 status,
@@ -304,6 +308,13 @@ export default class NotificationStore extends BaseStore {
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
+
+            // Acuity notification is available for both Demo and Real desktop clients
+            this.addNotificationMessage(this.client_notifications.acuity);
+            if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
+                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -603,6 +614,52 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
+            acuity: {
+                key: 'acuity',
+                header: localize('New trading tools for MT5'),
+                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
+                secondary_btn: {
+                    text: localize('Learn More'),
+                    onClick: () => {
+                        ui.setIsAcuityModalOpen(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                platform: [platform_name.DTrader],
+                is_disposable: true,
+                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
+                img_alt: 'Acuity',
+                className: 'acuity',
+                type: 'news',
+            },
+            acuity_mt5_download: {
+                key: 'acuity_mt5_download',
+                header: localize('Power up your trades with Acuity'),
+                message: localize(
+                    'Download intuitive trading tools to keep track of market events. The Acuity suite is only available for Windows, and is most recommended for financial assets.'
+                ),
+                secondary_btn: {
+                    text: localize('Learn More'),
+                    onClick: () => {
+                        ui.setIsAcuityModalOpen(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity_mt5_download.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity_mt5_download.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                platform: [platform_name.DMT5],
+                img_src: getUrlBase('/public/images/common/acuity_software.png'),
+                img_alt: 'Acuity Download',
+                className: 'acuity-mt5',
+                icon: 'IcCloseDark',
+                type: 'news',
+            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),

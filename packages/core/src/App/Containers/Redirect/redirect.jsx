@@ -10,7 +10,6 @@ const Redirect = ({
     history,
     loginid,
     is_eu,
-    is_eu_country,
     currency,
     setVerificationCode,
     verification_code,
@@ -43,7 +42,7 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
-            } else if (is_mf || is_eu || is_eu_country) {
+            } else if (is_mf || is_eu) {
                 history.push({
                     pathname: routes.trading_hub,
                     search: url_query_string,

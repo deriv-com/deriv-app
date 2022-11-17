@@ -7,8 +7,8 @@ const OnlineStatusIcon = ({ is_online, size = '1em' }) => {
     return (
         <div
             className={classNames('online-status__icon', {
-                'online-status__icon--offline': is_online === 0,
-                'online-status__icon--online': is_online === 1,
+                'online-status__icon--offline': !is_online,
+                'online-status__icon--online': !!is_online,
             })}
             style={{
                 width: size,

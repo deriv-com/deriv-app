@@ -150,7 +150,7 @@ const AdvertiserPage = () => {
                                 )}
                             </div>
 
-                            {isMobile() && (
+                            <MobileWrapper>
                                 <div className='advertiser-page__row'>
                                     <div className='advertiser-page__rating--row'>
                                         <OnlineStatusIcon is_online={is_online} />
@@ -173,10 +173,10 @@ const AdvertiserPage = () => {
                                         </Text>
                                     </div>
                                 </div>
-                            )}
+                            </MobileWrapper>
 
                             <div className='advertiser-page__rating'>
-                                {!isMobile() && (
+                                <DesktopWrapper>
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
                                             <OnlineStatusIcon is_online={is_online} />
@@ -202,7 +202,7 @@ const AdvertiserPage = () => {
                                             </Text>
                                         </div>
                                     </React.Fragment>
-                                )}
+                                </DesktopWrapper>
                                 {rating_average ? (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
@@ -251,7 +251,6 @@ const AdvertiserPage = () => {
                                     </div>
                                 )}
                             </div>
-
                             <div className='advertiser-page__row'>
                                 <TradeBadge
                                     is_poa_verified={!!full_verification}

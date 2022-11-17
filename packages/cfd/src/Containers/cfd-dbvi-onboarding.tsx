@@ -19,11 +19,7 @@ import { AccountStatusResponse } from '@deriv/api-types';
 import { TCFDDbviOnboardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
-type TSwitchToRealAccountMessage = {
-    onClickOK: () => void;
-};
-
-const SwitchToRealAccountMessage = ({ onClickOK }: TSwitchToRealAccountMessage) => (
+const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
         <Icon icon={'IcPoaLock'} size={128} />
         <Text className='da-icon-with-message__text' as='p' size={isMobile() ? 'xs' : 's'} weight='bold'>
@@ -33,7 +29,7 @@ const SwitchToRealAccountMessage = ({ onClickOK }: TSwitchToRealAccountMessage) 
             has_effect
             text={localize('Ok')}
             onClick={() => {
-                onClickOK();
+                onClickOk();
             }}
             className='da-icon-with-message__button'
             primary
@@ -98,7 +94,7 @@ const CFDDbviOnboarding = ({
         if (is_loading) {
             return <Loading is_fullscreen={false} />;
         } else if (is_virtual) {
-            return <SwitchToRealAccountMessage onClickOK={toggleCFDVerificationModal} />;
+            return <SwitchToRealAccountMessage onClickOk={toggleCFDVerificationModal} />;
         }
         return showSubmittedModal ? (
             <PoiPoaDocsSubmitted

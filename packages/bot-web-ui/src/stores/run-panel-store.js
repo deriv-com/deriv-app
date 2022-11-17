@@ -141,7 +141,7 @@ export default class RunPanelStore {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
         const is_ios = mobileOSDetect() === 'iOS';
-
+        this.dbot.saveRecentWorkspace();
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();

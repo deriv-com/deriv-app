@@ -82,16 +82,6 @@ const LocalComponent = ({
                         </div>
                     </div>
                     <div className='load-strategy__button-group'>
-                        <button
-                            ref={clear_preview_ref}
-                            className='load-strategy__button-group--clear'
-                            onClick={() => {
-                                clearInjectionDiv();
-                                setFileLoaded(false);
-                            }}
-                        >
-                            clear
-                        </button>
                         <input
                             type='file'
                             ref={file_input_ref}

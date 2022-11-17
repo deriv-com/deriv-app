@@ -14,6 +14,8 @@ type TRecentComponent = {
     recent_strategies: [];
     toggleExplanationExpand: boolean;
     toggleStrategies: (param: boolean) => void;
+    dashboard_strategies: [];
+    setDashboardStrategies: (strategies: []) => void;
 };
 const explanation_list = [
     localize('1. Logged in from a different device'),
@@ -26,17 +28,18 @@ const RecentComponent = ({
     recent_strategies,
     toggleExplanationExpand,
     toggleStrategies,
-}: TRecentComponent) => {
-    const [get_strategies, setStrategies] = React.useState([]);
 
+    dashboard_strategies,
+    setDashboardStrategies,
+}: TRecentComponent) => {
     React.useEffect(() => {
         toggleStrategies(true);
         getSavedWorkspaces().then(load_recent_strategies => {
-            setStrategies(load_recent_strategies);
+            setDashboardStrategies(load_recent_strategies);
         });
     }, [recent_strategies]);
 
-    if (get_strategies?.length) {
+    if (dashboard_strategies?.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__recent'>
@@ -45,11 +48,11 @@ const RecentComponent = ({
                             <Localize i18n_default_text='Your Bots' />
                         </div>
                         <div className='load-strategy__recent__files__list'>
-                            {get_strategies.map((workspace, index) => {
+                            {dashboard_strategies.map((workspace, index) => {
                                 return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
                             })}
                         </div>
-                        <DeleteDialog setStrategies={setStrategies} />
+                        <DeleteDialog setStrategies={setDashboardStrategies} />
                     </div>
                 </div>
             </div>
@@ -98,6 +101,9 @@ const Recent = connect(({ load_modal }: RootStore) => ({
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
     is_delete_modal_open: load_modal.is_delete_modal_open,
     toggleStrategies: load_modal.toggleStrategies,
+
+    dashboard_strategies: load_modal.dashboard_strategies,
+    setDashboardStrategies: load_modal.setDashboardStrategies,
 }))(RecentComponent);
 
 export default Recent;

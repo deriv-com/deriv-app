@@ -58,6 +58,7 @@ export default class LoadModalStore implements ILoadModalStore {
             is_strategy_removed: observable,
             loaded_local_file: observable,
             recent_strategies: observable,
+            dashboard_strategies: observable,
             selected_strategy_id: observable,
             preview_workspace: computed,
             selected_strategy: computed,
@@ -79,6 +80,7 @@ export default class LoadModalStore implements ILoadModalStore {
             toggleExplanationExpand: action.bound,
             toggleLoadModal: action.bound,
             readFile: action.bound,
+            setDashboardStrategies: action.bound,
         });
 
         this.root_store = root_store;
@@ -118,6 +120,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_open_button_loading = false;
     loaded_local_file = null;
     recent_strategies = [];
+    dashboard_strategies = [];
     selected_strategy_id = undefined;
     is_strategy_loaded = false;
     is_delete_modal_open = false;
@@ -144,6 +147,10 @@ export default class LoadModalStore implements ILoadModalStore {
         return '';
     }
 
+    setDashboardStrategies(strategies: []) {
+        this.dashboard_strategies = strategies;
+    }
+
     handleFileChange = (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
@@ -158,16 +165,19 @@ export default class LoadModalStore implements ILoadModalStore {
             ({ files } = event.target);
         }
 
-        files = Array.from(files);
+        const [file] = files;
 
         if (!is_body) {
-            if (files[0].name.includes('xml')) {
-                this.setLoadedLocalFile(files[0]);
+            if (file.name.includes('xml')) {
+                const dashboard_strategies = [...this.dashboard_strategies];
+                dashboard_strategies.push(file);
+                this.dashboard_strategies = dashboard_strategies;
+                this.setLoadedLocalFile(file);
             } else {
                 return false;
             }
         }
-        this.readFile(!is_body, event, files[0]);
+        this.readFile(!is_body, event, file);
         event.target.value = '';
         return true;
     };

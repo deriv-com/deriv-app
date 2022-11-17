@@ -64,13 +64,13 @@ const Card = ({
             icon: 'IcMyComputer',
             content: localize('My computer'),
             method: openFileLoader,
-            disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
+            disable: '',
         },
         {
             icon: 'IcGoogleDriveDbot',
             content: localize('Google Drive'),
             method: openGoogleDriveDialog,
-            disable: has_file_loaded ? 'tab__dashboard__table__disabled-card' : '',
+            disable: '',
         },
         {
             icon: 'IcBotBuilder',
@@ -115,7 +115,6 @@ const Card = ({
                         hidden
                         onChange={e => {
                             clear_preview_ref.current?.click();
-                            onConfirmSave();
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);

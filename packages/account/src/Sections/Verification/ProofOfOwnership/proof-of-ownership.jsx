@@ -21,7 +21,7 @@ export const ProofOfOwnership = ({
         const groups = {};
         let total_documents_required = 0;
         cards?.forEach(card => {
-            const card_details = paymentMethodConfig[card.payment_method.toLowerCase()] ?? paymentMethodConfig.other;
+            const card_details = paymentMethodConfig[card.payment_method.toLowerCase()] || paymentMethodConfig.other;
             if (groups[card?.payment_method?.toLowerCase()]) {
                 groups[card?.payment_method?.toLowerCase()].items.push(card);
                 total_documents_required += card?.documents_required;

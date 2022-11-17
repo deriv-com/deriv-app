@@ -42,7 +42,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
             </span>
         );
     const formatIdentifier = (payment_method_identifier, identifier_type) => {
-        let formatted_id = payment_method_identifier?.replace(/\s/g, '') ?? '';
+        let formatted_id = payment_method_identifier?.replace(/\s/g, '') || '';
         if (identifier_type === IDENTIFIER_TYPES.card_number) {
             if (
                 formatted_id.length !== 16 ||

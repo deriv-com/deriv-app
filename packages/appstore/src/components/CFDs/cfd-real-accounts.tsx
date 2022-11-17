@@ -34,11 +34,10 @@ const CFDRealAccounts = ({
         setMT5TradeAccount,
     } = modules.cfd;
     const { setAppstorePlatform, platform } = common;
-    const { isEligibleForMoreRealMt5, loginid } = client;
+    const { isEligibleForMoreRealMt5, is_eu } = client;
     const history = useHistory();
-    const is_mf = loginid?.startsWith('MF');
-    const account_name = is_mf ? 'CFDs' : 'Financial';
-    const account_desc = is_mf
+    const account_name = is_eu ? 'CFDs' : 'Financial';
+    const account_desc = is_eu
         ? 'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
         : 'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.';
     const available_real_accounts: TStaticAccountProps[] = [

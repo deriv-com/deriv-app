@@ -61,8 +61,13 @@
             }
 
             &--animated {
+                font-size: 2rem;
                 position: inherit;
                 animation: triggerAnimation 0.5s linear infinite alternate;
+            }
+
+            &--normal {
+                font-size: 2rem;
             }
         }
         &__body {

@@ -4,6 +4,8 @@ import { Localize, localize } from '@deriv/translations';
 import WalletIcon, { Icons } from 'Assets/svgs/wallet';
 import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
+import { useStores } from 'Stores';
+import { observer } from 'mobx-react-lite';
 
 type TPlatformLauncherProps = {
     app_icon: keyof typeof Icons;
@@ -24,6 +26,15 @@ const PlatformLauncher = ({
     has_real_account,
     account_type,
 }: TPlatformLauncherProps) => {
+    const { client } = useStores();
+
+    const { is_eu } = client;
+
+    const is_eu_description = 'Multipliers trading platform.';
+
+    const app_description =
+        app_desc === 'Options & multipliers trading platform.' && is_eu ? is_eu_description : app_desc;
+
     return (
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
@@ -44,7 +55,7 @@ const PlatformLauncher = ({
                         line_height='l'
                         className='platform-launcher__container--title-desc-wrapper--description'
                     >
-                        <Localize i18n_default_text={app_desc} />
+                        <Localize i18n_default_text={app_description} />
                     </Text>
                 </div>
             </div>
@@ -73,4 +84,4 @@ const PlatformLauncher = ({
     );
 };
 
-export default PlatformLauncher;
+export default observer(PlatformLauncher);

@@ -8,10 +8,9 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const { client, modules, common, ui }: TRootStore = useStores();
-    const { is_eu, loginid } = client;
-    const is_mf = loginid?.startsWith('MF');
-    const account_name = is_mf ? 'CFDs' : 'Financial';
-    const account_desc = is_mf
+    const { is_eu } = client;
+    const account_name = is_eu ? 'CFDs' : 'Financial';
+    const account_desc = is_eu
         ? 'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
         : 'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.';
     const available_demo_accounts: TStaticAccountProps[] = [

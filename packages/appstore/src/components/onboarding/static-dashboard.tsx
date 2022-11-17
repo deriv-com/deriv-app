@@ -86,8 +86,8 @@ const StaticDashboard = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options');
-    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options account';
+    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
 
     return (
         <div className='static-dashboard'>
@@ -113,11 +113,13 @@ const StaticDashboard = ({
                                     weight='bold'
                                     color={is_blurry.cfd_text ? 'less-prominent' : 'prominent'}
                                     className={
-                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                        is_onboarding_animated.text
+                                            ? 'static-dashboard-wrapper__header--animated'
+                                            : 'static-dashboard-wrapper__header--normal'
                                     }
                                 >
                                     <Localize
-                                        i18n_default_text='CFD <0>Compare accounts</0>'
+                                        i18n_default_text='CFDs <0>Compare accounts</0>'
                                         components={[
                                             <Text
                                                 key={0}
@@ -180,7 +182,7 @@ const StaticDashboard = ({
                                         type='synthetic'
                                         platform='mt5'
                                         appname='Derived'
-                                        description='Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'
+                                        description='Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}
@@ -212,7 +214,7 @@ const StaticDashboard = ({
                                     type='financial'
                                     platform='mt5'
                                     appname='Financial'
-                                    description='Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                                    description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
                                     financial_amount={financial_amount}
                                     loginid={loginid}
                                     currency={currency}
@@ -285,7 +287,9 @@ const StaticDashboard = ({
                                     weight='bold'
                                     color={is_blurry.options_text ? 'less-prominent' : 'prominent'}
                                     className={
-                                        is_onboarding_animated.text ? 'static-dashboard-wrapper__header--animated' : ''
+                                        is_onboarding_animated.text
+                                            ? 'static-dashboard-wrapper__header--animated'
+                                            : 'static-dashboard-wrapper__header--normal'
                                     }
                                 >
                                     {is_eu_title}
@@ -319,10 +323,19 @@ const StaticDashboard = ({
                                     />
                                 ) : (
                                     <Localize
-                                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>.'
+                                        i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simplicity of Options with <1>Multipliers</1>.'
                                         components={[
                                             <Text
                                                 key={0}
+                                                size='xs'
+                                                color='red'
+                                                className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                    'static-dashboard-wrapper__header--underlined--blurry':
+                                                        is_blurry.options_description,
+                                                })}
+                                            />,
+                                            <Text
+                                                key={1}
                                                 size='xs'
                                                 color='red'
                                                 className={classNames('static-dashboard-wrapper__header--underlined', {

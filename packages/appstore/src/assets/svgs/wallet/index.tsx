@@ -45,7 +45,7 @@ export const Icons = {
 };
 
 const WalletIcon = ({ icon, className, size, onClick }: TWalletIconProps) => {
-    const Icon = Icons[icon as keyof typeof Icons] as React.ElementType;
+    const Icon = Icons[icon] as React.ElementType;
 
     return Icon ? <Icon className={className} style={{ width: size, height: size }} onClick={onClick} /> : null;
 };

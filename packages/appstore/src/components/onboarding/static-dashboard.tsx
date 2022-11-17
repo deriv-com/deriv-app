@@ -62,10 +62,9 @@ const StaticDashboard = ({
     const Divider = () => <div className='divider' />;
 
     const { client } = useStores();
-    const { is_eu, loginid: logid } = client;
+    const { is_eu, is_eu_country, is_logged_in } = client;
 
-    const is_mf = logid?.startsWith('MF');
-
+    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
         { text: 'CFDs', value: 0 },
         { text: 'Options', value: 1 },
@@ -176,7 +175,7 @@ const StaticDashboard = ({
                             )}
                         </div>
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <div>
                                     <StaticCFDAccountManager
                                         type='synthetic'
@@ -243,7 +242,7 @@ const StaticDashboard = ({
                                     </div>
                                 )}
                             </div>
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <div>
                                     <StaticCFDAccountManager
                                         type='all'
@@ -391,7 +390,7 @@ const StaticDashboard = ({
 
                         <div
                             className={classNames('static-dashboard-wrapper__body--apps', {
-                                'static-dashboard-wrapper__body--apps--eu': is_mf,
+                                'static-dashboard-wrapper__body--apps--eu': is_eu_user,
                             })}
                         >
                             <StaticPlatformLauncher
@@ -402,7 +401,7 @@ const StaticDashboard = ({
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <StaticPlatformLauncher
                                     is_grey={is_grey}
                                     app_icon={`DBot`}
@@ -412,7 +411,7 @@ const StaticDashboard = ({
                                     has_applauncher_account={has_applauncher_account}
                                 />
                             )}
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <StaticPlatformLauncher
                                     is_grey={is_grey}
                                     app_icon={`SmartTraderBlue`}
@@ -422,7 +421,7 @@ const StaticDashboard = ({
                                     has_applauncher_account={has_applauncher_account}
                                 />
                             )}
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <StaticPlatformLauncher
                                     is_grey={is_grey}
                                     app_icon={`BinaryBotBlue`}
@@ -432,7 +431,7 @@ const StaticDashboard = ({
                                     has_applauncher_account={has_applauncher_account}
                                 />
                             )}
-                            {!is_mf && (
+                            {!is_eu_user && (
                                 <StaticPlatformLauncher
                                     is_grey={is_grey}
                                     app_icon={`DerivGoBlack`}

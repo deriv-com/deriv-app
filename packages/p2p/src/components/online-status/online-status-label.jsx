@@ -1,18 +1,18 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { getDiffDuration, isMobile, toMoment, epochToMoment } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'xxxs' : 'xs' }) => {
     const last_online_label = () => {
         if (!is_online) {
             if (last_online_time) {
-                const current_date = new Date();
-                const last_online_date = new Date(last_online_time * 1000);
-                const diff = moment.duration(moment(current_date).diff(last_online_date));
+                const start_time = epochToMoment(last_online_time).unix();
+                const end_time = toMoment().unix();
+
+                const diff = getDiffDuration(start_time, end_time);
                 const addPrural = duration => (duration !== 1 ? 's' : '');
 
                 if (diff.months())

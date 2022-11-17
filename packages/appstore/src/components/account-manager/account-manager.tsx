@@ -43,13 +43,12 @@ const AccountManager = ({
     };
     const { client }: TRootStore = useStores();
     const icon_size = isMobile() ? 48 : 64;
-    const is_mf = client.loginid?.startsWith('MF');
     return (
         <div className='account-manager'>
             <div className='account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     (type === 'financial' ? (
-                        is_mf ? (
+                        client.is_eu ? (
                             <WalletIcon icon='CFDs' size={icon_size} onClick={openStaticPage} />
                         ) : (
                             <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />

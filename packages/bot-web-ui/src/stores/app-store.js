@@ -154,10 +154,10 @@ export default class AppStore {
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
                         title: localize('DBot is not available for this account'),
-                        link: localize('Go to DMT5 dashboard'),
+                        link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
             }
@@ -178,10 +178,10 @@ export default class AppStore {
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
                         title: localize('DBot is not available for this account'),
-                        link: localize('Go to DMT5 dashboard'),
+                        link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
             }
@@ -245,10 +245,10 @@ export default class AppStore {
         ) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
-                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                 ),
                 title: localize('DBot is not available for this account'),
-                link: localize('Go to DMT5 dashboard'),
+                link: localize('Go to Deriv MT5 dashboard'),
             });
         } else if (common.has_error) {
             common.setError(false, null);

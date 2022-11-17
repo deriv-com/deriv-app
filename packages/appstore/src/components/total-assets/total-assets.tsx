@@ -29,15 +29,16 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
+    const [total_assets, setTotalAssets] = React.useState(0);
 
     const isDemo = (account: DetailsOfEachMT5Loginid) => account.account_type === 'demo';
 
     const cfd_real_currency =
-        mt5_login_list.find((mt5_account: DetailsOfEachMT5Loginid) => !isDemo(mt5_account))?.currency ||
+        mt5_login_list?.find((mt5_account: DetailsOfEachMT5Loginid) => !isDemo(mt5_account))?.currency ||
         dxtrade_accounts_list.find((mt5_accounts: DetailsOfEachMT5Loginid) => !isDemo(mt5_accounts))?.currency;
 
     const cfd_demo_currency =
-        mt5_login_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency ||
+        mt5_login_list?.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency ||
         dxtrade_accounts_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency;
 
     const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
@@ -53,15 +54,17 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                 setExchangeRate(res);
             });
         };
-        if (category === 'real' && cfd_real_currency) {
+        if (category === 'real') {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
-        } else if (category === 'demo' && vrtc_currency) {
+            setTotalAssets(getTotalRealAssets());
+        } else if (category === 'demo') {
             getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
+            setTotalAssets(getTotalDemoAssets());
         } else if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [category]);
 
     const getTotalBalanceCfd = (mt5_accounts: Mt5LoginList, is_demo: boolean, exchange_rate: number) => {
         return mt5_accounts
@@ -73,7 +76,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     },
                     mt5_account: DetailsOfEachMT5Loginid
                 ) => {
-                    total.balance += (mt5_account?.balance ?? 0) * exchange_rate;
+                    total.balance += (mt5_account?.balance || 0) * (exchange_rate || 1);
                     return total;
                 },
                 { balance: 0 }
@@ -99,13 +102,18 @@ const TotalAssets = ({ category }: TTotalAssets) => {
 
         let total = obj_total_balance.amount_real;
 
-        total += obj_total_balance.amount_mt5 > 0 ? obj_total_balance.amount_mt5 : mt5_total.balance || 0;
-        total += obj_total_balance.amount_dxtrade > 0 ? obj_total_balance.amount_dxtrade : dxtrade_total.balance || 0;
+        total +=
+            obj_total_balance.amount_mt5 > 0 && obj_total_balance.amount_mt5 !== 0
+                ? obj_total_balance.amount_mt5
+                : mt5_total.balance || 0;
+        total +=
+            obj_total_balance.amount_dxtrade > 0 && obj_total_balance.amount_dxtrade !== 0
+                ? obj_total_balance.amount_dxtrade
+                : dxtrade_total.balance || 0;
 
         return total;
     };
 
-    const total_assets = category === 'real' ? getTotalRealAssets() : getTotalDemoAssets();
     const currency = account_total_balance_currency;
     const is_eu_popover_text = is_eu
         ? localize(`Total assets in your Multipliers and DMT5 ${category} accounts`)

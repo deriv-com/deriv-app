@@ -147,7 +147,6 @@ export const icons =
         'IcCashierPaymentAgent',
         'IcCashierPaypalDark',
         'IcCashierPaypalLight',
-        'IcCashierPaymentAgent',
         'IcCashierPerfectMoneyDark',
         'IcCashierPerfectMoneyLight',
         'IcCashierPermatabankDark',
@@ -304,6 +303,7 @@ export const icons =
         'IcDrivingLicenseDashboard',
         'IcDrivingLicense',
         'IcEdit',
+        'IcEmailChanged',
         'IcEmailFirewall',
         'IcEmailOutlineNew',
         'IcEmailOutline',
@@ -582,6 +582,16 @@ export const icons =
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
         'IcMt5TradeTypes',
+    ],
+    'onboarding': [
+        'IcCfdsMobile',
+        'IcCfds',
+        'IcDigitalOptionsMobile',
+        'IcDigitalOptions',
+        'IcMultipliersMobile',
+        'IcMultipliers',
+        'IcNotSureMobile',
+        'IcNotSure',
     ],
     'option': [
         'IcOptionCallPutReset',
@@ -879,4 +889,4 @@ export const icons =
         'IcWalletZingpayDark',
         'IcWalletZingpayLight',
     ],
-};
+}

@@ -36,7 +36,7 @@ const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, s
         >
             <>
                 <DesktopWrapper>{icon}</DesktopWrapper>
-                <MobileWrapper>{mobileIcon}</MobileWrapper>
+                <MobileWrapper>{mobileIcon} </MobileWrapper>
             </>
         </div>
         <div className='welcome-item__body'>

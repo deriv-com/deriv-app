@@ -25,6 +25,7 @@ const BuySellForm = props => {
     const {
         advertiser_details,
         description,
+        effective_rate: market_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit,
@@ -53,6 +54,7 @@ const BuySellForm = props => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate,
     });
 
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
@@ -140,8 +142,8 @@ const BuySellForm = props => {
                 validateOnMount={!should_disable_field}
                 initialValues={{
                     amount: min_order_amount_limit,
-                    contact_info: buy_sell_store.contact_info,
-                    payment_info: buy_sell_store.payment_info,
+                    contact_info: general_store.contact_info,
+                    payment_info: general_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
                 }}
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
@@ -434,7 +436,7 @@ const BuySellForm = props => {
                                                             label={localize('Your bank details')}
                                                             required
                                                             has_character_counter
-                                                            initial_character_count={buy_sell_store.payment_info.length}
+                                                            initial_character_count={general_store.payment_info.length}
                                                             max_characters={300}
                                                             disabled={should_disable_field}
                                                         />
@@ -453,7 +455,7 @@ const BuySellForm = props => {
                                                         label={localize('Your contact details')}
                                                         required
                                                         has_character_counter
-                                                        initial_character_count={buy_sell_store.contact_info.length}
+                                                        initial_character_count={general_store.contact_info.length}
                                                         max_characters={300}
                                                         disabled={should_disable_field}
                                                     />
@@ -475,7 +477,6 @@ BuySellForm.propTypes = {
     advert: PropTypes.object,
     contact_info: PropTypes.string,
     form_props: PropTypes.object,
-    getAdvertiserInfo: PropTypes.func,
     setIsSubmitDisabled: PropTypes.func,
     setSubmitForm: PropTypes.func,
     setPageFooterParent: PropTypes.func,

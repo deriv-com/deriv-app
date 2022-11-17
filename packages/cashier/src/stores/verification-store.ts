@@ -1,43 +1,44 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import Constants from 'Constants/constants';
-import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class VerificationStore {
     resend_interval?: ReturnType<typeof setInterval>;
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
-        this.root_store = root_store;
-        this.WS = WS;
+        makeObservable(this, {
+            is_button_clicked: observable,
+            timeout_button: observable,
+            error: observable,
+            is_email_sent: observable,
+            is_resend_clicked: observable,
+            resend_timeout: observable,
+            setIsButtonClicked: action.bound,
+            setTimeoutButton: action.bound,
+            setIsEmailSent: action.bound,
+            setIsResendClicked: action.bound,
+            setResendTimeout: action.bound,
+            setTimeoutVerification: action.bound,
+            sendVerificationEmail: action.bound,
+            resendVerificationEmail: action.bound,
+        });
     }
 
-    @observable is_button_clicked = false;
-    @observable timeout_button = 0;
-    @observable error = new ErrorStore();
-    @observable is_email_sent = false;
-    @observable is_resend_clicked = false;
-    @observable resend_timeout = 60;
-
-    @action.bound
     setIsButtonClicked(value: boolean): void {
         this.is_button_clicked = value;
     }
 
-    @action.bound
     setTimeoutButton(value: number): void {
         this.timeout_button = value;
     }
 
-    @action.bound
     setIsEmailSent(value: boolean): void {
         this.is_email_sent = value;
     }
 
-    @action.bound
     setIsResendClicked(value: boolean): void {
         this.is_resend_clicked = value;
     }
 
-    @action.bound
     setResendTimeout(value: number): void {
         this.resend_timeout = value;
     }
@@ -48,7 +49,6 @@ export default class VerificationStore {
         }
     }
 
-    @action.bound
     setTimeoutVerification(): void {
         this.clearTimeoutVerification();
         this.setTimeoutButton(
@@ -60,7 +60,6 @@ export default class VerificationStore {
         );
     }
 
-    @action.bound
     async sendVerificationEmail() {
         const { client, modules } = this.root_store;
         const { resetPaymentAgent } = modules.cashier.payment_agent;
@@ -103,7 +102,6 @@ export default class VerificationStore {
         }
     }
 
-    @action.bound
     resendVerificationEmail() {
         // don't allow clicking while ongoing timeout
         if (this.resend_timeout < 60) {

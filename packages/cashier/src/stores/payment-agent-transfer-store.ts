@@ -1,5 +1,5 @@
-import { action, computed, observable } from 'mobx';
 import { PaymentAgentDetailsResponse, PaymentAgentTransferResponse } from '@deriv/api-types';
+import { action, computed, observable, makeObservable } from 'mobx';
 import { routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
@@ -17,26 +17,44 @@ import {
 
 export default class PaymentAgentTransferStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
-        this.root_store = root_store;
-        this.WS = WS;
+        makeObservable(this, {
+            container: observable,
+            error: observable,
+            is_payment_agent: observable,
+            is_try_transfer_successful: observable,
+            is_transfer_successful: observable,
+            confirm: observable,
+            receipt: observable,
+            transfer_limit: observable,
+            is_payment_agent_transfer_visible: computed,
+            setIsPaymentAgent: action.bound,
+            setIsTryTransferSuccessful: action.bound,
+            setIsTransferSuccessful: action.bound,
+            setConfirmationPaymentAgentTransfer: action.bound,
+            setReceiptPaymentAgentTransfer: action.bound,
+            setMinMaxPaymentAgentTransfer: action.bound,
+            onMountPaymentAgentTransfer: action.bound,
+            requestTryPaymentAgentTransfer: action.bound,
+            requestPaymentAgentTransfer: action.bound,
+            resetPaymentAgentTransfer: action.bound,
+        });
     }
 
-    @observable container = Constants.containers.payment_agent_transfer;
-    @observable error: TRootStore['modules']['cashier']['error'] = new ErrorStore();
-    @observable is_payment_agent = false;
-    @observable is_try_transfer_successful = false;
-    @observable is_transfer_successful = false;
-    @observable confirm = {
+    container = Constants.containers.payment_agent_transfer;
+    error = new ErrorStore();
+    is_payment_agent = false;
+    is_try_transfer_successful = false;
+    is_transfer_successful = false;
+    confirm = {
         amount: 0,
         client_id: '',
         client_name: '',
         description: '',
     };
-    @observable receipt = {};
-    @observable transfer_limit = {};
-    @observable onRemount: VoidFunction | null = null;
+    receipt = {};
+    transfer_limit = {};
+    onRemount: VoidFunction | null = null;
 
-    @computed
     get is_payment_agent_transfer_visible(): boolean {
         return this.is_payment_agent;
     }
@@ -46,12 +64,10 @@ export default class PaymentAgentTransferStore {
         this.setIsPaymentAgent(!!get_settings?.is_authenticated_payment_agent);
     }
 
-    @action.bound
     setOnRemount(func: VoidFunction): void {
         this.onRemount = func;
     }
 
-    @action.bound
     setIsPaymentAgent(is_payment_agent: boolean): void {
         if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
@@ -59,18 +75,15 @@ export default class PaymentAgentTransferStore {
         this.is_payment_agent = is_payment_agent;
     }
 
-    @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful: boolean): void {
         this.error.setErrorMessage({ code: '', message: '' });
         this.is_try_transfer_successful = is_try_transfer_successful;
     }
 
-    @action.bound
     setIsTransferSuccessful(is_transfer_successful: boolean): void {
         this.is_transfer_successful = is_transfer_successful;
     }
 
-    @action.bound
     setConfirmationPaymentAgentTransfer({
         amount,
         client_id,
@@ -85,7 +98,6 @@ export default class PaymentAgentTransferStore {
         };
     }
 
-    @action.bound
     setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }: TPaymentAgentTransferReceipt): void {
         this.receipt = {
             amount_transferred,
@@ -106,7 +118,6 @@ export default class PaymentAgentTransferStore {
         return current_payment_agent ?? {};
     }
 
-    @action.bound
     setMinMaxPaymentAgentTransfer({ min_withdrawal, max_withdrawal }: TTransferLimit): void {
         this.transfer_limit = {
             min_withdrawal,
@@ -114,7 +125,6 @@ export default class PaymentAgentTransferStore {
         };
     }
 
-    @action.bound
     async onMountPaymentAgentTransfer(): Promise<void> {
         const { general_store, payment_agent } = this.root_store.modules.cashier;
 
@@ -131,7 +141,6 @@ export default class PaymentAgentTransferStore {
         general_store.setLoading(false);
     }
 
-    @action.bound
     requestTryPaymentAgentTransfer = async ({
         amount,
         currency,
@@ -162,7 +171,6 @@ export default class PaymentAgentTransferStore {
         return payment_agent_transfer;
     };
 
-    @action.bound
     requestPaymentAgentTransfer = async ({
         amount,
         currency,
@@ -192,7 +200,6 @@ export default class PaymentAgentTransferStore {
         return payment_agent_transfer;
     };
 
-    @action.bound
     resetPaymentAgentTransfer = (): void => {
         this.setIsTransferSuccessful(false);
         this.error.setErrorMessage({ code: '', message: '' });

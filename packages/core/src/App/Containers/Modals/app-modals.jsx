@@ -9,12 +9,20 @@ import { moduleLoader } from '@deriv/shared';
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
 );
+const AcuityDownloadModal = React.lazy(() =>
+    import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
+);
 const CloseMxMltAccountModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "close-mx-mlt-account-modal" */ '../CloseMxMltAccountModal'))
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
+
+const UnlinkPasswordModal = React.lazy(() =>
+    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
+);
+
 const RedirectToLoginModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
@@ -41,6 +49,7 @@ const WarningScamMessageModal = React.lazy(() =>
 
 const AppModals = ({
     is_account_needed_modal_on,
+    is_acuity_modal_open,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -68,6 +77,9 @@ const AppModals = ({
         case 'request_email':
             ComponentToLoad = <ResetEmailModal />;
             break;
+        case 'social_email_change':
+            ComponentToLoad = <UnlinkPasswordModal />;
+            break;
         case 'system_email_change':
             ComponentToLoad = <UpdateEmailModal />;
             break;
@@ -77,6 +89,11 @@ const AppModals = ({
             }
             break;
     }
+
+    if (is_acuity_modal_open) {
+        ComponentToLoad = <AcuityDownloadModal />;
+    }
+
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
@@ -115,6 +132,7 @@ const AppModals = ({
 export default connect(({ client, ui }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
+    is_acuity_modal_open: ui.is_acuity_modal_open,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,

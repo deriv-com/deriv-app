@@ -50,6 +50,7 @@ export type TClientStore = {
     is_logging_in: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
+    is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;

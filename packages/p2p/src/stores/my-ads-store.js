@@ -387,6 +387,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickUpdatePaymentMethods(id, is_buy_advert) {
+        this.setIsTableLoading(true);
         requestWS({
             p2p_advert_update: 1,
             id,
@@ -398,7 +399,6 @@ export default class MyAdsStore extends BaseStore {
                 : {}),
         }).then(response => {
             if (!response.error) {
-                this.setAdverts([]);
                 this.loadMoreAds({ startIndex: 0 });
                 this.hideQuickAddModal();
             } else {
@@ -406,6 +406,7 @@ export default class MyAdsStore extends BaseStore {
                 this.setIsQuickAddModalOpen(false);
                 this.setIsQuickAddErrorModalOpen(true);
             }
+            this.setIsTableLoading(false);
         });
     }
 

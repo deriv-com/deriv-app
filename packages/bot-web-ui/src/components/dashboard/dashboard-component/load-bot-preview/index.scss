@@ -275,13 +275,10 @@
             &__button {
                 display: flex;
                 cursor: pointer;
-
-                &__edit {
-                    margin-right: 0.8rem;
-                }
-
-                &__save {
-                    margin-right: 0.8rem;
+                margin-right: 2rem;
+                padding: 0.2rem;
+                &:last-child {
+                    margin-right: 0;
                 }
             }
         }

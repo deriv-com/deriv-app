@@ -149,6 +149,17 @@ export default class LoadModalStore implements ILoadModalStore {
 
     setDashboardStrategies(strategies: []) {
         this.dashboard_strategies = strategies;
+        if (!strategies.length) {
+            this.selected_strategy_id = undefined;
+        }
+    }
+
+    getDashboardStrategies() {
+        setTimeout(() => {
+            getSavedWorkspaces().then(strategies => {
+                this.dashboard_strategies = strategies;
+            });
+        }, 1000);
     }
 
     handleFileChange = (
@@ -169,10 +180,8 @@ export default class LoadModalStore implements ILoadModalStore {
 
         if (!is_body) {
             if (file.name.includes('xml')) {
-                const dashboard_strategies = [...this.dashboard_strategies];
-                dashboard_strategies.push(file);
-                this.dashboard_strategies = dashboard_strategies;
                 this.setLoadedLocalFile(file);
+                this.getDashboardStrategies();
             } else {
                 return false;
             }

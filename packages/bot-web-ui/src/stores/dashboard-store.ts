@@ -47,7 +47,6 @@ export default class DashboardStore implements IDashboardStore {
             has_bot_builder_tour_started: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
-
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,

@@ -13,6 +13,8 @@ type TDeleteDialog = {
     removeBotStratagy: (param: string) => void;
     selected_strategy_id: string;
     setStrategies: (param: string[]) => void;
+    setDashboardStrategies: (param: string[]) => void;
+    dashboard_strategies: [];
 };
 
 const DeleteDialog = ({
@@ -20,7 +22,8 @@ const DeleteDialog = ({
     is_running,
     selected_strategy_id,
     onToggleDeleteDialog,
-    setStrategies,
+    setDashboardStrategies,
+    dashboard_strategies,
 }: TDeleteDialog) => {
     const removeBotStratagy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
@@ -29,7 +32,7 @@ const DeleteDialog = ({
                 if (index > -1) {
                     workspaces.splice(index, 1);
                 }
-                setStrategies(workspaces);
+                setDashboardStrategies(workspaces);
                 localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
                 onToggleDeleteDialog(false);
             }
@@ -40,6 +43,7 @@ const DeleteDialog = ({
         if (type === 'confirm') {
             removeBotStratagy(selected_strategy_id);
         }
+        onToggleDeleteDialog(param);
     };
 
     return (
@@ -80,4 +84,6 @@ export default connect(({ toolbar, load_modal }) => ({
     is_delete_modal_open: load_modal.is_delete_modal_open,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
+    setDashboardStrategies: load_modal.setDashboardStrategies,
+    dashboard_strategies: load_modal.dashboard_strategies,
 }))(DeleteDialog);

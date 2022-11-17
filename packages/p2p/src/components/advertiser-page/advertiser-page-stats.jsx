@@ -9,7 +9,7 @@ import './advertiser-page.scss';
 const AdvertiserPageStats = () => {
     const { advertiser_page_store, general_store } = useStores();
 
-    const is_my_advert = advertiser_page_store.advertiser_details_name === general_store.advertiser_info.name;
+    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
     const {
         buy_completion_rate,

@@ -8,6 +8,9 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
+    loginid,
+    is_eu,
+    is_eu_country,
     currency,
     setVerificationCode,
     verification_code,
@@ -20,6 +23,7 @@ const Redirect = ({
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
+    const is_mf = loginid?.startsWith('MF');
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -39,6 +43,12 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            } else if (is_mf || is_eu || is_eu_country) {
+                history.push({
+                    pathname: routes.trading_hub,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
             } else {
                 history.push({
                     pathname: routes.onboarding,
@@ -179,6 +189,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     currency: PropTypes.string,
+    loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
@@ -191,11 +202,16 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
 };
 
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
+        loginid: client.loginid,
+        is_eu: client.is_eu,
+        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

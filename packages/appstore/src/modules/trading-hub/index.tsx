@@ -191,7 +191,7 @@ const TradingHub: React.FC = () => {
                     <CFDAccounts account_type={tab_account_type} />
                     <Divider horizontal className='trading-hub_body--divider' />
                     <OptionsAccounts
-                        platformlauncherprops={is_mf ? mf_platform_config : platform_config}
+                        platformlauncherprops={is_mf || is_eu || is_eu_country ? mf_platform_config : platform_config}
                         accountType={tab_account_type}
                     />
                 </DesktopWrapper>

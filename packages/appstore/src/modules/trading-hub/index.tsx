@@ -135,6 +135,12 @@ const TradingHub: React.FC = () => {
         </div>
     );
 
+    eu_tour_step_locale.last = (
+        <div onClick={() => toggleIsTourOpen(false)}>
+            <Localize i18n_default_text='OK' />
+        </div>
+    );
+
     tour_step_locale.back = (
         <Button
             has_effect

@@ -5,12 +5,12 @@ describe('Regular expression checks', () => {
     it('should extract strings from localize() correctly', () => {
         const messages = getStringsFromInput(`
             localize('Touch/No Touch');
-            localize('You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.', { account_title: account_title[0].toLowerCase() + account_title.substr(1) });
+            localize('You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.', { account_title: account_title[0].toLowerCase() + account_title.substr(1) });
             localize('You have no trading activity yet.');
         `);
         expect(messages).to.deep.equal([
             'Touch/No Touch',
-            'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
+            'You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
             'You have no trading activity yet.',
         ]);
     });

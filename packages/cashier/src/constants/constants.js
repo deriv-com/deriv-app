@@ -46,10 +46,11 @@ const icon_payment_methods = {
     Mandirisyariah: ['mandirisyariah'],
     Moneygram: ['moneygram'],
     Paypal: ['paypal'],
-    PerfectMoney: ['perfectmoney'],
+    PerfectMoney: ['perfectmoneyandwebmoney', 'perfectmoney'],
     Permatabank: ['permatabank'],
     Tether: ['tether'],
     Verve: ['verve'],
+    WebMoney: ['perfectmoneyandwebmoney', 'webmoney'],
     Wechatpay: ['wechatpay'],
     Zenithbank: ['zenithbank'],
 };

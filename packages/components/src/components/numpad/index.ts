@@ -1,4 +1,4 @@
-import Numpad from './numpad.jsx';
+import Numpad from './numpad';
 import './numpad.scss';
 
 export default Numpad;

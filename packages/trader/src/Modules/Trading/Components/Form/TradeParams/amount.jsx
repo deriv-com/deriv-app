@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
@@ -68,6 +68,8 @@ const Amount = ({
     onChange,
     setCurrentFocus,
     validation_errors,
+    min_stake,
+    max_stake,
 }) => {
     if (is_minimized) {
         return (
@@ -95,7 +97,7 @@ const Amount = ({
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
-            header={is_multiplier || contract_type === 'high_low' ? localize('Stake') : undefined}
+            header={is_multiplier || ['high_low', 'vanilla'].includes(contract_type) ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
                     <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
@@ -170,6 +172,22 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
+            {contract_type === 'vanilla' && (
+                <section className='trade-container__stake-field'>
+                    <div className='trade-container__stake-field--min'>
+                        <Text size='xxxs'>Min. Stake</Text>
+                        <Text size='xxs'>
+                            {min_stake} {currency}
+                        </Text>
+                    </div>
+                    <div className='trade-container__stake-field--max'>
+                        <Text size='xxxs'>Max. Stake</Text>
+                        <Text size='xxs'>
+                            {max_stake} {currency}
+                        </Text>
+                    </div>
+                </section>
+            )}
         </Fieldset>
     );
 };
@@ -217,4 +235,6 @@ export default connect(({ modules, client, ui }) => ({
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
+    min_stake: modules.trade.min_stake,
+    max_stake: modules.trade.max_stake,
 }))(Amount);

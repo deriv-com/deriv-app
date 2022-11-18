@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
@@ -68,6 +68,25 @@ const ContractInfo = ({
 
     const { message, obj_contract_basis, stake } = proposal_info;
 
+    const setHintMessage = () => {
+        if (type === 'VANILLALONGCALL') {
+            return (
+                <Localize
+                    i18n_default_text='<0>For Call:</0> Earn payout when the market rises above your strike price at expiry. Your payout will grow by this amount for every point above your strike price.'
+                    components={[<strong key={0} />]}
+                />
+            );
+        } else if (type === 'VANILLALONGPUT') {
+            return (
+                <Localize
+                    i18n_default_text='<0>For Put:</0> Earn payout when the market rises above your strike price at expiry. Your payout will grow by this amount for every point above your strike price.'
+                    components={[<strong key={0} />]}
+                />
+            );
+        }
+        return message;
+    };
+
     return (
         <div className='trade-container__price'>
             <div
@@ -130,7 +149,7 @@ const ContractInfo = ({
                         id={`dt_purchase_${type.toLowerCase()}_info`}
                         is_bubble_hover_enabled
                         margin={216}
-                        message={has_error_or_not_loaded ? '' : message}
+                        message={has_error_or_not_loaded ? '' : setHintMessage()}
                         relative_render
                     />
                 </DesktopWrapper>

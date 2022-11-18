@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Money, Dropdown } from '@deriv/components';
+import { DesktopWrapper, InputField, MobileWrapper, Money, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
@@ -14,17 +15,23 @@ const Strike = ({
     setCurrentFocus,
     currency,
     advanced_duration_unit,
+    strike_price_choices,
+    expiry_type,
+    expiry_date,
+    server_time,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleWidget = () => setIsOpen(!is_open);
 
-    //TODO: Add strike values
-    const mock_strike_values = [
-        { text: '-1%', value: '-1' },
-        { text: '0%', value: '' },
-        { text: '+1%', value: '1' },
-    ];
+    const is_24_hours_contract = expiry_date ? toMoment(expiry_date).isSame(toMoment(server_time), 'day') : false;
+
+    const is_relative_strike_applicable =
+        advanced_duration_unit !== 'd' || (expiry_type === 'endtime' && is_24_hours_contract);
+
+    const strike_price_list = is_relative_strike_applicable
+        ? strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }))
+        : [];
 
     return (
         <React.Fragment>
@@ -39,7 +46,7 @@ const Strike = ({
                         />
                     }
                 >
-                    {advanced_duration_unit === 'd' ? (
+                    {!is_relative_strike_applicable ? (
                         <InputField
                             type='number'
                             name='barrier_1'
@@ -58,18 +65,23 @@ const Strike = ({
                             setCurrentFocus={setCurrentFocus}
                         />
                     ) : (
-                        <Dropdown
-                            classNameDisplay='dc-dropdown__display--duration'
-                            disabled={false}
-                            id='strike'
-                            is_alignment_left
-                            is_nativepicker={false}
-                            list={mock_strike_values}
-                            name='barrier_1'
-                            no_border={true}
-                            onChange={onChange}
-                            value={barrier_1}
-                        />
+                        <div className='trade-container__strike-field'>
+                            <Text size='s' className='strike-field--text'>
+                                {localize('Spot')}
+                            </Text>
+                            <Dropdown
+                                classNameDisplay='dc-dropdown__display--duration'
+                                disabled={false}
+                                id='strike'
+                                is_alignment_left
+                                is_nativepicker={false}
+                                list={strike_price_list}
+                                name='barrier_1'
+                                no_border={true}
+                                onChange={onChange}
+                                value={barrier_1}
+                            />
+                        </div>
                     )}
                 </Fieldset>
             </DesktopWrapper>
@@ -94,7 +106,7 @@ const Strike = ({
     );
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, ui, common }) => ({
     barrier_1: modules.trade.barrier_1,
     current_focus: ui.current_focus,
     currency: client.currency,
@@ -102,4 +114,9 @@ export default connect(({ client, modules, ui }) => ({
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
     advanced_duration_unit: ui.advanced_duration_unit,
+    strike_price_choices: modules.trade.strike_price_choices,
+    expiry_type: modules.trade.expiry_type,
+    start_date: modules.trade.start_date,
+    expiry_date: modules.trade.expiry_date,
+    server_time: common.server_time,
 }))(Strike);

@@ -69,6 +69,8 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list = [];
     currency = '';
+    min_stake;
+    max_stake;
 
     // Duration
     duration = 5;
@@ -85,6 +87,7 @@ export default class TradeStore extends BaseStore {
     barrier_count = 0;
     main_barrier = null;
     barriers = [];
+    strike_price_choices = [];
 
     // Start Time
     start_date = Number(0); // Number(0) refers to 'now'
@@ -208,6 +211,9 @@ export default class TradeStore extends BaseStore {
             barrier_count: observable,
             main_barrier: observable,
             barriers: observable,
+            strike_price_choices: observable,
+            min_stake: observable,
+            max_stake: observable,
             start_date: observable,
             start_dates_list: observable,
             start_time: observable,
@@ -295,6 +301,9 @@ export default class TradeStore extends BaseStore {
             is_multiplier: computed,
             is_vanilla: computed,
             getFirstOpenMarket: action.bound,
+            setMaxStake: action.bound,
+            setMinStake: action.bound,
+            setStrikeChoices: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -1073,6 +1082,12 @@ export default class TradeStore extends BaseStore {
             }
         } else {
             this.validateAllProperties();
+            if (this.is_vanilla) {
+                const { max_stake, min_stake, barrier_choices } = response.proposal;
+                this.setMinStake(min_stake);
+                this.setMaxStake(max_stake);
+                this.setStrikeChoices(barrier_choices);
+            }
         }
 
         if (!this.is_purchasing_contract) {
@@ -1365,5 +1380,17 @@ export default class TradeStore extends BaseStore {
             return undefined;
         }
         return findFirstOpenMarket(active_symbols, markets_to_search);
+    }
+
+    setStrikeChoices(strike_prices) {
+        this.strike_price_choices = strike_prices ?? [];
+    }
+
+    setMinStake(min_stake) {
+        this.min_stake = min_stake;
+    }
+
+    setMaxStake(max_stake) {
+        this.max_stake = max_stake;
     }
 }

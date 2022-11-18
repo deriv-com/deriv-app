@@ -188,6 +188,7 @@ const TradeParamsMobile = ({
     duration_tab_idx,
     has_amount_error,
     has_duration_error,
+    is_vanilla,
     // amount
     setAmountError,
     setSelectedAmount,
@@ -237,7 +238,9 @@ const TradeParamsMobile = ({
             case 'amount':
                 return (
                     <div className='trade-params__header'>
-                        <div className='trade-params__header-label'>{localize('Amount')}</div>
+                        <div className='trade-params__header-label'>
+                            {localize('{{tab_title}}', { tab_title: is_vanilla ? 'Strike' : 'Amount' })}
+                        </div>
                         <div
                             className={classNames('trade-params__header-value', {
                                 'trade-params__header-value--has-error': has_amount_error,
@@ -301,6 +304,7 @@ const TradeParamsMobile = ({
 const TradeParamsMobileWrapper = connect(({ modules }) => ({
     basis_list: modules.trade.basis_list,
     basis: modules.trade.basis,
+    is_vanilla: modules.trade.is_vanilla,
 }))(TradeParamsMobile);
 
 export const LastDigitMobile = connect(({ modules }) => ({

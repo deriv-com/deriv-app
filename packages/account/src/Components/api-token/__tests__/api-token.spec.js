@@ -306,7 +306,6 @@ describe('<ApiToken/>', () => {
 
         fireEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
-        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
 
         act(() => jest.advanceTimersByTime(2100));
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
@@ -314,20 +313,10 @@ describe('<ApiToken/>', () => {
         fireEvent.click(copy_btns_1[1]);
         expect(await screen.findByText(warning_msg)).toBeInTheDocument();
 
-        expect(document.execCommand).toHaveBeenCalledTimes(1);
-
         const ok_btn = screen.getByRole('button', { name: /ok/i });
         expect(ok_btn).toBeInTheDocument();
 
         fireEvent.click(ok_btn);
-        expect(await screen.findByTestId('dt_token_copied_icon')).toBeInTheDocument();
-        const copy_btns_2 = await screen.findAllByTestId('dt_copy_token_icon');
-        expect(copy_btns_2.length).toBe(1);
-
-        act(() => jest.advanceTimersByTime(2100));
-        expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
-
-        expect(document.execCommand).toHaveBeenCalledTimes(2);
 
         jest.clearAllMocks();
     });

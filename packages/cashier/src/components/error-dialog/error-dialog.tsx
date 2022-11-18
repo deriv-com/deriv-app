@@ -35,7 +35,7 @@ const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDia
 
     const dismissError = React.useCallback(() => {
         if (error.setErrorMessage) {
-            error.setErrorMessage('', null, false);
+            error.setErrorMessage({ code: '', message: '' }, null, false);
         }
         setErrorVisibility(false);
     }, [error]);

@@ -4,14 +4,9 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
+import { StoreProvider } from '../../../../hooks';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 
@@ -53,76 +48,80 @@ const setAccountStatus = (identity_status: TStatus, document_status: TStatus, ne
 };
 
 describe('WithdrawalLocked', () => {
-    const history = createBrowserHistory();
-    it('Should show "Check proof of identity document verification status" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
-        const need_poi_account_status = setAccountStatus('pending', '', '');
+    let history, mockRootStore;
+    beforeEach(() => {
+        history = createBrowserHistory();
+        mockRootStore = {
+            client: {
+                account_status: setAccountStatus('pending', '', ''),
+            },
+            modules: {
+                cashier: {
+                    withdraw: {
+                        is_10k_withdrawal_limit_reached: true,
+                        error: {
+                            is_ask_financial_risk_approval: false,
+                        },
+                    },
+                },
+            },
+        };
+    });
 
-        render(
-            <Router history={history}>
-                <WithdrawalLocked account_status={need_poi_account_status} is_10K_limit />
-            </Router>
+    const renderWithdrawalLocked = () => {
+        return render(
+            <StoreProvider store={mockRootStore}>
+                <Router history={history}>
+                    <WithdrawalLocked />
+                </Router>
+            </StoreProvider>
         );
+    };
+
+    it('Should show "Check proof of identity document verification status" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_identity_btn');
         expect(history.location.pathname).toBe(routes.proof_of_identity);
     });
 
     it('Should show "Upload a proof of identity to verify your identity" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
-        const need_poi_account_status = setAccountStatus('none', '', '');
-
-        render(
-            <Router history={history}>
-                <WithdrawalLocked account_status={need_poi_account_status} is_10K_limit />
-            </Router>
-        );
+        mockRootStore.client.account_status = setAccountStatus('none', '', '');
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_identity_btn');
         expect(history.location.pathname).toBe(routes.proof_of_identity);
     });
 
     it('Should show "Check proof of address document verification status" message and redirect to account/proof_of_address when "-->" button clicked', () => {
-        const need_poa_account_status = setAccountStatus('', 'pending', 'document');
-
-        render(
-            <Router history={history}>
-                <WithdrawalLocked account_status={need_poa_account_status} is_10K_limit />
-            </Router>
-        );
+        mockRootStore.client.account_status = setAccountStatus('', 'pending', 'document');
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
         expect(history.location.pathname).toBe(routes.proof_of_address);
     });
 
     it('Should show "Upload a proof of address to verify your address" message and redirect to account/proof_of_address when "-->" button clicked', () => {
-        const need_poa_account_status = setAccountStatus('', 'none', 'document');
-
-        render(
-            <Router history={history}>
-                <WithdrawalLocked account_status={need_poa_account_status} is_10K_limit />
-            </Router>
-        );
+        mockRootStore.client.account_status = setAccountStatus('', 'none', 'document');
+        renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
         expect(history.location.pathname).toBe(routes.proof_of_address);
     });
 
     it('Should show "Complete the financial assessment form" message and redirect to account/financial_assessment when "-->" button clicked', () => {
-        const account_status = setAccountStatus('', '', '');
-
-        render(
-            <Router history={history}>
-                <WithdrawalLocked account_status={account_status} is_10K_limit is_ask_financial_risk_approval />
-            </Router>
-        );
+        mockRootStore.client.account_status = setAccountStatus('', '', '');
+        mockRootStore.modules.cashier.withdraw.error.is_ask_financial_risk_approval = true;
+        renderWithdrawalLocked();
 
         fireButtonEvent('financial_assessment_btn');
         expect(history.location.pathname).toBe(routes.financial_assessment);
     });
 
     it('should render <CashierLocked /> component', () => {
-        const account_status = setAccountStatus('', '', '');
-
-        render(<WithdrawalLocked account_status={account_status} />);
+        mockRootStore.client.account_status = setAccountStatus('', '', '');
+        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = false;
+        renderWithdrawalLocked();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate, formatTime } from '@deriv/shared';
 
@@ -22,7 +22,8 @@ const CooldownWarningModal = ({
             has_close_icon={false}
         >
             <Modal.Body>
-                <Text as='p' size='xs' align='center'>
+                <Icon icon='IcRedWarning' size={63} />
+                <Text as='p' size='xs' align='center' className='risk-acceptance__text'>
                     <Localize
                         i18n_default_text='You can create your account on {{real_account_unblock_date}}. <0/>Please click ‘OK’ to continue.'
                         values={{ real_account_unblock_date }}

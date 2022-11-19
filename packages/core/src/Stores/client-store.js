@@ -2431,7 +2431,7 @@ export default class ClientStore extends BaseStore {
 
     fetchFinancialAssessment() {
         return new Promise(async resolve => {
-            const { get_financial_assessment } = await WS.getFinancialAssessment();
+            const { get_financial_assessment } = await WS.authorized.storage.getFinancialAssessment();
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);

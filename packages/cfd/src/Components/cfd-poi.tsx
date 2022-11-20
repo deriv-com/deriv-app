@@ -1,8 +1,8 @@
 import { ProofOfIdentityContainerForMt5 } from '@deriv/account';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
 
 type TCFDValue = {
     poi_state: string;

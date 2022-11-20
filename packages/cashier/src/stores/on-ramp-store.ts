@@ -3,9 +3,12 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
 import BaseStore from './base-store';
-import { TRootStore, TWebSocket, TServerError, TProviderDetails, TProviderDetailsWithoutFrom } from 'Types';
+import { TRootStore, TWebSocket, TServerError, TOnRampProviderDetails, TProviderDetailsWithoutFrom } from 'Types';
 
 export default class OnRampStore extends BaseStore {
+    disposeThirdPartyJsReaction: unknown;
+    disposeGetWidgetHtmlReaction: unknown;
+
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
 
@@ -33,7 +36,6 @@ export default class OnRampStore extends BaseStore {
             pollApiForDepositAddress: action.bound,
             resetPopup: action.bound,
             setApiError: action.bound,
-            setCopyIconRef: action.bound,
             setDepositAddress: action.bound,
             setDepositAddressRef: action.bound,
             setIsDepositAddressLoading: action.bound,
@@ -57,17 +59,17 @@ export default class OnRampStore extends BaseStore {
     }
 
     api_error: TServerError | null = null;
-    deposit_address = null;
+    deposit_address = '';
     is_deposit_address_loading = true;
     is_deposit_address_popover_open = false;
     is_onramp_modal_open = false;
     is_requesting_widget_html = false;
-    onramp_providers: Array<TProviderDetails | TProviderDetailsWithoutFrom> = [];
-    selected_provider: TProviderDetails | null = null;
+    onramp_providers: Array<TOnRampProviderDetails | TProviderDetailsWithoutFrom> = [];
+    selected_provider: TOnRampProviderDetails | null = null;
     should_show_widget = false;
     widget_error: string | null = null;
     widget_html: string | null = null;
-    deposit_address_ref = null;
+    deposit_address_ref: Node | null = null;
 
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
@@ -182,7 +184,7 @@ export default class OnRampStore extends BaseStore {
 
     onClickCopyDepositAddress() {
         const range = document.createRange();
-        range.selectNodeContents(this.deposit_address_ref);
+        range.selectNodeContents(this.deposit_address_ref as Node);
 
         const selections = window.getSelection();
         selections?.removeAllRanges();
@@ -282,7 +284,7 @@ export default class OnRampStore extends BaseStore {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
-    setSelectedProvider(provider: TProviderDetails | null): void {
+    setSelectedProvider(provider: TOnRampProviderDetails | null): void {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
@@ -297,7 +299,7 @@ export default class OnRampStore extends BaseStore {
         this.should_show_widget = should_show;
     }
 
-    setOnrampProviders(onramp_providers: Array<TProviderDetails | TProviderDetailsWithoutFrom>): void {
+    setOnrampProviders(onramp_providers: Array<TOnRampProviderDetails | TProviderDetailsWithoutFrom>): void {
         this.onramp_providers = onramp_providers.slice();
     }
 

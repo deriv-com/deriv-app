@@ -15,10 +15,10 @@ type TErrorDialogProps = {
 
 type TSetDetails = {
     title: string;
-    cancel_button_text: undefined | string;
-    confirm_button_text: undefined | string;
-    onConfirm: undefined | (() => void);
-    message: undefined | string | TReactElement;
+    cancel_button_text?: string;
+    confirm_button_text?: string;
+    onConfirm?: () => void;
+    message?: string | TReactElement;
     has_close_icon?: boolean;
 };
 

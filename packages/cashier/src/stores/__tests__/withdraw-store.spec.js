@@ -155,7 +155,7 @@ describe('WithdrawStore', () => {
         const { setConverterFromAmount, setConverterToAmount } =
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        withdraw_store.resetWithrawForm();
+        withdraw_store.resetWithdrawForm();
         expect(setConverterFromAmount).toHaveBeenCalledWith(0);
         expect(setConverterToAmount).toHaveBeenCalledWith(0);
         expect(withdraw_store.blockchain_address).toBe('');
@@ -288,6 +288,7 @@ describe('WithdrawStore', () => {
     it('should return an error if balance is less than the provided converter from amount', () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
+        withdraw_store.crypto_config = { currencies_config: { USD: { minimum_withdrawal: 2000 } } };
         withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 10000;
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith('Insufficient funds');
@@ -312,6 +313,7 @@ describe('WithdrawStore', () => {
         const { setConverterFromError, setConverterToError } =
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
         const error_message = 'Should be a valid number.';
+        withdraw_store.crypto_config = { currencies_config: { USD: { minimum_withdrawal: 2000 } } };
 
         validNumber.mockReturnValue({ is_ok: false, message: error_message });
         withdraw_store.validateWithdrawFromAmount();

@@ -8,7 +8,7 @@ type TPercentageSelectorProps = {
     amount: number;
     currency: string;
     from_account?: string;
-    getCalculatedAmount: (amount: string) => void;
+    getCalculatedAmount: (amount: number) => void;
     percentage: number;
     should_percentage_reset: boolean;
     to_account?: string;
@@ -52,7 +52,7 @@ const PercentageSelector = ({
         if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);
-        getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency)));
+        getCalculatedAmount(Number((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(currency))));
 
         for (let i = 1; i <= 4; i++) {
             const percentage_selector_block = document.getElementById(String(i));

@@ -117,7 +117,7 @@ const CryptoWithdrawReceipt = () => {
         setIsCryptoTransactionsVisible,
     } = transaction_history;
 
-    const { blockchain_address, resetWithrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
+    const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -126,7 +126,7 @@ const CryptoWithdrawReceipt = () => {
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
-            resetWithrawForm();
+            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, tab_index]);

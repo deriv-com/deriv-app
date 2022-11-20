@@ -41,7 +41,7 @@ export type TPaymentAgentWithdrawReceipt = {
     payment_agent_url?: TUrl[];
 };
 
-export type TPartialPaymentAgentList = {
+export type TPartialPaymentAgent = {
     currency?: string;
     deposit_commission?: string;
     email?: string;
@@ -51,6 +51,7 @@ export type TPartialPaymentAgentList = {
     name?: string;
     paymentagent_loginid?: string;
     phone_numbers?: TPhoneNumber[];
+    summary?: string;
     supported_banks?: TPaymentMethod[];
     urls?: TUrl[];
     withdrawal_commission?: string;
@@ -68,6 +69,8 @@ export type TPaymentAgentWithdrawRequest = {
     loginid: string;
     verification_code: string;
 };
+
+export type TPaymentAgentList = { paymentagent_list?: { list?: TPartialPaymentAgent[] } };
 
 type TExtendedPaymentAgentFields = {
     phone_numbers: TPhoneNumber[];

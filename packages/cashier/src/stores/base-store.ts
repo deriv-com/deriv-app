@@ -7,7 +7,7 @@ type TBaseStoreOptions = {
     root_store?: TRootStore;
     local_storage_properties?: Array<string>;
     session_storage_properties?: Array<string>;
-    validation_rules?: any;
+    validation_rules?: TValidationRules;
     store_name?: string;
 };
 
@@ -264,7 +264,7 @@ export default class BaseStore {
      */
     setValidationRules(rules = {}): void {
         Object.keys(rules).forEach(key => {
-            this.addRule(key, rules[key as keyof typeof this.addRule]);
+            this.addRule(key as keyof BaseStore, rules[key as keyof typeof this.addRule]);
         });
     }
 
@@ -275,7 +275,7 @@ export default class BaseStore {
      * @param {String} rules
      *
      */
-    addRule(property: string, rules: string) {
+    addRule(property: keyof BaseStore, rules: string) {
         this.validation_rules[property as keyof typeof this.validation_rules] = rules;
 
         intercept(this, property, change => {

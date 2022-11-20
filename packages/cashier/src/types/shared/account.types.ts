@@ -3,6 +3,8 @@
 /* -------------------------------------------------------------------------- */
 import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
 
+type TPlatform = 'dxtrade' | 'mt5';
+
 export type TAccount = {
     balance?: string | number;
     currency?: string;
@@ -14,20 +16,22 @@ export type TAccount = {
     market_type?: string;
     nativepicker_text?: string;
     platform_icon?: string;
+    status?: string;
     text?: JSX.Element | string;
     value?: string;
 };
 
 export type TTransferAccount = {
-    account_type?: 'trading' | 'mt5' | 'wallet' | 'dxtrade' | 'binary';
+    account_type: TPlatform;
     balance?: string;
     currency?: string;
     demo_account?: 0 | 1;
     landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
     loginid?: string;
-    market_type?: 'financial' | 'synthetic';
+    market_type?: 'all' | 'financial' | 'synthetic';
     mt5_group?: string;
-    sub_account_type?: string;
+    status?: string;
+    sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
 };
 
 export type TTransferBetweensAccounts = TransferBetweenAccountsResponse;
@@ -42,10 +46,11 @@ export type TMT5LoginAccount = DetailsOfEachMT5Loginid & {
 
 export type TAccountsList = {
     account: TAccount;
-    loginid?: string;
-    mt5_login_list: TMt5LoginList;
     icon?: string;
     idx: string | number;
-    is_dark_mode_on: boolean;
+    is_dark_mode_on?: boolean;
+    is_virtual?: boolean;
+    loginid?: string;
+    mt5_login_list?: TMt5LoginList;
     title?: string;
 };

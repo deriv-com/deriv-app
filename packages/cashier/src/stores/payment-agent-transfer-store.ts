@@ -52,7 +52,7 @@ export default class PaymentAgentTransferStore {
         description: '',
     };
     receipt = {};
-    transfer_limit = {};
+    transfer_limit: TTransferLimit = {};
     onRemount: VoidFunction | null = null;
 
     get is_payment_agent_transfer_visible(): boolean {
@@ -93,7 +93,7 @@ export default class PaymentAgentTransferStore {
         this.confirm = {
             amount,
             client_id,
-            client_name,
+            client_name: client_name || '',
             description,
         };
     }
@@ -192,7 +192,12 @@ export default class PaymentAgentTransferStore {
             });
             this.setIsTransferSuccessful(true);
             this.setIsTryTransferSuccessful(false);
-            this.setConfirmationPaymentAgentTransfer({});
+            this.setConfirmationPaymentAgentTransfer({
+                amount: 0,
+                client_id: '',
+                client_name: '',
+                description: '',
+            });
         } else {
             this.error.setErrorMessage(payment_agent_transfer.error as TServerError, this.resetPaymentAgentTransfer);
         }

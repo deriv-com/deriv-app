@@ -8,7 +8,8 @@ import {
     TAgent,
     TExtendedPaymentAgentList,
     TExtendedPaymentAgentListResponse,
-    TPartialPaymentAgentList,
+    TPartialPaymentAgent,
+    TPaymentAgentList,
     TPaymentAgentWithdrawConfirm,
     TPaymentAgentWithdrawReceipt,
     TRootStore,
@@ -46,7 +47,6 @@ export default class PaymentAgentStore {
             getPaymentAgentList: action.bound,
             getPaymentAgentDetails: action.bound,
             addSupportedBank: action.bound,
-            clearSuppertedBanks: action.bound,
             sortSupportedBanks: action.bound,
             setList: action.bound,
             clearList: action.bound,
@@ -74,11 +74,11 @@ export default class PaymentAgentStore {
         this.verification = new VerificationStore(WS, root_store);
     }
 
-    list = [];
-    agents = [];
+    list: TPartialPaymentAgent[] = [];
+    agents: TAgent[] = [];
     container = Constants.containers.payment_agent;
     error = new ErrorStore();
-    filtered_list = [];
+    filtered_list: TPartialPaymentAgent[] = [];
     is_name_selected = true;
     is_search_loading = false;
     is_withdraw = false;
@@ -90,7 +90,9 @@ export default class PaymentAgentStore {
     supported_banks: IObservableArray<TSupportedBank> | [] = [];
     verification = new VerificationStore(this.WS, this.root_store);
     active_tab_index = 0;
-    all_payment_agent_list: TExtendedPaymentAgentListResponse | null = [];
+    all_payment_agent_list: TPaymentAgentList = {
+        paymentagent_list: { list: [] },
+    };
     search_term = '';
     has_payment_agent_search_warning = false;
     onRemount: VoidFunction | null = null;
@@ -156,8 +158,8 @@ export default class PaymentAgentStore {
         );
     }
 
-    setList(pa_list: TPartialPaymentAgentList): void {
-        (this.list as IObservableArray<TPartialPaymentAgentList>).push(pa_list);
+    setList(pa_list: TPartialPaymentAgent): void {
+        (this.list as TPartialPaymentAgent[]).push(pa_list);
     }
 
     clearList(): void {
@@ -211,8 +213,7 @@ export default class PaymentAgentStore {
                     const bank_index = supported_banks
                         .map(x => x.payment_method.toLowerCase())
                         .indexOf((bank || this.selected_bank) as string);
-                    if (bank_index !== -1)
-                        (this.filtered_list as IObservableArray<TPartialPaymentAgentList>).push(payment_agent);
+                    if (bank_index !== -1) (this.filtered_list as TPartialPaymentAgent[]).push(payment_agent);
                 }
             });
         } else {
@@ -221,7 +222,7 @@ export default class PaymentAgentStore {
         if (this.search_term) {
             this.filtered_list = this.filtered_list.filter(payment_agent => {
                 return payment_agent.name?.toLocaleLowerCase().includes(this.search_term.toLocaleLowerCase());
-            }) as IObservableArray<TPartialPaymentAgentList>;
+            }) as IObservableArray<TPartialPaymentAgent>;
 
             if (this.filtered_list.length === 0) {
                 this.setPaymentAgentSearchWarning(true);
@@ -382,12 +383,12 @@ export default class PaymentAgentStore {
         setLoading(false);
     }
 
-    async getAllPaymentAgentList(): Promise<TExtendedPaymentAgentListResponse> {
+    async getAllPaymentAgentList(): Promise<TPartialPaymentAgent[]> {
         await this.WS.wait('get_settings');
         return this.WS.allPaymentAgentList(this.root_store.client.residence);
     }
 
-    setAllPaymentAgentList(list: TExtendedPaymentAgentListResponse): void {
+    setAllPaymentAgentList(list: TPaymentAgentList): void {
         this.all_payment_agent_list = list;
     }
 

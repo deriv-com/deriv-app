@@ -7,7 +7,21 @@ import Text from '../text/text';
 import Icon from '../icon/icon';
 import Div100vhContainer from '../div100vh-container';
 
-const MobileDialog = props => {
+type TMobileDialog = {
+    content_height_offset?: string;
+    onClose: React.MouseEventHandler;
+    has_content_scroll?: boolean;
+    portal_element_id: string;
+    renderTitle?: () => string;
+    title?: string;
+    visible?: boolean;
+    wrapper_classname?: string;
+    header_classname?: string;
+    has_full_height?: boolean;
+    footer?: React.ReactNode;
+};
+
+const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
     const {
         title,
         visible,
@@ -20,7 +34,7 @@ const MobileDialog = props => {
         header_classname,
     } = props;
 
-    const footer_ref = React.useRef(false);
+    const footer_ref = React.useRef<HTMLDivElement>(null);
     const [footer_height, setHeight] = React.useState(0);
     React.useLayoutEffect(() => {
         if (footer_ref.current && !footer_height) {
@@ -28,17 +42,19 @@ const MobileDialog = props => {
         }
     }, [footer, footer_height]);
 
+    const portal_element = document.getElementById(portal_element_id);
+
     const checkVisibility = () => {
         if (props.visible) {
             document.body.style.overflow = 'hidden';
-            document.getElementById(portal_element_id).style.overflow = 'hidden';
+            if (portal_element) portal_element.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = null;
-            document.getElementById(portal_element_id).style.overflow = null;
+            document.body.style.overflow = 'unset';
+            if (portal_element) portal_element.style.overflow = 'unset';
         }
     };
 
-    const scrollToElement = (parent, el) => {
+    const scrollToElement = (parent: HTMLInputElement, el: HTMLInputElement) => {
         const viewport_offset = el.getBoundingClientRect();
         const hidden = viewport_offset.top + el.clientHeight + 20 > window.innerHeight;
         if (hidden) {
@@ -48,10 +64,11 @@ const MobileDialog = props => {
     };
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
-    const handleClick = e => {
+    const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
         e.stopPropagation();
-        if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
-            const scrollToTarget = scrollToElement(e.currentTarget, e.target);
+        const target = e.target as HTMLInputElement;
+        if (target.tagName === 'INPUT' && target.type === 'number') {
+            const scrollToTarget = () => scrollToElement(e.currentTarget, target);
             window.addEventListener('resize', scrollToTarget, false);
 
             // remove listener, resize is not fired on iOS safari
@@ -62,7 +79,7 @@ const MobileDialog = props => {
     };
 
     checkVisibility();
-    if (!document.getElementById(portal_element_id)) return null;
+    if (!portal_element) return null;
     return ReactDOM.createPortal(
         <CSSTransition
             appear
@@ -119,21 +136,8 @@ const MobileDialog = props => {
                 </Div100vhContainer>
             </div>
         </CSSTransition>,
-        document.getElementById(portal_element_id)
+        portal_element
     );
-};
-
-MobileDialog.propTypes = {
-    content_height_offset: PropTypes.string,
-    children: PropTypes.any,
-    onClose: PropTypes.func,
-    has_content_scroll: PropTypes.bool,
-    portal_element_id: PropTypes.string.isRequired,
-    renderTitle: PropTypes.func,
-    title: PropTypes.string,
-    visible: PropTypes.bool,
-    wrapper_classname: PropTypes.string,
-    header_classname: PropTypes.string,
 };
 
 export default MobileDialog;

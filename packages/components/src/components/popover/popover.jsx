@@ -144,7 +144,9 @@ const Popover = ({
                                     relative_render && {
                                         borderTop: '10px solid transparent',
                                         borderLeft: '10px solid transparent',
-                                        borderRight: '10px solid var(--general-active)',
+                                        borderRight: `10px solid ${
+                                            has_error ? 'var(--status-danger)' : 'var(--general-active)'
+                                        }`,
                                         transform: 'rotate(315deg)',
                                         right: '0px',
                                         top: '5px',

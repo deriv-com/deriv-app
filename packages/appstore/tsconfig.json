@@ -1,11 +1,14 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "experimentalDecorators": true,
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
+            "Assets/*": ["src/assets/*"],
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
+            "Modules/*": ["src/modules/*"],
             "Services/*": ["src/services/*"],
             "Stores/*": ["src/stores/*"],
             "Stores": ["src/stores/index"],

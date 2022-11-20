@@ -17,13 +17,14 @@ import {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
+    LanguageSettings,
 } from 'Sections';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }) => [
+const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -58,6 +59,15 @@ const initRoutesConfig = ({ is_appstore }) => [
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
                     },
+                    ...(is_pre_appstore
+                        ? [
+                              {
+                                  path: routes.languages,
+                                  component: LanguageSettings,
+                                  getTitle: () => localize('Languages'),
+                              },
+                          ]
+                        : []),
                 ],
             },
             {
@@ -147,9 +157,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }) => {
+const getRoutesConfig = ({ is_appstore, is_pre_appstore }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig({ is_appstore, is_pre_appstore });
         routesConfig.push(route_default);
     }
     return routesConfig;

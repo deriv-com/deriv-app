@@ -3,7 +3,11 @@ import { Button, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const IdvExpired = ({ handleRequireSubmission }) => {
+type TIdvExpired = {
+    handleRequireSubmission: () => void;
+};
+
+const IdvExpired = ({ handleRequireSubmission }: TIdvExpired) => {
     return (
         <div className='proof-of-identity__container' data-testid='idv_expired_container'>
             <Icon icon='IcPoiFailed' className='icon' size={128} />

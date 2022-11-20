@@ -1,6 +1,5 @@
 import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
-import { Icon } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvExpired from '../idv-expired';
 
@@ -19,8 +18,8 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 beforeEach(() => {
-    isDesktop.mockReturnValue(true);
-    isMobile.mockReturnValue(false);
+    (isDesktop as jest.Mock).mockReturnValue(true);
+    (isMobile as jest.Mock).mockReturnValue(false);
     jest.clearAllMocks();
 });
 
@@ -41,8 +40,8 @@ describe('<IdvExpired/>', () => {
     });
 
     it('should render IdvExpired component on mobile', () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
         testComponentRender();
     });
 

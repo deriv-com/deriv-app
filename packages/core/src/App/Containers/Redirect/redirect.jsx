@@ -8,6 +8,8 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
+    loginid,
+    is_eu,
     currency,
     setVerificationCode,
     verification_code,
@@ -20,6 +22,7 @@ const Redirect = ({
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
+    const is_mf = loginid?.startsWith('MF');
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -28,7 +31,6 @@ const Redirect = ({
     const code_param = url_params.get('code') || verification_code[action_param];
 
     setVerificationCode(code_param, action_param);
-
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
@@ -40,6 +42,18 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            } else if (is_mf || is_eu) {
+                history.push({
+                    pathname: routes.trading_hub,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
+            } else {
+                history.push({
+                    pathname: routes.onboarding,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
@@ -51,6 +65,10 @@ const Redirect = ({
         }
         case 'request_email': {
             toggleResetEmailModal(true);
+            break;
+        }
+        case 'social_email_change': {
+            toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {
@@ -170,6 +188,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     currency: PropTypes.string,
+    loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
@@ -182,11 +201,16 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
 };
 
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
+        loginid: client.loginid,
+        is_eu: client.is_eu,
+        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

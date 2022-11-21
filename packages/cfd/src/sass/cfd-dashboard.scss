@@ -120,6 +120,41 @@
         }
     }
 
+    &__social-banner {
+        width: 100%;
+        background-color: var(--general-section-1);
+        opacity: 95%;
+        top: 0;
+        position: absolute;
+        z-index: 1;
+
+        &--close-icon {
+            position: absolute;
+            top: 1.6rem;
+            right: 1.6rem;
+        }
+
+        &--wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 2.4rem;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 0;
+            margin-inline: 2.4rem;
+
+            &__image {
+                width: 16rem;
+                height: 12rem;
+            }
+
+            &__button {
+                float: right;
+                padding: 0.8rem;
+            }
+        }
+    }
+
     &__download-container {
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
@@ -440,7 +475,7 @@
     grid-gap: 2.4rem;
     justify-content: center;
     padding-top: 2.4em;
-    height: 100%;
+    height: fit-content;
 
     @include mobile {
         display: flex;
@@ -448,12 +483,6 @@
         overflow-x: hidden;
         flex-direction: column;
         height: unset;
-    }
-}
-
-.cfd-demo-accounts-display .cfd-account-card__wrapper {
-    @include desktop {
-        height: auto;
     }
 }
 
@@ -698,11 +727,10 @@
         display: grid;
         grid-template-rows: 1fr;
         justify-content: center;
-        height: 100%;
+        height: fit-content;
 
         @include mobile {
             grid-template-rows: 1fr;
-            height: fit-content;
 
             &:not(:last-child) {
                 margin-bottom: 2.4rem;
@@ -1057,6 +1085,27 @@
             }
         }
     }
+
+    &__acuity-container {
+        height: 3.4rem;
+        margin: 1.6rem;
+    }
+
+    &__acuity-banner {
+        background: var(--general-section-1);
+        border-radius: 0.8rem;
+        width: 100%;
+        height: 100%;
+
+        &--wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.6rem;
+            padding: 0.8rem 2.65rem;
+        }
+    }
+
     &__divider {
         width: calc(100% - 3.2rem);
         margin-left: 1.6rem;
@@ -2084,18 +2133,35 @@
     }
     &__table-header {
         grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 1.39fr 2.74fr 0.9fr;
+        }
     }
     @for $financial_accounts_count from 0 through 6 {
         @for $synthetic_accounts_count from 0 through 2 {
             .cfd-real-compare-accounts__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
                 @if $synthetic_accounts_count > 0 and $financial_accounts_count > 0 {
                     grid-template-columns: 1fr ($synthetic_accounts_count + fr) ($financial_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) (
+                                $financial_accounts_count + fr
+                            ) 1fr;
+                    }
                 } @else if $synthetic_accounts_count == 0 and $financial_accounts_count == 0 {
                     grid-template-columns: 1fr;
+                    &__pre-appstore {
+                        grid-template-columns: 1fr 1fr;
+                    }
                 } @else if $synthetic_accounts_count == 0 {
                     grid-template-columns: 1fr ($financial_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($financial_accounts_count + fr) 1fr;
+                    }
                 } @else {
                     grid-template-columns: 1fr ($synthetic_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) 1fr;
+                    }
                 }
             }
         }
@@ -2106,11 +2172,20 @@
 
     &__table-row {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+        }
         &--leverage {
             grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
+            &__pre-appstore {
+                grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr 0.9fr;
+            }
         }
         &--instruments {
             grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
+            &__pre-appstore {
+                grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
+            }
         }
     }
 
@@ -2123,6 +2198,10 @@
     }
     &__table-footer {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        &__pre-appstore {
+            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+            height: 5.8rem;
+        }
         height: 5.8rem;
         &__item {
             height: 5.8rem;
@@ -2210,6 +2289,9 @@
             &-row--leverage,
             &-row--instruments {
                 width: 250vw;
+                &__pre-appstore {
+                    width: 250vw;
+                }
             }
         }
         .cfd-real-compare-accounts {
@@ -2231,12 +2313,18 @@
         @for $column_count from 1 through 7 {
             .cfd-real-compare-accounts__row-with-columns-count-#{$column_count} {
                 width: calc(250vw / 7 * #{$column_count});
+                &__pre-appstore {
+                    width: calc(250vw / 7 * #{$column_count + 1});
+                }
             }
         }
         @for $financial_accounts_count from 0 through 6 {
             @for $synthetic_accounts_count from 0 through 2 {
                 .cfd-real-compare-accounts__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
                     width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 1));
+                    &__pre-appstore {
+                        width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 2));
+                    }
                 }
             }
         }
@@ -2264,6 +2352,14 @@
         padding: 8px;
         width: 276px;
         border-radius: 4px;
+    }
+}
+
+.switch-to-real-account-modal {
+    .dc-dialog__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 

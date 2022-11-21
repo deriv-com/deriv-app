@@ -23,7 +23,7 @@ type TSideNoteProps = {
     has_bullets?: boolean;
     has_title?: boolean;
     is_mobile?: boolean;
-    side_notes?: TSideNotesProps[];
+    side_notes?: TSideNotesProps;
     title?: string | JSX.Element;
 };
 

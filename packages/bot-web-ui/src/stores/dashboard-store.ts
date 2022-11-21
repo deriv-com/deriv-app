@@ -18,6 +18,7 @@ export interface IDashboardStore {
     is_preview_on_popup: boolean;
     has_builder_token: string | number;
     has_onboarding_token: string | number;
+    strategy_save_type: string;
     onCloseDialog: () => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
@@ -40,6 +41,7 @@ export default class DashboardStore implements IDashboardStore {
             getFileArray: observable,
             has_file_loaded: observable,
             is_info_panel_visible: observable,
+            strategy_save_type: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
             has_onboard_tour_started: observable,
@@ -47,7 +49,6 @@ export default class DashboardStore implements IDashboardStore {
             has_bot_builder_tour_started: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
-
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,
@@ -89,6 +90,11 @@ export default class DashboardStore implements IDashboardStore {
     has_bot_builder_tour_started = false;
     has_builder_token = '';
     has_onboarding_token = '';
+    strategy_save_type = 'unsaved';
+
+    setStrategySaveType = (strategy_save_type: string) => {
+        this.strategy_save_type = strategy_save_type;
+    };
 
     setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
         this.has_builder_token = has_builder_token;
@@ -129,6 +135,12 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        if (active_tab === 1) {
+            const {
+                load_modal: { previewRecentStrategy, selected_strategy_id },
+            } = this.root_store;
+            previewRecentStrategy(selected_strategy_id);
+        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

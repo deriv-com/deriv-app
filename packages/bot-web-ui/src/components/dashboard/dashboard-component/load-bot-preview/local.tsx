@@ -31,7 +31,6 @@ const LocalComponent = ({
     setActiveTab,
     loadFileFromLocal,
     loadFileFromRecent,
-    setFileLoaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
@@ -41,8 +40,9 @@ const LocalComponent = ({
     };
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const clearInjectionDiv = () => {
-        el_ref?.current?.removeChild(el_ref?.current?.children[1]);
+        el_ref?.current?.removeChild(el_ref?.current?.children[0]);
     };
+
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
             <div className='load-strategy__local-preview'>
@@ -82,16 +82,6 @@ const LocalComponent = ({
                         </div>
                     </div>
                     <div className='load-strategy__button-group'>
-                        <button
-                            ref={clear_preview_ref}
-                            className='load-strategy__button-group--clear'
-                            onClick={() => {
-                                clearInjectionDiv();
-                                setFileLoaded(false);
-                            }}
-                        >
-                            clear
-                        </button>
                         <input
                             type='file'
                             ref={file_input_ref}

@@ -26,6 +26,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         cfd: 'IcMt5CfdPlatform',
     },
     // TODO: Line 30, 31 and 32 should be removed after real released.
+    // Some test
     dxtrade: {
         synthetic: 'IcDxtradeSyntheticPlatform',
         financial: 'IcDxtradeFinancialPlatform',

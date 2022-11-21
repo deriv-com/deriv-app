@@ -208,7 +208,7 @@ const getModules = ({ is_pre_appstore }) => {
         {
             path: routes.appstore,
             component: AppStore,
-            is_authenticated: false,
+            is_authenticated: true,
             getTitle: () => localize('Appstore'),
             routes: [
                 {

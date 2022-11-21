@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency } from '@deriv/shared';
 import Input from '../input/input.jsx';
@@ -97,17 +96,6 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             <Button text='-' className='dc-numpad__decrement' onClick={decrement} is_disabled={is_lt_min} />
         </div>
     );
-};
-
-StepInput.propTypes = {
-    className: PropTypes.string,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    onChange: PropTypes.func,
-    render: PropTypes.func,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    pip_size: PropTypes.number,
-    currency: PropTypes.string,
 };
 
 export default StepInput;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import NumberGrid from './number-grid';
@@ -240,27 +239,6 @@ const Numpad = ({
             </div>
         </div>
     );
-};
-
-Numpad.propTypes = {
-    currency: PropTypes.string,
-    format: PropTypes.func,
-    is_currency: PropTypes.bool,
-    is_regular: PropTypes.bool,
-    is_submit_disabled: PropTypes.bool,
-    reset_press_interval: PropTypes.number,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    onSubmit: PropTypes.func,
-    onValidate: PropTypes.func,
-    pip_size: PropTypes.number,
-    render: PropTypes.func,
-    reset_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    submit_label: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    className: PropTypes.string,
-    label: PropTypes.string,
-    onValueChange: PropTypes.func,
 };
 
 export default Numpad;

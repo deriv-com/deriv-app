@@ -37,7 +37,6 @@ const TradingAssessmentExistingUser = ({
         );
         setFormValue(form_value);
         setAssessmentQuestions(props.assessment_questions ?? []);
-
         return () => setIsTradingAssessmentForExistingUserEnabled(false);
     }, []);
 
@@ -92,7 +91,8 @@ const TradingAssessmentExistingUser = ({
                 }
             />
         );
-    } else if (should_show_risk_accept_modal) {
+    }
+    if (should_show_risk_accept_modal) {
         return (
             <TestWarningModal
                 show_risk_modal={should_show_risk_accept_modal}

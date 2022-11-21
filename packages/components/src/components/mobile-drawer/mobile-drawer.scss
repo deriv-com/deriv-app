@@ -73,6 +73,7 @@
             visibility: hidden;
         }
     }
+
     &__submenu {
         &-back {
             width: 16px;
@@ -172,6 +173,9 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        &--logout {
+            padding: 0 0 1.6rem 4.8rem;
+        }
     }
     &__footer {
         display: flex;
@@ -181,6 +185,12 @@
         justify-content: flex-start;
         align-items: center;
         padding: 1.6rem;
+
+        &--servertime {
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid var(--general-section-2);
+        }
     }
     &__wrapper {
         z-index: 9999 !important;

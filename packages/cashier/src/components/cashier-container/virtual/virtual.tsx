@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStore } from '../../../hooks';
 import './virtual.scss';
 
 const Virtual = () => {
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const history = useHistory();
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
     } = useStore();
@@ -41,7 +43,18 @@ const Virtual = () => {
                         i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                         components={[
                             <br key={0} />,
-                            <span key={1} className='virtual__account-switch-text' onClick={toggleAccountsDialog} />,
+                            <span
+                                key={1}
+                                className='virtual__account-switch-text'
+                                onClick={() => {
+                                    if (is_pre_appstore) {
+                                        history.push(routes.trade);
+                                        toggleAccountsDialog();
+                                    } else {
+                                        toggleAccountsDialog();
+                                    }
+                                }}
+                            />,
                         ]}
                     />
                 </Text>

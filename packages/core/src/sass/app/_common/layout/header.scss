@@ -37,13 +37,61 @@
     &__menu-mobile-platform-switcher {
         position: absolute;
         height: 100%;
-        top: 24px;
+        top: 2.4rem;
         left: 0;
     }
     &__menu-mobile-theme {
         border-bottom: 1px solid var(--general-section-2);
+        padding-bottom: 1.6rem;
         padding-right: 0;
+        margin-bottom: 1.6rem;
+
+        &--trading-hub {
+            padding-bottom: 1.6rem;
+            margin-bottom: 1.6rem;
+        }
     }
+
+    &__menu--separator {
+        border-right: 1px solid var(--general-section-1);
+        width: 2rem;
+        height: 3.2rem;
+        margin-right: 1rem;
+    }
+    &__menu--dtrader--separator {
+        border-right: 1px solid var(--general-section-1);
+        margin-top: 0.8rem;
+        height: 3.2rem;
+
+        &--account {
+            margin-right: 1rem;
+        }
+    }
+
+    &__menu__redirect {
+        display: flex;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
+    &__redirect--dtratder {
+        display: flex;
+        margin-left: 50rem;
+
+        &--link {
+            display: flex;
+            align-items: center;
+            margin-right: 5rem;
+            padding: 0.5rem;
+            text-decoration: none;
+        }
+    }
+
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;
@@ -97,6 +145,11 @@
             width: 2em;
         }
     }
+
+    &__menu-divider {
+        margin-left: 20rem;
+    }
+
     &__menu-left {
         justify-content: flex-start;
         order: -1;
@@ -129,6 +182,65 @@
             }
         }
     }
+
+    &__menu--back-to-old-ui--dtrader {
+        padding: 0 1.5rem 2.5rem;
+        width: 110%;
+    }
+
+    &__menu--back-to-ui {
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+        border-radius: 1rem;
+
+        &--dark {
+            background-color: var(--general-main-1);
+            display: flex;
+            width: 90%;
+            justify-content: space-between;
+            border-radius: 1rem;
+        }
+    }
+
+    &__menu--trading-hub {
+        padding: 0 2rem 2.5rem;
+    }
+
+    &__menu--explore-trading-hub {
+        display: flex;
+        padding: 1rem;
+        margin: 0 auto;
+        border-radius: 1rem;
+
+        &--dark {
+            display: flex;
+            padding: 1rem;
+            margin: 0 auto;
+            border-radius: 1rem;
+            background-color: var(--general-main-1);
+        }
+    }
+
+    &__menu--trading-hub-text {
+        align-items: flex-start;
+    }
+
+    &__menu--back-to-ui-text {
+        align-items: flex-start;
+
+        &--dark {
+            color: var(--text-prominent);
+            align-items: flex-start;
+        }
+    }
+
+    &__menu-mobile-right-arrow {
+        align-items: flex-end;
+        display: inline-flex;
+        margin-left: 9rem;
+    }
+
     &__menu-toggle {
         align-self: center;
         display: flex;

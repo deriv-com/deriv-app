@@ -19,6 +19,7 @@ import {
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
+import { CFDStore } from '@deriv/cfd';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -52,6 +53,12 @@ const AppWithoutTranslation = ({ root_store }) => {
     // TODO: investigate the order of cashier store initialization
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(initCashierStore, []);
+    const initCFDStore = () => {
+        root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
+    };
+
+    React.useEffect(initCFDStore, []);
+
     React.useEffect(() => {
         initializeTranslations();
 

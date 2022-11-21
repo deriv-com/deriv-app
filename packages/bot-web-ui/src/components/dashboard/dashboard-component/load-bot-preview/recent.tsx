@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentWorkspace from './recent-workspace';
 import RootStore from 'Stores/index';
@@ -33,6 +33,11 @@ const RecentComponent = ({ toggleStrategies, dashboard_strategies, setDashboardS
                         <Localize i18n_default_text='Your Bots' />
                     </div>
                     <div className='load-strategy__recent__files__list'>
+                        <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>
+                            <Text weight='bold'>Name</Text>
+                            <Text weight='bold'>Last modified</Text>
+                            <Text weight='bold'>Status</Text>
+                        </div>
                         {dashboard_strategies.map((workspace, index) => {
                             return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
                         })}

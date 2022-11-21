@@ -5,6 +5,12 @@ import { tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 import React from 'react';
 
+const clearInjectionDiv = () => {
+    const el_ref = document.getElementById('load-strategy__blockly-container');
+    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
+        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
+    }
+};
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;
@@ -133,7 +139,9 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     get selected_strategy() {
-        return this.recent_strategies.find(ws => ws.id === this.selected_strategy_id) || this.recent_strategies[0];
+        return (
+            this.dashboard_strategies.find(ws => ws.id === this.selected_strategy_id) || this.dashboard_strategies[0]
+        );
     }
 
     get tab_name() {
@@ -256,9 +264,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
-        if (this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy.id);
-        }
     };
 
     onDriveConnect = (): void => {
@@ -278,7 +283,7 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     onEntered = (): void => {
-        this.previewRecentStrategy(this.selected_strategy.id);
+        this.previewRecentStrategy(this.selected_strategy_id);
     };
 
     onLoadModalClose = (): void => {
@@ -328,6 +333,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
+        clearInjectionDiv();
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
         const { updateBotName } = this.root_store.save_modal;
         updateBotName(this.selected_strategy.name);
@@ -401,7 +407,6 @@ export default class LoadModalStore implements ILoadModalStore {
 
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
-
             if (is_preview) {
                 const ref = document.getElementById('load-strategy__blockly-container');
 
@@ -420,6 +425,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 load_options.file_name = file_name;
             }
 
+            clearInjectionDiv();
             load(load_options);
         });
         reader.readAsText(file);

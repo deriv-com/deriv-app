@@ -279,6 +279,9 @@
                 align-items: center;
                 flex-direction: column;
                 margin-right: 1rem;
+                &:nth-child(4) {
+                    letter-spacing: -0.8px;
+                }
             }
 
             &__images {

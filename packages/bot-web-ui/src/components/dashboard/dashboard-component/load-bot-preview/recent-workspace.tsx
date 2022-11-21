@@ -25,6 +25,7 @@ type TRecentWorkspace = {
     toggleStrategies: (param: boolean) => void;
     is_delete_modal_open: boolean;
     dashboard_strategies: [];
+    setLoaderVisible: (param: boolean) => void;
 };
 
 const RecentWorkspace = ({
@@ -34,7 +35,6 @@ const RecentWorkspace = ({
     selected_strategy_id,
     workspace,
     index,
-    has_file_loaded,
     setFileLoaded,
     toggleSaveModal,
     loadFileFromRecent,
@@ -45,19 +45,22 @@ const RecentWorkspace = ({
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
-        if (index === 0 && has_file_loaded === false) {
-            trigger_div_ref?.current?.click();
+        if (dashboard_strategies && dashboard_strategies.length && index === 0) {
+            setTimeout(() => {
+                trigger_div_ref?.current?.click();
+            }, 0);
         }
-    }, [has_file_loaded]);
+    }, []);
 
     return (
         <>
             <div
                 className={classnames('load-strategy__recent-item', {
-                    'load-strategy__recent-item__loaded': dashboard_strategies,
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
+                    'load-strategy__recent-item__loaded': dashboard_strategies,
                 })}
                 key={workspace.id}
+                ref={trigger_div_ref}
                 onClick={() => {
                     previewRecentStrategy(workspace.id);
                     setFileLoaded(true);
@@ -123,4 +126,6 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     setActiveTab: dashboard.setActiveTab,
     recent_strategies: load_modal.recent_strategies,
     dashboard_strategies: load_modal.dashboard_strategies,
+    active_tab: dashboard.active_tab,
+    setLoaderVisible: dashboard.setLoaderVisible,
 }))(RecentWorkspace);

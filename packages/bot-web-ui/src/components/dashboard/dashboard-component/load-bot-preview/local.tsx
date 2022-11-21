@@ -31,7 +31,6 @@ const LocalComponent = ({
     setActiveTab,
     loadFileFromLocal,
     loadFileFromRecent,
-    setFileLoaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
@@ -40,9 +39,7 @@ const LocalComponent = ({
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const clearInjectionDiv = () => {
-        el_ref?.current?.removeChild(el_ref?.current?.children[1]);
-    };
+
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
             <div className='load-strategy__local-preview'>
@@ -88,7 +85,6 @@ const LocalComponent = ({
                             accept='.xml'
                             style={{ display: 'none' }}
                             onChange={e => {
-                                clearInjectionDiv();
                                 onConfirmSave();
                                 setIsFileSupported(handleFileChange(e, false));
                             }}

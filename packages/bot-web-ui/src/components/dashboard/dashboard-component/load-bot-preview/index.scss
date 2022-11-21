@@ -150,6 +150,7 @@
                 /* TODO: ThemedScrollbars! */
                 height: calc(100% - 5.2rem); // 100% - Title height
                 padding-bottom: 5rem;
+                width: 100%;
             }
         }
 
@@ -214,9 +215,11 @@
                 }
             }
         }
+
         &__empty {
             text-align: center;
         }
+
         &-item {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -224,9 +227,21 @@
             padding: 0.8rem;
             align-items: center;
             text-align: center;
+            margin-right: 1.6rem;
+
             &__loaded {
                 text-align: left;
                 padding-left: 3.5rem;
+            }
+
+            &__loaded--first-child {
+                border: none;
+
+                &:hover {
+                    background: none;
+                    background-color: none;
+                    cursor: default;
+                }
             }
 
             &:not(.load-strategy__recent-item--selected):hover {
@@ -243,26 +258,34 @@
             }
 
             &-text {
-                flex-direction: column;
                 display: flex;
                 justify-content: center;
+                width: 100%;
+                word-break: break-word;
+                margin-right: 1.6rem;
             }
 
             &-title {
                 font-size: var(--text-size-s);
                 color: var(--text-general);
+                width: 100%;
+                word-break: break-word;
+                margin-right: 1.6rem;
             }
 
             &-time {
                 font-size: var(--text-size-xxs);
                 color: var(--text-general);
-                text-align: center;
+                width: 100%;
+                word-break: break-word;
+                margin-right: 1.6rem;
             }
 
             &-location {
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                width: 100%;
+                word-break: break-word;
                 color: var(--text-general);
             }
 
@@ -270,6 +293,7 @@
                 margin-left: 1rem;
                 font-size: var(--text-size-s);
                 line-height: 1.43;
+                word-break: break-word;
             }
 
             &__button {

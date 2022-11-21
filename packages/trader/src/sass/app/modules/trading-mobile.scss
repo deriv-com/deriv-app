@@ -185,6 +185,17 @@
                 }
             }
         }
+        &__strike {
+            display: flex;
+            flex-direction: column;
+            .trade-container__stake-field {
+                justify-content: space-around;
+                margin-top: 1.6rem;
+            }
+            .strike__pos {
+                margin-top: unset;
+            }
+        }
         &__amount {
             &-keypad {
                 width: 100%;

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Tabs, Money, Numpad } from '@deriv/components';
+import { Tabs, Money, Numpad, Text } from '@deriv/components';
 import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
+import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
@@ -21,6 +21,9 @@ const Basis = ({
     trade_duration,
     trade_duration_unit,
     setAmountError,
+    contract_type,
+    min_stake,
+    max_stake,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -65,28 +68,46 @@ const Basis = ({
     };
 
     return (
-        <div className='trade-params__amount-keypad'>
-            <Numpad
-                value={selected_basis}
-                format={formatAmount}
-                onSubmit={setBasisAndAmount}
-                currency={currency}
-                min={min_amount}
-                is_currency
-                render={({ value: v, className }) => {
-                    return (
-                        <div className={className}>
-                            {parseFloat(v) > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v}
-                        </div>
-                    );
-                }}
-                reset_press_interval={450}
-                reset_value=''
-                pip_size={user_currency_decimal_places}
-                onValidate={validateAmount}
-                submit_label={localize('OK')}
-                onValueChange={onNumberChange}
-            />
+        <div className='trade-params__strike'>
+            {contract_type === 'vanilla' && (
+                <section className='trade-container__stake-field'>
+                    <div className='trade-container__stake-field--min'>
+                        <Text size='xxs'>Min. Stake</Text>
+                        <Text size='xxs'>
+                            {min_stake} {currency}
+                        </Text>
+                    </div>
+                    <div className='trade-container__stake-field--max'>
+                        <Text size='xxs'>Max. Stake</Text>
+                        <Text size='xxs'>
+                            {max_stake} {currency}
+                        </Text>
+                    </div>
+                </section>
+            )}
+            <div className={classNames('trade-params__amount-keypad', { strike__pos: contract_type === 'vanilla' })}>
+                <Numpad
+                    value={selected_basis}
+                    format={formatAmount}
+                    onSubmit={setBasisAndAmount}
+                    currency={currency}
+                    min={min_amount}
+                    is_currency
+                    render={({ value: v, className }) => {
+                        return (
+                            <div className={className}>
+                                {parseFloat(v) > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v}
+                            </div>
+                        );
+                    }}
+                    reset_press_interval={450}
+                    reset_value=''
+                    pip_size={user_currency_decimal_places}
+                    onValidate={validateAmount}
+                    submit_label={localize('OK')}
+                    onValueChange={onNumberChange}
+                />
+            </div>
         </div>
     );
 };
@@ -99,6 +120,9 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     trade_duration: modules.trade.duration,
     currency: client.currency,
     addToast: ui.addToast,
+    contract_type: modules.trade.contract_type,
+    min_stake: modules.trade.min_stake,
+    max_stake: modules.trade.max_stake,
 }))(Basis);
 
 const Amount = ({

@@ -79,9 +79,7 @@ const Wizard = ({
 
         if (i === active_step)
             return (
-                <Wizard.Step>
-                    {isReactComponent(child) ? React.cloneElement(child as React.ReactElement, properties) : child}
-                </Wizard.Step>
+                <Wizard.Step>{React.isValidElement(child) ? React.cloneElement(child, properties) : child}</Wizard.Step>
             );
 
         return null;
@@ -89,7 +87,7 @@ const Wizard = ({
 
     return (
         <div className={classNames('wizard', className)}>
-            {nav && React.cloneElement(nav as React.ReactElement, properties)}
+            {nav && React.isValidElement(nav) && React.cloneElement(nav, properties)}
             {childrenWithProps}
         </div>
     );

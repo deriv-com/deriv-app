@@ -108,7 +108,11 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    toggleCFDVerificationModal: () => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    setAccountType: (account_type: { category: string; type?: string }) => void;
     setIsAcuityModalOpen: (value: boolean) => void;
+    updateAccountStatus: () => void;
 };
 
 export type TTradingPlatformAccounts = {

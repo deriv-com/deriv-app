@@ -360,6 +360,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
+            updateMT5Status: action.bound,
         });
 
         reaction(
@@ -2432,6 +2433,11 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    async updateMT5Status() {
+        this.updateAccountStatus();
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
     }
 }
 /* eslint-enable */

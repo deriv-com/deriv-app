@@ -205,7 +205,7 @@
             align-items: center;
             justify-content: center;
             width: 50%;
-            margin-top: -3rem;
+            margin-top: 3rem;
         }
 
         &__preview {
@@ -237,7 +237,7 @@
         &__description {
             text-align: center;
             margin-bottom: 4rem;
-            padding: 0 5rem;
+            padding: 0 3.6rem;
 
             &__loaded {
                 text-align: left;
@@ -278,9 +278,10 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                margin-right: 1rem;
-                &:nth-child(4) {
-                    letter-spacing: -0.8px;
+                width: 10.2rem;
+                margin: 1rem;
+                &:hover {
+                    cursor: pointer;
                 }
             }
 

@@ -463,13 +463,14 @@ const RealAccountSignup = ({
     const handleRiskAcceptance = () => {
         closeRealAccountSignup();
         setShouldShowRiskWarningModal(false);
+        setAssessmentDecline(false);
     };
 
-    if (should_show_risk_warning_modal && assessment_decline) {
+    if (assessment_decline) {
         return (
             <RiskToleranceWarningModal
                 has_icon={false}
-                show_risk_modal={should_show_risk_warning_modal}
+                show_risk_modal={assessment_decline}
                 onClick={handleRiskAcceptance}
                 title={risk_warning_title}
                 body_content={
@@ -481,7 +482,7 @@ const RealAccountSignup = ({
                 }
             />
         );
-    } else if (should_show_risk_warning_modal && !assessment_decline) {
+    } else if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
                 has_icon={true}

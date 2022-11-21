@@ -127,7 +127,6 @@ const TradingAssessment = ({
         );
     }
     if (should_show_warning_modal) {
-        // console.log('this.should_show_risk_accept_modal: ', should_show_risk_accept_modal);
         return (
             <TestWarningModal
                 show_risk_modal={should_show_warning_modal}

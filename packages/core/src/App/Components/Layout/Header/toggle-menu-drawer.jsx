@@ -318,6 +318,18 @@ const ToggleMenuDrawer = React.forwardRef(
             route.startsWith(routes.cashier) ||
             route.startsWith(routes.account);
 
+        const tradingHubRedirect = () => {
+            if (is_pre_appstore) {
+                setIsPreAppStore(false);
+                toggleDrawer();
+                history.push(routes.root);
+            } else {
+                setIsPreAppStore(true);
+                toggleDrawer();
+                history.push(routes.trading_hub);
+            }
+        };
+
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -362,9 +374,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 type='button'
                                                 large
                                                 onClick={() => {
-                                                    setIsPreAppStore(false);
-                                                    toggleDrawer();
-                                                    history.push(routes.root);
+                                                    tradingHubRedirect();
                                                 }}
                                             >
                                                 <Text
@@ -406,9 +416,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     type='button'
                                                     large
                                                     onClick={() => {
-                                                        setIsPreAppStore(false);
-                                                        toggleDrawer();
-                                                        history.push(route.root);
+                                                        tradingHubRedirect();
                                                     }}
                                                 >
                                                     <Text
@@ -564,9 +572,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 type='button'
                                                 large
                                                 onClick={() => {
-                                                    setIsPreAppStore(true);
-                                                    toggleDrawer();
-                                                    history.push(routes.trading_hub);
+                                                    tradingHubRedirect();
                                                 }}
                                             >
                                                 <Text className='header__menu--trading-hub-text' size='xs'>

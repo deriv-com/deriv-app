@@ -46,6 +46,7 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/css/'),
             to: 'p2p/css',
+            noErrorOnMissing: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),

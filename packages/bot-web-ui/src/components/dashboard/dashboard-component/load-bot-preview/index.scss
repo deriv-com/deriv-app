@@ -227,11 +227,14 @@
             padding: 0.8rem;
             align-items: center;
             text-align: center;
-            margin-right: 1.6rem;
+
+            &:hover {
+                cursor: pointer;
+            }
 
             &__loaded {
                 text-align: left;
-                padding-left: 3.5rem;
+                padding-left: 1.7rem;
             }
 
             &__loaded--first-child {
@@ -271,6 +274,7 @@
                 width: 100%;
                 word-break: break-word;
                 margin-right: 1.6rem;
+                line-height: 1.25;
             }
 
             &-time {
@@ -298,12 +302,13 @@
 
             &__button {
                 display: flex;
-                cursor: pointer;
                 margin-right: 2rem;
                 padding: 0.2rem;
                 &:last-child {
                     margin-right: 0;
                 }
+                align-items: center;
+                justify-content: flex-end;
             }
         }
     }

@@ -1,17 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Swipeable } from 'react-swipeable';
+import { Swipeable, SwipeableProps, useSwipeable } from 'react-swipeable';
 import Icon from '../icon';
 
-const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
+type TSwipeableWrapper = {
+    className?: string;
+    onChange: (prop?: number) => void;
+    is_disabled?: boolean;
+} & SwipeableProps;
+
+const SwipeableWrapper = ({ children, className, onChange, ...props }: TSwipeableWrapper) => {
     const [active_index, setActiveIndex] = React.useState(0);
 
     React.useEffect(() => {
-        if (typeof onChange === 'function') onChange(active_index);
+        onChange(active_index);
         return () => {
             // Makes an empty callback when unmounted so that we can reset
-            if (typeof onChange === 'function') onChange();
+            onChange();
         };
     }, [active_index, onChange]);
 
@@ -73,11 +78,6 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     );
 };
 
-SwipeableWrapper.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node), PropTypes.object]),
-    onChange: PropTypes.func,
-    is_disabled: PropTypes.bool,
-};
+SwipeableWrapper.useSwipeable = useSwipeable;
 
 export default SwipeableWrapper;

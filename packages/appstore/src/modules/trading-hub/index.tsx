@@ -21,7 +21,6 @@ import {
     JurisdictionModal,
     CFDPasswordModal,
     CFDDbviOnBoarding,
-    CFDPersonalDetailsModal,
     CFDResetPasswordModal,
     CFDTopUpDemoModal,
     MT5TradeModal,
@@ -241,7 +240,6 @@ const TradingHub: React.FC = () => {
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
-            <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal

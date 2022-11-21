@@ -12,7 +12,7 @@ import { TCFDPasswordFormValues } from './cfd-password-modal';
 import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
-export type TCFDPersonalDetailsModalProps = {
+export type TCFDPersonalDetailsContainerProps = {
     account_settings: GetSettings;
     getChangeableFields: () => string[];
     context: RootStore;

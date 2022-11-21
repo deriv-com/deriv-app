@@ -2,9 +2,9 @@ import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { connect } from '../Stores/connect';
-import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
-import CFDPOI from '../Components/cfd-poi';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
+import CFDPOA from '../Components/cfd-poa';
+import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import RootStore from '../Stores/index';
 

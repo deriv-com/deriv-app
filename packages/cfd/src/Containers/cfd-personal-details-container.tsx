@@ -3,7 +3,7 @@ import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/c
 import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
-import { TCFDPersonalDetailsModalProps } from './props.types';
+import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
@@ -19,7 +19,7 @@ const CFDPersonalDetailsContainer = ({
     residence_list,
     setAccountSettings,
     onSubmit,
-}: TCFDPersonalDetailsModalProps) => {
+}: TCFDPersonalDetailsContainerProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
     const [form_values, setFormValues] = React.useState<TFormValues>({

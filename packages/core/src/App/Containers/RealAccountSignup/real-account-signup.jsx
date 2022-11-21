@@ -241,6 +241,8 @@ const RealAccountSignup = ({
         },
     ]);
 
+    const [assessment_decline, setAssessmentDecline] = React.useState(false);
+
     const getModalHeight = () => {
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
@@ -434,6 +436,7 @@ const RealAccountSignup = ({
 
     const handleOnDecline = async () => {
         setLoading(true);
+        setAssessmentDecline(true);
         try {
             await realAccountSignup({ ...real_account_form_data, accept_risk: 0 });
         } catch (sign_up_error) {
@@ -454,9 +457,26 @@ const RealAccountSignup = ({
         setShouldShowRiskWarningModal(false);
     };
 
-    if (should_show_risk_warning_modal) {
+    if (should_show_risk_warning_modal && assessment_decline) {
         return (
             <RiskToleranceWarningModal
+                has_icon={false}
+                show_risk_modal={should_show_risk_warning_modal}
+                onClick={handleRiskAcceptance}
+                title={risk_warning_title}
+                body_content={
+                    <Localize
+                        i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money. <0/><0/>
+                        As you have declined our previous warning, you would need to wait 24 hours before you can proceed further.'
+                        components={[<br key={0} />]}
+                    />
+                }
+            />
+        );
+    } else if (should_show_risk_warning_modal && !assessment_decline) {
+        return (
+            <RiskToleranceWarningModal
+                has_icon={true}
                 show_risk_modal={should_show_risk_warning_modal}
                 onClick={handleRiskAcceptance}
                 title={risk_warning_title}

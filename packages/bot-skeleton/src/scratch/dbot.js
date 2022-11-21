@@ -56,11 +56,6 @@ class DBot {
 
                 this.workspace.cached_xml = { main: main_xml };
 
-                // this.workspace.save_workspace_interval = setInterval(async () => {
-                //     // Periodically save the workspace.
-                //     await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
-                // }, 10000);
-
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));

@@ -10,6 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
+import { tabs_array } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -55,7 +56,6 @@ const Dashboard = ({
     setTourDialogVisibility,
     toggleStrategyModal,
     setOnBoardingTokenCheck,
-    has_bot_builder_tour_started,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -115,6 +115,8 @@ const Dashboard = ({
     if (localStorage?.dbot_settings !== undefined) {
         storage = JSON.parse(localStorage?.dbot_settings);
     }
+
+    const { BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB } = tabs_array;
 
     const checkToken = () => {
         return (active_tab === 0 && !storage.onboard_tour_token) || (active_tab === 1 && !storage.bot_builder_token);
@@ -191,7 +193,7 @@ const Dashboard = ({
                         2. Quick Strategy
                         3. Charts
                     */}
-                    {[1, 2, 3].includes(active_tab) && <RunPanel />}
+                    {[BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

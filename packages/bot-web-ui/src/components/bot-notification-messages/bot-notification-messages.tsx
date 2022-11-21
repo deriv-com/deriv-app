@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import { tabs_array } from '../../constants/bot-contents';
 
 interface TBotNotificationMessagesProps {
     is_drawer_open: boolean;
@@ -9,6 +10,8 @@ interface TBotNotificationMessagesProps {
     is_info_panel_visible: boolean;
     Notifications: React.ComponentType;
 }
+
+const { BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB } = tabs_array;
 
 const BotNotificationMessages = ({
     is_drawer_open,
@@ -19,7 +22,8 @@ const BotNotificationMessages = ({
     <div
         className={classNames('notifications-container', {
             'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
-            'notifications-container--panel-open': [1, 2, 3].includes(active_tab) && is_drawer_open,
+            'notifications-container--panel-open':
+                [BOTBUILDERTAB, QUICKSTRATEGYTAB, CHARTTAB].includes(active_tab) && is_drawer_open,
         })}
     >
         <Notifications />

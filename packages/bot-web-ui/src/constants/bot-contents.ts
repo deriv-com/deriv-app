@@ -14,3 +14,5 @@ export const tabs_array: TTabsTitleProps = Object.freeze({
     CHART_TAB: 3,
     TUTORIAL_TAB: 4,
 });
+
+export const strategy_limit = 10;

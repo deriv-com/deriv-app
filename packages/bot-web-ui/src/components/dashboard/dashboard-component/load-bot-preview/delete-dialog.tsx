@@ -10,7 +10,7 @@ type TDeleteDialog = {
     is_running: boolean;
     is_delete_modal_open: boolean;
     onToggleDeleteDialog: (param: boolean) => void;
-    removeBotStratagy: (param: string) => void;
+    removeBotStrategy: (param: string) => void;
     selected_strategy_id: string;
     setStrategies: (param: string[]) => void;
     setDashboardStrategies: (param: string[]) => void;
@@ -25,7 +25,7 @@ const DeleteDialog = ({
     setDashboardStrategies,
     dashboard_strategies,
 }: TDeleteDialog) => {
-    const removeBotStratagy = async (strategy_id: string) => {
+    const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
         workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
             if (strategy_from_workspace.id === strategy_id) {
@@ -41,7 +41,7 @@ const DeleteDialog = ({
 
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
-            removeBotStratagy(selected_strategy_id);
+            removeBotStrategy(selected_strategy_id);
         }
         onToggleDeleteDialog(param);
     };

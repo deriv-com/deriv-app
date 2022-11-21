@@ -373,9 +373,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 className={`header__menu--back-to-ui${is_dark_mode ? '--dark' : ''}`}
                                                 type='button'
                                                 large
-                                                onClick={() => {
-                                                    tradingHubRedirect();
-                                                }}
+                                                onClick={tradingHubRedirect}
                                             >
                                                 <Text
                                                     className={`header__menu--back-to-ui-text${
@@ -415,9 +413,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     }`}
                                                     type='button'
                                                     large
-                                                    onClick={() => {
-                                                        tradingHubRedirect();
-                                                    }}
+                                                    onClick={tradingHubRedirect}
                                                 >
                                                     <Text
                                                         className={`header__menu--back-to-ui-text${
@@ -571,9 +567,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 }`}
                                                 type='button'
                                                 large
-                                                onClick={() => {
-                                                    tradingHubRedirect();
-                                                }}
+                                                onClick={tradingHubRedirect}
                                             >
                                                 <Text className='header__menu--trading-hub-text' size='xs'>
                                                     {localize("Trader's hub beta")}

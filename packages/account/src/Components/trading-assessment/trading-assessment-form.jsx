@@ -122,7 +122,7 @@ const TradingAssessmentForm = ({
                 <div className='trading-assessment__header--arrow-down' />
             </section>
             <section className='trading-assessment__form'>
-                <Formik initialValues={{ ...form_value }} onSubmit={(values, action) => onSubmit(values, action)}>
+                <Formik initialValues={{ ...form_value }}>
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
                             current_question_details.current_question;
@@ -179,12 +179,17 @@ const TradingAssessmentForm = ({
                                             <Button
                                                 has_effect
                                                 is_disabled={!is_next_button_enabled}
-                                                onClick={() => handleOnClickNext(values)}
-                                                type={isAssessmentCompleted(values) ? 'submit' : 'button'}
+                                                onClick={() =>
+                                                    isAssessmentCompleted(values)
+                                                        ? onSubmit(values)
+                                                        : handleOnClickNext(values)
+                                                }
+                                                type='button'
                                                 text={localize('Next')}
                                                 large
                                                 primary
                                                 className='trading-assessment__btn-group--btn'
+                                                name='Next'
                                             />
                                         </Button.Group>
                                     )}

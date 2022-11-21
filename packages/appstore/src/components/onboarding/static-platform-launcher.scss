@@ -1,0 +1,68 @@
+.static-platform-launcher {
+    &--grey {
+        background: var(--general-section-1);
+        width: 100%;
+        @include mobile {
+            width: 90%;
+            margin-left: 1.4rem;
+            height: 8rem;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+        gap: 1.6rem;
+        width: 18.32rem;
+        height: 5.4rem;
+        margin-bottom: 1.6rem;
+        margin-left: 1rem;
+
+        @include mobile {
+            width: auto;
+        }
+
+        &--icon {
+            width: 3.2rem;
+            height: 3.2rem;
+
+            &--blurry {
+                width: 3.2rem;
+                height: 3.2rem;
+                opacity: 0.2;
+            }
+        }
+        &--title-desc-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0;
+            width: 13.52rem;
+            height: 4rem;
+
+            @include mobile {
+                width: auto;
+            }
+        }
+    }
+    &__trade-button {
+        width: 90%;
+        margin-bottom: 2rem;
+
+        &--eu {
+            margin-bottom: 2rem;
+            display: flex;
+            margin-left: 1rem;
+            width: 20%;
+        }
+
+        @include mobile {
+            width: auto;
+            margin-right: 1rem;
+            margin-left: auto;
+            margin-top: 2rem;
+        }
+    }
+}

@@ -2,9 +2,10 @@ import { TConfigProps } from 'Types';
 import BaseStore from './base-store';
 
 export default class ConfigStore extends BaseStore {
-    public has_router = false;
+    public has_router = true;
     public routes = {
-        trading_hub: '/trading-hub',
+        trading_hub: '/appstore/trading-hub',
+        onboarding: '/appstore/onboarding',
         my_apps: '/my-apps',
         explore: '/explore',
         about_us: '/about-us',

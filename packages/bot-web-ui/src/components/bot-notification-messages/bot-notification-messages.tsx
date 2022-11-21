@@ -11,7 +11,7 @@ interface TBotNotificationMessagesProps {
     Notifications: React.ComponentType;
 }
 
-const { BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB } = tabs_array;
+const { BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB } = tabs_array;
 
 const BotNotificationMessages = ({
     is_drawer_open,
@@ -23,7 +23,7 @@ const BotNotificationMessages = ({
         className={classNames('notifications-container', {
             'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
             'notifications-container--panel-open':
-                [BOTBUILDERTAB, QUICKSTRATEGYTAB, CHARTTAB].includes(active_tab) && is_drawer_open,
+                [BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB].includes(active_tab) && is_drawer_open,
         })}
     >
         <Notifications />

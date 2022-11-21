@@ -8,9 +8,9 @@ export const tabs_title: TTabsTitleProps = Object.freeze({
 });
 
 export const tabs_array: TTabsTitleProps = Object.freeze({
-    DASHBOARDTAB: 0,
-    BOTBUILDERTAB: 1,
-    QUICKSTRATEGYTAB: 2,
-    CHARTTAB: 3,
-    TUTORIALTAB: 4,
+    DASHBOARD_TAB: 0,
+    BOT_BUILDER_TAB: 1,
+    QUICK_STRATEGY_TAB: 2,
+    CHART_TAB: 3,
+    TUTORIAL_TAB: 4,
 });

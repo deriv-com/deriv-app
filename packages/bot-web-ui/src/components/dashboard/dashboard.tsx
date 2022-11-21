@@ -116,7 +116,7 @@ const Dashboard = ({
         storage = JSON.parse(localStorage?.dbot_settings);
     }
 
-    const { BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB } = tabs_array;
+    const { BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB } = tabs_array;
 
     const checkToken = () => {
         return (active_tab === 0 && !storage.onboard_tour_token) || (active_tab === 1 && !storage.bot_builder_token);
@@ -193,7 +193,7 @@ const Dashboard = ({
                         2. Quick Strategy
                         3. Charts
                     */}
-                    {[BOTBUILDERTAB, CHARTTAB, QUICKSTRATEGYTAB].includes(active_tab) && <RunPanel />}
+                    {[BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

@@ -649,8 +649,6 @@
 
     &__btn-group {
         @include mobile() {
-            position: absolute;
-            bottom: 0;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
             width: 100%;

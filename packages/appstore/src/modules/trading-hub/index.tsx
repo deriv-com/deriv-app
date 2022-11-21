@@ -154,8 +154,6 @@ const TradingHub: React.FC = () => {
 
     const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
 
-    const is_mf = loginid?.startsWith('MF');
-
     if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 
     return (
@@ -202,7 +200,7 @@ const TradingHub: React.FC = () => {
                     <CFDAccounts account_type={tab_account_type} />
                     <Divider horizontal className='trading-hub_body--divider' />
                     <OptionsAccounts
-                        platformlauncherprops={is_mf || is_eu || is_eu_country ? mf_platform_config : platform_config}
+                        platformlauncherprops={is_eu ? mf_platform_config : platform_config}
                         accountType={tab_account_type}
                     />
                 </DesktopWrapper>
@@ -219,7 +217,7 @@ const TradingHub: React.FC = () => {
                     {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
                     {platform_type === 'options' && (
                         <OptionsAccounts
-                            platformlauncherprops={is_mf ? mf_platform_config : platform_config}
+                            platformlauncherprops={is_eu ? mf_platform_config : platform_config}
                             accountType={tab_account_type}
                         />
                     )}

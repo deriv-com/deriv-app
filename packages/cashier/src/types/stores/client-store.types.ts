@@ -41,6 +41,7 @@ export type TClientStore = {
         decimal_places?: number;
     };
     loginid?: string;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
     residence: string;
     standpoint: {
         iom: string;
@@ -59,7 +60,6 @@ export type TClientStore = {
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
 };

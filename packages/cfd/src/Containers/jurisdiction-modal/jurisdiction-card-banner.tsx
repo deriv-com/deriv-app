@@ -1,6 +1,6 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import RootStore from '../../Stores/index';
+import { connect } from '../../Stores/connect';
 import { TVerificationStatusBannerProps } from '../props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
@@ -11,9 +11,12 @@ const VerificationStatusBanner = ({
     account_type,
     card_classname,
     disabled,
+    context,
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,
+    real_synthetic_accounts_existing_data,
+    real_financial_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
     const {
         poi_not_submitted_for_vanuatu,
@@ -60,26 +63,32 @@ const VerificationStatusBanner = ({
                 return '';
         }
     };
-    if (is_virtual && is_svg) {
+
+    const isAccountCreated = () =>
+        account_type === 'synthetic'
+            ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
+            : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
+
+    if (disabled && isAccountCreated()) {
+        // account added
+        return (
+            <div className={`${card_classname}__verification-status--account_added`}>
+                <Text size='xxs' weight='bold' color='colored-background'>
+                    <Localize i18n_default_text='Account added' />
+                </Text>
+            </div>
+        );
+    } else if (is_virtual && !is_svg) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxxs' align='center' color='prominent'>
                     <Localize
-                        i18n_default_text='Switch to your real account to create a DMT5 {{account_title}} {{type_title}} account.'
+                        i18n_default_text='Switch to your real account to create a Deriv MT5 {{account_title}} {{type_title}} account.'
                         values={{
                             account_title: getAccountTitle(),
                             type_title: getTypeTitle(),
                         }}
                     />
-                </Text>
-            </div>
-        );
-    } else if (disabled) {
-        // account not added
-        return (
-            <div className={`${card_classname}__verification-status--account_added`}>
-                <Text size='xxs' weight='bold' color='colored-background'>
-                    <Localize i18n_default_text='Account added' />
                 </Text>
             </div>
         );
@@ -197,8 +206,10 @@ const JurisdictionCardBanner = (props: TVerificationStatusBannerProps) => {
     );
 };
 
-export default connect(({ client }: RootStore) => ({
+export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
+    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
 }))(JurisdictionCardBanner);

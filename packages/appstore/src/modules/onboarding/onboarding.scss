@@ -1,0 +1,78 @@
+.onboarding-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--text-less-prominent);
+    height: inherit;
+}
+
+.onboarding-header {
+    display: flex;
+    margin-left: 1rem;
+    justify-content: space-between;
+
+    &__cross-icon {
+        margin: 3.5rem 3rem 0 0;
+        cursor: pointer;
+    }
+}
+
+.onboarding-body {
+    display: flex;
+    justify-content: center;
+    color: var(--general-main-1);
+
+    @include mobile {
+        overflow-y: scroll;
+        height: 42rem;
+    }
+}
+
+.onboarding-footer {
+    background-color: var(--general-main-1);
+    width: 100%;
+    height: 100%;
+
+    @include mobile {
+        position: fixed;
+        top: 75%;
+    }
+
+    &__progress-bar {
+        margin-top: 2rem;
+    }
+
+    &-header {
+        line-height: 3rem;
+    }
+
+    &-text {
+        line-height: 2rem;
+        margin-top: 0.8rem;
+        @include mobile {
+            margin-top: 0;
+        }
+    }
+
+    &-buttons {
+        display: flex;
+        justify-content: space-around;
+        margin: 2.4rem 0;
+
+        @include mobile {
+            width: 100%;
+            margin: 1.5rem 0;
+            overflow-y: auto;
+            &--full-size {
+                width: 80%;
+                height: 3.8rem;
+                margin-left: 11%;
+            }
+        }
+        &--mobile {
+            @include mobile {
+                height: 3.8rem;
+                width: 40%;
+            }
+        }
+    }
+}

@@ -39,6 +39,9 @@ const LocalComponent = ({
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    const clearInjectionDiv = () => {
+        el_ref?.current?.removeChild(el_ref?.current?.children[0]);
+    };
 
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -85,6 +88,7 @@ const LocalComponent = ({
                             accept='.xml'
                             style={{ display: 'none' }}
                             onChange={e => {
+                                clearInjectionDiv();
                                 onConfirmSave();
                                 setIsFileSupported(handleFileChange(e, false));
                             }}

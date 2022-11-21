@@ -19,9 +19,7 @@ type TRecentComponent = {
 const RecentComponent = ({ toggleStrategies, dashboard_strategies, setDashboardStrategies }: TRecentComponent) => {
     React.useEffect(() => {
         toggleStrategies(true);
-        getSavedWorkspaces().then(load_recent_strategies => {
-            setDashboardStrategies(load_recent_strategies);
-        });
+        getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
     }, []);
 
     if (!dashboard_strategies?.length) return null;

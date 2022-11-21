@@ -8,7 +8,7 @@ import React from 'react';
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
     if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
+        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[1]);
     }
 };
 interface ILoadModalStore {
@@ -264,6 +264,9 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
+        if (this.selected_strategy) {
+            this.previewRecentStrategy(this.selected_strategy_id);
+        }
     };
 
     onDriveConnect = (): void => {
@@ -284,6 +287,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onEntered = (): void => {
         this.previewRecentStrategy(this.selected_strategy_id);
+        this.onActiveIndexChange();
     };
 
     onLoadModalClose = (): void => {
@@ -313,6 +317,16 @@ export default class LoadModalStore implements ILoadModalStore {
             return;
         }
 
+        const {
+            dashboard: { active_tab },
+        } = this.root_store;
+
+        if (active_tab === 1 || this.tab_name !== tabs_title.TAB_LOCAL) {
+            if (this.recent_workspace) {
+                this.recent_workspace.dispose();
+                this.recent_workspace = null;
+            }
+        }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
             //TODO: this was the check check used on the older functionality
             const ref = document.getElementById('load-strategy__blockly-container');
@@ -333,9 +347,11 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-        clearInjectionDiv();
+
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
-        const { updateBotName } = this.root_store.save_modal;
+        const {
+            save_modal: { updateBotName },
+        } = this.root_store;
         updateBotName(this.selected_strategy.name);
     };
 
@@ -365,6 +381,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
+        this.previewRecentStrategy(this.selected_strategy_id);
     };
 
     toggleStrategies = (load_recent_strategies: boolean): void => {
@@ -425,7 +442,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 load_options.file_name = file_name;
             }
 
-            clearInjectionDiv();
             load(load_options);
         });
         reader.readAsText(file);

@@ -77,8 +77,12 @@ export default class SaveModalStore implements ISaveModalStore {
 
             this.setButtonStatus(button_status.COMPLETED);
         }
-        const { active_tab } = this.root_store.dashboard;
-        const { selected_strategy_id, setRecentStrategies } = this.root_store.load_modal;
+        const {
+            dashboard: { active_tab },
+        } = this.root_store;
+        const {
+            load_modals: { selected_strategy_id, setRecentStrategies },
+        } = this.root_store;
 
         if (active_tab === 0) {
             const workspace_id = selected_strategy_id || Blockly.utils.genUid();
@@ -96,12 +100,13 @@ export default class SaveModalStore implements ISaveModalStore {
             }
 
             if (current_workspace_index >= 0) {
-                const current_workspace = {};
-                current_workspace.id = workspace_id;
-                current_workspace.xml = Blockly.Xml.domToText(xml);
-                current_workspace.name = bot_name;
-                current_workspace.timestamp = Date.now();
-                current_workspace.save_type = save_type;
+                const current_workspace = {
+                    id: workspace_id,
+                    xml: Blockly.Xml.domToText(xml),
+                    name: bot_name,
+                    timestamp: Date.now(),
+                    save_type,
+                };
                 workspace[current_workspace_index] = current_workspace;
             } else {
                 workspace.push({

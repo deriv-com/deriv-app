@@ -142,7 +142,13 @@ const Dashboard = ({
                             }}
                         />
                     )}
-                    <Tabs active_index={active_tab} className='dashboard__tabs' onTabItemClick={setActiveTab} top>
+                    <Tabs
+                        active_index={active_tab}
+                        className='dashboard__tabs'
+                        onTabItemChange={onEntered}
+                        onTabItemClick={setActiveTab}
+                        top
+                    >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponent />
                         </div>

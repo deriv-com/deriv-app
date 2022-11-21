@@ -322,11 +322,9 @@ export default class LoadModalStore implements ILoadModalStore {
             dashboard: { active_tab },
         } = this.root_store;
 
-        if (active_tab === 1 || this.tab_name !== tabs_title.TAB_LOCAL) {
-            if (this.recent_workspace) {
-                this.recent_workspace.dispose();
-                this.recent_workspace = null;
-            }
+        if ((active_tab === 1 || this.tab_name !== tabs_title.TAB_LOCAL) && this.recent_workspace) {
+            this.recent_workspace.dispose();
+            this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
             //TODO: this was the check check used on the older functionality

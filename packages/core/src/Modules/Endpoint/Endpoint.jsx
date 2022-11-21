@@ -32,6 +32,7 @@ const Endpoint = () => {
                 app_id: getAppId(),
                 server: getSocketURL(),
                 is_appstore_enabled: platform_store.is_appstore,
+                is_pre_appstore_enabled: platform_store.is_pre_appstore,
                 show_dbot_dashboard: dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false',
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
@@ -55,9 +56,11 @@ const Endpoint = () => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
                 localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
+                localStorage.setItem(platform_store.DERIV_PRE_APPSTORE_KEY, values.is_pre_appstore_enabled);
                 LocalStore.set('show_dbot_dashboard', values.show_dbot_dashboard);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
                 platform_store.setIsAppStore(values.is_appstore_enabled);
+                platform_store.setIsPreAppStore(values.is_pre_appstore_enabled);
                 window.localStorage.removeItem('config.platform');
                 location.reload();
             }}
@@ -107,6 +110,21 @@ const Endpoint = () => {
                             </div>
                         )}
                     </Field>
+                    <Field name='is_pre_appstore_enabled'>
+                        {({ field }) => (
+                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                                <Checkbox
+                                    {...field}
+                                    label='Enable Pre-Appstore'
+                                    value={values.is_pre_appstore_enabled}
+                                    onChange={e => {
+                                        handleChange(e);
+                                        setFieldTouched('is_pre_appstore_enabled', true);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </Field>
                     <Field name='show_dbot_dashboard'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
@@ -144,6 +162,7 @@ const Endpoint = () => {
                                 (!touched.server &&
                                     !touched.app_id &&
                                     !touched.is_appstore_enabled &&
+                                    !touched.is_pre_appstore_enabled &&
                                     !touched.show_dbot_dashboard &&
                                     !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||

@@ -706,3 +706,5 @@ const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => 
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };
+
+// asfdf

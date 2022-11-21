@@ -60,9 +60,6 @@ const Wizard = ({
 
     const goToPreviousStep = () => onSetActiveStep(active_step - 1);
 
-    // Allows for using HTML elements as a step
-    const isReactComponent = ({ type }: any) => typeof type === 'function' || typeof type === 'object';
-
     const properties = {
         getCurrentStep,
         getTotalSteps,
@@ -79,9 +76,7 @@ const Wizard = ({
 
         if (i === active_step)
             return (
-                <Wizard.Step>
-                    {isReactComponent(child) ? React.cloneElement(<>{child}</>, properties) : child}
-                </Wizard.Step>
+                <Wizard.Step>{React.isValidElement(child) ? React.cloneElement(child, properties) : child}</Wizard.Step>
             );
 
         return null;
@@ -89,7 +84,7 @@ const Wizard = ({
 
     return (
         <div className={classNames('wizard', className)}>
-            {nav && React.cloneElement(<>{nav}</>, properties)}
+            {nav && React.isValidElement(nav) && React.cloneElement(nav, properties)}
             {childrenWithProps}
         </div>
     );

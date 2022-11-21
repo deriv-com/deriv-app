@@ -44,6 +44,10 @@ const copyConfig = base => {
             to: 'p2p/js',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/css/'),
+            to: 'p2p/css',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
             to: 'cashier/public',
             transformPath(context) {

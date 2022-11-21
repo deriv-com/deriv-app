@@ -117,8 +117,14 @@ module.exports = function () {
             ],
         },
         plugins: [
-            ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
-            // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
+            ...(is_publishing
+                ? [
+                      new MiniCssExtractPlugin({
+                          filename: 'p2p/css/[name].css',
+                          chunkFilename: 'p2p/css/[name].[contenthash].css',
+                      }),
+                  ]
+                : []),
         ],
         optimization: {
             minimize: is_release,

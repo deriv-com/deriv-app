@@ -7,9 +7,6 @@ import { TInputs } from './components.types';
 const Inputs = ({
     idx,
     is_mobile,
-    handleChange,
-    onChangeInputValue,
-    setCurrentFocus,
     field_name,
     id,
     className,
@@ -22,6 +19,9 @@ const Inputs = ({
     uniq_selected_input,
     errors,
     is_input_field,
+    handleChange,
+    onChangeInputValue,
+    setCurrentFocus,
 }: TInputs) =>
     is_input_field ? (
         <div

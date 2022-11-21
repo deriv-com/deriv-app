@@ -13,19 +13,19 @@ const DurationFields = ({
     selected_value,
     label,
     select_value,
-    setFieldValue,
     className,
     is_able_disabled,
     values,
+    selected_trade_type,
+    selected_symbol,
+    errors,
+    setFieldValue,
     onChangeDropdownItem,
     onHideDropdownList,
     onScrollStopDropdownList,
-    selected_trade_type,
-    selected_symbol,
     handleChange,
     onChangeInputValue,
     setCurrentFocus,
-    errors,
 }: TDurationFields) =>
     id === 'duration-unit' ? (
         <div

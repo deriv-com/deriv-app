@@ -60,9 +60,6 @@ const Wizard = ({
 
     const goToPreviousStep = () => onSetActiveStep(active_step - 1);
 
-    // Allows for using HTML elements as a step
-    const isReactComponent = ({ type }: any) => typeof type === 'function' || typeof type === 'object';
-
     const properties = {
         getCurrentStep,
         getTotalSteps,

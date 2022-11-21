@@ -23,6 +23,8 @@ const Redirect = ({
     toggleUpdateEmailModal,
 }) => {
     const is_mf = loginid?.startsWith('MF');
+
+    //this is a test
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;

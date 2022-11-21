@@ -76,6 +76,7 @@ let derivez_accounts_to: Array<TAccount> = [];
 const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps) => {
     const {
         client,
+        common: { is_from_derivgo },
         modules: { cashier },
     } = useStore();
 
@@ -262,6 +263,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                         internal: internal_remaining_transfers?.allowed,
                         mt5: mt5_remaining_transfers?.allowed,
                         dxtrade: dxtrade_remaining_transfers?.allowed,
+                        derivez: derivez_remaining_transfers?.allowed,
                     }}
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
@@ -271,6 +273,8 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                     is_dxtrade_allowed={is_dxtrade_allowed}
                     is_dxtrade_transfer={is_dxtrade_transfer}
                     is_mt_transfer={is_mt_transfer}
+                    is_from_derivgo={is_from_derivgo}
+                    is_derivez_transfer={is_derivez_transfer}
                 />
             );
             setSideNotes([
@@ -547,6 +551,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                             internal: internal_remaining_transfers?.allowed,
                                             mt5: mt5_remaining_transfers?.allowed,
                                             dxtrade: dxtrade_remaining_transfers?.allowed,
+                                            derivez: derivez_remaining_transfers?.allowed,
                                         }}
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
@@ -555,6 +560,8 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                         is_dxtrade_allowed={is_dxtrade_allowed}
                                         is_dxtrade_transfer={is_dxtrade_transfer}
                                         is_mt_transfer={is_mt_transfer}
+                                        is_from_derivgo={is_from_derivgo}
+                                        is_derivez_transfer={is_derivez_transfer}
                                     />
                                 </SideNote>
                                 <ErrorDialog error={error} />

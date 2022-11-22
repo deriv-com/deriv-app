@@ -456,7 +456,7 @@ const DMT5CompareModalContent = ({
         const type = item.action.split('_')[1];
         if (isAccountAdded(item)) {
             return false;
-        } else if (type === 'svg') {
+        } else if (type === 'svg' || item.action === 'derivx') {
             return false;
         } else if (type === 'vanuatu') {
             return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;

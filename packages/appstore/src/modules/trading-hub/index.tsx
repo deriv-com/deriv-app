@@ -123,8 +123,8 @@ const TradingHub: React.FC = () => {
     ];
 
     const platform_toggle_options = [
-        { text: 'CFD', value: 'cfd' },
-        { text: 'Options', value: 'options' },
+        { text: 'CFDs', value: 'cfd' },
+        { text: 'Options and...', value: 'options' },
     ];
 
     tour_step_locale.last = (

@@ -175,7 +175,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route && is_eu_country) {
+    if (!redirected_to_route) {
         history.push({
             pathname: routes.root,
             search: url_query_string,

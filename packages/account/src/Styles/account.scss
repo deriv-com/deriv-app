@@ -24,6 +24,22 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 4.4rem;
             background-color: var(--general-main-1);
         }
+        &__header {
+            &-account__logout {
+                margin-top: 1rem;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                border: 2px solid var(--border-normal-1);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+
+                &--icon {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
     }
 
     .dc-vertical-tab--dashboard {
@@ -214,7 +230,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
-                grid-template-rows: 5rem 1fr 4rem 1fr;
+                grid-template-rows: auto;
 
                 & .account-form__header {
                     &:first-child {
@@ -1770,7 +1786,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     &__wrapper {
-        max-width: 682px;
         max-height: 560px;
         height: 100%;
         width: 100%;
@@ -1789,6 +1804,22 @@ $MIN_HEIGHT_FLOATING: calc(
             & .data-list__item {
                 box-shadow: 0 1.6rem #00000005, 0 1.6rem #0000000d;
             }
+        }
+    }
+
+    &__container {
+        display: flex;
+
+        @include mobile {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__article {
+        margin-top: -4rem;
+
+        @include mobile {
+            margin-top: -0.8rem;
         }
     }
 

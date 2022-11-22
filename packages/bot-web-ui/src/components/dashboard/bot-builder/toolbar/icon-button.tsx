@@ -11,15 +11,22 @@ type TIconButton = {
 };
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }: TIconButton) => {
-    <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
-        <Icon
-            icon={icon}
-            id={icon_id}
-            className='toolbar__icon'
-            onClick={iconOnClick}
-            {...(icon_color ? { color: icon_color } : null)}
-        />
-    </Popover>;
+    return (
+        <Popover
+            alignment='bottom'
+            message={popover_message}
+            zIndex={popover_zindex.TOOLBAR}
+            should_disable_pointer_events
+        >
+            <Icon
+                icon={icon}
+                id={icon_id}
+                className='toolbar__icon'
+                onClick={iconOnClick}
+                {...(icon_color ? { color: icon_color } : null)}
+            />
+        </Popover>
+    );
 };
 
 export default IconButton;

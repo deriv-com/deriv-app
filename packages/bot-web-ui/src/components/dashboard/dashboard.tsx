@@ -10,6 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
+import { DASHBOARD_TABS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -109,11 +110,12 @@ const Dashboard = ({
             setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
     });
-    const token = false;
     let storage = '';
     if (localStorage?.dbot_settings !== undefined) {
         storage = JSON.parse(localStorage?.dbot_settings);
     }
+
+    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
 
     const checkToken = () => {
         return (active_tab === 0 && !storage.onboard_tour_token) || (active_tab === 1 && !storage.bot_builder_token);
@@ -141,7 +143,13 @@ const Dashboard = ({
                             }}
                         />
                     )}
-                    <Tabs active_index={active_tab} className='dashboard__tabs' onTabItemClick={setActiveTab} top>
+                    <Tabs
+                        active_index={active_tab}
+                        className='dashboard__tabs'
+                        onTabItemChange={onEntered}
+                        onTabItemClick={setActiveTab}
+                        top
+                    >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponent />
                         </div>
@@ -154,8 +162,7 @@ const Dashboard = ({
                         >
                             <div
                                 className={classNames('quick-strategy', {
-                                    'quick-strategy__notifications-container--open': is_drawer_open,
-                                    'quick-strategy__notifications-container--closed': !is_drawer_open,
+                                    'quick-strategy--open': is_drawer_open,
                                 })}
                             >
                                 <QuickStrategy />
@@ -176,15 +183,7 @@ const Dashboard = ({
                 <div className='dashboard__run-strategy-wrapper'>
                     {!(is_mobile && active_tab === 2) && <RunStrategy />}
 
-                    {/*
-                        TODO: need to add named tab index such as 'dashboard', 'charts' etc
-                        instead of using default index 0, 1, 2
-                        
-                        1. Bot-Builder
-                        2. Quick Strategy
-                        3. Charts
-                    */}
-                    {[1, 2, 3].includes(active_tab) && <RunPanel />}
+                    {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

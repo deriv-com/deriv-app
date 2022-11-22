@@ -19,11 +19,13 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import RootStore from '../Stores/index';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
     has_previous_button?: boolean;
     is_loading: boolean;
+    context: RootStore;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
     onCancel: () => void;
@@ -36,6 +38,7 @@ type TCFDPersonalDetailsFormProps = {
 
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
+    context: RootStore;
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
@@ -126,6 +129,7 @@ export const InputField = ({ maxLength, name, optional = false, ...props }: TCFD
 
 const validatePersonalDetails = ({
     values,
+    context,
     residence_list,
     account_opening_reason,
     is_tin_required,
@@ -181,7 +185,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = ({
     place_of_birth_text,
 }) => {
     let citizen, tax_residence, place_of_birth;
-    residence_list.forEach((item: ResidenceList[0]) => {
+    residence_list?.forEach((item: ResidenceList[0]) => {
         if (item.text === citizen_text) {
             citizen = item;
         }
@@ -220,6 +224,7 @@ const CFDPersonalDetailsForm = ({
     residence_list,
     onCancel,
     onSave,
+    context,
     onSubmit,
     value,
     index,
@@ -247,6 +252,7 @@ const CFDPersonalDetailsForm = ({
             validate={values =>
                 validatePersonalDetails({
                     values,
+                    context,
                     residence_list,
                     account_opening_reason,
                     is_tin_required,
@@ -498,6 +504,7 @@ const CFDPersonalDetailsForm = ({
                                         is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
+                                        context={context}
                                         onCancel={() => handleCancel(values)}
                                         has_cancel={has_previous_button}
                                     />

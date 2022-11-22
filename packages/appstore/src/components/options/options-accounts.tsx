@@ -257,9 +257,6 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                 />
                             </div>
                         )}
-                        {!has_any_real_account && (
-                            <span className='options-accounts-container__appLauncher--account--divider' />
-                        )}
                     </React.Fragment>
                 ) : (
                     <Loading
@@ -321,7 +318,14 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                     ))}
                 </MobileDialog>
             </div>
-            <div className='options-accounts-container__platformLauncher'>
+            {!has_any_real_account && props.accountType === 'real' && (
+                <hr className='options-accounts-container__divider' />
+            )}
+            <div
+                className={`options-accounts-container__platformLauncher${
+                    has_any_real_account || props.accountType === 'demo' ? '' : '--applauncher'
+                }`}
+            >
                 {props.platformlauncherprops.map((item, index) => {
                     return (
                         <div className='options-accounts-container__platformLauncher--item' key={item.app_title}>

@@ -68,11 +68,11 @@
         }
     }
 
-    &__platformLauncher {
+    &__platformLauncher,
+    &__platformLauncher--applauncher {
         width: 100%;
         display: flex;
         flex-direction: row;
-        background: var(--general-section-5);
         border-radius: 0rem 0.6rem 0.6rem;
         padding: 1.6rem 2.4rem;
         overflow-x: auto;
@@ -96,5 +96,15 @@
             flex-direction: column;
             padding: 1.6rem 0;
         }
+    }
+    &__platformLauncher {
+        background: var(--general-section-5);
+    }
+    &__divider {
+        margin: 1.1rem 0;
+        height: 0.2rem;
+        width: 100%;
+        border: none;
+        background-color: var(--general-section-1);
     }
 }

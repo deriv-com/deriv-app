@@ -14,12 +14,12 @@ import Icon from '../icon/icon';
 
 type TMobileDrawer = {
     className: string;
-    id: string;
+    id?: string;
     height: string;
     width: string;
     alignment: 'left' | 'right';
     is_open: boolean;
-    title: string | boolean;
+    title: string;
     toggle: () => void;
     livechat: React.ReactElement;
 };

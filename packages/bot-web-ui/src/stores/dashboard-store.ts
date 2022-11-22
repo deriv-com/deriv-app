@@ -17,6 +17,8 @@ export interface IDashboardStore {
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
     is_tour_ended: boolean;
+    has_builder_token: string | number;
+    has_onboarding_token: string | number;
     onCloseDialog: () => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     setActiveTab: (active_tab: number) => void;
@@ -45,6 +47,9 @@ export default class DashboardStore implements IDashboardStore {
             has_onboard_tour_started: observable,
             is_preview_on_popup: observable,
             has_bot_builder_tour_started: observable,
+            has_builder_token: observable,
+            has_onboarding_token: observable,
+
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,
@@ -57,6 +62,8 @@ export default class DashboardStore implements IDashboardStore {
             setFAQSearchValue: action.bound,
             showVideoDialog: action.bound,
             setInfoPanelVisibility: action.bound,
+            setBotBuilderTokenCheck: action.bound,
+            setOnBoardingTokenCheck: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -78,14 +85,24 @@ export default class DashboardStore implements IDashboardStore {
     has_file_loaded = false;
     is_info_panel_visible = true;
     has_tour_started = false;
-    is_tour_dialog_visible = true;
+    is_tour_dialog_visible = false;
     has_onboard_tour_started = false;
     is_preview_on_popup = false;
     has_bot_builder_tour_started = false;
     is_tour_ended = false;
+    has_builder_token = '';
+    has_onboarding_token = '';
 
     setIsTourEnded = (is_tour_ended: boolean): void => {
         this.is_tour_ended = is_tour_ended;
+    };
+
+    setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
+        this.has_builder_token = has_builder_token;
+    };
+
+    setOnBoardingTokenCheck = (has_onboarding_token: string | number): void => {
+        this.has_onboarding_token = has_onboarding_token;
     };
 
     setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {

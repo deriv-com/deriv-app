@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import classNames from 'classnames';
-import { tour_type, getTourSettings, setTourSettings } from './joyride-config';
+import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 
 type TourTriggrerDialog = {
     active_tab: number;
@@ -28,25 +28,37 @@ const TourTriggrerDialog = ({
     setIsTourEnded,
 }: TourTriggrerDialog) => {
     const toggleTour = (value: boolean, type: string) => {
-        if (active_tab === 0) {
-            setTourActive(value);
-            setOnBoardTourRunState(value);
-        } else {
-            setBotBuilderTourState(value);
+        if (tour_type.key === 'onboard_tour_') {
+            if (type === 'onConfirm') {
+                if (active_tab === 0) {
+                    setTourActive(value);
+                    setOnBoardTourRunState(value);
+                    setTourDialogVisibility(false);
+                } else {
+                    setBotBuilderTourState(value);
+                    setTourDialogVisibility(false);
+                }
+                setIsTourEnded(value);
+            } else {
+                setTourSettings(new Date().getTime(), 'onboard_tour_token');
+                setTourDialogVisibility(false);
+            }
+        } else if (tour_type.key === 'bot_builder_') {
+            if (type === 'onConfirm') {
+                if (active_tab === 0) {
+                    setTourActive(value);
+                    setOnBoardTourRunState(value);
+                    setTourDialogVisibility(false);
+                } else {
+                    setBotBuilderTourState(value);
+                    setTourDialogVisibility(false);
+                }
+                setIsTourEnded(value);
+            } else {
+                setTourSettings(new Date().getTime(), 'bot_builder_token');
+                setTourDialogVisibility(false);
+            }
         }
-        if (is_tour_ended) {
-            setIsTourEnded(false);
-        }
-        setTourDialogVisibility(value);
-        if (type === 'onConfirm') {
-            setTourDialogVisibility(!value);
-        }
-        if (active_tab === 1 && tour_type.key === 'bot_builder_') {
-            if (!getTourSettings(`${tour_type.key}token`))
-                setTourSettings(new Date().getTime(), `${tour_type.key}token`);
-        }
-
-        if (!getTourSettings(`${tour_type.key}token`)) localStorage.removeItem('dbot_settings');
     };
 
     const getTourContent = () => {
@@ -141,7 +153,10 @@ const TourTriggrerDialog = ({
                             : localize('OK')
                         : localize('Start')
                 }
-                onConfirm={() => toggleTour(true, 'onConfirm')}
+                onConfirm={() => {
+                    const status = tour_status_ended.key === 'finished';
+                    toggleTour(status ? false : !is_tour_ended, 'onConfirm');
+                }}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {
                     'onboarding-tour-guide': active_tab === 0,

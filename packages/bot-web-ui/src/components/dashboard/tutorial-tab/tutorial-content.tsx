@@ -97,7 +97,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    'For more info, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/">check out this blog post</a> on the basics of building a trading bot.'
+                    'For more info, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on the basics of building a trading bot.'
                 ),
             },
         ],
@@ -347,7 +347,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    'Yes, you can. However, there are limits on your account, such as maximum number of open positions and maximum aggregate payouts on open positions. So, just keep these limits in mind when opening multiple positions. You can find more info about these limits at <a href="https://app.deriv.com/account/account-limits">Settings > Account limits</a>.'
+                    'Yes, you can. However, there are limits on your account, such as maximum number of open positions and maximum aggregate payouts on open positions. So, just keep these limits in mind when opening multiple positions. You can find more info about these limits at <a href="https://app.deriv.com/account/account-limits" target="_blank">Settings > Account limits</a>.'
                 ),
             },
         ],
@@ -378,7 +378,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    'We offer our services in all countries, except for the ones <a href="https://deriv.com/tnc/general-terms.pdf">mentioned in our terms and conditions.</a>'
+                    'We offer our services in all countries, except for the ones <a href="https://deriv.com/tnc/general-terms.pdf" target="_blank">mentioned in our terms and conditions.</a>'
                 ),
             },
         ],
@@ -409,7 +409,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s">Watch this video</a> to learn how to build a trading bot on DBot. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/">check out this blog post</a> on building a trading bot.'
+                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" target="_blank">Watch this video</a> to learn how to build a trading bot on DBot. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

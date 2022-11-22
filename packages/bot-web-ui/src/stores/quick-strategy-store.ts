@@ -388,21 +388,7 @@ export default class QuickStrategyStore {
                 trade_type_category[1]
             );
 
-            // TODO: Temporary filtering of barrier + prediction types. Should later
-            // render more inputs for these types. We should only filter out trade type
-            // categories which only feature prediction/barrier trade types. e.g.
-            // in Digits category, users can still purchase Even/Odd types.
-            let hidden_categories = 0;
-
-            for (let j = 0; j < trade_types.length; j++) {
-                const trade_type = trade_types[j];
-                const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-                const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
-
-                if (has_barrier || has_prediction) {
-                    hidden_categories++;
-                }
-            }
+            const hidden_categories = this.getHiddenCategories(trade_types);
 
             if (hidden_categories < trade_types.length) {
                 filtered_trade_type_categories.push(trade_type_category);
@@ -419,21 +405,7 @@ export default class QuickStrategyStore {
                 trade_type_category[1]
             );
 
-            trade_types.forEach((trade_type: TTradeTypeContractsFor) => {
-                const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-                const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
-                const is_muliplier = ['multiplier'].includes(trade_type.value);
-
-                // TODO: Render extra inputs for barrier + prediction and multiplier types.
-                if (!has_barrier && !has_prediction && !is_muliplier) {
-                    trade_type_options.push({
-                        text: trade_type.name,
-                        value: trade_type.value,
-                        group: trade_type_category[0],
-                        icon: trade_type.icon,
-                    });
-                }
-            });
+            trade_type_options.push(...this.getTradeTypeOptions(trade_types, trade_type_category));
         }
 
         this.setTradeTypeDropdown(trade_type_options);
@@ -595,5 +567,45 @@ export default class QuickStrategyStore {
 
     getQuickStrategyFields = (): void => {
         return getSetting('quick_strategy');
+    };
+
+    getHiddenCategories = (trade_types: Array<TTradeTypeContractsFor>) => {
+        // TODO: Temporary filtering of barrier + prediction types. Should later
+        // render more inputs for these types. We should only filter out trade type
+        // categories which only feature prediction/barrier trade types. e.g.
+        // in Digits category, users can still purchase Even/Odd types.
+        let hidden_categories = 0;
+
+        for (let j = 0; j < trade_types.length; j++) {
+            const trade_type = trade_types[j];
+            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+
+            if (has_barrier || has_prediction) {
+                hidden_categories++;
+            }
+        }
+
+        return hidden_categories;
+    };
+
+    getTradeTypeOptions = (trade_types: Array<TTradeTypeContractsFor>, trade_type_category: Array<string>) => {
+        const trade_type_options: TTradeTypeDropdown = [];
+        trade_types.forEach((trade_type: TTradeTypeContractsFor) => {
+            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const is_muliplier = ['multiplier'].includes(trade_type.value);
+
+            // TODO: Render extra inputs for barrier + prediction and multiplier types.
+            if (!has_barrier && !has_prediction && !is_muliplier) {
+                trade_type_options.push({
+                    text: trade_type.name,
+                    value: trade_type.value,
+                    group: trade_type_category[0],
+                    icon: trade_type.icon,
+                });
+            }
+        });
+        return trade_type_options;
     };
 }

@@ -4,21 +4,22 @@ import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
+import DashboardComponent from './dashboard-component';
+import RunStrategy from './dashboard-component/run-strategy';
+import RunPanel from '../run-panel';
+import QuickStrategy from './quick-strategy';
+import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
     handleJoyrideCallback,
     getTourSettings,
     setTourType,
     tour_type,
+    setTourSettings,
     tour_status_ended,
 } from './joyride-config';
-import DashboardComponent from './dashboard-component';
-import RunStrategy from './dashboard-component/run-strategy';
-import RunPanel from '../run-panel';
-import QuickStrategy from './quick-strategy';
-import Tutorial from './tutorial-tab';
 import TourTriggrerDialog from './tour-trigger-dialog';
 
 type TDashboard = {
@@ -37,6 +38,8 @@ type TDashboard = {
     setTourDialogVisibility: (param: boolean) => void;
     setIsTourEnded: (param: boolean) => void;
     toggleStrategyModal: () => void;
+    setBotBuilderTokenCheck: (param: string | number) => void;
+    setOnBoardingTokenCheck: (param: string | number) => void;
 };
 
 const Dashboard = ({
@@ -45,20 +48,19 @@ const Dashboard = ({
     has_file_loaded,
     has_onboard_tour_started,
     is_drawer_open,
-    is_tour_dialog_visible,
     onEntered,
     setActiveTab,
     setTourActive,
     setOnBoardTourRunState,
+    setBotBuilderTokenCheck,
     setBotBuilderTourState,
     setTourDialogVisibility,
     setIsTourEnded,
     toggleStrategyModal,
+    setOnBoardingTokenCheck,
 }: TDashboard) => {
-    const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
-        setTourRun(true);
         toggleStrategyModal();
     };
 
@@ -66,11 +68,8 @@ const Dashboard = ({
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
             const { action } = tour_status;
-            let actions = ['skip', 'close'];
+            const actions = ['skip', 'close'];
 
-            if (tour_type.key === 'bot_builder_') {
-                actions = ['skip', 'close'];
-            }
             if (actions.includes(action)) {
                 if (tour_type.key === 'bot_builder_') {
                     setBotBuilderTourState(false);
@@ -82,13 +81,22 @@ const Dashboard = ({
         }
     };
     let tour_ended = false;
+
+    let getBotBuilderToken: string | number = '';
+    let getOnboardingToken: string | number = '';
+
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
         }
+        if (active_tab === 0) {
+            getOnboardingToken = getTourSettings('token');
+            setOnBoardingTokenCheck(getOnboardingToken);
+        }
         if (active_tab === 1 && !has_onboard_tour_started) {
             setTourType('bot_builder_');
-            setTourDialogVisibility(true);
+            getBotBuilderToken = getTourSettings('token');
+            setBotBuilderTokenCheck(getBotBuilderToken);
         }
 
         tour_status = getTourSettings('onboard_tour_status');
@@ -96,32 +104,66 @@ const Dashboard = ({
     }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended]);
 
     //TODO: added addeventlistner because the useeffect does not trigger
-    window.addEventListener('storage', () => {
+    const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
             tour_ended = true;
+            if (has_onboard_tour_started) {
+                setActiveTab(0);
+            }
+            if (tour_ended === true) {
+                setTourDialogVisibility(true);
+                setIsTourEnded(true);
+                tour_ended = false;
+                window.removeEventListener('storage', botStorageSetting);
+            }
         }
 
-        if (tour_ended) {
-            setTourDialogVisibility(true);
-            setIsTourEnded(true);
+        getBotBuilderToken = getTourSettings('token');
+        if (active_tab === 1 && !storage.bot_builder_token && !has_onboard_tour_started) {
+            setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
-    });
+    };
+    if (!getBotBuilderToken) {
+        window.addEventListener('storage', botStorageSetting);
+    }
+
+    let storage = '';
+    if (localStorage?.dbot_settings !== undefined) {
+        storage = JSON.parse(localStorage?.dbot_settings);
+    }
+
+    React.useEffect(() => {
+        const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
+        if (active_tab === 0 && !dbot_settings?.onboard_tour_token) {
+            setTourDialogVisibility(true);
+        } else if (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_onboard_tour_started) {
+            setTourDialogVisibility(true);
+        }
+    }, [active_tab]);
 
     return (
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
-                    {active_tab === 0 && <TourTriggrerDialog />}
-                    {active_tab === 1 && !is_tour_dialog_visible && <TourTriggrerDialog />}
+                    <TourTriggrerDialog />
                     {has_tour_started && (
                         <ReactJoyride
                             steps={DBOT_ONBOARDING}
-                            run={is_tour_running}
                             continuous
                             callback={handleJoyrideCallback}
                             spotlightClicks
+                            locale={{ back: 'Previous' }}
+                            styles={{
+                                buttonBack: {
+                                    border: '0.2rem solid var(--text-less-prominent)',
+                                    marginRight: '1rem',
+                                    borderRadius: '0.4rem',
+                                    color: 'var(--general-section-7)',
+                                    padding: '0.6rem',
+                                },
+                            }}
                         />
                     )}
                     <Tabs active_index={active_tab} className='dashboard__tabs' onTabItemClick={setActiveTab} top>
@@ -190,4 +232,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setIsTourEnded: dashboard.setIsTourEnded,
+    setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
+    setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
 }))(Dashboard);

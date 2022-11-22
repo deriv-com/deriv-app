@@ -158,7 +158,7 @@ const CFDResetPasswordModal = ({
             title={
                 platform === CFD_PLATFORMS.DXTRADE
                     ? localize('Reset Deriv X investor password')
-                    : localize('Reset DMT5 investor password')
+                    : localize('Reset Deriv MT5 investor password')
             }
             onMount={() => redirectToLogin(is_logged_in, getLanguage(), true)}
             should_header_stick_body={false}

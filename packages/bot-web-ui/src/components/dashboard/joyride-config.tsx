@@ -1,9 +1,9 @@
 import React from 'react';
+import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
-import { CallBackProps } from 'react-joyride';
-import { Text } from '@deriv/components';
 import { getImageLocation } from '../../public-path';
 
 type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
@@ -66,7 +66,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     if (status === 'finished') {
         tour_status_ended.key = status;
     }
-    if (current_target && current_target !== index) {
+    if (current_target !== index) {
         tour = {};
         tour.status = status;
         tour.action = action;
@@ -75,7 +75,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     setTourSettings(tour, 'tour');
     //added trigger to create new listner on local storage
     window.dispatchEvent(new Event('storage'));
-    if (!getTourSettings(`${tour_type.key}token`)) setTourSettings(new Date().getTime(), `${tour_type.key}token`);
+    setTourSettings(new Date().getTime(), `${tour_type.key}token`);
 };
 
 const joyride_props: TJoyrideConfig = {

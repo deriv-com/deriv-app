@@ -4,6 +4,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { removeKeyValue } from '../../../utils/settings';
 
 type TGuideContent = {
     dialog_options: { [key: string]: string };
@@ -27,10 +28,24 @@ const GuideContent = ({
     setTourDialogVisibility,
 }: TGuideContent) => {
     const triggerTour = (type: string) => {
+        const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
-            setActiveTab(0);
+            if (storage.onboard_tour_token) {
+                const onBoardingToken = storage.onboard_tour_token;
+                removeKeyValue('onboard_tour_token');
+                removeKeyValue('onboard_tour_status');
+                removeKeyValue('bot_builder_status');
+            }
             setTourDialogVisibility(true);
+            setActiveTab(0);
         } else {
+            if (storage.bot_builder_token) {
+                const builderToken = storage.bot_builder_token;
+                removeKeyValue('bot_builder_token');
+                removeKeyValue('bot_builder_status');
+                removeKeyValue('onboard_tour_status');
+            }
+            setTourDialogVisibility(true);
             setActiveTab(1);
         }
     };

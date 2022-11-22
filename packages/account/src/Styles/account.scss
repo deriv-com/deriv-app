@@ -2820,7 +2820,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
                 @include mobile {
                     flex-direction: column;
-                    padding-bottom: 4rem;
+                    padding-bottom: 1rem;
                 }
 
                 &-cardnumber {

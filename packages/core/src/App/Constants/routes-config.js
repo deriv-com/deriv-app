@@ -130,7 +130,7 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
                         },
-                        ...(is_pre_appstore || isMobile()
+                        ...(is_pre_appstore && isMobile()
                             ? [
                                   {
                                       path: routes.languages,

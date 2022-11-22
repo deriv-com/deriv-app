@@ -71,4 +71,4 @@ const IntroducingFloatingRatesModal = () => {
     );
 };
 
-export default React.memo(observer(IntroducingFloatingRatesModal));
+export default observer(IntroducingFloatingRatesModal);

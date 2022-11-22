@@ -17,7 +17,7 @@ type TRecentComponent = {
     setDashboardStrategies: (strategies: []) => void;
 };
 
-const tab_title = ['Name', 'Last modified', 'Status'];
+const HEADERS = ['Name', 'Last modified', 'Status'];
 
 const RecentComponent = ({
     toggleStrategies,
@@ -32,35 +32,33 @@ const RecentComponent = ({
         }, 200);
     }, [strategy_save_type]);
 
+    if (!dashboard_strategies?.length) return null;
+
     return (
-        <>
-            {dashboard_strategies && dashboard_strategies.length && (
-                <div className='load-strategy__container load-strategy__container--has-footer'>
-                    <div className='load-strategy__recent'>
-                        <div className='load-strategy__recent__files'>
-                            <div className='load-strategy__title'>
-                                <Localize i18n_default_text='Your Bots' />
-                            </div>
-                            <div className='load-strategy__recent__files__list'>
-                                <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>
-                                    {tab_title.map(tab_name => {
-                                        return (
-                                            <Text weight='bold' key={tab_name}>
-                                                {tab_name}
-                                            </Text>
-                                        );
-                                    })}
-                                </div>
-                                {dashboard_strategies.map((workspace, index) => {
-                                    return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
-                                })}
-                            </div>
-                            <DeleteDialog setStrategies={setDashboardStrategies} />
-                        </div>
+        <div className='load-strategy__container load-strategy__container--has-footer'>
+            <div className='load-strategy__recent'>
+                <div className='load-strategy__recent__files'>
+                    <div className='load-strategy__title'>
+                        <Localize i18n_default_text='Your Bots' />
                     </div>
+                    <div className='load-strategy__recent__files__list'>
+                        <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>
+                            {HEADERS.map(tab_name => {
+                                return (
+                                    <Text weight='bold' key={tab_name}>
+                                        {tab_name}
+                                    </Text>
+                                );
+                            })}
+                        </div>
+                        {dashboard_strategies.map((workspace, index) => {
+                            return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
+                        })}
+                    </div>
+                    <DeleteDialog setStrategies={setDashboardStrategies} />
                 </div>
-            )}
-        </>
+            </div>
+        </div>
     );
 };
 

@@ -32,7 +32,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
-                <div>
+                <div className='account-transfer-form__icon'>
                     <Icon
                         icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
                         className='account-transfer-form__currency-icon'
@@ -46,9 +46,11 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
                         ? account.text
                         : getCurrencyName(account.currency)}
                 </Text>
-                <Text size='xxxs' align='left' color='less-prominent'>
-                    {account.value}
-                </Text>
+                {!account.is_derivez && (
+                    <Text size='xxxs' align='left' color='less-prominent'>
+                        {account.value}
+                    </Text>
+                )}
             </div>
 
             <span className='account-transfer-form__balance'>

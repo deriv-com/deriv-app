@@ -537,6 +537,9 @@ const PersonalDetails = ({
                                                         </div>
                                                     </div>
                                                 )}
+                                                {warning_items?.tax_identification_number && (
+                                                    <div className='details-form__tin-warn-divider' />
+                                                )}
                                                 {'employment_status' in props.value && (
                                                     <fieldset
                                                         className={classNames('account-form__fieldset', 'emp-status')}
@@ -574,9 +577,6 @@ const PersonalDetails = ({
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
-                                                )}
-                                                {warning_items?.tax_identification_number && (
-                                                    <div className='details-form__tin-warn-divider' />
                                                 )}
                                                 {'tax_identification_confirm' in props.value && (
                                                     <Checkbox

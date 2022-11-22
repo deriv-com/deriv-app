@@ -156,6 +156,7 @@ const TourTriggrerDialog = ({
                 onConfirm={() => {
                     const status = tour_status_ended.key === 'finished';
                     toggleTour(status ? false : !is_tour_ended, 'onConfirm');
+                    return status ? (tour_status_ended.key = '') : null;
                 }}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {

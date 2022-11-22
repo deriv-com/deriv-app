@@ -91,6 +91,7 @@ const Dashboard = ({
             onEntered();
         }
         if (active_tab === 0) {
+            setTourType('onboard_tour_');
             getOnboardingToken = getTourSettings('token');
             setOnBoardingTokenCheck(getOnboardingToken);
         }
@@ -99,7 +100,6 @@ const Dashboard = ({
             getBotBuilderToken = getTourSettings('token');
             setBotBuilderTokenCheck(getBotBuilderToken);
         }
-
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
     }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended]);
@@ -117,8 +117,8 @@ const Dashboard = ({
                 setTourDialogVisibility(true);
                 setIsTourEnded(true);
                 tour_ended = false;
-                window.removeEventListener('storage', botStorageSetting);
             }
+            window.removeEventListener('storage', botStorageSetting);
         }
 
         getBotBuilderToken = getTourSettings('token');
@@ -127,6 +127,7 @@ const Dashboard = ({
         }
     };
     if (!getBotBuilderToken) {
+        setIsTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
 

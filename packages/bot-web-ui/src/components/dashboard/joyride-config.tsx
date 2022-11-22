@@ -56,6 +56,7 @@ export const setTourType = (param: string) => {
 
 export const tour_status_ended = {
     key: '',
+    toggle: '',
     type: `${tour_type.key}status`,
 };
 
@@ -65,6 +66,9 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
     if (status === 'finished') {
         tour_status_ended.key = status;
+    }
+    if (action === 'close') {
+        tour_status_ended.toggle = action;
     }
     if (current_target !== index) {
         tour = {};
@@ -126,7 +130,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={2}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -139,7 +143,7 @@ export const DBOT_ONBOARDING = [
                 content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={3}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -154,7 +158,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={4}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,

@@ -216,10 +216,19 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
 
+            .emp-status {
+                .dc-select-native__wrapper {
+                    margin-top: 3rem;
+                }
+            }
+
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
                     text-transform: unset;
+                }
+                .dc-dropdown__display {
+                    margin-top: 3rem;
                 }
             }
 
@@ -577,6 +586,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__personal-details {
             &--dashboard {
+                // buto
                 & .account-form__fieldset {
                     margin-bottom: 3.2rem;
                     @include mobile {

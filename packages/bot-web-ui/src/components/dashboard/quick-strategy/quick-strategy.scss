@@ -13,17 +13,8 @@
     @include position-center;
     width: 100%;
 
-    &__notifications-container {
-        &--open {
-            @include position-center;
-            @include desktop {
-                width: calc(100% - 36.6rem); //35rem right bar + 1.6rem left padding of the right bar
-            }
-        }
-
-        &--closed {
-            @include position-center;
-        }
+    &--open {
+        width: calc(100% - 36.6rem); //35rem right bar + 1.6rem left padding of the right bar
     }
 
     &__container {

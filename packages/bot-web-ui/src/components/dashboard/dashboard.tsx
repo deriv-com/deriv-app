@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
@@ -22,40 +22,60 @@ import {
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
 
+type TDialogOptions = {
+    title: string;
+    message: string;
+    cancel_button_text?: string;
+    ok_button_text?: string;
+};
+
 type TDashboard = {
     active_tab: number;
-    is_drawer_open: boolean;
-    setActiveTab: (active_tab: number) => void;
-    onEntered: () => void;
+    dialog_options: TDialogOptions;
+    has_bot_builder_tour_started: boolean;
     has_file_loaded: boolean;
-    has_tour_started: boolean;
     has_onboard_tour_started: boolean;
-    setTourActive: (param: boolean) => void;
+    has_tour_started: boolean;
+    is_dialog_open: boolean;
+    is_drawer_open: boolean;
+    is_tour_dialog_visible: boolean;
+    onCancelButtonClick: () => void;
+    onCloseDialog: () => void;
+    onEntered: () => void;
+    onOkButtonClick: () => void;
+    setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     loadDataStrategy: () => void;
     is_mobile: boolean;
-    setTourDialogVisibility: (param: boolean) => void;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
+    setTourActive: (param: boolean) => void;
+    setTourDialogVisibility: (param: boolean) => void;
+    toggleStrategyModal: () => void;
 };
 
 const Dashboard = ({
     active_tab,
     is_drawer_open,
+    dialog_options,
     has_file_loaded,
     has_tour_started,
     has_onboard_tour_started,
     is_mobile,
-    setActiveTab,
+    is_dialog_open,
+    loadDataStrategy,
+    onCancelButtonClick,
+    onCloseDialog,
     onEntered,
-    setTourActive,
-    setOnBoardTourRunState,
+    onOkButtonClick,
+    setActiveTab,
     setBotBuilderTokenCheck,
     setBotBuilderTourState,
-    loadDataStrategy,
-    setTourDialogVisibility,
     setOnBoardingTokenCheck,
+    setOnBoardTourRunState,
+    setTourActive,
+    setTourDialogVisibility,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -186,23 +206,45 @@ const Dashboard = ({
                     {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
+            <Dialog
+                cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
+                className={'dc-dialog__wrapper--fixed'}
+                confirm_button_text={dialog_options.ok_button_text || localize('OK')}
+                has_close_icon
+                is_mobile_full_width={false}
+                is_visible={is_dialog_open}
+                onCancel={onCancelButtonClick}
+                onClose={onCloseDialog}
+                onConfirm={onOkButtonClick || onCloseDialog}
+                portal_element_id='modal_root'
+                title={dialog_options.title}
+            >
+                {dialog_options.message}
+            </Dialog>
         </React.Fragment>
     );
 };
 
 export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
     active_tab: dashboard.active_tab,
-    is_drawer_open: run_panel.is_drawer_open,
-    setActiveTab: dashboard.setActiveTab,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-    onEntered: load_modal.onEntered,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
+    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
+    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
+    setActiveTab: dashboard.setActiveTab,
     setTourActive: dashboard.setTourActive,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    is_mobile: ui.is_mobile,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
+    is_drawer_open: run_panel.is_drawer_open,
+    dialog_options: run_panel.dialog_options,
+    is_dialog_open: run_panel.is_dialog_open,
+    onCancelButtonClick: run_panel.onCancelButtonClick,
+    onCloseDialog: run_panel.onCloseDialog,
+    onOkButtonClick: run_panel.onOkButtonClick,
+    onEntered: load_modal.onEntered,
+    is_mobile: ui.is_mobile,
 }))(Dashboard);

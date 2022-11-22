@@ -43,6 +43,7 @@ const TourTriggrerDialog = ({
                 setTourSettings(new Date().getTime(), 'onboard_tour_token');
                 setTourDialogVisibility(false);
             }
+            tour_type.key = 'onboard_tour_';
         } else if (tour_type.key === 'bot_builder_') {
             if (type === 'onConfirm') {
                 if (active_tab === 0) {
@@ -58,6 +59,7 @@ const TourTriggrerDialog = ({
                 setTourSettings(new Date().getTime(), 'bot_builder_token');
                 setTourDialogVisibility(false);
             }
+            tour_type.key = 'bot_builder_';
         }
     };
 

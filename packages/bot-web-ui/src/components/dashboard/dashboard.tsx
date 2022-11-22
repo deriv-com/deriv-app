@@ -102,7 +102,7 @@ const Dashboard = ({
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended]);
+    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended, tour_status_ended]);
 
     //TODO: added addeventlistner because the useeffect does not trigger
     const botStorageSetting = () => {
@@ -110,11 +110,13 @@ const Dashboard = ({
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
             tour_ended = true;
-            if (has_onboard_tour_started) {
-                setActiveTab(0);
-            }
             if (tour_ended === true) {
-                setTourDialogVisibility(true);
+                if (tour_type.key === 'onboard_tour_') {
+                    setActiveTab(0);
+                    setTourDialogVisibility(true);
+                } else {
+                    setTourDialogVisibility(true);
+                }
                 setIsTourEnded(true);
                 tour_ended = false;
             }
@@ -145,7 +147,7 @@ const Dashboard = ({
         }
     }, [active_tab]);
 
-    const { BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB } = tabs_array;
+    const { BOT_BUILDER_TAB, CHART_TAB, QUICK_STRATEGY_TAB } = tabs_array;
 
     return (
         <React.Fragment>
@@ -219,7 +221,7 @@ const Dashboard = ({
                         2. Quick Strategy
                         3. Charts
                     */}
-                    {[BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB].includes(active_tab) && <RunPanel />}
+                    {[BOT_BUILDER_TAB, CHART_TAB, QUICK_STRATEGY_TAB].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

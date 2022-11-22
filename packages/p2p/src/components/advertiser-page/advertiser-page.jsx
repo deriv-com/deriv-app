@@ -27,6 +27,7 @@ const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
     const {
         basic_verification,

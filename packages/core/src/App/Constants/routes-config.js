@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
+import { makeLazyLoader, routes, moduleLoader, isMobile } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
@@ -130,7 +130,7 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
                         },
-                        ...(is_pre_appstore
+                        ...(is_pre_appstore || isMobile()
                             ? [
                                   {
                                       path: routes.languages,

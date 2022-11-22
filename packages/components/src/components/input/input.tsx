@@ -68,7 +68,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             trailing_icon,
             warn,
             data_testId,
-            maxLength = 30,
+            maxLength,
             ...props
         },
         ref?

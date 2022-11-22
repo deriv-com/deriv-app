@@ -51,8 +51,8 @@ type TDashboard = {
     setOnBoardTourRunState: (param: boolean) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
-    setIsTourEnded: (param: boolean) => void;
     toggleStrategyModal: () => void;
+    setIsTourEnded: (param: boolean) => void;
 };
 
 const Dashboard = ({
@@ -127,17 +127,14 @@ const Dashboard = ({
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
-            tour_ended.current = true;
-            if (tour_ended.current === true) {
-                if (tour_type.key === 'onboard_tour_') {
-                    setActiveTab(0);
-                    setTourDialogVisibility(true);
-                } else {
-                    setTourDialogVisibility(true);
-                }
-                setIsTourEnded(true);
-                tour_ended.current = false;
+            if (tour_type.key === 'onboard_tour_') {
+                setActiveTab(0);
+                setTourDialogVisibility(true);
+            } else {
+                setTourDialogVisibility(true);
             }
+            setIsTourEnded(true);
+            tour_ended.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
 

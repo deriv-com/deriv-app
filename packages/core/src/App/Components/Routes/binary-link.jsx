@@ -10,12 +10,12 @@ import getRoutesConfig from '../../Constants/routes-config';
 // TODO: solve circular dependency problem
 // when binary link is imported into components present in routes config
 // or into their descendants
-const BinaryLink = ({ active_class, is_eu_country, to, children, href, has_error, setError, ...props }) => {
+const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }) => {
     const platform_context = React.useContext(PlatformContext);
     const is_appstore = platform_context?.is_appstore;
     const is_pre_appstore = platform_context?.is_pre_appstore;
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore, is_pre_appstore, is_eu_country }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_appstore, is_pre_appstore }));
 
     if (!route && to) {
         throw new Error(`Route not found: ${to}`);
@@ -46,11 +46,9 @@ BinaryLink.propTypes = {
     href: PropTypes.string,
     setError: PropTypes.func,
     to: PropTypes.string,
-    is_eu_country: PropTypes.bool,
 };
 
-export default connect(({ common, client }) => ({
+export default connect(({ common }) => ({
     has_error: common.has_error,
     setError: common.setError,
-    is_eu_country: client.is_eu_country,
 }))(BinaryLink);

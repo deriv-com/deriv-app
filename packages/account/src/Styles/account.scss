@@ -2945,6 +2945,8 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 .stack-top {
     z-index: 12;
+    background-color: var(--overlay-inside-dialog);
+    padding-left: 0.5rem;
 }
 .remove-element {
     display: none;

@@ -52,7 +52,6 @@ export const ProofOfOwnership = ({
                 grouped_payment_method_data={grouped_payment_method_data.groups}
                 updateAccountStatus={updateAccountStatus}
                 refreshNotifications={refreshNotifications}
-                is_dark_mode={is_dark_mode}
                 client_email={client_email}
                 total_documents_required={grouped_payment_method_data.total_documents_required}
             />

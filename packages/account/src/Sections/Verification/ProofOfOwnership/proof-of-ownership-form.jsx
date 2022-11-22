@@ -236,7 +236,6 @@ const ProofOfOwnershipForm = ({
 
 ProofOfOwnershipForm.propTypes = {
     client_email: PropTypes.string,
-    is_dark_mode: PropTypes.bool,
     grouped_payment_method_data: PropTypes.object,
     refreshNotifications: PropTypes.func,
     total_documents_required: PropTypes.number,

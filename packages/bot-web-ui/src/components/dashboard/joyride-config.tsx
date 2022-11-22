@@ -13,6 +13,14 @@ type TStep = {
     content: string[];
 };
 
+type TTourStatus = {
+    key: string;
+    toggle: string;
+    type: string;
+};
+
+type TTourType = Pick<TTourStatus, 'key'>;
+
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
     if (type === `${tour_type.key}token`) {
         return storeSetting(`${tour_type.key}token`, param);
@@ -46,7 +54,7 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
-export const tour_type = {
+export const tour_type: TTourType = {
     key: 'onboard_tour_',
 };
 
@@ -54,7 +62,7 @@ export const setTourType = (param: string) => {
     tour_type.key = param;
 };
 
-export const tour_status_ended = {
+export const tour_status_ended: TTourStatus = {
     key: '',
     toggle: '',
     type: `${tour_type.key}status`,

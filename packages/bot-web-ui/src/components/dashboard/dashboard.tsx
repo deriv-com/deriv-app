@@ -81,7 +81,8 @@ const Dashboard = ({
             }
         }
     };
-    let tour_ended = false;
+
+    const tour_ended = React.useRef(true);
 
     let getBotBuilderToken: string | number = '';
     let getOnboardingToken: string | number = '';
@@ -109,8 +110,8 @@ const Dashboard = ({
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
-            tour_ended = true;
-            if (tour_ended === true) {
+            tour_ended.current = true;
+            if (tour_ended.current === true) {
                 if (tour_type.key === 'onboard_tour_') {
                     setActiveTab(0);
                     setTourDialogVisibility(true);
@@ -118,7 +119,7 @@ const Dashboard = ({
                     setTourDialogVisibility(true);
                 }
                 setIsTourEnded(true);
-                tour_ended = false;
+                tour_ended.current = false;
             }
             window.removeEventListener('storage', botStorageSetting);
         }

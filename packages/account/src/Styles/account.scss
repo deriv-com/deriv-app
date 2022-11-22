@@ -2819,6 +2819,11 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 @include mobile {
+                    .dc-input {
+                        margin-bottom: 1rem;
+                    }
+                }
+                @include mobile {
                     flex-direction: column;
                     padding-bottom: 1rem;
                 }

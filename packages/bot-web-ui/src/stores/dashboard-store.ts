@@ -19,6 +19,7 @@ export interface IDashboardStore {
     is_tour_ended: boolean;
     has_builder_token: string | number;
     has_onboarding_token: string | number;
+    strategy_save_type: string;
     onCloseDialog: () => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     setActiveTab: (active_tab: number) => void;
@@ -42,6 +43,7 @@ export default class DashboardStore implements IDashboardStore {
             has_file_loaded: observable,
             is_info_panel_visible: observable,
             is_tour_ended: observable,
+            strategy_save_type: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
             has_onboard_tour_started: observable,
@@ -49,7 +51,6 @@ export default class DashboardStore implements IDashboardStore {
             has_bot_builder_tour_started: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
-
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,
@@ -92,6 +93,11 @@ export default class DashboardStore implements IDashboardStore {
     is_tour_ended = false;
     has_builder_token = '';
     has_onboarding_token = '';
+    strategy_save_type = 'unsaved';
+
+    setStrategySaveType = (strategy_save_type: string) => {
+        this.strategy_save_type = strategy_save_type;
+    };
 
     setIsTourEnded = (is_tour_ended: boolean): void => {
         this.is_tour_ended = is_tour_ended;
@@ -136,6 +142,12 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        if (active_tab === 1) {
+            const {
+                load_modal: { previewRecentStrategy, selected_strategy_id },
+            } = this.root_store;
+            previewRecentStrategy(selected_strategy_id);
+        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

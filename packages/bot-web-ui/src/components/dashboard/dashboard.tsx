@@ -10,6 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
+import { tabs_array } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -143,6 +144,8 @@ const Dashboard = ({
         }
     }, [active_tab]);
 
+    const { BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB } = tabs_array;
+
     return (
         <React.Fragment>
             <div className='dashboard__main'>
@@ -166,7 +169,13 @@ const Dashboard = ({
                             }}
                         />
                     )}
-                    <Tabs active_index={active_tab} className='dashboard__tabs' onTabItemClick={setActiveTab} top>
+                    <Tabs
+                        active_index={active_tab}
+                        className='dashboard__tabs'
+                        onTabItemChange={onEntered}
+                        onTabItemClick={setActiveTab}
+                        top
+                    >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
                             <DashboardComponent />
                         </div>
@@ -209,7 +218,7 @@ const Dashboard = ({
                         2. Quick Strategy
                         3. Charts
                     */}
-                    {[1, 2, 3].includes(active_tab) && <RunPanel />}
+                    {[BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

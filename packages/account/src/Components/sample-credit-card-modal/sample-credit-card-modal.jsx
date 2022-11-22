@@ -13,7 +13,7 @@ export const SampleCreditCardModal = ({ is_open, onClose }) => {
             toggleModal={onClose}
         >
             <React.Fragment>
-                <Text className='sample_credit_card_modal-text' size='xs'>
+                <Text className='sample-credit-card-modal-text' size='xs'>
                     {localize(
                         'Black out digits 7 to 12 of the card number that’s shown on the front of your debit/credit card.⁤'
                     )}
@@ -21,7 +21,7 @@ export const SampleCreditCardModal = ({ is_open, onClose }) => {
                 <img
                     src={getUrlBase('/public/images/common/sample-credit-card.png')}
                     alt='creditcardsample'
-                    className='sample_credit_card_modal-img'
+                    className='sample-credit-card-modal-img'
                 />
             </React.Fragment>
         </Modal>

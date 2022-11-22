@@ -12,8 +12,8 @@ import {
     Text,
     UILoader,
 } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
@@ -27,6 +27,7 @@ type TMT5TradeModalProps = {
     enableApp: () => void;
     is_eu_user: boolean;
     is_open: boolean;
+    context: RootStore;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -59,7 +60,13 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
                 <Text size='xs'>***************</Text>
             </Popover>
         </div>
-        <Popover alignment='bottom' message={localize('Change Password')} zIndex={9999}>
+        <Popover
+            className='cfd-trade-modal__password-popover'
+            alignment='left'
+            message={localize('Change Password')}
+            relative_render
+            zIndex={9999}
+        >
             <Button
                 className='cfd-trade-modal__password-action'
                 transparent
@@ -104,6 +111,7 @@ const MT5TradeModal = ({
     enableApp,
     is_eu_user,
     is_open,
+    context,
     onPasswordManager,
     toggleModal,
 }: TMT5TradeModalProps) => {

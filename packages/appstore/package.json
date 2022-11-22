@@ -3,13 +3,7 @@
     "version": "0.0.4",
     "description": "Deriv Appstore",
     "main": "dist/appstore/js/index.js",
-    "private": false,
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "dist"
-    ],
+    "private": true,
     "engines": {
         "node": "^16.16.0"
     },
@@ -23,31 +17,43 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(ts|tsx)\""
+        "test:eslint": "eslint \"./src/**/*.?(ts|tsx|js|jsx)\"",
+        "storybook": "start-storybook -p 6006",
+        "storybook:build": "build-storybook --output-dir .out"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Deriv",
+    "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
+        "@deriv/cfd": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/ui": "^0.0.15",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
-        "mobx": "^5.15.7",
-        "mobx-react-lite": "^2.2.2",
+        "mobx": "^6.6.1",
+        "mobx-react-lite": "^3.4.0",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-router": "^5.2.0",
+        "react-joyride": "^2.5.3",
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
         "@deriv/publisher": "^0.0.1-beta4",
+        "@storybook/addon-docs": "^6.5.10",
+        "@storybook/addon-essentials": "^6.5.10",
+        "@storybook/addon-links": "^6.5.10",
+        "@storybook/builder-webpack5": "^6.5.10",
+        "@storybook/manager-webpack5": "^6.5.10",
+        "@storybook/react": "^6.5.10",
+        "@testing-library/react": "^12.0.0",
         "@types/classnames": "^2.2.11",
         "@types/object.fromentries": "^2.0.0",
         "@types/react": "^18.0.7",
@@ -56,6 +62,7 @@
         "babel-core": "^6.26.3",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
+        "copy-webpack-plugin": "^9.0.1",
         "concurrently": "^5.3.0",
         "cross-env": "^5.2.0",
         "css-loader": "^5.0.1",

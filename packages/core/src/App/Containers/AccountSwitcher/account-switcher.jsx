@@ -25,7 +25,6 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
-import { getExchangeRate } from 'Utils/ExchangeCurrencyRate/exchange_currency_rate';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -33,7 +32,7 @@ import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
+        !props.is_virtual || props.should_show_real_accounts_list || props.is_real_tab_enabled ? 0 : 1
     );
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -70,7 +69,7 @@ const AccountSwitcher = props => {
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (currency, setExchangeRate) => {
-            getExchangeRate(currency, account_total_balance_currency).then(res => {
+            props.getExchangeRate(currency, account_total_balance_currency).then(res => {
                 setExchangeRate(res);
             });
         };
@@ -560,7 +559,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_demo_visible}
                         toggleVisibility={() => {
                             toggleVisibility('demo_dmt5');
@@ -774,7 +773,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dmt5');
@@ -1012,6 +1011,7 @@ AccountSwitcher.propTypes = {
     country_standpoint: PropTypes.object,
     dxtrade_accounts_list: PropTypes.array,
     dxtrade_accounts_list_error: PropTypes.string, // is this correct?
+    getExchangeRate: PropTypes.func,
     has_active_real_account: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     has_fiat: PropTypes.bool,
@@ -1071,6 +1071,7 @@ const account_switcher = withRouter(
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
         country_standpoint: client.country_standpoint,
+        getExchangeRate: common.getExchangeRate,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,

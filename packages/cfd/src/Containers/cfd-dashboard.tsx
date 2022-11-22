@@ -13,7 +13,7 @@ import {
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { ResetTradingPasswordModal } from '@deriv/account';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import CFDPersonalDetailsModal from './cfd-personal-details-modal';
@@ -28,8 +28,9 @@ import CFDServerErrorDialog from './cfd-server-error-dialog';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
+import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
@@ -172,6 +173,8 @@ export type TCFDDashboardProps = RouteComponentProps & {
         getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
     ) => void;
     openDerivRealAccountNeededModal: () => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
+    refreshNotifications: () => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -199,6 +202,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
         openResetPassword();
+        props.refreshNotifications();
         props.onMount();
         return () => {
             props.onUnmount();
@@ -392,6 +396,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen,
     } = props;
 
     const should_show_missing_real_account =
@@ -482,6 +487,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Real account')} hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
@@ -522,11 +528,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 residence={residence}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
+                                                setIsAcuityModalOpen={setIsAcuityModalOpen}
                                             />
                                         </React.Fragment>
                                     </div>
                                 )}
                                 {is_demo_enabled && (
+                                    // eslint-disable-next-line react/no-unknown-property
                                     <div label={localize('Demo account')} hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
@@ -579,6 +587,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 openPasswordModal={openRealPasswordModal}
                                 is_real_enabled={is_real_enabled}
                             />
+                            <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
                                 current_list={current_list}
@@ -664,7 +673,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 };
 
 export default withRouter(
-    connect(({ client, modules, ui }: RootStore) => ({
+    connect(({ client, modules, notifications, ui }: RootStore) => ({
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
@@ -712,6 +721,7 @@ export default withRouter(
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.cfd.onMount,
         onUnmount: modules.cfd.onUnmount,
+        refreshNotifications: notifications.refreshNotifications,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
@@ -724,5 +734,6 @@ export default withRouter(
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
         mt5_status_server: client.website_status.mt5_status,
         openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
+        setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     }))(CFDDashboard)
 );

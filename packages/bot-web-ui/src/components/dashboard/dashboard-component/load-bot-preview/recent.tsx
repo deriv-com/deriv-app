@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -20,7 +21,7 @@ const tab_title = ['Name', 'Last modified', 'Status'];
 
 const RecentComponent = ({
     toggleStrategies,
-    dashboard_strategies = [],
+    dashboard_strategies,
     setDashboardStrategies,
     strategy_save_type,
 }: TRecentComponent) => {
@@ -33,7 +34,7 @@ const RecentComponent = ({
 
     return (
         <>
-            {dashboard_strategies.length && (
+            {dashboard_strategies && dashboard_strategies.length && (
                 <div className='load-strategy__container load-strategy__container--has-footer'>
                     <div className='load-strategy__recent'>
                         <div className='load-strategy__recent__files'>

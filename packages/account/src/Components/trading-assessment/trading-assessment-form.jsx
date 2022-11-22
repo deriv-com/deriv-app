@@ -23,13 +23,19 @@ const TradingAssessmentForm = ({
     });
     const [form_data, setFormData] = React.useState({});
 
+    const stored_items = parseInt(localStorage.getItem('current_question_index'));
     const last_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
-        setCurrentQuestionDetails(prevState => ({
-            ...prevState,
-            current_question: assessment_questions[prevState.current_question_index],
-        }));
+        setCurrentQuestionDetails(prevState => {
+            return {
+                ...prevState,
+                current_question_index: stored_items || 0,
+                current_question: stored_items
+                    ? assessment_questions[stored_items]
+                    : assessment_questions[prevState.current_question_index],
+            };
+        });
         setFormData(form_value);
     }, []);
 
@@ -43,10 +49,15 @@ const TradingAssessmentForm = ({
             onSubmit(form_data, null, true);
         } else {
             const next_question = current_question_details.current_question_index + 1;
+
             if (next_question < assessment_questions.length) {
-                setCurrentQuestionDetails({
-                    current_question_index: next_question,
-                    current_question: assessment_questions[next_question],
+                setCurrentQuestionDetails(prev_state_question => {
+                    const next_state_question_index = prev_state_question.current_question_index + 1;
+                    localStorage.setItem('current_question_index', next_state_question_index);
+                    return {
+                        current_question_index: next_state_question_index,
+                        current_question: assessment_questions[next_state_question_index],
+                    };
                 });
             }
         }
@@ -55,9 +66,13 @@ const TradingAssessmentForm = ({
     const displayPreviousPage = () => {
         const prev_question = current_question_details.current_question_index - 1;
         if (prev_question >= 0) {
-            setCurrentQuestionDetails({
-                current_question_index: prev_question,
-                current_question: assessment_questions[prev_question],
+            setCurrentQuestionDetails(prev_state_question => {
+                const prev_state_question_index = prev_state_question.current_question_index - 1;
+                localStorage.setItem('current_question_index', prev_state_question_index);
+                return {
+                    current_question_index: prev_state_question_index,
+                    current_question: assessment_questions[prev_state_question_index],
+                };
             });
         }
     };

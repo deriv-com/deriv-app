@@ -283,6 +283,7 @@ const AccountWizard = props => {
             })
             .finally(() => {
                 props.setLoading(false);
+                localStorage.removeItem('current_question_index');
             });
     };
 

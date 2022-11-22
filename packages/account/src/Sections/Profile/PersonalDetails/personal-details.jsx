@@ -244,21 +244,12 @@ export const PersonalDetailsForm = ({
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
-            console.log('=>', 'Done');
-
             // Adding a delay to show the notification after the page reload
             setTimeout(() => {
-                try {
-                    console.log('=>', 'setTimeout');
-                    if (data.set_settings.notification) {
-                        console.log('=>', 'Success');
-                        showPOAAddressMismatchSuccessNotification();
-                    } else if (has_poa_address_mismatch) {
-                        console.log('=>', 'Failure');
-                        showPOAAddressMismatchFailureNotification();
-                    }
-                } catch (error) {
-                    console.log('=>', 'error', error);
+                if (data.set_settings.notification) {
+                    showPOAAddressMismatchSuccessNotification();
+                } else if (has_poa_address_mismatch) {
+                    showPOAAddressMismatchFailureNotification();
                 }
             }, 1000);
 

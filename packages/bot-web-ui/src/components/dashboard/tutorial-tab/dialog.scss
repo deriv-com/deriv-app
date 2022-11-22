@@ -60,6 +60,11 @@
             background-color: var(--general-section-7);
         }
     }
+    &--end {
+        .dc-btn--secondary {
+            display: none;
+        }
+    }
 
     .dc-dialog__content {
         &__header {

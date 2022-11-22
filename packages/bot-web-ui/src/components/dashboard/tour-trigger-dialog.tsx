@@ -163,6 +163,7 @@ const TourTriggrerDialog = ({
                 is_mobile_full_width
                 className={classNames('dc-dialog', {
                     'onboarding-tour-guide': active_tab === 0,
+                    'onboarding-tour-guide--end': active_tab === 0 && is_tour_ended,
                     'bot-builder-dialog': active_tab === 1,
                     'bot-builder-dialog--ended': active_tab === 1 && is_tour_ended,
                 })}

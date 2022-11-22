@@ -8,7 +8,6 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
-    loginid,
     is_eu,
     currency,
     setVerificationCode,
@@ -21,8 +20,8 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
+    is_eu_country,
 }) => {
-    const is_mf = loginid?.startsWith('MF');
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -42,7 +41,7 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
-            } else if (is_mf || is_eu) {
+            } else if (is_eu_country || is_eu) {
                 history.push({
                     pathname: routes.trading_hub,
                     search: url_query_string,
@@ -176,7 +175,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && is_eu_country) {
         history.push({
             pathname: routes.root,
             search: url_query_string,

@@ -145,7 +145,6 @@ const Endpoint = () => {
                                     !touched.app_id &&
                                     !touched.is_appstore_enabled &&
                                     !touched.is_pre_appstore_enabled &&
-                                    !touched.show_dbot_dashboard &&
                                     !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||

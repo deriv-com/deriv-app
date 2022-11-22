@@ -1,0 +1,37 @@
+.account-manager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include mobile {
+        width: 100%;
+    }
+
+    &__icon {
+        margin-right: 0.8rem;
+        cursor: pointer;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.8rem;
+        &--title {
+            cursor: pointer;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        &-topup {
+            margin-bottom: 0.5rem;
+        }
+        &-get {
+            margin-left: 2rem;
+        }
+    }
+    @include mobile {
+        max-width: 100%;
+    }
+}

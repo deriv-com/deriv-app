@@ -8,8 +8,7 @@ type TSubMenuSection = React.PropsWithChildren<{
     section_title?: string | React.ReactElement;
     section_icon?: string;
 }>;
-const SubMenuSection = (props: TSubMenuSection) => {
-    const { submenu_toggle_class, section_title, section_icon, children }: TSubMenuSection = props;
+const SubMenuSection = ({ submenu_toggle_class, section_title, section_icon, children, ...props }: TSubMenuSection) => {
     return (
         <div className={classNames('dc-mobile-drawer__submenu-section', submenu_toggle_class)}>
             <div className='dc-mobile-drawer__submenu-section-title'>

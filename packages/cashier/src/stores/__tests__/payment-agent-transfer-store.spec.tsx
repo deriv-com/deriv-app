@@ -254,7 +254,12 @@ describe('PaymentAgentTransferStore', () => {
         });
         expect(payment_agent_transfer_store.is_transfer_successful).toBeTruthy();
         expect(payment_agent_transfer_store.is_try_transfer_successful).toBeFalsy();
-        expect(payment_agent_transfer_store.confirm).toEqual({});
+        expect(payment_agent_transfer_store.confirm).toEqual({
+            amount: 0,
+            client_id: '',
+            client_name: '',
+            description: '',
+        });
     });
 
     // it('should trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestPaymentAgentTransfer', async () => {

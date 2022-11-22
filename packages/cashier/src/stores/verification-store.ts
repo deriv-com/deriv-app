@@ -1,5 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import Constants from 'Constants/constants';
+import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class VerificationStore {
@@ -23,11 +24,18 @@ export default class VerificationStore {
         });
     }
 
+    is_button_clicked = false;
+    timeout_button: ReturnType<typeof setTimeout> | null = null;
+    error = new ErrorStore();
+    is_email_sent = false;
+    is_resend_clicked = false;
+    resend_timeout = 60;
+
     setIsButtonClicked(value: boolean): void {
         this.is_button_clicked = value;
     }
 
-    setTimeoutButton(value: number): void {
+    setTimeoutButton(value: ReturnType<typeof setTimeout>): void {
         this.timeout_button = value;
     }
 
@@ -52,11 +60,9 @@ export default class VerificationStore {
     setTimeoutVerification(): void {
         this.clearTimeoutVerification();
         this.setTimeoutButton(
-            Number(
-                setTimeout(() => {
-                    this.clearVerification();
-                }, 3600000)
-            )
+            setTimeout(() => {
+                this.clearVerification();
+            }, 3600000)
         );
     }
 

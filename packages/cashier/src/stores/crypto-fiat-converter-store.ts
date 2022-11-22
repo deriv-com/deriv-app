@@ -35,11 +35,11 @@ export default class CryptoFiatConverterStore {
     is_timer_visible = false;
 
     setConverterFromAmount(amount: number): void {
-        this.converter_from_amount = amount;
+        this.converter_from_amount = String(amount);
     }
 
     setConverterToAmount(amount: number): void {
-        this.converter_to_amount = amount;
+        this.converter_to_amount = String(amount);
     }
 
     setConverterFromError(error: string): void {
@@ -106,7 +106,7 @@ export default class CryptoFiatConverterStore {
                 account_transfer.setAccountTransferAmount(0);
             } else {
                 const rate = await this.getExchangeRate(from_currency || '', to_currency || '');
-                const decimals = getDecimalPlaces(to_currency);
+                const decimals = getDecimalPlaces(to_currency || '');
                 const amount = (rate * target.value).toFixed(decimals);
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(Number(amount));

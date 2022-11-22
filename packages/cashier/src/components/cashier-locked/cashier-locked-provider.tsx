@@ -4,14 +4,14 @@ import { formatDate } from '@deriv/shared';
 import { TEmptyStateProps } from 'Components/empty-state/empty-state';
 
 type TProps = {
-    cashier_validation: string[] | undefined;
+    cashier_validation?: string[];
     is_crypto: boolean;
     is_system_maintenance: boolean;
     is_cashier_locked: boolean;
     is_deposit_locked: boolean;
     is_withdrawal_locked: boolean;
     is_identity_verification_needed: boolean;
-    excluded_until: number | undefined;
+    excluded_until?: number;
 };
 
 const getMessage = ({

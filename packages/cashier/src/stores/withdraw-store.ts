@@ -23,7 +23,7 @@ export default class WithdrawStore {
             setWithdrawAmount: action.bound,
             requestWithdraw: action.bound,
             saveWithdraw: action.bound,
-            resetWithrawForm: action.bound,
+            resetWithdrawForm: action.bound,
             setBlockchainAddress: action.bound,
             willMountWithdraw: action.bound,
             onMountWithdraw: action.bound,
@@ -37,24 +37,23 @@ export default class WithdrawStore {
             validateWithdrawToAmount: action.bound,
             account_platform_icon: computed,
         });
-
-        this.verification = new VerificationStore(WS, root_store);
     }
 
     blockchain_address = '';
     container = Constants.containers.withdraw;
+    crypto_config: CryptoConfig = { currencies_config: {} };
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
-    withdraw_amount = '';
     max_withdraw_amount = 0;
-    crypto_config: CryptoConfig = {};
+    verification = new VerificationStore(this.WS, this.root_store);
+    withdraw_amount = 0;
 
     setIsWithdrawConfirmed(is_withdraw_confirmed: boolean): void {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
-        if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
+        if (is_withdraw_confirmed) this.setWithdrawAmount(Number(converter_from_amount));
 
         if (!is_withdraw_confirmed && this.verification) {
             this.verification.clearVerification();
@@ -107,15 +106,14 @@ export default class WithdrawStore {
                     // clear verification code on error
                     this.verification.clearVerification();
                 }
-                this.resetWithrawForm();
+                this.resetWithdrawForm();
             } else {
                 this.setIsWithdrawConfirmed(true);
             }
         });
     }
 
-    @action.bound
-    resetWithrawForm(): void {
+    resetWithdrawForm(): void {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.setBlockchainAddress('');
         setConverterFromAmount(0);
@@ -290,11 +288,11 @@ export default class WithdrawStore {
         const { crypto_fiat_converter } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
-        const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
+        const min_withdraw_amount = Number(this.crypto_config?.currencies_config?.[currency].minimum_withdrawal);
         const max_withdraw_amount =
             Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);
 
-        const format_balance = formatMoney(currency, balance, true);
+        const format_balance = formatMoney(currency, balance || 0, true);
         const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
         const format_max_withdraw_amount = formatMoney(currency, max_withdraw_amount, true);
 
@@ -340,7 +338,7 @@ export default class WithdrawStore {
         if (converter_to_amount) {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(current_fiat_currency),
+                decimals: getDecimalPlaces(current_fiat_currency || ''),
             });
             if (!is_ok) error_message = message;
         }

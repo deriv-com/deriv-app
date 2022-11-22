@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { GetLimits } from '@deriv/api-types';
-import { DesktopWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 import { TReactChildren } from 'Types';
 
@@ -11,13 +11,13 @@ type TAccountTransferBulletProps = {
 
 type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
-    currency: string;
-    is_crypto_to_crypto_transfer: boolean;
-    is_dxtrade_allowed: boolean;
-    is_dxtrade_transfer: boolean;
-    is_mt_transfer: boolean;
+    currency?: string;
+    is_crypto_to_crypto_transfer?: boolean;
+    is_dxtrade_allowed?: boolean;
+    is_dxtrade_transfer?: boolean;
+    is_mt_transfer?: boolean;
     minimum_fee: string | number;
-    transfer_fee: string | number;
+    transfer_fee?: number | null;
 };
 
 const AccountTransferBullet = ({ children }: TAccountTransferBulletProps) => (

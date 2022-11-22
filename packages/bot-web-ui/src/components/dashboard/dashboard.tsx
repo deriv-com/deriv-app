@@ -10,7 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import { tabs_array } from '../../constants/bot-contents';
+import { DASHBOARD_TABS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -147,7 +147,7 @@ const Dashboard = ({
         }
     }, [active_tab]);
 
-    const { BOT_BUILDER_TAB, CHART_TAB, QUICK_STRATEGY_TAB } = tabs_array;
+    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
 
     return (
         <React.Fragment>
@@ -191,8 +191,7 @@ const Dashboard = ({
                         >
                             <div
                                 className={classNames('quick-strategy', {
-                                    'quick-strategy__notifications-container--open': is_drawer_open,
-                                    'quick-strategy__notifications-container--closed': !is_drawer_open,
+                                    'quick-strategy--open': is_drawer_open,
                                 })}
                             >
                                 <QuickStrategy />
@@ -213,15 +212,7 @@ const Dashboard = ({
                 <div className='dashboard__run-strategy-wrapper'>
                     <RunStrategy />
 
-                    {/*
-                        TODO: need to add named tab index such as 'dashboard', 'charts' etc
-                        instead of using default index 0, 1, 2
-                        
-                        1. Bot-Builder
-                        2. Quick Strategy
-                        3. Charts
-                    */}
-                    {[BOT_BUILDER_TAB, CHART_TAB, QUICK_STRATEGY_TAB].includes(active_tab) && <RunPanel />}
+                    {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
+import { routes, PlatformContext, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -9,7 +9,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
@@ -23,8 +22,6 @@ const MenuLink = ({
     text,
     onClickLink,
 }) => {
-    const deriv_static_url = getStaticUrl(link_to);
-
     if (is_language) {
         return (
             <span
@@ -54,27 +51,6 @@ const MenuLink = ({
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
-        );
-    } else if (deriv_static_url) {
-        return (
-            <a
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                    'header__menu-mobile-link--active': is_active,
-                })}
-                href={link_to}
-            >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <Text
-                    className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                    as='h3'
-                    size='xs'
-                    weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-                >
-                    {text}
-                </Text>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </a>
         );
     }
 
@@ -132,14 +108,13 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-        const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+        const { is_appstore } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore });
+                const routes_config = getRoutesConfig({ is_appstore });
                 let primary_routes = [];
                 let secondary_routes = [];
-                const location = window.location.pathname;
 
                 if (is_appstore) {
                     primary_routes = [
@@ -150,9 +125,6 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.trade_types,
                         routes.markets,
                     ];
-                    secondary_routes = [];
-                } else if ((is_pre_appstore && location === routes.trading_hub) || is_trading_hub_category) {
-                    primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
                     primary_routes = [routes.reports, routes.account, routes.cashier];
@@ -166,7 +138,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, is_pre_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -309,26 +281,6 @@ const ToggleMenuDrawer = React.forwardRef(
                 </MobileDrawer.SubMenu>
             );
         };
-        const { pathname: route } = useLocation();
-
-        const history = useHistory();
-
-        const is_trading_hub_category =
-            route.startsWith(routes.trading_hub) ||
-            route.startsWith(routes.cashier) ||
-            route.startsWith(routes.account);
-
-        const tradingHubRedirect = () => {
-            if (is_pre_appstore) {
-                setIsPreAppStore(false);
-                toggleDrawer();
-                history.push(routes.root);
-            } else {
-                setIsPreAppStore(true);
-                toggleDrawer();
-                history.push(routes.trading_hub);
-            }
-        };
 
         return (
             <React.Fragment>
@@ -361,192 +313,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                     )}
                                 </MobileDrawer.Body>
                             )}
-                            {is_pre_appstore && (
-                                <React.Fragment>
-                                    {is_logged_in && is_trading_hub_category ? (
-                                        <MobileDrawer.SubHeader
-                                            className={classNames({
-                                                'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
-                                            })}
-                                        >
-                                            <Button
-                                                className={`header__menu--back-to-ui${is_dark_mode ? '--dark' : ''}`}
-                                                type='button'
-                                                large
-                                                onClick={tradingHubRedirect}
-                                            >
-                                                <Text
-                                                    className={`header__menu--back-to-ui-text${
-                                                        is_dark_mode ? '--dark' : ''
-                                                    }`}
-                                                    size='xs'
-                                                >
-                                                    {localize("Exit Trader's hub")}
-                                                </Text>
-                                                <Icon
-                                                    className='header__menu-mobile-right-arrow'
-                                                    icon='IcArrowRight'
-                                                    size={18}
-                                                    color='red'
-                                                />
-                                            </Button>
-                                        </MobileDrawer.SubHeader>
-                                    ) : (
-                                        <MobileDrawer.SubHeader
-                                            className={classNames({
-                                                'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
-                                            })}
-                                        >
-                                            {platform_switcher}
-                                        </MobileDrawer.SubHeader>
-                                    )}
-                                    <MobileDrawer.Body>
-                                        <div
-                                            className='header__menu-mobile-platform-switcher'
-                                            id='mobile_platform_switcher'
-                                        />
-                                        {is_logged_in && !is_trading_hub_category && (
-                                            <MobileDrawer.Item className='header__menu--back-to-old-ui--dtrader'>
-                                                <Button
-                                                    className={`header__menu--back-to-ui${
-                                                        is_dark_mode ? '--dark' : ''
-                                                    }`}
-                                                    type='button'
-                                                    large
-                                                    onClick={tradingHubRedirect}
-                                                >
-                                                    <Text
-                                                        className={`header__menu--back-to-ui-text${
-                                                            is_dark_mode ? '--dark' : ''
-                                                        }`}
-                                                        size='xs'
-                                                    >
-                                                        {localize("Exit Trader's hub")}
-                                                    </Text>
-                                                    <Icon
-                                                        className='header__menu-mobile-right-arrow'
-                                                        icon='IcArrowRight'
-                                                        size={18}
-                                                        color='red'
-                                                    />
-                                                </Button>
-                                            </MobileDrawer.Item>
-                                        )}
-                                        {is_logged_in && (
-                                            <MobileDrawer.Item>
-                                                <MenuLink
-                                                    link_to={routes.trading_hub}
-                                                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
-                                                    text={localize('Trading Hub')}
-                                                    onClickLink={toggleDrawer}
-                                                    changeCurrentLanguage={changeCurrentLanguage}
-                                                />
-                                            </MobileDrawer.Item>
-                                        )}
-                                        {is_logged_in && !is_trading_hub_category && (
-                                            <MobileDrawer.Item>
-                                                <MenuLink
-                                                    link_to={routes.trade}
-                                                    icon='IcTrade'
-                                                    text={localize('Trade')}
-                                                    onClickLink={toggleDrawer}
-                                                    changeCurrentLanguage={changeCurrentLanguage}
-                                                />
-                                            </MobileDrawer.Item>
-                                        )}
-                                        {primary_routes_config.map((route_config, idx) =>
-                                            getRoutesWithSubMenu(route_config, idx)
-                                        )}
-                                        <MobileDrawer.Item
-                                            className='header__menu-mobile-theme--trading-hub'
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                toggleTheme(!is_dark_mode);
-                                            }}
-                                        >
-                                            <div className={classNames('header__menu-mobile-link')}>
-                                                <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                                <span className='header__menu-mobile-link-text'>
-                                                    {localize('Dark theme')}
-                                                </span>
-                                                <ToggleSwitch
-                                                    id='dt_mobile_drawer_theme_toggler'
-                                                    handleToggle={() => toggleTheme(!is_dark_mode)}
-                                                    is_enabled={is_dark_mode}
-                                                />
-                                            </div>
-                                        </MobileDrawer.Item>
-                                        {is_logged_in && (
-                                            <React.Fragment>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/help-centre')}
-                                                        icon='IcHelpCentre'
-                                                        text={localize('Help centre')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={routes.account_limits}
-                                                        icon='IcAccountLimits'
-                                                        text={localize('Account Limits')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/responsible')}
-                                                        icon='IcVerification'
-                                                        text={localize('Responsible trading')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/regulatory')}
-                                                        icon='IcRegulatoryInformation'
-                                                        text={localize('Regulatory information')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Item className='header__menu-mobile-theme'>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/')}
-                                                        icon='IcDerivOutline'
-                                                        text={localize('Go to Deriv.com')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Item
-                                                    onClick={() => {
-                                                        logoutClient();
-                                                        toggleDrawer();
-                                                    }}
-                                                    className='dc-mobile-drawer__item--logout'
-                                                >
-                                                    <MenuLink
-                                                        link_to={routes.index}
-                                                        icon='IcLogout'
-                                                        text={localize('Log out')}
-                                                    />
-                                                </MobileDrawer.Item>
-                                                <MobileDrawer.Footer className='dc-mobile-drawer__footer--servertime'>
-                                                    <ServerTime is_mobile />
-                                                    <NetworkStatus is_mobile />
-                                                </MobileDrawer.Footer>
-                                            </React.Fragment>
-                                        )}
-                                    </MobileDrawer.Body>
-                                </React.Fragment>
-                            )}
-
-                            {!is_appstore && !is_pre_appstore && (
+                            {!is_appstore && (
                                 <React.Fragment>
                                     <MobileDrawer.SubHeader
                                         className={classNames({
@@ -560,26 +327,6 @@ const ToggleMenuDrawer = React.forwardRef(
                                             className='header__menu-mobile-platform-switcher'
                                             id='mobile_platform_switcher'
                                         />
-                                        <MobileDrawer.Item className='header__menu--trading-hub'>
-                                            <Button
-                                                className={`header__menu--explore-trading-hub ${
-                                                    is_dark_mode ? 'header__menu--explore-trading-hub--dark' : ''
-                                                }`}
-                                                type='button'
-                                                large
-                                                onClick={tradingHubRedirect}
-                                            >
-                                                <Text className='header__menu--trading-hub-text' size='xs'>
-                                                    {localize("Trader's hub beta")}
-                                                </Text>
-                                                <Icon
-                                                    className='header__menu-mobile-right-arrow'
-                                                    icon='IcArrowRight'
-                                                    size={18}
-                                                    color='red'
-                                                />
-                                            </Button>
-                                        </MobileDrawer.Item>
                                         <MobileDrawer.Item>
                                             <MenuLink
                                                 link_to={routes.trade}
@@ -647,12 +394,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                 </React.Fragment>
                             )}
                         </div>
-                        {!is_pre_appstore && (
-                            <MobileDrawer.Footer>
-                                <ServerTime is_mobile />
-                                <NetworkStatus is_mobile />
-                            </MobileDrawer.Footer>
-                        )}
+                        <MobileDrawer.Footer>
+                            <ServerTime is_mobile />
+                            <NetworkStatus is_mobile />
+                        </MobileDrawer.Footer>
                     </Div100vhContainer>
                 </MobileDrawer>
             </React.Fragment>

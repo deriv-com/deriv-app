@@ -86,7 +86,7 @@
         "react": "^16.14.0",
         "react-content-loader": "^4.3.2",
         "react-dom": "^16.14.0",
-        "react-joyride": "^2.5.3",
+        "react-joyride": "^2.5.1",
         "react-transition-group": "4.4.2",
         "yup": "^0.32.11"
     }

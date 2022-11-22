@@ -1,8 +1,8 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TCFDServerErrorDialogProps = {
     clearCFDError: () => void;

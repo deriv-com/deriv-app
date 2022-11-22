@@ -14,13 +14,12 @@ type TDashboard = {
 };
 
 const DashboardComponent = ({ is_info_panel_visible, dashboard_strategies }: TDashboard) => {
-    const has_dashboard_strategies = dashboard_strategies && dashboard_strategies.length;
     return (
         <React.Fragment>
             <div className='tab__dashboard'>
                 <div className='tab__dashboard__content'>
                     <div className='tab__dashboard__centered'>
-                        {!has_dashboard_strategies && (
+                        {!dashboard_strategies.length && (
                             <div className='tab__dashboard__header'>
                                 <Text color='prominent' line_height='xxl' size='sm' weight='bold'>
                                     {localize('Load or build your bot')}
@@ -29,7 +28,8 @@ const DashboardComponent = ({ is_info_panel_visible, dashboard_strategies }: TDa
                         )}
                         <div
                             className={classNames('tab__dashboard__description', {
-                                tab__dashboard__description__loaded: has_dashboard_strategies,
+                                tab__dashboard__description__loaded:
+                                    dashboard_strategies && dashboard_strategies.length,
                             })}
                         >
                             <Text color='prominent' line_height='s'>
@@ -40,7 +40,7 @@ const DashboardComponent = ({ is_info_panel_visible, dashboard_strategies }: TDa
                         </div>
                         <Cards />
                     </div>
-                    {has_dashboard_strategies && (
+                    {dashboard_strategies && dashboard_strategies.length && (
                         <div className='tab__dashboard__preview'>
                             <Local />
                         </div>

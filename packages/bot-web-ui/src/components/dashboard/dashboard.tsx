@@ -10,7 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import { DASHBOARD_TABS } from '../../constants/bot-contents';
+import { tabs_array } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -116,7 +116,7 @@ const Dashboard = ({
         storage = JSON.parse(localStorage?.dbot_settings);
     }
 
-    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
+    const { BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB } = tabs_array;
 
     const checkToken = () => {
         return (active_tab === 0 && !storage.onboard_tour_token) || (active_tab === 1 && !storage.bot_builder_token);
@@ -184,7 +184,16 @@ const Dashboard = ({
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
                     <RunStrategy />
-                    {[BOT_BUILDER, QUICK_STRATEGY, CHART].includes(active_tab) && <RunPanel />}
+
+                    {/*
+                        TODO: need to add named tab index such as 'dashboard', 'charts' etc
+                        instead of using default index 0, 1, 2
+                        
+                        1. Bot-Builder
+                        2. Quick Strategy
+                        3. Charts
+                    */}
+                    {[BOTBUILDER_TAB, CHART_TAB, QUICKSTRATEGY_TAB].includes(active_tab) && <RunPanel />}
                 </div>
             </DesktopWrapper>
         </React.Fragment>

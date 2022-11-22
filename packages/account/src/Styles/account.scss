@@ -2917,6 +2917,12 @@ $MIN_HEIGHT_FLOATING: calc(
         -webkit-text-fill-color: $color-green-1 !important;
         border-color: $color-green-1 !important;
     }
+    & .account__scrollbars_container--grid-layout {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
 .sample-credit-card-modal {
     &-text {

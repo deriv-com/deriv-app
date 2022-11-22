@@ -37,8 +37,6 @@ const TourTriggrerDialog = ({
             if (!getTourSettings(`${tour_type.key}token`))
                 setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
-
-        if (!getTourSettings(`${tour_type.key}token`)) localStorage.removeItem('dbot_settings');
     };
 
     const getTourContent = () => {

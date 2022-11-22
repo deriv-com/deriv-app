@@ -18,6 +18,18 @@
     &--is-hidden {
         display: none;
     }
+    &__menu-mobile-whatsapp {
+        &-link {
+            text-decoration: none;
+            color: var(--text-general);
+            padding-left: 1.6rem;
+        }
+    }
+
+    &__menu-mobile-livechat {
+        border-bottom: 1px solid var(--general-section-2);
+    }
+
     &__menu-mobile-body-wrapper {
         position: relative;
         height: calc(100% - 4rem);
@@ -29,13 +41,13 @@
         left: 0;
     }
     &__menu-mobile-theme {
-        border-bottom: 1px solid var(--general-section-1);
-        padding-bottom: 1.6rem;
-        margin-bottom: 1.6rem;
+        border-bottom: 1px solid var(--general-section-2);
+        padding-right: 0;
     }
     &__menu-mobile-link {
         text-decoration: none;
         display: flex;
+        flex: 1;
         align-items: center;
 
         &--active {
@@ -47,6 +59,7 @@
         &-text {
             font-size: 1.4rem;
             color: var(--text-general);
+            flex: 1;
         }
         &-icon {
             margin-right: 16px;

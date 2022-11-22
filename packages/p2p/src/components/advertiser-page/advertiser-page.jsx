@@ -39,7 +39,7 @@ const AdvertiserPage = () => {
         recommended_average,
         recommended_count,
         sell_orders_count,
-    } = advertiser_page_store.advertiser_info;
+    } = advertiser_page_store.counterparty_advertiser_info;
 
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
@@ -51,7 +51,7 @@ const AdvertiserPage = () => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
 
-        return reaction(
+        reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
@@ -59,6 +59,10 @@ const AdvertiserPage = () => {
             },
             { fireImmediately: true }
         );
+
+        return () => {
+            advertiser_page_store.onUnmount();
+        };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -88,7 +92,7 @@ const AdvertiserPage = () => {
                     advertiser_page_store.onCancel();
                     general_store.setBlockUnblockUserError('');
                 }}
-                small
+                width={isMobile() ? '90rem' : '40rem'}
             />
             <BlockUserModal
                 advertiser_name={name}

@@ -42,6 +42,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
+                    icon={data.icon}
                 />
             );
         case 'trustpilot':
@@ -176,6 +177,7 @@ Notification.propTypes = {
         img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
         key: PropTypes.string,
+        icon: PropTypes.string,
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         message_popup: PropTypes.string,
         primary_btn: PropTypes.object,

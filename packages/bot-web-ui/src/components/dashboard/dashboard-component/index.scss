@@ -160,21 +160,10 @@
         }
     }
 
-    &__card {
-        margin-bottom: 1.6rem;
-
-        h1 {
-            font-size: 2.4rem;
-            margin-bottom: 0.8rem;
-            line-height: 2rem;
-            font-weight: 700;
-        }
-
-        p {
-            font-size: var(--text-size-xs);
-            margin-bottom: 0.8rem;
-            line-height: 2rem;
-            font-weight: 400;
+    &__content {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
         }
     }
 }

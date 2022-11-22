@@ -5,7 +5,6 @@ import { Button, Div100vhContainer, Input, Loading, Modal, Text, ThemedScrollbar
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
@@ -28,7 +27,6 @@ const EditAdFormWrapper = ({ children }) => {
 
 const EditAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
 
     const {
@@ -211,14 +209,17 @@ const EditAdForm = () => {
                                                                 hint={
                                                                     // Using two "==" is intentional as we're checking for nullish
                                                                     // rather than falsy values.
-                                                                    !is_sell_advert || available_balance == null
+                                                                    !is_sell_advert ||
+                                                                    general_store.advertiser_info.balance_available ==
+                                                                        null
                                                                         ? undefined
                                                                         : localize(
                                                                               'Your DP2P balance is {{ dp2p_balance }}',
                                                                               {
                                                                                   dp2p_balance: `${formatMoney(
                                                                                       account_currency,
-                                                                                      available_balance,
+                                                                                      general_store.advertiser_info
+                                                                                          .balance_available,
                                                                                       true
                                                                                   )} ${account_currency}`,
                                                                               }

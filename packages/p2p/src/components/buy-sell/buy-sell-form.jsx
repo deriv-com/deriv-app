@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
-import { getRoundedNumber, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -12,6 +12,7 @@ import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
+import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 
 const BuySellForm = props => {
@@ -24,6 +25,7 @@ const BuySellForm = props => {
     const {
         advertiser_details,
         description,
+        effective_rate: market_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit,
@@ -35,10 +37,10 @@ const BuySellForm = props => {
     } = buy_sell_store?.advert || {};
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
+    const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
+
     const should_disable_field =
-        !buy_sell_store.is_buy_advert &&
-        (parseFloat(general_store.balance) === 0 ||
-            parseFloat(general_store.balance) < buy_sell_store.advert?.min_order_amount_limit);
+        !buy_sell_store.is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
 
     const style = {
         borderColor: 'var(--brand-secondary)',
@@ -52,6 +54,7 @@ const BuySellForm = props => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate,
     });
 
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
@@ -110,6 +113,14 @@ const BuySellForm = props => {
         }
     };
 
+    const getAdvertiserMaxLimit = () => {
+        if (buy_sell_store.is_buy_advert) {
+            if (advertiser_buy_limit < max_order_amount_limit_display) return roundOffDecimal(advertiser_buy_limit);
+        } else if (advertiser_sell_limit < max_order_amount_limit_display)
+            return roundOffDecimal(advertiser_sell_limit);
+        return max_order_amount_limit_display;
+    };
+
     return (
         <React.Fragment>
             {rate_type === ad_type.FLOAT && !should_disable_field && (
@@ -131,8 +142,8 @@ const BuySellForm = props => {
                 validateOnMount={!should_disable_field}
                 initialValues={{
                     amount: min_order_amount_limit,
-                    contact_info: buy_sell_store.contact_info,
-                    payment_info: buy_sell_store.payment_info,
+                    contact_info: general_store.contact_info,
+                    payment_info: general_store.payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
                 }}
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
@@ -360,7 +371,7 @@ const BuySellForm = props => {
                                                             i18n_default_text='Limit: {{min}}–{{max}} {{currency}}'
                                                             values={{
                                                                 min: min_order_amount_limit_display,
-                                                                max: max_order_amount_limit_display,
+                                                                max: getAdvertiserMaxLimit(),
                                                                 currency: buy_sell_store.account_currency,
                                                             }}
                                                         />
@@ -378,16 +389,16 @@ const BuySellForm = props => {
                                                         }
                                                     }}
                                                     onChange={event => {
-                                                        if (event.target.value === '') {
-                                                            setFieldValue('amount', '');
-                                                            setInputAmount('');
+                                                        const { value } = event.target;
+
+                                                        if (
+                                                            countDecimalPlaces(value) >
+                                                            getDecimalPlaces(buy_sell_store.account_currency)
+                                                        ) {
+                                                            setFieldValue('amount', parseFloat(input_amount));
                                                         } else {
-                                                            const amount = getRoundedNumber(
-                                                                event.target.value,
-                                                                buy_sell_store.account_currency
-                                                            );
-                                                            setFieldValue('amount', amount);
-                                                            setInputAmount(amount);
+                                                            setFieldValue('amount', parseFloat(value));
+                                                            setInputAmount(value);
                                                         }
                                                     }}
                                                     required
@@ -425,7 +436,7 @@ const BuySellForm = props => {
                                                             label={localize('Your bank details')}
                                                             required
                                                             has_character_counter
-                                                            initial_character_count={buy_sell_store.payment_info.length}
+                                                            initial_character_count={general_store.payment_info.length}
                                                             max_characters={300}
                                                             disabled={should_disable_field}
                                                         />
@@ -444,7 +455,7 @@ const BuySellForm = props => {
                                                         label={localize('Your contact details')}
                                                         required
                                                         has_character_counter
-                                                        initial_character_count={buy_sell_store.contact_info.length}
+                                                        initial_character_count={general_store.contact_info.length}
                                                         max_characters={300}
                                                         disabled={should_disable_field}
                                                     />
@@ -466,7 +477,6 @@ BuySellForm.propTypes = {
     advert: PropTypes.object,
     contact_info: PropTypes.string,
     form_props: PropTypes.object,
-    getAdvertiserInfo: PropTypes.func,
     setIsSubmitDisabled: PropTypes.func,
     setSubmitForm: PropTypes.func,
     setPageFooterParent: PropTypes.func,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, action, reaction, computed, runInAction } from 'mobx';
+import { observable, action, reaction, computed, runInAction, makeObservable } from 'mobx';
 import { localize, Localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
@@ -9,20 +9,74 @@ import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store) {
+        makeObservable(this, {
+            active_index: observable,
+            contract_stage: observable,
+            dialog_options: observable,
+            has_open_contract: observable,
+            is_running: observable,
+            is_statistics_info_modal_open: observable,
+            is_drawer_open: observable,
+            is_dialog_open: observable,
+            is_sell_requested: observable,
+            run_id: observable,
+            error_type: observable,
+            statistics: computed,
+            is_stop_button_visible: computed,
+            is_stop_button_disabled: computed,
+            is_clear_stat_disabled: computed,
+            onStopButtonClick: action.bound,
+            stopBot: action.bound,
+            onClearStatClick: action.bound,
+            clearStat: action.bound,
+            toggleStatisticsInfoModal: action.bound,
+            toggleDrawer: action.bound,
+            setActiveTabIndex: action.bound,
+            onCloseDialog: action.bound,
+            showStopMultiplierContractDialog: action.bound,
+            showLoginDialog: action.bound,
+            showRealAccountDialog: action.bound,
+            showClearStatDialog: action.bound,
+            showIncompatibleStrategyDialog: action.bound,
+            showContractUpdateErrorDialog: action.bound,
+            onBotSellEvent: action.bound,
+            onBotStopEvent: action.bound,
+            onBotTradeAgain: action.bound,
+            onContractStatusEvent: action.bound,
+            onClickSell: action.bound,
+            onBotContractEvent: action.bound,
+            onError: action.bound,
+            showErrorMessage: action.bound,
+            switchToJournal: action.bound,
+            setContractStage: action.bound,
+            setHasOpenContract: action.bound,
+            setIsRunning: action.bound,
+            onMount: action.bound,
+            onUnmount: action.bound,
+            handleInvalidToken: action.bound,
+            onRunButtonClick: action.bound,
+            registerBotListeners: action.bound,
+            registerReactions: action.bound,
+            onBotRunningEvent: action.bound,
+            unregisterBotListeners: action.bound,
+            clear: action.bound,
+            preloadAudio: action.bound,
+        });
+
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.disposeReactionsFn = this.registerReactions();
     }
 
-    @observable active_index = 0;
-    @observable contract_stage = contract_stages.NOT_RUNNING;
-    @observable dialog_options = {};
-    @observable has_open_contract = false;
-    @observable is_running = false;
-    @observable is_statistics_info_modal_open = false;
-    @observable is_drawer_open = true;
-    @observable is_dialog_open = false;
-    @observable is_sell_requested = false;
+    active_index = 0;
+    contract_stage = contract_stages.NOT_RUNNING;
+    dialog_options = {};
+    has_open_contract = false;
+    is_running = false;
+    is_statistics_info_modal_open = false;
+    is_drawer_open = true;
+    is_dialog_open = false;
+    is_sell_requested = false;
 
     run_id = '';
 
@@ -31,7 +85,6 @@ export default class RunPanelStore {
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
     error_type = undefined;
 
-    @computed
     get statistics() {
         let total_runs = 0;
         const { transactions } = this.root_store.transactions;
@@ -66,17 +119,14 @@ export default class RunPanelStore {
         return statistics;
     }
 
-    @computed
     get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
     }
 
-    @computed
     get is_stop_button_disabled() {
         return [contract_stages.PURCHASE_SENT, contract_stages.IS_STOPPING].includes(this.contract_stage);
     }
 
-    @computed
     get is_clear_stat_disabled() {
         const { journal, transactions } = this.root_store;
 
@@ -87,7 +137,6 @@ export default class RunPanelStore {
         );
     }
 
-    @action.bound
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
@@ -137,7 +186,6 @@ export default class RunPanelStore {
         });
     }
 
-    @action.bound
     onStopButtonClick() {
         const { is_multiplier } = this.root_store.summary_card;
 
@@ -148,7 +196,6 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     stopBot() {
         const { ui } = this.root_store.core;
 
@@ -177,12 +224,10 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     onClearStatClick() {
         this.showClearStatDialog();
     }
 
-    @action.bound
     clearStat() {
         const { summary_card, journal, transactions } = this.root_store;
 
@@ -195,17 +240,14 @@ export default class RunPanelStore {
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
 
-    @action.bound
     toggleStatisticsInfoModal() {
         this.is_statistics_info_modal_open = !this.is_statistics_info_modal_open;
     }
 
-    @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
     }
 
-    @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
 
@@ -214,12 +256,10 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     onCloseDialog() {
         this.is_dialog_open = false;
     }
 
-    @action.bound
     showStopMultiplierContractDialog() {
         const { summary_card, core } = this.root_store;
         const { ui } = core;
@@ -257,7 +297,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
     showLoginDialog() {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -268,7 +307,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
     showRealAccountDialog() {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -279,7 +317,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
     showClearStatDialog() {
         this.onOkButtonClick = () => {
             this.clearStat();
@@ -295,7 +332,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
     showIncompatibleStrategyDialog() {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -306,7 +342,6 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
-    @action.bound
     showContractUpdateErrorDialog(message) {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
@@ -381,7 +416,6 @@ export default class RunPanelStore {
         };
     }
 
-    @action.bound
     onBotRunningEvent() {
         this.setHasOpenContract(true);
 
@@ -398,12 +432,10 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     onBotSellEvent() {
         this.is_sell_requested = true;
     }
 
-    @action.bound
     onBotStopEvent() {
         const { self_exclusion, summary_card } = this.root_store;
         const { ui } = this.root_store.core;
@@ -452,14 +484,12 @@ export default class RunPanelStore {
         document.dispatchEvent(listen_new_version);
     }
 
-    @action.bound
     onBotTradeAgain(is_trade_again) {
         if (!is_trade_again) {
             this.onStopButtonClick();
         }
     }
 
-    @action.bound
     onContractStatusEvent(contract_status) {
         switch (contract_status.id) {
             case 'contract.purchase_sent': {
@@ -491,7 +521,6 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     onClickSell() {
         const { is_multiplier } = this.root_store.summary_card;
 
@@ -506,7 +535,6 @@ export default class RunPanelStore {
         observer.emit('statistics.clear');
     };
 
-    @action.bound
     onBotContractEvent(data) {
         if (data?.is_sold) {
             this.is_sell_requested = false;
@@ -514,7 +542,6 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     onError(data) {
         // data.error for API errors, data for code errors
         const error = data.error || data;
@@ -529,7 +556,6 @@ export default class RunPanelStore {
         this.showErrorMessage(error_message);
     }
 
-    @action.bound
     showErrorMessage(data) {
         const { journal, notifications } = this.root_store;
         journal.onError(data);
@@ -542,7 +568,6 @@ export default class RunPanelStore {
         }
     }
 
-    @action.bound
     switchToJournal() {
         const { journal, notifications } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
@@ -561,22 +586,18 @@ export default class RunPanelStore {
         observer.unregisterAll('Error');
     };
 
-    @action.bound
     setContractStage(contract_stage) {
         this.contract_stage = contract_stage;
     }
 
-    @action.bound
     setHasOpenContract(has_open_contract) {
         this.has_open_contract = has_open_contract;
     }
 
-    @action.bound
     setIsRunning(is_running) {
         this.is_running = is_running;
     }
 
-    @action.bound
     onMount() {
         const { journal } = this.root_store;
         observer.register('ui.log.error', this.showErrorMessage);
@@ -585,7 +606,6 @@ export default class RunPanelStore {
         observer.register('client.invalid_token', this.handleInvalidToken);
     }
 
-    @action.bound
     onUnmount() {
         const { journal, summary_card, transactions } = this.root_store;
 
@@ -601,7 +621,6 @@ export default class RunPanelStore {
         observer.unregisterAll('client.invalid_token');
     }
 
-    @action.bound
     async handleInvalidToken() {
         const { client } = this.root_store.core;
         await client.logout();

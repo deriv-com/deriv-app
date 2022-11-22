@@ -2829,8 +2829,8 @@ $MIN_HEIGHT_FLOATING: calc(
                     border-radius: 4px;
                     height: 4rem;
                     margin-right: 10px;
-                    color: var(--text-general);
-                    -webkit-text-fill-color: var(--text-general);
+                    color: var(--text-less-prominent);
+                    -webkit-text-fill-color: var(--text-less-prominent);
                     @include mobile {
                         width: 100%;
                     }

@@ -190,12 +190,14 @@ const ProofOfOwnershipForm = ({
                                         className='proof-of-ownership__form-content'
                                         key={grouped_payment_method_data_key}
                                     >
-                                        <div className='proof-of-ownership__progress'>
-                                            <div className='proof-of-ownership__progress-number'>{index + 1}</div>
-                                            {index !== grouped_payment_method_data_keys.length - 1 && (
-                                                <div className='proof-of-ownership__progress-bar' />
-                                            )}
-                                        </div>
+                                        {grouped_payment_method_data_keys.length > 1 && (
+                                            <div className='proof-of-ownership__progress'>
+                                                <div className='proof-of-ownership__progress-number'>{index + 1}</div>
+                                                {index !== grouped_payment_method_data_keys.length - 1 && (
+                                                    <div className='proof-of-ownership__progress-bar' />
+                                                )}
+                                            </div>
+                                        )}
                                         <Card
                                             error={errors?.data?.[index]}
                                             index={index}

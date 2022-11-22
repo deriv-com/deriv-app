@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';

@@ -15,4 +15,4 @@ export const DASHBOARD_TABS: TTabsTitleProps = Object.freeze({
     TUTORIAL: 4,
 });
 
-export const strategy_limit = 10;
+export const MAX_STRATEGIES = 10;

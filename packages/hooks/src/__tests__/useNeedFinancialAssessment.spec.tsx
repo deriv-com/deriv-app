@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
-import type { DeepPartial, TRootStore } from '@deriv/stores/types';
+import type { TRootStore } from '@deriv/stores/types';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
 import useNeedFinancialAssessment from '../useNeedFinancialAssessment';
@@ -26,7 +26,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -43,7 +43,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -60,7 +60,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -77,7 +77,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -94,7 +94,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -111,7 +111,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -128,7 +128,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');
@@ -145,7 +145,7 @@ describe('useNeedFinancialAssessment', () => {
         };
 
         render(<UseNeedFinancialAssessmentExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const is_need_financial_assessment = screen.getByTestId('dt_is_need_financial_assessment');

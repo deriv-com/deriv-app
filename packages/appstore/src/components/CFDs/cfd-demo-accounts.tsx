@@ -131,15 +131,14 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                                   existing_account.landing_company_short?.slice(1)
                                                 : existing_account.landing_company_short?.toUpperCase();
 
-                                        const title_shortcode = is_eu ? '' : non_eu_accounts;
+                                        const title_shortcode =
+                                            is_eu || account.platform === CFD_PLATFORMS.DXTRADE ? '' : non_eu_accounts;
                                         return (
                                             <div className='existing-accounts' key={existing_account.name}>
                                                 <AccountManager
                                                     has_account={true}
                                                     type={existing_account.market_type}
-                                                    appname={`${account.name} ${
-                                                        account.name === 'Deriv X' ? '' : title_shortcode
-                                                    }`}
+                                                    appname={`${account.name} ${title_shortcode}`}
                                                     platform={account.platform}
                                                     disabled={false}
                                                     loginid={existing_account.display_login}

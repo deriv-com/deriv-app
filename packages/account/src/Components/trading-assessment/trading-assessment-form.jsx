@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Modal, Text, Icon } from '@deriv/components';
+import { Button, Modal, Text, Icon, FormSubmitButton } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
@@ -170,32 +170,16 @@ const TradingAssessmentForm = ({
                                     className='trading-assessment__existing_btn '
                                 >
                                     {is_header_navigation ? (
-                                        <Button.Group
-                                            className={classNames('trading-assessment__btn-group', {
-                                                'dc-form-submit-button--absolute': isMobile(),
-                                            })}
-                                        >
-                                            <Button
-                                                has_effect
-                                                onClick={() => onCancel(values)}
-                                                text={localize('Previous')}
-                                                type='button'
-                                                secondary
-                                                large
-                                                className='trading-assessment__btn-group--btn'
-                                            />
-                                            <Button
-                                                has_effect
-                                                is_disabled={!isAssessmentCompleted(values)}
-                                                onClick={() => onSubmit(values)}
-                                                type='button'
-                                                text={localize('Next')}
-                                                large
-                                                primary
-                                                className='trading-assessment__btn-group--btn'
-                                                name='Next'
-                                            />
-                                        </Button.Group>
+                                        <FormSubmitButton
+                                            cancel_label={localize('Previous')}
+                                            has_cancel
+                                            is_disabled={!isAssessmentCompleted(values)}
+                                            is_absolute={isMobile()}
+                                            label={localize('Next')}
+                                            onCancel={() => onCancel(values)}
+                                            type='button'
+                                            onClick={() => onSubmit(values)}
+                                        />
                                     ) : (
                                         <Button.Group className='trading-assessment__btn-group'>
                                             {current_question_details.current_question_index !== 0 && (

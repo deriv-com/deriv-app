@@ -5,6 +5,7 @@ import { Loading, Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import MissingPaymentMethodNote from '../missing-payment-method-note';
 import VerificationEmail from 'Components/verification-email';
 import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
@@ -47,6 +48,9 @@ const PaymentAgentList = ({
                 side_notes.push(
                     <SideNote has_title={false} key={0}>
                         <PaymentAgentDisclaimer />
+                    </SideNote>,
+                    <SideNote has_title={false} key={0}>
+                        <MissingPaymentMethodNote />
                     </SideNote>
                 );
             }

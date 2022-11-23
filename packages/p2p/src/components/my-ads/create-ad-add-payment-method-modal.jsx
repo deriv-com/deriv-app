@@ -5,7 +5,7 @@ import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/component
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
-import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 
 const CreateAdAddPaymentMethodModal = () => {
     const { my_ads_store, my_profile_store } = useStores();

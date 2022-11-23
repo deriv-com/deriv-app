@@ -17,7 +17,7 @@ import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
-import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
+import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
 import LoadingModal from '../loading-modal';

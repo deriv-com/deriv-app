@@ -8,7 +8,7 @@ import BuySell from './buy-sell/buy-sell.jsx';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import MyAds from './my-ads/my-ads.jsx';
-import MyProfile from './my-profile';
+import MyProfile from 'Pages/my-profile';
 import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';

@@ -19,7 +19,7 @@ import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
-import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 
 const LowBalanceMessage = () => (

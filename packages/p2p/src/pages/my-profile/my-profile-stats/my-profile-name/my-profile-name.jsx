@@ -5,7 +5,7 @@ import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import { daysSince, isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
-import TradeBadge from '../../../trade-badge';
+import TradeBadge from 'Components/trade-badge';
 import MyProfilePrivacy from '../my-profile-privacy';
 import StarRating from 'Components/star-rating';
 import RecommendedBy from 'Components/recommended-by';

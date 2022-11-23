@@ -17,7 +17,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import React from 'react';
 import { WS } from 'Services';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
@@ -30,16 +30,52 @@ import {
 } from './Helpers/client-notifications';
 
 export default class NotificationStore extends BaseStore {
-    @observable is_notifications_visible = false;
-    @observable notifications = [];
-    @observable notification_messages = [];
-    @observable marked_notifications = [];
-    @observable push_notifications = [];
-    @observable client_notifications = {};
-    @observable should_show_popups = true;
+    is_notifications_visible = false;
+    notifications = [];
+    notification_messages = [];
+    marked_notifications = [];
+    push_notifications = [];
+    client_notifications = {};
+    should_show_popups = true;
+    p2p_order_props = {};
 
     constructor(root_store) {
         super({ root_store });
+
+        makeObservable(this, {
+            is_notifications_visible: observable,
+            notifications: observable,
+            notification_messages: observable,
+            marked_notifications: observable,
+            push_notifications: observable,
+            client_notifications: observable,
+            should_show_popups: observable,
+            p2p_order_props: observable,
+            custom_notifications: computed,
+            filtered_notifications: computed,
+            addNotificationBar: action.bound,
+            addNotificationMessage: action.bound,
+            addNotificationMessageByKey: action.bound,
+            showCompletedOrderNotification: action.bound,
+            addVerificationNotifications: action.bound,
+            filterNotificationMessages: action.bound,
+            handleClientNotifications: action.bound,
+            markNotificationMessage: action.bound,
+            refreshNotifications: action.bound,
+            removeAllNotificationMessages: action.bound,
+            removeNotifications: action.bound,
+            removeNotificationByKey: action.bound,
+            removeNotificationMessage: action.bound,
+            removeNotificationMessageByKey: action.bound,
+            resetVirtualBalanceNotification: action.bound,
+            setClientNotifications: action.bound,
+            setP2POrderProps: action.bound,
+            setShouldShowPopups: action.bound,
+            toggleNotificationsModal: action.bound,
+            unmarkNotificationMessage: action.bound,
+            updateNotifications: action.bound,
+        });
+
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
@@ -55,8 +91,16 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                this.p2p_order_props.order_id,
             ],
-            () => {
+            async () => {
+                if (
+                    root_store.client.is_logged_in &&
+                    Object.keys(root_store.client.account_status).length > 0 &&
+                    Object.keys(root_store.client.landing_companies).length > 0
+                )
+                    await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
+
                 if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status).length > 0 &&
@@ -66,12 +110,12 @@ export default class NotificationStore extends BaseStore {
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
                     this.handleClientNotifications();
+                    this.filterNotificationMessages();
                 }
             }
         );
     }
 
-    @computed
     get custom_notifications() {
         const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
         const notification_content = {
@@ -97,18 +141,15 @@ export default class NotificationStore extends BaseStore {
         return notification_content;
     }
 
-    @computed
     get filtered_notifications() {
         return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
-    @action.bound
     addNotificationBar(message) {
         this.push_notifications.push(message);
         this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
-    @action.bound
     addNotificationMessage(notification) {
         if (!notification) return;
         if (!this.notification_messages.find(item => item.key === notification.key)) {
@@ -136,40 +177,57 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    @action.bound
-    addVerificationNotifications(identity, document) {
-        if (identity.status === 'expired') this.addNotificationMessage(this.client_notifications.poi_expired);
+    addVerificationNotifications(identity, document, has_restricted_mt5_account) {
+        //identity
+        if (identity.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poi_verified);
+        } else if (!['none', 'pending'].includes(identity.status)) {
+            this.addNotificationMessage(this.client_notifications.poi_failed);
+        }
 
-        if (document.status === 'expired') this.addNotificationMessage(this.client_notifications.poa_expired);
+        // document
+
+        if (document.status === 'verified') {
+            this.addNotificationMessage(this.client_notifications.poa_verified);
+        } else if (has_restricted_mt5_account) {
+            if (document.status === 'pending') {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_pending_poa);
+            } else {
+                this.addNotificationMessage(this.client_notifications.resticted_mt5_with_failed_poa);
+            }
+        } else if (!['none', 'pending'].includes(document.status)) {
+            this.addNotificationMessage(this.client_notifications.poa_failed);
+        }
     }
 
-    @action.bound
     filterNotificationMessages() {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
-        this.notifications = this.notification_messages.filter(notification => {
-            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
-                return true;
-            } else if (!notification.platform.includes(getPathname())) {
-                if (notification.is_disposable) {
-                    this.removeNotificationMessage({
-                        key: notification.key,
-                        should_show_again: notification.should_show_again,
-                    });
-                    this.removeNotificationByKey({ key: notification.key });
+
+        if (window.location.pathname !== routes.cashier_p2p) {
+            this.notification_messages = this.notification_messages.filter(notification => {
+                if (notification.platform === undefined || notification.platform.includes(getPathname())) {
+                    return true;
+                } else if (!notification.platform.includes(getPathname())) {
+                    if (notification.is_disposable) {
+                        this.removeNotificationMessage({
+                            key: notification.key,
+                            should_show_again: notification.should_show_again,
+                        });
+                        this.removeNotificationByKey({ key: notification.key });
+                    }
                 }
-            }
-            return false;
-        });
+
+                return false;
+            });
+        }
     }
 
-    @action.bound
-    handleClientNotifications() {
+    async handleClientNotifications() {
         const {
             account_settings,
             account_status,
@@ -189,8 +247,9 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            has_restricted_mt5_account,
         } = this.root_store.client;
-        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
+        const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
@@ -199,10 +258,13 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
-
+        const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
+            this.client_notifications.acuity_mt5_download.key
+        );
         let has_missing_required_field;
 
         if (is_logged_in) {
+            if (isEmptyObject(account_status)) return;
             const {
                 authentication: { document, identity, needs_verification },
                 status,
@@ -246,6 +308,13 @@ export default class NotificationStore extends BaseStore {
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
             }
+
+            // Acuity notification is available for both Demo and Real desktop clients
+            this.addNotificationMessage(this.client_notifications.acuity);
+            if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
+                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -277,28 +346,20 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
 
-                this.addVerificationNotifications(identity, document);
+                this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
-                if (needs_verification.includes('identity')) {
-                    if (
-                        poi_name_mismatch &&
-                        identity?.services.onfido.last_rejected &&
-                        !personal_details_locked &&
-                        onfido_submissions_left > 0
-                    ) {
-                        this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
-                    } else if (identity.status === 'rejected' && onfido_submissions_left === 0) {
-                        this.addNotificationMessage(this.client_notifications.onfido_failed);
-                    } else if (is_identity_verification_needed) {
-                        this.addNotificationMessage(this.client_notifications.identity);
-                    }
+
+                if (
+                    poi_name_mismatch &&
+                    identity?.services.onfido.last_rejected &&
+                    !personal_details_locked &&
+                    onfido_submissions_left > 0
+                ) {
+                    this.addNotificationMessage(this.client_notifications.poi_name_mismatch);
                 }
 
-                if (!needs_verification.length && document.status === 'verified' && identity.status === 'verified') {
-                    this.addNotificationMessage(this.client_notifications.poa_poi_verified);
-                }
                 if (system_maintenance) {
                     this.setClientNotifications(client);
                     this.addNotificationMessage(
@@ -365,6 +426,29 @@ export default class NotificationStore extends BaseStore {
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
+
+                    p2p_completed_orders?.map(order => {
+                        const {
+                            advertiser_details,
+                            client_details,
+                            id,
+                            is_reviewable,
+                            status: order_status,
+                            type,
+                        } = order;
+
+                        if (is_reviewable) {
+                            if (type === 'buy' && order_status === 'completed' && client_details.loginid === loginid)
+                                this.showCompletedOrderNotification(advertiser_details.name, id);
+
+                            if (
+                                type === 'sell' &&
+                                order_status === 'completed' &&
+                                advertiser_details.loginid === loginid
+                            )
+                                this.showCompletedOrderNotification(client_details.name, id);
+                        }
+                    });
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
@@ -391,12 +475,57 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
+    showCompletedOrderNotification(advertiser_name, order_id) {
+        const notification_key = `order-${order_id}`;
+
+        const notification_redirect_action =
+            routes.cashier_p2p === window.location.pathname
+                ? {
+                      onClick: () => {
+                          this.p2p_order_props.redirectToOrderDetails(order_id);
+                          this.setP2POrderProps({
+                              ...this.p2p_order_props,
+                              order_id,
+                          });
+                          if (this.is_notifications_visible) this.toggleNotificationsModal();
+                          this.refreshNotifications();
+                      },
+                      text: localize('Give feedback'),
+                  }
+                : {
+                      route: `${routes.cashier_p2p}?order=${order_id}`,
+                      text: localize('Give feedback'),
+                  };
+
+        this.addNotificationMessage({
+            action:
+                this.p2p_order_props?.order_id === order_id
+                    ? {
+                          onClick: () => {
+                              this.p2p_order_props.setIsRatingModalOpen(true);
+                              if (this.is_notifications_visible) this.toggleNotificationsModal();
+                              this.refreshNotifications();
+                          },
+                          text: localize('Give feedback'),
+                      }
+                    : notification_redirect_action,
+            header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
+            key: notification_key,
+            message: (
+                <Localize
+                    i18n_default_text='{{name}} has released your funds. <br/> Would you like to give your feedback?'
+                    values={{ name: advertiser_name }}
+                />
+            ),
+            platform: 'P2P',
+            type: 'p2p_completed_order',
+        });
+    }
+
     markNotificationMessage({ key }) {
         this.marked_notifications.push(key);
     }
 
-    @action.bound
     refreshNotifications() {
         this.removeNotifications(true);
         this.removeAllNotificationMessages();
@@ -404,26 +533,22 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    @action.bound
     removeAllNotificationMessages(should_close_persistent) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
-    @action.bound
     removeNotifications(should_close_persistent) {
         this.notifications = should_close_persistent
             ? []
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
     }
 
-    @action.bound
     removeNotificationByKey({ key }) {
         this.notifications = this.notifications.filter(n => n.key !== key);
     }
 
-    @action.bound
     removeNotificationMessage({ key, should_show_again } = {}) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
@@ -450,12 +575,10 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     removeNotificationMessageByKey({ key }) {
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
     }
 
-    @action.bound
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
@@ -482,7 +605,6 @@ export default class NotificationStore extends BaseStore {
         }
     }
 
-    @action.bound
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
@@ -492,6 +614,52 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
+            acuity: {
+                key: 'acuity',
+                header: localize('New trading tools for MT5'),
+                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
+                secondary_btn: {
+                    text: localize('Learn More'),
+                    onClick: () => {
+                        ui.setIsAcuityModalOpen(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                platform: [platform_name.DTrader],
+                is_disposable: true,
+                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
+                img_alt: 'Acuity',
+                className: 'acuity',
+                type: 'news',
+            },
+            acuity_mt5_download: {
+                key: 'acuity_mt5_download',
+                header: localize('Power up your trades with Acuity'),
+                message: localize(
+                    'Download intuitive trading tools to keep track of market events. The Acuity suite is only available for Windows, and is most recommended for financial assets.'
+                ),
+                secondary_btn: {
+                    text: localize('Learn More'),
+                    onClick: () => {
+                        ui.setIsAcuityModalOpen(true);
+                        this.removeNotificationByKey({ key: this.client_notifications.acuity_mt5_download.key });
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.acuity_mt5_download.key,
+                            should_show_again: false,
+                        });
+                    },
+                },
+                platform: [platform_name.DMT5],
+                img_src: getUrlBase('/public/images/common/acuity_software.png'),
+                img_alt: 'Acuity Download',
+                className: 'acuity-mt5',
+                icon: 'IcCloseDark',
+                type: 'news',
+            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),
@@ -726,34 +894,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
-            needs_poa_virtual: {
-                action: {
-                    route: routes.proof_of_address,
-                    text: localize('Verify address'),
-                },
-                key: 'needs_poa_virtual',
-                header: localize('Please Verify your address'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
-                ),
-                type: 'danger',
-            },
-            needs_poi_virtual: {
-                action: {
-                    onClick: async () => {
-                        const { switchAccount, first_switchable_real_loginid } = client_data;
 
-                        await switchAccount(first_switchable_real_loginid);
-                    },
-                    text: localize('Verify identity'),
-                },
-                key: 'needs_poi_virtual',
-                header: localize('Please Verify your identity'),
-                message: localize(
-                    'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
-                ),
-                type: 'danger',
-            },
             new_version_available: {
                 action: {
                     onClick: () => window.location.reload(),
@@ -791,27 +932,41 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            onfido_failed: {
-                key: 'onfido_failed',
-                header: localize("You've reached the limit for uploading your documents."),
-                message: localize('Please contact us via live chat.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
-                type: 'danger',
-            },
             password_changed: {
                 key: 'password_changed',
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
-            poa_poi_verified: {
-                key: 'poa_poi_verified',
-                header: localize('Proof of identity and address verified'),
+            poa_failed: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poa_failed',
+                header: localize('Please resubmit your proof of address or we may restrict your account.'),
+                message: localize('Please submit your proof of address.'),
+                type: 'danger',
+            },
+            poa_verified: {
+                key: 'poa_verified',
+                header: localize('Your proof of address is verified.'),
+                type: 'announce',
+                should_hide_close_btn: false,
+            },
+            poi_failed: {
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Resubmit proof of identity'),
+                },
+                key: 'poi_failed',
+                header: localize('Your proof of identity verification has failed'),
+                message: localize('Please submit your proof of identity.'),
+                type: 'danger',
+            },
+            poi_verified: {
+                key: 'poi_verified',
+                header: localize('Your proof of identity is verified.'),
                 type: 'announce',
                 should_hide_close_btn: false,
             },
@@ -829,6 +984,26 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            resticted_mt5_with_pending_poa: {
+                key: 'resticted_mt5_with_pending_poa',
+                header: localize('Your proof of address verification is pending'),
+                message: localize(
+                    'Your address verification is pending, and we’ve placed some restrictions on your account. The restrictions will be lifted once your address is verified.'
+                ),
+                type: 'danger',
+            },
+            resticted_mt5_with_failed_poa: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'resticted_mt5_with_failed_poa',
+                header: localize('Your proof of address verification has failed'),
+                message: localize(
+                    'Your proof of address did not pass our verification checks, and we’ve placed some restrictions on your account. Please resubmit your proof of address.'
+                ),
+                type: 'danger',
             },
             required_fields: (withdrawal_locked, deposit_locked) => {
                 let message;
@@ -1042,22 +1217,22 @@ export default class NotificationStore extends BaseStore {
         this.client_notifications = notifications;
     }
 
-    @action.bound
+    setP2POrderProps(p2p_order_props) {
+        this.p2p_order_props = p2p_order_props;
+    }
+
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }
 
-    @action.bound
     toggleNotificationsModal() {
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 
-    @action.bound
     unmarkNotificationMessage({ key }) {
         this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
-    @action.bound
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }

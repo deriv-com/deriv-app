@@ -50,7 +50,8 @@
         padding: 0.8rem;
 
         @include mobile {
-            grid-column: 2;
+            display: flex;
+            justify-content: center;
             justify-self: center;
             height: 4rem;
             width: 4rem;

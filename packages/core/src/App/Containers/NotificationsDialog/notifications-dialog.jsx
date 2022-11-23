@@ -15,77 +15,90 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
-
+import { toTitleCase, isEmptyObject, isMobile, PlatformContext } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
-const NotificationsList = ({ notifications, toggleDialog }) => (
-    <React.Fragment>
-        {notifications.map(item => (
-            <div className='notifications-item' key={item.key}>
-                <Text
-                    as='h2'
-                    className='notifications-item__title'
-                    weight='bold'
-                    size='xs'
-                    line_height='m'
-                    color='prominent'
-                >
-                    {item.type && (
-                        <Icon
-                            icon={
-                                ['contract_sold', 'info'].includes(item.type)
-                                    ? 'IcAlertInfo'
-                                    : `IcAlert${toTitleCase(item.type)}`
-                            }
-                            className={classNames('notifications-item__title-icon', {
-                                [`notifications-item__title-icon--${item.type}`]: item.type,
-                            })}
-                        />
-                    )}
-                    {item.header}
-                </Text>
-                <div className='notifications-item__message'>{item.message}</div>
-                <div className='notifications-item__action'>
-                    {!isEmptyObject(item.action) && (
-                        <React.Fragment>
-                            {item.action.route ? (
-                                <BinaryLink
-                                    onClick={toggleDialog}
-                                    active_class='notifications-item'
-                                    className={classNames(
-                                        'dc-btn',
-                                        'dc-btn--secondary',
-                                        'notifications-item__cta-button'
-                                    )}
-                                    to={item.action.route}
-                                >
-                                    <Text weight='bold' size='xxs'>
-                                        {item.action.text}
-                                    </Text>
-                                </BinaryLink>
-                            ) : (
-                                <Button
-                                    className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                    onClick={item.action.onClick}
-                                >
-                                    <Text weight='bold' size='xxs'>
-                                        {item.action.text}
-                                    </Text>
-                                </Button>
-                            )}
-                        </React.Fragment>
-                    )}
-                </div>
-            </div>
-        ))}
-    </React.Fragment>
-);
+const NotificationsList = ({ notifications, toggleDialog }) => {
+    const getNotificationitemIcon = item => {
+        const { type } = item;
+        if (['contract_sold', 'info'].includes(type)) {
+            return 'IcAlertInfo';
+        } else if (type === 'p2p_completed_order') {
+            return 'IcAlertAnnounce';
+        }
 
+        return `IcAlert${toTitleCase(type)}`;
+    };
+
+    return (
+        <React.Fragment>
+            {notifications.map(item => (
+                <div className='notifications-item' key={item.key}>
+                    <Text
+                        as='h2'
+                        className='notifications-item__title'
+                        weight='bold'
+                        size='xs'
+                        line_height='m'
+                        color='prominent'
+                    >
+                        {item.type && (
+                            <Icon
+                                icon={getNotificationitemIcon(item)}
+                                className={classNames('notifications-item__title-icon', {
+                                    [`notifications-item__title-icon--${item.type}`]: item.type,
+                                })}
+                            />
+                        )}
+                        {item.header}
+                    </Text>
+                    <div className='notifications-item__message'>{item.message}</div>
+                    <div className='notifications-item__action'>
+                        {!isEmptyObject(item.action) && (
+                            <React.Fragment>
+                                {item.action.route ? (
+                                    <BinaryLink
+                                        onClick={toggleDialog}
+                                        active_class='notifications-item'
+                                        className={classNames(
+                                            'dc-btn',
+                                            'dc-btn--secondary',
+                                            'notifications-item__cta-button'
+                                        )}
+                                        to={item.action.route}
+                                    >
+                                        <Text weight='bold' size='xxs'>
+                                            {item.action.text}
+                                        </Text>
+                                    </BinaryLink>
+                                ) : (
+                                    <Button
+                                        className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
+                                        onClick={item.action.onClick}
+                                    >
+                                        <Text weight='bold' size='xxs'>
+                                            {item.action.text}
+                                        </Text>
+                                    </Button>
+                                )}
+                            </React.Fragment>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </React.Fragment>
+    );
+};
 const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog }, ref) => {
     const is_empty = !notifications.length;
+    const { is_pre_appstore } = React.useContext(PlatformContext);
     return (
-        <div className='notifications-dialog' ref={ref}>
+        <div
+            className={classNames('notifications-dialog', {
+                'notifications-dialog--pre-appstore': is_pre_appstore,
+            })}
+            ref={ref}
+        >
             <div className='notifications-dialog__header'>
                 <Text
                     as='h2'

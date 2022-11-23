@@ -613,7 +613,7 @@ const ModalContent = ({
                                 {is_logged_in ? (
                                     <React.Fragment>
                                         {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
-                                            <Table.Head>{localize('Synthetic')}</Table.Head>
+                                            <Table.Head>{localize('Derived')}</Table.Head>
                                         )}
                                         {isLandingCompanyEnabled({
                                             landing_companies,
@@ -642,7 +642,7 @@ const ModalContent = ({
                                     </React.Fragment>
                                 ) : (
                                     <React.Fragment>
-                                        <Table.Head>{localize('Synthetic')}</Table.Head>
+                                        <Table.Head>{localize('Derived')}</Table.Head>
                                         <Table.Head>
                                             {localize('Financial')}
                                             <Text size='s' weight='bold' className='cfd-compare-accounts__star'>

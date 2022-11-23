@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Checkbox from '../checkbox/checkbox.jsx';
+import Checkbox from '../checkbox/checkbox';
 import Text from '../text';
 
 const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, children, ...props }) => {
@@ -44,7 +44,7 @@ CompositeCheckbox.propTypes = {
     label: PropTypes.string.isRequired,
     id: PropTypes.string,
     description: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType(PropTypes.node, PropTypes.arrayOf(PropTypes.node)),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 };
 
 export default CompositeCheckbox;

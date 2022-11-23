@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -12,11 +12,13 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
+import { BinaryLink } from 'App/Components/Routes';
+import { Localize } from '@deriv/translations';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
+    can_have_whatsapp,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -59,7 +61,6 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     changeCurrentLanguage,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -67,6 +68,32 @@ const DefaultHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
+
+    const RedirectToOldInterface = () => {
+        const platform_store = React.useContext(PlatformContext);
+        const disablePreAppstore = () => {
+            platform_store.setIsPreAppStore(false);
+        };
+        return (
+            <div className='trading-hub-header__redirect'>
+                <BinaryLink
+                    to={routes.trade}
+                    className='trading-hub-header__redirect--link'
+                    onClick={disablePreAppstore}
+                >
+                    <Text as='p' size='xs' color='general'>
+                        <Localize i18n_default_text="Exit Trader's hub" />
+                    </Text>
+                    <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
+                    <Icon icon='IcArrowRight' size={18} color='red' />
+                </BinaryLink>
+            </div>
+        );
+    };
+
+    React.useEffect(() => {
+        if (is_logged_in) replaceCashierMenuOnclick();
+    }, [is_logged_in]);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
@@ -91,6 +118,37 @@ const DefaultHeader = ({
             }
             return true;
         });
+
+    const Divider = () => {
+        return <div className='header__menu--separator' />;
+    };
+
+    const ExploreTradingHub = () => {
+        const platform_store = React.useContext(PlatformContext);
+        const EnablePreAppstore = () => {
+            platform_store.setIsPreAppStore(true);
+        };
+        return (
+            <div className='header__menu__redirect'>
+                <BinaryLink
+                    to={routes.trading_hub}
+                    className='header__menu__redirect--link'
+                    onClick={EnablePreAppstore}
+                >
+                    <Text as='p' size='xs'>
+                        <Localize i18n_default_text="Explore Trader's hub" />
+                    </Text>
+                    <Icon
+                        className='trading-hub-header__dtrader--redirect--beta'
+                        icon='IcAppstoreTradingHubBeta'
+                        size={45}
+                    />
+                    <Icon icon='IcArrowRight' size={18} color='red' />
+                </BinaryLink>
+            </div>
+        );
+    };
+
     return (
         <header
             className={classNames('header', {
@@ -112,6 +170,7 @@ const DefaultHeader = ({
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
+                            can_have_whatsapp={can_have_whatsapp}
                             enableApp={enableApp}
                             disableApp={disableApp}
                             location={location}
@@ -134,15 +193,23 @@ const DefaultHeader = ({
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
                             }
-                            is_social_signup={is_social_signup}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
+                {is_logged_in && (
+                    <DesktopWrapper>
+                        {window.location.pathname.startsWith(routes.appstore) ? (
+                            <RedirectToOldInterface />
+                        ) : (
+                            <ExploreTradingHub />
+                        )}
+                        <Divider />
+                    </DesktopWrapper>
+                )}
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
@@ -159,6 +226,7 @@ const DefaultHeader = ({
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
+
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -186,7 +254,6 @@ const DefaultHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
-            <TempAppSettings />
         </header>
     );
 };
@@ -196,6 +263,7 @@ DefaultHeader.propTypes = {
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
+    can_have_whatsapp: PropTypes.bool,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -217,9 +285,6 @@ DefaultHeader.propTypes = {
     is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_account_transfer_visible: PropTypes.bool,
-    // is_p2p_enabled: PropTypes.bool,
-    // is_payment_agent_transfer_visible: PropTypes.bool,
-    // is_payment_agent_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -231,7 +296,6 @@ DefaultHeader.propTypes = {
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
@@ -247,6 +311,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    can_have_whatsapp: client.can_have_whatsapp,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -287,5 +352,4 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
 }))(withRouter(DefaultHeader));

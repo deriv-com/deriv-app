@@ -1,21 +1,28 @@
+@mixin ad-status-base($background-color) {
+    &:before {
+        content: '';
+        height: 100%;
+        width: 100%;
+        opacity: 0.16;
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        border-radius: 1.6rem;
+        background-color: $background-color;
+    }
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 0.1rem 1.2rem;
+    position: relative;
+    text-align: center;
+}
+
 .ad-status {
     &--active {
-        &:before {
-            content: '';
-            height: 100%;
-            width: 100%;
-            background-color: var(--status-success);
-            opacity: 0.16;
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
-            border-radius: 1.6rem;
-        }
-        padding: 0.1rem 1.2rem;
-        text-align: center;
-        display: flex;
-        position: relative;
+        @include ad-status-base(var(--status-success));
+
         width: 6.7rem;
 
         @include mobile {
@@ -25,22 +32,7 @@
     }
 
     &--inactive {
-        &:before {
-            content: '';
-            height: 100%;
-            width: 100%;
-            background-color: var(--status-danger);
-            opacity: 0.16;
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
-            border-radius: 1.6rem;
-        }
-        padding: 0.1rem 1.2rem;
-        text-align: center;
-        display: flex;
-        position: relative;
+        @include ad-status-base(var(--status-danger));
         width: 8rem;
     }
 }

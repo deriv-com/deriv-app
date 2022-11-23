@@ -15,7 +15,6 @@ import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared'
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import FloatingRate from 'Components/floating-rate';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -34,8 +33,8 @@ const CreateAdFormWrapper = ({ children }) => {
 
 const CreateAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
+
     const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
@@ -100,7 +99,7 @@ const CreateAdForm = () => {
         <React.Fragment>
             <Formik
                 initialValues={{
-                    contact_info: my_ads_store.contact_info,
+                    contact_info: general_store.contact_info,
                     default_advert_description: my_ads_store.default_advert_description,
                     max_transaction: '',
                     min_transaction: '',
@@ -203,14 +202,16 @@ const CreateAdForm = () => {
                                                         hint={
                                                             // Using two "==" is intentional as we're checking for nullish
                                                             // rather than falsy values.
-                                                            !is_sell_advert || available_balance == null
+                                                            !is_sell_advert ||
+                                                            general_store.advertiser_info.balance_available == null
                                                                 ? undefined
                                                                 : localize(
                                                                       'Your Deriv P2P balance is {{ dp2p_balance }}',
                                                                       {
                                                                           dp2p_balance: `${formatMoney(
                                                                               currency,
-                                                                              available_balance,
+                                                                              general_store.advertiser_info
+                                                                                  .balance_available,
                                                                               true
                                                                           )} ${currency}`,
                                                                       }
@@ -344,7 +345,7 @@ const CreateAdForm = () => {
                                                         }
                                                         error={touched.contact_info && errors.contact_info}
                                                         className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                        initial_character_count={my_ads_store.contact_info.length}
+                                                        initial_character_count={general_store.contact_info.length}
                                                         required
                                                         has_character_counter
                                                         max_characters={300}
@@ -371,7 +372,7 @@ const CreateAdForm = () => {
                                                     hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={
-                                                        my_ads_store.default_advert_description.length
+                                                        general_store.default_advert_description.length
                                                     }
                                                     has_character_counter
                                                     max_characters={300}
@@ -384,7 +385,11 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='Payment methods' />
                                             </Text>
                                             <Text color='less-prominent'>
-                                                <Localize i18n_default_text='You may choose up to 3.' />
+                                                {is_sell_advert ? (
+                                                    <Localize i18n_default_text='You may tap and choose up to 3.' />
+                                                ) : (
+                                                    <Localize i18n_default_text='You may choose up to 3.' />
+                                                )}
                                             </Text>
                                         </div>
                                         <CreateAdFormPaymentMethods

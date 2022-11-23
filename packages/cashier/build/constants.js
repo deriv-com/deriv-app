@@ -18,7 +18,6 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const ALIASES = {
-    _common: path.resolve(__dirname, '../src/_common'),
     Components: path.resolve(__dirname, '../src/components'),
     Config: path.resolve(__dirname, '../src/config'),
     Containers: path.resolve(__dirname, '../src/containers'),
@@ -36,7 +35,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
         ? [
               {
                   test: /\.(js|jsx|ts|tsx)$/,
-                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(_common\/lib)/,
+                  exclude: /node_modules|__tests__|(build\/.*\.js$)|(utils\/lib)/,
                   include: /src/,
                   loader: 'eslint-loader',
                   enforce: 'pre',

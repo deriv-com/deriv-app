@@ -4,16 +4,13 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { RootStore, TReactElement } from 'Types';
+import { TRootStore, TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
+    className: string;
     disableApp: () => void;
     enableApp: () => void;
-    error: {
-        message?: string;
-        code?: string;
-        setErrorMessage?: (message: string) => void;
-    };
+    error: TError | Record<string, never>;
 };
 
 type TSetDetails = {
@@ -25,7 +22,7 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDialogProps) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -35,6 +32,13 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
         onConfirm: undefined,
         message: '',
     });
+
+    const dismissError = React.useCallback(() => {
+        if (error.setErrorMessage) {
+            error.setErrorMessage({ code: '', message: '' }, null, false);
+        }
+        setErrorVisibility(false);
+    }, [error]);
 
     const mapErrorToDetails = React.useCallback(
         (error_code?: string, error_message?: string) => {
@@ -118,18 +122,12 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
         setIsVisible(is_error_visible);
     };
 
-    const dismissError = React.useCallback(() => {
-        if (error.setErrorMessage) {
-            error.setErrorMessage('');
-        }
-        setErrorVisibility(false);
-    }, [error]);
-
     return (
         <Dialog
             title={details.title}
             confirm_button_text={details.confirm_button_text}
             cancel_button_text={details.cancel_button_text}
+            className={className}
             onConfirm={() => {
                 if (typeof details.onConfirm === 'function') {
                     details.onConfirm();
@@ -152,7 +150,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
     );
 };
 
-export default connect(({ ui }: RootStore) => ({
+export default connect(({ ui }: TRootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
 }))(ErrorDialog);

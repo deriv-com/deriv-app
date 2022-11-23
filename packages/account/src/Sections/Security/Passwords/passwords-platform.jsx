@@ -15,7 +15,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
     const getPlatformTitle = () => {
         let title = '';
         if (has_mt5_accounts) {
-            title = localize('DMT5 Password');
+            title = localize('Deriv MT5 Password');
         } else if (has_dxtrade_accounts) {
             title = localize('{{platform_name_dxtrade}} Password', { platform_name_dxtrade });
         }
@@ -44,16 +44,16 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                 {has_mt5_accounts && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize i18n_default_text='Your DMT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
+                            <Localize i18n_default_text='Your Deriv MT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
                         </Text>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize
-                                i18n_default_text='Click the <0>Change password</0> button to change your DMT5 password.'
+                                i18n_default_text='Click the <0>Change password</0> button to change your Deriv MT5 password.'
                                 components={[<strong key={0} />]}
                             />
                         </Text>
                         <div className='passwords-platform__content'>
-                            <Popover alignment='bottom' message='DMT5'>
+                            <Popover alignment='bottom' message='Deriv MT5'>
                                 <Icon icon='IcBrandDmt5' size={32} />
                             </Popover>
                             <Button
@@ -71,14 +71,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize
-                                i18n_default_text='Your {{platform_name_dxtrade}} password is for logging in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
-                                values={{ platform_name_dxtrade }}
-                            />
-                        </Text>
-                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize
-                                i18n_default_text='Click the <0>Change password</0> button to change your {{platform_name_dxtrade}} password.'
-                                components={[<strong key={0} />]}
+                                i18n_default_text='Use the {{platform_name_dxtrade}} password to log in to your {{platform_name_dxtrade}} accounts on the web and mobile apps.'
                                 values={{ platform_name_dxtrade }}
                             />
                         </Text>
@@ -102,6 +95,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                     identifier_title={identifier}
                     onClose={() => setIsSentEmailModalOpen(false)}
                     onClickSendEmail={onClickSendEmail}
+                    is_modal_when_mobile
                 />
                 {/*
                 <SuccessDialog

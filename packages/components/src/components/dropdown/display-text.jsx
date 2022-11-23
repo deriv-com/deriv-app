@@ -56,7 +56,7 @@ DisplayText.propTypes = {
     list: listPropType(),
     name: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     is_align_text_left: PropTypes.bool,
 };
 

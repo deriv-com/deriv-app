@@ -4,7 +4,7 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { RootStore, TReactChangeEvent, TReactChildren } from 'Types';
+import { TRootStore, TReactChangeEvent, TReactChildren } from 'Types';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -24,14 +24,17 @@ type TCryptoFiatConverterProps = {
     from_currency: string;
     hint: string | TReactChildren;
     is_timer_visible: boolean;
-    onChangeConverterFromAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterFromAmount: (
+        event: { target: { value: string } },
+        from_currency: string,
+        to_currency: string
+    ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
     resetConverter: () => void;
     to_currency: string;
     validateFromAmount: () => void;
     validateToAmount: () => void;
 };
-let changed_event_amount: TReactChangeEvent;
 
 const Timer = ({ onComplete }: TTimerProps) => {
     const initial_time = 60;
@@ -114,6 +117,7 @@ const CryptoFiatConverter = ({
                         required
                         hint={hint}
                         classNameHint='crypto-fiat-converter__hint'
+                        data-testid='dt_converter_from_amount_input'
                     />
                 )}
             </Field>
@@ -146,13 +150,13 @@ const CryptoFiatConverter = ({
                             autoComplete='off'
                             hint={localize('Approximate value')}
                             classNameHint='crypto-fiat-converter__hint'
+                            data-testid='dt_converter_to_amount_input'
                         />
                         {is_timer_visible && (
                             <Timer
                                 onComplete={() => {
-                                    changed_event_amount.target.value = converter_from_amount;
                                     onChangeConverterFromAmount(
-                                        { ...changed_event_amount },
+                                        { target: { value: converter_from_amount } },
                                         from_currency,
                                         to_currency
                                     );
@@ -166,7 +170,7 @@ const CryptoFiatConverter = ({
     );
 };
 
-export default connect(({ modules }: RootStore) => ({
+export default connect(({ modules }: TRootStore) => ({
     converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
     converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
     converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,

@@ -8,14 +8,28 @@ import './ad-status.scss';
 const AdStatus = ({ is_active }) => {
     if (!is_active) {
         return (
-            <Text className='ad-status--inactive' color='loss-danger' line_height='s' size='xs' weight='bold'>
+            <Text
+                align='center'
+                className='ad-status--inactive'
+                color='loss-danger'
+                line_height='s'
+                size='xs'
+                weight='bold'
+            >
                 <Localize i18n_default_text='Inactive' />
             </Text>
         );
     }
 
     return (
-        <Text className='ad-status--active' color='profit-success' line_height='s' size='xs' weight='bold'>
+        <Text
+            align='center'
+            className='ad-status--active'
+            color='profit-success'
+            line_height='s'
+            size='xs'
+            weight='bold'
+        >
             <Localize i18n_default_text='Active' />
         </Text>
     );

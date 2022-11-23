@@ -82,7 +82,7 @@
         line-height: 1.4;
     }
 
-    @media (orientation: portrait) {
+    @media screen and (max-aspect-ratio: 13/9) {
         display: none;
     }
 }

@@ -180,8 +180,7 @@ const CFDRealAccounts = ({
                                                   existing_account.landing_company_short?.slice(1)
                                                 : existing_account.landing_company_short?.toUpperCase();
 
-                                        const title_shortcode =
-                                            is_eu || account.platform === CFD_PLATFORMS.DXTRADE ? '' : non_eu_accounts;
+                                        const title_shortcode = is_eu ? '' : non_eu_accounts;
                                         return (
                                             <div className='existing-accounts' key={existing_account.name}>
                                                 <AccountManager

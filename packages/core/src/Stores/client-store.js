@@ -360,6 +360,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
+            isEuropeCountry: action.bound,
         });
 
         reaction(
@@ -985,6 +986,10 @@ export default class ClientStore extends BaseStore {
 
     get is_multipliers_only() {
         return isMultipliersOnly(this.residence);
+    }
+
+    isEuropeCountry() {
+        return this.is_eu_country || this.is_eu;
     }
 
     /**

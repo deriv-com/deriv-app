@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
+import { getAccountTypeFields, getCFDAccountKey } from '@deriv/shared';
 import specifications from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -49,7 +49,7 @@ type TCFDMT5RealAccountDisplayProps = {
     ) => void;
     platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
@@ -61,6 +61,7 @@ type TCFDMT5RealAccountDisplayProps = {
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 const CFDMT5RealAccountDisplay = ({
@@ -88,6 +89,7 @@ const CFDMT5RealAccountDisplay = ({
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
+    setIsAcuityModalOpen,
 }: TCFDMT5RealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -212,6 +214,7 @@ const CFDMT5RealAccountDisplay = ({
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
             toggleMT5TradeModal={toggleMT5TradeModal}
+            setIsAcuityModalOpen={setIsAcuityModalOpen}
         />
     );
 

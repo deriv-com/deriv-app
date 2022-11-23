@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
-import UserAvatar from 'Components/user/user-avatar';
+import { OnlineStatusAvatar } from 'Components/online-status';
 import { useStores } from 'Stores';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
@@ -38,6 +38,7 @@ const BuySellRow = ({ row: advert }) => {
         account_currency,
         advertiser_details,
         counterparty_type,
+        effective_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -57,6 +58,7 @@ const BuySellRow = ({ row: advert }) => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     if (isMobile()) {
@@ -70,7 +72,12 @@ const BuySellRow = ({ row: advert }) => {
                             : buy_sell_store.showAdvertiserPage(advert)
                     }
                 >
-                    <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
+                    <OnlineStatusAvatar
+                        is_online={advertiser_details.is_online}
+                        nickname={advertiser_name}
+                        size={32}
+                        text_size='s'
+                    />
                     <div className='buy-sell-row__advertiser-name'>
                         <div className='buy-sell__cell--container__row'>
                             <Text
@@ -172,7 +179,12 @@ const BuySellRow = ({ row: advert }) => {
                             : buy_sell_store.showAdvertiserPage(advert)
                     }
                 >
-                    <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
+                    <OnlineStatusAvatar
+                        is_online={advertiser_details.is_online}
+                        nickname={advertiser_name}
+                        size={24}
+                        text_size='xxs'
+                    />
                     <div className='buy-sell__cell--container'>
                         <div className='buy-sell__cell--container__row'>
                             <div

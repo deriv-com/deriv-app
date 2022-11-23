@@ -9,9 +9,6 @@ import CreateAdForm from './create-ad-form.jsx';
 const CreateAd = () => {
     const { my_ads_store } = useStores();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
-
     return (
         <React.Fragment>
             <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />

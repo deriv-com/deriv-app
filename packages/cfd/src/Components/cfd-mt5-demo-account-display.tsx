@@ -108,7 +108,7 @@ const CFDMT5DemoAccountDisplay = ({
     }, [is_logged_in, is_eu, is_eu_country, residence, platform]);
 
     return (
-        <div>
+        <React.Fragment>
             {is_loading ? (
                 <Loading />
             ) : (
@@ -177,7 +177,7 @@ const CFDMT5DemoAccountDisplay = ({
                     )}
                 </div>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

@@ -125,8 +125,8 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         }
     };
 
-    it('should render Derived & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
-        render(<CFDMT5DemoAccountDisplay {...props} />);
+    it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
+        render(<CFDDemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -139,14 +139,14 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 
-    it('should render Derived & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} />);
+    it('should render Derived & Financial cards without "Add demo account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
+        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add demo account" button on DMT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
+    it('should render a CFDs card only with enabled "Add demo account" button on Deriv MT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
         props.standpoint.iom = true;
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDMT5DemoAccountDisplay {...props} is_eu />);
@@ -159,7 +159,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
         expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'demo CFDs');
     });
 
-    it('should render a CFDs card only without "Add demo account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
+    it('should render a CFDs card only without "Add demo account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 

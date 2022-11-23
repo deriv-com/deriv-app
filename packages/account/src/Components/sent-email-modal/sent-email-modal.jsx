@@ -54,7 +54,7 @@ const SentEmailModal = ({
                 );
                 break;
             case CFD_PLATFORMS.MT5:
-                subtitle = localize('Please click on the link in the email to change your DMT5 password.');
+                subtitle = localize('Please click on the link in the email to change your Deriv MT5 password.');
                 break;
             case 'Google':
             case 'Facebook':

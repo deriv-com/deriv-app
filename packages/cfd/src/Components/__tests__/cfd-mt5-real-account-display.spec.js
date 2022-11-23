@@ -211,8 +211,8 @@ describe('<CFDMT5RealAccountDisplay />', () => {
         }
     };
 
-    it('should render Derived & Financial cards with enabled buttons on DMT5 when is_logged_in=true & is_eu=false', () => {
-        render(<CFDMT5RealAccountDisplay {...props} />);
+    it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when is_logged_in=true & is_eu=false', () => {
+        render(<CFDRealAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
@@ -225,14 +225,14 @@ describe('<CFDMT5RealAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'real', platform: 'mt5' });
     });
 
-    it('should render Derived & Financial cards without "Add real account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDMT5RealAccountDisplay {...props} is_logged_in={false} />);
+    it('should render Derived & Financial cards without "Add real account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add real account" button on DMT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
+    it('should render a CFDs card only with enabled "Add real account" button on Deriv MT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(
             <CFDMT5RealAccountDisplay
@@ -251,7 +251,7 @@ describe('<CFDMT5RealAccountDisplay />', () => {
         expect(props.openDerivRealAccountNeededModal).toHaveBeenCalledTimes(1);
     });
 
-    it('should render a CFDs card only without "Add real account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
+    it('should render a CFDs card only without "Add real account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDMT5RealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 

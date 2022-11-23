@@ -63,7 +63,7 @@ const Trade = ({
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
-            return { category: 'synthetic_index' };
+            return { category: 'synthetics' };
         } else if (try_open_markets && category) {
             return { category, subcategory };
         }

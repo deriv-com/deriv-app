@@ -6,7 +6,6 @@ import RootStore from '../Stores/index';
 
 type TCFDServerErrorDialogProps = {
     clearCFDError: () => void;
-    context: RootStore;
     disableApp: () => void;
     enableApp: () => void;
     error_message: string;
@@ -17,7 +16,6 @@ type TCFDServerErrorDialogProps = {
 
 const CFDServerErrorDialog = ({
     clearCFDError,
-    context,
     disableApp,
     enableApp,
     error_message,
@@ -38,7 +36,6 @@ const CFDServerErrorDialog = ({
             disableApp={disableApp}
             enableApp={enableApp}
             is_visible={should_show_error}
-            context={context}
         >
             {error_message || <Localize i18n_default_text='Sorry, an error occured while processing your request.' />}
         </Dialog>

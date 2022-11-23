@@ -1086,11 +1086,16 @@
         }
     }
 
+    &__acuity-container {
+        height: 3.4rem;
+        margin: 1.6rem;
+    }
+
     &__acuity-banner {
         background: var(--general-section-1);
-        height: 3.4rem;
         border-radius: 0.8rem;
-        margin: 1.6rem;
+        width: 100%;
+        height: 100%;
 
         &--wrapper {
             display: flex;

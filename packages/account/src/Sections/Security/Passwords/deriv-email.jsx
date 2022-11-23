@@ -57,7 +57,7 @@ const DerivEmail = ({ email, social_identity_provider, is_social_signup, is_from
                             />
                         </fieldset>
                     </Formik>
-                    {!is_from_derivgo ? (
+                    {!is_from_derivgo && (
                         <Button
                             className='email-change_button'
                             type='submit'
@@ -69,7 +69,7 @@ const DerivEmail = ({ email, social_identity_provider, is_social_signup, is_from
                             large
                             primary
                         />
-                    ) : null}
+                    )}
                 </div>
                 <UnlinkAccountModal
                     is_open={is_unlink_account_modal_open}

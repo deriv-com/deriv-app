@@ -23,6 +23,7 @@ import {
     CFDDbviOnBoarding,
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
+    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
@@ -241,6 +242,7 @@ const TradingHub: React.FC = () => {
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
+            <CFDServerErrorDialog context={store} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

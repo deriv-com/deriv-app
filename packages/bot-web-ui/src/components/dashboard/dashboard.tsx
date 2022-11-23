@@ -21,6 +21,7 @@ import {
     setTourSettings,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
+import { isMobile } from '@deriv/shared';
 
 type TDialogOptions = {
     title: string;
@@ -44,10 +45,11 @@ type TDashboard = {
     onEntered: () => void;
     onOkButtonClick: () => void;
     setActiveTab: (active_tab: number) => void;
-    setBotBuilderTokenCheck: (param: string | number) => void;
     setBotBuilderTourState: (param: boolean) => void;
-    setOnBoardingTokenCheck: (param: string | number) => void;
     setOnBoardTourRunState: (param: boolean) => void;
+    loadDataStrategy: () => void;
+    setBotBuilderTokenCheck: (param: string | number) => void;
+    setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
     toggleStrategyModal: () => void;
@@ -55,12 +57,13 @@ type TDashboard = {
 
 const Dashboard = ({
     active_tab,
+    is_drawer_open,
     dialog_options,
     has_file_loaded,
-    has_onboard_tour_started,
     has_tour_started,
+    has_onboard_tour_started,
     is_dialog_open,
-    is_drawer_open,
+    loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -72,11 +75,10 @@ const Dashboard = ({
     setOnBoardTourRunState,
     setTourActive,
     setTourDialogVisibility,
-    toggleStrategyModal,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
-        toggleStrategyModal();
+        loadDataStrategy();
     };
 
     let tour_status: { [key: string]: string };
@@ -127,7 +129,6 @@ const Dashboard = ({
             setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
     });
-    const token = false;
     let storage = '';
     if (localStorage?.dbot_settings !== undefined) {
         storage = JSON.parse(localStorage?.dbot_settings);
@@ -199,7 +200,7 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    <RunStrategy />
+                    {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
                     {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
@@ -223,26 +224,25 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
     active_tab: dashboard.active_tab,
-    dialog_options: run_panel.dialog_options,
-    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
     has_file_loaded: dashboard.has_file_loaded,
-    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     has_tour_started: dashboard.has_tour_started,
-    is_dialog_open: run_panel.is_dialog_open,
-    is_drawer_open: run_panel.is_drawer_open,
+    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
+    setActiveTab: dashboard.setActiveTab,
+    setTourActive: dashboard.setTourActive,
+    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
+    setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
+    setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
+    is_drawer_open: run_panel.is_drawer_open,
+    dialog_options: run_panel.dialog_options,
+    is_dialog_open: run_panel.is_dialog_open,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onCloseDialog: run_panel.onCloseDialog,
-    onEntered: load_modal.onEntered,
     onOkButtonClick: run_panel.onOkButtonClick,
-    setActiveTab: dashboard.setActiveTab,
-    setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
-    setBotBuilderTourState: dashboard.setBotBuilderTourState,
-    setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourActive: dashboard.setTourActive,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    onEntered: load_modal.onEntered,
 }))(Dashboard);

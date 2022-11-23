@@ -407,13 +407,9 @@ const Chart = props => {
         >
             <ChartMarkers />
             {is_accumulator &&
-                accumulators_positions.map(({ contract_info }) => {
-                    return (
-                        !!contract_info.is_sold && (
-                            <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
-                        )
-                    );
-                })}
+                accumulators_positions.map(({ contract_info }) => (
+                    <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
+                ))}
         </SmartChartWithRef>
     );
 };

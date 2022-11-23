@@ -185,18 +185,17 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, color, font, is_dark_theme, max_width, text, text_align, left, top, scale }) => {
-    ctx.textAlign = text_align || 'center';
+const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
+    ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
-    ctx.font = font || `bold ${size}px BinarySymbols, Roboto`;
-    if (color) ctx.fillStyle = color;
+    ctx.font = `bold ${size}px BinarySymbols, Roboto`;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
     }
     // fillText once in firefox due to disabling of text shadows, for default cases where its enabled, set to 5 (to add blur intensity)
     for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
-        ctx.fillText(text, left, top, max_width);
+        ctx.fillText(text, left, top);
     }
 };
 
@@ -213,8 +212,6 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             contract_type,
             // exit_tick_time,
-            currency,
-            current_spot_time,
             status,
             profit,
             is_accumulators_trade_without_contract,
@@ -251,7 +248,7 @@ const TickContract = RawMarkerMaker(
         const previous_tick = ticks[ticks.length - 2] || exit;
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
-        if (is_accumulators_trade_without_contract) {
+        if (start && is_accumulators_trade_without_contract) {
             // draw 2 barriers with a shade in-between only
             draw_partial_shade({
                 ctx,
@@ -268,80 +265,28 @@ const TickContract = RawMarkerMaker(
 
         if (is_accumulators_contract) {
             // draw custom barrier shadows with borders and labels for accumulators:
-            if (contract_type === 'ACCU') {
-                if (status === 'open' || is_in_contract_details) {
-                    // draw 2 barriers with a shade between them for an open Accumulate contract
-                    draw_partial_shade({
-                        ctx,
-                        start_left: previous_tick.left,
-                        fill_color: 'rgba(0, 167, 158, 0.08)',
-                        stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                        top: barrier,
-                        bottom: barrier_2,
-                        scale,
-                    });
-                }
+            if (
+                contract_type === 'ACCU' &&
+                barrier &&
+                barrier_2 &&
+                previous_tick &&
+                (status === 'open' || is_in_contract_details)
+            ) {
+                // draw 2 barriers with a shade between them for an open Accumulate contract
+                draw_partial_shade({
+                    ctx,
+                    start_left: previous_tick.left,
+                    fill_color: 'rgba(0, 167, 158, 0.08)',
+                    stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                    top: barrier,
+                    bottom: barrier_2,
+                    scale,
+                });
             }
 
             if (is_in_contract_details) {
                 ctx.restore();
                 return;
-            }
-
-            if (start.visible || entry.visible) {
-                const sign = profit > 0 ? '+' : '';
-                const profit_text = `${sign}${profit}`;
-                ctx.save();
-                const end_left =
-                    ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
-                const getMaxWidth = (is_profit_text, left, profit_text_width) => {
-                    if (
-                        !is_profit_text &&
-                        left + profit_text_width < end_left &&
-                        end_left - (left + profit_text_width) > 32
-                    ) {
-                        return end_left - (left + profit_text_width);
-                    } else if (is_profit_text && left < end_left && end_left - left > 52) {
-                        return end_left - left;
-                    }
-                    return 0;
-                };
-                if (current_spot_time?.visible && !is_sold) {
-                    // draw 3 text items with different font size and weight:
-                    let profit_text_width = 0;
-                    [
-                        {
-                            text: profit_text,
-                            font: `bold 20px IBM Plex Sans`,
-                            left: current_spot_time.left + 33,
-                            top: current_spot_time.top,
-                        },
-                        {
-                            text: `${currency}`,
-                            font: '10px IBM Plex Sans',
-                            left: current_spot_time.left + 35,
-                            top: current_spot_time.top + 1.5,
-                        },
-                    ].forEach(({ text, font, left, top }) => {
-                        shadowed_text({
-                            ctx,
-                            scale,
-                            is_dark_theme,
-                            text,
-                            font,
-                            text_align: 'start',
-                            color: getColor({ status: 'open', profit }),
-                            left: text === profit_text ? left : left + profit_text_width,
-                            top,
-                            max_width: getMaxWidth(text === profit_text, left, profit_text_width),
-                        });
-                        profit_text_width =
-                            text === profit_text
-                                ? ctx.measureText(profit_text).actualBoundingBoxRight
-                                : profit_text_width;
-                    });
-                    ctx.restore();
-                }
             }
         }
 

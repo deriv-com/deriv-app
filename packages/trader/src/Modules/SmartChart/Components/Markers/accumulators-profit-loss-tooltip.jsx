@@ -4,13 +4,17 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
+import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 
 const AccumulatorsProfitLossTooltip = ({
     alignment = 'right',
+    current_spot,
+    current_spot_time = 0,
     className = 'sc-accumulators-profit-loss-tooltip',
     currency,
     exit_tick = 0,
     exit_tick_time = 0,
+    is_sold,
     profit,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(true);
@@ -37,6 +41,16 @@ const AccumulatorsProfitLossTooltip = ({
             });
         }
     };
+
+    if (!is_sold)
+        return (
+            <AccumulatorsProfitLossText
+                currency={currency}
+                current_spot={current_spot}
+                current_spot_time={current_spot_time}
+                profit={profit}
+            />
+        );
 
     return (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
@@ -73,10 +87,13 @@ const AccumulatorsProfitLossTooltip = ({
 
 AccumulatorsProfitLossTooltip.propTypes = {
     alignment: PropTypes.string,
+    current_spot: PropTypes.number,
+    current_spot_time: PropTypes.number,
     className: PropTypes.string,
     currency: PropTypes.string,
     exit_tick: PropTypes.number,
     exit_tick_time: PropTypes.number,
+    is_sold: PropTypes.number,
     profit: PropTypes.number,
 };
 

@@ -8,12 +8,11 @@ configure({ adapter: new Adapter() });
 
 describe('AccumulatorsProfitLossTooltip', () => {
     const props = {
-        contract_info: {
-            currency: 'USD',
-            exit_tick: 6468.95,
-            exit_tick_time: 1666091856,
-            profit: +0.15,
-        },
+        currency: 'USD',
+        exit_tick: 6468.95,
+        exit_tick_time: 1666091856,
+        profit: +0.15,
+        is_sold: 1,
         className: 'profit-loss-tooltip',
     };
 

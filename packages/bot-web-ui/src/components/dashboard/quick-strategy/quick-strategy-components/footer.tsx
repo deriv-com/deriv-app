@@ -6,7 +6,6 @@ import { TQuickStrategyFooter } from './components.types';
 
 const QuickStrategyFooter = ({
     is_onscreen_keyboard_active,
-    is_mobile,
     is_submit_enabled,
     is_stop_button_visible,
     setFieldValue,
@@ -19,21 +18,19 @@ const QuickStrategyFooter = ({
         })}
     >
         <Button.Group>
-            {!is_mobile && (
-                <Button
-                    type='button'
-                    id='db-quick-strategy__button-edit'
-                    text={localize('Create and edit')}
-                    is_disabled={!is_submit_enabled}
-                    secondary
-                    large
-                    onClick={() => {
-                        setActiveTab(0);
-                        setFieldValue('button', 'edit');
-                        submitForm();
-                    }}
-                />
-            )}
+            <Button
+                type='button'
+                id='db-quick-strategy__button-edit'
+                text={localize('Create')}
+                is_disabled={!is_submit_enabled}
+                secondary
+                large
+                onClick={() => {
+                    setActiveTab(0);
+                    setFieldValue('button', 'edit');
+                    submitForm();
+                }}
+            />
             <Button
                 type='button'
                 id='db-quick-strategy__button-run'

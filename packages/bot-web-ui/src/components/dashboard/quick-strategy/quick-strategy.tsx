@@ -3,35 +3,18 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TQuickStrategyProps } from './quick-strategy.types';
 import { QuickStrategyContainer } from './quick-strategy-components';
-import { localize } from '@deriv/translations';
-import { MobileFullPageModal } from '@deriv/components';
 
 const QuickStrategy = (props: TQuickStrategyProps) => {
-    const { is_mobile, is_strategy_modal_open, toggleStrategyModal } = props;
+    const { loadDataStrategy } = props;
     React.useEffect(() => {
-        toggleStrategyModal();
+        loadDataStrategy();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <>
-            {is_mobile ? (
-                <MobileFullPageModal
-                    is_modal_open={is_strategy_modal_open}
-                    className='quick-strategy__wrapper'
-                    header={localize('Quick Strategy')}
-                    onClickClose={toggleStrategyModal}
-                    height_offset='80px'
-                    page_overlay
-                >
-                    <QuickStrategyContainer {...props} />
-                </MobileFullPageModal>
-            ) : (
-                <div className='quick-strategy__container'>
-                    <QuickStrategyContainer {...props} />
-                </div>
-            )}
-        </>
+        <div className='quick-strategy__container'>
+            <QuickStrategyContainer {...props} />
+        </div>
     );
 };
 
@@ -56,7 +39,7 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     selected_duration_unit: quick_strategy.selected_duration_unit,
     selected_type_strategy: quick_strategy.selected_type_strategy,
     symbol_dropdown: quick_strategy.symbol_dropdown,
-    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     setCurrentFocus: ui.setCurrentFocus,
     setActiveTab: dashboard.setActiveTab,

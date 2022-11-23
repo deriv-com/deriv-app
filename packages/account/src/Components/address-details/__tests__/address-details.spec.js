@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails from '../address-details';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 
@@ -55,6 +55,7 @@ describe('<AddressDetails/>', () => {
             address_state: 'Default test state',
         },
         validate: jest.fn(),
+        disabled_items: [],
     };
 
     const svgCommonRenderCheck = () => {
@@ -261,5 +262,19 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             expect(address_state_input.value).toBe('State 1');
         });
+    });
+
+    it('should disable the field if it is immuatble from BE', async () => {
+        mock_props.disabled_items = ['address_line_1', 'address_line_2'];
+
+        render(<AddressDetails {...mock_props} />);
+
+        expect(screen.getByPlaceholderText(address_line_1)).toBeDisabled();
+        expect(screen.getByPlaceholderText(address_line_2)).toBeDisabled();
+        await act(async () => {
+            expect(screen.getByPlaceholderText('State/Province')).toBeEnabled();
+        });
+        expect(screen.getByPlaceholderText(address_town)).toBeEnabled();
+        expect(screen.getByPlaceholderText(address_postcode)).toBeEnabled();
     });
 });

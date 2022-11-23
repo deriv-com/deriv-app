@@ -21,6 +21,7 @@ import {
     setTourSettings,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
+import { isMobile } from '@deriv/shared';
 
 type TDialogOptions = {
     title: string;
@@ -47,7 +48,6 @@ type TDashboard = {
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     loadDataStrategy: () => void;
-    is_mobile: boolean;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -62,7 +62,6 @@ const Dashboard = ({
     has_file_loaded,
     has_tour_started,
     has_onboard_tour_started,
-    is_mobile,
     is_dialog_open,
     loadDataStrategy,
     onCancelButtonClick,
@@ -201,7 +200,7 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    {!(is_mobile && active_tab === 2) && <RunStrategy />}
+                    {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
                     {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
@@ -246,5 +245,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     onCloseDialog: run_panel.onCloseDialog,
     onOkButtonClick: run_panel.onOkButtonClick,
     onEntered: load_modal.onEntered,
-    is_mobile: ui.is_mobile,
 }))(Dashboard);

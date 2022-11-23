@@ -23,7 +23,7 @@
             width: 77.5rem;
         }
         @include mobile {
-            height: calc(100% - 4rem - 4rem);
+            height: calc(100% - 8rem);
             position: fixed;
             z-index: 6;
             width: 100%;

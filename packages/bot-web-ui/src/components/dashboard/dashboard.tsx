@@ -82,6 +82,12 @@ const Dashboard = ({
         toggleStrategyModal();
     };
 
+    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
+    const is_tour_complete = React.useRef(true);
+    let bot_tour_token: string | number = '';
+    let onboard_tour_token: string | number = '';
+    let storage = '';
+
     let tour_status: { [key: string]: string };
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
@@ -99,11 +105,6 @@ const Dashboard = ({
         }
     };
 
-    const is_tour_complete = React.useRef(true);
-
-    let bot_tour_token: string | number = '';
-    let onboard_tour_token: string | number = '';
-
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
@@ -120,9 +121,8 @@ const Dashboard = ({
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, is_tour_complete, tour_status_ended]);
+    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_status_ended]);
 
-    //TODO: added addeventlistner because the useeffect does not trigger
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
@@ -148,7 +148,6 @@ const Dashboard = ({
         window.addEventListener('storage', botStorageSetting);
     }
 
-    let storage = '';
     if (localStorage?.dbot_settings !== undefined) {
         storage = JSON.parse(localStorage?.dbot_settings);
     }
@@ -161,8 +160,6 @@ const Dashboard = ({
             setTourDialogVisibility(true);
         }
     }, [active_tab]);
-
-    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
 
     return (
         <React.Fragment>

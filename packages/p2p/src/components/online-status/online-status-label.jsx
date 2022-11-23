@@ -22,7 +22,7 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
                     }
                     return localize('Seen {{ duration }} month{{ prural }} ago', {
                         duration: diff.months(),
-                        prural: addPrural(diff.months()),
+                        prural: addPlural(diff.months()),
                     });
                 }
                 if (diff.days())

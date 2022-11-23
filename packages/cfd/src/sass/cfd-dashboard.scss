@@ -510,7 +510,7 @@
     }
 
     @include desktop {
-        height: 100%;
+        height: auto;
         margin: 0 0.8rem;
     }
 
@@ -519,7 +519,6 @@
         margin-top: 2.4rem;
         display: flex;
         justify-content: center;
-        align-items: center;
 
         @include mobile {
             flex-direction: column;

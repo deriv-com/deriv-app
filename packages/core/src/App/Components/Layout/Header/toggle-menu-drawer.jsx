@@ -9,7 +9,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
@@ -311,24 +311,10 @@ const ToggleMenuDrawer = React.forwardRef(
         };
         const { pathname: route } = useLocation();
 
-        const history = useHistory();
-
         const is_trading_hub_category =
             route.startsWith(routes.trading_hub) ||
             route.startsWith(routes.cashier) ||
             route.startsWith(routes.account);
-
-        const tradingHubRedirect = () => {
-            if (is_pre_appstore) {
-                setIsPreAppStore(false);
-                toggleDrawer();
-                history.push(routes.root);
-            } else {
-                setIsPreAppStore(true);
-                toggleDrawer();
-                history.push(routes.trading_hub);
-            }
-        };
 
         return (
             <React.Fragment>
@@ -373,7 +359,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 className={`header__menu--back-to-ui${is_dark_mode ? '--dark' : ''}`}
                                                 type='button'
                                                 large
-                                                onClick={tradingHubRedirect}
+                                                onClick={() => {
+                                                    setIsPreAppStore(false);
+                                                    toggleDrawer();
+                                                }}
                                             >
                                                 <Text
                                                     className={`header__menu--back-to-ui-text${
@@ -413,7 +402,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     }`}
                                                     type='button'
                                                     large
-                                                    onClick={tradingHubRedirect}
+                                                    onClick={() => {
+                                                        setIsPreAppStore(false);
+                                                        toggleDrawer();
+                                                    }}
                                                 >
                                                     <Text
                                                         className={`header__menu--back-to-ui-text${
@@ -567,7 +559,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 }`}
                                                 type='button'
                                                 large
-                                                onClick={tradingHubRedirect}
+                                                onClick={() => {
+                                                    setIsPreAppStore(true);
+                                                    toggleDrawer();
+                                                }}
                                             >
                                                 <Text className='header__menu--trading-hub-text' size='xs'>
                                                     {localize("Trader's hub beta")}

@@ -1,3 +1,3 @@
-import { MissingPersonalDetails } from './missing-personal-details.jsx';
+import { MissingPersonalDetails } from './missing-personal-details';
 
 export default MissingPersonalDetails;

@@ -105,7 +105,7 @@ const StaticDashboard = ({
                                         setIndex(item.target.value);
                                     }}
                                     name='CFDs'
-                                    value={'CFDs'}
+                                    value={index}
                                 />
                             ) : (
                                 <Text
@@ -282,7 +282,7 @@ const StaticDashboard = ({
                                         setIndex(item.target.value);
                                     }}
                                     name='Options'
-                                    value={'Options and Multipliers'}
+                                    value={index}
                                 />
                             ) : (
                                 <Text

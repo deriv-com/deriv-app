@@ -251,7 +251,7 @@ export const PersonalDetailsForm = ({
                 } else if (has_poa_address_mismatch) {
                     showPOAAddressMismatchFailureNotification();
                 }
-            }, 1000);
+            }, 2000);
 
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();

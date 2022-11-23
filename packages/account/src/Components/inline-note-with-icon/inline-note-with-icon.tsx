@@ -1,8 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { HTMLAttributes } from 'react';
 import { Icon, Text } from '@deriv/components';
 
-const InlineNoteWithIcon = ({ icon, message, title }) => {
+type TInlineNoteWithIconExtend = {
+    icon: string;
+    message: string;
+    title: string;
+};
+
+export type TInlineNoteWithIcon = HTMLAttributes<HTMLInputElement | HTMLLabelElement> &
+    React.PropsWithChildren<TInlineNoteWithIconExtend>;
+
+const InlineNoteWithIcon = ({ icon, message, title }: TInlineNoteWithIcon) => {
     return (
         <div className='da-inline-note-with-icon'>
             <div>
@@ -14,12 +22,6 @@ const InlineNoteWithIcon = ({ icon, message, title }) => {
             </Text>
         </div>
     );
-};
-
-InlineNoteWithIcon.propTypes = {
-    icon: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
 };
 
 export default InlineNoteWithIcon;

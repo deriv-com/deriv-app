@@ -1,9 +1,18 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Text from '../text/text';
 import Icon from '../icon/icon';
+
+type TMobileDrawerSubmenu = {
+    has_subheader?: boolean;
+    onToggle: (params: boolean) => void;
+    submenu_toggle_class?: string;
+    submenu_icon?: string;
+    submenu_title?: string | React.ReactElement;
+    submenu_suffix_icon?: string;
+    route_config_path: string;
+};
 
 const SubMenu = ({
     children,
@@ -14,7 +23,7 @@ const SubMenu = ({
     submenu_title,
     submenu_suffix_icon,
     route_config_path,
-}) => {
+}: React.PropsWithChildren<TMobileDrawerSubmenu>) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
 
     const toggleMenu = () => {
@@ -32,7 +41,7 @@ const SubMenu = ({
                     <Text
                         as='h3'
                         size='xs'
-                        weight={window.location.pathname.startsWith(route_config_path) ? 'bold' : null}
+                        weight={window.location.pathname.startsWith(route_config_path) ? 'bold' : ''}
                     >
                         {submenu_title}
                     </Text>
@@ -53,18 +62,20 @@ const SubMenu = ({
     );
 };
 
-SubMenu.propTypes = {
-    children: PropTypes.node,
-    has_subheader: PropTypes.bool,
-    submenu_icon: PropTypes.string,
-    submenu_suffix_icon: PropTypes.string,
-    submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    submenu_toggle_class: PropTypes.string,
-    onToggle: PropTypes.func,
-    route_config_path: PropTypes.string,
+type TSubmenuList = {
+    has_subheader?: boolean;
+    submenu_title?: string | React.ReactElement;
+    collapse: () => void;
+    is_expanded: boolean;
 };
 
-const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_title }) => (
+const SubMenuList = ({
+    children,
+    collapse,
+    has_subheader,
+    is_expanded,
+    submenu_title,
+}: React.PropsWithChildren<TSubmenuList>) => (
     <CSSTransition
         in={is_expanded}
         classNames={{
@@ -94,13 +105,5 @@ const SubMenuList = ({ children, collapse, has_subheader, is_expanded, submenu_t
         </div>
     </CSSTransition>
 );
-
-SubMenuList.propTypes = {
-    children: PropTypes.node,
-    collapse: PropTypes.func,
-    has_subheader: PropTypes.bool,
-    is_expanded: PropTypes.bool,
-    submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-};
 
 export default SubMenu;

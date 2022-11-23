@@ -1,15 +1,28 @@
+/* eslint @typescript-eslint/triple-slash-reference: "off" */
+/// <reference path="../../../@types/react-drag-drawer/react-drag-drawer-config.d.ts" />
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Drawer from 'react-drag-drawer';
-import Body from './mobile-drawer-body.jsx';
-import Footer from './mobile-drawer-footer.jsx';
-import SubHeader from './mobile-drawer-subheader.jsx';
-import Item from './mobile-drawer-item.jsx';
-import SubMenu from './mobile-drawer-submenu.jsx';
-import SubMenuSection from './mobile-drawer-submenu-section.jsx';
+import Body from './mobile-drawer-body';
+import Footer from './mobile-drawer-footer';
+import SubHeader from './mobile-drawer-subheader';
+import Item from './mobile-drawer-item';
+import SubMenu from './mobile-drawer-submenu';
+import SubMenuSection from './mobile-drawer-submenu-section';
 import Text from '../text/text';
 import Icon from '../icon/icon';
+
+type TMobileDrawer = {
+    className: string;
+    id?: string;
+    height: string;
+    width: string;
+    alignment: 'left' | 'right';
+    is_open: boolean;
+    title: string;
+    toggle: () => void;
+    livechat: React.ReactElement;
+};
 
 const MobileDrawer = ({
     className,
@@ -22,7 +35,7 @@ const MobileDrawer = ({
     toggle,
     children,
     livechat: LiveChat,
-}) => (
+}: React.PropsWithChildren<TMobileDrawer>) => (
     <Drawer
         direction={alignment}
         open={is_open}
@@ -70,30 +83,11 @@ const MobileDrawer = ({
     </Drawer>
 );
 
-MobileDrawer.defaultProps = {
-    alignment: 'left',
-};
-
 MobileDrawer.Body = Body;
 MobileDrawer.Footer = Footer;
 MobileDrawer.Item = Item;
 MobileDrawer.SubHeader = SubHeader;
 MobileDrawer.SubMenu = SubMenu;
 MobileDrawer.SubMenuSection = SubMenuSection;
-
-MobileDrawer.propTypes = {
-    alignment: PropTypes.oneOf(['left', 'right']),
-    children: PropTypes.node,
-    className: PropTypes.string,
-    height: PropTypes.string,
-    id: PropTypes.string,
-    is_open: PropTypes.bool,
-    livechat_title: PropTypes.string,
-    onClickLivechat: PropTypes.func,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    toggle: PropTypes.func,
-    width: PropTypes.string,
-    livechat: PropTypes.object,
-};
 
 export default MobileDrawer;

@@ -1,14 +1,12 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
-const Body = ({ children, className }) => (
+type TBody = {
+    className?: string;
+};
+
+const Body = ({ children, className }: React.PropsWithChildren<TBody>) => (
     <div className={classNames('dc-mobile-drawer__body', className)}>{children}</div>
 );
-
-Body.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-};
 
 export default Body;

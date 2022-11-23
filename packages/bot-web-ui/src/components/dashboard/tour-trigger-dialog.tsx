@@ -12,6 +12,7 @@ type TourTriggrerDialog = {
     setOnBoardTourRunState: (param: boolean) => void;
     setBotBuilderTourState: (param: boolean) => void;
     active_tab: number;
+    first_name?: string;
 };
 
 const TourTriggrerDialog = ({
@@ -21,6 +22,7 @@ const TourTriggrerDialog = ({
     setOnBoardTourRunState,
     setTourActive,
     active_tab,
+    first_name = '',
 }: TourTriggrerDialog) => {
     const toggleTour = (value: boolean, type: string) => {
         if (active_tab === 0) {
@@ -39,16 +41,17 @@ const TourTriggrerDialog = ({
         }
     };
 
-    const getTourContent = () => {
+    const getTourContent = (name?: string) => {
         return (
             <>
                 {active_tab === 0 && (
                     <Localize
                         key={0}
                         i18n_default_text={
-                            'Hi [first name]! Hit <0>Start</0> for a quick <1>tour</1> to help you get started.'
+                            'Hi{{ name }}! Hit <0>Start</0> for a quick <1>tour</1> to help you get started.'
                         }
                         components={[<strong key={1} />, <i key={2} />]}
+                        values={{ name: name ? ` ${name}` : '' }}
                     />
                 )}
                 {active_tab === 1 && (
@@ -96,18 +99,19 @@ const TourTriggrerDialog = ({
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text color='prominent'>{getTourContent()}</Text>
+                    <Text color='prominent'>{getTourContent(first_name)}</Text>
                 </div>
             </Dialog>
         </div>
     );
 };
 
-export default connect(({ dashboard }: RootStore) => ({
+export default connect(({ dashboard, client }: RootStore) => ({
     active_tab: dashboard.active_tab,
     setTourActive: dashboard.setTourActive,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    first_name: client?.account_settings?.first_name,
 }))(TourTriggrerDialog);

@@ -99,7 +99,7 @@ const Dashboard = ({
         }
     };
 
-    const tour_ended = React.useRef(true);
+    const is_tour_complete = React.useRef(true);
 
     let getBotBuilderToken: string | number = '';
     let getOnboardingToken: string | number = '';
@@ -120,7 +120,7 @@ const Dashboard = ({
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_ended, tour_status_ended]);
+    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, is_tour_complete, tour_status_ended]);
 
     //TODO: added addeventlistner because the useeffect does not trigger
     const botStorageSetting = () => {
@@ -134,7 +134,7 @@ const Dashboard = ({
                 setTourDialogVisibility(true);
             }
             setIsTourEnded(true);
-            tour_ended.current = false;
+            is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
 

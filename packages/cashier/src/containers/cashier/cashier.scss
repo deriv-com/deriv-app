@@ -63,8 +63,7 @@
 
             @include mobile {
                 width: 100vw;
-                height: 100% !important;
-                // margin-top: 4rem;
+                margin-top: 4rem;
                 .dc-collapsible {
                     position: relative;
                     background-color: var(--general-section-1);
@@ -272,11 +271,11 @@
         @include mobile {
             /* postcss-bem-linter: ignore */
             & .dc-page-overlay__header {
-                // position: fixed;
-                // top: 4rem;
-                // width: 100%;
-                // height: 4rem;
-                display: none;
+                position: fixed;
+                top: 4rem;
+                width: 100%;
+                height: 4rem;
+                // display: none;
             }
 
             .dc-page-overlay__header.dc-page-app__header {

@@ -68,7 +68,7 @@
     &__form {
         @include mobile {
             &-element {
-                // padding: 0 0 10rem;
+                padding: 0 0 10rem;
             }
 
             .dc-input__footer {
@@ -207,10 +207,10 @@
                 bottom: 0;
                 flex-direction: row;
                 padding: 1.6rem;
-                // position: fixed;
+                position: fixed;
                 right: 0;
                 width: 100vw;
-                // z-index: 4;
+                z-index: 4;
             }
         }
     }

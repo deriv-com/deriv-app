@@ -3,9 +3,8 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Loading } from '@deriv/components';
-import { getLocation, PlatformContext } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import SameCitizenshipModal from '../CitizenshipModal/same-citizenship-modal.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -14,12 +13,10 @@ import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 import validateSignupFields from './validate-signup-fields.jsx';
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({ enableApp, isModalVisible, onSignup, residence_list, is_loading }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [country, setCountry] = React.useState('');
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [selected_residence, setSelectedResidence] = React.useState('');
@@ -41,16 +38,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         setSelectedCitizenship(citizenship);
         setIsPasswordModal(true);
     };
-
-    // didMount lifecycle hook
-    React.useEffect(() => {
-        WS.wait('website_status', 'residence_list').then(() => {
-            if (clients_country && residence_list) {
-                setCountry(getLocation(residence_list, clients_country, 'text'));
-            }
-            setIsLoading(false);
-        });
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 
@@ -110,7 +97,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     setFieldTouched={setFieldTouched}
                                     setFieldValue={setFieldValue}
                                     residence_list={residence_list}
-                                    default_value={country}
+                                    // default_value={country}
                                     history_value={history_value.current}
                                 >
                                     <Button
@@ -199,6 +186,7 @@ AccountSignup.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
     isModalVisible: PropTypes.func,
+    is_loading: PropTypes.bool,
 };
 
 const AccountSignupModal = ({
@@ -235,6 +223,7 @@ const AccountSignupModal = ({
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                is_loading={is_loading}
             />
         </Dialog>
     );

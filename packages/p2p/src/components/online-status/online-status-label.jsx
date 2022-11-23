@@ -15,11 +15,16 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
                 const diff = getDiffDuration(start_time, end_time);
                 const addPlural = duration => (duration !== 1 ? 's' : '');
 
-                if (diff.months())
-                    return localize('Seen {{ duration }} month{{ plural }} ago', {
+                if (diff.years()) return localize('Seen more than 6 months ago');
+                if (diff.months()) {
+                    if (diff.months() > 6) {
+                        return localize('Seen more than 6 months ago');
+                    }
+                    return localize('Seen {{ duration }} month{{ prural }} ago', {
                         duration: diff.months(),
-                        plural: addPlural(diff.months()),
+                        prural: addPrural(diff.months()),
                     });
+                }
                 if (diff.days())
                     return localize('Seen {{ duration }} day{{ plural }} ago', {
                         duration: diff.days(),

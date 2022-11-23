@@ -126,6 +126,14 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
+
+            // cleanup categories
+            Object.keys(available_categories).categories?.forEach(key => {
+                available_categories[key] = available_categories[key].filter(item => typeof item === 'object');
+                if (available_categories[key].length === 0) {
+                    delete available_categories[key];
+                }
+            });
         });
 
     const buildTradeTypesConfig = (contract, trade_types = {}) => {

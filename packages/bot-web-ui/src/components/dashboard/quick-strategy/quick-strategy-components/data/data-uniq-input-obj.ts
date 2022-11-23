@@ -1,8 +1,9 @@
 import QuickStrategyStore from 'Stores/quick-strategy-store';
 import common_inputs_properties, { TCommonInputsProperties } from './common-input-properties';
 import { TInputUniqFields } from '../../quick-strategy.types';
+import RootStore from 'Stores/root-store';
 
-const quick_strategy_store = new QuickStrategyStore();
+const quick_strategy_store = new QuickStrategyStore(RootStore);
 
 export type TDataUniqInput = {
     id: TFieldNameUniqInput;

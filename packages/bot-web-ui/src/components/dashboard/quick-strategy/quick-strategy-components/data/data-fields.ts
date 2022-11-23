@@ -15,7 +15,6 @@ export type TDataFields = {
     placeholder?: string;
     trailing_icon_message?: string;
     is_able_disabled?: boolean;
-    is_basic_field?: boolean;
 } & Readonly<TCommonInputsProperties>;
 
 const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = [
@@ -25,7 +24,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         className: '',
         select_value: 'type-strategy',
         label: '',
-        is_basic_field: true,
     },
     {
         id: 'symbol',
@@ -33,7 +31,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         className: 'quick-strategy__dropdown quick-strategy__leading',
         select_value: 'symbol',
         label: 'Asset',
-        is_basic_field: true,
     },
     {
         id: 'trade-type',
@@ -41,7 +38,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         className: 'quick-strategy__dropdown quick-strategy__leading',
         select_value: 'trade-type',
         label: 'Trade type',
-        is_basic_field: true,
     },
     {
         id: 'duration-unit',
@@ -50,7 +46,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         select_value: 'duration-unit',
         label: 'Duration unit',
         is_able_disabled: true,
-        is_basic_field: true,
     },
     {
         id: 'duration-value',
@@ -59,7 +54,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         label: 'Duration value',
         placeholder: '5',
         trailing_icon_message: 'The trade length of your purchased contract.',
-        is_basic_field: true,
         ...common_inputs_properties,
     },
     {
@@ -69,7 +63,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         label: 'Initial stake',
         placeholder: '10',
         trailing_icon_message: 'The amount that you pay to enter a trade.',
-        is_basic_field: true,
         ...common_inputs_properties,
     },
     {
@@ -79,7 +72,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         label: 'Loss threshold',
         placeholder: '5000',
         trailing_icon_message: getMessage('loss'),
-        is_basic_field: true,
         ...common_inputs_properties,
     },
     ...[data_uniq_input_obj],
@@ -90,7 +82,6 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         label: 'Profit threshold',
         placeholder: '5000',
         trailing_icon_message: getMessage('profit'),
-        is_basic_field: true,
         ...common_inputs_properties,
     },
 ];

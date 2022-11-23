@@ -13,7 +13,7 @@ import {
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { ResetTradingPasswordModal } from '@deriv/account';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
 import CFDPersonalDetailsModal from './cfd-personal-details-modal';
@@ -30,7 +30,7 @@ import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';

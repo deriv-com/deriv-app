@@ -11,18 +11,20 @@ export interface IDashboardStore {
     active_tab: number;
     faq_search_value: string | null;
     dialog_options: { [key: string]: string };
-    is_dialog_open: boolean;
     has_onboard_tour_started: boolean;
     has_bot_builder_tour_started: boolean;
+    is_dialog_open: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
+    is_tour_ended: boolean;
     has_builder_token: string | number;
     has_onboarding_token: string | number;
+    strategy_save_type: string;
     onCloseDialog: () => void;
+    showVideoDialog: (param: { [key: string]: string }) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
-    showVideoDialog: (param: { [key: string]: string }) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_onboard_tour_started: boolean) => void;
 }
@@ -40,6 +42,8 @@ export default class DashboardStore implements IDashboardStore {
             getFileArray: observable,
             has_file_loaded: observable,
             is_info_panel_visible: observable,
+            is_tour_ended: observable,
+            strategy_save_type: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
             has_onboard_tour_started: observable,
@@ -47,7 +51,6 @@ export default class DashboardStore implements IDashboardStore {
             has_bot_builder_tour_started: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
-
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,
@@ -83,12 +86,22 @@ export default class DashboardStore implements IDashboardStore {
     has_file_loaded = false;
     is_info_panel_visible = true;
     has_tour_started = false;
-    is_tour_dialog_visible = true;
+    is_tour_dialog_visible = false;
     has_onboard_tour_started = false;
     is_preview_on_popup = false;
     has_bot_builder_tour_started = false;
+    is_tour_ended = false;
     has_builder_token = '';
     has_onboarding_token = '';
+    strategy_save_type = 'unsaved';
+
+    setStrategySaveType = (strategy_save_type: string) => {
+        this.strategy_save_type = strategy_save_type;
+    };
+
+    setIsTourEnded = (is_tour_ended: boolean): void => {
+        this.is_tour_ended = is_tour_ended;
+    };
 
     setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
         this.has_builder_token = has_builder_token;
@@ -129,6 +142,12 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        if (active_tab === 1) {
+            const {
+                load_modal: { previewRecentStrategy, selected_strategy_id },
+            } = this.root_store;
+            previewRecentStrategy(selected_strategy_id);
+        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

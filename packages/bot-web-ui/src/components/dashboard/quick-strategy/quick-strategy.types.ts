@@ -175,7 +175,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     selected_duration_unit: TDurationOptions;
     selected_type_strategy: TTypeStrategy;
     symbol_dropdown: TSymbolDropdown;
-    toggleStrategyModal: () => void;
+    loadDataStrategy: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;

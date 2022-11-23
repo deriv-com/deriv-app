@@ -160,21 +160,10 @@
         }
     }
 
-    &__card {
-        margin-bottom: 1.6rem;
-
-        h1 {
-            font-size: 2.4rem;
-            margin-bottom: 0.8rem;
-            line-height: 2rem;
-            font-weight: 700;
-        }
-
-        p {
-            font-size: var(--text-size-xs);
-            margin-bottom: 0.8rem;
-            line-height: 2rem;
-            font-weight: 400;
+    &__content {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
@@ -205,7 +194,7 @@
             align-items: center;
             justify-content: center;
             width: 50%;
-            margin-top: -3rem;
+            margin-top: 3rem;
         }
 
         &__preview {
@@ -237,7 +226,7 @@
         &__description {
             text-align: center;
             margin-bottom: 4rem;
-            padding: 0 5rem;
+            padding: 0 3.6rem;
 
             &__loaded {
                 text-align: left;
@@ -278,7 +267,11 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                margin-right: 1rem;
+                width: 10.2rem;
+                margin: 1rem;
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             &__images {

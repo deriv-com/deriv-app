@@ -19,7 +19,7 @@ const AdvertiserPageStats = () => {
         sell_completion_rate,
         sell_orders_amount,
         sell_orders_count,
-    } = advertiser_page_store.advertiser_info;
+    } = advertiser_page_store.counterparty_advertiser_info;
 
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';

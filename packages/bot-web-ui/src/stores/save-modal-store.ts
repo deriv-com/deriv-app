@@ -1,8 +1,11 @@
 import { observable, action, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
-import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
+import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName, getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
+import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import RootStore from './root-store';
+import LZString from 'lz-string';
+import localForage from 'localforage';
 
 interface ISaveModalStore {
     is_save_modal_open: boolean;
@@ -75,9 +78,63 @@ export default class SaveModalStore implements ISaveModalStore {
 
             this.setButtonStatus(button_status.COMPLETED);
         }
+        const {
+            dashboard: { active_tab },
+        } = this.root_store;
+        const {
+            load_modal: { selected_strategy_id, setRecentStrategies },
+        } = this.root_store;
 
-        this.updateBotName(bot_name);
+        let save_type;
+        if (active_tab === 0) {
+            const workspace_id = selected_strategy_id || Blockly.utils.genUid();
+            const workspace = await getSavedWorkspaces();
+            const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
+            const {
+                load_modal: { getSaveType },
+            } = this.root_store;
+            const type = save_as_collection
+                ? save_types.UNSAVED
+                : is_local
+                ? save_types.LOCAL
+                : save_types.GOOGLE_DRIVE;
+            save_type = getSaveType(type);
+            const workspace_structure = {
+                id: workspace_id,
+                xml: Blockly.Xml.domToText(xml),
+                name: bot_name,
+                timestamp: Date.now(),
+                save_type,
+            };
+
+            if (current_workspace_index >= 0) {
+                const current_workspace = workspace_structure;
+                workspace[current_workspace_index] = current_workspace;
+            } else {
+                workspace.push(workspace_structure);
+            }
+
+            workspace
+                .sort((a, b) => {
+                    return new Date(a.timestamp) - new Date(b.timestamp);
+                })
+                .reverse();
+
+            if (workspace.length > MAX_STRATEGIES) {
+                workspace.pop();
+            }
+            localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
+            const updated_stratagies = await getSavedWorkspaces();
+            setRecentStrategies(updated_stratagies);
+            const {
+                dashboard: { setStrategySaveType },
+            } = this.root_store;
+            setStrategySaveType(save_type);
+        } else {
+            this.updateBotName(bot_name);
+        }
         saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+
         this.toggleSaveModal();
     }
 

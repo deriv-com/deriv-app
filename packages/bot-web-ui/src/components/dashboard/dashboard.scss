@@ -18,6 +18,8 @@
     &__chart-wrapper {
         position: relative;
         height: var(--tab-content-height);
+        width: 100%;
+        transition: all 0.4s;
         @include mobile {
             height: var(--tab-content-height-mobile);
         }

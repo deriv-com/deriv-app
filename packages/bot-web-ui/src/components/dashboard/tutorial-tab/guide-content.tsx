@@ -10,6 +10,7 @@ type TGuideContent = {
     dialog_options: { [key: string]: string };
     faq_search_value: string;
     is_dialog_open: boolean;
+    setIsTourEnded: (param: boolean) => boolean;
     onOkButtonClick: () => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     guide_list: [];
@@ -26,6 +27,7 @@ const GuideContent = ({
     guide_list,
     setActiveTab,
     setTourDialogVisibility,
+    setIsTourEnded,
 }: TGuideContent) => {
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
@@ -36,6 +38,7 @@ const GuideContent = ({
                 removeKeyValue('onboard_tour_status');
                 removeKeyValue('bot_builder_status');
             }
+            setIsTourEnded(false);
             setTourDialogVisibility(true);
             setActiveTab(0);
         } else {
@@ -45,6 +48,7 @@ const GuideContent = ({
                 removeKeyValue('bot_builder_status');
                 removeKeyValue('onboard_tour_status');
             }
+            setIsTourEnded(false);
             setTourDialogVisibility(true);
             setActiveTab(1);
         }
@@ -164,4 +168,5 @@ export default connect(({ dashboard, load_modal }: RootStore) => ({
     toggleLoadModal: load_modal.toggleLoadModal,
     setActiveTab: dashboard.setActiveTab,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    setIsTourEnded: dashboard.setIsTourEnded,
 }))(GuideContent);

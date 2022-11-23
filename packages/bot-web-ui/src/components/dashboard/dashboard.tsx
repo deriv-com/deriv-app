@@ -101,8 +101,8 @@ const Dashboard = ({
 
     const is_tour_complete = React.useRef(true);
 
-    let getBotBuilderToken: string | number = '';
-    let getOnboardingToken: string | number = '';
+    let bot_tour_token: string | number = '';
+    let onboard_tour_token: string | number = '';
 
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
@@ -110,13 +110,13 @@ const Dashboard = ({
         }
         if (active_tab === 0) {
             setTourType('onboard_tour_');
-            getOnboardingToken = getTourSettings('token');
-            setOnBoardingTokenCheck(getOnboardingToken);
+            onboard_tour_token = getTourSettings('token');
+            setOnBoardingTokenCheck(onboard_tour_token);
         }
         if (active_tab === 1 && !has_onboard_tour_started) {
             setTourType('bot_builder_');
-            getBotBuilderToken = getTourSettings('token');
-            setBotBuilderTokenCheck(getBotBuilderToken);
+            bot_tour_token = getTourSettings('token');
+            setBotBuilderTokenCheck(bot_tour_token);
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
@@ -138,12 +138,12 @@ const Dashboard = ({
             window.removeEventListener('storage', botStorageSetting);
         }
 
-        getBotBuilderToken = getTourSettings('token');
+        bot_tour_token = getTourSettings('token');
         if (active_tab === 1 && !storage.bot_builder_token && !has_onboard_tour_started) {
             setTourSettings(new Date().getTime(), `${tour_type.key}token`);
         }
     };
-    if (!getBotBuilderToken) {
+    if (!bot_tour_token) {
         setIsTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }

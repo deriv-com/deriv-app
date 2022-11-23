@@ -9,7 +9,7 @@ import IconMessageContent from 'Components/icon-message-content';
 
 export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
     const { is_appstore } = React.useContext(PlatformContext);
-    const message = localize('Your proof of address was submitted successfully');
+    const message = localize('Your documents were submitted successfully');
     if (needs_poi) {
         return (
             <div
@@ -23,7 +23,7 @@ export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
                 >
                     <div className='account-management__text-container'>
                         <Text align='center' size='xs' as='p'>
-                            {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                            {localize('We’ll review your documents and notify you of its status within 1 to 3 days.')}
                         </Text>
                         <Text align='center' size='xs' as='p'>
                             {localize('You must also submit a proof of identity.')}
@@ -42,7 +42,7 @@ export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
         >
             <IconMessageContent
                 message={message}
-                text={localize('Your document is being reviewed, please check back in 1-3 days.')}
+                text={localize('We’ll review your documents and notify you of its status within 1 to 3 days.')}
                 icon={<Icon icon='IcPoaVerified' size={128} />}
                 full_width={is_appstore}
             >

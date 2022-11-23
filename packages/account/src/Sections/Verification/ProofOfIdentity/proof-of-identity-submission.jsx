@@ -173,6 +173,14 @@ const POISubmission = ({
                     );
                 // This will be replaced in the next Manual Upload Project
                 case service_code.manual:
+                    return (
+                        <UploadComplete
+                            is_from_external={is_from_external}
+                            needs_poa={needs_poa}
+                            redirect_button={redirect_button}
+                            is_manual_upload
+                        />
+                    );
                 case service_code.onfido:
                     return (
                         <UploadComplete

@@ -126,7 +126,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
     };
 
     it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
-        render(<CFDDemoAccountDisplay {...props} />);
+        render(<CFDMT5DemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
@@ -140,7 +140,7 @@ describe('<CFDMT5DemoAccountDisplay />', () => {
     });
 
     it('should render Derived & Financial cards without "Add demo account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
-        render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
+        render(<CFDMT5DemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);

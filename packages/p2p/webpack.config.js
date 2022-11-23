@@ -15,8 +15,9 @@ module.exports = function () {
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, 'lib'),
-            filename: 'index.js',
+            chunkFilename: 'p2p/js/p2p.[name].[contenthash].js',
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'p2p/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/p2p',
             libraryTarget: 'umd',
@@ -116,8 +117,14 @@ module.exports = function () {
             ],
         },
         plugins: [
-            ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
-            // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
+            ...(is_publishing
+                ? [
+                      new MiniCssExtractPlugin({
+                          filename: 'p2p/css/[name].css',
+                          chunkFilename: 'p2p/css/[name].[contenthash].css',
+                      }),
+                  ]
+                : []),
         ],
         optimization: {
             minimize: is_release,

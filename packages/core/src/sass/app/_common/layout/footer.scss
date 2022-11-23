@@ -44,14 +44,6 @@
             align-items: center;
             position: relative;
         }
-
-        &--dark-mode {
-            padding: 0.8rem;
-            cursor: pointer;
-            &:hover {
-                background: var(--general-hover);
-            }
-        }
     }
     &__link {
         padding: 0 0.8em;

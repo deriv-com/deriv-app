@@ -1,6 +1,6 @@
 import React from 'react';
-import RootStore from '../../Stores/index';
-import { connect } from '../../Stores/connect';
+import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
 import { TVerificationStatusBannerProps } from '../props.types';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
@@ -11,7 +11,6 @@ const VerificationStatusBanner = ({
     account_type,
     card_classname,
     disabled,
-    context,
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,

@@ -24,7 +24,7 @@ jest.mock('Components/verification/verification', () => jest.fn(() => 'Verificat
 jest.mock('Components/my-ads/my-ads', () => jest.fn(() => 'MyAds'));
 jest.mock('Components/orders/orders', () => jest.fn(() => 'Orders'));
 jest.mock('Components/buy-sell/buy-sell', () => jest.fn(() => 'BuySell'));
-jest.mock('Components/my-profile', () => jest.fn(() => 'MyProfile'));
+jest.mock('Pages/my-profile', () => jest.fn(() => 'MyProfile'));
 
 describe('<AppContent/>', () => {
     const mocked_store_values = {

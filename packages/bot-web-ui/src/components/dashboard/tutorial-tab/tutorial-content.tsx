@@ -41,13 +41,8 @@ export const guide_content: TGuideContent[] = [
         id: 1,
         type: 'DBotVideo',
         content: localize('DBot -- your automated trading partner'),
-        url: 'https://www.youtube.com/embed/Bb0HnaYNUx4',
-        src: getImageLocation('video_dbot.png'),
-    },
-    {
-        id: 2,
-        type: 'DBotTour',
-        content: localize('How to build your bot from scratch using a simple strategy.'),
+        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
+        src: getImageLocation('video_dbot.webp'),
     },
 ];
 

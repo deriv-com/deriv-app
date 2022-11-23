@@ -244,7 +244,6 @@ const JurisdictionModal = ({
             <React.Suspense fallback={<UILoader />}>
                 <DesktopWrapper>
                     <Modal
-                        context={context}
                         className='jurisdiction-modal'
                         disableApp={disableApp}
                         enableApp={enableApp}

@@ -13,7 +13,6 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
-            cancels_remaining: observable,
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
@@ -37,7 +36,6 @@ export default class OrderStore {
             nav: computed,
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
-            getAdvertiserInfo: action.bound,
             getP2POrderList: action.bound,
             getSettings: action.bound,
             getWebsiteStatus: action.bound,
@@ -54,7 +52,6 @@ export default class OrderStore {
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
             setCancellationLimit: action.bound,
-            setCancelsRemaining: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
@@ -98,7 +95,6 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
-    cancels_remaining = null;
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
@@ -192,17 +188,6 @@ export default class OrderStore {
                 }
             }
         });
-    }
-
-    getAdvertiserInfo(setShouldShowCancelModal) {
-        requestWS({ p2p_advertiser_info: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                this.setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
-            }
-        });
-        this.getWebsiteStatus(setShouldShowCancelModal);
     }
 
     getP2POrderList() {
@@ -531,10 +516,6 @@ export default class OrderStore {
 
     setCancellationLimit(cancellation_limit) {
         this.cancellation_limit = cancellation_limit;
-    }
-
-    setCancelsRemaining(cancels_remaining) {
-        this.cancels_remaining = cancels_remaining;
     }
 
     setData(data) {

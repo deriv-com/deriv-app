@@ -26,7 +26,8 @@ describe('<MissingPersonalDetails />', () => {
         expect(screen.getByText(/your personal details are missing/i)).toBeInTheDocument();
         const btn = screen.getByRole('link', { name: /go to personal details/i });
         expect(btn).toBeInTheDocument();
-        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details');
+        expect(btn.hasAttribute('href'));
+        expect(btn.hasAttribute('/account/personal-details'));
     });
 
     it('should show invalid msg and update link if has_invalid_postal_code is true', () => {
@@ -40,10 +41,8 @@ describe('<MissingPersonalDetails />', () => {
 
         const btn = screen.getByRole('link', { name: /update postal code/i });
         expect(btn).toBeInTheDocument();
-        expect(btn.closest('a')).toHaveAttribute(
-            'href',
-            '/account/personal-details?from=proof_of_identity#address_postcode'
-        );
+        expect(btn.hasAttribute('href'));
+        expect(btn.hasAttribute('/account/personal-details?from=proof_of_identity#address_postcode'));
     });
 
     it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is true', () => {
@@ -57,7 +56,8 @@ describe('<MissingPersonalDetails />', () => {
 
         const btn = screen.getByRole('link', { name: /go to personal details/i });
         expect(btn).toBeInTheDocument();
-        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details?from=proof_of_identity');
+        expect(btn.hasAttribute('href'));
+        expect(btn.hasAttribute('/account/personal-details?from=proof_of_identity'));
     });
 
     it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is false', () => {
@@ -77,6 +77,7 @@ describe('<MissingPersonalDetails />', () => {
 
         const btn = screen.getByRole('link', { name: /go to personal details/i });
         expect(btn).toBeInTheDocument();
-        expect(btn.closest('a')).toHaveAttribute('href', '/account/personal-details');
+        expect(btn.hasAttribute('href'));
+        expect(btn.hasAttribute('/account/personal-details'));
     });
 });

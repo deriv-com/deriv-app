@@ -9,3 +9,7 @@ export { default as common_inputs_properties } from './data/common-input-propert
 export { default as data_fields } from './data/data-fields';
 export { default as SelectField } from './select-field';
 export { default as InputField } from './input-field';
+export { default as Inputs } from './inputs';
+export { default as Description } from './description';
+export { default as Selects } from './selects';
+export { default as DurationFields } from './duration-fields';

@@ -236,9 +236,7 @@ export default class QuickStrategyStore {
 
     onHideDropdownList(type: TDropdownItems, value: TSelectsFieldNames, setFieldValue: TSetFieldValue): void {
         const field_map = this.getFieldMap(type);
-        const item =
-            (field_map.dropdown as TDropdowns)?.find(i => i.text.toLowerCase() === value.toLowerCase()) ||
-            field_map.selected;
+        const item = field_map.dropdown?.find(i => i.text.toLowerCase() === value.toLowerCase()) || field_map.selected;
 
         // Don't allow bogus input.
         if (!item) {
@@ -292,7 +290,8 @@ export default class QuickStrategyStore {
         };
 
         const modifyFieldDropdownValues = (name: string, value: string) => {
-            const el_blocks = strategy_dom.querySelectorAll(`field[name="${`${name.toUpperCase()}_LIST`}"]`);
+            const name_list = `${name.toUpperCase()}_LIST`;
+            const el_blocks = strategy_dom.querySelectorAll(`field[name="${name_list}"]`);
 
             el_blocks.forEach((el_block: HTMLElement) => {
                 el_block.innerHTML = value;

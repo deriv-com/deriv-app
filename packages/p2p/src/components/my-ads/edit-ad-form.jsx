@@ -89,8 +89,6 @@ const EditAdForm = () => {
         my_ads_store.error_code
     );
 
-    React.useEffect(() => {}, [my_ads_store.current_method.is_deleted]);
-
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();

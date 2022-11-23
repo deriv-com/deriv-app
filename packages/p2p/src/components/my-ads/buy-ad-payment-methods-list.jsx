@@ -11,7 +11,7 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
     const { my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
-    const [is_close_circle_icon_showing, setIsCloseCircleIconShowing] = React.useState(false);
+    const [close_icon, setCloseIcon] = React.useState(false);
     const [show_list, setShowList] = React.useState(false);
     const [hide_list, setHideList] = React.useState(false);
     const deleted_autocomplete_ref = React.useRef();
@@ -50,13 +50,13 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
 
     const onEditPaymentMethodItem = (value, index) => {
         if (value) {
-            if (is_close_circle_icon_showing && selected_methods.length > 1) {
-                setIsCloseCircleIconShowing(false);
+            if (close_icon && selected_methods.length > 1) {
+                setCloseIcon(false);
                 my_ads_store.setCurrentMethod({ ...my_ads_store.current_method, is_deleted: true });
-            } else if (is_close_circle_icon_showing && selected_methods.length === 1) {
+            } else if (close_icon && selected_methods.length === 1) {
                 onClickDeletePaymentMethodItem(selected_methods[0]);
                 my_ads_store.setCurrentMethod({ ...my_ads_store.current_method, key: null, is_deleted: false });
-                setIsCloseCircleIconShowing(false);
+                setCloseIcon(false);
             } else {
                 const edited_methods = [...selected_methods];
                 edited_methods[index] = value;
@@ -163,18 +163,18 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                     onBlur={e => {
                                                         e.preventDefault();
                                                         setFieldValue('payment_method', method);
-                                                        setIsCloseCircleIconShowing(false);
+                                                        setCloseIcon(false);
                                                     }}
                                                     onHideDropdownList={() => {
                                                         setFieldValue('payment_method', method);
-                                                        setIsCloseCircleIconShowing(false);
+                                                        setCloseIcon(false);
                                                     }}
                                                     onItemSelection={({ value }) => {
                                                         onEditPaymentMethodItem(value, key);
                                                     }}
                                                     onFocus={e => {
                                                         e.preventDefault();
-                                                        setIsCloseCircleIconShowing(true);
+                                                        setCloseIcon(true);
                                                         setHideList(false);
                                                         setFieldValue('payment_method', method);
                                                         if (!my_ads_store.current_method.is_deleted) {
@@ -189,31 +189,29 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                         }
                                                     }}
                                                     onShowDropdownList={() => {
-                                                        setIsCloseCircleIconShowing(true);
+                                                        setCloseIcon(true);
                                                     }}
                                                     required
                                                     trailing_icon={
                                                         <Icon
                                                             className='buy-ad-payment-methods-list__icon'
                                                             color={
-                                                                is_close_circle_icon_showing &&
-                                                                my_ads_store.current_method.key === key
+                                                                close_icon && my_ads_store.current_method.key === key
                                                                     ? 'secondary'
                                                                     : 'black'
                                                             }
                                                             icon={
-                                                                is_close_circle_icon_showing &&
-                                                                my_ads_store.current_method.key === key
+                                                                close_icon && my_ads_store.current_method.key === key
                                                                     ? 'IcCloseCircle'
                                                                     : 'IcDelete'
                                                             }
                                                             onMouseDown={() => {
-                                                                if (is_close_circle_icon_showing) {
+                                                                if (close_icon) {
                                                                     onEditPaymentMethodItem(payment_method, key);
                                                                     setShowList(true);
                                                                     setFieldValue('payment_method', '');
                                                                 } else if (
-                                                                    !is_close_circle_icon_showing &&
+                                                                    !close_icon &&
                                                                     !my_ads_store.current_method.is_deleted
                                                                 ) {
                                                                     onClickDeletePaymentMethodItem(payment_method);

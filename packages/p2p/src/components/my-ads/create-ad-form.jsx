@@ -59,8 +59,6 @@ const CreateAdForm = () => {
         my_ads_store.setShowAdForm(false);
     };
 
-    React.useEffect(() => {}, [my_ads_store.current_method.is_deleted]);
-
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();

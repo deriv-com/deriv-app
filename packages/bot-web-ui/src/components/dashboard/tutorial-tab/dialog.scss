@@ -18,12 +18,6 @@
                 right: 1rem;
                 z-index: 90;
             }
-
-            .dc-dialog__header--close {
-                svg {
-                    filter: invert(1);
-                }
-            }
         }
 
         &__content {

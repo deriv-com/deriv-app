@@ -151,7 +151,7 @@ const GuideContent = ({
                 </Dialog>
             </div>
         ),
-        [guide_list]
+        [guide_list, is_dialog_open]
     );
 };
 

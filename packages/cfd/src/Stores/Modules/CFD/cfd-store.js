@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
+import { action, computed, observable, when, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
@@ -110,14 +110,11 @@ export default class CFDStore extends BaseStore {
             loadDxtradeTokens: action.bound,
         });
 
-        reaction(
-            () => [this.root_store.client.dxtrade_accounts_list],
-            () => {
-                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
-                    this.loadDxtradeTokens();
-                }
+        when(() => {
+            if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+                this.loadDxtradeTokens();
             }
-        );
+        });
     }
 
     get account_title() {

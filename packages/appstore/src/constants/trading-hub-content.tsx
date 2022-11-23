@@ -168,6 +168,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 has_account
                 currency={'USD'}
                 derived_amount={'369'}
+                financial_amount={'512'}
                 loginid={'20884385'}
                 has_applauncher_account
                 is_last_step
@@ -207,6 +208,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_grey
                 has_account
                 currency={'USD'}
+                derived_amount={'369'}
                 financial_amount={'512'}
                 loginid={'20884385'}
                 has_applauncher_account

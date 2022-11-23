@@ -49,6 +49,7 @@ type TStaticDashboard = {
 const StaticDashboard = ({
     currency,
     financial_amount,
+    derived_amount,
     has_account,
     has_applauncher_account,
     is_blurry,
@@ -180,11 +181,13 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='synthetic'
                                         platform='mt5'
-                                        appname='Derived'
+                                        appname={has_account ? 'Derived SVG' : 'Derived'}
                                         description='Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}
+                                        derived_amount={derived_amount}
+                                        financial_amount={financial_amount}
                                         is_blurry={is_blurry}
                                         is_onboarding_animated={is_onboarding_animated}
                                     />
@@ -212,9 +215,10 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname='Financial'
+                                    appname={has_account ? 'Financial BVI' : 'Financial'}
                                     description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
                                     financial_amount={financial_amount}
+                                    derived_amount={derived_amount}
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}

@@ -138,7 +138,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                                                 <AccountManager
                                                     has_account={true}
                                                     type={existing_account.market_type}
-                                                    appname={`${account.name} ${title_shortcode}`}
+                                                    appname={`${account.name} Demo`}
                                                     platform={account.platform}
                                                     disabled={false}
                                                     loginid={existing_account.display_login}

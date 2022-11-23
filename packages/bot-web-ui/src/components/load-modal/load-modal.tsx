@@ -35,6 +35,7 @@ const LoadModal = ({
     toggleLoadModal,
 }: TLoadModalProps) => {
     const header_text = localize('Load strategy');
+
     if (is_mobile) {
         return (
             <MobileFullPageModal
@@ -60,6 +61,9 @@ const LoadModal = ({
         );
     }
 
+    const has_loaded_file = loaded_local_file && tab_name === tabs_title.TAB_LOCAL;
+    const has_recent_strategies = recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT;
+
     return (
         <Modal
             title={header_text}
@@ -84,12 +88,7 @@ const LoadModal = ({
                     </div>
                 </Tabs>
             </Modal.Body>
-            {loaded_local_file && tab_name === tabs_title.TAB_LOCAL && (
-                <Modal.Footer has_separator>
-                    <RecentFooter />
-                </Modal.Footer>
-            )}
-            {recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT && (
+            {(has_recent_strategies || has_loaded_file) && (
                 <Modal.Footer has_separator>
                     <RecentFooter />
                 </Modal.Footer>

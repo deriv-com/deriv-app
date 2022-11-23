@@ -10,9 +10,7 @@ const Description = ({ id, description }: TDescription) => (
     <React.Fragment>
         {id === 'type-strategy' && (
             <div key='description' className='quick-strategy__text'>
-                <Text size='sm' weight='normal'>
-                    {description}
-                </Text>
+                <Text weight='normal'>{description}</Text>
             </div>
         )}
     </React.Fragment>

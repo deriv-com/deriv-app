@@ -15,6 +15,7 @@ import {
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
 import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
+import { verifyDocument } from '../../document-verification/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
@@ -72,6 +73,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
+        const recurring_number_pattern = document_number.match(/([0-9])\1{3,}/g);
+        const invalid_id = verifyDocument(document_number).includes(true);
+
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
@@ -81,6 +85,8 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (recurring_number_pattern || invalid_id) {
+            errors.document_number = localize('Please provide a valid document.');
         } else {
             const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {
@@ -286,6 +292,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
+                                                                    onPaste={e => e.preventDefault()}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

@@ -272,7 +272,7 @@ describe('<AddressDetails/>', () => {
         expect(screen.getByPlaceholderText(address_line_1)).toBeDisabled();
         expect(screen.getByPlaceholderText(address_line_2)).toBeDisabled();
         await act(async () => {
-            expect(screen.getByPlaceholderText('State/Province')).toBeEnabled();
+            expect(screen.getByRole('textbox', { name: 'State/Province' })).toBeEnabled();
         });
         expect(screen.getByPlaceholderText(address_town)).toBeEnabled();
         expect(screen.getByPlaceholderText(address_postcode)).toBeEnabled();

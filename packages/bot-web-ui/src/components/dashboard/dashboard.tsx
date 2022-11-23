@@ -96,7 +96,7 @@ const Dashboard = ({
             const actions = ['skip', 'close'];
 
             if (actions.includes(action)) {
-                if (tour_type.key === 'bot_builder_') {
+                if (tour_type.key === 'bot_builder') {
                     setBotBuilderTourState(false);
                 } else {
                     setOnBoardTourRunState(false);
@@ -111,12 +111,12 @@ const Dashboard = ({
             onEntered();
         }
         if (active_tab === 0) {
-            setTourType('onboard_tour_');
+            setTourType('onboard_tour');
             onboard_tour_token = getTourSettings('token');
             setOnBoardingTokenCheck(onboard_tour_token);
         }
         if (active_tab === 1 && !has_onboard_tour_started) {
-            setTourType('bot_builder_');
+            setTourType('bot_builder');
             bot_tour_token = getTourSettings('token');
             setBotBuilderTokenCheck(bot_tour_token);
         }
@@ -128,7 +128,7 @@ const Dashboard = ({
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
-            if (tour_type.key === 'onboard_tour_') {
+            if (tour_type.key === 'onboard_tour') {
                 setActiveTab(0);
                 setTourDialogVisibility(true);
             } else {
@@ -141,7 +141,7 @@ const Dashboard = ({
 
         bot_tour_token = getTourSettings('token');
         if (active_tab === 1 && !storage.bot_builder_token && !has_onboard_tour_started) {
-            setTourSettings(new Date().getTime(), `${tour_type.key}token`);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     };
     if (!bot_tour_token) {

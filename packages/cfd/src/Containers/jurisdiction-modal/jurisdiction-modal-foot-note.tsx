@@ -7,7 +7,6 @@ import { TJurisdictionModalFootNoteProps } from '../props.types';
 const FooterNote = ({
     account_status,
     account_type,
-    context,
     jurisdiction_selected_shortcode,
     card_classname,
     should_restrict_bvi_account_creation,

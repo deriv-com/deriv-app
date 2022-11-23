@@ -70,7 +70,7 @@ const PlatformLauncher = ({
                             </Button>
                         </Link>
                     ) : (
-                        <a href={href}>
+                        <a href={href} target='_blank' rel='noreferrer'>
                             <Button primary className='platform-launcher__trade-button'>
                                 <Text color='white' weight='bold' size={isMobile() ? 'xxxs' : 's'}>
                                     {localize('Trade')}

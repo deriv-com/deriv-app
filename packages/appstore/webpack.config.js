@@ -1,39 +1,12 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
-const svg_loaders = [
-    {
-        loader: 'babel-loader',
-        options: {
-            cacheDirectory: true,
-            rootMode: 'upward',
-        },
-    },
-    {
-        loader: 'react-svg-loader',
-        options: {
-            jsx: true,
-            svgo: {
-                plugins: [
-                    { removeTitle: false },
-                    { removeUselessStrokeAndFill: false },
-                    { removeUknownsAndDefaults: false },
-                ],
-                floatPrecision: 2,
-            },
-        },
-    },
-];
-
-module.exports = function (env) {
-    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
-
+module.exports = function () {
     return {
         entry: {
             index: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -41,7 +14,6 @@ module.exports = function (env) {
         mode: is_release ? 'production' : 'development',
         output: {
             path: path.resolve(__dirname, 'dist'),
-            publicPath: base,
             filename: 'appstore/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/appstore',
@@ -53,7 +25,6 @@ module.exports = function (env) {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
-                Modules: path.resolve(__dirname, 'src/modules'),
                 Services: path.resolve(__dirname, 'src/services'),
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
@@ -83,9 +54,6 @@ module.exports = function (env) {
                         },
                         {
                             loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
-                        },
-                        {
-                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.js',
                         },
                         {
                             loader: 'babel-loader',
@@ -136,11 +104,6 @@ module.exports = function (env) {
                         },
                     ],
                 },
-                {
-                    test: /\.svg$/,
-                    exclude: /node_modules|public\//,
-                    use: svg_loaders,
-                },
             ],
         },
         optimization: {
@@ -168,9 +131,8 @@ module.exports = function (env) {
                 '@deriv/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,
-                '@deriv/cfd': true,
             },
         ],
-        plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        plugins: [new ForkTsCheckerWebpackPlugin()],
     };
 };

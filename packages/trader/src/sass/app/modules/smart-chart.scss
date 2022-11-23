@@ -254,10 +254,10 @@
         display: flex;
         align-items: center;
 
-        &.won p {
+        &.won div {
             color: var(--text-profit-success);
         }
-        &.lost p {
+        &.lost div {
             color: var(--text-loss-danger);
         }
         &__profit {
@@ -273,8 +273,8 @@
             content: '';
             position: absolute;
             width: calc(100% - 3rem);
-            height: 10%;
-            top: -5%;
+            height: 8%;
+            top: -4%;
             z-index: -2;
             background-color: var(--general-main-1);
         }
@@ -282,12 +282,12 @@
             content: '';
             position: absolute;
             width: calc(100% - 3rem);
-            height: 10%;
-            top: -5%;
+            height: 8%;
+            top: -4%;
             z-index: -1;
-            background-color: rgba(0, 167, 158, 0.08);
+            background-color: rgba(0, 167, 158, 0.1);
             box-shadow: 0 -8px 11px 0 rgba(0, 167, 158, 0.08), 0 8px 11px 0 rgba(0, 167, 158, 0.08),
-                0 0 11px -5px rgba(0, 167, 158, 0.08);
+                0 0 11px -5px rgba(0, 167, 158, 0.08), 0 0 11px -5px rgba(0, 167, 158, 0.08);
         }
     }
     &-tooltip {

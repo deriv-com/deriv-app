@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Text, DesktopWrapper, Icon } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
@@ -12,14 +12,14 @@ type TLocalComponent = {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
     is_mobile: boolean;
     loaded_local_file: boolean;
-    setLoadedLocalFile: (data: Nullable<string>) => void;
+    loadFileFromLocal: () => void;
+    loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
-    setActiveTab: (param: number) => void;
-    loadFileFromLocal: () => void;
     previewRecentStrategy: () => void;
-    loadFileFromRecent: () => void;
+    setActiveTab: (param: number) => void;
     setFileLoaded: (param: boolean) => void;
+    setLoadedLocalFile: (data: Nullable<string>) => void;
     setTourDialogVisibility: (param: boolean) => boolean;
 };
 
@@ -27,13 +27,12 @@ const LocalComponent = ({
     handleFileChange,
     is_mobile,
     loaded_local_file,
-    onConfirmSave,
-    setActiveTab,
     loadFileFromLocal,
     loadFileFromRecent,
+    onConfirmSave,
+    setActiveTab,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const loadedLocalFileLocation = () => {
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
@@ -126,7 +125,5 @@ const Local = connect(({ load_modal, ui, save_modal, dashboard }: RootStore) => 
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setFileLoaded: dashboard.setFileLoaded,
 }))(LocalComponent);
-
-Local.Footer = LocalFooter;
 
 export default Local;

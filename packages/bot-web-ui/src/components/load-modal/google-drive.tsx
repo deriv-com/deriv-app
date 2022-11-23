@@ -1,11 +1,25 @@
 import classnames from 'classnames';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Button, Icon, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/root-store';
 
-const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => {
+type TGoogleDriveProps = {
+    is_authorised: boolean;
+    is_mobile: boolean;
+    is_open_button_loading: boolean;
+    onDriveConnect: () => void;
+    onDriveOpen: () => void;
+};
+
+const GoogleDrive = ({
+    is_authorised,
+    is_open_button_loading,
+    onDriveConnect,
+    onDriveOpen,
+    is_mobile,
+}: TGoogleDriveProps) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -59,15 +73,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
     );
 };
 
-GoogleDrive.propTypes = {
-    is_authorised: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_open_button_loading: PropTypes.bool,
-    onDriveConnect: PropTypes.func,
-    onDriveOpen: PropTypes.func,
-};
-
-export default connect(({ load_modal, ui, google_drive }) => ({
+export default connect(({ load_modal, ui, google_drive }: RootStore) => ({
     is_authorised: google_drive.is_authorised,
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,

@@ -7,7 +7,12 @@ const ModalManager = () => {
     const { key, props } = modal;
     const Modal = modals[key];
 
-    if (Modal) return <Modal {...props} />;
+    if (Modal)
+        return (
+            <React.Suspense fallback={null}>
+                <Modal {...props} />
+            </React.Suspense>
+        );
 
     return null;
 };

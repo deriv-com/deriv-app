@@ -87,12 +87,12 @@ const QuickStrategyForm = ({
                                 })}
                             >
                                 <div className='quick-strategy__text'>
-                                    <Text size='sm' weight='bold' line_height='s'>
+                                    <Text size={is_mobile ? 's' : 'sm'} weight='bold' line_height='s'>
                                         {localize('Quick strategy')}
                                     </Text>
                                 </div>
                                 <div className='quick-strategy__text'>
-                                    <Text size='sm' weight='normal'>
+                                    <Text weight='normal'>
                                         {localize('Choose a template and set your trade parameters.')}
                                     </Text>
                                 </div>
@@ -122,7 +122,6 @@ const QuickStrategyForm = ({
                         </ThemedScrollbars>
                         <QuickStrategyFooter
                             is_onscreen_keyboard_active={is_onscreen_keyboard_active}
-                            is_mobile={is_mobile}
                             is_submit_enabled={is_submit_enabled}
                             is_stop_button_visible={is_stop_button_visible}
                             setFieldValue={setFieldValue}

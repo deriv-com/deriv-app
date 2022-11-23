@@ -22,6 +22,7 @@ import {
     tour_status_ended,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
+import { isMobile } from '@deriv/shared';
 
 type TDialogOptions = {
     title: string;
@@ -45,24 +46,25 @@ type TDashboard = {
     onEntered: () => void;
     onOkButtonClick: () => void;
     setActiveTab: (active_tab: number) => void;
-    setBotBuilderTokenCheck: (param: string | number) => void;
     setBotBuilderTourState: (param: boolean) => void;
-    setOnBoardingTokenCheck: (param: string | number) => void;
     setOnBoardTourRunState: (param: boolean) => void;
+    loadDataStrategy: () => void;
+    setBotBuilderTokenCheck: (param: string | number) => void;
+    setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
-    toggleStrategyModal: () => void;
     setIsTourEnded: (param: boolean) => void;
 };
 
 const Dashboard = ({
     active_tab,
+    is_drawer_open,
     dialog_options,
     has_file_loaded,
-    has_onboard_tour_started,
     has_tour_started,
+    has_onboard_tour_started,
     is_dialog_open,
-    is_drawer_open,
+    loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -75,11 +77,10 @@ const Dashboard = ({
     setTourActive,
     setTourDialogVisibility,
     setIsTourEnded,
-    toggleStrategyModal,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
-        toggleStrategyModal();
+        loadDataStrategy();
     };
 
     const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
@@ -222,7 +223,7 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    <RunStrategy />
+                    {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
                     {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
                 </div>
@@ -246,12 +247,9 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
     active_tab: dashboard.active_tab,
-    dialog_options: run_panel.dialog_options,
-    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
     has_file_loaded: dashboard.has_file_loaded,
-    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     has_tour_started: dashboard.has_tour_started,
     setTourActive: dashboard.setTourActive,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
@@ -260,13 +258,15 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
+    dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onCloseDialog: run_panel.onCloseDialog,
-    onEntered: load_modal.onEntered,
     onOkButtonClick: run_panel.onOkButtonClick,
     setActiveTab: dashboard.setActiveTab,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    toggleStrategyModal: quick_strategy.toggleStrategyModal,
+    onEntered: load_modal.onEntered,
 }))(Dashboard);

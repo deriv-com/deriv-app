@@ -77,7 +77,6 @@ export type TQuickStrategyFields = {
 
 export type TQuickStrategyFooter = {
     is_onscreen_keyboard_active: boolean;
-    is_mobile: boolean;
     is_submit_enabled: boolean;
     is_stop_button_visible: boolean;
     setFieldValue: TSetFieldValue;
@@ -133,3 +132,14 @@ export type TTradeTypeOptionProps = React.PropsWithChildren<{
 export type TMarketOptionProps = React.PropsWithChildren<{
     symbol: TMarketOption;
 }>;
+
+type TSelectsAdditionalProps = { select_value?: TDropdownItems; field_name: TSelectsFieldNames | TInputsFieldNames };
+export type TSelects = Omit<TSelectFieldProps, 'field_name' | 'select_value'> & TSelectsAdditionalProps;
+
+export type TInputs = Omit<TInputFieldProps, 'field_name'> & {
+    is_input_field: boolean;
+    field_name: TSelectsFieldNames | TInputsFieldNames;
+};
+
+export type TDurationFields = TSelects &
+    Pick<TInputs, 'handleChange' | 'onChangeInputValue' | 'setCurrentFocus' | 'errors' | 'idx'>;

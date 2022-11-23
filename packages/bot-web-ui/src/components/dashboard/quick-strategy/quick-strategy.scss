@@ -18,12 +18,28 @@
     }
 
     &__container {
-        width: 77.5rem;
         transform: translateY(0);
+        @include desktop {
+            width: 77.5rem;
+        }
+        @include mobile {
+            height: calc(100% - 8rem);
+            position: fixed;
+            z-index: 6;
+            width: 100%;
+            left: 0px;
+            top: calc(10.6rem);
+            background: var(--general-main-1);
+            max-height: 100%;
+            overflow-y: scroll;
+        }
     }
 
     &__text {
         margin: 1.5rem 0;
+        @include mobile {
+            @include position-center;
+        }
     }
 
     &__tab-content {
@@ -126,6 +142,11 @@
             &--active-keyboard {
                 position: unset;
                 display: block;
+            }
+            @include mobile {
+                position: fixed;
+                bottom: 2.6rem;
+                padding: 1rem 2.4rem;
             }
         }
         .dc-autocomplete {

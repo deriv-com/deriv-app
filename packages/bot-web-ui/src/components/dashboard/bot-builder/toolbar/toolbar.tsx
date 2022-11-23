@@ -25,7 +25,7 @@ type TToolbar = {
     onZoomInOutClick: () => void;
     toggleSaveLoadModal: () => void;
     is_mobile: boolean;
-    toggleStrategyModal: () => void;
+    loadDataStrategy: () => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
 };
@@ -89,6 +89,6 @@ export default connect(
         onZoomInOutClick: toolbar.onZoomInOutClick,
         toggleLoadModal: load_modal.toggleLoadModal,
         toggleSaveModal: save_modal.toggleSaveModal,
-        toggleStrategyModal: quick_strategy.toggleStrategyModal,
+        loadDataStrategy: quick_strategy.loadDataStrategy,
     })
 )(Toolbar);

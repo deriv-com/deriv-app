@@ -122,7 +122,6 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
-            can_have_whatsapp,
         },
         ref
     ) => {
@@ -614,7 +613,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </div>
                                             </MobileDrawer.Item>
                                         }
-                                        {can_have_whatsapp && liveChat.isReady && (
+                                        {liveChat.isReady && (
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                                 <Icon icon='IcWhatsApp' className='drawer-icon' />
                                                 <a

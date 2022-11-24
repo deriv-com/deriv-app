@@ -14,7 +14,7 @@ const BinaryRoutes = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
-    const is_eu_country = props.is_eu_country;
+    const is_eu_country = props.isEuropeCountry;
 
     return (
         <React.Suspense fallback={<Loading />}>
@@ -32,5 +32,5 @@ export default connect(({ ui, gtm, client }) => ({
     prompt_when: ui.prompt_when,
     promptFn: ui.promptFn,
     pushDataLayer: gtm.pushDataLayer,
-    is_eu_country: client.is_eu_country,
+    isEuropeCountry: client.isEuropeCountry,
 }))(BinaryRoutes);

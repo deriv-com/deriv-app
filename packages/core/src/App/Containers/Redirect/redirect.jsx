@@ -8,7 +8,6 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
-    is_eu,
     currency,
     setVerificationCode,
     verification_code,
@@ -20,12 +19,12 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
-    is_eu_country,
+    isEuropeCountry,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
 
@@ -34,28 +33,31 @@ const Redirect = ({
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else if (is_eu_country || is_eu) {
-                history.push({
-                    pathname: routes.trading_hub,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
-            }
-            sessionStorage.removeItem('redirect_url');
-            toggleAccountSignupModal(true);
+            WS.wait('website_status').then(() => {
+                if (is_appstore) {
+                    // TODO: redirect
+                    // history.push({
+                    //     pathname: routes.dashboard,
+                    //     search: url_query_string,
+                    // });
+                    // redirected_to_route = true;
+                } else if (isEuropeCountry()) {
+                    setIsPreAppStore(true);
+                    history.push({
+                        pathname: routes.trading_hub,
+                        search: url_query_string,
+                    });
+                    redirected_to_route = true;
+                } else {
+                    history.push({
+                        pathname: routes.onboarding,
+                        search: url_query_string,
+                    });
+                    redirected_to_route = true;
+                }
+                sessionStorage.removeItem('redirect_url');
+                toggleAccountSignupModal(true);
+            });
             break;
         }
         case 'reset_password': {
@@ -200,8 +202,7 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
-    is_eu: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
+    isEuropeCountry: PropTypes.func,
 };
 
 export default withRouter(
@@ -221,5 +222,6 @@ export default withRouter(
         setNewEmail: client.setNewEmail,
         toggleResetEmailModal: ui.toggleResetEmailModal,
         toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
+        isEuropeCountry: client.isEuropeCountry,
     }))(Redirect)
 );

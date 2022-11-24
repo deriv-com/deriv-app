@@ -27,7 +27,6 @@ const PaymentAgentSearchWarning = () => {
         </div>
     );
 };
-
 const PaymentAgentContainer = ({
     app_contents_scroll_ref,
     has_payment_agent_search_warning,

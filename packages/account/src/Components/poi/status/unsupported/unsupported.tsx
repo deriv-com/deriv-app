@@ -8,10 +8,11 @@ import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';
+import { FormikValues } from 'formik';
 
-const checkNimcStep = documents => {
+const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
-    documents.forEach(document => {
+    documents.forEach((document: FormikValues) => {
         if (document.document_type === DOCUMENT_TYPES.NIMC_SLIP) {
             has_nimc = true;
         }
@@ -19,12 +20,19 @@ const checkNimcStep = documents => {
     return has_nimc;
 };
 
-const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
-    const [detail, setDetail] = React.useState(null);
-    const toggleDetail = index => setDetail(index);
+type TUnsupported = {
+    country_code: string;
+    handlePOIforMT5Complete: () => void;
+    manual?: {
+        status: string;
+    };
+};
+
+const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }: Partial<TUnsupported>) => {
+    const [detail, setDetail] = React.useState<number | null>(null);
+    const toggleDetail = (index: number) => setDetail(index);
 
     const documents = getDocumentIndex({
-        setDetail,
         country_code,
     });
 

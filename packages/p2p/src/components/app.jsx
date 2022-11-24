@@ -92,7 +92,7 @@ const App = props => {
             order_store.setVerificationCode(verification_code);
         }
         if (verification_action && verification_code) {
-            order_store.setIsLoadingModalOpen(true);
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(verification_action, verification_code);
         }
 

@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
 import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Styles/account.scss';
-import { useHistory } from 'react-router';
 
 const AccountLogout = ({ logout, history }) => {
     return (
@@ -20,27 +19,7 @@ const AccountLogout = ({ logout, history }) => {
             }}
         >
             <div className='dc-vertical-tab__header-group account__logout-tab'>
-                <Text size='xxs' weight='normal'>
-                    {localize('Log out')}
-                </Text>
-            </div>
-        </div>
-    );
-};
-
-const TradingHubLogout = ({ logout }) => {
-    const history = useHistory();
-    return (
-        <div
-            className='dc-vertical-tab__header-account__logout-tab'
-            onClick={() => {
-                logout();
-                history.push(shared_routes.index);
-            }}
-        >
-            <div className='dc-vertical-tab__header-account__logout'>
-                <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
-                <Text size='xs' weight='bold'>
+                <Text color='general' size='xxs' weight='normal'>
                     {localize('Log out')}
                 </Text>
             </div>
@@ -51,13 +30,11 @@ const TradingHubLogout = ({ logout }) => {
 const PageOverlayWrapper = ({
     is_from_derivgo,
     is_appstore,
-    is_pre_appstore,
     list_groups,
     logout,
     onClickClose,
     selected_route,
     subroutes,
-    history,
 }) => {
     if (isMobile() && selected_route) {
         return (
@@ -97,7 +74,6 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} />}
             />
         </PageOverlay>
     );
@@ -119,7 +95,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -183,14 +159,12 @@ const Account = ({
                 <PageOverlayWrapper
                     is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
-                    is_pre_appstore={is_pre_appstore}
                     list_groups={list_groups}
                     logout={logout}
                     onClickClose={onClickClose}
                     platform={platform}
                     selected_route={selected_route}
                     subroutes={subroutes}
-                    history={history}
                 />
             </div>
         </FadeWrapper>

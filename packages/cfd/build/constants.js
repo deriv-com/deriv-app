@@ -1,15 +1,24 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+// const HtmlWebPackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const { cssConfig, stylelintConfig } = require('./config');
+const {
+    copyConfig,
+    cssConfig,
+    // htmlOutputConfig,
+    stylelintConfig,
+} = require('./config');
 const {
     css_loaders,
     file_loaders,
@@ -26,7 +35,6 @@ const ALIASES = {
     Constants: path.resolve(__dirname, '../src/Constants'),
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
-    Helpers: path.resolve(__dirname, '../src/Helpers'),
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),

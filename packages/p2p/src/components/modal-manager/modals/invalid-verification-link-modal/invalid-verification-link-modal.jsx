@@ -2,30 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const InvalidVerificationLinkModal = ({
-    invalid_verification_link_error_message,
-    is_invalid_verification_link_modal_open,
-    onClickGetNewLinkButton,
-    setIsInvalidVerificationLinkModalOpen,
+    order_id,
     // TODO: Uncomment when time is available in BE response
     // verification_link_expiry_time,
 }) => {
+    const { order_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
+
     return (
-        <Modal
-            has_close_icon
-            is_open={is_invalid_verification_link_modal_open}
-            renderTitle={() => <></>}
-            toggleModal={() => setIsInvalidVerificationLinkModalOpen(false)}
-            width='440px'
-        >
+        <Modal has_close_icon is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
             <Modal.Body className='invalid-verification-link-modal'>
                 <Icon icon='IcEmailVerificationLinkInvalid' size='128' />
                 <Text className='invalid-verification-link-modal--text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text='Invalid verification link' />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
-                    {invalid_verification_link_error_message}
+                    {order_store.verification_link_error_message}
                 </Text>
             </Modal.Body>
             <Modal.Footer className='invalid-verification-link-modal--footer'>
@@ -33,8 +29,8 @@ const InvalidVerificationLinkModal = ({
                     large
                     primary
                     onClick={() => {
-                        setIsInvalidVerificationLinkModalOpen(false);
-                        onClickGetNewLinkButton();
+                        hideModal();
+                        order_store.confirmOrderRequest(order_id);
                     }}
                 >
                     <Localize i18n_default_text='Get new link' />
@@ -45,10 +41,7 @@ const InvalidVerificationLinkModal = ({
 };
 
 InvalidVerificationLinkModal.propTypes = {
-    invalid_verification_link_error_message: PropTypes.string,
-    is_invalid_verification_link_modal_open: PropTypes.bool,
-    onClickGetNewLinkButton: PropTypes.func,
-    setIsInvalidVerificationLinkModalOpen: PropTypes.func,
+    order_id: PropTypes.string,
     // TODO: Uncomment when time is available in BE response
     // verification_link_expiry_time: PropTypes.number,
 };

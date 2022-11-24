@@ -58,7 +58,6 @@ export default class OrderStore {
             setIsEmailLinkBlockedModalOpen: action.bound,
             setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsEmailVerificationModalOpen: action.bound,
-            setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
@@ -150,7 +149,7 @@ export default class OrderStore {
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        clearTimeout(wait);
+                        // clearTimeout(wait);
                         if (this.is_email_verification_modal_open) {
                             this.setIsEmailVerificationModalOpen(false);
                         }
@@ -158,11 +157,11 @@ export default class OrderStore {
                             this.setIsEmailLinkVerifiedModalOpen(false);
                         }
                         this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
+                        this.root_store.general_store.showModal({
+                            key: 'InvalidVerificationLinkModal',
+                            props: { order_id: id },
+                        });
                     } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
-                        }
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
@@ -493,13 +492,12 @@ export default class OrderStore {
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
+                        this.root_store.general_store.showModal({
+                            key: 'InvalidVerificationLinkModal',
+                            props: { order_id: this.order_id },
+                        });
                     } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
-                        }
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
@@ -556,10 +554,6 @@ export default class OrderStore {
 
     setIsEmailVerificationModalOpen(is_email_verification_modal_open) {
         this.is_email_verification_modal_open = is_email_verification_modal_open;
-    }
-
-    setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
-        this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;
     }
 
     setIsLoading(is_loading) {

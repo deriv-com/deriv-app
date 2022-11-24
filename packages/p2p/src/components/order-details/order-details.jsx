@@ -21,7 +21,6 @@ import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-cont
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
 import LoadingModal from '../loading-modal';
-import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
@@ -173,12 +172,6 @@ const OrderDetails = observer(() => {
                         is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
                         onClickConfirm={() => order_store.confirmOrder(is_buy_order_for_user)}
                         setIsEmailLinkVerifiedModalOpen={order_store.setIsEmailLinkVerifiedModalOpen}
-                    />
-                    <InvalidVerificationLinkModal
-                        invalid_verification_link_error_message={order_store.verification_link_error_message}
-                        is_invalid_verification_link_modal_open={order_store.is_invalid_verification_link_modal_open}
-                        setIsInvalidVerificationLinkModalOpen={order_store.setIsInvalidVerificationLinkModalOpen}
-                        onClickGetNewLinkButton={() => order_store.confirmOrderRequest(id)}
                     />
                     <EmailLinkBlockedModal
                         email_link_blocked_modal_error_message={order_store.verification_link_error_message}

@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { Icon, Text } from '@deriv/components';
 
 type TInlineNoteWithIconExtend = {
     icon: string;
-    message: string;
+    message: React.ReactNode;
     title: string;
 };
 
-export type TInlineNoteWithIcon = React.PropsWithChildren<TInlineNoteWithIconExtend>;
+export type TInlineNoteWithIcon = HTMLAttributes<HTMLInputElement | HTMLLabelElement> &
+    React.PropsWithChildren<TInlineNoteWithIconExtend>;
 
 const InlineNoteWithIcon = ({ icon, message, title }: TInlineNoteWithIcon) => {
     return (

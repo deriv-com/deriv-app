@@ -45,8 +45,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-router": "^5.2.0",
-        "react-router-dom": "^5.2.0",
-        "react-i18next": "^11.11.0"
+        "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

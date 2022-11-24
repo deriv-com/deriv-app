@@ -6,7 +6,7 @@ import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
+type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon', boolean>;
 
 type TStep = {
     label?: string;
@@ -94,7 +94,6 @@ const joyride_props: TJoyrideConfig = {
     showProgress: false,
     spotlightClicks: true,
     disableBeacon: true,
-    disableOverlay: true,
 };
 
 export const DBOT_ONBOARDING = [
@@ -108,6 +107,7 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -123,9 +123,10 @@ export const DBOT_ONBOARDING = [
                 ]}
                 img={getImageLocation('ic-new-user-step-two.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -138,9 +139,10 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -151,9 +153,10 @@ export const DBOT_ONBOARDING = [
                 content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -166,9 +169,10 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -182,6 +186,7 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={1}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -195,6 +200,7 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={1}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
     },
 ];
@@ -218,6 +224,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -232,6 +239,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -247,6 +255,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -262,6 +271,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -282,6 +292,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -307,6 +318,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -322,6 +334,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
     },
 ];

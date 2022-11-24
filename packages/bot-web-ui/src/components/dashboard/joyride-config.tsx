@@ -6,7 +6,9 @@ import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
+type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon', boolean>;
+
+type TTourOverlay = Record<'disableOverlay', boolean>;
 
 type TStep = {
     label?: string;
@@ -94,6 +96,12 @@ const joyride_props: TJoyrideConfig = {
     showProgress: false,
     spotlightClicks: true,
     disableBeacon: true,
+};
+
+const onboard_tour_overlay: TTourOverlay = {
+    disableOverlay: false,
+};
+const bot_tour_overlay: TTourOverlay = {
     disableOverlay: true,
 };
 
@@ -109,6 +117,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '#id-bot-builder',
@@ -123,10 +132,11 @@ export const DBOT_ONBOARDING = [
                 ]}
                 img={getImageLocation('ic-new-user-step-two.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '#id-quick-strategy',
@@ -138,10 +148,11 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '#id-charts',
@@ -151,10 +162,11 @@ export const DBOT_ONBOARDING = [
                 content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '#id-tutorials',
@@ -166,10 +178,11 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboardTabIndex={0}
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '.animation__wrapper',
@@ -183,6 +196,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
     {
         target: '[data-testid="drawer"]',
@@ -196,6 +210,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        ...onboard_tour_overlay,
     },
 ];
 
@@ -219,6 +234,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '[data-category="trade_parameters"]',
@@ -233,6 +249,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '[data-category="purchase_conditions"]',
@@ -248,6 +265,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '[data-category="sell_conditions"]',
@@ -263,6 +281,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
@@ -283,6 +302,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
@@ -308,6 +328,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
     {
         target: '[data-category="trade_results"]',
@@ -323,5 +344,6 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         ...joyride_props,
+        ...bot_tour_overlay,
     },
 ];

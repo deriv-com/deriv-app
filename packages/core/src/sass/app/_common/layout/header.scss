@@ -42,13 +42,10 @@
     }
     &__menu-mobile-theme {
         border-bottom: 1px solid var(--general-section-2);
-        padding-bottom: 1.6rem;
         padding-right: 0;
-        margin-bottom: 1.6rem;
 
-        &--trading-hub {
-            padding-bottom: 1.6rem;
-            margin-bottom: 1.6rem;
+        &--trader-hub {
+            border-bottom: 1px solid var(--general-section-2);
         }
     }
 

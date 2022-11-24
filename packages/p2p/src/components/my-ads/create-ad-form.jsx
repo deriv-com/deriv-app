@@ -32,7 +32,6 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    //test comment for commit
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
     const os = mobileOSDetect();
 

@@ -13,6 +13,7 @@ import {
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
+    routes,
     setSharedCFDText,
     useOnLoadTranslation,
 } from '@deriv/shared';
@@ -69,7 +70,12 @@ const AppWithoutTranslation = ({ root_store }) => {
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height) {
+
+            if (
+                view_width <= view_height ||
+                root_store.modules?.cashier?.general_store?.is_user_on_p2p ||
+                window.location.pathname.endsWith(routes.cashier_p2p)
+            ) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -77,6 +83,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                 el_landscape_blocker.classList.add('landscape-blocker--visible');
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [root_store.ui]);
 
     React.useEffect(() => {

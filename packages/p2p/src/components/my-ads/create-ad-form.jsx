@@ -72,7 +72,6 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
-            my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
         };

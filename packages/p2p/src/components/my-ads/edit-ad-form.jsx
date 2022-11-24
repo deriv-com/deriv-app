@@ -121,7 +121,6 @@ const EditAdForm = () => {
         }
         return () => {
             my_ads_store.setApiErrorCode(null);
-            my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

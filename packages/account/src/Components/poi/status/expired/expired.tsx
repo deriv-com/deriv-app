@@ -4,7 +4,13 @@ import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const Expired = ({ handleRequireSubmission, is_from_external, redirect_button }) => {
+type TExpired = {
+    handleRequireSubmission: () => void;
+    is_from_external: boolean;
+    redirect_button: React.HTMLAttributes<HTMLElement>;
+};
+
+const Expired = ({ handleRequireSubmission, is_from_external, redirect_button }: TExpired) => {
     return (
         <IconMessageContent
             message={localize('New proof of identity document needed')}

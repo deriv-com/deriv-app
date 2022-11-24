@@ -90,7 +90,8 @@ const Input = React.forwardRef(
                             })}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}
-                            onPaste={props.onChange}
+                            onPaste={props.onPaste}
+                            onChange={props.onChange}
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
                             id={input_id}

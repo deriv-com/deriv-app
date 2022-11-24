@@ -1,20 +1,9 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Div100vhContainer, Money, Modal, Popover, Numpad } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
+import classNames from 'classnames';
 
-const StrikeParamModal = ({ is_open, toggleModal, strike, currency, onChange }) => {
-    const user_currency_decimal_places = getDecimalPlaces(currency);
-    const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
-    const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
-
-    const setBasisAndAmount = value => {
-        onChange({ target: { value, name: 'barrier_1' } });
-        toggleModal();
-    };
-
-    const formatAmount = value =>
-        !isNaN(value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
+const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike_price_list }) => {
     return (
         <Modal
             className='trade-params'
@@ -34,35 +23,27 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, currency, onChange }) 
                         id='dt_multiplier-stake__tooltip'
                         zIndex={9999}
                         is_bubble_hover_enabled
-                        message={<Localize i18n_default_text='Test message' />}
+                        message={
+                            <Localize
+                                i18n_default_text='<0>For Call:</0> You will earn a payout if the market is above this price at the expiry time. Otherwise, your payout will be zero.<1/><1/><0>For Put:</0> You will earn a payout if the market is below this price at the expiry time. Otherwise, your payout will be zero.'
+                                components={[<strong key={0} />, <br key={1} />]}
+                            />
+                        }
+                        classNameWrapper='trade-params--modal-wrapper'
+                        classNameBubble='trade-params--modal-wrapper__content'
                     />
                 </div>
-                <div className='trade-params__amount-keypad'>
-                    <Numpad
-                        value={strike ?? 0}
-                        format={formatAmount}
-                        onSubmit={setBasisAndAmount}
-                        currency={currency}
-                        min={min_amount}
-                        is_currency
-                        render={({ value: v, className }) => {
-                            return (
-                                <div className={className}>
-                                    {parseFloat(v) > 0 ? (
-                                        <Money currency={currency} amount={v} should_format={false} />
-                                    ) : (
-                                        v
-                                    )}
-                                </div>
-                            );
-                        }}
-                        reset_press_interval={450}
-                        reset_value=''
-                        pip_size={user_currency_decimal_places}
-                        onValidate={() => undefined}
-                        submit_label={localize('OK')}
-                        onValueChange={() => undefined}
-                    />
+                <div className={classNames('trade-params__amount-keypad', 'trade-params--mobile-strike')}>
+                    <RadioGroup
+                        name={name}
+                        className='trade-params__amount--mobile'
+                        onToggle={onChange}
+                        selected={strike}
+                    >
+                        {strike_price_list.map(item => (
+                            <RadioGroup.Item key={item.key} value={String(item.value)} label={item.value} />
+                        ))}
+                    </RadioGroup>
                 </div>
             </Div100vhContainer>
         </Modal>

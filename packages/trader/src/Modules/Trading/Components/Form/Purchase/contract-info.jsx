@@ -68,6 +68,8 @@ const ContractInfo = ({
 
     const { message, obj_contract_basis, stake } = proposal_info;
 
+    // console.log('basis_text: ', basis_text, has_error_or_not_loaded);
+
     const setHintMessage = () => {
         if (type === 'VANILLALONGCALL') {
             return (

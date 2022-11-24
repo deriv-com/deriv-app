@@ -207,6 +207,11 @@
                 align-items: center;
                 justify-content: center;
 
+                &--strike {
+                    padding: 0 1.6rem;
+                    margin-bottom: 2.4rem;
+                }
+
                 .dc-numpad--is-currency,
                 .dc-numpad--is-regular {
                     max-width: 100%;
@@ -269,6 +274,28 @@
                     transform: scale(1, 0.92);
                     transform-origin: top;
                     margin-top: -0.4rem;
+                }
+
+                .dc-radio-group {
+                    flex-direction: column;
+                    width: 100%;
+                    gap: 10px;
+                    align-items: flex-start;
+
+                    .trade-params__amount--mobile {
+                        display: flex;
+                        height: 4.8rem;
+                        align-items: center;
+                        padding: 0 0.8rem;
+                        box-sizing: border-box;
+                        border: 1px solid var(--general-section-2);
+                        border-radius: 4px;
+                        width: 100%;
+                        &:hover {
+                            box-shadow: none;
+                            border-color: var(--border-active);
+                        }
+                    }
                 }
             }
         }
@@ -416,5 +443,31 @@
                 }
             }
         }
+        &--modal-wrapper {
+            left: 24px !important;
+
+            &__content {
+                max-width: 32.8rem;
+            }
+        }
+        &--mobile {
+            &-strike {
+                overflow: auto;
+                margin-top: unset;
+            }
+            &__payout-container {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+.dc-modal__container_trade-params {
+    .trade-params__multiplier-ic-info-wrapper {
+        margin-left: 1.4rem;
+    }
+    .dc-modal-header__close {
+        margin-right: 1rem;
     }
 }

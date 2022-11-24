@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Text } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import { localize } from '@deriv/translations';
 
 const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
     contract_types.map((type, idx) => (
@@ -19,16 +18,9 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
             onClick={e => handleSelect(type, e)}
         >
             <IconTradeCategory category={type.value} className='contract-type-item__icon-wrapper' />
-            <div className='contract-type-item__container'>
-                <Text size='xs' className='contract-type-item__title'>
-                    {type.text}
-                </Text>
-                {type.value === 'vanilla' && (
-                    <span className={classNames('dc-vertical-tab__header--new', 'contract-type-item__new')}>
-                        {localize('NEW!')}
-                    </span>
-                )}
-            </div>
+            <Text size='xs' className='contract-type-item__title'>
+                {type.text}
+            </Text>
             <DesktopWrapper>
                 <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(type)}>
                     <Icon icon='IcInfoOutline' />

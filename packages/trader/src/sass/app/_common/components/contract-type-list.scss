@@ -41,7 +41,9 @@
     }
 
     &__new {
-        padding: 0.2rem 0.4rem;
+        padding: 0.3rem 0.4rem;
+        margin-bottom: 0.8rem;
+        border-radius: 16px;
     }
 
     &__title {
@@ -51,7 +53,7 @@
     &__container {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.6rem;
     }
 
     &__icon {

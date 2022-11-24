@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Money, Dropdown, Text } from '@deriv/components';
+import { DesktopWrapper, InputField, MobileWrapper, Money, Dropdown, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
+import './strike-field.scss';
 
 const Strike = ({
     barrier_1,
@@ -21,6 +22,8 @@ const Strike = ({
     server_time,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
+    const [should_open_dropdown, setShouldOpenDropdown] = React.useState(false);
+    const [selected_value, setSelectedValue] = React.useState(barrier_1);
 
     const toggleWidget = () => setIsOpen(!is_open);
 
@@ -29,9 +32,39 @@ const Strike = ({
     const is_relative_strike_applicable =
         advanced_duration_unit !== 'd' || (expiry_type === 'endtime' && is_24_hours_contract);
 
-    const strike_price_list = is_relative_strike_applicable
-        ? strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }))
-        : [];
+    const strike_price_list = strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }));
+
+    if (should_open_dropdown) {
+        return (
+            <section className='strike-field'>
+                <div className='strike-field--header'>
+                    <Text weight='bold' size='xs'>
+                        {localize('Strike Prices')}
+                    </Text>
+                    <Icon icon='IcCross' onClick={() => setShouldOpenDropdown(false)} />
+                </div>
+                <div className='strike-field--body'>
+                    {strike_price_list.map(strike => (
+                        <Text
+                            size='xs'
+                            line_height='xl'
+                            key={strike.key}
+                            className={classNames('strike-field--body-item', {
+                                'dc-list__item--selected': selected_value === strike.value,
+                            })}
+                            onClick={() => {
+                                setSelectedValue(strike.value);
+                                setShouldOpenDropdown(false);
+                                onChange({ target: { name: 'barrier_1', value: strike.value } });
+                            }}
+                        >
+                            {strike.value}
+                        </Text>
+                    ))}
+                </div>
+            </section>
+        );
+    }
 
     return (
         <React.Fragment>
@@ -50,7 +83,7 @@ const Strike = ({
                         <InputField
                             type='number'
                             name='barrier_1'
-                            value={barrier_1}
+                            value={selected_value}
                             className='trade-container__barriers-single'
                             classNameInput={classNames(
                                 'trade-container__input',
@@ -58,11 +91,12 @@ const Strike = ({
                                 'trade-container__barriers-single-input'
                             )}
                             current_focus={current_focus}
-                            onChange={onChange}
                             error_messages={validation_errors?.barrier_1 || []}
                             is_float
                             is_signed
+                            is_read_only
                             setCurrentFocus={setCurrentFocus}
+                            onClick={() => setShouldOpenDropdown(true)}
                         />
                     ) : (
                         <div className='trade-container__strike-field'>
@@ -97,8 +131,9 @@ const Strike = ({
                         is_open={is_open}
                         toggleModal={toggleWidget}
                         strike={barrier_1}
-                        currency={currency}
                         onChange={onChange}
+                        name='barrier_1'
+                        strike_price_list={strike_price_list}
                     />
                 </div>
             </MobileWrapper>

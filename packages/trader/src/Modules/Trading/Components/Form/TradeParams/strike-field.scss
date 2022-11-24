@@ -1,0 +1,38 @@
+.strike-field {
+    width: 24rem;
+    border-radius: 4px;
+    background-color: var(--general-section-1);
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow: auto;
+
+    &--header {
+        padding: 1.6rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--general-hover);
+    }
+
+    &--body {
+        padding: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 8px;
+
+        &-item {
+            &:hover {
+                background-color: var(--state-hover);
+            }
+        }
+
+        &--active {
+            background-color: var(--state-active);
+        }
+    }
+}

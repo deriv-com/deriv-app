@@ -111,18 +111,20 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                <div className='btn-purchase__bottom'>
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={has_increased}
-                        is_loading={is_loading}
-                        is_multiplier={is_multiplier}
-                        should_fade={should_fade}
-                        proposal_info={info}
-                        type={type}
-                    />
-                </div>
+                {!is_vanilla && (
+                    <div className='btn-purchase__bottom'>
+                        <ContractInfo
+                            basis={basis}
+                            currency={currency}
+                            has_increased={has_increased}
+                            is_loading={is_loading}
+                            is_multiplier={is_multiplier}
+                            should_fade={should_fade}
+                            proposal_info={info}
+                            type={type}
+                        />
+                    </div>
+                )}
             </MobileWrapper>
         </button>
     );

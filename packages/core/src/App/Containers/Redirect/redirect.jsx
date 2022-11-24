@@ -53,8 +53,8 @@ const Redirect = ({
                         search: url_query_string,
                     });
                 }
-                redirected_to_route = true;
                 sessionStorage.removeItem('redirect_url');
+                redirected_to_route = true;
                 toggleAccountSignupModal(true);
             });
             break;

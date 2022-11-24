@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
@@ -98,20 +98,15 @@ const AppContents = ({
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-dashboard': is_appstore,
                 'app-contents--is-hidden': platforms[platform],
-                'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
             })}
             ref={scroll_ref}
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}
-                {window.location.pathname === routes.onboarding ? (
-                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }}>{children}</ThemedScrollbars>
-                ) : (
-                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
-                        {children}
-                    </ThemedScrollbars>
-                )}
+                <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
+                    {children}
+                </ThemedScrollbars>
             </DesktopWrapper>
             {show_cookie_banner && (
                 <CookieBanner

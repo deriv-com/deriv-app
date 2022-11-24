@@ -56,10 +56,11 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
 
     if (has_group) {
         const dropdown_items = options.reduce((dropdown_map: { [key: string]: Array<TListItem> }, item) => {
-            const index = item.group as string;
-            dropdown_map[index] = dropdown_map[index] || [];
-            dropdown_map[index].push(item);
-
+            if (item.group) {
+                const index = item.group;
+                dropdown_map[index] = dropdown_map[index] || [];
+                dropdown_map[index].push(item);
+            }
             return dropdown_map;
         }, {});
         const group_names = Object.keys(dropdown_items);

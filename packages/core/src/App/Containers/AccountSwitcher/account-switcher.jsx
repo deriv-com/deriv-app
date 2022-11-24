@@ -289,6 +289,11 @@ const AccountSwitcher = props => {
         if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
             return [...all_config];
         }
+
+        if (!is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return [...gaming_config, ...financial_config, ...all_config];
+        }
+
         return [...gaming_config, ...financial_config];
     };
 

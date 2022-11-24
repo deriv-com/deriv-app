@@ -216,7 +216,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
         if (props.is_logged_in) {
             ['demo', 'real'].forEach(account_type => {
-                const should_enable_tab = isSyntheticCardVisible(account_type) || isFinancialCardVisible();
+                const should_enable_tab =
+                    isDxtradeAllCardVisible() || isSyntheticCardVisible(account_type) || isFinancialCardVisible();
 
                 if (account_type === 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
@@ -319,6 +320,16 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         props.setAccountType(account_type);
         props.openPasswordModal();
+    };
+
+    const isDxtradeAllCardVisible = () => {
+        const { platform, landing_companies } = props;
+
+        return isLandingCompanyEnabled({
+            landing_companies,
+            platform,
+            type: 'all',
+        });
     };
 
     const isSyntheticCardVisible = (account_category: string) => {

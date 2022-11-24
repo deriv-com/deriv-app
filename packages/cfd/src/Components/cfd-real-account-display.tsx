@@ -7,7 +7,7 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from './props.types';
+import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -153,16 +153,18 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial' | 'all') => {
         // We need to check enabled property for DXTRADE accounts only.
+        const accountKey =
+            acc_type === 'all' ? `${platform}.real.${platform}@${acc_type}` : `${platform}.real.${acc_type}`;
         // TODO: This condition should be removed after separating the DXTRADE and MT5 component.
         const should_be_enabled = (list_item: TCurrentList) =>
             platform === 'dxtrade' ? list_item.enabled === 1 : true;
         const acc = Object.keys(current_list).some(
-            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+            key => key.startsWith(accountKey) && should_be_enabled(current_list[key])
         )
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .filter(key => key.startsWith(accountKey))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -237,7 +239,35 @@ const CFDRealAccountDisplay = ({
         />
     );
 
-    const items = [synthetic_account_items, financial_account].filter(Boolean);
+    const derivx_all_account = platform === 'dxtrade' && (
+        <CFDAccountCard
+            commission_message={localize('No commission')}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+            existing_accounts_data={existing_accounts_data('all')}
+            has_real_account={has_real_account}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+            is_disabled={has_cfd_account_error || standpoint.malta}
+            is_eu={is_eu_user}
+            is_logged_in={is_logged_in}
+            is_virtual={is_virtual}
+            key='cfd'
+            onClickFund={onClickFundReal}
+            onPasswordManager={openPasswordManager}
+            onSelectAccount={() => onSelectRealAccount('all')}
+            platform={platform}
+            specs={specifications.dxtrade.real_all_specs}
+            title={localize('Deriv X')}
+            toggleAccountsDialog={toggleAccountsDialog}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            type={{
+                category: 'real',
+                type: 'all',
+                platform,
+            }}
+        />
+    );
+
+    const items = [synthetic_account_items, financial_account, derivx_all_account].filter(Boolean);
 
     return (
         <div data-testid='dt_cfd_real_accounts_display' className={classNames('cfd-real-accounts-display')}>

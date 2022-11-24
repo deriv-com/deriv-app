@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import Div100vhContainer from '../div100vh-container';
@@ -6,6 +5,30 @@ import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay.jsx';
 import Text from '../text/text';
 import Icon from '../icon/icon';
+
+type TMobileFullPageModal = {
+    className?: string;
+    container_children: React.ReactNode;
+    header?: string;
+    header_background_color?: string;
+    height_offset?: string;
+    is_flex?: boolean;
+    is_modal_open: boolean;
+    onClickClose: React.MouseEventHandler;
+    pageHeaderReturnFn: () => void;
+    renderPageFooterChildren: () => React.ReactNode;
+    page_footer_className?: string;
+    page_header_className?: string;
+    page_header_text?: string;
+    renderPageHeaderTrailingIcon?: () => React.ReactNode;
+    renderPageHeaderText?: () => string;
+    should_header_stick_body?: boolean;
+    body_className?: string;
+    is_popup?: boolean;
+    page_footer_parent: React.ReactNode;
+    renderPageHeader: () => React.ReactNode;
+    page_footer_parent_className?: string;
+};
 
 const MobileFullPageModal = ({
     body_className,
@@ -31,7 +54,7 @@ const MobileFullPageModal = ({
     // opt-in for backward compatibility.
     children,
     container_children,
-}) => (
+}: React.PropsWithChildren<TMobileFullPageModal>) => (
     <FadeWrapper
         is_visible={is_modal_open}
         className={classNames('dc-mobile-full-page-modal', className)}
@@ -49,7 +72,7 @@ const MobileFullPageModal = ({
                     <div
                         className={classNames('dc-mobile-full-page-modal__header', {
                             'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
-                            [page_header_className]: !!page_header_className,
+                            ...(page_header_className ? { [page_header_className]: !!page_header_className } : {}),
                         })}
                         style={{
                             background: header_background_color,
@@ -100,31 +123,5 @@ const MobileFullPageModal = ({
         </PageOverlay>
     </FadeWrapper>
 );
-
-MobileFullPageModal.propTypes = {
-    className: PropTypes.string,
-    container_children: PropTypes.any,
-    header: PropTypes.string,
-    header_background_color: PropTypes.string,
-    height_offset: PropTypes.string,
-    is_flex: PropTypes.bool,
-    is_modal_open: PropTypes.bool,
-    onClickClose: PropTypes.func,
-    pageHeaderReturnFn: PropTypes.func,
-    renderPageFooterChildren: PropTypes.func,
-    page_footer_className: PropTypes.string,
-    page_header_className: PropTypes.string,
-    page_header_text: PropTypes.string,
-    renderPageHeaderTrailingIcon: PropTypes.func,
-    renderPageHeaderText: PropTypes.func,
-    should_header_stick_body: PropTypes.bool,
-    should_wrap_body: PropTypes.bool,
-    body_className: PropTypes.string,
-    is_popup: PropTypes.bool,
-    page_footer_parent: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    children: PropTypes.oneOfType([PropTypes.arrayOf, PropTypes.node]),
-    renderPageHeader: PropTypes.func,
-    page_footer_parent_className: PropTypes.string,
-};
 
 export default MobileFullPageModal;

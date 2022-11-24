@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
-import PageOverlay from '../page-overlay/page-overlay.jsx';
+import PageOverlay from '../page-overlay/page-overlay';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 

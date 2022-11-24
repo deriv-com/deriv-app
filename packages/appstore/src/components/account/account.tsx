@@ -286,7 +286,7 @@ const OptionsAccount = ({
                             secondary
                             small
                         >
-                            {localize('Reset')}
+                            {localize('Reset balance')}
                         </Button>
                     ) : (
                         has_balance && (

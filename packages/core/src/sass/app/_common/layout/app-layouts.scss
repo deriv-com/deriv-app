@@ -82,8 +82,8 @@
         line-height: 1.4;
     }
 
-    // checks for portrait view using aspect ratio. portrait has an aspect ratio less than 13:9
-    @media screen and (max-aspect-ratio: 13/9) {
+    // checks for portrait view using aspect ratio. 16:9 is the most common aspect ratio used on smartphones.
+    @media screen and (max-aspect-ratio: 16/9) {
         display: none;
     }
 }

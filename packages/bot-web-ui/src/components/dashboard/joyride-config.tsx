@@ -8,8 +8,6 @@ import { getImageLocation } from '../../public-path';
 
 type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon', boolean>;
 
-type TTourOverlay = Record<'disableOverlay', boolean>;
-
 type TStep = {
     label?: string;
     content: string[];
@@ -98,13 +96,6 @@ const joyride_props: TJoyrideConfig = {
     disableBeacon: true,
 };
 
-const onboard_tour_overlay: TTourOverlay = {
-    disableOverlay: false,
-};
-const bot_tour_overlay: TTourOverlay = {
-    disableOverlay: true,
-};
-
 export const DBOT_ONBOARDING = [
     {
         target: '#tab__dashboard__table__tiles',
@@ -116,8 +107,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '#id-bot-builder',
@@ -135,8 +126,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '#id-quick-strategy',
@@ -151,8 +142,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '#id-charts',
@@ -165,8 +156,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '#id-tutorials',
@@ -181,8 +172,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={0}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '.animation__wrapper',
@@ -195,8 +186,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={1}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
     {
         target: '[data-testid="drawer"]',
@@ -209,8 +200,8 @@ export const DBOT_ONBOARDING = [
                 dashboardTabIndex={1}
             />
         ),
+        disableOverlay: false,
         ...joyride_props,
-        ...onboard_tour_overlay,
     },
 ];
 
@@ -233,8 +224,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '[data-category="trade_parameters"]',
@@ -248,8 +239,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '[data-category="purchase_conditions"]',
@@ -264,8 +255,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '[data-category="sell_conditions"]',
@@ -280,8 +271,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
@@ -301,8 +292,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
@@ -327,8 +318,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
     {
         target: '[data-category="trade_results"]',
@@ -343,7 +334,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
+        disableOverlay: true,
         ...joyride_props,
-        ...bot_tour_overlay,
     },
 ];

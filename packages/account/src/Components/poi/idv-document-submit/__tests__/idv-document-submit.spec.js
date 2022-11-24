@@ -128,9 +128,15 @@ describe('<IdvDocumentSubmit/>', () => {
 
         fireEvent.keyUp(document_number_input);
         fireEvent.change(document_number_input, { target: { value: 'D09876' } });
+        expect(await screen.findByText(/please provide a valid document/i)).toBeInTheDocument();
+
+        fireEvent.change(document_number_input, { target: { value: 'D06253' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
         fireEvent.change(document_number_input, { target: { value: 'A-54321' } });
+        expect(await screen.findByText(/please provide a valid document/i)).toBeInTheDocument();
+
+        fireEvent.change(document_number_input, { target: { value: 'A-42512' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please provide a valid document/i)).not.toBeInTheDocument();

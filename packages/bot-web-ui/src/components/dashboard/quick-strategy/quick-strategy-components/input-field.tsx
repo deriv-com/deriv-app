@@ -17,8 +17,6 @@ const InputField = ({
     field_name,
     id,
     className,
-    label_className,
-    field_className,
     label,
     input_value,
     placeholder,
@@ -39,8 +37,6 @@ const InputField = ({
         field_name: new_field_name,
         id: new_id,
         className: new_className,
-        label_className: new_label_className,
-        field_className: new_field_className,
         label: new_label,
         input_value: new_input_value,
         placeholder: new_placeholder,
@@ -55,8 +51,6 @@ const InputField = ({
                     <Input
                         {...field}
                         className={className || new_className}
-                        label_className={label_className || new_label_className}
-                        field_className={field_className || new_field_className}
                         type='text'
                         error={errors[(field.name as keyof typeof errors) || (new_field_name as keyof typeof errors)]}
                         label={localize(label || new_label)}

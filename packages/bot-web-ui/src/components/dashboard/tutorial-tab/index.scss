@@ -43,6 +43,7 @@
         margin-right: 2.4rem;
         height: 16rem;
         width: 28rem;
+        background-size: 100% 100%;
         &__tours {
             height: 13.5rem;
             width: 21.5rem;
@@ -57,6 +58,10 @@
             height: 7rem;
             border-radius: 1rem;
             cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            &--play {
+                filter: invert(1);
+            }
         }
         &--disabled {
             pointer-events: none;

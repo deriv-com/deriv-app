@@ -13,18 +13,26 @@ type TStep = {
     content: string[];
 };
 
+type TTourStatus = {
+    key: string;
+    toggle: string;
+    type: string;
+};
+
+type TTourType = Pick<TTourStatus, 'key'>;
+
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
-    if (type === `${tour_type.key}token`) {
-        return storeSetting(`${tour_type.key}token`, param);
+    if (type === `${tour_type.key}_token`) {
+        return storeSetting(`${tour_type.key}_token`, param);
     }
-    return storeSetting(`${tour_type.key}status`, param);
+    return storeSetting(`${tour_type.key}_status`, param);
 };
 
 export const getTourSettings = (type: string) => {
     if (type === 'token') {
-        return getSetting(`${tour_type.key}token`);
+        return getSetting(`${tour_type.key}_token`);
     }
-    return getSetting(`${tour_type.key}status`);
+    return getSetting(`${tour_type.key}_status`);
 };
 
 export const Step = ({ label, content }: TStep) => {
@@ -46,18 +54,30 @@ export const Step = ({ label, content }: TStep) => {
     );
 };
 
-export const tour_type = {
-    key: 'onboard_tour_',
+export const tour_type: TTourType = {
+    key: 'onboard_tour',
 };
 
 export const setTourType = (param: string) => {
     tour_type.key = param;
 };
 
+export const tour_status_ended: TTourStatus = {
+    key: '',
+    toggle: '',
+    type: `${tour_type.key}_status`,
+};
+
 let tour: { [key: string]: string } = {};
-let current_target: number;
+let current_target: number | undefined;
 export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status } = data;
+    const { action, index, status, type } = data;
+    if (status === 'finished') {
+        tour_status_ended.key = status;
+    }
+    if (action === 'close') {
+        tour_status_ended.toggle = action;
+    }
     if (current_target !== index) {
         tour = {};
         tour.status = status;
@@ -67,7 +87,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
     setTourSettings(tour, 'tour');
     //added trigger to create new listner on local storage
     window.dispatchEvent(new Event('storage'));
-    setTourSettings(new Date().getTime(), `${tour_type.key}token`);
+    setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
 };
 
 const joyride_props: TJoyrideConfig = {
@@ -118,7 +138,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-three.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={2}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -131,7 +151,7 @@ export const DBOT_ONBOARDING = [
                 content={localize('View the market price of your favourite assets.')}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={3}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -146,7 +166,7 @@ export const DBOT_ONBOARDING = [
                 )}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 className={'dbot-onboarding__container'}
-                dashboardTabIndex={4}
+                dashboardTabIndex={1}
             />
         ),
         ...joyride_props,
@@ -177,20 +197,8 @@ export const DBOT_ONBOARDING = [
         ),
         ...joyride_props,
     },
-
-    {
-        target: 'body',
-        content: (
-            <TourGuide
-                label={localize('Want to take retake the tour?')}
-                content={localize('If yes, go to Tutorials.')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
-            />
-        ),
-        ...joyride_props,
-    },
 ];
+
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
@@ -310,23 +318,6 @@ export const BOT_BUILDER_TOUR = [
                     localize('Step 6 :'),
                     localize(
                         'Finally, drag and add the whole <strong>Repeat</strong> block to the <strong>Restart trading conditions</strong> block.'
-                    ),
-                ]}
-            />,
-        ],
-        ...joyride_props,
-    },
-    {
-        target: 'header',
-        content: [
-            <Step
-                key='Congratulations'
-                label={localize('Congratulations!')}
-                content={[
-                    localize('You have successfully created your bot using a simple strategy.'),
-                    localize('Now, <strong>run the bot</strong> to test out the strategy.'),
-                    localize(
-                        'Note: If you wish to learn more about the Bot Builder, you can proceed to the <strong>Tutorials</strong> tab.'
                     ),
                 ]}
             />,

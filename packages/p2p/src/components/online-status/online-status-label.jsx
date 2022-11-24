@@ -13,27 +13,32 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
                 const end_time = toMoment().unix();
 
                 const diff = getDiffDuration(start_time, end_time);
-                const addPrural = duration => (duration !== 1 ? 's' : '');
+                const addPlural = duration => (duration !== 1 ? 's' : '');
 
-                if (diff.months())
+                if (diff.years()) return localize('Seen more than 6 months ago');
+                if (diff.months()) {
+                    if (diff.months() > 6) {
+                        return localize('Seen more than 6 months ago');
+                    }
                     return localize('Seen {{ duration }} month{{ prural }} ago', {
                         duration: diff.months(),
-                        prural: addPrural(diff.months()),
+                        prural: addPlural(diff.months()),
                     });
+                }
                 if (diff.days())
-                    return localize('Seen {{ duration }} day{{ prural }} ago', {
+                    return localize('Seen {{ duration }} day{{ plural }} ago', {
                         duration: diff.days(),
-                        prural: addPrural(diff.days()),
+                        plural: addPlural(diff.days()),
                     });
                 if (diff.hours())
-                    return localize('Seen {{ duration }} hour{{ prural }} ago', {
+                    return localize('Seen {{ duration }} hour{{ plural }} ago', {
                         duration: diff.hours(),
-                        prural: addPrural(diff.hours()),
+                        plural: addPlural(diff.hours()),
                     });
                 if (diff.minutes())
-                    return localize('Seen {{ duration }} minute{{ prural }} ago', {
+                    return localize('Seen {{ duration }} minute{{ plural }} ago', {
                         duration: diff.minutes(),
-                        prural: addPrural(diff.minutes()),
+                        plural: addPlural(diff.minutes()),
                     });
             } else {
                 return localize('Seen more than 6 months ago');

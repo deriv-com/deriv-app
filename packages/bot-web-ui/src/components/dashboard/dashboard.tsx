@@ -255,6 +255,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,

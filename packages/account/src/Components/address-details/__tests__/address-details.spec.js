@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails from '../address-details';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 
@@ -271,7 +271,7 @@ describe('<AddressDetails/>', () => {
 
         expect(screen.getByPlaceholderText(address_line_1)).toBeDisabled();
         expect(screen.getByPlaceholderText(address_line_2)).toBeDisabled();
-        await act(async () => {
+        await waitFor(() => {
             expect(screen.getByRole('textbox', { name: 'State/Province' })).toBeEnabled();
         });
         expect(screen.getByPlaceholderText(address_town)).toBeEnabled();

@@ -67,7 +67,7 @@ const Popover = ({
                             ? is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))
                             : is_open ?? (is_hovered && message)
                     }
-                    position={alignment}
+                    positions={[].concat(alignment)}
                     transitionDuration={0.25}
                     padding={margin + 8}
                     containerClassName={classNames({

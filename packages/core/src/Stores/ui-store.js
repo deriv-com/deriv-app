@@ -323,7 +323,6 @@ export default class UIStore extends BaseStore {
             setRealAccountSignupParams: action.bound,
             setRealAccountSignupEnd: action.bound,
             resetRealAccountSignupParams: action.bound,
-            onOrientationChange: action.bound,
             toggleOnScreenKeyboard: action.bound,
             setCurrentFocus: action.bound,
             addToast: action.bound,
@@ -698,10 +697,6 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
-    }
-
-    onOrientationChange({ is_landscape_orientation }) {
-        this.is_landscape = is_landscape_orientation;
     }
 
     toggleOnScreenKeyboard() {

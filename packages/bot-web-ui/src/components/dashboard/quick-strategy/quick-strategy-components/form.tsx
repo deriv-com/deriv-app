@@ -48,7 +48,7 @@ const QuickStrategyForm = ({
 
         'quick-strategy__stake': setDefaultValidationNumber(),
         'quick-strategy__loss': setDefaultValidationNumber(),
-        'martingale-size': setDefaultValidationNumber().min(3, localize('Must be a number higher than 2')),
+        'martingale-size': setDefaultValidationNumber(),
         'alembert-unit': setDefaultValidationNumber(),
         'oscar-unit': setDefaultValidationNumber(),
         'quick-strategy__profit': setDefaultValidationNumber(),

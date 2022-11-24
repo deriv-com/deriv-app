@@ -133,6 +133,7 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.change(document_number_input, { target: { value: 'A-54321' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/please provide a valid document/i)).not.toBeInTheDocument();
             expect(verifyBtn).not.toBeDisabled();
         });
 

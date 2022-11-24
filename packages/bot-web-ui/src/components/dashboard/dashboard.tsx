@@ -266,6 +266,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     onCloseDialog: run_panel.onCloseDialog,
     onOkButtonClick: run_panel.onOkButtonClick,
     setActiveTab: dashboard.setActiveTab,
+    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     onEntered: load_modal.onEntered,

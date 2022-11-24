@@ -122,7 +122,6 @@ const ToggleMenuDrawer = React.forwardRef(
             should_allow_authentication,
             title,
             toggleTheme,
-            can_have_whatsapp,
         },
         ref
     ) => {
@@ -458,7 +457,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                             getRoutesWithSubMenu(route_config, idx)
                                         )}
                                         <MobileDrawer.Item
-                                            className='header__menu-mobile-theme--trading-hub'
+                                            className='header__menu-mobile-theme'
                                             onClick={e => {
                                                 e.preventDefault();
                                                 toggleTheme(!is_dark_mode);
@@ -514,7 +513,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         changeCurrentLanguage={changeCurrentLanguage}
                                                     />
                                                 </MobileDrawer.Item>
-                                                <MobileDrawer.Item className='header__menu-mobile-theme'>
+                                                <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                     <MenuLink
                                                         link_to={getStaticUrl('/')}
                                                         icon='IcDerivOutline'
@@ -523,12 +522,31 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         changeCurrentLanguage={changeCurrentLanguage}
                                                     />
                                                 </MobileDrawer.Item>
+                                                {liveChat.isReady && (
+                                                    <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                                        <a
+                                                            className='header__menu-mobile-whatsapp-link'
+                                                            href={whatsapp_url}
+                                                            target='_blank'
+                                                            rel='noopener noreferrer'
+                                                            onClick={() => {
+                                                                toggleDrawer();
+                                                            }}
+                                                        >
+                                                            {localize('WhatsApp')}
+                                                        </a>
+                                                    </MobileDrawer.Item>
+                                                )}
+                                                <MobileDrawer.Item className='header__menu-mobile-livechat'>
+                                                    {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                                </MobileDrawer.Item>
                                                 <MobileDrawer.Item
                                                     onClick={() => {
                                                         logoutClient();
                                                         toggleDrawer();
                                                     }}
-                                                    className='dc-mobile-drawer__item--logout'
+                                                    className='dc-mobile-drawer__item'
                                                 >
                                                     <MenuLink
                                                         link_to={routes.index}
@@ -614,7 +632,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 </div>
                                             </MobileDrawer.Item>
                                         }
-                                        {can_have_whatsapp && liveChat.isReady && (
+                                        {liveChat.isReady && (
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                                 <Icon icon='IcWhatsApp' className='drawer-icon' />
                                                 <a
@@ -622,6 +640,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     href={whatsapp_url}
                                                     target='_blank'
                                                     rel='noopener noreferrer'
+                                                    onClick={() => {
+                                                        toggleDrawer();
+                                                    }}
                                                 >
                                                     {localize('WhatsApp')}
                                                 </a>

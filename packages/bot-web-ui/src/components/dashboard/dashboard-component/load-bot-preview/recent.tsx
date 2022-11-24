@@ -29,7 +29,7 @@ const RecentComponent = ({
         toggleStrategies(true);
         setTimeout(() => {
             getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
-        }, 200);
+        }, 100);
     }, [strategy_save_type]);
 
     if (!dashboard_strategies?.length) return null;

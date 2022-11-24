@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { InputField, SelectField } from '.';
 import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
 import { TDurationFields } from './components.types';
+import { isMobile } from '@deriv/shared';
 
 const DurationFields = ({
     id,
-    is_mobile,
     field_name,
     idx,
     dropdown_list,
@@ -26,8 +26,9 @@ const DurationFields = ({
     handleChange,
     onChangeInputValue,
     setCurrentFocus,
-}: TDurationFields) =>
-    id === 'duration-unit' ? (
+}: TDurationFields) => {
+    const is_mobile = isMobile();
+    return id === 'duration-unit' ? (
         <div
             className={classNames('quick-strategy__form-row', {
                 'quick-strategy__form-row--multiple': !is_mobile,
@@ -63,5 +64,6 @@ const DurationFields = ({
     ) : (
         <></>
     );
+};
 
 export default React.memo(DurationFields);

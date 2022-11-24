@@ -1,16 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field as FormField, Formik, Form, FieldProps } from 'formik';
-import { Input, Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SearchBox from './search-box';
+import { isMobile } from '@deriv/shared';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;
-    is_mobile: boolean;
     is_search_loading: boolean;
     is_toolbox_open: boolean;
     onMount: (param?: React.RefObject<typeof ToolboxItems>) => void;
@@ -30,7 +29,6 @@ const Toolbox = ({
     onMount,
     onUnmount,
     hasSubCategory,
-    is_mobile,
     is_search_loading,
     onSearch,
     onSearchBlur,
@@ -49,7 +47,7 @@ const Toolbox = ({
         return () => onUnmount();
     }, []);
 
-    if (is_mobile) {
+    if (isMobile()) {
         return null;
     }
 
@@ -141,7 +139,6 @@ const Toolbox = ({
 
 export default connect(({ toolbox, ui }: RootStore) => ({
     hasSubCategory: toolbox.hasSubCategory,
-    is_mobile: ui.is_mobile,
     is_search_loading: toolbox.is_search_loading,
     is_toolbox_open: toolbox.is_toolbox_open,
     onMount: toolbox.onMount,

@@ -4,10 +4,10 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { isMobile } from '@deriv/shared';
 
 type Nullable<T> = T | null;
 type TLocalFooter = {
-    is_mobile: boolean;
     is_open_button_loading: boolean;
     loadFileFromLocal: () => void;
     setLoadedLocalFile: (data: Nullable<string>) => void;
@@ -16,13 +16,13 @@ type TLocalFooter = {
 };
 
 const LocalFooter = ({
-    is_mobile,
     is_open_button_loading,
     loadFileFromLocal,
     setLoadedLocalFile,
     setPreviewOnPopup,
     toggleLoadModal,
 }: TLocalFooter) => {
+    const is_mobile = isMobile();
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
     return (
         <Wrapper>
@@ -45,8 +45,7 @@ const LocalFooter = ({
     );
 };
 
-export default connect(({ load_modal, ui, dashboard }: RootStore) => ({
-    is_mobile: ui.is_mobile,
+export default connect(({ load_modal, dashboard }: RootStore) => ({
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,

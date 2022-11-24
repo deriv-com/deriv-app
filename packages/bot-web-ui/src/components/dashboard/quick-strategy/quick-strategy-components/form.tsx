@@ -1,5 +1,5 @@
 import { ThemedScrollbars, Text } from '@deriv/components';
-import { isSafari } from '@deriv/shared';
+import { isSafari, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
@@ -22,7 +22,6 @@ const QuickStrategyForm = ({
     onScrollStopDropdownList,
     symbol_dropdown,
     trade_type_dropdown,
-    is_mobile,
     selected_symbol,
     selected_trade_type,
     selected_duration_unit,
@@ -72,6 +71,7 @@ const QuickStrategyForm = ({
                 const is_valid =
                     Object.keys(errors).length === 0 && !Object.values(values).some(elem => (elem as string) === '');
                 const is_submit_enabled = !isSubmitting && is_valid;
+                const is_mobile = isMobile();
 
                 return (
                     <Form
@@ -98,7 +98,6 @@ const QuickStrategyForm = ({
                                 </div>
 
                                 <QuickStrategyFields
-                                    is_mobile={is_mobile}
                                     types_strategies_dropdown={types_strategies_dropdown}
                                     symbol_dropdown={symbol_dropdown}
                                     trade_type_dropdown={trade_type_dropdown}

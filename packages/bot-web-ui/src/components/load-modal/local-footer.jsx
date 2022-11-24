@@ -3,15 +3,16 @@ import { PropTypes } from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
 const LocalFooter = ({
-    is_mobile,
     is_open_button_loading,
     loadFileFromLocal,
     setLoadedLocalFile,
     toggleLoadModal,
     setPreviewOnPopup,
 }) => {
+    const is_mobile = isMobile();
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
     return (
         <Wrapper>
@@ -35,15 +36,13 @@ const LocalFooter = ({
 };
 
 LocalFooter.propTypes = {
-    is_mobile: PropTypes.bool,
     is_open_button_loading: PropTypes.bool,
     loadFileFromLocal: PropTypes.func,
     setLoadedLocalFile: PropTypes.bool,
     setPreviewOnPopup: PropTypes.func,
 };
 
-export default connect(({ load_modal, ui, dashboard }) => ({
-    is_mobile: ui.is_mobile,
+export default connect(({ load_modal, dashboard }) => ({
     is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,

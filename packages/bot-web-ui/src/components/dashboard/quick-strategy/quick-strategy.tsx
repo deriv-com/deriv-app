@@ -28,7 +28,6 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     getSizeDesc: quick_strategy.getSizeDesc,
     initial_values: quick_strategy.initial_values,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
-    is_mobile: ui.is_mobile,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     onChangeDropdownItem: quick_strategy.onChangeDropdownItem,
     onChangeInputValue: quick_strategy.onChangeInputValue,

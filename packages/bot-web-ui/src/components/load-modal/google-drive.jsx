@@ -4,8 +4,9 @@ import { PropTypes } from 'prop-types';
 import { Button, Icon, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
-const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => {
+const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -14,7 +15,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     className={classnames('load-strategy__google-drive-icon', {
                         'load-strategy__google-drive-icon--disabled': !is_authorised,
                     })}
-                    size={is_mobile ? 96 : 128}
+                    size={isMobile() ? 96 : 128}
                 />
                 <div className='load-strategy__google-drive-text'>
                     {is_authorised ? (
@@ -61,15 +62,13 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
 
 GoogleDrive.propTypes = {
     is_authorised: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_open_button_loading: PropTypes.bool,
     onDriveConnect: PropTypes.func,
     onDriveOpen: PropTypes.func,
 };
 
-export default connect(({ load_modal, ui, google_drive }) => ({
+export default connect(({ load_modal, google_drive }) => ({
     is_authorised: google_drive.is_authorised,
-    is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,

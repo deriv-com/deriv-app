@@ -14,7 +14,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         getSizeDesc,
         initial_values,
         is_onscreen_keyboard_active,
-        is_mobile,
         is_stop_button_visible,
         onChangeDropdownItem,
         onChangeInputValue,
@@ -65,7 +64,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             onScrollStopDropdownList={onScrollStopDropdownList}
             symbol_dropdown={symbol_dropdown_options}
             trade_type_dropdown={trade_type_dropdown_options}
-            is_mobile={is_mobile}
             selected_symbol={selected_symbol}
             selected_trade_type={selected_trade_type}
             selected_duration_unit={selected_duration_unit}

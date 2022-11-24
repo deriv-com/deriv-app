@@ -4,6 +4,7 @@ import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace }
 import { tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
@@ -145,7 +146,7 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     get tab_name() {
-        if (this.root_store.ui.is_mobile) {
+        if (isMobile()) {
             if (this.active_index === 0) return tabs_title.TAB_LOCAL;
             if (this.active_index === 1) return tabs_title.TAB_GOOGLE;
         }

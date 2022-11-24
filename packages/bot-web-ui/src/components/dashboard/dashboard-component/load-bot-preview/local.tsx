@@ -1,16 +1,16 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Text, DesktopWrapper, Icon } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { isMobile } from '@deriv/shared';
 
 type Nullable<T> = T | null;
 type TLocalComponent = {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
-    is_mobile: boolean;
     loaded_local_file: boolean;
     setLoadedLocalFile: (data: Nullable<string>) => void;
     onConfirmSave: () => void;
@@ -25,7 +25,6 @@ type TLocalComponent = {
 
 const LocalComponent = ({
     handleFileChange,
-    is_mobile,
     loaded_local_file,
     onConfirmSave,
     setActiveTab,
@@ -33,7 +32,6 @@ const LocalComponent = ({
     loadFileFromRecent,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const loadedLocalFileLocation = () => {
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
@@ -105,7 +103,7 @@ const LocalComponent = ({
                     </div>
                 </div>
             </div>
-            {is_mobile && (
+            {isMobile() && (
                 <div className='load-strategy__local-footer'>
                     <LocalFooter />
                 </div>
@@ -114,9 +112,8 @@ const LocalComponent = ({
     );
 };
 
-const Local = connect(({ load_modal, ui, save_modal, dashboard }: RootStore) => ({
+const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     handleFileChange: load_modal.handleFileChange,
-    is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loaded_local_file: load_modal.loaded_local_file,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,

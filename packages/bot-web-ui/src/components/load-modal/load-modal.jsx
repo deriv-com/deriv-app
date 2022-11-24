@@ -7,11 +7,11 @@ import { tabs_title } from 'Constants/load-modal';
 import GoogleDrive from './google-drive.jsx';
 import Local from './local.jsx';
 import Recent from './recent.jsx';
+import { isMobile } from '@deriv/shared';
 
 const LoadModal = ({
     active_index,
     is_load_modal_open,
-    is_mobile,
     loaded_local_file,
     onEntered,
     recent_strategies,
@@ -22,7 +22,7 @@ const LoadModal = ({
 }) => {
     const header_text = localize('Load strategy');
 
-    if (is_mobile) {
+    if (isMobile()) {
         return (
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}
@@ -88,7 +88,6 @@ const LoadModal = ({
 LoadModal.propTypes = {
     active_index: PropTypes.number,
     is_load_modal_open: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     loaded_local_file: PropTypes.string,
     onEntered: PropTypes.func,
     recent_strategies: PropTypes.array,
@@ -97,10 +96,9 @@ LoadModal.propTypes = {
     setPreviewOnPopup: PropTypes.func,
 };
 
-export default connect(({ load_modal, ui, dashboard }) => ({
+export default connect(({ load_modal, dashboard }) => ({
     active_index: load_modal.active_index,
     is_load_modal_open: load_modal.is_load_modal_open,
-    is_mobile: ui.is_mobile,
     loaded_local_file: load_modal.loaded_local_file,
     onEntered: load_modal.onEntered,
     recent_strategies: load_modal.recent_strategies,

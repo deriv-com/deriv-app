@@ -10,6 +10,7 @@ import {
     getCardLabels,
     getContractTypeDisplay,
     getEndTime,
+    isMobile,
 } from '@deriv/shared';
 
 const PositionsDrawerCard = ({
@@ -21,7 +22,6 @@ const PositionsDrawerCard = ({
     currency,
     current_focus,
     getContractById,
-    is_mobile,
     is_sell_requested,
     is_unsupported,
     is_link_disabled,
@@ -46,6 +46,7 @@ const PositionsDrawerCard = ({
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
+    const is_mobile = isMobile();
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -201,7 +202,6 @@ PositionsDrawerCard.propTypes = {
     indicative: PropTypes.number,
     is_link_disabled: PropTypes.bool,
     is_loading: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),

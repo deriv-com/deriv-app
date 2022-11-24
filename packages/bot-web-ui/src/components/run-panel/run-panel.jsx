@@ -10,6 +10,7 @@ import TradeAnimation from 'Components/trade-animation';
 import SelfExclusion from 'Components/self-exclusion';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
 const StatisticsTile = ({ content, contentClassName, title }) => (
     <div className='run-panel__tile'>
@@ -182,7 +183,6 @@ const RunPanel = ({
     currency,
     is_clear_stat_disabled,
     is_drawer_open,
-    is_mobile,
     is_statistics_info_modal_open,
     lost_contracts,
     number_of_runs,
@@ -202,6 +202,8 @@ const RunPanel = ({
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
+
+    const is_mobile = isMobile();
 
     const content = (
         <DrawerContent
@@ -264,7 +266,6 @@ RunPanel.propTypes = {
     currency: PropTypes.string,
     is_clear_stat_disabled: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_statistics_info_modal_open: PropTypes.bool,
     lost_contracts: PropTypes.number,
     number_of_runs: PropTypes.number,
@@ -281,12 +282,11 @@ RunPanel.propTypes = {
     won_contracts: PropTypes.number,
 };
 
-export default connect(({ run_panel, core, ui }) => ({
+export default connect(({ run_panel, core }) => ({
     active_index: run_panel.active_index,
     currency: core.client.currency,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_drawer_open: run_panel.is_drawer_open,
-    is_mobile: ui.is_mobile,
     is_statistics_info_modal_open: run_panel.is_statistics_info_modal_open,
     lost_contracts: run_panel.statistics.lost_contracts,
     number_of_runs: run_panel.statistics.number_of_runs,

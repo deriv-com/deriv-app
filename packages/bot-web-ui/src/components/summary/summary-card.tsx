@@ -8,6 +8,7 @@ import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Utils/multiplier';
 import RootStore from 'Stores/index';
 import { TSummaryCardProps } from './summary-card.types';
+import { isMobile } from '@deriv/shared';
 
 const SummaryCard = ({
     addToast,
@@ -17,7 +18,6 @@ const SummaryCard = ({
     is_contract_completed,
     is_contract_loading,
     is_contract_inactive,
-    is_mobile,
     is_multiplier,
     onClickSell,
     is_sell_requested,
@@ -25,6 +25,7 @@ const SummaryCard = ({
     server_time,
     setCurrentFocus,
 }: TSummaryCardProps) => {
+    const is_mobile = isMobile();
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
@@ -120,7 +121,6 @@ export default connect(({ summary_card, common, run_panel, ui }: RootStore) => (
     is_contract_completed: summary_card.is_contract_completed,
     is_contract_inactive: summary_card.is_contract_inactive,
     is_contract_loading: summary_card.is_contract_loading,
-    is_mobile: ui.is_mobile,
     is_multiplier: summary_card.is_multiplier,
     onClickSell: run_panel.onClickSell,
     is_sell_requested: run_panel.is_sell_requested,

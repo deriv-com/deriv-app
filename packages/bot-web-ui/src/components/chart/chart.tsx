@@ -15,7 +15,6 @@ interface TChartProps {
     getMarketsOrder: (active_symbols: ActiveSymbols) => string[];
     granularity: number;
     is_drawer_open: boolean;
-    is_mobile: boolean;
     is_socket_opened: boolean;
     onSymbolChange: (symbol: string) => void;
     setChartStatus: (status: boolean) => void;
@@ -35,7 +34,6 @@ const Chart = ({
     getMarketsOrder,
     granularity,
     is_drawer_open,
-    is_mobile,
     is_socket_opened,
     onSymbolChange,
     setChartStatus,
@@ -67,7 +65,7 @@ const Chart = ({
                     <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
                 )}
                 chartType={chart_type}
-                isMobile={is_mobile}
+                isMobile={isMobile()}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}
@@ -91,7 +89,6 @@ export default connect(({ chart_store, common, ui, run_panel }: RootStore) => ({
         is_digit_contract: false,
     },
     is_drawer_open: run_panel.is_drawer_open,
-    is_mobile: ui.is_mobile,
     is_socket_opened: common.is_socket_opened,
     onSymbolChange: chart_store.onSymbolChange,
     setChartStatus: chart_store.setChartStatus,

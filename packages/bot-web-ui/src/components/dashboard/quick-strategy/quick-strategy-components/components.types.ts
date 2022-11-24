@@ -43,7 +43,6 @@ export type TQuickStrategyForm = {
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
-    is_mobile: boolean;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
@@ -54,7 +53,6 @@ export type TQuickStrategyForm = {
 };
 
 export type TQuickStrategyFields = {
-    is_mobile: boolean;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
@@ -134,9 +132,9 @@ export type TMarketOptionProps = React.PropsWithChildren<{
 }>;
 
 type TSelectsAdditionalProps = { select_value?: TDropdownItems; field_name: TSelectsFieldNames | TInputsFieldNames };
-export type TSelects = Omit<TSelectFieldProps, 'field_name' | 'select_value'> & TSelectsAdditionalProps;
+export type TSelects = Omit<TSelectFieldProps, 'field_name' | 'select_value' | 'is_mobile'> & TSelectsAdditionalProps;
 
-export type TInputs = Omit<TInputFieldProps, 'field_name'> & {
+export type TInputs = Omit<TInputFieldProps, 'field_name' | 'is_mobile'> & {
     is_input_field: boolean;
     field_name: TSelectsFieldNames | TInputsFieldNames;
 };

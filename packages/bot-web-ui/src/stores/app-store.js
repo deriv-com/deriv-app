@@ -26,11 +26,11 @@ export default class AppStore {
 
     onMount() {
         const { blockly_store, core } = this.root_store;
-        const { client, common, ui } = core;
+        const { client, common } = core;
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.startLoading();
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
+        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store).then(() => {
             blockly_store.setContainerSize();
             blockly_store.endLoading();
         });
@@ -215,7 +215,6 @@ export default class AppStore {
         const { populateConfig, setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
-            is_mobile: false,
             client,
             flyout,
             populateConfig,

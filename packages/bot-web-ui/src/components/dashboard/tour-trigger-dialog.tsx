@@ -8,7 +8,6 @@ import { tour_type, setTourSettings, tour_status_ended } from './joyride-config'
 
 type TourTriggrerDialog = {
     active_tab: number;
-    first_name?: string;
     is_tour_dialog_visible: boolean;
     is_tour_ended: boolean;
     setIsTourEnded: (param: boolean) => void;
@@ -20,7 +19,6 @@ type TourTriggrerDialog = {
 
 const TourTriggrerDialog = ({
     active_tab,
-    first_name = '',
     is_tour_dialog_visible,
     is_tour_ended,
     setTourDialogVisibility,
@@ -65,18 +63,15 @@ const TourTriggrerDialog = ({
         }
     };
 
-    const getTourContent = (name?: string) => {
+    const getTourContent = () => {
         return (
             <>
                 {active_tab === 0 &&
                     (!is_tour_ended ? (
                         <Localize
                             key={0}
-                            i18n_default_text={
-                                'Hi{{ name }}! Hit <0>Start</0> for a quick tour to help you get started.'
-                            }
+                            i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
                             components={[<strong key={0} />]}
-                            values={{ name: name ? ` ${name}` : '' }}
                         />
                     ) : (
                         <Localize
@@ -180,14 +175,14 @@ const TourTriggrerDialog = ({
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text color='prominent'>{getTourContent(first_name)}</Text>
+                    <Text color='prominent'>{getTourContent()}</Text>
                 </div>
             </Dialog>
         </div>
     );
 };
 
-export default connect(({ dashboard, client }: RootStore) => ({
+export default connect(({ dashboard }: RootStore) => ({
     active_tab: dashboard.active_tab,
     setTourActive: dashboard.setTourActive,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
@@ -196,5 +191,4 @@ export default connect(({ dashboard, client }: RootStore) => ({
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setIsTourEnded: dashboard.setIsTourEnded,
-    first_name: client?.account_settings?.first_name,
 }))(TourTriggrerDialog);

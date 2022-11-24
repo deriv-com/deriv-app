@@ -9,10 +9,9 @@ type TInfoPanel = {
     setInfoPanelVisibility: (state: boolean) => void;
     setActiveTab: (param: number) => void;
     setActiveTabTutorial: (param: number) => void;
-    first_name?: string;
 };
 
-const InfoPanel = ({ setInfoPanelVisibility, setActiveTab, setActiveTabTutorial, first_name = '' }: TInfoPanel) => {
+const InfoPanel = ({ setInfoPanelVisibility, setActiveTab, setActiveTabTutorial }: TInfoPanel) => {
     const switchTab = (link: boolean, label: string) => {
         const tutorial_link = link ? setActiveTab(4) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
@@ -37,7 +36,7 @@ const InfoPanel = ({ setInfoPanelVisibility, setActiveTab, setActiveTabTutorial,
                 return (
                     <div key={`${label}-${index}`}>
                         <Text color='prominent' line_height='xxl' size='m' weight='bold' as='h1'>
-                            {label} {index === 0 && first_name}
+                            {label}
                         </Text>
                         {content.map((text, key) => (
                             <Text
@@ -60,9 +59,8 @@ const InfoPanel = ({ setInfoPanelVisibility, setActiveTab, setActiveTabTutorial,
     );
 };
 
-export default connect(({ dashboard, client }: RootStore) => ({
+export default connect(({ dashboard }: RootStore) => ({
     setInfoPanelVisibility: dashboard.setInfoPanelVisibility,
     setActiveTab: dashboard.setActiveTab,
     setActiveTabTutorial: dashboard.setActiveTabTutorial,
-    first_name: client?.account_settings?.first_name,
 }))(InfoPanel);

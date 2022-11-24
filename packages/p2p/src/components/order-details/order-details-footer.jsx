@@ -35,7 +35,7 @@ const OrderDetailsFooter = observer(() => {
 
     const hideCancelOrderModal = () => setShouldShowCancelModal(false);
     const showCancelOrderModal = () => {
-        order_store.getAdvertiserInfo(setShouldShowCancelModal);
+        order_store.getWebsiteStatus(setShouldShowCancelModal);
     };
 
     const hideComplainOrderModal = () => setShouldShowComplainModal(false);

@@ -13,7 +13,6 @@ import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
 import AccountClosed from 'Sections/Security/AccountClosed';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
-import LanguageSettings from 'Sections/Profile/LanguageSettings';
 
 export {
     AccountLimits,
@@ -31,5 +30,4 @@ export {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
-    LanguageSettings,
 };

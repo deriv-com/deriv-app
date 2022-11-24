@@ -46,10 +46,15 @@ const ContractInfo = ({
 
     const stakeOrPayout = () => {
         switch (basis) {
-            case 'stake':
+            case 'stake': {
+                if (is_vanilla) {
+                    return localize('Payout per point');
+                }
                 return localized_basis.payout;
-            case 'payout':
+            }
+            case 'payout': {
                 return localized_basis.stake;
+            }
             default:
                 return basis;
         }
@@ -57,7 +62,7 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return 'Payout per 1%';
+            return 'Payout per point';
         }
         return proposal_info.obj_contract_basis.text;
     };
@@ -67,8 +72,6 @@ const ContractInfo = ({
     const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
 
     const { message, obj_contract_basis, stake } = proposal_info;
-
-    // console.log('basis_text: ', basis_text, has_error_or_not_loaded);
 
     const setHintMessage = () => {
         if (type === 'VANILLALONGCALL') {
@@ -118,7 +121,13 @@ const ContractInfo = ({
                     !is_multiplier &&
                     obj_contract_basis && (
                         <React.Fragment>
-                            <div className='trade-container__price-info-basis'>{basis_text}</div>
+                            <div
+                                className={classNames('trade-container__price-info-basis', {
+                                    'trade-container__price-info-strike': is_vanilla,
+                                })}
+                            >
+                                {basis_text}
+                            </div>
                             <DesktopWrapper>
                                 <ValueMovement
                                     has_error_or_not_loaded={has_error_or_not_loaded}
@@ -156,6 +165,19 @@ const ContractInfo = ({
                     />
                 </DesktopWrapper>
             )}
+            {is_vanilla && (
+                <MobileWrapper>
+                    <Popover
+                        alignment='left'
+                        icon='info'
+                        id={`dt_purchase_${type.toLowerCase()}_info`}
+                        is_bubble_hover_enabled
+                        margin={216}
+                        message={has_error_or_not_loaded ? '' : setHintMessage()}
+                        relative_render
+                    />
+                </MobileWrapper>
+            )}
         </div>
     );
 };
@@ -165,6 +187,7 @@ ContractInfo.propTypes = {
     currency: PropTypes.string,
     has_increased: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,
     should_fade: PropTypes.bool,

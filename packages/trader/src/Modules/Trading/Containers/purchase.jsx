@@ -53,6 +53,7 @@ const Purchase = ({
                         is_loading={isLoading(info)}
                         is_multiplier={is_multiplier}
                         // should_fade={should_fade}
+                        is_vanilla={is_vanilla}
                         proposal_info={info}
                         type={type}
                     />

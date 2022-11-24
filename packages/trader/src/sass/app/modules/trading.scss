@@ -278,6 +278,11 @@
                     color: var(--text-colored-background);
                 }
             }
+            &-strike {
+                @include mobile {
+                    color: var(--text-less-prominent);
+                }
+            }
             &-currency {
                 margin-left: 4px;
                 margin-right: 1px;

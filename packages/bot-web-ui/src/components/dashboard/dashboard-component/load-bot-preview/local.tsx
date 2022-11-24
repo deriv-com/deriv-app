@@ -67,7 +67,7 @@ const LocalComponent = ({
                                     line_height='s'
                                     className={'tab__dashboard__preview__retrigger__text'}
                                 >
-                                    {localize('UserGuide')}
+                                    {localize('User Guide')}
                                 </Text>
                             </button>
                         </div>

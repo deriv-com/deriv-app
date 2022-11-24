@@ -17,7 +17,7 @@ type TRecentComponent = {
     setDashboardStrategies: (strategies: []) => void;
 };
 
-const HEADERS = ['Name', 'Last modified', 'Status'];
+const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
 const RecentComponent = ({
     toggleStrategies,

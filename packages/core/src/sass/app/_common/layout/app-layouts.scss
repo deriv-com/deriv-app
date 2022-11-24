@@ -105,6 +105,11 @@
     &--is-hidden {
         margin-top: 0;
     }
+    &--is-onboarding {
+        padding: 0;
+        margin: 0;
+        height: inherit;
+    }
     @include mobile {
         // no footer:
         margin-bottom: 0;

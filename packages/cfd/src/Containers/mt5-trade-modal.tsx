@@ -12,8 +12,8 @@ import {
     Text,
     UILoader,
 } from '@deriv/components';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
@@ -27,7 +27,6 @@ type TMT5TradeModalProps = {
     enableApp: () => void;
     is_eu_user: boolean;
     is_open: boolean;
-    context: RootStore;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -111,7 +110,6 @@ const MT5TradeModal = ({
     enableApp,
     is_eu_user,
     is_open,
-    context,
     onPasswordManager,
     toggleModal,
 }: TMT5TradeModalProps) => {

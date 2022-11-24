@@ -82,6 +82,7 @@
         line-height: 1.4;
     }
 
+    // checks for portrait view using aspect ratio. portrait has an aspect ratio less than 13:9
     @media screen and (max-aspect-ratio: 13/9) {
         display: none;
     }

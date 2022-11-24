@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import InlineNoteWithIcon from '../inline-note-with-icon';
+import InlineNoteWithIconExtend from '../inline-note-with-icon';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -17,7 +17,7 @@ describe('<InlineNoteWithIcon />', () => {
     };
 
     it('should render the InlineNoteWithIcon component', () => {
-        render(<InlineNoteWithIcon {...props} />);
+        render(<InlineNoteWithIconExtend {...props} />);
         expect(screen.getByText('mockedIcon')).toBeInTheDocument();
         expect(screen.getByText(/test message/i)).toBeInTheDocument();
         expect(screen.getByText(/test title/i)).toBeInTheDocument();

@@ -2133,35 +2133,18 @@
     }
     &__table-header {
         grid-template-columns: 0.9fr 1.39fr 2.74fr;
-        &__pre-appstore {
-            grid-template-columns: 0.9fr 1.39fr 2.74fr 0.9fr;
-        }
     }
     @for $financial_accounts_count from 0 through 6 {
         @for $synthetic_accounts_count from 0 through 2 {
             .cfd-real-compare-accounts__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
                 @if $synthetic_accounts_count > 0 and $financial_accounts_count > 0 {
                     grid-template-columns: 1fr ($synthetic_accounts_count + fr) ($financial_accounts_count + fr);
-                    &__pre-appstore {
-                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) (
-                                $financial_accounts_count + fr
-                            ) 1fr;
-                    }
                 } @else if $synthetic_accounts_count == 0 and $financial_accounts_count == 0 {
                     grid-template-columns: 1fr;
-                    &__pre-appstore {
-                        grid-template-columns: 1fr 1fr;
-                    }
                 } @else if $synthetic_accounts_count == 0 {
                     grid-template-columns: 1fr ($financial_accounts_count + fr);
-                    &__pre-appstore {
-                        grid-template-columns: 1fr ($financial_accounts_count + fr) 1fr;
-                    }
                 } @else {
                     grid-template-columns: 1fr ($synthetic_accounts_count + fr);
-                    &__pre-appstore {
-                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) 1fr;
-                    }
                 }
             }
         }
@@ -2172,20 +2155,11 @@
 
     &__table-row {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
-        &__pre-appstore {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
-        }
         &--leverage {
             grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
-            &__pre-appstore {
-                grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr 0.9fr;
-            }
         }
         &--instruments {
             grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
-            &__pre-appstore {
-                grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
-            }
         }
     }
 
@@ -2198,10 +2172,6 @@
     }
     &__table-footer {
         grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
-        &__pre-appstore {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
-            height: 5.8rem;
-        }
         height: 5.8rem;
         &__item {
             height: 5.8rem;
@@ -2289,9 +2259,6 @@
             &-row--leverage,
             &-row--instruments {
                 width: 250vw;
-                &__pre-appstore {
-                    width: 250vw;
-                }
             }
         }
         .cfd-real-compare-accounts {
@@ -2313,18 +2280,12 @@
         @for $column_count from 1 through 7 {
             .cfd-real-compare-accounts__row-with-columns-count-#{$column_count} {
                 width: calc(250vw / 7 * #{$column_count});
-                &__pre-appstore {
-                    width: calc(250vw / 7 * #{$column_count + 1});
-                }
             }
         }
         @for $financial_accounts_count from 0 through 6 {
             @for $synthetic_accounts_count from 0 through 2 {
                 .cfd-real-compare-accounts__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
                     width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 1));
-                    &__pre-appstore {
-                        width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 2));
-                    }
                 }
             }
         }

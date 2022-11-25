@@ -1,9 +1,15 @@
 import React from 'react';
 import { Card } from '@deriv/components';
-import { CardWithArrow } from './card-with-arrow.jsx';
+import { CardWithArrow } from './card-with-arrow';
+import { FormikValues } from 'formik';
 
-export const Documents = ({ toggleDetail, documents }) =>
-    documents.map((item, index) => (
+type TDocument = {
+    toggleDetail: (index: number) => void;
+    documents: object[];
+};
+
+export const Documents = ({ toggleDetail, documents }: TDocument) =>
+    documents.map((item: FormikValues, index: number) => (
         <Card
             style={{
                 margin: '1.6rem 0',

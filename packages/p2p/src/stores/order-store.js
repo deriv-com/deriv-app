@@ -214,7 +214,7 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(setShouldShowCancelModal) {
+    getWebsiteStatus(should_show_cancel_modal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error.message);
@@ -224,9 +224,9 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-            if (typeof setShouldShowCancelModal === 'function') {
-                setShouldShowCancelModal(true);
-            }
+
+            if (should_show_cancel_modal)
+                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 

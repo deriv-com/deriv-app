@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
@@ -6,25 +5,26 @@ import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import FormError from 'Components/form/error.jsx';
-import 'Components/order-details/order-details-cancel-modal.scss';
+import { useModalManagerContext } from '../../modal-manager-context';
 
-const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
+const OrderDetailsCancelModal = () => {
     const { general_store, order_store } = useStores();
     const { cancels_remaining } = general_store.advertiser_info;
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     const isMounted = useIsMounted();
 
     const cancelOrderRequest = () => {
         requestWS({
             p2p_order_cancel: 1,
-            id: order_id,
+            id: order_store.order_information.id,
         }).then(response => {
             if (isMounted()) {
                 if (response.error) {
                     order_store.setErrorMessage(response.error.message);
                 }
 
-                hideCancelOrderModal();
+                hideModal();
             }
         });
     };
@@ -33,8 +33,8 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
         <Modal
             className='cancel-modal'
             has_close_icon={false}
-            is_open={should_show_cancel_modal}
-            toggleModal={hideCancelOrderModal}
+            is_open={is_modal_open}
+            toggleModal={hideModal}
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
                     <Localize i18n_default_text='Do you want to cancel this order?' />
@@ -77,19 +77,13 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                     <Button secondary large onClick={cancelOrderRequest}>
                         <Localize i18n_default_text='Cancel this order' />
                     </Button>
-                    <Button primary type='button' onClick={hideCancelOrderModal} large>
+                    <Button primary type='button' onClick={hideModal} large>
                         <Localize i18n_default_text='Do not cancel' />
                     </Button>
                 </Button.Group>
             </Modal.Footer>
         </Modal>
     );
-};
-
-OrderDetailsCancelModal.propTypes = {
-    hideCancelOrderModal: PropTypes.func,
-    order_id: PropTypes.string,
-    should_show_cancel_modal: PropTypes.bool,
 };
 
 export default OrderDetailsCancelModal;

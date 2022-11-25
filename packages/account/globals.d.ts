@@ -1,7 +1,9 @@
 export {};
 declare global {
     interface Window {
-        LC_API: any;
+        LC_API: {
+            open_chat_window: VoidFunction;
+        };
     }
 }
 declare module '*.svg' {

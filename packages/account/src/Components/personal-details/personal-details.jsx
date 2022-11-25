@@ -256,7 +256,7 @@ const PersonalDetails = ({
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
-                                                hint={getFieldHint(localize('first_name'))}
+                                                hint={getFieldHint(localize('first name'))}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'

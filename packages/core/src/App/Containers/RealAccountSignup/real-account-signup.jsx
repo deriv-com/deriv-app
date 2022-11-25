@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform, PlatformContext } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

@@ -363,7 +363,6 @@ export default class UIStore extends BaseStore {
             setShouldShowCooldownModal: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowTradeAssessmentForm: action.bound,
-            setIsRealTabEnabled: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);

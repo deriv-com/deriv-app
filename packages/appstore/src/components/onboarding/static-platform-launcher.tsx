@@ -27,9 +27,7 @@ const PlatformLauncher = ({
     has_applauncher_account,
 }: TPlatformLauncherProps) => {
     const { client } = useStores();
-    const { loginid } = client;
-
-    const is_mf = loginid?.startsWith('MF');
+    const { is_eu } = client;
 
     return (
         <div
@@ -65,7 +63,7 @@ const PlatformLauncher = ({
                 <Button
                     primary
                     className={classNames('static-platform-launcher__trade-button', {
-                        'static-platform-launcher__trade-button--eu': is_mf,
+                        'static-platform-launcher__trade-button--eu': is_eu,
                     })}
                 >
                     <Localize i18n_default_text='Trade' />

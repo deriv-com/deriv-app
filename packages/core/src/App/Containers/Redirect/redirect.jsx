@@ -19,12 +19,11 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
-    isEuropeCountry,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
 
@@ -41,12 +40,6 @@ const Redirect = ({
                     //     search: url_query_string,
                     // });
                     // redirected_to_route = true;
-                } else if (isEuropeCountry()) {
-                    setIsPreAppStore(true);
-                    history.push({
-                        pathname: routes.trading_hub,
-                        search: url_query_string,
-                    });
                 } else {
                     history.push({
                         pathname: routes.onboarding,
@@ -201,7 +194,6 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
-    isEuropeCountry: PropTypes.func,
 };
 
 export default withRouter(
@@ -221,6 +213,5 @@ export default withRouter(
         setNewEmail: client.setNewEmail,
         toggleResetEmailModal: ui.toggleResetEmailModal,
         toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
-        isEuropeCountry: client.isEuropeCountry,
     }))(Redirect)
 );

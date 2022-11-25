@@ -167,6 +167,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_grey
                 has_account
                 currency={'USD'}
+                mf_currency={'EUR'}
                 derived_amount={'369'}
                 financial_amount={'512'}
                 loginid={'20884385'}
@@ -208,6 +209,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 is_grey
                 has_account
                 currency={'USD'}
+                mf_currency={'EUR'}
                 derived_amount={'369'}
                 financial_amount={'512'}
                 loginid={'20884385'}

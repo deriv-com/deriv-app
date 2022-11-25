@@ -192,7 +192,7 @@ const Dashboard = ({
                         onTabItemClick={setActiveTab}
                         top
                     >
-                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
+                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
                             <DashboardComponent />
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
@@ -225,7 +225,9 @@ const Dashboard = ({
                 <div className='dashboard__run-strategy-wrapper'>
                     {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
-                    {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
+                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_onboard_tour_started) && (
+                        <RunPanel />
+                    )}
                 </div>
             </DesktopWrapper>
             <Dialog

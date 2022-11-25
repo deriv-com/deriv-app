@@ -69,7 +69,7 @@ export const tour_status_ended: TTourStatus = {
 };
 
 let tour: { [key: string]: string } = {};
-export const current_target: number | undefined = undefined;
+let current_target: number | undefined;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
     if (status === 'finished') {
@@ -149,20 +149,6 @@ export const DBOT_ONBOARDING = [
         ...joyride_props,
     },
     {
-        target: '#tab__dashboard__table__tiles',
-        content: (
-            <TourGuide
-                label={localize('Shortcuts')}
-                content={[localize('You can also use these shortcuts to import or build your bot.')]}
-                dashboard_tab_index={0}
-                step_index={4}
-            />
-        ),
-        disableOverlay: false,
-        placement: 'right',
-        ...joyride_props,
-    },
-    {
         target: '#id-tutorials',
         content: (
             <TourGuide
@@ -174,13 +160,26 @@ export const DBOT_ONBOARDING = [
                 ]}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 dashboard_tab_index={0}
-                step_index={5}
+                step_index={4}
             />
         ),
         disableOverlay: false,
         ...joyride_props,
     },
-
+    {
+        target: '#tab__dashboard__table__tiles',
+        content: (
+            <TourGuide
+                label={localize('Shortcuts')}
+                content={[localize('You can also use these shortcuts to import or build your bot.')]}
+                dashboard_tab_index={0}
+                step_index={5}
+            />
+        ),
+        disableOverlay: false,
+        placement: 'right',
+        ...joyride_props,
+    },
     {
         target: '.animation__wrapper',
         content: (
@@ -188,7 +187,7 @@ export const DBOT_ONBOARDING = [
                 label={localize('Run or stop your bot')}
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
                 img={getImageLocation('ic-new-user-step-seven.png')}
-                dashboard_tab_index={1}
+                dashboard_tab_index={0}
                 step_index={6}
             />
         ),
@@ -202,7 +201,7 @@ export const DBOT_ONBOARDING = [
                 label={localize('How is my bot doing?')}
                 content={[localize("See your bot's performance in real-time.")]}
                 img={getImageLocation('ic-new-user-step-six.png')}
-                dashboard_tab_index={1}
+                dashboard_tab_index={0}
                 step_index={7}
             />
         ),

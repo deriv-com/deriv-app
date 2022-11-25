@@ -182,6 +182,7 @@
             flex-grow: 1;
             background: var(--general-main-1);
             overflow: hidden;
+            position: relative;
 
             @include mobile {
                 height: var(--tab-content-height-mobile);
@@ -194,7 +195,6 @@
             align-items: center;
             justify-content: center;
             width: 50%;
-            margin-top: 3rem;
         }
 
         &__preview {
@@ -215,6 +215,31 @@
 
                 &__text {
                     margin-left: 0.4rem;
+                    color: var(--text-less-prominent);
+                }
+            }
+        }
+
+        &__home {
+            &__retrigger {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 2rem;
+                button {
+                    background: $color-grey-2;
+                    border-radius: 2.4rem;
+                    outline: none;
+                    border: none;
+                    height: 4rem;
+                    width: 12.8rem;
+                    @include align-center;
+                    cursor: pointer;
+                }
+
+                &__text {
+                    margin-left: 0.4rem;
+                    color: var(--text-less-prominent);
                 }
             }
         }

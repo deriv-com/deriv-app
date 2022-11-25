@@ -104,15 +104,7 @@
             width: 100%;
             background: var(--general-section-2);
         }
-        &--pre-appstore {
-            left: calc(-50% - 18rem);
-
-            @include mobile {
-                left: calc(3% - 1rem);
-            }
-        }
     }
-
     /** @define notifications-empty; weak */
     &-empty {
         display: flex;

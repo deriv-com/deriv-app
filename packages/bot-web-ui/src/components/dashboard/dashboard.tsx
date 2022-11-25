@@ -252,6 +252,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
     setTourActive: dashboard.setTourActive,
+    has_onboard_tour_started: dashboard.has_onboard_tour_started,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,

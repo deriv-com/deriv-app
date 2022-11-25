@@ -17,7 +17,7 @@ type TRecentComponent = {
     setDashboardStrategies: (strategies: []) => void;
 };
 
-const HEADERS = ['Name', 'Last modified', 'Status'];
+const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
 const RecentComponent = ({
     toggleStrategies,
@@ -45,7 +45,7 @@ const RecentComponent = ({
                         <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>
                             {HEADERS.map(tab_name => {
                                 return (
-                                    <Text weight='bold' key={tab_name}>
+                                    <Text size='xs' weight='bold' key={tab_name}>
                                         {tab_name}
                                     </Text>
                                 );

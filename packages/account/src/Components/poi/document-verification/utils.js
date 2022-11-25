@@ -24,11 +24,7 @@ export const sequentialNumberCheck = document_number => {
 
     if (document_number.length >= PATTERN_SIZE) {
         createDocumentPatterns().forEach(pattern => {
-            if (document_number.includes(pattern)) {
-                pattern_results.push(true);
-            } else {
-                pattern_results.push(false);
-            }
+            pattern_results.push(document_number.includes(pattern));
         });
     }
 

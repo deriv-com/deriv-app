@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 
-export type TInlineNoteWithIconExtend = {
+type TInlineNoteWithIconExtend = {
     icon: string;
     message: React.ReactNode;
     title: string;

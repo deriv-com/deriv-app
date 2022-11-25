@@ -15,21 +15,21 @@ jest.mock('../utils.js', () => ({
                 },
                 document_2: {
                     new_display_name: '',
-                    example_format: 'A-54321',
+                    example_format: 'A-52431',
                     sample_image: '',
                 },
             },
         };
         return data[country_code][key];
     },
-    getRegex: jest.fn(() => /a-54321/i),
+    getRegex: jest.fn(() => /a-52431/i),
 }));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
-    formatInput: jest.fn(() => 'A-54321'),
+    formatInput: jest.fn(() => 'A-52431'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),
     },
@@ -127,19 +127,19 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
         fireEvent.keyUp(document_number_input);
-        fireEvent.change(document_number_input, { target: { value: 'D09876' } });
-        expect(await screen.findByText(/please provide a valid document/i)).toBeInTheDocument();
+        fireEvent.change(document_number_input, { target: { value: '98765' } });
+        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
+
+        fireEvent.change(document_number_input, { target: { value: '111112' } });
+        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
 
         fireEvent.change(document_number_input, { target: { value: 'D06253' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: 'A-54321' } });
-        expect(await screen.findByText(/please provide a valid document/i)).toBeInTheDocument();
-
-        fireEvent.change(document_number_input, { target: { value: 'A-42512' } });
+        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/please provide a valid document/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
             expect(verifyBtn).not.toBeDisabled();
         });
 

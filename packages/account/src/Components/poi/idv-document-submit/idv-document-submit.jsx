@@ -5,7 +5,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { verifyDocument } from '../document-verification/utils';
+import { sequentialNumberCheck, recurringNumberRegex } from '../document-verification/utils';
 import FormFooter from 'Components/form-footer';
 import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -80,8 +80,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
-        const recurring_number_pattern = document_number.match(/([0-9])\1{3,}/g);
-        const invalid_id = verifyDocument(document_number).includes(true);
+        const sequential_number = sequentialNumberCheck(document_number).includes(true);
+        const recurring_number = recurringNumberRegex(document_number);
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -92,8 +92,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (recurring_number_pattern || invalid_id) {
-            errors.document_number = localize('Please provide a valid document.');
+        } else if (recurring_number || sequential_number) {
+            errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {

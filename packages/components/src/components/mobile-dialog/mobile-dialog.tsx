@@ -18,6 +18,7 @@ type TMobileDialog = {
     header_classname?: string;
     has_full_height?: boolean;
     footer?: React.ReactNode;
+    has_close_icon: boolean;
 };
 
 const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {

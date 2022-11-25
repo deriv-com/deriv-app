@@ -48,9 +48,22 @@ const RecentWorkspace = ({
         if (dashboard_strategies && dashboard_strategies.length && index === 0) {
             setTimeout(() => {
                 trigger_div_ref?.current?.click();
-            }, 0);
+            }, 50);
         }
     }, []);
+
+    const viewRecentStrategy = (type: string) => {
+        previewRecentStrategy(workspace.id);
+        setFileLoaded(true);
+        if (type === 'edit') {
+            loadFileFromRecent();
+            setActiveTab(1);
+        } else if (type === 'save') {
+            toggleSaveModal();
+        } else if (type === 'delete') {
+            onToggleDeleteDialog(true);
+        }
+    };
 
     return (
         <>
@@ -62,8 +75,7 @@ const RecentWorkspace = ({
                 key={workspace.id}
                 ref={trigger_div_ref}
                 onClick={() => {
-                    previewRecentStrategy(workspace.id);
-                    setFileLoaded(true);
+                    viewRecentStrategy('preview');
                 }}
             >
                 <div className='load-strategy__recent-item-text'>
@@ -83,8 +95,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={() => {
-                            setActiveTab(1);
-                            loadFileFromRecent();
+                            viewRecentStrategy('edit');
                         }}
                     >
                         <Icon icon='IcEdit' />
@@ -92,7 +103,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={() => {
-                            toggleSaveModal();
+                            viewRecentStrategy('save');
                         }}
                     >
                         <Icon icon='IcSave' />
@@ -100,7 +111,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={e => {
-                            onToggleDeleteDialog(true);
+                            viewRecentStrategy('delete');
                         }}
                     >
                         <Icon icon='IcDelete' />

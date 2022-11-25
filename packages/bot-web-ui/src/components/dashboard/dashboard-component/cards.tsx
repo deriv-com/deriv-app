@@ -53,8 +53,6 @@ const Card = ({
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
-
-    const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
@@ -114,7 +112,6 @@ const Card = ({
                         accept='.xml'
                         hidden
                         onChange={e => {
-                            clear_preview_ref.current?.click();
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);

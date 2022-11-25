@@ -33,7 +33,6 @@ const LocalComponent = ({
     loadFileFromRecent,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const clear_preview_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const loadedLocalFileLocation = () => {
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();

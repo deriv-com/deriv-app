@@ -1,9 +1,9 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from '../Stores/index';
+import RootStore from 'Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { connect } from '../Stores/connect';
+import { connect } from 'Stores/connect';
 import { WS, getAuthenticationStatusInfo } from '@deriv/shared';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
@@ -16,13 +16,11 @@ type TVerificationModalProps = {
     jurisdiction_selected_shortcode: string;
     updateAccountStatus: () => void;
     account_status: GetAccountStatus;
-    context: RootStore;
 };
 
 const CFDDbViOnBoarding = ({
     disableApp,
     enableApp,
-    context,
     is_cfd_verification_modal_visible,
     toggleCFDVerificationModal,
     jurisdiction_selected_shortcode,
@@ -64,7 +62,6 @@ const CFDDbViOnBoarding = ({
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
-                context={context}
                 is_vanuatu_selected={is_vanuatu_selected}
             />
         ) : (
@@ -72,7 +69,6 @@ const CFDDbViOnBoarding = ({
                 onFinish={() => {
                     setShowSubmittedModal(true);
                 }}
-                context={context}
             />
         );
 
@@ -90,7 +86,6 @@ const CFDDbViOnBoarding = ({
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
-                    context={context}
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
@@ -104,7 +99,6 @@ const CFDDbViOnBoarding = ({
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
-                    context={context}
                 >
                     {getModalContent()}
                 </MobileDialog>

@@ -59,7 +59,5 @@ export const routes = {
     complaints_policy: '/complaints-policy',
 
     // Appstore
-    appstore: '/appstore',
-    trading_hub: '/appstore/trading-hub',
-    onboarding: '/appstore/onboarding',
+    trading_hub: '/trading-hub',
 };

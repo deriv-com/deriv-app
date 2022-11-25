@@ -36,8 +36,6 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
-    const { is_pre_appstore } = React.useContext(PlatformContext);
-
     if (!maltainvest_signup && !currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
@@ -50,23 +48,18 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
 
-    // if (is_pre_appstore) {
-    //     return <Localize i18n_default_text='Get an Options account' />;
-    // }
-
     switch (real_account_signup_target) {
         case 'malta':
             if (
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium ||
-                is_pre_appstore
+                country_standpoint.is_belgium
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
         case 'iom':
-            if (country_standpoint.is_united_kingdom || is_pre_appstore) {
+            if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
@@ -75,8 +68,7 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_france ||
                 country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu ||
-                is_pre_appstore
+                country_standpoint.is_rest_of_eu
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
             }

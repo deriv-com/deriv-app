@@ -38,27 +38,5 @@
         "go": {
             "name": "Deriv Go"
         }
-    },
-    "platforms_appstore": {
-        "trader": {
-            "name": "DTrader",
-            "icon": "DTrader"
-        },
-        "dbot": {
-            "name": "DBot",
-            "icon": "DBot"
-        },
-        "smarttrader": {
-            "name": "SmartTrader",
-            "icon": "SmartTrader"
-        },
-        "bbot": {
-            "name": "Binary Bot",
-            "icon": "BinaryBot"
-        },
-        "go": {
-            "name": "Deriv Go",
-            "icon": "DerivGo"
-        }
     }
 }

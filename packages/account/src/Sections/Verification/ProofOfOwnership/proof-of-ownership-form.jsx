@@ -149,7 +149,7 @@ const ProofOfOwnershipForm = ({
                                         form_errors?.[card_key]?.[card_item_key] ?? {};
                                     form_errors[card_key][card_item_key].files =
                                         form_errors?.[card_key]?.[card_item_key]?.files ?? [];
-                                    form_errors[card_key][card_item_key].files[sub_index] = localize(response.message); // Document already uploaded
+                                    form_errors[card_key][card_item_key].files[sub_index] = response.message; // Document already uploaded
                                     setDocumentUploadErrors(form_errors);
                                     form_ref.current.setErrors(form_errors);
                                     form_ref.current.validateForm();

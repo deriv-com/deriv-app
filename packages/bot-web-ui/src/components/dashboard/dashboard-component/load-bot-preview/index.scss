@@ -32,10 +32,10 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {
@@ -45,10 +45,10 @@
         }
 
         @include tablet {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {

@@ -30,7 +30,7 @@ const Strike = ({
     const is_24_hours_contract = expiry_date ? toMoment(expiry_date).isSame(toMoment(server_time), 'day') : false;
 
     const is_relative_strike_applicable =
-        advanced_duration_unit !== 'd' || (expiry_type === 'endtime' && is_24_hours_contract);
+        expiry_type === 'endtime' ? is_24_hours_contract : advanced_duration_unit !== 'd';
 
     const strike_price_list = strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }));
 

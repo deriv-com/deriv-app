@@ -32,10 +32,10 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {
@@ -45,10 +45,10 @@
         }
 
         @include tablet {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {
@@ -234,7 +234,7 @@
 
             &__loaded {
                 text-align: left;
-                padding-left: 1.7rem;
+                padding: 1rem 3rem;
             }
 
             &__loaded--first-child {
@@ -269,7 +269,7 @@
             }
 
             &-title {
-                font-size: var(--text-size-s);
+                font-size: var(--text-size-xs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;
@@ -278,7 +278,7 @@
             }
 
             &-time {
-                font-size: var(--text-size-xxs);
+                font-size: var(--text-size-xs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;
@@ -295,7 +295,7 @@
 
             &-saved {
                 margin-left: 1rem;
-                font-size: var(--text-size-s);
+                font-size: var(--text-size-xs);
                 line-height: 1.43;
                 word-break: break-word;
             }

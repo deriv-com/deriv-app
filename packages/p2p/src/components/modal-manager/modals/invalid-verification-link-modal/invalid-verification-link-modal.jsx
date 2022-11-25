@@ -6,6 +6,7 @@ import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const InvalidVerificationLinkModal = ({
+    error_message,
     order_id,
     // TODO: Uncomment when time is available in BE response
     // verification_link_expiry_time,
@@ -21,7 +22,7 @@ const InvalidVerificationLinkModal = ({
                     <Localize i18n_default_text='Invalid verification link' />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
-                    {order_store.verification_link_error_message}
+                    {error_message}
                 </Text>
             </Modal.Body>
             <Modal.Footer className='invalid-verification-link-modal--footer'>
@@ -41,6 +42,7 @@ const InvalidVerificationLinkModal = ({
 };
 
 InvalidVerificationLinkModal.propTypes = {
+    error_message: PropTypes.string,
     order_id: PropTypes.string,
     // TODO: Uncomment when time is available in BE response
     // verification_link_expiry_time: PropTypes.number,

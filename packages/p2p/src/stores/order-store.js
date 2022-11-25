@@ -144,17 +144,15 @@ export default class OrderStore {
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        // clearTimeout(wait);
                         if (this.is_email_verification_modal_open) {
                             this.setIsEmailVerificationModalOpen(false);
                         }
                         if (this.is_email_link_verified_modal_open) {
                             this.setIsEmailLinkVerifiedModalOpen(false);
                         }
-                        this.setVerificationLinkErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
                             key: 'InvalidVerificationLinkModal',
-                            props: { order_id: id },
+                            props: { error_message: response.error.message, order_id: id },
                         });
                     } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
                         clearTimeout(wait);
@@ -468,10 +466,12 @@ export default class OrderStore {
     }
 
     verifyEmailVerificationCode(verification_action, verification_code) {
+        const order_id = this.order_id;
+
         if (verification_action === 'p2p_order_confirm' && verification_code) {
             requestWS({
                 p2p_order_confirm: 1,
-                id: this.order_id,
+                id: order_id,
                 verification_code,
                 dry_run: 1,
             }).then(response => {
@@ -484,10 +484,9 @@ export default class OrderStore {
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        this.setVerificationLinkErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
                             key: 'InvalidVerificationLinkModal',
-                            props: { order_id: this.order_id },
+                            props: { error_message: response.error.message, order_id },
                         });
                     } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
                         clearTimeout(wait);

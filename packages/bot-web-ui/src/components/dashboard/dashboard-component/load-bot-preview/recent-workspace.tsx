@@ -46,9 +46,9 @@ const RecentWorkspace = ({
 
     React.useEffect(() => {
         if (dashboard_strategies && dashboard_strategies.length && index === 0) {
-            if (!selected_strategy_id) {
+            setTimeout(() => {
                 trigger_div_ref?.current?.click();
-            }
+            }, 50);
         }
     }, []);
 

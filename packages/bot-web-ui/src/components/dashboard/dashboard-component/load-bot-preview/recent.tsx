@@ -27,9 +27,10 @@ const RecentComponent = ({
 }: TRecentComponent) => {
     React.useEffect(() => {
         toggleStrategies(true);
-        setTimeout(() => {
-            getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
-        }, 100);
+        const getStratagies = async () => {
+            await getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
+        };
+        getStratagies();
     }, [strategy_save_type]);
 
     if (!dashboard_strategies?.length) return null;

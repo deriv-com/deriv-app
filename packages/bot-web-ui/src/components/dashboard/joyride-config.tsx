@@ -69,7 +69,7 @@ export const tour_status_ended: TTourStatus = {
 };
 
 let tour: { [key: string]: string } = {};
-let current_target: number | undefined;
+export const current_target: number | undefined = undefined;
 export const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data;
     if (status === 'finished') {
@@ -98,19 +98,6 @@ const joyride_props: TJoyrideConfig = {
 
 export const DBOT_ONBOARDING = [
     {
-        target: '#tab__dashboard__table__tiles',
-        content: (
-            <TourGuide
-                label={localize('Shortcuts')}
-                content={localize('You can also use these shortcuts to import or build your bot.')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
-            />
-        ),
-        disableOverlay: false,
-        ...joyride_props,
-    },
-    {
         target: '#id-bot-builder',
         content: (
             <TourGuide
@@ -122,8 +109,8 @@ export const DBOT_ONBOARDING = [
                     ),
                 ]}
                 img={getImageLocation('ic-new-user-step-two.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
+                dashboard_tab_index={0}
+                step_index={1}
             />
         ),
         disableOverlay: false,
@@ -134,12 +121,14 @@ export const DBOT_ONBOARDING = [
         content: (
             <TourGuide
                 label={localize('Start with a template')}
-                content={localize(
-                    "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
-                )}
+                content={[
+                    localize(
+                        "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
+                    ),
+                ]}
                 img={getImageLocation('ic-new-user-step-three.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
+                dashboard_tab_index={0}
+                step_index={2}
             />
         ),
         disableOverlay: false,
@@ -150,13 +139,27 @@ export const DBOT_ONBOARDING = [
         content: (
             <TourGuide
                 label={localize('Monitor the market')}
-                content={localize('View the market price of your favourite assets.')}
+                content={[localize('View the market price of your favourite assets.')]}
                 img={getImageLocation('ic-new-user-step-four.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
+                dashboard_tab_index={0}
+                step_index={3}
             />
         ),
         disableOverlay: false,
+        ...joyride_props,
+    },
+    {
+        target: '#tab__dashboard__table__tiles',
+        content: (
+            <TourGuide
+                label={localize('Shortcuts')}
+                content={[localize('You can also use these shortcuts to import or build your bot.')]}
+                dashboard_tab_index={0}
+                step_index={4}
+            />
+        ),
+        disableOverlay: false,
+        placement: 'right',
         ...joyride_props,
     },
     {
@@ -164,26 +167,29 @@ export const DBOT_ONBOARDING = [
         content: (
             <TourGuide
                 label={localize('Start with a tutorials')}
-                content={localize(
-                    "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
-                )}
+                content={[
+                    localize(
+                        "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
+                    ),
+                ]}
                 img={getImageLocation('ic-new-user-step-five.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={0}
+                dashboard_tab_index={0}
+                step_index={5}
             />
         ),
         disableOverlay: false,
         ...joyride_props,
     },
+
     {
         target: '.animation__wrapper',
         content: (
             <TourGuide
                 label={localize('Run or stop your bot')}
-                content={localize('Click Run when you want to start trading, and click Stop when you want to stop.')}
+                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
                 img={getImageLocation('ic-new-user-step-seven.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboard_tab_index={1}
+                step_index={6}
             />
         ),
         disableOverlay: false,
@@ -194,13 +200,14 @@ export const DBOT_ONBOARDING = [
         content: (
             <TourGuide
                 label={localize('How is my bot doing?')}
-                content={localize("See your bot's performance in real-time.")}
+                content={[localize("See your bot's performance in real-time.")]}
                 img={getImageLocation('ic-new-user-step-six.png')}
-                className={'dbot-onboarding__container'}
-                dashboardTabIndex={1}
+                dashboard_tab_index={1}
+                step_index={7}
             />
         ),
         disableOverlay: false,
+        placement: 'left',
         ...joyride_props,
     },
 ];

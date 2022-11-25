@@ -88,7 +88,6 @@ const Dashboard = ({
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
     let storage = '';
-
     let tour_status: { [key: string]: string };
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
@@ -173,6 +172,7 @@ const Dashboard = ({
                             continuous
                             callback={handleJoyrideCallback}
                             spotlightClicks
+                            hideCloseButton
                             locale={{ back: 'Previous' }}
                             styles={{
                                 buttonBack: {

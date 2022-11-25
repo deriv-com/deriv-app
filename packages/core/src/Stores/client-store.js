@@ -364,7 +364,7 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
-            setPrevRealRealAccountLoginid: action.bound,
+            setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
         });
 
@@ -1394,7 +1394,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
         if (!this.is_virtual && /VRTC/.test(loginid)) {
-            this.setPrevRealRealAccountLoginid(this.loginid);
+            this.setPrevRealAccountLoginid(this.loginid);
         }
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -1506,7 +1506,7 @@ export default class ClientStore extends BaseStore {
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
-                this.setPrevRealRealAccountLoginid(this.loginid);
+                this.setPrevRealAccountLoginid(this.loginid);
             }
         }
 
@@ -2450,7 +2450,7 @@ export default class ClientStore extends BaseStore {
         });
     }
 
-    setPrevRealRealAccountLoginid = logind => {
+    setPrevRealAccountLoginid = logind => {
         this.prev_real_account_loginid = logind;
     };
 
@@ -2464,7 +2464,7 @@ export default class ClientStore extends BaseStore {
                 );
             }
         } else if (tab_current_account_type === 'real') {
-            this.setPrevRealRealAccountLoginid(this.loginid);
+            this.setPrevRealAccountLoginid(this.loginid);
             await this.switchAccount(this.virtual_account_loginid);
         }
     }

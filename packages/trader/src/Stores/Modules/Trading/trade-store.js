@@ -685,6 +685,7 @@ export default class TradeStore extends BaseStore {
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
                 color,
+                not_draggable: this.is_vanilla,
             });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {

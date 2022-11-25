@@ -1,47 +1,93 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Field from '../field/field';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 
-const getDisplayText = (list_items, value) => {
-    const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
+type TSelectNative = {
+    className?: string;
+    classNameDisplay?: string;
+    classNameHint?: string;
+    error?: string;
+    hint?: string;
+    label: string;
+    placeholder?: string;
+    should_show_empty_option?: boolean;
+    suffix_icon?: string;
+    data_testid?: string;
+    hide_selected_value?: boolean;
+    value: string | number;
+    list_items: Array<TListItem> | { [key: string]: Array<TListItem> };
+    hide_top_placeholder: boolean;
+} & Omit<TSelectNativeOptions, 'list_items'> &
+    Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'value'>; // Default type of value in HTMLSelectElement is only string but here string | number is required
+
+type TSelectNativeOptions = {
+    list_items: Array<TListItem>;
+    should_hide_disabled_options?: boolean;
+    use_text?: boolean;
+};
+
+type TListItem = {
+    text: string;
+    value: string;
+    disabled?: boolean;
+    nativepicker_text?: React.ReactNode;
+    group?: string;
+    id?: string;
+};
+
+const getDisplayText = (list_items: Array<TListItem> | { [key: string]: Array<TListItem> }, value: string | number) => {
+    const dropdown_items = Array.isArray(list_items)
+        ? list_items
+        : ([] as Array<TListItem>).concat(...Object.values(list_items)); //typecasting since [] is inferred to be type never[]
     const list_obj = dropdown_items.find(item =>
-        typeof item.value !== 'string' ? item.value === value : item.value.toLowerCase() === value.toLowerCase()
+        typeof item.value !== 'string'
+            ? item.value === value
+            : item.value.toLowerCase() === (value as string).toLowerCase()
     );
 
     if (list_obj) return list_obj.text;
     return '';
 };
 
-const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }) => {
+const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }: TSelectNativeOptions) => {
     const options = should_hide_disabled_options ? list_items.filter(opt => !opt.disabled) : list_items;
     const has_group = Array.isArray(list_items) && !!list_items[0]?.group;
 
     if (has_group) {
-        const dropdown_items = options.reduce((dropdown_map, item) => {
-            dropdown_map[item.group] = dropdown_map[item.group] || [];
-            dropdown_map[item.group].push(item);
-
+        const dropdown_items = options.reduce((dropdown_map: { [key: string]: Array<TListItem> }, item) => {
+            if (item.group) {
+                const index = item.group;
+                dropdown_map[index] = dropdown_map[index] || [];
+                dropdown_map[index].push(item);
+            }
             return dropdown_map;
         }, {});
         const group_names = Object.keys(dropdown_items);
-        return group_names.map(option => (
-            <optgroup key={option} label={option}>
-                {dropdown_items[option].map(value => (
-                    <option key={value.value} value={use_text ? value.text : value.value}>
-                        {value.nativepicker_text || value.text}
-                    </option>
+        return (
+            <React.Fragment>
+                {group_names.map(option => (
+                    <optgroup key={option} label={option}>
+                        {dropdown_items[option].map((value: TListItem) => (
+                            <option key={value.value} value={use_text ? value.text : value.value}>
+                                {value.nativepicker_text || value.text}
+                            </option>
+                        ))}
+                    </optgroup>
                 ))}
-            </optgroup>
-        ));
+            </React.Fragment>
+        );
     }
-    return options.map(option => (
-        <option key={option.id || option.value} value={use_text ? option.text : option.value}>
-            {option.nativepicker_text || option.text}
-        </option>
-    ));
+    return (
+        <React.Fragment>
+            {options.map(option => (
+                <option key={option.id || option.value} value={use_text ? option.text : option.value}>
+                    {option.nativepicker_text || option.text}
+                </option>
+            ))}
+        </React.Fragment>
+    );
 };
 
 const SelectNative = ({
@@ -54,7 +100,6 @@ const SelectNative = ({
     hint,
     label,
     list_items,
-    onItemSelection,
     placeholder,
     should_hide_disabled_options = true,
     should_show_empty_option = true,
@@ -64,7 +109,7 @@ const SelectNative = ({
     data_testid,
     hide_top_placeholder = false,
     ...props
-}) => (
+}: TSelectNative) => (
     <div
         className={classNames(className, 'dc-select-native', {
             'dc-select-native--disabled': disabled,
@@ -101,15 +146,15 @@ const SelectNative = ({
                 {!suffix_icon ? (
                     <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
                 ) : (
-                    <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
+                    <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} />
                 )}
                 <select
-                    id='dt_components_select-native_select-tag'
                     className='dc-select-native__picker'
                     value={value}
                     disabled={disabled}
                     data-testid={data_testid}
                     {...props}
+                    id='dt_components_select-native_select-tag'
                 >
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
@@ -129,9 +174,9 @@ const SelectNative = ({
                             />
                         </React.Fragment>
                     ) : (
-                        Object.keys(list_items).map(key => {
+                        Object.keys(list_items).map((key: string) => {
                             const items = should_hide_disabled_options
-                                ? list_items[key].filter(opt => !opt.disabled)
+                                ? list_items[key].filter((opt: TListItem) => !opt.disabled)
                                 : list_items[key];
 
                             if (items.length > 0) {
@@ -169,39 +214,5 @@ const SelectNative = ({
         )}
     </div>
 );
-
-const list_items_shape = PropTypes.oneOfType([
-    PropTypes.arrayOf(
-        PropTypes.shape({
-            disabled: PropTypes.bool,
-            nativepicker_text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-            text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        })
-    ),
-    PropTypes.object,
-    PropTypes.array,
-]);
-
-SelectNative.propTypes = {
-    className: PropTypes.string,
-    classNameDisplay: PropTypes.string,
-    classNameHint: PropTypes.string,
-    disabled: PropTypes.bool,
-    error: PropTypes.string,
-    hint: PropTypes.string,
-    label: PropTypes.string,
-    list_items: list_items_shape,
-    placeholder: PropTypes.string,
-    should_show_empty_option: PropTypes.bool,
-    suffix_icon: PropTypes.string,
-    use_text: PropTypes.bool,
-    value: PropTypes.string,
-    should_hide_disabled_options: PropTypes.bool,
-    data_testid: PropTypes.string,
-    hide_selected_value: PropTypes.bool,
-    onItemSelection: PropTypes.func,
-    hide_top_placeholder: PropTypes.bool,
-};
 
 export default SelectNative;

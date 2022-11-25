@@ -138,6 +138,8 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    prev_real_account_loginid = '';
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -196,6 +198,7 @@ export default class ClientStore extends BaseStore {
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
+            prev_real_account_loginid: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -361,6 +364,8 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
+            setPrevRealRealAccountLoginid: action.bound,
+            switchAccountHandlerForAppstore: action.bound,
         });
 
         reaction(
@@ -1388,6 +1393,9 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
+        if (!this.is_virtual && /VRTC/.test(loginid)) {
+            this.setPrevRealRealAccountLoginid(this.loginid);
+        }
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -1497,6 +1505,9 @@ export default class ClientStore extends BaseStore {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
+            if (!this.is_virtual) {
+                this.setPrevRealRealAccountLoginid(this.loginid);
+            }
         }
 
         this.selectCurrency('');
@@ -2437,6 +2448,25 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    setPrevRealRealAccountLoginid = logind => {
+        this.prev_real_account_loginid = logind;
+    };
+
+    async switchAccountHandlerForAppstore(tab_current_account_type) {
+        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
+            if (this.prev_real_account_loginid) {
+                await this.switchAccount(this.prev_real_account_loginid);
+            } else {
+                await this.switchAccount(
+                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
+                );
+            }
+        } else if (tab_current_account_type === 'real') {
+            this.setPrevRealRealAccountLoginid(this.loginid);
+            await this.switchAccount(this.virtual_account_loginid);
+        }
     }
 }
 /* eslint-enable */

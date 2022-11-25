@@ -45,7 +45,7 @@ const TradingHub: React.FC = () => {
         is_eu_country,
         is_populating_mt5_account_list,
         is_populating_dxtrade_account_list,
-        loginid,
+        switchAccountHandlerForAppstore,
     } = client;
     const {
         setAccountType,
@@ -107,6 +107,7 @@ const TradingHub: React.FC = () => {
             name: string;
         };
     }) => {
+        switchAccountHandlerForAppstore(tab_account_type);
         setTabAccountType(event.target.value as TAccountCategory);
     };
     const platformTypeChange = (event: {

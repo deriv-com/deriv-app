@@ -38,8 +38,8 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const nextStep = () => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
-            history.push(routes.trading_hub);
             setIsPreAppStore(true);
+            history.push(routes.trading_hub);
             toggleIsTourOpen(true);
         }
     };

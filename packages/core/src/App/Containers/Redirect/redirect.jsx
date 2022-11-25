@@ -32,24 +32,22 @@ const Redirect = ({
 
     switch (action_param) {
         case 'signup': {
-            WS.wait('website_status').then(() => {
-                if (is_appstore) {
-                    // TODO: redirect
-                    // history.push({
-                    //     pathname: routes.dashboard,
-                    //     search: url_query_string,
-                    // });
-                    // redirected_to_route = true;
-                } else {
-                    history.push({
-                        pathname: routes.onboarding,
-                        search: url_query_string,
-                    });
-                }
-                sessionStorage.removeItem('redirect_url');
-                redirected_to_route = true;
-                toggleAccountSignupModal(true);
-            });
+            if (is_appstore) {
+                // TODO: redirect
+                // history.push({
+                //     pathname: routes.dashboard,
+                //     search: url_query_string,
+                // });
+                // redirected_to_route = true;
+            } else {
+                history.push({
+                    pathname: routes.onboarding,
+                    search: url_query_string,
+                });
+            }
+            sessionStorage.removeItem('redirect_url');
+            redirected_to_route = true;
+            toggleAccountSignupModal(true);
             break;
         }
         case 'reset_password': {

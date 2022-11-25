@@ -178,13 +178,16 @@ const SubmittedPage = ({ platform, routeBackInApp }) => {
 const FinancialAssessment = ({
     is_authentication_needed,
     is_financial_account,
+    is_mf,
     is_svg,
     is_trading_experience_incomplete,
+    is_financial_information_incomplete,
     is_virtual,
     platform,
-    removeNotificationByKey,
-    removeNotificationMessage,
+    refreshNotifications,
     routeBackInApp,
+    setFinancialAndTradingAssessment,
+    updateAccountStatus,
 }) => {
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
@@ -196,6 +199,7 @@ const FinancialAssessment = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState({});
+
     const {
         income_source,
         employment_status,
@@ -223,43 +227,46 @@ const FinancialAssessment = ({
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
-                    setHasTradingExperience((is_financial_account || is_trading_experience_incomplete) && !is_svg);
+                    setHasTradingExperience(
+                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
+                    );
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-
                     setInitialFormValues(data.get_financial_assessment);
                     setIsLoading(false);
                 });
             });
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = (values, { setSubmitting, setStatus }) => {
+    const onSubmit = async (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
-        WS.setFinancialAssessment(values).then(data => {
-            if (data.error) {
+        const form_payload = {
+            financial_information: { ...values },
+        };
+        const data = await setFinancialAndTradingAssessment(form_payload);
+        if (data.error) {
+            setIsBtnLoading(false);
+            setStatus({ msg: data.error.message });
+        } else {
+            await updateAccountStatus();
+            WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                setInitialFormValues(res_data.get_financial_assessment);
+                setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
-                setStatus({ msg: data.error.message });
-            } else {
-                WS.authorized.storage.getFinancialAssessment().then(res_data => {
-                    setInitialFormValues(res_data.get_financial_assessment);
-                    setIsSubmitSuccess(true);
-                    setIsBtnLoading(false);
 
-                    if (isDesktop()) {
-                        setTimeout(() => setIsSubmitSuccess(false), 10000);
-                    }
-
-                    removeNotificationMessage({ key: 'risk' });
-                    removeNotificationByKey({ key: 'risk' });
-                });
-            }
+                if (isDesktop()) {
+                    setTimeout(() => setIsSubmitSuccess(false), 10000);
+                }
+            });
             setSubmitting(false);
-        });
+            refreshNotifications();
+        }
     };
 
     const validateFields = values => {
@@ -296,40 +303,53 @@ const FinancialAssessment = ({
     };
 
     const getScrollOffset = () => {
-        if (isMobile()) return is_appstore ? '160px' : '200px';
+        if (is_appstore) {
+            return isMobile() ? '160px' : '200px';
+        } else if (is_mf) {
+            return is_financial_information_incomplete && !is_submit_success ? '140px' : '80px';
+        }
         return '80px';
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
-    if (isMobile() && is_authentication_needed && is_submit_success)
+    if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
+
+    const setInitialFormData = () => {
+        const form_data = {
+            income_source,
+            employment_status,
+            employment_industry,
+            occupation,
+            source_of_wealth,
+            education_level,
+            net_income,
+            estimated_worth,
+            account_turnover,
+            ...(has_trading_experience && {
+                binary_options_trading_experience,
+                binary_options_trading_frequency,
+                cfd_trading_experience,
+                cfd_trading_frequency,
+                forex_trading_experience,
+                forex_trading_frequency,
+                other_instruments_trading_experience,
+                other_instruments_trading_frequency,
+            }),
+        };
+        if (!is_mf) {
+            return form_data;
+        }
+        delete form_data.employment_status;
+        return form_data;
+    };
 
     return (
         <React.Fragment>
             <Formik
-                initialValues={{
-                    income_source,
-                    employment_status,
-                    employment_industry,
-                    occupation,
-                    source_of_wealth,
-                    education_level,
-                    net_income,
-                    estimated_worth,
-                    account_turnover,
-                    ...(has_trading_experience && {
-                        binary_options_trading_experience,
-                        binary_options_trading_frequency,
-                        cfd_trading_experience,
-                        cfd_trading_frequency,
-                        forex_trading_experience,
-                        forex_trading_frequency,
-                        other_instruments_trading_experience,
-                        other_instruments_trading_frequency,
-                    }),
-                }}
+                initialValues={setInitialFormData()}
                 enableReinitialize
                 validate={validateFields}
                 onSubmit={onSubmit}
@@ -360,6 +380,24 @@ const FinancialAssessment = ({
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
+                                {is_mf && is_financial_information_incomplete && !is_submit_success && (
+                                    <div className='financial-banner'>
+                                        <div className='financial-banner__frame'>
+                                            <div className='financial-banner__container'>
+                                                <Icon icon='IcAlertWarning' />
+                                                {isMobile() ? (
+                                                    <Text size='xxxs' line_height='s'>
+                                                        <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                ) : (
+                                                    <Text size='xxs' line_height='l'>
+                                                        <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                                 <FormBody scroll_offset={getScrollOffset()}>
                                     <FormSubHeader
                                         title={localize('Financial information')}
@@ -399,34 +437,36 @@ const FinancialAssessment = ({
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Employment status')}
-                                                    is_align_text_left
-                                                    name='employment_status'
-                                                    list={getEmploymentStatusList()}
-                                                    value={values.employment_status}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.employment_status && errors.employment_status}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='employment_status'
-                                                    label={localize('Employment status')}
-                                                    list_items={getEmploymentStatusList()}
-                                                    value={values.employment_status}
-                                                    error={touched.employment_status && errors.employment_status}
-                                                    onChange={e => {
-                                                        setFieldTouched('employment_status', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
+                                        {!is_mf && (
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('Employment status')}
+                                                        is_align_text_left
+                                                        name='employment_status'
+                                                        list={getEmploymentStatusList()}
+                                                        value={values.employment_status}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={touched.employment_status && errors.employment_status}
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='employment_status'
+                                                        label={localize('Employment status')}
+                                                        list_items={getEmploymentStatusList()}
+                                                        value={values.employment_status}
+                                                        error={touched.employment_status && errors.employment_status}
+                                                        onChange={e => {
+                                                            setFieldTouched('employment_status', true);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                        )}
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Dropdown
@@ -933,7 +973,7 @@ const FinancialAssessment = ({
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {isMobile() && !is_appstore && (
+                                    {isMobile() && !is_appstore && !is_mf && (
                                         <Text
                                             align='center'
                                             size='xxs'
@@ -971,23 +1011,29 @@ const FinancialAssessment = ({
 FinancialAssessment.propTypes = {
     is_authentication_needed: PropTypes.bool,
     is_financial_account: PropTypes.bool,
+    is_mf: PropTypes.bool,
     is_svg: PropTypes.bool,
     is_trading_experience_incomplete: PropTypes.bool,
+    is_financial_information_incomplete: PropTypes.bool,
     is_virtual: PropTypes.bool,
     platform: PropTypes.string,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
+    refreshNotifications: PropTypes.func,
     routeBackInApp: PropTypes.func,
+    setFinancialAndTradingAssessment: PropTypes.func,
+    updateAccountStatus: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_svg: client.is_svg,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_virtual: client.is_virtual,
     platform: common.platform,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
+    refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(FinancialAssessment));

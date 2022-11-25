@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -142,20 +141,6 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         </CSSTransition>,
         portal_element
     );
-};
-
-MobileDialog.propTypes = {
-    content_height_offset: PropTypes.string,
-    children: PropTypes.any,
-    onClose: PropTypes.func,
-    has_content_scroll: PropTypes.bool,
-    has_close_icon: PropTypes.bool,
-    portal_element_id: PropTypes.string.isRequired,
-    renderTitle: PropTypes.func,
-    title: PropTypes.string,
-    visible: PropTypes.bool,
-    wrapper_classname: PropTypes.string,
-    header_classname: PropTypes.string,
 };
 
 export default MobileDialog;

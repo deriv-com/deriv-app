@@ -77,6 +77,8 @@ const PurchaseButton = ({
                 'btn-purchase--2': index === 1,
                 'btn-purchase--multiplier': is_multiplier,
                 'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
+                'btn-purchase--1__vanilla-opts': index === 0 && is_vanilla,
+                'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
                 setPurchaseState(index);

@@ -71,6 +71,11 @@
                             margin-top: 7.5rem;
                         }
                     }
+                    &--tutorials {
+                        display: flex;
+                        justify-content: flex-start;
+                        padding: 0 1.6rem;
+                    }
                 }
 
                 &__active {

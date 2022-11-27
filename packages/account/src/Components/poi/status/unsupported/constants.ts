@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { FormikValues } from 'formik';
 
 export const ROOT_CLASS = 'manual-poi-details';
 
@@ -33,7 +34,7 @@ const date_field = {
     required: true,
 };
 
-export const getDocumentIndex = ({ country_code }) => [
+export const getDocumentIndex = ({ country_code }: FormikValues) => [
     {
         onfido_name: 'Passport',
         card: {

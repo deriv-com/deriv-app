@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -19,6 +18,7 @@ type TMobileDialog = {
     header_classname?: string;
     has_full_height?: boolean;
     footer?: React.ReactNode;
+    has_close_icon: boolean;
 };
 
 const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
@@ -31,6 +31,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         renderTitle,
         wrapper_classname,
         footer,
+        has_close_icon = true,
         header_classname,
     } = props;
 
@@ -110,9 +111,11 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                         >
                             {renderTitle ? renderTitle() : title}
                         </Text>
-                        <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                            <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                        </div>
+                        {has_close_icon && (
+                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                            </div>
+                        )}
                     </div>
                     <div
                         className={classNames('dc-mobile-dialog__content', {

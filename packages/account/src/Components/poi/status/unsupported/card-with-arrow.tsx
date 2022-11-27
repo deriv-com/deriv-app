@@ -2,7 +2,14 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 
-const CardWithArrow = ({ onClick, title, description, icon }) => {
+type TCardWithArrow = {
+    onClick: () => void;
+    title: string;
+    description: string;
+    icon: string;
+};
+
+const CardWithArrow = ({ onClick, title, description, icon }: TCardWithArrow) => {
     return (
         <div className='manual-poi__card' onClick={onClick}>
             <Icon className='manual-poi__card-icon' icon={icon} size={64} />

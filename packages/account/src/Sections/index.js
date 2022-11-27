@@ -13,6 +13,7 @@ import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
+import TradingAssessment from 'Sections/Assessment/TradingAssessment';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 
 export {
@@ -31,5 +32,6 @@ export {
     ProofOfIdentity,
     ProofOfIncome,
     SelfExclusion,
+    TradingAssessment,
     TwoFactorAuthentication,
 };

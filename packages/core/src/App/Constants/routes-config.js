@@ -125,6 +125,17 @@ const getModules = ({ is_appstore }) => {
                             getTitle: () => localize('Personal details'),
                             default: true,
                         },
+                    ],
+                },
+                {
+                    getTitle: () => localize('Assessments'),
+                    icon: 'IcAssessment',
+                    subroutes: [
+                        {
+                            path: routes.trading_assessment,
+                            component: Account,
+                            getTitle: () => localize('Trading assessment'),
+                        },
                         {
                             path: routes.financial_assessment,
                             component: Account,

@@ -17,6 +17,7 @@ import {
     ProofOfIdentity,
     ProofOfIncome,
     SelfExclusion,
+    TradingAssessment,
     TwoFactorAuthentication,
 } from 'Sections';
 
@@ -53,6 +54,17 @@ const initRoutesConfig = ({ is_appstore }) => [
                         component: PersonalDetails,
                         getTitle: () => localize('Personal details'),
                         default: true,
+                    },
+                ],
+            },
+            {
+                getTitle: () => localize('Assessments'),
+                icon: 'IcAssessment',
+                subroutes: [
+                    {
+                        path: routes.trading_assessment,
+                        component: TradingAssessment,
+                        getTitle: () => localize('Trading assessment'),
                     },
                     {
                         path: routes.financial_assessment,

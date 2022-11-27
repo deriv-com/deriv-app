@@ -55,6 +55,7 @@ export const routes = {
     statement: '/reports/statement',
     token: '/settings/token',
     trade: '/',
+    trading_assessment: '/account/trading-assessment',
     two_factor_authentication: '/account/two-factor-authentication',
 
     // Appstore

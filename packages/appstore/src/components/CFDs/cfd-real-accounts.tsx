@@ -5,7 +5,14 @@ import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@der
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
-import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
+import {
+    TCFDAccountsProps,
+    TPlatform,
+    TDetailsOfEachMT5Loginid,
+    TStaticAccountProps,
+    TRootStore,
+    TTradingPlatformAvailableAccount,
+} from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';
@@ -162,6 +169,11 @@ const CFDRealAccounts = ({
         return acc;
     };
 
+    const numberOfExistingAccounts = (account: TStaticAccountProps, market_type: 'financial' | 'synthetic') => {
+        return existingRealAccounts(account.platform, account?.type)?.filter(acc => acc.market_type === market_type)
+            .length;
+    };
+
     return (
         <div className='cfd-real-account'>
             {!has_real_account && <AddOptionsAccount />}
@@ -173,10 +185,15 @@ const CFDRealAccounts = ({
                                 {existingRealAccounts(account.platform, account?.type) ? (
                                     existingRealAccounts(account.platform, account?.type)?.map(
                                         (existing_account, index) => {
-                                            const number_of_financial_accounts = existingRealAccounts(
-                                                account.platform,
-                                                account?.type
-                                            )?.filter(acc => acc.market_type === 'financial').length;
+                                            const number_of_financial_accounts = numberOfExistingAccounts(
+                                                account,
+                                                'financial'
+                                            );
+
+                                            const number_of_derived_accounts = numberOfExistingAccounts(
+                                                account,
+                                                'synthetic'
+                                            );
                                             const non_eu_accounts =
                                                 existing_account.landing_company_short &&
                                                 existing_account.landing_company_short !== 'svg' &&
@@ -212,7 +229,8 @@ const CFDRealAccounts = ({
                                                         description={account.description}
                                                     />
                                                     {isEligibleForMoreRealMt5(existing_account.market_type) &&
-                                                        number_of_financial_accounts === index + 1 &&
+                                                        (number_of_financial_accounts === index + 1 ||
+                                                            number_of_derived_accounts === index + 1) &&
                                                         account.platform !== CFD_PLATFORMS.DXTRADE && (
                                                             <AddDerived
                                                                 title={localize(`More ${account.name} accounts`)}

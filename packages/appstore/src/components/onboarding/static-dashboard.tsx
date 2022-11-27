@@ -88,8 +88,8 @@ const StaticDashboard = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options and Multipliers');
-    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
 
     return (
         <div className='static-dashboard'>
@@ -333,7 +333,7 @@ const StaticDashboard = ({
                                         : 'prominent'
                                 }
                             >
-                                {is_eu ? (
+                                {is_eu_user ? (
                                     <Localize
                                         i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
                                         components={[
@@ -440,7 +440,11 @@ const StaticDashboard = ({
                                 is_grey={is_grey}
                                 app_icon={`DTrader`}
                                 app_title={'DTrader'}
-                                app_desc={'Options & multipliers trading platform.'}
+                                app_desc={
+                                    is_eu_user
+                                        ? 'Multipliers trading platform.'
+                                        : 'Options & multipliers trading platform.'
+                                }
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />

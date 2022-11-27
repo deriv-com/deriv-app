@@ -63,19 +63,19 @@ const CryptoIcon = ({ currency, is_eu_user }: TCryptoIcon) => {
 };
 
 const CurrencyIcon = ({ currency, is_item_blurry, is_eu_user }: TCryptoConfig) => {
-    const is_eu_loginid = is_eu_user ? localize('MF4581125') : localize('CR5236585');
+    const loginid = is_eu_user ? localize('MF4581125') : localize('CR5236585');
     const currency_icon = is_eu_user ? eu_icon_config : crypto_icon_config;
-    const is_eu_config = is_eu_user ? eu_currency_config : crypto_config;
+    const currency_config = is_eu_user ? eu_currency_config : crypto_config;
     //infer the exact value of the keys it can return a union of their literal types instead of just returning "string".
     const icon_selector: keyof typeof crypto_icon_config & keyof typeof eu_icon_config =
         currency as keyof typeof crypto_icon_config & keyof typeof eu_icon_config;
     return (
         <React.Fragment>
             <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                {localize(`${is_eu_config[icon_selector]}`)}
+                {localize(`${currency_config[icon_selector]}`)}
             </Text>
             <Text size='xxxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                {is_eu_loginid}
+                {loginid}
             </Text>
             <Text
                 size={is_eu_user ? 'xs' : 'xxxs'}

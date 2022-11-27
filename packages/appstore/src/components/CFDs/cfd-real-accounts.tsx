@@ -5,14 +5,7 @@ import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@der
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
-import {
-    TCFDAccountsProps,
-    TPlatform,
-    TDetailsOfEachMT5Loginid,
-    TStaticAccountProps,
-    TRootStore,
-    TTradingPlatformAvailableAccount,
-} from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';

@@ -89,6 +89,7 @@ const TradingAssessmentExistingUser = ({
                         components={[<br key={0} />]}
                     />
                 }
+                has_icon
             />
         );
     }

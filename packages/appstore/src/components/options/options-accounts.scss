@@ -22,9 +22,9 @@
             }
             .account-container {
                 width: 20%;
-                min-width: 24rem;
+                min-width: 26rem;
                 @include mobile {
-                    width: 70%;
+                    width: 80%;
                 }
             }
         }
@@ -81,7 +81,7 @@
             flex-direction: row;
             align-items: center;
             width: 20%;
-            min-width: 24rem;
+            min-width: 25rem;
             &_divider {
                 width: 4rem;
                 height: 0.1rem;

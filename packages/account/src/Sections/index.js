@@ -5,7 +5,7 @@ import ApiToken from 'Sections/Security/ApiToken';
 import ClosingAccount from 'Sections/Security/ClosingAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
-import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
+import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
 import LoginHistory from 'Sections/Security/LoginHistory';
 import Passwords from 'Sections/Security/Passwords';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';

@@ -22,7 +22,7 @@ module.exports = function (env) {
             'demo-message': 'Components/demo-message',
             'error-component': 'Components/error-component',
             'file-uploader': 'Components/file-uploader',
-            'financial-assessment': 'Sections/Profile/FinancialAssessment',
+            'financial-assessment': 'Sections/Assessment/FinancialAssessment',
             'financial-details': 'Components/financial-details',
             'financial-details-config': 'Configs/financial-details-config',
             'form-body': 'Components/form-body',

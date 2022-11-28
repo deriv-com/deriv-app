@@ -34,9 +34,9 @@ type TDialogOptions = {
 type TDashboard = {
     active_tab: number;
     dialog_options: TDialogOptions;
-    has_bot_builder_tour_started: boolean;
+    has_started_bot_builder_tour: boolean;
     has_file_loaded: boolean;
-    has_onboard_tour_started: boolean;
+    has_started_onboarding_tour: boolean;
     has_tour_started: boolean;
     is_dialog_open: boolean;
     is_drawer_open: boolean;
@@ -62,7 +62,7 @@ const Dashboard = ({
     dialog_options,
     has_file_loaded,
     has_tour_started,
-    has_onboard_tour_started,
+    has_started_onboarding_tour,
     is_dialog_open,
     loadDataStrategy,
     onCancelButtonClick,
@@ -88,7 +88,6 @@ const Dashboard = ({
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
     let storage = '';
-
     let tour_status: { [key: string]: string };
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
@@ -115,14 +114,14 @@ const Dashboard = ({
             onboard_tour_token = getTourSettings('token');
             setOnBoardingTokenCheck(onboard_tour_token);
         }
-        if (active_tab === 1 && !has_onboard_tour_started) {
+        if (active_tab === 1 && !has_started_onboarding_tour) {
             setTourType('bot_builder');
             bot_tour_token = getTourSettings('token');
             setBotBuilderTokenCheck(bot_tour_token);
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_onboard_tour_started, tour_status_ended]);
+    }, [active_tab, handleJoyrideCallback, has_started_onboarding_tour, tour_status_ended]);
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
@@ -140,7 +139,7 @@ const Dashboard = ({
         }
 
         bot_tour_token = getTourSettings('token');
-        if (active_tab === 1 && !storage.bot_builder_token && !has_onboard_tour_started) {
+        if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     };
@@ -157,7 +156,7 @@ const Dashboard = ({
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
         if (active_tab === 0 && !dbot_settings?.onboard_tour_token) {
             setTourDialogVisibility(true);
-        } else if (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_onboard_tour_started) {
+        } else if (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour) {
             setTourDialogVisibility(true);
         }
     }, [active_tab]);
@@ -173,6 +172,7 @@ const Dashboard = ({
                             continuous
                             callback={handleJoyrideCallback}
                             spotlightClicks
+                            hideCloseButton
                             locale={{ back: 'Previous' }}
                             styles={{
                                 buttonBack: {
@@ -192,7 +192,7 @@ const Dashboard = ({
                         onTabItemClick={setActiveTab}
                         top
                     >
-                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')}>
+                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
                             <DashboardComponent />
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
@@ -225,7 +225,9 @@ const Dashboard = ({
                 <div className='dashboard__run-strategy-wrapper'>
                     {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
-                    {[BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && <RunPanel />}
+                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
+                        <RunPanel />
+                    )}
                 </div>
             </DesktopWrapper>
             <Dialog
@@ -252,14 +254,14 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
     setTourActive: dashboard.setTourActive,
-    has_onboard_tour_started: dashboard.has_onboard_tour_started,
+    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
-    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
+    has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,

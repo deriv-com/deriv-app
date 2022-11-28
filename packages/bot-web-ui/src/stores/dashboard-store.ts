@@ -3,7 +3,7 @@ import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
+    if (el_ref && el_ref.getElementsByClassName('injectionDiv').length > 1) {
         el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
     }
 };
@@ -11,8 +11,8 @@ export interface IDashboardStore {
     active_tab: number;
     faq_search_value: string | null;
     dialog_options: { [key: string]: string };
-    has_onboard_tour_started: boolean;
-    has_bot_builder_tour_started: boolean;
+    has_started_onboarding_tour: boolean;
+    has_started_bot_builder_tour: boolean;
     is_dialog_open: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
@@ -26,7 +26,7 @@ export interface IDashboardStore {
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
-    setOnBoardTourRunState: (has_onboard_tour_started: boolean) => void;
+    setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -46,9 +46,9 @@ export default class DashboardStore implements IDashboardStore {
             strategy_save_type: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
-            has_onboard_tour_started: observable,
+            has_started_onboarding_tour: observable,
             is_preview_on_popup: observable,
-            has_bot_builder_tour_started: observable,
+            has_started_bot_builder_tour: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
             setBotBuilderTourState: action.bound,
@@ -87,9 +87,9 @@ export default class DashboardStore implements IDashboardStore {
     is_info_panel_visible = true;
     has_tour_started = false;
     is_tour_dialog_visible = false;
-    has_onboard_tour_started = false;
+    has_started_onboarding_tour = false;
     is_preview_on_popup = false;
-    has_bot_builder_tour_started = false;
+    has_started_bot_builder_tour = false;
     is_tour_ended = false;
     has_builder_token = '';
     has_onboarding_token = '';
@@ -111,16 +111,16 @@ export default class DashboardStore implements IDashboardStore {
         this.has_onboarding_token = has_onboarding_token;
     };
 
-    setBotBuilderTourState = (has_bot_builder_tour_started: boolean): void => {
-        this.has_bot_builder_tour_started = has_bot_builder_tour_started;
+    setBotBuilderTourState = (has_started_bot_builder_tour: boolean): void => {
+        this.has_started_bot_builder_tour = has_started_bot_builder_tour;
     };
 
     setPreviewOnPopup = (is_preview_on_popup: boolean): void => {
         this.is_preview_on_popup = is_preview_on_popup;
     };
 
-    setOnBoardTourRunState = (has_onboard_tour_started: boolean): void => {
-        this.has_onboard_tour_started = has_onboard_tour_started;
+    setOnBoardTourRunState = (has_started_onboarding_tour: boolean): void => {
+        this.has_started_onboarding_tour = has_started_onboarding_tour;
     };
 
     setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {

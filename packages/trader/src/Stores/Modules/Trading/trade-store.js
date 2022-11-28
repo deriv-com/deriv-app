@@ -494,6 +494,10 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
+                // delete 'if' statement when accumulators are supported for real account
+                if (!this.root_store.client.is_virtual) {
+                    delete contract_categories.contract_types_list.Accumulators;
+                }
                 this.processNewValuesAsync({
                     ...contract_categories,
                     ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),

@@ -95,7 +95,12 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
         const categories = [];
 
-        if (multipliers_category.length > 0 && options_category.length > 0 && accumulators_category.length) {
+        const is_all_categories_button_needed =
+            (multipliers_category.length > 0 && options_category.length > 0) ||
+            (multipliers_category.length > 0 && accumulators_category.length) ||
+            (options_category.length > 0 && accumulators_category.length);
+
+        if (is_all_categories_button_needed) {
             categories.push({
                 label: localize('All'),
                 contract_categories: [...list],

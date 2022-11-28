@@ -100,6 +100,7 @@ const ToggleMenuDrawer = React.forwardRef(
             title,
             toggleTheme,
             can_have_whatsapp,
+            active_account_landing_company,
         },
         ref
     ) => {
@@ -230,8 +231,13 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     /proof-of-address/.test(subroute.path)) ||
                                                 (!should_allow_authentication &&
                                                     /proof-of-identity/.test(subroute.path)) ||
-                                                (is_virtual && /trading-assessment/.test(subroute.path)) ||
-                                                (!is_risky_client && /financial-assessment/.test(subroute.path)) ||
+                                                is_virtual ||
+                                                (active_account_landing_company !== 'maltainvest' &&
+                                                    /trading-assessment/.test(subroute.path)) ||
+                                                is_virtual ||
+                                                (active_account_landing_company === 'maltainvest' &&
+                                                    !is_risky_client &&
+                                                    /financial-assessment/.test(subroute.path)) ||
                                                 subroute.is_disabled
                                             }
                                             link_to={subroute.path}

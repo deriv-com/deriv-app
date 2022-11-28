@@ -115,11 +115,8 @@ const Account = ({
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                if (active_account_landing_company === 'maltainvest') {
-                    route.is_disabled = is_virtual || !is_risky_client;
-                } else {
-                    route.is_disabled = is_virtual;
-                }
+                route.is_disabled =
+                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
             }
             if (route.path === shared_routes.trading_assessment) {
                 route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';

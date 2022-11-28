@@ -496,7 +496,7 @@
         }
 
         @include mobile() {
-            height: calc(100vh - 4rem);
+            height: calc(100vh - 12rem);
             .trading-assessment__side-note {
                 padding: 2.2rem 1.6rem;
             }

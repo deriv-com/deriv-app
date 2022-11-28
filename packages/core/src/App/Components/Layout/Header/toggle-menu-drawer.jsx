@@ -181,6 +181,15 @@ const ToggleMenuDrawer = React.forwardRef(
 
             const has_subroutes = route_config.routes.some(route => route.subroutes);
 
+            const disableRoute = route_path => {
+                if (/financial-assessment/.test(route_path)) {
+                    return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                } else if (/trading-assessment/.test(route_path)) {
+                    return is_virtual || active_account_landing_company !== 'maltainvest';
+                }
+                return false;
+            };
+
             return (
                 <MobileDrawer.SubMenu
                     key={idx}
@@ -231,13 +240,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                     /proof-of-address/.test(subroute.path)) ||
                                                 (!should_allow_authentication &&
                                                     /proof-of-identity/.test(subroute.path)) ||
-                                                is_virtual ||
-                                                (active_account_landing_company !== 'maltainvest' &&
-                                                    /trading-assessment/.test(subroute.path)) ||
-                                                is_virtual ||
-                                                (active_account_landing_company === 'maltainvest' &&
-                                                    !is_risky_client &&
-                                                    /financial-assessment/.test(subroute.path)) ||
+                                                disableRoute(subroute.path) ||
                                                 subroute.is_disabled
                                             }
                                             link_to={subroute.path}

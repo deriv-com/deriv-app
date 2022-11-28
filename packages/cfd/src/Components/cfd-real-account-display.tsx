@@ -155,16 +155,16 @@ const CFDRealAccountDisplay = ({
 
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial' | 'all') => {
         // We need to check enabled property for DXTRADE accounts only.
-        const accountKey =
+        const account_key =
             acc_type === 'all' ? `${platform}.real.${platform}@${acc_type}` : `${platform}.real.${acc_type}`;
         // TODO: This condition should be removed after separating the DXTRADE and MT5 component.
         const should_be_enabled = (list_item: TCurrentList) =>
             platform === 'dxtrade' ? list_item.enabled === 1 : true;
         const acc = Object.keys(current_list).some(
-            key => key.startsWith(accountKey) && should_be_enabled(current_list[key])
+            key => key.startsWith(account_key) && should_be_enabled(current_list[key])
         )
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(accountKey))
+                  .filter(key => key.startsWith(account_key))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;

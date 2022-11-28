@@ -3,14 +3,16 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AdExceedsDailyLimitModal = () => {
     const { my_ads_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            is_open={my_ads_store.is_ad_exceeds_daily_limit_modal_open}
+            is_open={is_modal_open}
             small
             has_close_icon={false}
             title={localize('Your ad exceeds the daily limit')}
@@ -37,13 +39,7 @@ const AdExceedsDailyLimitModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Ok')}
-                    onClick={() => my_ads_store.setIsAdExceedsDailyLimitModalOpen(false)}
-                    primary
-                    large
-                />
+                <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
             </Modal.Footer>
         </Modal>
     );

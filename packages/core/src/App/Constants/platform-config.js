@@ -21,7 +21,7 @@ const platform_config = [
         icon: getPlatformSettings('mt5').icon,
         title: () => getPlatformSettings('mt5').name,
         name: getPlatformSettings('mt5').name,
-        description: () => localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
+        description: () => localize('Trade on Deriv MT5, the all-in-one FX and CFD trading platform.'),
         link_to: routes.mt5,
     },
     {

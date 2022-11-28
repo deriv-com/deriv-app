@@ -118,7 +118,6 @@ const ContractUpdateForm = props => {
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
             value={contract_profit_or_loss.contract_update_take_profit}
-            is_checkbox_hidden={is_accumulator}
             is_disabled={!is_accumulator && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />

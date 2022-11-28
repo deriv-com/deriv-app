@@ -94,7 +94,7 @@ const MobileRowRenderer = ({
     const duration_type = getContractDurationType(contract_info.longcode);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
-    if (isMultiplierContract(type)) {
+    if (isMultiplierContract(type) || isAccumulatorContract(type)) {
         return (
             <PositionsDrawerCard
                 contract_info={contract_info}

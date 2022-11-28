@@ -48,7 +48,7 @@ export const isValidToSell = (contract_info: TIsValidToSell) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
-export const isAccumulatorContract = (contract_type: string) => /(A|DE)CCU/i.test(contract_type);
+export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 

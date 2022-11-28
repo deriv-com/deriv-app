@@ -13,7 +13,7 @@ const TradeCategories = ({ category }) => {
                     <React.Fragment>
                         <p>
                             {localize(
-                                'When you open a position, barriers will be created around the asset price. For each new tick, the upper and lower barriers are automatically calculated based on the asset and accumulator value that you choose. You will earn a profit if you close your position before the asset price hits either of the barriers.'
+                                'When you open a position, barriers will be created around the asset price. For each new tick, the upper and lower barriers are automatically calculated based on the asset and accumulator value you choose. You will earn a profit if you close your position before the asset price hits either of the barriers.'
                             )}
                         </p>
                         <p>

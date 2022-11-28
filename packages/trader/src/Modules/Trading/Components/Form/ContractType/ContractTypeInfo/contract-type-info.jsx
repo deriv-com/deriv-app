@@ -15,7 +15,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 <div className='contract-type-info__gif'>
                     <TradeCategoriesGIF category={type.value} />
                 </div>
-                <ThemedScrollbars className='contract-type-info__scrollbars' height='300px' autohide={false}>
+                <ThemedScrollbars
+                    className='contract-type-info__scrollbars'
+                    height={!isMobile() ? '300px' : ''}
+                    autohide={false}
+                >
                     <div className='contract-type-info__content'>
                         <TradeCategories category={type.value} />
                     </div>

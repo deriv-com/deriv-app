@@ -15,7 +15,6 @@ const ContractCard = ({
     contract_info,
     getCardLabels,
     getContractPath,
-    // is_accumulator,
     is_multiplier,
     is_positions,
     is_unsupported,
@@ -35,7 +34,6 @@ const ContractCard = ({
                         contract_id={contract_info.contract_id}
                         getCardLabels={getCardLabels}
                         getContractPath={getContractPath}
-                        // is_accumulator={is_accumulator}
                         is_unsupported={is_unsupported}
                         is_multiplier={is_multiplier}
                         is_visible={!!contract_info.is_sold}
@@ -64,7 +62,6 @@ ContractCard.propTypes = {
     contract_info: PropTypes.object,
     getCardLabels: PropTypes.func,
     getContractPath: PropTypes.func,
-    // is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_unsupported: PropTypes.bool,

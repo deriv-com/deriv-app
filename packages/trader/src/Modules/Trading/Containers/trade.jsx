@@ -158,7 +158,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset={is_accumulator ? '317px' : '259px'}
+                height_offset={is_accumulator ? '295px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense

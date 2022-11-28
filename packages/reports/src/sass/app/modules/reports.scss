@@ -998,6 +998,12 @@ $side-padding: 1.2em;
                 }
             }
         }
+        & .dc-contract-card-item {
+            &:nth-child(3),
+            &:nth-child(5) {
+                order: unset;
+            }
+        }
     }
 }
 

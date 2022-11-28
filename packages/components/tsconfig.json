@@ -7,6 +7,6 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src", "./@types/react-div-100vh/react-div-100vh-config.d.ts","./@types/react-drag-drawer/react-drag-drawer-config.d.ts","./@types/@contentpass/zxcvbn/@contentpass-zxcvbn-config.d.ts"]
+    "include": ["src", "./@types/react-div-100vh/react-div-100vh-config.d.ts","./@types/react-drag-drawer/react-drag-drawer-config.d.ts","./@types/@contentpass-zxcvbn/@contentpass-zxcvbn-config.d.ts"]
     
 }

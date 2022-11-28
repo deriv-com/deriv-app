@@ -223,7 +223,7 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
-    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_barriers_marker.type];
+    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
@@ -353,14 +353,17 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
+    const { contract_type, status, tick_stream } = contract_store.contract_info;
+    const should_show_10_last_ticks = contract_type === 'ACCU' && status === 'open' && tick_stream.length === 10;
+    const allowed_scroll_to_epoch = should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.scroll_to_epoch;
 
     return {
         accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
-        start_epoch: contract_config.start_epoch,
+        start_epoch: should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: allow_scroll_to_epoch ? allowed_scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

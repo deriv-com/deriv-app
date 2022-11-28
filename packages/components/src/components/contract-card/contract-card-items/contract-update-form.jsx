@@ -64,8 +64,9 @@ const ContractUpdateForm = props => {
 
     const is_take_profit_valid = has_contract_update_take_profit ? contract_update_take_profit > 0 : isValid(stop_loss);
     const is_stop_loss_valid = has_contract_update_stop_loss ? contract_update_stop_loss > 0 : isValid(take_profit);
+    const is_valid_accu_contract_update = is_accumulator && !!is_take_profit_valid;
     const is_valid_contract_update =
-        !is_accumulator && is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
+        is_valid_accu_contract_update || (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
 
     const getStateToCompare = _state => {
         const props_to_pick = [

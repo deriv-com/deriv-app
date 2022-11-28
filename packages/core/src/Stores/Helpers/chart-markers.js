@@ -7,11 +7,14 @@ import {
     createMarkerSpotMiddle,
     getSpotCount,
 } from './chart-marker-helpers';
-import { getEndTime, unique } from '@deriv/shared';
+import { getEndTime, isAccumulatorContract, unique } from '@deriv/shared';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 
 export const createChartMarkers = contract_info => {
+    const { contract_type, status, tick_stream } = contract_info;
+    const should_show_10_last_ticks = contract_type === 'ACCU' && status === 'open' && tick_stream.length === 10;
+
     let markers = [];
     if (contract_info) {
         const end_time = getEndTime(contract_info);
@@ -24,9 +27,11 @@ export const createChartMarkers = contract_info => {
             const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
             markers.push(...spot_markers);
         }
-        const line_markers = Object.keys(marker_lines).map(type => marker_lines[type](contract_info));
-        markers.push(...line_markers);
-
+        if (!should_show_10_last_ticks) {
+            // don't draw start/end lines if only 10 last ticks are displayed
+            const line_markers = Object.keys(marker_lines).map(type => marker_lines[type](contract_info));
+            markers.push(...line_markers);
+        }
         markers = markers.filter(m => !!m);
     }
     markers.forEach(marker => {
@@ -61,12 +66,33 @@ const addLabelAlignment = (tick, idx, arr) => {
 };
 
 const createTickMarkers = contract_info => {
-    const tick_stream = unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
+    // TODO: maryia-binary: refactor this if BE adds entry_spot to tick_stream for ACCU:
+    // accumulators open contract tick_stream contains 10 last ticks only & for now does not contain entry spot
+    const accu_entry_tick = {
+        epoch: contract_info.entry_tick_time,
+        flag: 'highlight_tick',
+        name: 'Entry Spot',
+        tick: contract_info.entry_spot,
+        tick_display_value: contract_info.entry_spot_display_value,
+    };
+    const accu_tick_stream =
+        contract_info.tick_stream.length && contract_info.tick_stream.length < 10
+            ? [accu_entry_tick, ...contract_info.tick_stream]
+            : contract_info.tick_stream;
+    const available_ticks = is_accumulator
+        ? contract_info.audit_details?.all_ticks || accu_tick_stream
+        : contract_info.tick_stream;
+    const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
     const result = [];
 
     tick_stream.forEach((tick, idx) => {
-        const is_entry_spot = idx === 0 && +tick.epoch !== contract_info.exit_tick_time;
-        const is_middle_spot = idx > 0 && +tick.epoch !== +contract_info.exit_tick_time;
+        const isEntrySpot = _tick => +_tick.epoch === contract_info.entry_tick_time;
+        const is_entry_spot =
+            +tick.epoch !== contract_info.exit_tick_time && (is_accumulator ? isEntrySpot(tick) : idx === 0);
+        // accumulators entry spot will be missing from tick_stream when contract is lasting for longer than 10 ticks
+        const entry_spot_index = is_accumulator ? tick_stream.findIndex(isEntrySpot) : 0;
+        const is_middle_spot = idx > entry_spot_index && +tick.epoch !== +contract_info.exit_tick_time;
         const is_exit_spot =
             +tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, idx) === contract_info.tick_count;

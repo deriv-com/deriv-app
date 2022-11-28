@@ -5,9 +5,8 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { sequentialNumberCheck, recurringNumberRegex } from '../document-verification/utils';
+import { isSequentialNumber, recurringNumberRegex , getDocumentData, getRegex } from './utils';
 import FormFooter from 'Components/form-footer';
-import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
@@ -80,7 +79,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
-        const sequential_number = sequentialNumberCheck(document_number).includes(true);
+        const sequential_number = isSequentialNumber(document_number);
         const recurring_number = recurringNumberRegex(document_number);
 
         if (!document_type || !document_type.text || !document_type.value) {

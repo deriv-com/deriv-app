@@ -14,8 +14,7 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
-import { sequentialNumberCheck, recurringNumberRegex } from '../../document-verification/utils';
+import { getDocumentData, getRegex , isSequentialNumber, recurringNumberRegex } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
@@ -73,7 +72,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
-        const sequential_number = sequentialNumberCheck(document_number).includes(true);
+        const sequential_number = isSequentialNumber(document_number);
         const recurring_number = recurringNumberRegex(document_number);
 
         if (!document_type || !document_type.text || !document_type.value) {

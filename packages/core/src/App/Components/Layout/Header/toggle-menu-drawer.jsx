@@ -186,6 +186,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
                 } else if (/trading-assessment/.test(route_path)) {
                     return is_virtual || active_account_landing_company !== 'maltainvest';
+                } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
+                    return !should_allow_authentication;
                 }
                 return false;
             };
@@ -235,14 +237,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                     {route.subroutes.map((subroute, subindex) => (
                                         <MenuLink
                                             key={subindex}
-                                            is_disabled={
-                                                (!should_allow_authentication &&
-                                                    /proof-of-address/.test(subroute.path)) ||
-                                                (!should_allow_authentication &&
-                                                    /proof-of-identity/.test(subroute.path)) ||
-                                                disableRoute(subroute.path) ||
-                                                subroute.is_disabled
-                                            }
+                                            is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}

@@ -4,27 +4,34 @@ import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import Field from '../field';
 import Loading from '../loading';
-import { ZXCVBNResult, ZXCVBNFeedback } from 'zxcvbn';
 
 type TPasswordMeter = {
     children?: React.ReactNode | ((prop: { [key: string]: boolean }) => string);
     input: string;
     has_error?: boolean;
-    custom_feedback_messages: string[];
+    custom_feedback_messages: { [key: string]: string };
 };
 
+type TCustomFeedback = { warning: () => string; suggestions: string };
+
 const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }: TPasswordMeter) => {
-    const zxcvbn = React.useRef<(propA: string, propB?: string[]) => ZXCVBNResult>();
+    const zxcvbn =
+        React.useRef<
+            (
+                propA: string,
+                propB: { feedback_messages: { [key: string]: string } }
+            ) => { score: number; feedback: TCustomFeedback }
+        >();
 
     const [is_loading, setLoading] = React.useState(true);
-    const [score, setScore] = React.useState<number>();
-    const [feedback, setFeedback] = React.useState<ZXCVBNFeedback>();
+    const [score, setScore] = React.useState<number>(0);
+    const [feedback, setFeedback] = React.useState<TCustomFeedback>({ warning: () => '', suggestions: '' });
 
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
         async function loadLibrary() {
-            const lib = await import('zxcvbn');
+            const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
             if (isMounted()) setLoading(false);
         }
@@ -37,15 +44,14 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
         if (typeof zxcvbn.current === 'function') {
             // 0 - 4 Score for password strength
             if (input?.length > 0) {
-                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(
-                    input,
-                    custom_feedback_messages
-                );
+                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input, {
+                    feedback_messages: custom_feedback_messages,
+                });
                 setScore(updated_score);
                 setFeedback(updated_feedback);
             } else {
                 setScore(0);
-                setFeedback({ warning: '', suggestions: [] });
+                setFeedback({ warning: () => '', suggestions: '' });
             }
         }
     }, [custom_feedback_messages, has_error, input]);

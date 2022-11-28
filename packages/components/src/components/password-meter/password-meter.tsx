@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import Field from '../field';
 import Loading from '../loading';
@@ -85,13 +84,6 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
             </div>
         </React.Fragment>
     );
-};
-
-PasswordMeter.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),
-    has_error: PropTypes.bool,
-    input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    custom_feedback_messages: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 export default PasswordMeter;

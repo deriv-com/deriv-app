@@ -60,6 +60,7 @@ type TDMT5CompareModalContentProps = {
     setAppstorePlatform: (platform: string) => void;
     should_show_derivx: boolean;
     should_restrict_bvi_account_creation: boolean;
+    updateAccountStatus: () => void;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -249,6 +250,7 @@ const DMT5CompareModalContent = ({
     setAppstorePlatform,
     should_show_derivx,
     should_restrict_bvi_account_creation,
+    updateAccountStatus,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -284,6 +286,7 @@ const DMT5CompareModalContent = ({
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
+        updateAccountStatus();
         if (!has_submitted_personal_details) {
             let get_settings_response: GetSettings = {};
             if (!account_settings) {
@@ -681,4 +684,5 @@ export default connect(({ modules, client, common, ui }: RootStore) => ({
     upgradeable_landing_companies: client.upgradeable_landing_companies,
     openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
     setAppstorePlatform: common.setAppstorePlatform,
+    updateAccountStatus: client.updateAccountStatus,
 }))(DMT5CompareModalContent);

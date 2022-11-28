@@ -61,6 +61,7 @@ const DefaultHeader = ({
     toggleNotifications,
     changeCurrentLanguage,
     is_trading_assessment_for_existing_user_enabled,
+    active_account_landing_company,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -133,6 +134,7 @@ const DefaultHeader = ({
                             is_risky_client={is_risky_client}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
+                            active_account_landing_company={active_account_landing_company}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -300,4 +302,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
+    active_account_landing_company: client.landing_company_shortcode,
 }))(withRouter(DefaultHeader));

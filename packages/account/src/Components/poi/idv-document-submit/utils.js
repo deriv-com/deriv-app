@@ -1,5 +1,5 @@
 import { getUrlBase } from '@deriv/shared';
-
+//reset circleci
 const PATTERN_SIZE = 5;
 
 export const recurringNumberRegex = document_number => document_number.match(/([0-9])\1{4,}/g);

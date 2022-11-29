@@ -19,6 +19,7 @@ type TSelectNative = {
     hide_top_placeholder: boolean;
     value: string | number;
     list_items: Array<TListItem> | { [key: string]: Array<TListItem> };
+    hide_top_placeholder: boolean;
 } & Omit<TSelectNativeOptions, 'list_items'> &
     Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'value'>; // Default type of value in HTMLSelectElement is only string but here string | number is required
 

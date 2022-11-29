@@ -228,6 +228,10 @@
             align-items: center;
             text-align: center;
 
+            &.load-dialog {
+                padding: 1.6rem;
+            }
+
             &:hover {
                 cursor: pointer;
             }
@@ -266,6 +270,11 @@
                 width: 100%;
                 word-break: break-word;
                 margin-right: 1.6rem;
+                &.load-dialog {
+                    display: block;
+                    text-align: left;
+                    padding: 1.2rem 0;
+                }
             }
 
             &-title {
@@ -291,6 +300,9 @@
                 width: 100%;
                 word-break: break-word;
                 color: var(--text-general);
+                &.load-dialog {
+                    justify-content: center;
+                }
             }
 
             &-saved {

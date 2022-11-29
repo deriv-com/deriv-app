@@ -1,12 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Modal, Tabs, MobileFullPageModal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { tabs_title } from 'Constants/load-modal';
-import GoogleDrive from './google-drive.jsx';
-import Local from './local.jsx';
-import Recent from './recent.jsx';
+import RootStore from 'Stores/root-store';
+import GoogleDrive from './google-drive';
+import Local from './local';
+import Recent from './recent';
+import RecentFooter from './recent-footer';
+
+type TLoadModalProps = {
+    active_index: number;
+    is_load_modal_open: boolean;
+    is_mobile: boolean;
+    loaded_local_file: string;
+    onEntered: () => void;
+    recent_strategies: any[];
+    setActiveTabIndex: () => void;
+    setPreviewOnPopup: (show: boolean) => void;
+    tab_name: string;
+    toggleLoadModal: () => void;
+};
 
 const LoadModal = ({
     active_index,
@@ -16,10 +30,10 @@ const LoadModal = ({
     onEntered,
     recent_strategies,
     setActiveTabIndex,
+    setPreviewOnPopup,
     tab_name,
     toggleLoadModal,
-    setPreviewOnPopup,
-}) => {
+}: TLoadModalProps) => {
     const header_text = localize('Load strategy');
 
     if (is_mobile) {
@@ -47,6 +61,9 @@ const LoadModal = ({
         );
     }
 
+    const has_loaded_file = loaded_local_file && tab_name === tabs_title.TAB_LOCAL;
+    const has_recent_strategies = recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT;
+
     return (
         <Modal
             title={header_text}
@@ -71,33 +88,16 @@ const LoadModal = ({
                     </div>
                 </Tabs>
             </Modal.Body>
-            {loaded_local_file && tab_name === tabs_title.TAB_LOCAL && (
+            {(has_recent_strategies || has_loaded_file) && (
                 <Modal.Footer has_separator>
-                    <Local.Footer />
-                </Modal.Footer>
-            )}
-            {recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT && (
-                <Modal.Footer has_separator>
-                    <Recent.Footer />
+                    <RecentFooter />
                 </Modal.Footer>
             )}
         </Modal>
     );
 };
 
-LoadModal.propTypes = {
-    active_index: PropTypes.number,
-    is_load_modal_open: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    loaded_local_file: PropTypes.string,
-    onEntered: PropTypes.func,
-    recent_strategies: PropTypes.array,
-    setActiveTabIndex: PropTypes.func,
-    toggleLoadModal: PropTypes.func,
-    setPreviewOnPopup: PropTypes.func,
-};
-
-export default connect(({ load_modal, ui, dashboard }) => ({
+export default connect(({ load_modal, ui, dashboard }: RootStore) => ({
     active_index: load_modal.active_index,
     is_load_modal_open: load_modal.is_load_modal_open,
     is_mobile: ui.is_mobile,

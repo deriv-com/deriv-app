@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@deriv/components';
-import { CardWithArrow } from './card-with-arrow.jsx';
+import { CardWithArrow } from './card-with-arrow';
 
 export const Documents = ({ toggleDetail, documents }) =>
     documents.map((item, index) => (

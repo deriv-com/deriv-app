@@ -20,5 +20,9 @@
             "@deriv/*": ["../*/src"]
         }
     },
+<<<<<<< HEAD
     "include": ["src","globals.d.ts"]
+=======
+    "include": ["src", "globals.d.ts"]
+>>>>>>> e508384d906cee352548d1f6e4abe22e29b6905d
 }

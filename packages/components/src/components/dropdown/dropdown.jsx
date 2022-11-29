@@ -257,8 +257,8 @@ const Dropdown = ({
 
     React.useEffect(() => {
         if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
-    }, [is_list_visible, value]);
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_list_visible]);
     const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });
 

@@ -28,7 +28,6 @@ const ALIASES = {
     Stores: path.resolve(__dirname, '../src/stores'),
     Types: path.resolve(__dirname, '../src/types'),
     Utils: path.resolve(__dirname, '../src/utils'),
-    '@deriv/hooks': path.resolve(__dirname, '../src/hooks'),
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => [

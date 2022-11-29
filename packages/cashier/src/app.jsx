@@ -1,5 +1,4 @@
 import React from 'react';
-import { StoreProvider } from '@deriv/hooks';
 import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { init } from 'Utils/server_time';

@@ -13,7 +13,6 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
         '^Containers/(.*)$': '<rootDir>/src/containers/$1',
         '^Pages/(.*)$': '<rootDir>/src/pages/$1',
-        '^@deriv/hooks': '<rootDir>/src/hooks',
     },
     testPathIgnorePatterns: ['/Routes/', '/validator/'],
     coveragePathIgnorePatterns: [

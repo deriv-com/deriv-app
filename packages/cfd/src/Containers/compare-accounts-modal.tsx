@@ -34,6 +34,8 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     openDerivRealAccountNeededModal: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -98,6 +100,8 @@ const CompareAccountsModal = ({
     toggleCompareAccounts,
     openPasswordModal,
     openDerivRealAccountNeededModal,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCompareAccountsModalProps) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
@@ -179,6 +183,8 @@ const CompareAccountsModal = ({
                                     show_eu_related={show_eu_related}
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
                         </Modal>
@@ -212,6 +218,8 @@ const CompareAccountsModal = ({
                                     show_eu_related={show_eu_related}
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
                         </MobileDialog>

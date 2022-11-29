@@ -839,7 +839,14 @@ const AccountSwitcher = props => {
                                             {account.title}
                                         </Text>
                                         <Button
-                                            onClick={() => openMt5RealAccount(account.type)}
+                                            onClick={() => {
+                                                if (props.real_account_creation_unlock_date) {
+                                                    closeAccountsDialog();
+                                                    props.setShouldShowCooldownModal(true);
+                                                } else {
+                                                    openMt5RealAccount(account.type);
+                                                }
+                                            }}
                                             className='acc-switcher__new-account-btn'
                                             secondary
                                             small

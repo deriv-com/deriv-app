@@ -247,6 +247,8 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            is_risky_client,
+            is_financial_information_incomplete,
             has_restricted_mt5_account,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
@@ -287,6 +289,12 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
+            }
+
+            if (is_risky_client && is_financial_information_incomplete) {
+                this.addNotificationMessage(this.client_notifications.risk_client);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
             }
 
             if (is_poi_dob_mismatch) {
@@ -1213,7 +1221,20 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
+            risk_client: {
+                key: 'risk_client',
+                header: localize('You can only make deposits.'),
+                message: (
+                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start assessment'),
+                },
+            },
         };
+
         this.client_notifications = notifications;
     }
 

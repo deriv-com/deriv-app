@@ -36,7 +36,8 @@
             "icon": "IcBrandBinarybot"
         },
         "go": {
-            "name": "Deriv Go"
+            "name": "Deriv Go",
+            "icon": ""
         }
     }
 }

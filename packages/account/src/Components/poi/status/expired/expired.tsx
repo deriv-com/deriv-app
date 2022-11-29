@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
@@ -7,7 +6,7 @@ import IconMessageContent from 'Components/icon-message-content';
 type TExpired = {
     handleRequireSubmission: () => void;
     is_from_external: boolean;
-    redirect_button: React.HTMLAttributes<HTMLElement>;
+    redirect_button: React.ReactElement;
 };
 
 const Expired = ({ handleRequireSubmission, is_from_external, redirect_button }: TExpired) => {
@@ -27,12 +26,6 @@ const Expired = ({ handleRequireSubmission, is_from_external, redirect_button }:
             {!is_from_external && redirect_button}
         </IconMessageContent>
     );
-};
-
-Expired.propTypes = {
-    handleRequireSubmission: PropTypes.func,
-    is_from_external: PropTypes.bool,
-    redirect_button: PropTypes.element,
 };
 
 export default Expired;

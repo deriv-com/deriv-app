@@ -23,9 +23,10 @@ export type TClientStore = {
     account_list: TAccountsList[];
     account_status: GetAccountStatus;
     accounts: { [k: string]: TAccount };
+    active_account_landing_company: string;
     active_accounts: Array<TActiveAccounts>;
-    available_crypto_currencies: string[];
     authentication_status: TAuthenticationStatus;
+    available_crypto_currencies: string[];
     balance?: string;
     can_change_fiat_currency: boolean;
     currency: string;

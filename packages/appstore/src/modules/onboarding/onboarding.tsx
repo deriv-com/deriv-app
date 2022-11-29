@@ -28,7 +28,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const number_of_steps = Object.keys(contents);
     const { tradinghub, client } = useStores();
     const { toggleIsTourOpen } = tradinghub;
-    const { is_eu, is_eu_country } = client;
+    const { is_eu, is_eu_country, is_logged_in } = client;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
     const { setIsPreAppStore } = React.useContext(PlatformContext);
@@ -46,17 +46,19 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             toggleIsTourOpen(true);
         }
     };
+    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const onboarding_step = number_of_steps[step - 1];
 
     const footer_header = contents[onboarding_step]?.footer_header;
-    const eu_footer_header = contents[onboarding_step]?.eu_footer_header;
     const footer_text = contents[onboarding_step]?.footer_text;
-    const eu_footer_text = contents[onboarding_step]?.eu_footer_text;
 
-    const footer_header_text = eu_footer_header && is_eu && is_eu_country ? eu_footer_header : footer_header;
+    const eu_footer_header = contents[onboarding_step]?.eu_footer_header || footer_header;
+    const eu_footer_text = contents[onboarding_step]?.eu_footer_text || footer_text;
 
-    const footer_desctiption = eu_footer_text && is_eu && is_eu_country ? eu_footer_text : footer_text;
+    const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
+
+    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
 
     return (
         <div className='onboarding-wrapper'>

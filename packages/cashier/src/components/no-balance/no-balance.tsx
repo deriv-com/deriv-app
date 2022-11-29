@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 const NoBalance = ({ history }: RouteComponentProps) => {
     const {

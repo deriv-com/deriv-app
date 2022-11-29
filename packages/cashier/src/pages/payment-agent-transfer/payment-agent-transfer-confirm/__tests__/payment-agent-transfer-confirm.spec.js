@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm.jsx';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 const mockRootStore = {
     ui: {

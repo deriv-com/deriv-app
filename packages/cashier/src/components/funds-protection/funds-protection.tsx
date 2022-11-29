@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 import './funds-protection.scss';
 
 const FundsProtection = () => {

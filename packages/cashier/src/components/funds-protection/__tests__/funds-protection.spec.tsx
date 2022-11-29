@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FundsProtection from '../funds-protection';
-import { StoreProvider } from '../../../hooks';
-import { TRootStore, DeepPartial } from '../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import type { DeepPartial } from '@deriv/stores/types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     modules: {
@@ -15,7 +16,7 @@ const mockRootStore: DeepPartial<TRootStore> = {
 describe('FundsProtection component tests', () => {
     it('should render the component', () => {
         render(<FundsProtection />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Funds protection level')).toBeInTheDocument();
@@ -24,7 +25,7 @@ describe('FundsProtection component tests', () => {
 
     it('onClick function should be triggered', () => {
         render(<FundsProtection />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const btn = screen.getByRole('button');

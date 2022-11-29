@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 import './cashier-onboarding.scss';
 
 const CashierOnboardingSideNote = ({ is_crypto }) => {

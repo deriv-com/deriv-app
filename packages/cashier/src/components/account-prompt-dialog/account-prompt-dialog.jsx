@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 const AccountPromptDialog = () => {
     const {

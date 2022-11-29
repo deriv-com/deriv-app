@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();

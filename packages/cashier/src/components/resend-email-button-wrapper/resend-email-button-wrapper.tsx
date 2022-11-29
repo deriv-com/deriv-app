@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 type TResetEmailButtonWrapperProps = {
     is_withdrawal: boolean;

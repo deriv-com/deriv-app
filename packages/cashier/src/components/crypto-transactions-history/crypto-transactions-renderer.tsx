@@ -6,7 +6,7 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getStatus } from 'Constants/transaction-status';
 import { TCryptoTransactionDetails } from 'Types';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;

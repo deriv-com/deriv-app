@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
-import { StoreProvider } from '../../../hooks';
-import { DeepPartial, TRootStore } from '../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import type { DeepPartial } from '@deriv/stores/types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     ui: {
@@ -41,7 +42,7 @@ describe('<TransferConfirm />', () => {
 
     it('should show proper icon, messages and buttons', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
@@ -75,7 +76,9 @@ describe('<TransferConfirm />', () => {
                 }}
             />,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => (
+                    <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>
+                ),
             }
         );
 
@@ -86,7 +89,7 @@ describe('<TransferConfirm />', () => {
 
     it('should trigger onClickBack method when the client clicks on Back button', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const [back_btn, _] = screen.getAllByRole('button');
@@ -97,7 +100,7 @@ describe('<TransferConfirm />', () => {
 
     it('should enable Transfer now button when checkbox is checked', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const el_checkbox = screen.getByRole('checkbox');
@@ -108,7 +111,7 @@ describe('<TransferConfirm />', () => {
     });
     it('should show proer checkbox label text when is_payment_agent_withdraw property is equal to true/false', () => {
         const { rerender } = render(<TransferConfirm {...props} is_payment_agent_withdraw />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(
@@ -124,7 +127,7 @@ describe('<TransferConfirm />', () => {
 
     it('should trigger onClickConfirm method when the client clicks on Transfer now button', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const el_checkbox = screen.getByRole('checkbox');

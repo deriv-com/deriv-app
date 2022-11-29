@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ResendEmailButtonWrapper from '../resend-email-button-wrapper';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<ResendEmailButtonWrapper/>', () => {
     let mockRootStore;

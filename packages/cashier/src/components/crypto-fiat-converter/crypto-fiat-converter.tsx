@@ -5,7 +5,7 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TReactChangeEvent, TReactChildren } from 'Types';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {

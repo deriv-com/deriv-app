@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoFiatConverter from '../crypto-fiat-converter';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 

@@ -7,7 +7,7 @@ import { TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 const getHeaders = () => [
     { text: localize('Transaction') },

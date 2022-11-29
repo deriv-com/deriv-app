@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 const mockRootStore = {
     ui: {

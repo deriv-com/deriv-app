@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStore } from '../../../hooks';
+import { useStore } from '@deriv/stores';
 import './virtual.scss';
 
 const Virtual = () => {

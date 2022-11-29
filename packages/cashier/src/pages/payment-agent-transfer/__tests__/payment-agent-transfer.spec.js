@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 const mockRootStore = {
     ui: {

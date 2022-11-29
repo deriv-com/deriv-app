@@ -4,8 +4,9 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '../../../hooks';
-import { TRootStore, DeepPartial } from '../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import type { DeepPartial } from '@deriv/stores/types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     ui: { disableApp: jest.fn(), enableApp: jest.fn() },
@@ -25,7 +26,7 @@ describe('<ErrorDialog />', () => {
 
     it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
         render(<ErrorDialog error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
@@ -46,7 +47,9 @@ describe('<ErrorDialog />', () => {
                 <ErrorDialog error={error} />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => (
+                    <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>
+                ),
             }
         );
         const on_confirm_btn = screen.getByText('Verify identity');
@@ -57,7 +60,7 @@ describe('<ErrorDialog />', () => {
 
     it('should show "Cashier Error" message and "OK" button', () => {
         render(<ErrorDialog error={{ code: '', message: 'Error is occured' }} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
@@ -72,7 +75,7 @@ describe('<ErrorDialog />', () => {
             setErrorMessage,
         };
         render(<ErrorDialog error={error} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
         const ok_btn = screen.getByText('OK');
         fireEvent.click(ok_btn);
@@ -90,7 +93,7 @@ describe('<ErrorDialog />', () => {
             setErrorMessage,
         };
         render(<ErrorDialog error={error} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
         const cancel_btn = screen.getByText('Cancel');
         fireEvent.click(cancel_btn);
@@ -115,7 +118,9 @@ describe('<ErrorDialog />', () => {
                     <ErrorDialog error={error} />
                 </Router>,
                 {
-                    wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                    wrapper: ({ children }) => (
+                        <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>
+                    ),
                 }
             );
             const error_btn = screen.getByText(btn_name);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

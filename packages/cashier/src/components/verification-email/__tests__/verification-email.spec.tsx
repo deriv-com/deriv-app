@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import VerificationEmail from '../verification-email';
-import { StoreProvider } from '../../../hooks';
-import { DeepPartial, TRootStore } from '../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import type { DeepPartial } from '@deriv/stores/types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     modules: {
@@ -38,7 +39,7 @@ describe('<VerificationEmail />', () => {
     it('component should be rendered', () => {
         const props = mockProps();
         render(<VerificationEmail {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText("We've sent you an email.")).toBeInTheDocument();
@@ -52,7 +53,7 @@ describe('<VerificationEmail />', () => {
         props.is_resend_clicked = true;
 
         render(<VerificationEmail {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
         const btn = screen.getByRole('button');
 
@@ -68,7 +69,7 @@ describe('<VerificationEmail />', () => {
         props.is_resend_clicked = true;
 
         render(<VerificationEmail {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const btn = screen.getByRole('button', { name: 'Resend email' });
@@ -81,7 +82,7 @@ describe('<VerificationEmail />', () => {
         const props = mockProps();
 
         render(<VerificationEmail {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByRole('button', { name: "Didn't receive the email?" })).toBeInTheDocument();
@@ -91,7 +92,7 @@ describe('<VerificationEmail />', () => {
         const props = mockProps();
 
         render(<VerificationEmail {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const btn = screen.getByRole('button', { name: "Didn't receive the email?" });

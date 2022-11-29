@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
 
 const mockRootStore = {
     ui: {

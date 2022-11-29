@@ -9,7 +9,7 @@ import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 import SideNote from 'Components/side-note';
-import { useStore } from '../../hooks';
+import { useStore } from '@deriv/stores';
 
 const CashierOnboarding = ({ setSideNotes }) => {
     const {

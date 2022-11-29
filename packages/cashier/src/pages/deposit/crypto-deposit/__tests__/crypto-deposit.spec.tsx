@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
-import { DeepPartial } from '@deriv/stores/types';
+import type { DeepPartial } from '@deriv/stores/types';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from '../../../../types';
 
@@ -33,7 +33,7 @@ describe('<CryptoDeposit />', () => {
     const renderWithRouter = (component, mockRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
     };
 
@@ -362,7 +362,7 @@ describe('<CryptoDeposit />', () => {
             <Router history={history}>
                 <CryptoDeposit />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider> }
+            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();

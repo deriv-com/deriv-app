@@ -58,18 +58,17 @@ const BotBuilder = ({
                             locale={{ back: 'Previous' }}
                             styles={{
                                 options: {
-                                    arrowColor: 'var(--general-section-7)',
-                                    backgroundColor: 'var(--general-section-7)',
-                                    overlayColor: 'rgba(0, 0, 0, 0.5)',
+                                    arrowColor: 'var(--general-main-2)',
+                                    backgroundColor: 'var(--general-main-2)',
                                     primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-joyride-tour)',
+                                    textColor: 'var(--text-general)',
                                     spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                                 },
                                 buttonBack: {
                                     border: '0.1rem solid var(--text-less-prominent)',
                                     marginRight: '1rem',
                                     borderRadius: '0.4rem',
-                                    color: 'var(--text-joyride-tour)',
+                                    color: 'var(--text-general)',
                                     padding: '0.6rem',
                                 },
                             }}

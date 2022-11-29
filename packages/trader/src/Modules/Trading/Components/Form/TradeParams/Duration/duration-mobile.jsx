@@ -329,8 +329,8 @@ const Duration = ({
                                     />
                                     <RelativeDatepicker
                                         onChange={handleRelativeChange}
-                                        min={min}
-                                        max={max}
+                                        min_date={min}
+                                        max_date={max}
                                         title={localize('Pick an end date')}
                                     />
                                 </div>

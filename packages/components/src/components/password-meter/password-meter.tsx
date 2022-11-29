@@ -30,7 +30,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
 
     React.useEffect(() => {
         async function loadLibrary() {
-            const lib = await require('@contentpass/zxcvbn');
+            const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
             if (isMounted()) setLoading(false);
         }

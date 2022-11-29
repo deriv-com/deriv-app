@@ -29,6 +29,7 @@
                     font-size: 1.4rem;
                     padding-left: 3rem;
                     border: solid 0.1rem var(--checkbox-disabled-grey);
+                    color: var(--text-general);
 
                     ::placeholder {
                         margin-left: 3.2rem;
@@ -69,6 +70,11 @@
                         &:first-child {
                             margin-top: 7.5rem;
                         }
+                    }
+                    &--tutorials {
+                        display: flex;
+                        justify-content: flex-start;
+                        padding: 0 1.6rem;
                     }
                 }
 

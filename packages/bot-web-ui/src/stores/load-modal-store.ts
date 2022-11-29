@@ -163,9 +163,8 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     async getDashboardStrategies() {
-        const strategies = await getSavedWorkspaces();
         setTimeout(() => {
-            strategies.then(recent_strategies => {
+            getSavedWorkspaces().then(recent_strategies => {
                 this.dashboard_strategies = recent_strategies;
             });
         }, 1000);

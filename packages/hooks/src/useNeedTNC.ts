@@ -1,5 +1,5 @@
+import { useStore } from '@deriv/stores';
 import useRealSTPAccount from './useRealSTPAccount';
-import { useStore } from './useStore';
 
 const useNeedTNC = () => {
     const { client } = useStore();

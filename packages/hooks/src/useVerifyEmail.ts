@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { TSocketEndpoints } from 'Types';
+import { useWS } from '@deriv/api';
+import type { TSocketEndpoints } from '@deriv/api/types';
+import { useStore } from '@deriv/stores';
 import useCountdown from './useCountdown';
-import { useStore } from './useStore';
-import useWS from './useWS';
 
 const RESEND_COUNTDOWN = 60;
 

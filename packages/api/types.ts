@@ -1,34 +1,37 @@
-import {
-    PingRequest,
-    PingResponse,
-    VerifyEmailRequest,
-    VerifyEmailResponse,
-    ExchangeRatesRequest,
-    ExchangeRatesResponse,
-    P2POrderInformationRequest,
-    P2POrderInformationResponse,
-    ServerStatusRequest,
-    ServerStatusResponse,
-    TermsAndConditionsApprovalRequest,
-    TermsAndConditionsApprovalResponse,
+import type {
+    BalanceRequest,
+    BalanceResponse,
     CashierInformationRequest,
     CashierInformationResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
-    PaymentAgentTransferRequest,
-    PaymentAgentTransferResponse,
-    PaymentAgentListRequest,
-    PaymentAgentListResponse,
+    ExchangeRatesRequest,
+    ExchangeRatesResponse,
+    NewVirtualMoneyAccountRequest,
+    NewVirtualMoneyAccountResponse,
+    P2POrderInformationRequest,
+    P2POrderInformationResponse,
     PaymentAgentDetailsRequest,
     PaymentAgentDetailsResponse,
+    PaymentAgentListRequest,
+    PaymentAgentListResponse,
+    PaymentAgentTransferRequest,
+    PaymentAgentTransferResponse,
     PaymentAgentWithdrawRequest,
     PaymentAgentWithdrawResponse,
+    PingRequest,
+    PingResponse,
+    ServerStatusRequest,
+    ServerStatusResponse,
+    TermsAndConditionsApprovalRequest,
+    TermsAndConditionsApprovalResponse,
+    TicksStreamRequest,
+    TicksStreamResponse,
     TransferBetweenAccountsRequest,
     TransferBetweenAccountsResponse,
-    BalanceRequest,
-    BalanceResponse,
+    VerifyEmailRequest,
+    VerifyEmailResponse,
 } from '@deriv/api-types';
-import { KeysMatching } from './utils';
 
 export type TSocketEndpoints = {
     ping: {
@@ -87,6 +90,14 @@ export type TSocketEndpoints = {
         request: BalanceRequest;
         response: BalanceResponse;
     };
+    ticks: {
+        request: TicksStreamRequest;
+        response: TicksStreamResponse;
+    };
+    new_account_virtual: {
+        request: NewVirtualMoneyAccountRequest;
+        response: NewVirtualMoneyAccountResponse;
+    };
 };
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
@@ -97,7 +108,7 @@ export type TSocketSubscribableEndpointNames =
 
 export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T]['response'];
 
-export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T];
+export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T extends 'ticks' ? 'tick' : T];
 
 export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
@@ -109,3 +120,7 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
 export type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
     ? never
     : TSocketRequestCleaned<T>;
+
+export type KeysMatching<T, V> = {
+    [K in keyof T]-?: T[K] extends V ? K : never;
+}[keyof T];

@@ -231,9 +231,9 @@ const TradingHub: React.FC = () => {
                 disableScrolling
                 hideCloseButton
                 disableCloseOnEsc
-                steps={is_eu ? eu_tour_step_config : tour_step_config}
+                steps={tour_step_config}
                 styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-                locale={is_eu ? eu_tour_step_locale : tour_step_locale}
+                locale={tour_step_locale}
                 floaterProps={{
                     disableAnimation: true,
                 }}

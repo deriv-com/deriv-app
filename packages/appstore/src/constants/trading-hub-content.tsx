@@ -4,7 +4,9 @@ import StaticDashboard from 'Components/onboarding/static-dashboard';
 
 type TStep = {
     component: React.ReactNode;
+    eu_footer_header?: string;
     footer_header: string;
+    eu_footer_text?: string;
     footer_text: string;
     next_content?: string;
     has_next_content: boolean;
@@ -105,7 +107,9 @@ export const trading_hub_contents: TTradingHubContents = {
             />
         ),
         footer_header: localize('CFDs, Options or Multipliers'),
+        eu_footer_header: localize('CFDs or Multipliers'),
         footer_text: localize('You can choose between CFD trading accounts or Options and Multipliers accounts'),
+        eu_footer_text: localize('You can choose between CFD trading accounts and Multipliers accounts'),
         has_next_content: false,
     },
     step4: {

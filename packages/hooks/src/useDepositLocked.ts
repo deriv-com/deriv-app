@@ -1,7 +1,7 @@
+import { useStore } from '@deriv/stores';
 import useNeedAuthentication from './useNeedAuthentication';
 import useNeedFinancialAssessment from './useNeedFinancialAssessment';
 import useNeedTNC from './useNeedTNC';
-import { useStore } from './useStore';
 
 const useDepositLocked = () => {
     const { client } = useStore();

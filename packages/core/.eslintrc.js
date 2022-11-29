@@ -7,4 +7,7 @@ module.exports = {
             webpack: { config: webpackConfig({}) },
         },
     },
+    globals: {
+        VERCEL_ANALYTICS_ID: true,
+    },
 };

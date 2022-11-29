@@ -33,6 +33,7 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
+import { initVitals } from 'Services/vitals';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -61,6 +62,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         setSharedCFDText(CFD_TEXT);
         handleResize();
         root_store.common.setPlatform();
+        initVitals();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

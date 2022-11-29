@@ -133,6 +133,7 @@ const plugins = ({ base, is_test_env, env }) => {
     return [
         new DefinePlugin({
             'process.env.IS_QAWOLF': is_qawolf,
+            VERCEL_ANALYTICS_ID: process.env.VERCEL_ANALYTICS_ID,
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

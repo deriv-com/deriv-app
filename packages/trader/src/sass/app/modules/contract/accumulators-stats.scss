@@ -69,25 +69,6 @@
         }
     }
 
-    &__spot-emphasizing {
-        position: relative;
-
-        &:before {
-            content: '';
-            position: absolute;
-            width: 3.2rem;
-            height: 3.2rem;
-            top: -0.3rem;
-            left: 0.3rem;
-            border-radius: 50%;
-            background: center no-repeat radial-gradient(50% 50% at 50% 50%, rgba(55, 124, 252, 0.72) 0%, rgba(55, 124, 252, 0) 100%);
-
-            @include mobile {
-                left: 0rem;
-            }
-        }
-    }
-
     &__history {
         display: flex;
         align-items: center;
@@ -142,6 +123,25 @@
                         95% {
                             background: var(--text-general);
                         }
+                    }
+                }
+            }
+            &--emphasized {
+                position: relative;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 3.2rem;
+                    height: 3.2rem;
+                    top: -0.3rem;
+                    left: 0.3rem;
+                    border-radius: 50%;
+                    background: center no-repeat
+                        radial-gradient(50% 50% at 50% 50%, rgba(55, 124, 252, 0.72) 0%, rgba(55, 124, 252, 0) 100%);
+
+                    @include mobile {
+                        left: 0rem;
                     }
                 }
             }
@@ -215,7 +215,6 @@
 
     @include mobile {
         height: 5.2rem;
-
     }
 }
 

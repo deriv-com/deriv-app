@@ -22,6 +22,20 @@ const AccumulatorsProfitLossText = ({
     const prev_arr = prev_profit.current?.toFixed(2).split('.');
     const new_counter = +new_arr[1][0];
     const prev_counter = +prev_arr[1][0];
+    const [is_brightening, setIsBrightening] = React.useState(false);
+
+    React.useLayoutEffect(() => {
+        let brightening_timeout;
+        if (profit) {
+            setIsBrightening(true);
+            brightening_timeout = setTimeout(() => {
+                setIsBrightening(false);
+            }, 300);
+        }
+        return () => {
+            clearTimeout(brightening_timeout);
+        };
+    }, [profit]);
 
     React.useEffect(() => {
         if (animated_ref?.current) {
@@ -128,7 +142,9 @@ const AccumulatorsProfitLossText = ({
                 weight='bold'
                 size='m'
                 color={won ? 'profit-success' : 'loss-danger'}
-                className={`${className}__profit`}
+                className={classNames(`${className}__profit`, {
+                    [`${className}__profit--brightening`]: is_brightening,
+                })}
                 as='div'
             >
                 {`${sign}${new_arr[0]}.`}

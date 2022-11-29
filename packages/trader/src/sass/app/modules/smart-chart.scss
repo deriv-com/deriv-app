@@ -264,6 +264,18 @@
             display: flex;
             transform: translateY(-54%);
             position: relative;
+
+            &--brightening {
+                @keyframes appear {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+                animation: 0.3s ease-in appear;
+            }
         }
         &__currency {
             padding-left: 0.3rem;

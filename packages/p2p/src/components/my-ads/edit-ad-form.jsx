@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Button, Div100vhContainer, Input, Loading, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -27,7 +27,6 @@ const EditAdFormWrapper = ({ children }) => {
 
 const EditAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const os = mobileOSDetect();
 
     const {
         account_currency,
@@ -160,12 +159,7 @@ const EditAdForm = () => {
                                     : is_payment_method_touched;
                             return (
                                 <div className='p2p-my-ads__form'>
-                                    <Form
-                                        className={classNames('p2p-my-ads__form-element', {
-                                            'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',
-                                        })}
-                                        noValidate
-                                    >
+                                    <Form noValidate>
                                         <ThemedScrollbars
                                             className='p2p-my-ads__form-scrollbar'
                                             is_scrollbar_hidden={isMobile()}

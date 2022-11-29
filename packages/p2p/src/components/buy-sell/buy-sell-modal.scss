@@ -63,11 +63,20 @@
         }
     }
 
+    &-footer {
+        border-top: 2px solid var(--general-section-1);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: auto;
+        padding: 1.6rem;
+    }
+
     &--input {
         display: flex;
         gap: 2rem;
         flex-direction: column;
-        padding: 0 2.4rem 1.4rem;
+        padding: 0 2.4rem 2rem;
         .dc-input__wrapper {
             margin-bottom: unset;
         }
@@ -126,6 +135,12 @@
         &--title {
             margin-bottom: 0.8rem;
         }
+    }
+
+    &-receive-amount {
+        border-top: 1px solid var(--general-section-2);
+        padding: 0.8rem 1.6rem;
+        background-color: var(--general-main-1);
     }
 
     &--sell-payment-methods {
@@ -188,4 +203,7 @@
         margin-top: 1rem;
         border-top: 2px solid var(--general-section-5);
     }
+}
+.dc-mobile-full-page-modal form {
+    height: fit-content;
 }

@@ -1,4 +1,4 @@
-import { TSocketRequestProps, TSocketResponseData, TSocketSubscribableEndpointNames } from 'Types';
+import { TSocketRequestProps, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
 import { useWS as useWSShared } from '@deriv/shared';
 import { useState } from 'react';
 
@@ -12,7 +12,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onData = (response: any) => {
-        setData(response[name]);
+        setData(response[name === 'ticks' ? 'tick' : name]);
         setIsLoading(false);
     };
 

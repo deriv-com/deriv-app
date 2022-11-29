@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useStore } from '../../../hooks';
+import { useStore } from '@deriv/stores';
 
 const AccountTransferLocked = () => {
     const {

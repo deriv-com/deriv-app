@@ -5,11 +5,11 @@ import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import { TReactChangeEvent } from 'Types';
-import { useStore } from '../../../hooks';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {

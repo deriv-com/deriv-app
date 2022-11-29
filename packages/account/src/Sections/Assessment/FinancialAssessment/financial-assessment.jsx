@@ -303,11 +303,9 @@ const FinancialAssessment = ({
     };
 
     const getScrollOffset = () => {
-        if (is_appstore) {
-            return isMobile() ? '160px' : '200px';
-        } else if (is_mf) {
+        if (is_mf) {
             return is_financial_information_incomplete && !is_submit_success ? '140px' : '80px';
-        }
+        } else if (isMobile()) return is_appstore ? '160px' : '200px';
         return '80px';
     };
 

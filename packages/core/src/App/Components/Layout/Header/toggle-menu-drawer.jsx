@@ -100,6 +100,7 @@ const ToggleMenuDrawer = React.forwardRef(
             title,
             toggleTheme,
             can_have_whatsapp,
+            active_account_landing_company,
         },
         ref
     ) => {
@@ -180,6 +181,17 @@ const ToggleMenuDrawer = React.forwardRef(
 
             const has_subroutes = route_config.routes.some(route => route.subroutes);
 
+            const disableRoute = route_path => {
+                if (/financial-assessment/.test(route_path)) {
+                    return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                } else if (/trading-assessment/.test(route_path)) {
+                    return is_virtual || active_account_landing_company !== 'maltainvest';
+                } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
+                    return !should_allow_authentication;
+                }
+                return false;
+            };
+
             return (
                 <MobileDrawer.SubMenu
                     key={idx}
@@ -225,15 +237,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                     {route.subroutes.map((subroute, subindex) => (
                                         <MenuLink
                                             key={subindex}
-                                            is_disabled={
-                                                (!should_allow_authentication &&
-                                                    /proof-of-address/.test(subroute.path)) ||
-                                                (!should_allow_authentication &&
-                                                    /proof-of-identity/.test(subroute.path)) ||
-                                                (is_virtual && /trading-assessment/.test(subroute.path)) ||
-                                                (!is_risky_client && /financial-assessment/.test(subroute.path)) ||
-                                                subroute.is_disabled
-                                            }
+                                            is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}

@@ -175,6 +175,8 @@ export type TCFDDashboardProps = RouteComponentProps & {
     openDerivRealAccountNeededModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
     refreshNotifications: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -397,6 +399,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
         setIsAcuityModalOpen,
+        real_account_creation_unlock_date,
+        setShouldShowCooldownModal,
     } = props;
 
     const should_show_missing_real_account =
@@ -492,7 +496,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
-                                                    onClickSignup={beginRealSignupForMt5}
+                                                    onClickSignup={() => {
+                                                        if (real_account_creation_unlock_date) {
+                                                            setShouldShowCooldownModal(true);
+                                                        } else {
+                                                            beginRealSignupForMt5();
+                                                        }
+                                                    }}
                                                     platform={platform}
                                                 />
                                             )}
@@ -529,6 +539,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
                                                 setIsAcuityModalOpen={setIsAcuityModalOpen}
+                                                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                                setShouldShowCooldownModal={setShouldShowCooldownModal}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -586,6 +598,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 is_demo_tab={is_demo_tab}
                                 openPasswordModal={openRealPasswordModal}
                                 is_real_enabled={is_real_enabled}
+                                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                setShouldShowCooldownModal={setShouldShowCooldownModal}
                             />
                             <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />
@@ -735,5 +749,7 @@ export default withRouter(
         mt5_status_server: client.website_status.mt5_status,
         openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
         setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
+        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
+        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
     }))(CFDDashboard)
 );

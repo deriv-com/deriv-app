@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/triple-slash-reference: "off" */
+/// <reference path="../../../@types/@contentpass/zxcvbn/contentpass-zxcvbn-config.d.ts" />
 import classNames from 'classnames';
 import React from 'react';
 import { useIsMounted } from '@deriv/shared';

@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import EmailVerificationEmptyState from '../email-verification-empty-state';
-import { StoreProvider } from '../../../hooks';
-import { DeepPartial, TRootStore } from '../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { DeepPartial } from '@deriv/stores/types';
+import { TRootStore } from '../../../types';
 
 const mock_store: DeepPartial<TRootStore> = {
     client: {
@@ -13,7 +14,7 @@ const mock_store: DeepPartial<TRootStore> = {
 describe('EmailVerificationEmptyState', () => {
     test('should disable resend button after sending the request', () => {
         render(<EmailVerificationEmptyState type='reset_password' />, {
-            wrapper: ({ children }) => <StoreProvider store={mock_store}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mock_store as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.queryByTestId('dt_empty_state_action')).toBeInTheDocument();

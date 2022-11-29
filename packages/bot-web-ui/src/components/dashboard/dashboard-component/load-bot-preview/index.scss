@@ -247,11 +247,6 @@
                 }
             }
 
-            &:not(.load-strategy__recent-item--selected):hover {
-                background-color: var(--state-hover);
-                cursor: pointer;
-            }
-
             &:not(:last-child) {
                 border-bottom: solid 0.1rem var(--border-normal);
             }

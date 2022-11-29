@@ -123,7 +123,6 @@ const SentEmailModal = ({
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}
             onClickSendEmail={onClickSendEmail}
-            closeEmailModal={onClose}
             live_chat={live_chat}
         >
             {getNoEmailContentStrings().map(item => (

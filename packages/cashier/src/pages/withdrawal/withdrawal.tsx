@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -16,7 +17,6 @@ import RecentTransaction from 'Components/recent-transaction';
 import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
 import { Virtual } from 'Components/cashier-container';
-import { useStore } from '../../hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;

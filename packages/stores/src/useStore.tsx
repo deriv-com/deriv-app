@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../types';
 
 export const StoreContext = createContext<TRootStore | null>(null);
 

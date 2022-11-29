@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';

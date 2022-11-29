@@ -1,4 +1,4 @@
-import { useStore } from './useStore';
+import { useStore } from '@deriv/stores';
 
 const useNeedAuthentication = () => {
     const { client } = useStore();

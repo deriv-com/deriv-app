@@ -3,6 +3,7 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { useStore } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import QRCode from 'qrcode.react';
 import { observer } from 'mobx-react-lite';
 import RecentTransaction from 'Components/recent-transaction';

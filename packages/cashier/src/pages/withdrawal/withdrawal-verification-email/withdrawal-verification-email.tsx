@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MobileWrapper } from '@deriv/components';
-import { useStore, useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import RecentTransaction from 'Components/recent-transaction';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import EmptyState from 'Components/empty-state';

@@ -77,12 +77,6 @@ const TradingAssessmentForm = ({
         }
     };
 
-    const handleOnClickNext = values => {
-        if (!isAssessmentCompleted(values)) {
-            displayNextPage();
-        }
-    };
-
     const handleValueSelection = (e, form_control, callBackFn) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
@@ -197,9 +191,10 @@ const TradingAssessmentForm = ({
                                                 has_effect
                                                 is_disabled={!is_next_button_enabled}
                                                 onClick={() =>
-                                                    isAssessmentCompleted(values)
+                                                    isAssessmentCompleted(values) &&
+                                                    stored_items === last_question_index
                                                         ? onSubmit(values)
-                                                        : handleOnClickNext(values)
+                                                        : displayNextPage()
                                                 }
                                                 type='button'
                                                 text={localize('Next')}

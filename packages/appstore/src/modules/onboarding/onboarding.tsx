@@ -69,6 +69,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     custom_color='var(--general-main-1)'
                     className='onboarding-header__cross-icon'
                     onClick={() => {
+                        setIsPreAppStore(true);
                         toggleIsTourOpen(false);
                         history.push(routes.trading_hub);
                     }}

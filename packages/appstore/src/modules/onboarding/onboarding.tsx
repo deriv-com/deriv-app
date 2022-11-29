@@ -54,13 +54,9 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const footer_text = contents[onboarding_step]?.footer_text;
     const eu_footer_text = contents[onboarding_step]?.eu_footer_text;
 
-    const footer_header_text =
-        footer_header === 'CFDs, Options or Multipliers' && is_eu ? eu_footer_header : footer_header;
+    const footer_header_text = eu_footer_header && is_eu ? eu_footer_header : footer_header;
 
-    const footer_desctiption =
-        footer_text === 'You can choose between CFD trading accounts or Options and Multipliers accounts' && is_eu
-            ? eu_footer_text
-            : footer_text;
+    const footer_desctiption = eu_footer_text && is_eu ? eu_footer_text : footer_text;
 
     return (
         <div className='onboarding-wrapper'>

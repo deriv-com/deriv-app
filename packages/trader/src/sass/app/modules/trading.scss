@@ -190,10 +190,7 @@
         #dt_purchase_vanillalongcall_price,
         #dt_purchase_vanillalongput_price {
             display: block;
-
-            .trade-container__price-info-currency {
-                margin-left: unset;
-            }
+            margin-bottom: 6px;
         }
     }
 
@@ -259,11 +256,6 @@
                 opacity: 1;
                 transition: 0.3s;
 
-                .per-point--multiplier {
-                    gap: 1rem;
-                    display: flex;
-                }
-
                 @include mobile {
                     color: var(--text-colored-background);
                 }
@@ -281,6 +273,9 @@
             &-strike {
                 @include mobile {
                     color: var(--text-less-prominent);
+                    font-size: 1.2rem;
+                    display: flex;
+                    gap: 8px;
                 }
             }
             &-currency {
@@ -735,5 +730,14 @@
                 }
             }
         }
+    }
+}
+
+.strike--info {
+    color: var(--text-general);
+    justify-content: flex-start;
+    &__value {
+        font-size: var(--text-size-xxs);
+        margin-left: unset;
     }
 }

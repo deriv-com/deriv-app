@@ -1,24 +1,35 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
+import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
+const PayoutHintModal = ({ is_open, onClose, type }) => (
+    <Modal small is_open={is_open} is_vertical_centered toggleModal={onClose} title={localize('Payout per point')}>
+        <Text size='xxs' as='p' styles={{ padding: '0 1.6rem 1.6rem 1.6rem' }}>
+            <Localize
+                i18n_default_text='<0>For Call:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price.'
+                components={[<strong key={0} />, <br key={1} />]}
+                values={{ trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below' }}
+            />
+        </Text>
+    </Modal>
+);
+
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
     <div style={{ display: 'flex' }}>
-        <div className='trade-container__price-info-value'>
+        <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
-                <span className='per-point--multiplier'>
-                    {is_vanilla && <span>x</span>}
-                    <Money
-                        amount={proposal_info.obj_contract_basis.value}
-                        className='trade-container__price-info-currency'
-                        currency={currency}
-                        show_currency
-                    />
-                </span>
+                <Money
+                    amount={proposal_info.obj_contract_basis.value}
+                    className={classNames('trade-container__price-info-currency', {
+                        'strike--info__value': is_vanilla,
+                    })}
+                    currency={currency}
+                    show_currency
+                />
             )}
         </div>
         <div className='trade-container__price-info-movement'>
@@ -43,6 +54,8 @@ const ContractInfo = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
+
+    const [is_open_hint, setIsOpenHint] = React.useState(false);
 
     const stakeOrPayout = () => {
         switch (basis) {
@@ -127,6 +140,21 @@ const ContractInfo = ({
                                 })}
                             >
                                 {basis_text}
+                                {is_vanilla && (
+                                    <MobileWrapper>
+                                        <Icon
+                                            icon='IcInfoOutline'
+                                            id={`dt_purchase_${type.toLowerCase()}_info`}
+                                            color='disabled'
+                                            onClick={() => setIsOpenHint(true)}
+                                        />
+                                        <PayoutHintModal
+                                            onClose={() => setIsOpenHint(false)}
+                                            type={type}
+                                            is_open={is_open_hint}
+                                        />
+                                    </MobileWrapper>
+                                )}
                             </div>
                             <DesktopWrapper>
                                 <ValueMovement
@@ -138,7 +166,11 @@ const ContractInfo = ({
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='trade-container__price-info-wrapper'>
+                                <div
+                                    className={classNames('trade-container__price-info-wrapper', {
+                                        'strike--info': is_vanilla,
+                                    })}
+                                >
                                     <ValueMovement
                                         has_error_or_not_loaded={has_error_or_not_loaded}
                                         proposal_info={proposal_info}
@@ -164,19 +196,6 @@ const ContractInfo = ({
                         relative_render
                     />
                 </DesktopWrapper>
-            )}
-            {is_vanilla && (
-                <MobileWrapper>
-                    <Popover
-                        alignment='left'
-                        icon='info'
-                        id={`dt_purchase_${type.toLowerCase()}_info`}
-                        is_bubble_hover_enabled
-                        margin={216}
-                        message={has_error_or_not_loaded ? '' : setHintMessage()}
-                        relative_render
-                    />
-                </MobileWrapper>
             )}
         </div>
     );

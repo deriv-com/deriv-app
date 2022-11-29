@@ -207,7 +207,7 @@ const OptionsAccount = ({
         <div
             className={classNames('account-container', {
                 'account-container-active': activeAccount === loginid_text,
-                'account-container-disabled': activeAccount !== loginid_text,
+                'account-container-disabled': is_disabled,
                 'account-container-modal': is_modal,
             })}
             onClick={redirectAccount}

@@ -48,6 +48,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         & .account-form {
             &__personal-details,
+            &__trading-assessment,
             &__financial-assessment {
                 .account__scrollbars_container {
                     width: 68.5rem;
@@ -199,6 +200,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
 
+            .emp-status {
+                .dc-select-native__wrapper {
+                    margin-top: 3rem;
+                }
+            }
+
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
@@ -214,7 +221,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
-                grid-template-rows: 5rem 1fr 4rem 1fr;
+                grid-template-rows: auto;
 
                 & .account-form__header {
                     &:first-child {
@@ -326,6 +333,30 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 40rem;
                 @include mobile {
                     width: 100%;
+                }
+            }
+        }
+        &__question {
+            position: relative;
+            max-width: 67.2rem;
+            margin-top: 1.6rem;
+            margin-bottom: 2rem;
+            &--text {
+                margin-bottom: 1.6rem;
+                max-width: 67.2rem;
+                @include mobile {
+                    margin-bottom: 2.4rem;
+                }
+            }
+            .dc-dropdown__display {
+                max-width: 67.2rem;
+            }
+
+            &:last-child {
+                .dc-list {
+                    .dc-themed-scrollbars__autohide {
+                        top: 1px;
+                    }
                 }
             }
         }
@@ -536,6 +567,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__personal-details {
             &--dashboard {
+                // buto
                 & .account-form__fieldset {
                     margin-bottom: 3.2rem;
                     @include mobile {
@@ -587,7 +619,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-
+        &__trading-assessment,
         &__financial-assessment {
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
@@ -1770,7 +1802,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     &__wrapper {
-        max-width: 682px;
         max-height: 560px;
         height: 100%;
         width: 100%;
@@ -1789,6 +1820,22 @@ $MIN_HEIGHT_FLOATING: calc(
             & .data-list__item {
                 box-shadow: 0 1.6rem #00000005, 0 1.6rem #0000000d;
             }
+        }
+    }
+
+    &__container {
+        display: flex;
+
+        @include mobile {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__article {
+        margin-top: -4rem;
+
+        @include mobile {
+            margin-top: -0.8rem;
         }
     }
 
@@ -2681,3 +2728,28 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 
 /* stylelint-enable */
+
+.financial-banner {
+    width: 49.5rem;
+    border-radius: 4px;
+    position: relaitve;
+    background-color: var(--status-warning-transparent);
+
+    @include mobile {
+        width: 32.8rem;
+        margin: 1rem;
+    }
+
+    &__frame {
+        width: 100%;
+        position: relative;
+        padding: 0.8rem;
+    }
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+}

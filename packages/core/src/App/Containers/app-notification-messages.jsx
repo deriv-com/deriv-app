@@ -42,10 +42,10 @@ const NotificationsContent = ({
     return (
         <div className='notification-messages' style={style}>
             <TransitionGroup component='div'>
-                {notifications.map((notification, idx) => (
+                {notifications.map(notification => (
                     <CSSTransition
                         appear={!is_notification_loaded}
-                        key={idx}
+                        key={notification.key}
                         in={!!notification.header}
                         timeout={150}
                         classNames={{
@@ -103,6 +103,7 @@ const AppNotificationMessages = ({
                   'dp2p',
                   'install_pwa',
                   'tnc',
+                  'risk_client',
                   'deriv_go',
                   'close_mx_mlt_account',
                   'trustpilot',

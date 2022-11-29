@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -107,6 +107,8 @@ const CFDAccountCardAction = ({
     type,
     platform,
     title,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
@@ -146,7 +148,13 @@ const CFDAccountCardAction = ({
     return (
         <Button
             className='cfd-account-card__account-selection'
-            onClick={onSelectAccount}
+            onClick={() => {
+                if (real_account_creation_unlock_date) {
+                    setShouldShowCooldownModal(true);
+                } else {
+                    onSelectAccount();
+                }
+            }}
             type='button'
             is_disabled={is_disabled}
             primary={is_button_primary}
@@ -187,6 +195,8 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -330,21 +340,25 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !isMobile() && is_logged_in && (
-                    <Button
-                        onClick={() => setIsAcuityModalOpen(true)}
-                        className='cfd-account-card__acuity-banner'
-                        type='button'
-                        transparent
-                    >
-                        <div className='cfd-account-card__acuity-banner--wrapper'>
-                            <Icon icon='icMt5Acuity' />
-                            <Text as='p' size='xxs' weight='bold' color='prominent'>
-                                <Localize i18n_default_text='Get Acuity trading tools' />
-                            </Text>
-                            <Icon icon='IcAddOutline' color='secondary' />
-                        </div>
-                    </Button>
+                {platform === CFD_PLATFORMS.MT5 && isDesktop() && is_logged_in && (
+                    <div className='cfd-account-card__acuity-container'>
+                        {type.type === 'financial' && (
+                            <Button
+                                onClick={() => setIsAcuityModalOpen(true)}
+                                className='cfd-account-card__acuity-banner'
+                                type='button'
+                                transparent
+                            >
+                                <div className='cfd-account-card__acuity-banner--wrapper'>
+                                    <Icon icon='icMt5Acuity' />
+                                    <Text as='p' size='xxs' weight='bold' color='prominent'>
+                                        <Localize i18n_default_text='Get Acuity trading tools' />
+                                    </Text>
+                                    <Icon icon='IcAddOutline' color='secondary' />
+                                </div>
+                            </Button>
+                        )}
+                    </div>
                 )}
                 {existing_data && <div className='cfd-account-card__divider' />}
 
@@ -659,6 +673,8 @@ const CFDAccountCardComponent = ({
                                 type={type}
                                 platform={platform}
                                 title={title}
+                                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                setShouldShowCooldownModal={setShouldShowCooldownModal}
                             />
                         )}
                     </div>

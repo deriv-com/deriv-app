@@ -12,7 +12,7 @@ import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
 
     const {
         basic_verification,
@@ -24,7 +24,7 @@ const MyProfileName = () => {
         recommended_average,
         recommended_count,
         sell_orders_count,
-    } = my_profile_store.advertiser_info;
+    } = general_store.advertiser_info;
 
     const joined_since = daysSince(created_time);
     // rating_average_decimal converts rating_average to 1 d.p number
@@ -44,7 +44,41 @@ const MyProfileName = () => {
                         <Text color='prominent' weight='bold' size='s' line_height='m'>
                             {general_store.nickname}
                         </Text>
+                        <MobileWrapper>
+                            <div className='my-profile-name__row'>
+                                <Text
+                                    className='my-profile-name--rating__row'
+                                    color='less-prominent'
+                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                >
+                                    {joined_since ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            </div>
+                        </MobileWrapper>
                         <div className='my-profile-name--rating'>
+                            <DesktopWrapper>
+                                <Text
+                                    className='my-profile-name--rating__row'
+                                    color='less-prominent'
+                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                >
+                                    {joined_since ? (
+                                        <Localize
+                                            i18n_default_text='Joined {{days_since_joined}}d'
+                                            values={{ days_since_joined: joined_since }}
+                                        />
+                                    ) : (
+                                        <Localize i18n_default_text='Joined today' />
+                                    )}
+                                </Text>
+                            </DesktopWrapper>
                             {rating_average ? (
                                 <React.Fragment>
                                     <div className='my-profile-name--rating__row'>
@@ -94,41 +128,14 @@ const MyProfileName = () => {
                                 <div className='my-profile-name--rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                <Text
-                                    className='my-profile-name--rating__row'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                >
-                                    {joined_since > 0 ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
-                                </Text>
                             </DesktopWrapper>
                         </div>
+
                         <MobileWrapper>
                             <div className='my-profile-name__row'>
                                 <div className='my-profile-name--rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                <Text
-                                    className='my-profile-name--rating__row'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                >
-                                    {joined_since > 0 ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
-                                </Text>
                             </div>
                         </MobileWrapper>
                         <div className='my-profile-name__row'>

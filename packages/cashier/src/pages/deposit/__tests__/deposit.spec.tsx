@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
+import { DeepPartial } from '@deriv/stores/types';
 import Deposit from '../deposit';
-import { StoreProvider } from '../../../hooks';
-import { TRootStore, DeepPartial } from '../../../types';
+import { TRootStore } from '../../../types';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

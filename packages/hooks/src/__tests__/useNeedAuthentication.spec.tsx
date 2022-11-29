@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { StoreProvider } from '@deriv/stores';
+import type { DeepPartial, TRootStore } from '@deriv/stores/types';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
-import { StoreProvider } from '../useStore';
 import useNeedAuthentication from '../useNeedAuthentication';
-import { TRootStore, DeepPartial } from '../../types';
 
 const UseNeedAuthenticationExample = () => {
     const is_need_authentication = useNeedAuthentication();

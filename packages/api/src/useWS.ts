@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWS as useWSShared } from '@deriv/shared';
-import { TSocketEndpointNames, TSocketRequestProps, TSocketResponseData } from 'Types';
+import { TSocketEndpointNames, TSocketRequestProps, TSocketResponseData } from '../types';
 
 const useWS = <T extends TSocketEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);

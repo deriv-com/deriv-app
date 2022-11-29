@@ -4,7 +4,14 @@ import { ButtonLink, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const GoToPersonalDetailsButton = ({ anchor, from, text }) => (
+type TGoToPersonalDetailsButton = {
+    has_invalid_postal_code?: boolean;
+    anchor?: string;
+    from?: string;
+    text?: string;
+};
+
+const GoToPersonalDetailsButton = ({ anchor, from, text }: TGoToPersonalDetailsButton) => (
     <ButtonLink to={`/account/personal-details${from ? `?from=${from}` : ''}${anchor ? `#${anchor}` : ''}`}>
         <Text className='dc-btn__text' weight='bold' as='p'>
             {text || localize('Go to personal details')}
@@ -12,7 +19,7 @@ const GoToPersonalDetailsButton = ({ anchor, from, text }) => (
     </ButtonLink>
 );
 
-export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
+export const MissingPersonalDetails = ({ has_invalid_postal_code, from }: TGoToPersonalDetailsButton) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (has_invalid_postal_code)
         return (

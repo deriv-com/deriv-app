@@ -24,8 +24,9 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { tradinghub } = useStores();
+    const { tradinghub, client } = useStores();
     const { toggleIsTourOpen } = tradinghub;
+    const { is_eu } = client;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
     const { setIsPreAppStore } = React.useContext(PlatformContext);
@@ -45,6 +46,20 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     };
 
     const onboarding_step = number_of_steps[step - 1];
+
+    const footer_header = contents[onboarding_step]?.footer_header;
+    const footer_text = contents[onboarding_step]?.footer_text;
+
+    const is_eu_footer_header = 'CFDs or Multipliers';
+    const is_eu_footer_text = 'You can choose between CFD trading accounts and Multipliers accounts';
+
+    const footer_header_text =
+        footer_header === 'CFDs, Options or Multipliers' && is_eu ? is_eu_footer_header : footer_header;
+
+    const footer_desctiption =
+        footer_text === 'You can choose between CFD trading accounts or Options and Multipliers accounts' && is_eu
+            ? is_eu_footer_text
+            : footer_text;
 
     return (
         <div className='onboarding-wrapper'>
@@ -68,10 +83,10 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
                     <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {contents[onboarding_step]?.footer_header}
+                        {footer_header_text}
                     </Text>
                     <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {contents[onboarding_step]?.footer_text}
+                        {footer_desctiption}
                     </Text>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>

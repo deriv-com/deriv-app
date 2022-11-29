@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
 import { useStores } from 'Stores';
@@ -6,28 +5,30 @@ import { Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const OrderDetailsConfirmModal = ({
-    order_information,
-    is_buy_order_for_user,
-    hideConfirmOrderModal,
-    should_show_confirm_modal,
-}) => {
-    const { account_currency, amount, amount_display, id, local_currency, other_user_details, rate } =
-        order_information;
-
+const OrderDetailsConfirmModal = () => {
+    const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_details_store, order_store } = useStores();
-
+    const {
+        account_currency,
+        amount,
+        amount_display,
+        id,
+        is_buy_order_for_user,
+        local_currency,
+        other_user_details,
+        rate,
+    } = order_store.order_information;
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
-
     const rounded_rate = roundOffDecimal(rate, setDecimalPlaces(rate, 6));
 
     return (
         <React.Fragment>
             <Modal
                 className='order-details-confirm-modal'
-                is_open={should_show_confirm_modal}
-                toggleModal={hideConfirmOrderModal}
+                is_open={is_modal_open}
+                toggleModal={hideModal}
                 has_close_icon
                 renderTitle={() => (
                     <Text color='prominent' line-height='m' size='s' weight='bold'>
@@ -55,7 +56,6 @@ const OrderDetailsConfirmModal = ({
                             <Localize i18n_default_text='Please confirm only after checking your bank or e-wallet account to make sure you have received payment.' />
                         )}
                     </Text>
-
                     <Checkbox
                         className='order-details-card__modal-checkbox'
                         onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
@@ -78,7 +78,7 @@ const OrderDetailsConfirmModal = ({
                 <Modal.Footer>
                     {order_details_store.error_message && <FormError message={order_details_store.error_message} />}
                     <Button.Group>
-                        <Button secondary type='button' onClick={hideConfirmOrderModal} large>
+                        <Button secondary type='button' onClick={() => hideModal()} large>
                             {is_buy_order_for_user ? (
                                 <Localize i18n_default_text="I haven't paid yet" />
                             ) : (
@@ -90,7 +90,7 @@ const OrderDetailsConfirmModal = ({
                             primary
                             large
                             onClick={() => {
-                                hideConfirmOrderModal();
+                                hideModal();
                                 setIsCheckboxChecked(false);
                                 order_store.confirmOrderRequest(id, is_buy_order_for_user);
                             }}
@@ -112,13 +112,6 @@ const OrderDetailsConfirmModal = ({
             </Modal>
         </React.Fragment>
     );
-};
-
-OrderDetailsConfirmModal.propTypes = {
-    order_information: PropTypes.object,
-    is_buy_order_for_user: PropTypes.bool,
-    hideConfirmOrderModal: PropTypes.func,
-    should_show_confirm_modal: PropTypes.bool,
 };
 
 export default OrderDetailsConfirmModal;

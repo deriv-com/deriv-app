@@ -304,7 +304,8 @@ const FinancialAssessment = ({
 
     const getScrollOffset = () => {
         if (is_mf) {
-            return is_financial_information_incomplete && !is_submit_success ? '140px' : '80px';
+            if (isMobile() && is_financial_information_incomplete) return '220px';
+            return is_financial_information_incomplete && !is_submit_success ? '165px' : '80px';
         } else if (isMobile()) return is_appstore ? '160px' : '200px';
         return '80px';
     };

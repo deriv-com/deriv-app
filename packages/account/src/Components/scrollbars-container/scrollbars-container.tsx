@@ -8,7 +8,11 @@ type TScrollbarsContainer = {
     scroll_offset: string;
 };
 
-export const ScrollbarsContainer = ({ children, className, scroll_offset }) => (
+export const ScrollbarsContainer = ({
+    children,
+    className,
+    scroll_offset,
+}: React.PropsWithChildren<TScrollbarsContainer>) => (
     <ThemedScrollbars is_bypassed={isMobile()} height={scroll_offset ? `calc(100% - ${scroll_offset})` : '100%'}>
         <div className={classNames('account__scrollbars_container', className)}>{children}</div>
     </ThemedScrollbars>

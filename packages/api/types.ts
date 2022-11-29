@@ -126,3 +126,7 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
 export type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
     ? never
     : TSocketRequestCleaned<T>;
+
+export type KeysMatching<T, V> = {
+    [K in keyof T]-?: T[K] extends V ? K : never;
+}[keyof T];

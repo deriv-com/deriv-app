@@ -10,9 +10,12 @@ const PayoutHintModal = ({ is_open, onClose, type }) => (
     <Modal small is_open={is_open} is_vertical_centered toggleModal={onClose} title={localize('Payout per point')}>
         <Text size='xxs' as='p' styles={{ padding: '0 1.6rem 1.6rem 1.6rem' }}>
             <Localize
-                i18n_default_text='<0>For Call:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price.'
+                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price.'
                 components={[<strong key={0} />, <br key={1} />]}
-                values={{ trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below' }}
+                values={{
+                    trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below',
+                    title: type === 'VANILLALONGCALL' ? 'Call' : 'Put',
+                }}
             />
         </Text>
     </Modal>

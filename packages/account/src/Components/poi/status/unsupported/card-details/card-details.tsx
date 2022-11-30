@@ -15,7 +15,7 @@ type TCardDetails = {
 
 const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPoiCompleted }: TCardDetails) => {
     const [documents, setDocuments] = React.useState<FormikValues>();
-    const [selfie, setSelfie] = React.useState<{ [x: string]: string }>();
+    const [selfie, setSelfie] = React.useState<FormikValues>();
     const [is_selfie_upload, setIsSelfieUpload] = React.useState(false);
 
     const onSubmitDocuments = (values: FormikValues) => {
@@ -23,7 +23,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
         setIsSelfieUpload(true);
     };
 
-    const onConfirmDocuments = (values: FormikValues) => {
+    const onConfirmDocuments = (values?: FormikValues) => {
         onComplete({ ...documents, ...values });
         setIsCfdPoiCompleted(true);
     };
@@ -43,7 +43,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
                     initial_values={selfie}
                     goBack={() => setIsSelfieUpload(false)}
                     onConfirm={onConfirmDocuments}
-                    onFileDrop={(value: string) => setSelfie({ [SELFIE_DOCUMENT.name]: value })}
+                    onFileDrop={(value?: string) => setSelfie({ [SELFIE_DOCUMENT.name]: value })}
                 />
             )}
         </React.Fragment>

@@ -159,17 +159,15 @@ const TourTriggrerDialog = ({
                 }}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {
-                    'onboarding-tour-guide': active_tab === 0,
-                    'onboarding-tour-guide--end': active_tab === 0 && is_tour_ended,
-                    'bot-builder-dialog': active_tab === 1,
-                    'bot-builder-dialog--end': active_tab === 1 && is_tour_ended,
+                    'tour-dialog': active_tab === 0 || active_tab === 1,
+                    'tour-dialog--end': (active_tab === 0 || active_tab === 1) && is_tour_ended,
                 })}
                 has_close_icon={false}
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent'>
                         {!is_tour_ended &&
-                            (active_tab === 1 ? localize("Let's build a Bot") : localize('Get started on DBot'))}
+                            (active_tab === 1 ? localize("Let's build a Bot!") : localize('Get started on DBot'))}
                         {is_tour_ended &&
                             (active_tab === 1 ? localize('Congratulations!') : localize('Want to retake the tour?'))}
                     </Text>

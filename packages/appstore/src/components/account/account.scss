@@ -11,7 +11,13 @@
     &-active {
         background: var(--general-section-5);
     }
-
+    &-disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+    &-disabled:hover {
+        background-color: var(--general-main-2);
+    }
     @include mobile {
         gap: 0.4rem;
         border-radius: 0.4rem 0.4rem 0 0;

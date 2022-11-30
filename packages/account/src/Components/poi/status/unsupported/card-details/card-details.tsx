@@ -6,7 +6,7 @@ import './card-details.scss';
 import { FormikValues } from 'formik';
 
 type TCardDetails = {
-    data: object;
+    data: FormikValues;
     onComplete: (e: object) => void;
     goToCards: () => void;
     is_from_external: boolean;

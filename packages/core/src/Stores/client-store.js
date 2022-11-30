@@ -1989,7 +1989,7 @@ export default class ClientStore extends BaseStore {
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
                 is_pre_appstore === 'true' &&
-                redirect_url?.endsWith('/') &&
+                (redirect_url?.endsWith('/') || redirect_url?.endsWith('/bot')) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
                 window.history.replaceState({}, document.title, '/appstore/trading-hub');

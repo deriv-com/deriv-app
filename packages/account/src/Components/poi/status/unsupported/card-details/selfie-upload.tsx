@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
@@ -9,7 +8,14 @@ import Uploader from './uploader.jsx';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
 
-const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
+type TSelfieUpload = {
+    initial_values: FormikValues;
+    goBack: () => void;
+    onConfirm: () => void;
+    onFileDrop: () => void;
+};
+
+const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfieUpload) => {
     return (
         <div
             className={classNames(ROOT_CLASS, {
@@ -21,9 +27,14 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
                 validate={values => validateFields(values, undefined, [SELFIE_DOCUMENT])}
                 onSubmit={onConfirm}
             >
-                {({ values, isValid, isSubmitting, touched }) => {
-                    const is_form_touched = Object.keys(touched).length > 0;
-                    const is_form_empty = Object.values(values).some(field => field === null || field === '');
+                {({ values, isValid, isSubmitting, touched }: Partial<FormikProps<FormikValues>>) => {
+                    let is_form_touched, is_form_empty;
+                    if (touched) {
+                        is_form_touched = Object.keys(touched).length > 0;
+                    }
+                    if (values) {
+                        is_form_empty = Object.values(values).some(field => field === null || field === '');
+                    }
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
@@ -34,7 +45,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
                                 <div className={`${ROOT_CLASS}__uploaders-wrap`}>
                                     <Uploader
                                         data={SELFIE_DOCUMENT}
-                                        value={values[SELFIE_DOCUMENT.name]}
+                                        value={values ? values[SELFIE_DOCUMENT.name] : ''}
                                         is_full={true}
                                         onChange={onFileDrop}
                                         has_frame
@@ -70,12 +81,6 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
             </Formik>
         </div>
     );
-};
-
-SelfieUpload.propTypes = {
-    initial_values: PropTypes.object,
-    goBack: PropTypes.func,
-    onConfirm: PropTypes.func,
 };
 
 export default SelfieUpload;

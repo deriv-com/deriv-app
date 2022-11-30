@@ -1,12 +1,11 @@
 ## **Usage**
+
 1. Using icons within the Components package
 
     ```jsx
     import Icon from '../icon'; // please import the relative path in Components
 
-    const App = () => (
-        <Icon icon='IcBrandDtrader' />
-    );
+    const App = () => <Icon icon='IcBrandDtrader' />;
     ```
 
 2. Using icons as a UI component library (in Trader or Bot)
@@ -14,25 +13,21 @@
     ```jsx
     import { Icon } from '@deriv/components';
 
-    const App = () => (
-        <Icon icon='IcBrandDbot' />
-    );
+    const App = () => <Icon icon='IcBrandDbot' />;
     ```
-
 
 ## **Props**
 
-|Name | Type | Default | Description
-|--|---|--|--|
-| size   | `number | string` | `16` | Sets the width and height of the icon
-| height | `number | string` | `16` | Sets the height of the icon
-| width  | `number | string` | `16` | Sets the width of the icon
-| color  | `'active' |` `'disabled' |` `'secondary' |` `'red' |` `'green' |` `'brand' `| primary fill color: ```var(--text-general)```  <br/> secondary fill color: ```var(--text-less-prominent)``` <br/>tertiary fill color: ```var(--general-section-1)```| Sets the icon color with our current theme colors palette
-| custom_color | `string (hex color or CSS variable)` | - | Sets the icon custom color (on the primary fill color only)
-| onClick | `function` | - | Adds onClick event handler
-| onMouseEnter | `function` | - | Adds onMouseEnter event handler
-| onMouseLeave | `function` | - | Adds onMouseLeave event handler
-
+| Name         | Type                                 | Default       | Description                                                 |
+| ------------ | ------------------------------------ | ------------- | ----------------------------------------------------------- | ------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| size         | `number                              | string`       | `16`                                                        | Sets the width and height of the icon |
+| height       | `number                              | string`       | `16`                                                        | Sets the height of the icon           |
+| width        | `number                              | string`       | `16`                                                        | Sets the width of the icon            |
+| color        | `'active'                            | ` `'disabled' | ` `'secondary'                                              | ` `'red'                              | ` `'green' | ` `'brand' ` | primary fill color: `var(--text-general)` <br/> secondary fill color: `var(--text-less-prominent)` <br/>tertiary fill color: `var(--general-section-1)` | Sets the icon color with our current theme colors palette |
+| custom_color | `string (hex color or CSS variable)` | -             | Sets the icon custom color (on the primary fill color only) |
+| onClick      | `function`                           | -             | Adds onClick event handler                                  |
+| onMouseEnter | `function`                           | -             | Adds onMouseEnter event handler                             |
+| onMouseLeave | `function`                           | -             | Adds onMouseLeave event handler                             |
 
 #### Example:
 
@@ -42,7 +37,7 @@ import { Icon } from '@deriv/components';
 const App = () => (
     <>
         <Icon icon='IcBell' height={32} width={48} /> // icon with different width and height
-        <Icon icon='IcBell' size={128} />   // icon with the same width and height
+        <Icon icon='IcBell' size={128} /> // icon with the same width and height
         <Icon icon='IcBell' color='active' />
         <Icon icon='IcBell' custom_color='#dedede' />
     </>
@@ -50,8 +45,9 @@ const App = () => (
 ```
 
 ## **Adding new icon**
+
 1. Add an `.svg` icon file under one of the svg folders (or add a new folder) in `components/icon` folder.
-2. Make sure the icon file name is in  `kebab-case` and is prefix with `ic-`. The icon file name will be converted to a `PascalCase` as the icon name.
+2. Make sure the icon file name is in `kebab-case` and is prefix with `ic-`. The icon file name will be converted to a `PascalCase` as the icon name.
 
     - Example:
 
@@ -83,8 +79,10 @@ const App = () => (
     ```
 
 ## **Theming icon**
+
 1. Theming has to be done manually for now. You need add CSS variables to each path that needs to be themed.
 2. Rules:
+
     - replace primary `<path />` fill or stroke color with `var(--fill-color1)`
     - replace secondary `<path />` fill or stroke color with `var(--fill-color2)`
     - replace background `<rect />` or `<circle />` fill color with `var(--fill-color3)`
@@ -102,6 +100,7 @@ const App = () => (
     ```
 
 ## **Adding new SVG sprite**
+
 1. Configure webpack to create new SVG sprite:
 
     ```js

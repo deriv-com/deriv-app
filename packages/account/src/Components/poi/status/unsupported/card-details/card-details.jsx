@@ -1,6 +1,6 @@
 import React from 'react';
 import DocumentsUpload from './documents-upload.jsx';
-import SelfieUpload from './selfie-upload.jsx';
+import SelfieUpload from './selfie-upload';
 import { SELFIE_DOCUMENT } from '../constants';
 import './card-details.scss';
 

@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
 import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
-import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';
 import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
 import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
 import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
@@ -95,8 +94,10 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         }
                         onClick={() => switchPlatform({ route: routes.trade })}
                         title={localize('Options')}
-                        icon={<Icon icon='IcDigitalOptions' />}
-                        mobileIcon={<DigitalOptionsMobile />}
+                        icon={<img src='Assets/SvgComponents/onboarding/digital-options.png' width='84' height='112' />}
+                        mobileIcon={
+                            <img src='Assets/SvgComponents/onboarding/digital-options.png' width='67' height='109' />
+                        }
                         options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
                     />
                 )}

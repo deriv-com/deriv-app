@@ -19,12 +19,14 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import RootStore from '../Stores/index';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
     form_error?: string;
     index: number;
     is_loading: boolean;
+    context: RootStore;
     landing_company: LandingCompany;
     onSubmit: TOnSubmit;
     residence_list: ResidenceList;
@@ -33,6 +35,7 @@ type TCFDPersonalDetailsFormProps = {
 
 type TValidatePersonalDetailsParams = {
     values: TFormValues;
+    context: RootStore;
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
     is_tin_required: boolean;
@@ -123,6 +126,7 @@ export const InputField = ({ maxLength, name, optional = false, ...props }: TCFD
 
 const validatePersonalDetails = ({
     values,
+    context,
     residence_list,
     account_opening_reason,
     is_tin_required,
@@ -178,7 +182,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = ({
     place_of_birth_text,
 }) => {
     let citizen, tax_residence, place_of_birth;
-    residence_list.forEach((item: ResidenceList[0]) => {
+    residence_list?.forEach((item: ResidenceList[0]) => {
         if (item.text === citizen_text) {
             citizen = item;
         }
@@ -215,6 +219,7 @@ const CFDPersonalDetailsForm = ({
     landing_company,
     residence_list,
     onSubmit,
+    context,
     value,
     index,
     form_error,
@@ -236,6 +241,7 @@ const CFDPersonalDetailsForm = ({
             validate={values =>
                 validatePersonalDetails({
                     values,
+                    context,
                     residence_list,
                     account_opening_reason,
                     is_tin_required,
@@ -486,6 +492,7 @@ const CFDPersonalDetailsForm = ({
                                         is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
+                                        context={context}
                                     />
                                 </Modal.Footer>
                             </form>

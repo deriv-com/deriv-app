@@ -3,8 +3,8 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
-import RootStore from 'Stores/index';
-import { getMtCompanies, getFormattedJurisdictionCode, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import RootStore from '../Stores/index';
+import { getMtCompanies, getFormattedJurisdictionCode, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -29,9 +29,9 @@ import {
     getAuthenticationStatusInfo,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from 'Components/success-dialog';
+import SuccessDialog from '../Components/success-dialog';
 import 'Sass/cfd.scss';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 export type TCFDPasswordFormValues = { password: string };
@@ -47,6 +47,7 @@ type TPasswordModalHeaderProps = {
     is_password_reset_error: boolean;
     platform: string;
     has_mt5_account?: boolean;
+    context: RootStore;
 };
 
 type TIconTypeProps = {
@@ -57,18 +58,21 @@ type TIconTypeProps = {
 
 type TCFDPasswordFormReusedProps = {
     platform: string;
+    context: RootStore;
     error_message: string;
     validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
 
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
+    context: RootStore;
     onSubmit: TOnSubmitPassword;
     is_real_financial_stp: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
+    context: RootStore;
     submitPassword: TOnSubmitPassword;
     is_real_financial_stp: boolean;
 };
@@ -90,6 +94,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
         type?: string;
     };
     closeModal: () => void;
+    context: RootStore;
     error_type?: string;
     form_error?: string;
     has_mt5_account: boolean;
@@ -105,6 +110,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
 
 type TCFDPasswordModalProps = RouteComponentProps & {
     account_title: string;
+    context: RootStore;
     account_type: {
         category?: string;
         type?: string;
@@ -142,6 +148,7 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
+    context,
 }: TPasswordModalHeaderProps) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
@@ -236,6 +243,7 @@ const CreatePassword = ({
     password,
     platform,
     validatePassword,
+    context,
     onSubmit,
     error_message,
     is_real_financial_stp,
@@ -289,6 +297,7 @@ const CreatePassword = ({
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
+                                context={context}
                                 has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
@@ -325,6 +334,7 @@ const CreatePassword = ({
                                 platform: getCFDPlatformLabel(platform),
                             })}
                             is_center={true}
+                            context={context}
                         />
                     </div>
                 </form>
@@ -337,6 +347,7 @@ const CFDCreatePasswordForm = ({
     has_mt5_account,
     platform,
     error_message,
+    context,
     validatePassword,
     submitPassword,
     is_real_financial_stp,
@@ -358,6 +369,7 @@ const CFDCreatePasswordForm = ({
             component: (
                 <CreatePassword
                     password={password}
+                    context={context}
                     platform={platform}
                     error_message={error_message}
                     validatePassword={validatePassword}
@@ -375,6 +387,7 @@ const CFDCreatePasswordForm = ({
                         submitPassword({ password }, actions)
                     }
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
+                    context={context}
                 />
             ),
         },
@@ -422,6 +435,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
                                     onCancel={handleCancel}
+                                    context={props.context}
                                     is_absolute={isMobile()}
                                     label={button_label}
                                 />
@@ -437,6 +451,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
         return (
             <CFDCreatePasswordForm
                 platform={props.platform}
+                context={props.context}
                 error_message={props.error_message}
                 validatePassword={props.validatePassword}
                 submitPassword={props.submitPassword}
@@ -542,6 +557,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
                         label={button_label}
+                        context={props.context}
                         is_center={props.should_set_trading_password}
                         form_error={props.form_error}
                     />
@@ -564,6 +580,7 @@ const CFDPasswordModal = ({
     history,
     is_eu,
     is_logged_in,
+    context,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
@@ -789,6 +806,7 @@ const CFDPasswordModal = ({
     const cfd_password_form = (
         <CFDPasswordForm
             is_bvi={is_bvi}
+            context={context}
             account_title={account_title}
             account_type={account_type}
             closeModal={closeModal}
@@ -820,6 +838,7 @@ const CFDPasswordModal = ({
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    context={context}
                 />
             )}
             onUnmount={() => getAccountStatus(platform)}
@@ -844,6 +863,7 @@ const CFDPasswordModal = ({
                 has_mt5_account={has_mt5_account}
                 is_password_reset_error={is_password_reset}
                 platform={platform}
+                context={context}
             />
 
             {cfd_password_form}

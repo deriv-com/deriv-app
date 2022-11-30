@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../../Stores/connect';
+import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
@@ -14,6 +14,7 @@ const JurisdictionModal = ({
     enableApp,
     is_jurisdiction_modal_visible,
     is_eu,
+    context,
     is_virtual,
     jurisdiction_selected_shortcode,
     openPasswordModal,
@@ -145,6 +146,7 @@ const JurisdictionModal = ({
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 setChecked={setChecked}
+                context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
                 should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
@@ -176,6 +178,7 @@ const JurisdictionModal = ({
                         title={modal_title}
                         toggleModal={toggleJurisdictionModal}
                         type='button'
+                        context={context}
                         height='664px'
                         width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
                         exit_classname='cfd-modal--custom-exit'
@@ -187,6 +190,7 @@ const JurisdictionModal = ({
                     <MobileDialog
                         portal_element_id='deriv_app'
                         title={modal_title}
+                        context={context}
                         visible={is_jurisdiction_modal_visible}
                         onClose={toggleJurisdictionModal}
                     >

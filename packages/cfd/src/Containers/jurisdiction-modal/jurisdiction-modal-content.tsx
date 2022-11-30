@@ -13,6 +13,7 @@ const JurisdictionModalContent = ({
     synthetic_available_accounts,
     financial_available_accounts,
     checked,
+    context,
     setChecked,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
@@ -43,6 +44,7 @@ const JurisdictionModalContent = ({
                             <JurisdictionCard
                                 key={`${account_type}_${card}`}
                                 type_of_card={card}
+                                context={context}
                                 disabled={disableCard(card)}
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                 synthetic_available_accounts={synthetic_available_accounts}
@@ -57,11 +59,13 @@ const JurisdictionModalContent = ({
                 account_status={account_status}
                 account_type={account_type}
                 card_classname={card_classname}
+                context={context}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
             <JurisdictionCheckBox
                 is_checked={checked}
+                context={context}
                 onCheck={() => setChecked(!checked)}
                 class_name={`${card_classname}__jurisdiction-checkbox`}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}

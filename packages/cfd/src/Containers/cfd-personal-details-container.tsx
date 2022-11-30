@@ -1,9 +1,9 @@
 import React from 'react';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
-import { TCFDPersonalDetailsModalProps } from './props.types';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
+import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
@@ -13,12 +13,13 @@ type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsContainer = ({
     account_settings,
+    context,
     getChangeableFields,
     landing_company,
     residence_list,
     setAccountSettings,
     onSubmit,
-}: TCFDPersonalDetailsModalProps) => {
+}: TCFDPersonalDetailsContainerProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
     const [form_values, setFormValues] = React.useState<TFormValues>({
@@ -69,7 +70,7 @@ const CFDPersonalDetailsContainer = ({
     }, []);
 
     const transform = (value: unknown) => {
-        const [result] = residence_list.filter(item => item.value === value);
+        const [result] = residence_list?.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
@@ -112,13 +113,14 @@ const CFDPersonalDetailsContainer = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    changeable_fields={getChangeableFields()}
+                    context={context}
                     form_error={form_error}
                     index={2}
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onSubmit={updateValue}
                     residence_list={residence_list}
+                    changeable_fields={getChangeableFields()}
                     value={form_values}
                 />
             </div>

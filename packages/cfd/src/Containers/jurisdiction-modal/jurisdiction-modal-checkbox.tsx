@@ -9,6 +9,7 @@ const JurisdictionCheckBox = ({
     is_checked,
     jurisdiction_selected_shortcode,
     onCheck,
+    context,
     should_restrict_bvi_account_creation,
 }: TJurisdictionCheckBoxProps) => {
     const shouldShowCheckBox = () => {
@@ -54,6 +55,7 @@ const JurisdictionCheckBox = ({
             {shouldShowCheckBox() && (
                 <div className={class_name}>
                     <Checkbox
+                        context={context}
                         value={is_checked}
                         onChange={onCheck}
                         label={getCheckboxLabel()}

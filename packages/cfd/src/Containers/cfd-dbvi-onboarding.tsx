@@ -11,9 +11,9 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import { TCFDDbviOnboardingProps } from './props.types';
@@ -39,6 +39,7 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 
 const CFDDbviOnboarding = ({
     account_status,
+    context,
     disableApp,
     enableApp,
     fetchAccountSettings,
@@ -104,6 +105,7 @@ const CFDDbviOnboarding = ({
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={openPasswordModal}
+                context={context}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup
@@ -116,6 +118,7 @@ const CFDDbviOnboarding = ({
                         openPasswordModal();
                     }
                 }}
+                context={context}
             />
         );
     };
@@ -136,6 +139,7 @@ const CFDDbviOnboarding = ({
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
+                    context={context}
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
@@ -149,6 +153,7 @@ const CFDDbviOnboarding = ({
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
+                    context={context}
                 >
                     {getModalContent()}
                 </MobileDialog>

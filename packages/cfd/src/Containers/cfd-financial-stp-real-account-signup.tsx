@@ -1,12 +1,12 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -30,6 +30,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
+    context: RootStore;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     refreshNotifications: () => void;
@@ -199,6 +200,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     index={state_index}
                     onSubmit={nextStep}
                     height='auto'
+                    context={props.context}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}

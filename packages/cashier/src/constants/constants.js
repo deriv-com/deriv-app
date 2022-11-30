@@ -642,6 +642,7 @@ const payment_methods = {
         'Phonepe',
         'PhonePe',
         'Phone pay',
+        'PhonePay',
     ],
     Pix: ['Pix', 'PIX'],
     'Polaris Bank': ['Polaris Bank', 'Polaris'],

@@ -258,7 +258,7 @@ const PersonalDetails = ({
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
-                                                hint={getFieldHint('first name')}
+                                                hint={getFieldHint(localize('first name'))}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'
@@ -269,7 +269,7 @@ const PersonalDetails = ({
                                                 name='last_name'
                                                 required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
-                                                hint={getFieldHint('last name')}
+                                                hint={getFieldHint(localize('last name'))}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                                 data-testid='last_name'
@@ -285,7 +285,7 @@ const PersonalDetails = ({
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
-                                                hint={getFieldHint('date of birth')}
+                                                hint={getFieldHint(localize('date of birth'))}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}

@@ -134,6 +134,11 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
                 ],
             ],
         },
+        employment_status: {
+            default_value: '',
+            supported_in: ['maltainvest'],
+            rules: [['req', localize('Employment status is required.')]],
+        },
         tax_identification_confirm: {
             default_value: false,
             supported_in: ['maltainvest'],

@@ -3,6 +3,8 @@ import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
 export const routes = {
     error404: '/404',
     account: '/account',
+    trading_assessment: '/account/trading-assessment',
+    languages: '/account/languages',
     financial_assessment: '/account/financial-assessment',
     personal_details: '/account/personal-details',
     proof_of_identity: '/account/proof-of-identity',

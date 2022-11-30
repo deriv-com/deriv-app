@@ -57,6 +57,8 @@ type TDMT5CompareModalContentProps = {
     account_status: GetAccountStatus;
     upgradeable_landing_companies: unknown[];
     should_restrict_bvi_account_creation: boolean;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -229,6 +231,8 @@ const DMT5CompareModalContent = ({
     account_status,
     upgradeable_landing_companies,
     should_restrict_bvi_account_creation,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -385,7 +389,11 @@ const DMT5CompareModalContent = ({
             is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0 && is_real_enabled;
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
-            openDerivRealAccountNeededModal();
+            if (real_account_creation_unlock_date) {
+                setShouldShowCooldownModal(true);
+            } else {
+                openDerivRealAccountNeededModal();
+            }
         } else if (is_virtual && !['synthetic_svg', 'financial_svg'].includes(item.action)) {
             openSwitchToRealAccountModal();
         } else onSelectRealAccount(item);

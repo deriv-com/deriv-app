@@ -22,8 +22,7 @@ const Basis = ({
     trade_duration_unit,
     setAmountError,
     contract_type,
-    min_stake,
-    max_stake,
+    stake_boundary,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -74,13 +73,13 @@ const Basis = ({
                     <div className='trade-container__stake-field--min'>
                         <Text size='xxs'>Min. Stake</Text>
                         <Text size='xxs'>
-                            {min_stake} {currency}
+                            {stake_boundary.minimal_stake} {currency}
                         </Text>
                     </div>
                     <div className='trade-container__stake-field--max'>
                         <Text size='xxs'>Max. Stake</Text>
                         <Text size='xxs'>
-                            {max_stake} {currency}
+                            {stake_boundary.maximum_stake} {currency}
                         </Text>
                     </div>
                 </section>
@@ -121,8 +120,7 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     currency: client.currency,
     addToast: ui.addToast,
     contract_type: modules.trade.contract_type,
-    min_stake: modules.trade.min_stake,
-    max_stake: modules.trade.max_stake,
+    stake_boundary: modules.trade.stake_boundary,
 }))(Basis);
 
 const Amount = ({

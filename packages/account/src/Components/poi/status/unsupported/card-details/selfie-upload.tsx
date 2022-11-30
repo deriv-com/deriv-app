@@ -9,7 +9,7 @@ import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
 
 type TSelfieUpload = {
-    initial_values: object;
+    initial_values: FormikValues;
     goBack: () => void;
     onConfirm: () => void;
     onFileDrop: () => void;

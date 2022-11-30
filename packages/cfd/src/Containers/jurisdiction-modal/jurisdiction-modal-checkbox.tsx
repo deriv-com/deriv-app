@@ -54,7 +54,13 @@ const JurisdictionCheckBox = ({
         <React.Fragment>
             {shouldShowCheckBox() && (
                 <div className={class_name}>
-                    <Checkbox context={context} onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
+                    <Checkbox
+                        context={context}
+                        value={is_checked}
+                        onChange={onCheck}
+                        label={getCheckboxLabel()}
+                        defaultChecked={!!is_checked}
+                    />
                 </div>
             )}
         </React.Fragment>

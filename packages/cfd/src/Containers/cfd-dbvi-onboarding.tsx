@@ -81,6 +81,7 @@ const CFDDbviOnboarding = ({
         });
         setIsLoading(false);
     };
+
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
             setIsLoading(true);
@@ -101,10 +102,10 @@ const CFDDbviOnboarding = ({
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
                 account_status={account_status}
-                context={context}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={openPasswordModal}
+                context={context}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup

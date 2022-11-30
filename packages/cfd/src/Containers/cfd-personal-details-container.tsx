@@ -12,8 +12,8 @@ type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsContainer = ({
-    context,
     account_settings,
+    context,
     getChangeableFields,
     landing_company,
     residence_list,
@@ -113,15 +113,15 @@ const CFDPersonalDetailsContainer = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    index={2}
                     context={context}
+                    form_error={form_error}
+                    index={2}
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onSubmit={updateValue}
                     residence_list={residence_list}
-                    value={form_values}
                     changeable_fields={getChangeableFields()}
-                    form_error={form_error}
+                    value={form_values}
                 />
             </div>
         </Div100vhContainer>

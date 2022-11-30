@@ -211,11 +211,11 @@ describe('<CFDPasswordModal/>', () => {
         ).toBeInTheDocument();
     });
 
-    it('should close the dialog when you click on  ok button', async () => {
+    it('should close the dialog when you click on ok button', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial_stp' },
+            account_type: { category: 'real', type: 'financial' },
             is_eu: true,
             is_fully_authenticated: false,
             jurisdiction_selected_shortcode: 'bvi',

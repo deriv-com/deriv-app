@@ -217,6 +217,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
+
         actions.setSubmitting(false);
         onSave(index, values);
         onSubmit(index, values);

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({
     account_status,
     account_type,
     context,
-    jurisdiction_selected_shortcode,
     card_classname,
+    jurisdiction_selected_shortcode,
     should_restrict_bvi_account_creation,
 }: TJurisdictionModalFootNoteProps) => {
     const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';

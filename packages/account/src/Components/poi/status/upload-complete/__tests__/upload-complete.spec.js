@@ -36,11 +36,11 @@ describe('<UploadComplete />', () => {
         expect(screen.getByTestId(/dt_mocked_icon/)).toBeInTheDocument();
     });
 
-    it('should render <UploadComplete /> component and is_appstore is true', () => {
-        renderWithRouter(<UploadComplete />, true);
+    it('should render <UploadComplete /> component for manual upload', () => {
+        renderWithRouter(<UploadComplete is_manual_upload />, true);
 
         expect(screen.getByText(successful_upload_message)).toBeInTheDocument();
-        expect(screen.getByText(poi_under_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message_for_manual)).toBeInTheDocument();
         expect(screen.getByTestId(/dt_mocked_icon/i)).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });

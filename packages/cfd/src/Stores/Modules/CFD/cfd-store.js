@@ -129,19 +129,8 @@ export default class CFDStore extends BaseStore {
         return !!(citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason);
     }
 
-    get has_created_account_for_selected_jurisdiction() {
-        return this.account_type.type === 'synthetic'
-            ? this.real_synthetic_accounts_existing_data?.some(
-                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
-              )
-            : this.real_financial_accounts_existing_data?.some(
-                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
-              );
-    }
-
     get current_list() {
         const list = {};
-
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
@@ -167,6 +156,15 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get dxtrade_companies() {
         return getDxCompanies();
+    }
+    get has_created_account_for_selected_jurisdiction() {
+        return this.account_type.type === 'synthetic'
+            ? this.real_synthetic_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              )
+            : this.real_financial_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              );
     }
 
     onMount() {

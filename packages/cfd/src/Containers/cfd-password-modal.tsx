@@ -56,12 +56,6 @@ type TIconTypeProps = {
     is_eu: boolean;
 };
 
-type TReviewMsgForMT5 = {
-    is_selected_mt5_verified: boolean;
-    jurisdiction_selected_shortcode: string;
-    manual_status: string;
-};
-
 type TCFDPasswordFormReusedProps = {
     platform: string;
     context: RootStore;
@@ -86,6 +80,11 @@ type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
 type TMultiStepRefProps = {
     goNextStep: () => void;
     goPrevStep: () => void;
+};
+type TReviewMsgForMT5 = {
+    is_selected_mt5_verified: boolean;
+    jurisdiction_selected_shortcode: string;
+    manual_status: string;
 };
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -125,6 +124,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
     is_logged_in: boolean;
+    is_fully_authenticated: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
@@ -579,8 +579,8 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_eu,
-    context,
     is_logged_in,
+    context,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,

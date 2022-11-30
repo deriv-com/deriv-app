@@ -29,7 +29,7 @@ jest.mock('Components/recent-transaction', () => {
 
 describe('<CryptoDeposit />', () => {
     let history: ReturnType<typeof createBrowserHistory>;
-    const renderWithRouter = (component, mockRootStore) => {
+    const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
@@ -60,7 +60,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -89,7 +89,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(
             screen.getByText(
@@ -123,7 +123,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         const refresh_btn = screen.getByRole('button', { name: 'Refresh' });
         fireEvent.click(refresh_btn);
@@ -156,7 +156,7 @@ describe('<CryptoDeposit />', () => {
         };
 
         (getCurrencyName as jest.Mock).mockReturnValueOnce('Bitcoin');
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Send only Bitcoin (BTC) to this address.')).toBeInTheDocument();
         expect(
@@ -196,7 +196,7 @@ describe('<CryptoDeposit />', () => {
         };
 
         (getCurrencyName as jest.Mock).mockReturnValueOnce('Ethereum');
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Send only Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
@@ -230,7 +230,7 @@ describe('<CryptoDeposit />', () => {
                 },
             };
 
-            const { rerender, unmount } = renderWithRouter(<CryptoDeposit />, mockRootStore);
+            const { rerender, unmount } = renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
             const rerenderAndOpenDropdownOptions = () => {
                 rerender(
                     <Router history={history}>

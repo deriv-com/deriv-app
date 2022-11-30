@@ -469,10 +469,11 @@ $MIN_HEIGHT_FLOATING: calc(
             &-note {
                 color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
-                height: 4rem;
                 line-height: 1.5;
                 text-align: right;
-                width: 27.6rem;
+                min-width: 27.6rem;
+                max-width: 36.6rem;
+                height: 3.6rem;
                 @include mobile {
                     width: auto;
                     text-align: center;
@@ -1180,7 +1181,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &__row,
             &__header {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 19rem 7.5rem 24.8rem minmax(13.3rem, 30.8rem) 12rem;
+                grid-template-columns: 19rem minmax(max-content, 9.5rem) 24.8rem minmax(13.3rem, 30.8rem) 12rem;
                 padding: 1rem;
                 padding-left: 0;
                 background-color: var(--general-main-1);
@@ -1781,7 +1782,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     &__row {
-        grid-template-columns: 169px 198px 80px 109px;
+        grid-template-columns: 169px 198px 80px 104px;
         padding: 0;
         column-gap: 42px;
         text-align: left;
@@ -2090,7 +2091,7 @@ $MIN_HEIGHT_FLOATING: calc(
                         margin-bottom: 32px;
 
                         button {
-                            width: 85px;
+                            min-width: 85px;
                             height: 40px;
                         }
 

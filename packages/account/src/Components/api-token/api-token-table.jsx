@@ -19,8 +19,25 @@ const ApiTokenTable = () => {
         return sentenced_case;
     };
 
+    const getTranslatedScopes = str => {
+        switch (str) {
+            case 'read':
+                return localize('Read');
+            case 'trade':
+                return localize('Trade');
+            case 'payments':
+                return localize('Payments');
+            case 'admin':
+                return localize('Admin');
+            case 'trading_information':
+                return localize('Trading information');
+            default:
+                return formatTokenScopes(str);
+        }
+    };
+
     const getScopeValue = token => {
-        const titled_scopes = token.scopes.map(scope => formatTokenScopes(scope));
+        const titled_scopes = token.scopes.map(scope => getTranslatedScopes(scope));
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
         return {

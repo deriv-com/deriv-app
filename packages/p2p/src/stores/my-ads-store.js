@@ -24,7 +24,6 @@ export default class MyAdsStore extends BaseStore {
     has_more_items_to_load = false;
     is_ad_created_modal_visible = false;
     is_ad_exceeds_daily_limit_modal_open = false;
-    is_api_error_modal_visible = false;
     is_delete_error_modal_open = false;
     is_delete_modal_open = false;
     is_edit_ad_error_modal_visible = false;
@@ -68,7 +67,6 @@ export default class MyAdsStore extends BaseStore {
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
             is_ad_exceeds_daily_limit_modal_open: observable,
-            is_api_error_modal_visible: observable,
             is_delete_error_modal_open: observable,
             is_delete_modal_open: observable,
             is_edit_ad_error_modal_visible: observable,
@@ -122,7 +120,6 @@ export default class MyAdsStore extends BaseStore {
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
             setIsAdExceedsDailyLimitModalOpen: action.bound,
-            setIsApiErrorModalVisible: action.bound,
             setIsDeleteErrorModalOpen: action.bound,
             setIsDeleteModalOpen: action.bound,
             setIsEditAdErrorModalVisible: action.bound,
@@ -245,12 +242,8 @@ export default class MyAdsStore extends BaseStore {
                         setSubmitting(false);
                     } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
                         this.setAdvertDetails(response.p2p_advert_create);
-                        setTimeout(() => {
-                            if (!this.is_api_error_modal_visible) {
-                                this.setIsAdCreatedModalVisible(true);
-                            }
-                        }, 200);
-                    } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                        this.setIsAdCreatedModalVisible(true);
+                    } else if (!this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
                             this.setIsAdExceedsDailyLimitModalOpen(true);
@@ -536,10 +529,6 @@ export default class MyAdsStore extends BaseStore {
 
     setIsAdExceedsDailyLimitModalOpen(is_ad_exceeds_daily_limit_modal_open) {
         this.is_ad_exceeds_daily_limit_modal_open = is_ad_exceeds_daily_limit_modal_open;
-    }
-
-    setIsApiErrorModalVisible(is_api_error_modal_visible) {
-        this.is_api_error_modal_visible = is_api_error_modal_visible;
     }
 
     setIsDeleteErrorModalOpen(is_delete_error_modal_open) {

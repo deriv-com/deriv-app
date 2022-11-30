@@ -20,7 +20,6 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
-import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 
@@ -64,7 +63,9 @@ const CreateAdForm = () => {
         my_profile_store.getAdvertiserPaymentMethods();
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
-            () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
+            () => {
+                if (my_ads_store.api_error_message) general_store.showModal({ key: 'CreateAdErrorModal', props: {} });
+            }
         );
         // P2P configuration is not subscribable. Hence need to fetch it on demand
         general_store.setP2PConfig();
@@ -418,7 +419,6 @@ const CreateAdForm = () => {
                     );
                 }}
             </Formik>
-            <CreateAdErrorModal />
             <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'

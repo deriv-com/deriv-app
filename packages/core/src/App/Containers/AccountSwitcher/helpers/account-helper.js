@@ -23,6 +23,7 @@ export const getSortedAccountList = (account_list, accounts) => {
 };
 
 export const getSortedCFDList = account_list => {
+    if (account_list.length < 2) return [...account_list];
     // for DXTrade, MT5, synthetic, financial, financial stp
     return [...account_list].sort((a, b) => {
         const a_is_demo = isDemo(a);

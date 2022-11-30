@@ -38,6 +38,7 @@ type TCFDRealAccountDisplayProps = {
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
+    isDxtradeAllCardVisible: (account_category: string) => boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
@@ -75,6 +76,7 @@ const CFDRealAccountDisplay = ({
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
+    isDxtradeAllCardVisible,
     onSelectAccount,
     realSyntheticAccountsExistingData,
     realFinancialAccountsExistingData,
@@ -245,7 +247,7 @@ const CFDRealAccountDisplay = ({
         />
     );
 
-    const derivx_all_account = platform === 'dxtrade' && (
+    const derivx_all_account = platform === 'dxtrade' && isDxtradeAllCardVisible('real') && (
         <CFDAccountCard
             commission_message={localize('No commission')}
             descriptor={general_messages.getFinancialAccountDescriptor(platform)}

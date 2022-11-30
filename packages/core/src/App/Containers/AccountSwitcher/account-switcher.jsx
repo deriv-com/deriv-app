@@ -291,7 +291,14 @@ const AccountSwitcher = props => {
         }
 
         if (!is_demo && platform === CFD_PLATFORMS.DXTRADE) {
-            return [...gaming_config, ...financial_config, ...all_config];
+            const has_account = Object.keys(existing_cfd_accounts).some(
+                key =>
+                    existing_cfd_accounts[key].market_type === 'synthetic' ||
+                    existing_cfd_accounts[key].market_type === 'financial'
+            );
+
+            if (has_account) return [...gaming_config, ...financial_config];
+            return [...all_config];
         }
 
         return [...gaming_config, ...financial_config];

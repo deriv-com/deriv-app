@@ -35,6 +35,8 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     openDerivRealAccountNeededModal: () => void;
     context: RootStore;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -100,6 +102,8 @@ const CompareAccountsModal = ({
     openPasswordModal,
     openDerivRealAccountNeededModal,
     context,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCompareAccountsModalProps) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
@@ -208,6 +212,8 @@ const CompareAccountsModal = ({
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
                                     should_show_derivx={should_show_derivx}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
                         </Modal>
@@ -243,6 +249,8 @@ const CompareAccountsModal = ({
                                     is_real_enabled={is_real_enabled}
                                     toggleCompareAccounts={toggleCompareAccounts}
                                     should_show_derivx={should_show_derivx}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
                         </MobileDialog>

@@ -50,14 +50,14 @@
     &__button-wrapper {
         font-size: 1.2rem;
         box-sizing: border-box;
-        padding: 0 1rem;
+        padding: 0;
         border-radius: 0.4rem;
 
         position: absolute;
-        top: 0.5rem;
-        right: 0;
+        top: 0.8rem;
+        right: 0.8rem;
         @include mobile {
-            padding: 0 1rem;
+            padding: 0 3.1rem;
         }
         &-modal {
             width: 100%;

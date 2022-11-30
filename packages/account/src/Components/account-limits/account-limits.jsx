@@ -248,13 +248,11 @@ const AccountLimits = ({
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
-                                                            <Localize
-                                                                i18n_default_text={
-                                                                    is_appstore
-                                                                        ? 'Total withdrawal limit'
-                                                                        : 'Total withdrawal allowed'
-                                                                }
-                                                            />
+                                                            {is_appstore ? (
+                                                                <Localize i18n_default_text='Total withdrawal limit' />
+                                                            ) : (
+                                                                <Localize i18n_default_text='Total withdrawal allowed' />
+                                                            )}
                                                             {is_appstore && !is_fully_authenticated && (
                                                                 <React.Fragment>
                                                                     <Text

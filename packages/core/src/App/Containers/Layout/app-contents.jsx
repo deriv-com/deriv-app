@@ -7,6 +7,7 @@ import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/componen
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import WelcomeModal1 from '../WelcomeModal/welcome-modal-1.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -101,6 +102,7 @@ const AppContents = ({
             })}
             ref={scroll_ref}
         >
+            <WelcomeModal1 />
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}

@@ -56,7 +56,7 @@ function webVitals(options) {
     }
 }
 
-export function initVitals() {
+function initVitals() {
     // eslint-disable-next-line no-console
     console.log('VERCEL_ANALYTICS_ID', VERCEL_ANALYTICS_ID);
 
@@ -64,6 +64,10 @@ export function initVitals() {
         webVitals({
             analyticsId: VERCEL_ANALYTICS_ID,
             debug: true,
+            params: [],
+            path: window.location.pathname,
         });
     }
 }
+
+initVitals();

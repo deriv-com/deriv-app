@@ -35,23 +35,22 @@ const QuickStrategyForm = ({
 
     const setDefaultValidationNumber = () =>
         Yup.number()
-            .typeError(localize('Should be a number'))
+            .typeError(localize('Must be a number'))
             .round('ceil')
             .min(1, localize('Must be a number higher than 0'));
 
     const SchemaFields = Yup.object().shape({
         'quick-strategy__duration-value': Yup.number()
-            .typeError(localize('Should be a number'))
+            .typeError(localize('Must be a number'))
             .required(localize('Field cannot be empty'))
             .min(min, localize('Minimum duration: {{ min }}', { min }))
             .max(max, localize('Maximum duration: {{ max }}', { max })),
-
         'quick-strategy__stake': setDefaultValidationNumber(),
         'quick-strategy__loss': setDefaultValidationNumber(),
-        'martingale-size': setDefaultValidationNumber().min(
-            2,
-            localize('The value must be equal to or greater than 2.')
-        ),
+        'martingale-size': Yup.number()
+            .typeError(localize('Must be a number'))
+            .round('floor')
+            .min(2, localize('The value must be equal to or greater than 2.')),
         'alembert-unit': setDefaultValidationNumber(),
         'oscar-unit': setDefaultValidationNumber(),
         'quick-strategy__profit': setDefaultValidationNumber(),

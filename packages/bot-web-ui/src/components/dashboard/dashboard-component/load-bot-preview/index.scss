@@ -66,6 +66,7 @@
         font-size: var(--text-size-s);
         font-weight: 700;
         margin: 1.5rem;
+        color: var(--text-general);
     }
 
     &__button-group {
@@ -228,6 +229,10 @@
             align-items: center;
             text-align: center;
 
+            &.load-dialog {
+                padding: 1.6rem;
+            }
+
             &:hover {
                 cursor: pointer;
             }
@@ -247,11 +252,6 @@
                 }
             }
 
-            &:not(.load-strategy__recent-item--selected):hover {
-                background-color: var(--state-hover);
-                cursor: pointer;
-            }
-
             &:not(:last-child) {
                 border-bottom: solid 0.1rem var(--border-normal);
             }
@@ -266,6 +266,11 @@
                 width: 100%;
                 word-break: break-word;
                 margin-right: 1.6rem;
+                &.load-dialog {
+                    display: block;
+                    text-align: left;
+                    padding: 1.2rem 0;
+                }
             }
 
             &-title {
@@ -291,6 +296,9 @@
                 width: 100%;
                 word-break: break-word;
                 color: var(--text-general);
+                &.load-dialog {
+                    justify-content: center;
+                }
             }
 
             &-saved {

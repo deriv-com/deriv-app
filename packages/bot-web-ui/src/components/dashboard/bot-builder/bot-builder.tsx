@@ -11,18 +11,18 @@ import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 type TBotBuilder = {
     app: AppStore;
     active_tab: number;
-    has_onboard_tour_started: boolean;
+    has_started_onboarding_tour: boolean;
     is_preview_on_popup: boolean;
-    setOnBoardTourRunState: (has_onboard_tour_started: boolean) => boolean;
-    has_bot_builder_tour_started: boolean;
+    setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => boolean;
+    has_started_bot_builder_tour: boolean;
 };
 
 const BotBuilder = ({
     app,
     active_tab,
-    has_onboard_tour_started,
+    has_started_onboarding_tour,
     is_preview_on_popup,
-    has_bot_builder_tour_started,
+    has_started_bot_builder_tour,
 }: TBotBuilder) => {
     const [is_tour_running, setTourRun] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
@@ -48,7 +48,7 @@ const BotBuilder = ({
                     }}
                 >
                     <WorkspaceWrapper />
-                    {has_bot_builder_tour_started && active_tab === 1 && !has_onboard_tour_started && (
+                    {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (
                         <ReactJoyride
                             steps={BOT_BUILDER_TOUR}
                             run={is_tour_running}
@@ -58,18 +58,17 @@ const BotBuilder = ({
                             locale={{ back: 'Previous' }}
                             styles={{
                                 options: {
-                                    arrowColor: 'var(--general-section-7)',
-                                    backgroundColor: 'var(--general-section-7)',
-                                    overlayColor: 'rgba(0, 0, 0, 0.5)',
+                                    arrowColor: 'var(--general-main-2)',
+                                    backgroundColor: 'var(--general-main-2)',
                                     primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-joyride-tour)',
+                                    textColor: 'var(--text-general)',
                                     spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                                 },
                                 buttonBack: {
                                     border: '0.1rem solid var(--text-less-prominent)',
                                     marginRight: '1rem',
                                     borderRadius: '0.4rem',
-                                    color: 'var(--text-joyride-tour)',
+                                    color: 'var(--text-general)',
                                     padding: '0.6rem',
                                 },
                             }}
@@ -86,8 +85,8 @@ const BotBuilder = ({
 export default connect(({ app, dashboard }: RootStore) => ({
     app,
     active_tab: dashboard.active_tab,
-    has_onboard_tour_started: dashboard.has_onboard_tour_started,
+    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     is_preview_on_popup: dashboard.is_preview_on_popup,
-    has_bot_builder_tour_started: dashboard.has_bot_builder_tour_started,
+    has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
 }))(BotBuilder);

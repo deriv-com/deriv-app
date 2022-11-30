@@ -1,12 +1,28 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import LocalFooter from './local-footer.jsx';
-import WorkspaceControl from './workspace-control.jsx';
+import LocalFooter from './local-footer';
+import WorkspaceControl from './workspace-control';
+import RootStore from 'Stores/root-store';
 
-const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoadedLocalFile }) => {
+type TLocalComponentProps = {
+    handleFileChange: (
+        e: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
+        is_body?: boolean
+    ) => boolean;
+    is_mobile: boolean;
+    is_open_button_loading: boolean;
+    loaded_local_file: string;
+    setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
+};
+
+const LocalComponent = ({
+    handleFileChange,
+    is_mobile,
+    loaded_local_file,
+    setLoadedLocalFile,
+}: TLocalComponentProps) => {
     const file_input_ref = React.useRef(null);
     const [is_file_supported, setIsFileSupported] = React.useState(true);
 
@@ -83,22 +99,12 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
     );
 };
 
-LocalComponent.propTypes = {
-    handleFileChange: PropTypes.func,
-    is_mobile: PropTypes.bool,
-    is_open_button_loading: PropTypes.bool,
-    loaded_local_file: PropTypes.string,
-    setLoadedLocalFile: PropTypes.func,
-};
-
-const Local = connect(({ load_modal, ui }) => ({
+const Local = connect(({ load_modal, ui }: RootStore) => ({
     handleFileChange: load_modal.handleFileChange,
     is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loaded_local_file: load_modal.loaded_local_file,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
 }))(LocalComponent);
-
-Local.Footer = LocalFooter;
 
 export default Local;

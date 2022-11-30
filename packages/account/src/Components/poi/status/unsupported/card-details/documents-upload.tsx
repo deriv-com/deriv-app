@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
@@ -29,7 +28,21 @@ const icons = [
     },
 ];
 
-const IconsItem = ({ data }) => (
+type TDocumentsUpload = {
+    initial_values: object;
+    is_from_external: boolean;
+    goToCards: () => void;
+    onSubmit: () => void;
+};
+
+type TIconsItem = {
+    data: {
+        icon: string;
+        text: string;
+    };
+};
+
+const IconsItem = ({ data }: TIconsItem) => (
     <div className={`${ROOT_CLASS}__icons-item`}>
         <Icon icon={data.icon} size={24} />
         <Text as='p' size='xxxs' align='center'>
@@ -38,8 +51,14 @@ const IconsItem = ({ data }) => (
     </div>
 );
 
-const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, onSubmit }) => {
-    const { fields, documents_title, documents } = data;
+const DocumentsUpload = ({
+    initial_values,
+    is_from_external,
+    data,
+    goToCards,
+    onSubmit,
+}: TDocumentsUpload & TIconsItem) => {
+    const { fields, documents_title, documents }: FormikValues = data;
 
     const fields_title = localize('First, enter your {{label}} and the expiry date.', {
         label: fields[0].label,
@@ -56,7 +75,7 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                 validate={values => validateFields(values, fields, documents)}
                 onSubmit={onSubmit}
             >
-                {({ values, isValid, touched }) => {
+                {({ values, isValid, touched }: FormikValues) => {
                     const is_form_touched = Object.keys(touched).length > 0;
                     const is_form_empty = Object.values(values).some(
                         (field, key) => (field === null || field === '') && fields[key]?.required
@@ -69,7 +88,7 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                                     {fields_title}
                                 </Text>
                                 <div className={`${ROOT_CLASS}__fields-wrap`}>
-                                    {fields.map(field => (
+                                    {fields.map((field: FormikValues) => (
                                         <InputField key={field.name} data={field} />
                                     ))}
                                 </div>
@@ -78,7 +97,7 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                                     {documents_title}
                                 </Text>
                                 <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                    {documents.map(item => (
+                                    {documents.map((item: FormikValues) => (
                                         <Uploader
                                             key={item.name}
                                             data={item}
@@ -117,10 +136,4 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
     );
 };
 
-DocumentsUpload.propTypes = {
-    initial_values: PropTypes.object,
-    data: PropTypes.object,
-    goToCards: PropTypes.func,
-    onSubmit: PropTypes.func,
-};
 export default DocumentsUpload;

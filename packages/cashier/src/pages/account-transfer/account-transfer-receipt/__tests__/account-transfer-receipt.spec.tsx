@@ -1,10 +1,10 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AccountTransferReceipt from '../account-transfer-receipt';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
+import AccountTransferReceipt from '../account-transfer-receipt';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

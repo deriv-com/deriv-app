@@ -27,6 +27,10 @@
             "name": "Deriv X",
             "icon": "IcBrandDxtrade"
         },
+        "derivez": {
+            "name": "Deriv EZ",
+            "icon": "IcDerivez"
+        },
         "smarttrader": {
             "name": "SmartTrader",
             "icon": "IcBrandSmarttrader"

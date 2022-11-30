@@ -11,6 +11,9 @@ const SameCitizenshipModal = ({
     setIsSameCitizenshipModal,
 }) => (
     <div>
+        <Text as='p' weight='bold' className='account-signup__text'>
+            {localize('Citizenship')}
+        </Text>
         <Text as='p' className='account-signup__text'>
             {localize('Are you a citizen of {{- residence}}?', { residence })}
         </Text>

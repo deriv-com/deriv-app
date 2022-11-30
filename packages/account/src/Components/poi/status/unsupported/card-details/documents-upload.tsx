@@ -29,7 +29,7 @@ const icons = [
 ];
 
 type TDocumentsUpload = {
-    initial_values: object;
+    initial_values: FormikValues;
     is_from_external: boolean;
     goToCards: () => void;
     onSubmit: () => void;

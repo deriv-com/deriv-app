@@ -242,6 +242,13 @@ const Chart = props => {
         return margin;
     };
 
+    const passthrough_contract_info = props.is_accumulator_contract
+        ? {
+              ...props.contract_info,
+              tick_stream: props.all_ticks.length ? props.all_ticks : props.contract_info.tick_stream,
+          }
+        : props.contract_info;
+
     return (
         <SmartChart
             barriers={props.barriers_array}
@@ -273,10 +280,10 @@ const Chart = props => {
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
-                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
-                props.is_accumulator_contract
+                props.is_accumulator_contract ||
+                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'
             }
-            contractInfo={props.contract_info}
+            contractInfo={passthrough_contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker

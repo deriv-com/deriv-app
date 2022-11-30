@@ -6,7 +6,6 @@ import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
-import Condition from 'yup/lib/Condition';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;

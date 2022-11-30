@@ -6,7 +6,7 @@ import RootStore from 'Stores/index';
 import classNames from 'classnames';
 import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 
-type TourTriggrerDialog = {
+type TTourTriggrerDialog = {
     active_tab: number;
     is_tour_dialog_visible: boolean;
     is_tour_ended: boolean;
@@ -26,7 +26,7 @@ const TourTriggrerDialog = ({
     setOnBoardTourRunState,
     setTourActive,
     setIsTourEnded,
-}: TourTriggrerDialog) => {
+}: TTourTriggrerDialog) => {
     const toggleTour = (value: boolean, type: string) => {
         if (tour_type.key === 'onboard_tour') {
             if (type === 'onConfirm') {

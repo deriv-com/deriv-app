@@ -372,6 +372,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 <a
                                                     className='header__menu-mobile-whatsapp-link'
                                                     href={whatsapp_url}
+                                                    onClick={toggleDrawer}
                                                     target='_blank'
                                                     rel='noopener noreferrer'
                                                 >

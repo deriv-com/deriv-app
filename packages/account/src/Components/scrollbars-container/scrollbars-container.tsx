@@ -5,7 +5,7 @@ import { isMobile } from '@deriv/shared';
 
 type TScrollbarsContainer = {
     className?: string;
-    scroll_offset: string;
+    scroll_offset?: string;
 };
 
 export const ScrollbarsContainer = ({

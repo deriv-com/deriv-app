@@ -47,6 +47,8 @@ export type TCFDAccountCardActionProps = {
     type: TType;
     platform: string;
     title: string;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -113,6 +115,8 @@ export type TCFDAccountCard = {
     setAccountType: (account_type: { category: string; type?: string }) => void;
     setIsAcuityModalOpen: (value: boolean) => void;
     updateAccountStatus: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {

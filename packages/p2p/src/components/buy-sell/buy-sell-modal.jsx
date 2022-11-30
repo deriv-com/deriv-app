@@ -205,11 +205,16 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             </MobileFullPageModal>
         );
     }
+
     if (should_show_popup) {
         return (
             <Modal
                 className='buy-sell__modal'
-                height={table_type === buy_sell.BUY ? 'auto' : '649px'}
+                height={
+                    table_type === buy_sell.SELL && !my_profile_store.should_show_add_payment_method_form
+                        ? '649px'
+                        : 'auto'
+                }
                 width='456px'
                 is_open={should_show_popup}
                 title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}

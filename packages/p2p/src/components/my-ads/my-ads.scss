@@ -134,8 +134,11 @@
             }
 
             &-container {
-                margin: 0 1.6rem;
                 width: 90vw;
+
+                @include mobile {
+                    margin: 0 1.6rem;
+                }
             }
 
             @include mobile {

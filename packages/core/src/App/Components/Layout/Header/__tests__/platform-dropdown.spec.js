@@ -29,8 +29,8 @@ describe('PlatformDropdown', () => {
         expect(wrapper.find('.platform-dropdown__list-platform').exists()).to.be.false;
     });
 
-    it('should not contain <PlatformBox /> if platform_config is an empty array', () => {
-        const wrapper = shallow(<PlatformDropdown platform_config={[]} />);
-        expect(wrapper.find(PlatformBox)).to.have.length(0);
+    it('should contain <PlatformBox /> if platform_config is not an empty array', () => {
+        const wrapper = shallow(<PlatformDropdown platform_config={platform_config} />);
+        expect(wrapper.find('.platform-dropdown__list-platform').children().type()).to.equal(PlatformBox);
     });
 });

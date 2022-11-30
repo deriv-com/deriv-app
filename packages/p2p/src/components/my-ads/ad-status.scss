@@ -33,7 +33,7 @@
 
     &--inactive {
         @include ad-status-base(var(--status-danger));
-        
+
         width: fit-content;
     }
 }

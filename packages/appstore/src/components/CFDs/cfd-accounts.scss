@@ -14,6 +14,11 @@
 
         &__description {
             margin-bottom: 2.4rem;
+
+            @include mobile {
+                margin-bottom: 1.6rem;
+            }
+
             a {
                 text-decoration-line: underline;
             }
@@ -27,6 +32,11 @@
             justify-content: start;
             margin-top: 4rem;
             gap: 2.4rem;
+
+            @include mobile {
+                margin-top: 2rem;
+            }
+
             &--item {
                 width: 33.3%;
                 max-width: 36.8rem;

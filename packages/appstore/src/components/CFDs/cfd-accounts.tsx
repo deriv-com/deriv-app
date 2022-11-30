@@ -87,7 +87,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                         {localize('CFDs')}
                     </Text>
                 )}
-                {!is_demo_tab && (
+                {!is_demo_tab && !isMobile() && (
                     <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
                         <Text weight='bold' size='xxs' color='red'>
                             <Localize i18n_default_text='Compare accounts' />
@@ -105,6 +105,13 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                     />
                 </Text>
             </div>
+            {!is_demo_tab && isMobile() && (
+                <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
+                    <Text weight='bold' size='xs' color='red'>
+                        <Localize i18n_default_text='Compare accounts' />
+                    </Text>
+                </div>
+            )}
             {account_type === 'demo' && (
                 <CFDDemoAccounts
                     isDerivedVisible={isDerivedVisible}

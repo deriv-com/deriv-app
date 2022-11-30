@@ -72,7 +72,7 @@ const BuySellModal = () => {
         />
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const formik_ref = React.useRef();
 
     const generateModalTitle = () => {
@@ -83,8 +83,11 @@ const BuySellModal = () => {
                         <Icon
                             icon='IcArrowLeftBold'
                             onClick={() => {
-                                if (formik_ref.current.dirty) {
-                                    my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                if (general_store.is_form_modified) {
+                                    showModal({
+                                        key: 'CancelAddPaymentMethodModal',
+                                    });
+                                    // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                 } else {
                                     my_profile_store.setShouldShowAddPaymentMethodForm(false);
                                 }
@@ -124,8 +127,11 @@ const BuySellModal = () => {
 
     const onCancel = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
-            if (formik_ref.current.dirty) {
-                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+            if (general_store.is_form_modified) {
+                showModal({
+                    key: 'CancelAddPaymentMethodModal',
+                });
+                // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
             } else {
                 my_profile_store.hideAddPaymentMethodForm();
             }
@@ -157,8 +163,9 @@ const BuySellModal = () => {
             setErrorMessage(null);
         }
 
-        my_profile_store.setSelectedPaymentMethod('');
-        my_profile_store.setSelectedPaymentMethodDisplayName('');
+        // these will screw up the form history, refactor these out!
+        // my_profile_store.setSelectedPaymentMethod('');
+        // my_profile_store.setSelectedPaymentMethodDisplayName('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
@@ -243,7 +250,9 @@ const BuySellModal = () => {
             </ThemedScrollbars>
             {!my_profile_store.should_show_add_payment_method_form && (
                 <Modal.Footer has_separator>
-                    {my_profile_store.should_show_add_payment_method_form ? null : (
+                    {my_profile_store.should_show_add_payment_method_form ? (
+                        <></>
+                    ) : (
                         <BuySellModalFooter
                             is_submit_disabled={is_submit_disabled}
                             onCancel={onCancel}

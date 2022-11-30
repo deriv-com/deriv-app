@@ -19,6 +19,7 @@ export default class GeneralStore extends BaseStore {
     block_unblock_user_error = '';
     balance;
     feature_level = null;
+    formik_ref = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
@@ -38,6 +39,7 @@ export default class GeneralStore extends BaseStore {
     poi_status = null;
     props = {};
     review_period;
+    saved_form_state = null;
     should_show_real_name = false;
     should_show_popup = false;
     user_blocked_count = 0;
@@ -68,6 +70,7 @@ export default class GeneralStore extends BaseStore {
             block_unblock_user_error: observable,
             balance: observable,
             feature_level: observable,
+            formik_ref: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -87,6 +90,7 @@ export default class GeneralStore extends BaseStore {
             poi_status: observable,
             props: observable.ref,
             review_period: observable,
+            saved_form_state: observable,
             should_show_real_name: observable,
             should_show_popup: observable,
             user_blocked_count: observable,
@@ -95,10 +99,12 @@ export default class GeneralStore extends BaseStore {
             is_modal_open: observable,
             client: computed,
             current_focus: computed,
+            form_state: computed,
             setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
+            is_form_modified: computed,
             is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
@@ -121,6 +127,8 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
             setFeatureLevel: action.bound,
+            setFormikRef: action.bound,
+            saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
             setIsBlocked: action.bound,
@@ -162,6 +170,10 @@ export default class GeneralStore extends BaseStore {
         return this.props?.current_focus;
     }
 
+    get form_state() {
+        return this.formik_ref;
+    }
+
     get setCurrentFocus() {
         return this.props?.setCurrentFocus;
     }
@@ -176,6 +188,10 @@ export default class GeneralStore extends BaseStore {
 
     get is_barred() {
         return !!this.user_blocked_until;
+    }
+
+    get is_form_modified() {
+        return this.form_state?.dirty || this.saved_form_state;
     }
 
     get is_my_profile_tab_visible() {
@@ -582,6 +598,18 @@ export default class GeneralStore extends BaseStore {
 
     setFeatureLevel(feature_level) {
         this.feature_level = feature_level;
+    }
+
+    setFormikRef(formik_ref) {
+        this.formik_ref = formik_ref;
+    }
+
+    setSavedFormState(saved_form_state) {
+        this.saved_form_state = saved_form_state;
+    }
+
+    saveFormState() {
+        this.setSavedFormState(this.form_state);
     }
 
     setInactiveNotificationCount(inactive_notification_count) {

@@ -9,7 +9,7 @@ import Empty from 'Components/empty/empty.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
-import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
+// import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
 
 const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();
@@ -53,7 +53,7 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal is_floating />
+                {/* <CancelAddPaymentMethodModal is_floating /> */}
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'

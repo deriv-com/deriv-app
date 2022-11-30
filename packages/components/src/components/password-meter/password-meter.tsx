@@ -1,16 +1,32 @@
+/* eslint @typescript-eslint/triple-slash-reference: "off" */
+/// <reference path="../../../@types/@contentpass/zxcvbn/contentpass-zxcvbn-config.d.ts" />
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import Field from '../field';
 import Loading from '../loading';
 
-const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }) => {
-    const zxcvbn = React.useRef();
+type TPasswordMeter = {
+    children?: React.ReactNode | ((prop: { [key: string]: boolean }) => string);
+    input: string;
+    has_error?: boolean;
+    custom_feedback_messages: { [key: string]: string };
+};
+
+type TCustomFeedback = { warning: () => string; suggestions: string };
+
+const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }: TPasswordMeter) => {
+    const zxcvbn =
+        React.useRef<
+            (
+                propA: string,
+                propB: { feedback_messages: { [key: string]: string } }
+            ) => { score: number; feedback: TCustomFeedback }
+        >();
 
     const [is_loading, setLoading] = React.useState(true);
-    const [score, setScore] = React.useState();
-    const [feedback, setFeedback] = React.useState();
+    const [score, setScore] = React.useState<number>(0);
+    const [feedback, setFeedback] = React.useState<TCustomFeedback>({ warning: () => '', suggestions: '' });
 
     const isMounted = useIsMounted();
 
@@ -36,7 +52,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
                 setFeedback(updated_feedback);
             } else {
                 setScore(0);
-                setFeedback('');
+                setFeedback({ warning: () => '', suggestions: '' });
             }
         }
     }, [custom_feedback_messages, has_error, input]);
@@ -63,20 +79,13 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
                 {feedback?.warning && !has_error && (
                     <Field
                         className='dc-password-meter__warning'
-                        message={`${custom_feedback_messages ? feedback.warning() : feedback.warning}.`}
+                        message={`${custom_feedback_messages ? feedback.warning() : feedback.warning}`}
                         type='error'
                     />
                 )}
             </div>
         </React.Fragment>
     );
-};
-
-PasswordMeter.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),
-    has_error: PropTypes.bool,
-    input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    custom_feedback_messages: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 export default PasswordMeter;

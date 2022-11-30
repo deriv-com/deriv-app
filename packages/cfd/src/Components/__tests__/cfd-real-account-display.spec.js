@@ -37,6 +37,7 @@ describe('<CFDRealAccountDisplay />', () => {
             is_logged_in: true,
             is_virtual: false,
             isAccountOfTypeDisabled: jest.fn(() => false),
+            isDxtradeAllCardVisible: jest.fn(() => true),
             isSyntheticCardVisible: jest.fn(() => true),
             isFinancialCardVisible: jest.fn(() => true),
             onSelectAccount: jest.fn(),

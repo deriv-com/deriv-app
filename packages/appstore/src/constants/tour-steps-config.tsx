@@ -12,7 +12,7 @@ export const tour_step_config: Step[] = [
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
+        content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.toggle-account-type__button',
         disableBeacon: true,
         placement: 'bottom-end',

@@ -175,11 +175,18 @@ const Dashboard = ({
                             hideCloseButton
                             locale={{ back: 'Previous' }}
                             styles={{
+                                options: {
+                                    arrowColor: 'var(--general-main-2)',
+                                    backgroundColor: 'var(--general-main-2)',
+                                    primaryColor: 'var(--brand-red-coral)',
+                                    textColor: 'var(--text-general)',
+                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                },
                                 buttonBack: {
                                     border: '0.2rem solid var(--text-less-prominent)',
                                     marginRight: '1rem',
                                     borderRadius: '0.4rem',
-                                    color: 'var(--general-section-7)',
+                                    color: 'var(--text-general)',
                                     padding: '0.6rem',
                                 },
                             }}

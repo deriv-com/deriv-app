@@ -120,7 +120,7 @@
             right: 1.6rem;
             bottom: 1.6rem;
             border-radius: 3rem;
-            background-color: $color-grey-2;
+            background-color: var(--general-section-6);
             box-shadow: 0.2rem 0.2rem 0.5rem var(--shadow-menu);
             z-index: 99;
         }
@@ -228,6 +228,10 @@
             align-items: center;
             text-align: center;
 
+            &.load-dialog {
+                padding: 1.6rem;
+            }
+
             &:hover {
                 cursor: pointer;
             }
@@ -250,11 +254,6 @@
                 }
             }
 
-            &:not(.load-strategy__recent-item--selected):hover {
-                background-color: var(--state-hover);
-                cursor: pointer;
-            }
-
             &:not(:last-child) {
                 border-bottom: solid 0.1rem var(--border-normal);
             }
@@ -270,6 +269,11 @@
                 word-break: break-word;
                 margin-right: 1.6rem;
                 height: unset;
+                &.load-dialog {
+                    display: block;
+                    text-align: left;
+                    padding: 1.2rem 0;
+                }
             }
 
             &-title {
@@ -295,6 +299,9 @@
                 width: 100%;
                 word-break: break-word;
                 color: var(--text-general);
+                &.load-dialog {
+                    justify-content: center;
+                }
             }
 
             &-saved {

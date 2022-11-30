@@ -38,17 +38,11 @@ export const getTourSettings = (type: string) => {
 export const Step = ({ label, content }: TStep) => {
     return (
         <div className='db-tour'>
-            <Text line_height='xl' as='p' weight='bold' color='var(--text-joyride-tour)'>
+            <Text line_height='xl' as='p' weight='bold'>
                 {label}
             </Text>
             {content.map(item => (
-                <Text
-                    key={item}
-                    line_height='xl'
-                    as='p'
-                    color='var(--text-joyride-tour)'
-                    dangerouslySetInnerHTML={{ __html: item }}
-                />
+                <Text key={item} line_height='xl' as='p' dangerouslySetInnerHTML={{ __html: item }} />
             ))}
         </div>
     );

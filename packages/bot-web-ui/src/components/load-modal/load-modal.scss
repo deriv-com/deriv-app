@@ -1,21 +1,51 @@
 #modal_root {
     .load-strategy {
-        &__recent-item {
-            grid-template-columns: 1fr 1fr;
-        }
+        &__recent {
+            &-item {
+                padding: 1.6rem;
+                grid-template-columns: 1fr 1fr;
+                &-location {
+                    justify-content: center;
+                }
+                &-text {
+                    height: 10rem;
+                    flex-direction: column;
+                    text-align: left;
+                }
+                &-title {
+                    font-size: var(--text-size-s);
+                }
+                &-saved {
+                    font-size: var(--text-size-s);
+                }
+            }
 
-        &__recent-files {
-            width: 35%;
-        }
+            &-files {
+                width: 35%;
+                height: 50rem;
+                overflow: auto;
+            }
 
-        &__recent-preview {
-            width: 65%;
+            &-preview {
+                width: 65%;
+                .load-strategy__preview-workspace {
+                    height: 40rem;
+                    min-height: unset;
+                }
+            }
         }
 
         &__container {
             &--has-footer {
                 overflow: auto;
+                height: calc(80vh - 21rem);
             }
         }
     }
+}
+
+.load-strategy__recent-item-text {
+    height: 10rem;
+    flex-direction: column;
+    text-align: left;
 }

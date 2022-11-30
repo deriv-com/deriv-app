@@ -151,7 +151,11 @@ export const load = ({
             }
         } catch (e) {
             console.error(e); // eslint-disable-line
-            return showInvalidStrategyError();
+            //fixing this through the catch becuse needs time to identify where
+            //the initializtion order has to be changed
+            if (e.message !== "Cannot read properties of null (reading 'getBlockById')") {
+                return showInvalidStrategyError();
+            }
         } finally {
             endLoading();
         }

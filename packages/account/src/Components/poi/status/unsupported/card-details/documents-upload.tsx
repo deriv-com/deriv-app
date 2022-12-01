@@ -91,7 +91,7 @@ const DocumentsUpload = ({
                                     {fields_title}
                                 </Text>
                                 <div className={`${ROOT_CLASS}__fields-wrap`}>
-                                    {fields.map((field: FormikValues) => (
+                                    {fields?.map((field: FormikValues) => (
                                         <InputField key={field.name} data={field} />
                                     ))}
                                 </div>

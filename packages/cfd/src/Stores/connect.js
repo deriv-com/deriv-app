@@ -17,7 +17,9 @@ function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
             ObservedComponent = FunctionalWrapperComponent;
         }
 
-        return useObserver(() => ObservedComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
+        //  This is a temporary approach to pass stores from different packages
+        const context = own_props.context || store;
+        return useObserver(() => ObservedComponent({ ...own_props, ...propsToSelectFn(context, own_props) }));
     };
 
     Component.displayName = BaseComponent.name;

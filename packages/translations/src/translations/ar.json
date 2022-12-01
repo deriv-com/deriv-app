@@ -367,6 +367,7 @@
     "478280278": "This block displays a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number and can be assigned to a variable. When the dialog box is displayed, your strategy is paused and will only resume after you enter a response and click \"OK\".",
     "479420576": "Tertiary",
     "481276888": "Goes Outside",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483279638": "Assessment Completed<0/><0/>",
     "483591040": "Delete all {{ delete_count }} blocks?",
     "485379166": "View transactions",

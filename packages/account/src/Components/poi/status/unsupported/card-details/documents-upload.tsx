@@ -39,6 +39,9 @@ type TIconsItem = {
     data: {
         icon: string;
         text: string;
+        fields?: FormikValues[];
+        documents_title?: string;
+        documents?: FormikValues[];
     };
 };
 
@@ -58,10 +61,10 @@ const DocumentsUpload = ({
     goToCards,
     onSubmit,
 }: TDocumentsUpload & TIconsItem) => {
-    const { fields, documents_title, documents }: FormikValues = data;
+    const { fields, documents_title, documents } = data;
 
     const fields_title = localize('First, enter your {{label}} and the expiry date.', {
-        label: fields[0].label,
+        label: fields?.[0].label,
     });
 
     return (
@@ -71,14 +74,14 @@ const DocumentsUpload = ({
             })}
         >
             <Formik
-                initialValues={initial_values || setInitialValues([...fields, ...documents])}
+                initialValues={initial_values || setInitialValues([...(fields || []), ...(documents || [])])}
                 validate={values => validateFields(values, fields, documents)}
                 onSubmit={onSubmit}
             >
                 {({ values, isValid, touched }: FormikValues) => {
                     const is_form_touched = Object.keys(touched).length > 0;
                     const is_form_empty = Object.values(values).some(
-                        (field, key) => (field === null || field === '') && fields[key]?.required
+                        (field, key) => (field === null || field === '') && fields?.[key]?.required
                     );
 
                     return (
@@ -97,7 +100,7 @@ const DocumentsUpload = ({
                                     {documents_title}
                                 </Text>
                                 <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                    {documents.map((item: FormikValues) => (
+                                    {documents?.map((item: FormikValues) => (
                                         <Uploader
                                             key={item.name}
                                             data={item}

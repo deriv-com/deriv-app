@@ -42,3 +42,8 @@ const getMethodsList = (store, new_state) => [
 ];
 
 const getExpiryMethodsList = () => [StartDate.onChangeExpiry];
+
+export const processMinMaxStake = (min_stake, max_stake) => ({
+    min_stake: Math.max(...Object.values(min_stake)),
+    max_stake: Math.min(...Object.values(max_stake)),
+});

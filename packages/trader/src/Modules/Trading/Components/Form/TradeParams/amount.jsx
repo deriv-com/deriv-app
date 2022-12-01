@@ -68,8 +68,7 @@ const Amount = ({
     onChange,
     setCurrentFocus,
     validation_errors,
-    min_stake,
-    max_stake,
+    stake_boundary,
 }) => {
     if (is_minimized) {
         return (
@@ -177,13 +176,13 @@ const Amount = ({
                     <div className='trade-container__stake-field--min'>
                         <Text size='xxxs'>Min. Stake</Text>
                         <Text size='xxs'>
-                            {min_stake} {currency}
+                            {stake_boundary.min_stake} {currency}
                         </Text>
                     </div>
                     <div className='trade-container__stake-field--max'>
                         <Text size='xxxs'>Max. Stake</Text>
                         <Text size='xxs'>
-                            {max_stake} {currency}
+                            {stake_boundary.max_stake} {currency}
                         </Text>
                     </div>
                 </section>
@@ -213,6 +212,7 @@ Amount.propTypes = {
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
+    stake_boundary: PropTypes.object,
 };
 
 export default connect(({ modules, client, ui }) => ({
@@ -235,6 +235,5 @@ export default connect(({ modules, client, ui }) => ({
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
-    min_stake: modules.trade.min_stake,
-    max_stake: modules.trade.max_stake,
+    stake_boundary: modules.trade.stake_boundary,
 }))(Amount);

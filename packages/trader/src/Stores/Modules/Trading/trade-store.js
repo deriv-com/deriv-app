@@ -31,7 +31,7 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 
-import { processTradeParams } from './Helpers/process';
+import { processTradeParams, processMinMaxStake } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
@@ -69,8 +69,9 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list = [];
     currency = '';
-    min_stake;
-    max_stake;
+    min_stake = {};
+    max_stake = {};
+    stake_boundary = {};
 
     // Duration
     duration = 5;
@@ -214,6 +215,7 @@ export default class TradeStore extends BaseStore {
             strike_price_choices: observable,
             min_stake: observable,
             max_stake: observable,
+            stake_boundary: observable,
             start_date: observable,
             start_dates_list: observable,
             start_time: observable,
@@ -304,6 +306,7 @@ export default class TradeStore extends BaseStore {
             setMaxStake: action.bound,
             setMinStake: action.bound,
             setStrikeChoices: action.bound,
+            setStakeBoundary: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -993,7 +996,6 @@ export default class TradeStore extends BaseStore {
         if (!isEmptyObject(requests)) {
             this.proposal_requests = requests;
             this.purchase_info = {};
-
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
@@ -1085,9 +1087,10 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
             if (this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal;
-                this.setMinStake(min_stake);
-                this.setMaxStake(max_stake);
+                this.setMinStake(contract_type, min_stake);
+                this.setMaxStake(contract_type, max_stake);
                 this.setStrikeChoices(barrier_choices);
+                this.setStakeBoundary(processMinMaxStake(this.min_stake, this.max_stake));
             }
         }
 
@@ -1387,11 +1390,15 @@ export default class TradeStore extends BaseStore {
         this.strike_price_choices = strike_prices ?? [];
     }
 
-    setMinStake(min_stake) {
-        this.min_stake = min_stake;
+    setMinStake(type, min_stake) {
+        this.min_stake[type] = min_stake;
     }
 
-    setMaxStake(max_stake) {
-        this.max_stake = max_stake;
+    setMaxStake(type, max_stake) {
+        this.max_stake[type] = max_stake;
+    }
+
+    setStakeBoundary(stake_boundary) {
+        this.stake_boundary = { ...stake_boundary };
     }
 }

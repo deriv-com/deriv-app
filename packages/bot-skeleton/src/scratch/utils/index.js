@@ -154,7 +154,7 @@ export const load = ({
             //fixing this through the catch becuse needs time to identify where
             //the initializtion order has to be changed
             if (
-                e.message !== "Cannot read properties of null (reading 'getBlockById')" ||
+                e.message !== "Cannot read properties of null (reading 'getBlockById')" &&
                 e.message !== "Cannot read properties of null (reading 'appendChild')"
             ) {
                 return showInvalidStrategyError();

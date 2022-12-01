@@ -28,11 +28,35 @@ const DashboardComponent = ({
                 <div className='tab__dashboard__content'>
                     <div className='tab__dashboard__centered'>
                         {!has_dashboard_strategies && (
-                            <div className='tab__dashboard__header'>
-                                <Text color='prominent' line_height='xxl' size='m' weight='bold'>
-                                    {localize('Load or build your bot')}
-                                </Text>
-                            </div>
+                            <>
+                                <div className='tab__dashboard__header'>
+                                    <Text color='prominent' line_height='xxl' size='m' weight='bold'>
+                                        {localize('Load or build your bot')}
+                                    </Text>
+                                </div>
+                                <div className='tab__dashboard__home__retrigger'>
+                                    <button
+                                        onClick={() => {
+                                            setActiveTab(4);
+                                        }}
+                                    >
+                                        <Icon
+                                            className='tab__dashboard__home__retrigger__icon'
+                                            width='2.4rem'
+                                            height='2.4rem'
+                                            icon={'IcDbotUserGuide'}
+                                        />
+                                        <Text
+                                            color='prominent'
+                                            size='xs'
+                                            line_height='s'
+                                            className={'tab__dashboard__home__retrigger__text'}
+                                        >
+                                            {localize('User Guide')}
+                                        </Text>
+                                    </button>
+                                </div>
+                            </>
                         )}
                         <div
                             className={classNames('tab__dashboard__description', {
@@ -47,28 +71,7 @@ const DashboardComponent = ({
                         </div>
                         <Cards />
                     </div>
-                    <div className='tab__dashboard__home__retrigger'>
-                        <button
-                            onClick={() => {
-                                setActiveTab(4);
-                            }}
-                        >
-                            <Icon
-                                className='tab__dashboard__home__retrigger__icon'
-                                width='2.4rem'
-                                height='2.4rem'
-                                icon={'IcDbotUserGuide'}
-                            />
-                            <Text
-                                color='prominent'
-                                size='xs'
-                                line_height='s'
-                                className={'tab__dashboard__home__retrigger__text'}
-                            >
-                                {localize('User Guide')}
-                            </Text>
-                        </button>
-                    </div>
+
                     {has_dashboard_strategies && (
                         <div className='tab__dashboard__preview'>
                             <Local />

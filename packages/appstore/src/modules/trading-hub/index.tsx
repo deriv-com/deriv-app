@@ -126,7 +126,7 @@ const TradingHub: React.FC = () => {
 
     const platform_toggle_options = [
         { text: 'CFD', value: 'cfd' },
-        { text: 'Options and...', value: 'options' },
+        { text: `${is_eu ? 'Multipliers' : 'Options and...'}`, value: 'options' },
     ];
 
     tour_step_locale.last = (

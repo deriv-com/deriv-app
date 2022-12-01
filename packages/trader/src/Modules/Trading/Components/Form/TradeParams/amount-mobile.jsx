@@ -73,13 +73,13 @@ const Basis = ({
                     <div className='trade-container__stake-field--min'>
                         <Text size='xxs'>Min. Stake</Text>
                         <Text size='xxs'>
-                            {stake_boundary.minimal_stake} {currency}
+                            {stake_boundary.min_stake} {currency}
                         </Text>
                     </div>
                     <div className='trade-container__stake-field--max'>
                         <Text size='xxs'>Max. Stake</Text>
                         <Text size='xxs'>
-                            {stake_boundary.maximum_stake} {currency}
+                            {stake_boundary.max_stake} {currency}
                         </Text>
                     </div>
                 </section>

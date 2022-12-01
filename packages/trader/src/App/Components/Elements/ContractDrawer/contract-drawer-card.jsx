@@ -21,6 +21,7 @@ const ContractDrawerCard = ({
     is_market_closed,
     is_mobile,
     is_multiplier,
+    is_vanilla,
     is_sell_requested,
     is_collapsed,
     onClickCancel,
@@ -73,6 +74,7 @@ const ContractDrawerCard = ({
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={is_sold}
+            is_vanilla={is_vanilla}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}
@@ -163,6 +165,7 @@ ContractDrawerCard.propTypes = {
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

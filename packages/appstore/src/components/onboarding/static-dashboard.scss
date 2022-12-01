@@ -39,6 +39,8 @@
                 border-radius: $BORDER_RADIUS;
                 align-self: center;
                 width: 80%;
+                pointer-events: none;
+                cursor: not-allowed;
             }
 
             @include mobile {
@@ -70,6 +72,7 @@
                 font-size: 2rem;
             }
         }
+
         &__body {
             display: flex;
 
@@ -103,6 +106,11 @@
                     display: flex;
                     width: 95.6rem;
                     margin-bottom: 1rem;
+
+                    @include mobile {
+                        display: block;
+                        width: auto;
+                    }
                 }
 
                 @include mobile {

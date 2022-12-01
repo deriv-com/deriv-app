@@ -216,11 +216,11 @@ export const BOT_BUILDER_TOUR = [
                     localize('First, set the <strong>Trade parameters</strong> block.'),
                     localize('<strong>1. Trade Parameters</strong>:'),
                     localize(
-                        '- <strong>Market</strong>: Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index'
+                        '<ul class="list"><li><strong>Market</strong>: Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index</li></ul>'
                     ),
-                    localize('- <strong>Trade Type</strong>: Up/Down > Rise/Fall'),
-                    localize('- <strong>Contract type</strong>: Both'),
-                    localize('- <strong>Default candle interval</strong>: 1 minute'),
+                    localize('<ul class="list"><li><strong>Trade Type</strong>: Up/Down > Rise/Fall</li></ul> '),
+                    localize('<ul class="list"><li><strong>Contract type</strong>: Both</li></ul> '),
+                    localize('<ul class="list"><li><strong>Default candle interval</strong>: 1 minute</li></ul>'),
                 ]}
             />,
         ],
@@ -234,8 +234,8 @@ export const BOT_BUILDER_TOUR = [
                 key='trade_parameters'
                 content={[
                     localize('For <strong>Trade options</strong>, set it as below:'),
-                    localize('- <strong>Duration</strong>: Ticks 1'),
-                    localize('- <strong>Stake: USD</strong> 10 (min: 0.35 - max: 50000)'),
+                    localize('<ul class="list"><li><strong>Duration</strong>: Ticks 1</li></ul>'),
+                    localize('<ul class="list"><li><strong>Stake: USD</strong> 10 (min: 0.35 - max: 50000)</li></ul>'),
                 ]}
             />,
         ],
@@ -251,7 +251,7 @@ export const BOT_BUILDER_TOUR = [
                     localize('Step 2 :'),
                     localize('Then, set the <strong>Purchase conditions</strong> block.'),
                     localize('<strong>2. Purchase conditions</strong>:'),
-                    localize('- <strong>Purchase</strong>: Rise'),
+                    localize('<ul class="list"><li><strong>Purchase</strong>: Rise</li></ul>'),
                 ]}
             />,
         ],
@@ -285,10 +285,10 @@ export const BOT_BUILDER_TOUR = [
                         'Next, go to <strong>Utility tab</strong> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops</strong>.'
                     ),
                     localize(
-                        '- Look for the <strong>Repeat While/Until</strong>, and click the + icon to add the block to the workspace area.'
+                        '<ul class="list"><li>Look for the <strong>Repeat While/Until</strong>, and click the + icon to add the block to the workspace area.</li></ul>'
                     ),
-                    localize('- Choose <strong>until</strong> as the repeat option.'),
-                    localize('Pro tip: You can also drag out the desired block'),
+                    localize('<ul class="list"><li>Choose <strong>until</strong> as the repeat option.</li></ul>'),
+                    localize('<ul class="list"><li>Pro tip: You can also drag out the desired block</li></ul>'),
                 ]}
             />,
         ],
@@ -306,14 +306,16 @@ export const BOT_BUILDER_TOUR = [
                         'Now, tap the <strong>Analysis</strong> drop-down arrow and hit <strong>Contract</strong>.'
                     ),
                     localize(
-                        '- Go to the <strong>Last trade result</strong> block and click + icon to add the <strong>Result is Win</strong> block to the workspace.'
+                        '<ul class="list"><li>Go to the <strong>Last trade result</strong> block and click + icon to add the <strong>Result is Win</strong> block to the workspace.</li></ul>'
                     ),
                     localize(
-                        '- Then, drag the <strong>Result is win</strong> next to the <strong>repeat until</strong> block.'
+                        '<ul class="list"><li>Then, drag the <strong>Result is win</strong> next to the <strong>repeat until</strong> block.</li></ul>'
                     ),
-                    localize('- Now, go to the <strong>Restart trading conditions</strong> block.'),
                     localize(
-                        '- Drag the <strong>Trade again</strong> block and add it next to the <strong>do</strong> part of the <strong>Repeat until</strong> block.'
+                        '<ul class="list"><li>Now, go to the <strong>Restart trading conditions</strong> block.</li></ul>'
+                    ),
+                    localize(
+                        '<ul class="list"><li>Drag the <strong>Trade again</strong> block and add it next to the <strong>do</strong> part of the <strong>Repeat until</strong> block.</li></ul>'
                     ),
                 ]}
             />,
@@ -335,6 +337,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
 ];

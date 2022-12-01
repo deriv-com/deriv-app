@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
@@ -12,7 +13,6 @@ import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from 'Components/side-note';
-import { useStore } from '../../hooks';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;

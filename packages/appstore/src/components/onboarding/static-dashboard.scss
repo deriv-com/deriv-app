@@ -39,6 +39,8 @@
                 border-radius: $BORDER_RADIUS;
                 align-self: center;
                 width: 80%;
+                pointer-events: none;
+                cursor: not-allowed;
             }
 
             @include mobile {

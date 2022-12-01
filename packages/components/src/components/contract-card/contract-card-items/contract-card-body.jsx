@@ -23,6 +23,51 @@ import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
+const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, status }) => {
+    const { buy_price, entry_spot_display_value, barrier } = contract_info;
+    const total_profit = getTotalProfit(contract_info);
+
+    return (
+        <React.Fragment>
+            <div className='dc-contract-card-items-wrapper'>
+                <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
+                    <Money amount={buy_price} currency={currency} />
+                </ContractCardItem>
+
+                <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
+                    {/* TODO: replace buy_price with contract_value once API is ready */}
+                    <Money amount={buy_price} currency={currency} />
+                </ContractCardItem>
+
+                <ContractCardItem header={getCardLabels().ENTRY_SPOT}>
+                    <Money amount={entry_spot_display_value} currency={currency} />
+                </ContractCardItem>
+
+                <ContractCardItem header={getCardLabels().STRIKE}>
+                    <Money amount={barrier} currency={currency} />
+                </ContractCardItem>
+            </div>
+            <ContractCardItem
+                className='dc-contract-card-item__total-profit-loss'
+                header={getCardLabels().TOTAL_PROFIT_LOSS}
+                is_crypto={isCryptocurrency(currency)}
+                is_loss={+total_profit < 0}
+                is_won={+total_profit > 0}
+            >
+                <Money amount={total_profit} currency={currency} />
+                <div
+                    className={classNames('dc-contract-card__indicative--movement', {
+                        'dc-contract-card__indicative--movement-complete': is_sold,
+                    })}
+                >
+                    {status === 'profit' && <Icon icon='IcProfit' />}
+                    {status === 'loss' && <Icon icon='IcLoss' />}
+                </div>
+            </ContractCardItem>
+        </React.Fragment>
+    );
+};
+
 const MultiplierCardBody = ({
     addToast,
     contract_info,
@@ -161,6 +206,7 @@ const ContractCardBody = ({
     is_mobile,
     is_multiplier,
     is_sold,
+    is_vanilla,
     onMouseLeave,
     removeToast,
     server_time,
@@ -206,6 +252,14 @@ const ContractCardBody = ({
             setCurrentFocus={setCurrentFocus}
             should_show_cancellation_warning={should_show_cancellation_warning}
             toggleCancellationWarning={toggleCancellationWarning}
+        />
+    ) : is_vanilla ? (
+        <VanillaOptionsCardBody
+            contract_info={contract_info}
+            currency={currency}
+            getCardLabels={getCardLabels}
+            is_sold={is_sold}
+            status={status}
         />
     ) : (
         <React.Fragment>

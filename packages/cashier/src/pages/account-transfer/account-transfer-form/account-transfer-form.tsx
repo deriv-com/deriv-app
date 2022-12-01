@@ -418,7 +418,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                         {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e: { target: { value: string } }) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
@@ -446,7 +446,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize

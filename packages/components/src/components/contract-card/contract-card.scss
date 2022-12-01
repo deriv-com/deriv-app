@@ -42,7 +42,7 @@
             width: 100%;
 
             &--trader {
-                grid-template-columns: 1.5fr 1fr;
+                grid-template-columns: 1.2fr 1fr;
             }
             &--mobile {
                 grid-template-columns: 1fr 1fr 25%;
@@ -124,7 +124,9 @@
     }
     &__wrapper {
         margin: 0 1em;
-        max-width: 218px;
+        min-width: 218px;
+        max-width: 238px;
+        width: min-content;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -412,6 +414,7 @@
 
             .dc-btn--cancel {
                 margin-left: 0.8rem;
+                max-width: 10.5rem;
             }
         }
         .dc-remaining-time {

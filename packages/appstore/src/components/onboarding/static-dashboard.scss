@@ -103,6 +103,12 @@
                     display: flex;
                     width: 95.6rem;
                     margin-bottom: 1rem;
+
+                    @include mobile {
+                        display: initial;
+                        width: initial;
+                        margin-bottom: 1rem;
+                    }
                 }
 
                 @include mobile {

@@ -367,6 +367,7 @@
     "478280278": "Khung này hiển thị một hộp thoại sử dụng tin nhẵn tùy chỉnh để yêu cầu một đầu vào. Đầu vào có thể là một chuỗi văn bản hoặc một số và có thể được gán vào một biến. Khi hộp thoại hiển thị, chiến lược của bạn sẽ bị tạm dừng và chỉ tiếp tục sau khi bạn nhập một phản hồi sau đó nhấp vào \"OK\".",
     "479420576": "Cấp thứ ba",
     "481276888": "Ra Ngoài",
+    "483246914": "Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).",
     "483279638": "Assessment Completed<0/><0/>",
     "483591040": "Xóa tất cả {{ delete_count }} khung?",
     "485379166": "Xem giao dịch",

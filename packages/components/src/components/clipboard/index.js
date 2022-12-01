@@ -1,4 +1,4 @@
-import Clipboard from './clipboard.jsx';
+import Clipboard from './clipboard';
 import './clipboard.scss';
 
 export default Clipboard;

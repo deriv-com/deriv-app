@@ -1,8 +1,8 @@
 import { TToken } from './common-prop.type';
 
 export type TPlatformContext = {
-    is_appstore: boolean;
-    displayName: string;
+    is_appstore?: boolean;
+    displayName?: string;
 };
 
 export type TApiContext = {

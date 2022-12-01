@@ -64,8 +64,10 @@ const App = () => (
 3. Run `svgo` with the `--enable=sortAttrs` flag to clean and sort the icon attributes (for readibility).
 
     ```sh
-    svgo src/components/icon/**/**.svg --enable=sortAttrs
+    npx svgo src/components/icon/**/**.svg --enable=sortAttrs
     ```
+
+    Note: If there are multiple svg files you are adding in the component, please make sure that the id's are not duplicated due to minification.
 
 4. Run `npm run build` to rebuild the Icon component.
 

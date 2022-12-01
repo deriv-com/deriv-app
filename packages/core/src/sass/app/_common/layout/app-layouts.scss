@@ -82,9 +82,14 @@
         line-height: 1.4;
     }
 
-    // checks for portrait view using aspect ratio. 16:9 is the most common aspect ratio used on smartphones.
-    @media screen and (max-aspect-ratio: 16/9) {
+    @media (hover: hover) and (pointer: fine) {
         display: none;
+    }
+
+    @media only screen and (hover: none) and (pointer: coarse) {
+        @media screen and (orientation: portrait) and (max-aspect-ratio: 16/9) {
+            display: none;
+        }
     }
 }
 

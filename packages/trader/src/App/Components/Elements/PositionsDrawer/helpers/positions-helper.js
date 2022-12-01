@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { isHighLow, getContractTypesConfig, isCallPut } from '@deriv/shared';
+import { isHighLow, getContractTypesConfig, isCallPut, isVanillaContract } from '@deriv/shared';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {
@@ -13,6 +13,9 @@ export const addCommaToNumber = (num, decimal_places) => {
 export const getBarrierLabel = contract_info => {
     if (isDigitType(contract_info.contract_type)) {
         return localize('Target');
+    }
+    if (isVanillaContract(contract_info.contract_type)) {
+        return localize('Strike');
     }
     return localize('Barrier');
 };

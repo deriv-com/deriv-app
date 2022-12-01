@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import WithdrawalVerificationEmail from '../withdrawal-verification-email';
-import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Components/verification-email', () => jest.fn(() => 'VerificationEmail'));
 

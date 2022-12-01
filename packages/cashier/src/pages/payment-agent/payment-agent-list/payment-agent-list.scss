@@ -48,6 +48,9 @@
         &-header {
             margin-top: 2.4rem;
             margin-bottom: 1.6rem;
+            &-text {
+                min-width: fit-content;
+            }
             @include mobile {
                 margin-top: 1.6rem;
             }

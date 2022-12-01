@@ -1,11 +1,12 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CryptoDeposit from '../crypto-deposit';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
-import { StoreProvider } from '../../../../hooks';
-import { TRootStore, DeepPartial } from '../../../../types';
+import { StoreProvider } from '@deriv/stores';
+import { DeepPartial } from '@deriv/stores/types';
+import CryptoDeposit from '../crypto-deposit';
+import { TRootStore } from '../../../../types';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

@@ -7,8 +7,8 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from './props.types';
-import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
+import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
+import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -62,6 +62,8 @@ type TCFDRealAccountDisplayProps = {
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
     setIsAcuityModalOpen: (value: boolean) => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 const CFDRealAccountDisplay = ({
@@ -90,6 +92,8 @@ const CFDRealAccountDisplay = ({
     openDerivRealAccountNeededModal,
     should_enable_add_button,
     setIsAcuityModalOpen,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDRealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -234,6 +238,8 @@ const CFDRealAccountDisplay = ({
             toggleAccountsDialog={toggleAccountsDialog}
             toggleMT5TradeModal={toggleMT5TradeModal}
             setIsAcuityModalOpen={setIsAcuityModalOpen}
+            real_account_creation_unlock_date={real_account_creation_unlock_date}
+            setShouldShowCooldownModal={setShouldShowCooldownModal}
         />
     );
 

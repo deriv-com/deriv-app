@@ -60,7 +60,7 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength={props.maxLength || '30'}
+                maxLength={props.maxLength || 30}
                 error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}

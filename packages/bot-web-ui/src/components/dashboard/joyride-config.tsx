@@ -225,6 +225,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'top',
         ...joyride_props,
     },
     {
@@ -256,6 +257,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
@@ -272,10 +274,11 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(5)',
+        target: '.db-toolbox__row:nth-child(6)',
         content: [
             <Step
                 key='toolbox'
@@ -293,10 +296,11 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(6)',
+        target: '.db-toolbox__row:nth-child(5)',
         content: [
             <Step
                 key='dashboard__toolbox'
@@ -319,6 +323,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {

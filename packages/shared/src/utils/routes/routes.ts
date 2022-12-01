@@ -59,5 +59,7 @@ export const routes = {
     two_factor_authentication: '/account/two-factor-authentication',
 
     // Appstore
-    trading_hub: '/trading-hub',
+    appstore: '/appstore',
+    trading_hub: '/appstore/trading-hub',
+    onboarding: '/appstore/onboarding',
 };

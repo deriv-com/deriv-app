@@ -39,8 +39,14 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            } else {
+                history.push({
+                    pathname: routes.onboarding,
+                    search: url_query_string,
+                });
             }
             sessionStorage.removeItem('redirect_url');
+            redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
         }
@@ -173,6 +179,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     currency: PropTypes.string,
+    loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
@@ -190,6 +197,9 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
+        loginid: client.loginid,
+        is_eu: client.is_eu,
+        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

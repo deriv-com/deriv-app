@@ -264,9 +264,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
-        if (this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy_id);
-        }
     };
 
     onDriveConnect = (): void => {
@@ -287,16 +284,15 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onEntered = (): void => {
         this.previewRecentStrategy(this.selected_strategy_id);
-        this.onActiveIndexChange();
     };
 
     onLoadModalClose = (): void => {
         if (this.recent_workspace) {
-            this.recent_workspace.dispose();
+            // this.recent_workspace.dispose()
             this.recent_workspace = null;
         }
         if (this.local_workspace) {
-            this.local_workspace.dispose();
+            // this.recent_workspace.dispose();
             this.local_workspace = null;
         }
 
@@ -316,7 +312,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!this.selected_strategy) {
             return;
         }
-
         const {
             dashboard: { active_tab },
         } = this.root_store;
@@ -345,7 +340,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
         const {
             save_modal: { updateBotName },

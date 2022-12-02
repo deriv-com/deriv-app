@@ -144,8 +144,9 @@ export default class DashboardStore implements IDashboardStore {
         this.active_tab = active_tab;
         if (active_tab === 1) {
             const {
-                load_modal: { previewRecentStrategy, selected_strategy_id },
+                load_modal: { previewRecentStrategy, selected_strategy_id, recent_workspace, local_workspace },
             } = this.root_store;
+            recent_workspace.dispose();
             previewRecentStrategy(selected_strategy_id);
         }
     };

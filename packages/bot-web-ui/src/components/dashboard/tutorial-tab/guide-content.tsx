@@ -59,7 +59,7 @@ const GuideContent = ({
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s'>
-                        User Guides
+                        Step-by-step guides
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -90,7 +90,7 @@ const GuideContent = ({
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s'>
-                        Guides
+                        Videos on DBot
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

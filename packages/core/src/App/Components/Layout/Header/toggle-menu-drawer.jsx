@@ -618,25 +618,38 @@ const ToggleMenuDrawer = React.forwardRef(
                                         )}
                                         {getLanguageRoutes()}
                                         {
-                                            <MobileDrawer.Item
-                                                className='header__menu-mobile-theme'
-                                                onClick={e => {
-                                                    e.preventDefault();
-                                                    toggleTheme(!is_dark_mode);
-                                                }}
-                                            >
-                                                <div className={classNames('header__menu-mobile-link')}>
-                                                    <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                                    <span className='header__menu-mobile-link-text'>
-                                                        {localize('Dark theme')}
-                                                    </span>
-                                                    <ToggleSwitch
-                                                        id='dt_mobile_drawer_theme_toggler'
-                                                        handleToggle={() => toggleTheme(!is_dark_mode)}
-                                                        is_enabled={is_dark_mode}
+                                            <React.Fragment>
+                                                <MobileDrawer.Item
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                        toggleTheme(!is_dark_mode);
+                                                    }}
+                                                >
+                                                    <div className={classNames('header__menu-mobile-link')}>
+                                                        <Icon
+                                                            className='header__menu-mobile-link-icon'
+                                                            icon={'IcTheme'}
+                                                        />
+                                                        <span className='header__menu-mobile-link-text'>
+                                                            {localize('Dark theme')}
+                                                        </span>
+                                                        <ToggleSwitch
+                                                            id='dt_mobile_drawer_theme_toggler'
+                                                            handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                            is_enabled={is_dark_mode}
+                                                        />
+                                                    </div>
+                                                </MobileDrawer.Item>
+                                                <MobileDrawer.Item className='header__menu-mobile-theme'>
+                                                    <MenuLink
+                                                        link_to={getStaticUrl('/help-centre')}
+                                                        icon='IcHelpCentre'
+                                                        text={localize('Help centre')}
+                                                        onClickLink={toggleDrawer}
+                                                        changeCurrentLanguage={changeCurrentLanguage}
                                                     />
-                                                </div>
-                                            </MobileDrawer.Item>
+                                                </MobileDrawer.Item>
+                                            </React.Fragment>
                                         }
                                         {liveChat.isReady && (
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { RejectedReasons } from '../rejected-reasons.js';
+import { RejectedReasons } from '../rejected-reasons';
 
 describe('<RejectedReasons />', () => {
     it('should render RejectedReasons with rejected reasons and trigger continue ', () => {

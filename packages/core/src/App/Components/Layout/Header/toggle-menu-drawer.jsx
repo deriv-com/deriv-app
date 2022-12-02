@@ -315,9 +315,9 @@ const ToggleMenuDrawer = React.forwardRef(
             );
         };
 
-        const HelpCentreRoute = class_name => {
+        const HelpCentreRoute = has_border_bottom => {
             return (
-                <MobileDrawer.Item className={class_name}>
+                <MobileDrawer.Item className={classNames({ 'header__menu-mobile-theme': has_border_bottom })}>
                     <MenuLink
                         link_to={getStaticUrl('/help-centre')}
                         icon='IcHelpCentre'
@@ -647,7 +647,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         />
                                                     </div>
                                                 </MobileDrawer.Item>
-                                                {HelpCentreRoute('header__menu-mobile-theme')}
+                                                {HelpCentreRoute(true)}
                                             </React.Fragment>
                                         }
                                         {liveChat.isReady && (

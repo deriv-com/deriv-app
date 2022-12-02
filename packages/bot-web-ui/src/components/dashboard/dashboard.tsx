@@ -220,7 +220,7 @@ const Dashboard = ({
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
                         </div>
-                        <div icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
+                        <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
                                 <Tutorial />
                             </div>

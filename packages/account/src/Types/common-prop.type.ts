@@ -22,6 +22,7 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
 
 export type TPlatformContext = {
     is_appstore?: boolean;
+    is_pre_appstore?: boolean;
 };
 
 export type TCurrencyConfig = {

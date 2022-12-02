@@ -92,7 +92,7 @@
     // pointer checks if primary input mechanism has limited accuracy (remotes for tvs or game consoles).
     @media only screen and (hover: none) and (pointer: coarse) {
         @include mobile {
-            @media (max-aspect-ratio: 16/9) {
+            @media (max-aspect-ratio: 20/9) {
                 display: none;
             }
         }

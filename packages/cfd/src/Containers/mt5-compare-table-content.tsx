@@ -183,7 +183,7 @@ const content: TModalContentProps[] = [
         id: 'instruments',
         attribute: localize('Trading instruments'),
         values: {
-            synthetic_svg: { text: [localize('Synthetics'), localize('Basket indices')] },
+            synthetic_svg: { text: [localize('Synthetics'), localize('Basket indices'), localize('Derived FX')] },
             financial_svg: {
                 text: [
                     localize('Forex: standard/micro'),

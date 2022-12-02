@@ -17,6 +17,7 @@ import {
     TTradingPlatformAccounts,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { FormikValues } from 'formik';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -240,7 +241,7 @@ const CFDAccountCardComponent = ({
     };
 
     const checkMultipleSvgAcc = () => {
-        existing_accounts_data?.map(acc => {
+        existing_accounts_data?.map((acc: FormikValues) => {
             if (acc.landing_company_short === 'svg') {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
@@ -392,7 +393,7 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'demo' &&
                             existing_accounts_data?.length &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {acc?.display_balance && is_logged_in && acc.landing_company_short === 'labuan' && (
                                         <div className='cfd-account-card__item--banner'>
@@ -497,7 +498,7 @@ const CFDAccountCardComponent = ({
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && !is_eu && (
                                         <div className='cfd-account-card__item--banner'>
@@ -529,16 +530,17 @@ const CFDAccountCardComponent = ({
                                                     show_currency
                                                 />
                                             </Text>
-                                            {checkMultipleSvgAcc()?.length > 1 && acc.landing_company_short === 'svg' && (
-                                                <Text
-                                                    className='cfd-account-card__balance--region'
-                                                    color='colored-background'
-                                                    size='xxxs'
-                                                    weight='bold'
-                                                >
-                                                    {getServerName(acc)}
-                                                </Text>
-                                            )}
+                                            {checkMultipleSvgAcc()?.length > 1 &&
+                                                acc.landing_company_short === 'svg' && (
+                                                    <Text
+                                                        className='cfd-account-card__balance--region'
+                                                        color='colored-background'
+                                                        size='xxxs'
+                                                        weight='bold'
+                                                    >
+                                                        {getServerName(acc)}
+                                                    </Text>
+                                                )}
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
@@ -546,7 +548,7 @@ const CFDAccountCardComponent = ({
                                             <Button
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
+                                                        (data: FormikValues) =>
                                                             data.landing_company_short === acc.landing_company_short &&
                                                             data.login === acc.login
                                                     );
@@ -565,7 +567,7 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
+                                                        (data: FormikValues) =>
                                                             data.landing_company_short === acc.landing_company_short &&
                                                             data.login === acc.login
                                                     );

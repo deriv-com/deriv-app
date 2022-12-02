@@ -314,6 +314,21 @@ const ToggleMenuDrawer = React.forwardRef(
                 </MobileDrawer.SubMenu>
             );
         };
+
+        const HelpCentreRoute = class_name => {
+            return (
+                <MobileDrawer.Item className={class_name}>
+                    <MenuLink
+                        link_to={getStaticUrl('/help-centre')}
+                        icon='IcHelpCentre'
+                        text={localize('Help centre')}
+                        onClickLink={toggleDrawer}
+                        changeCurrentLanguage={changeCurrentLanguage}
+                    />
+                </MobileDrawer.Item>
+            );
+        };
+
         const { pathname: route } = useLocation();
 
         const history = useHistory();
@@ -483,15 +498,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         {is_logged_in && (
                                             <React.Fragment>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/help-centre')}
-                                                        icon='IcHelpCentre'
-                                                        text={localize('Help centre')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
+                                                {HelpCentreRoute()}
                                                 <MobileDrawer.Item>
                                                     <MenuLink
                                                         link_to={routes.account_limits}
@@ -640,15 +647,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                         />
                                                     </div>
                                                 </MobileDrawer.Item>
-                                                <MobileDrawer.Item className='header__menu-mobile-theme'>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/help-centre')}
-                                                        icon='IcHelpCentre'
-                                                        text={localize('Help centre')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
+                                                {HelpCentreRoute('header__menu-mobile-theme')}
                                             </React.Fragment>
                                         }
                                         {liveChat.isReady && (

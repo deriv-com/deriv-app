@@ -84,25 +84,35 @@
 
     // Desktop view: by checking if the primary input mechanism can hover over elements.
     // pointer checks if primary input mechanism is an accurate pointing device (mouse, touchpads, stylus).
-    @media (hover: hover) and (pointer: fine) {
+    // @media (hover: hover) and (pointer: fine) {
+    //     display: none;
+    // }
+
+    @include desktop {
         display: none;
     }
 
-    // Touch Devices: by checking if they can hover over elements or if their
-    // pointer checks if primary input mechanism has limited accuracy (remotes for tvs or game consoles).
-    @media only screen and (hover: none) and (pointer: coarse) {
-        // @include mobile {
-        @media (max-aspect-ratio: 1/1) {
+    @include mobile {
+        @media screen and (max-aspect-ratio: 13/9) {
             display: none;
         }
-        // }
-
-        // @include tablet {
-        //     @media (orientation: portrait) {
-        //         display: none;
-        //     }
-        // }
     }
+
+    // // Touch Devices: by checking if they can hover over elements or if their
+    // // pointer checks if primary input mechanism has limited accuracy (remotes for tvs or game consoles).
+    // @media only screen and (hover: none) and (pointer: coarse) {
+    //     @include mobile {
+    //         @media (max-aspect-ratio: 1/1) {
+    //             display: none;
+    //         }
+    //     }
+
+    //     @include tablet {
+    //         @media (orientation: portrait) {
+    //             display: none;
+    //         }
+    //     }
+    // }
 }
 
 /** @define app-contents; weak */

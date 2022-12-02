@@ -91,11 +91,11 @@
     // Touch Devices: by checking if they can hover over elements or if their
     // pointer checks if primary input mechanism has limited accuracy (remotes for tvs or game consoles).
     @media only screen and (hover: none) and (pointer: coarse) {
-        @include mobile {
-            @media (max-aspect-ratio: 1/1) {
-                display: none;
-            }
+        // @include mobile {
+        @media (max-aspect-ratio: 1/1) {
+            display: none;
         }
+        // }
 
         // @include tablet {
         //     @media (orientation: portrait) {

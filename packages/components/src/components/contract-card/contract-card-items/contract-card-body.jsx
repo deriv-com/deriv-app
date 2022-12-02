@@ -24,7 +24,7 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
 const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, status }) => {
-    const { buy_price, entry_spot_display_value, barrier } = contract_info;
+    const { buy_price, bid_price, entry_spot_display_value, barrier } = contract_info;
     const total_profit = getTotalProfit(contract_info);
 
     return (
@@ -35,8 +35,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                 </ContractCardItem>
 
                 <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
-                    {/* TODO: replace buy_price with contract_value once API is ready */}
-                    <Money amount={buy_price} currency={currency} />
+                    <Money amount={bid_price} currency={currency} />
                 </ContractCardItem>
 
                 <ContractCardItem header={getCardLabels().ENTRY_SPOT}>

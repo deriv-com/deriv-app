@@ -146,7 +146,6 @@ export default class DashboardStore implements IDashboardStore {
             const {
                 load_modal: { previewRecentStrategy, selected_strategy_id, recent_workspace, local_workspace },
             } = this.root_store;
-            recent_workspace.dispose();
             previewRecentStrategy(selected_strategy_id);
         }
     };

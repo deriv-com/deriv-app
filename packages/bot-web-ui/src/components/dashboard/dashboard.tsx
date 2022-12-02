@@ -265,6 +265,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    onEntered: load_modal.onEntered,
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
@@ -278,5 +279,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setActiveTab: dashboard.setActiveTab,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    onEntered: load_modal.onEntered,
 }))(Dashboard);

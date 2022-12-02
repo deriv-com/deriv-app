@@ -151,8 +151,6 @@ export const load = ({
             }
         } catch (e) {
             console.error(e); // eslint-disable-line
-            //fixing this through the catch becuse needs time to identify where
-            //the initializtion order has to be changed
             return showInvalidStrategyError();
         } finally {
             endLoading();

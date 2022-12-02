@@ -5,12 +5,6 @@ import { tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 import React from 'react';
 
-const clearInjectionDiv = () => {
-    const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[1]);
-    }
-};
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;
@@ -288,11 +282,9 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onLoadModalClose = (): void => {
         if (this.recent_workspace) {
-            // this.recent_workspace.dispose()
             this.recent_workspace = null;
         }
         if (this.local_workspace) {
-            // this.recent_workspace.dispose();
             this.local_workspace = null;
         }
 

@@ -320,8 +320,13 @@ export default class LoadModalStore implements ILoadModalStore {
         const {
             dashboard: { active_tab },
         } = this.root_store;
-
-        if ((active_tab === 1 || this.tab_name !== tabs_title.TAB_LOCAL) && this.recent_workspace) {
+        //removed the dispose here so on switch of tab it does not
+        //throw xml error
+        if (active_tab === 1) {
+            this.recent_workspace = null;
+        }
+        //to load the bot on first load
+        if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }

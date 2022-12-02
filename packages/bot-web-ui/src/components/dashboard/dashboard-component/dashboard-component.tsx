@@ -35,11 +35,7 @@ const DashboardComponent = ({
                                     </Text>
                                 </div>
                                 <div className='tab__dashboard__home__retrigger'>
-                                    <button
-                                        onClick={() => {
-                                            setActiveTab(4);
-                                        }}
-                                    >
+                                    <button onClick={() => setActiveTab(4)}>
                                         <Icon
                                             className='tab__dashboard__home__retrigger__icon'
                                             width='2.4rem'

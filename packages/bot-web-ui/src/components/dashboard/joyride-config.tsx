@@ -225,7 +225,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
-        placement: 'top',
+        placement: 'right',
         ...joyride_props,
     },
     {

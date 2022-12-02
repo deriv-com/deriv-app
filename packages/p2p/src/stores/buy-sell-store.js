@@ -644,13 +644,11 @@ export default class BuySellStore extends BaseStore {
         } else if (this.is_sell_advert) {
             this.getAdvertiserInfo();
             this.setSelectedAdState(selected_advert);
-            // this.setShouldShowPopup(true);
             general_store.showModal({
                 key: 'BuySellModal',
             });
         } else {
             this.setSelectedAdState(selected_advert);
-            // this.setShouldShowPopup(true);
             general_store.showModal({
                 key: 'BuySellModal',
             });

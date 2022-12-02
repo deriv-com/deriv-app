@@ -18,7 +18,6 @@ import { useStores } from 'Stores';
 import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-amount.jsx';
 import NicknameForm from 'Components/nickname-form';
-import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -87,7 +86,6 @@ const BuySellModal = () => {
                                     showModal({
                                         key: 'CancelAddPaymentMethodModal',
                                     });
-                                    // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                 } else {
                                     my_profile_store.setShouldShowAddPaymentMethodForm(false);
                                 }
@@ -265,4 +263,4 @@ const BuySellModal = () => {
     );
 };
 
-export default observer(BuySellModal);
+export default React.memo(observer(BuySellModal));

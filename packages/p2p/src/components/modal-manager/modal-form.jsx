@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 
 /**
- * Formik wrapper that allows for saving form state using form_state and saved_form_state declared in general_store
+ * Formik wrapper that automatically handles saving and restoring form state and values when a modal is unmounted
  * Use this for modals with forms using Formik, that could be temporary hidden in place of another modal,
  * such as an error modal or a message modal like CancelAddPaymentMethodModal
  *
@@ -23,9 +23,6 @@ const ModalForm = props => {
             general_store.formik_ref.setValues(general_store.saved_form_state.values);
         }
 
-        // return () => {
-        //     general_store.setFormikRef(null);
-        // };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

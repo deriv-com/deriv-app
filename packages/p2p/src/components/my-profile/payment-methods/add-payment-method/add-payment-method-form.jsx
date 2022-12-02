@@ -41,7 +41,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                 {({ dirty, handleChange, isSubmitting, errors, touched }) => {
                     return (
                         <Form className='add-payment-method-form__form' noValidate>
-                            {/* <FormHistory /> */}
                             <div className='add-payment-method-form__form-wrapper'>
                                 <Field name='choose_payment_method'>
                                     {({ field }) => (
@@ -105,7 +104,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                     large
                                     onClick={() => {
                                         if (dirty || my_profile_store.selected_payment_method.length > 0) {
-                                            // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                             showModal({
                                                 key: 'CancelAddPaymentMethodModal',
                                             });

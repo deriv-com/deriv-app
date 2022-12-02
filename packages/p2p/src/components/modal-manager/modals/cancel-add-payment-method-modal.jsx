@@ -37,7 +37,7 @@ const CancelAddPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        hideModal(false);
+                        hideModal();
                         my_profile_store.hideAddPaymentMethodForm();
                         my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
                         my_ads_store.setShouldShowAddPaymentMethodModal(false);
@@ -49,7 +49,7 @@ const CancelAddPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        hideModal();
+                        hideModal(true);
                     }}
                     primary
                 >

@@ -33,7 +33,7 @@ HintBox.propTypes = {
     is_info: PropTypes.bool,
     is_warn: PropTypes.bool,
     is_danger: PropTypes.bool,
-    message: PropTypes.string,
+    message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 
 export default HintBox;

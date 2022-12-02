@@ -128,6 +128,7 @@ export default class GeneralStore extends BaseStore {
             setAppProps: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
+            setSavedFormState: action.bound,
             saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,

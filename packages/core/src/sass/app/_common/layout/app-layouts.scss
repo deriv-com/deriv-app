@@ -97,11 +97,11 @@
             }
         }
 
-        @include tablet {
-            @media (orientation: portrait) {
-                display: none;
-            }
-        }
+        // @include tablet {
+        //     @media (orientation: portrait) {
+        //         display: none;
+        //     }
+        // }
     }
 }
 

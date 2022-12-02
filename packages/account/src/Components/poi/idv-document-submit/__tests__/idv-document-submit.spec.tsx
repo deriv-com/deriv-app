@@ -5,7 +5,7 @@ import IdvDocumentSubmit from '../idv-document-submit';
 
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('../utils.js', () => ({
-    getDocumentData: function (country_code, key) {
+    getDocumentData(country_code, key) {
         const data = {
             tc: {
                 document_1: {
@@ -49,7 +49,7 @@ describe('<IdvDocumentSubmit/>', () => {
                             document_1: { display_name: 'Test document 1 name', format: '12345A' },
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
-                        has_visual_sample: 1,
+                        has_visual_sample: true,
                         is_country_supported: 0,
                     },
                 },
@@ -67,7 +67,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('New ID type name')).not.toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
         expect(inputs.length).toBe(2);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
@@ -100,8 +100,8 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
@@ -111,15 +111,15 @@ describe('<IdvDocumentSubmit/>', () => {
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();
 
-        const document_type_input = screen.getByRole('combobox');
+        const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).not.toBeDisabled();
+        expect(document_number_input).toBeEnabled();
         expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
 
@@ -133,7 +133,7 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.change(document_number_input, { target: { value: 'A-54321' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-            expect(verifyBtn).not.toBeDisabled();
+            expect(verifyBtn).toBeEnabled();
         });
 
         fireEvent.click(verifyBtn);

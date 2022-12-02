@@ -9,14 +9,6 @@ const CancelAddPaymentMethodModal = () => {
     const { my_profile_store, my_ads_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
-    // React.useEffect(() => {
-    //     // return () => {
-    //     //     my_profile_store.setSelectedPaymentMethod('');
-    //     //     my_profile_store.setSelectedPaymentMethodDisplayName('');
-    //     // };
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
-
     return (
         <Modal
             has_close_icon={false}

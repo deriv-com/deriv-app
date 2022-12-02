@@ -25,7 +25,6 @@ const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_s
                     <PageReturn
                         onClick={() => {
                             if (my_profile_store.selected_payment_method.length > 0) {
-                                // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
                                 general_store.showModal('CancelAddPaymentMethodModal');
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();

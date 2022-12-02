@@ -42,7 +42,7 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
     return (
         <Modal
             has_close_icon={false}
-            is_open={general_store.is_modal_open}
+            is_open={my_profile_store.is_cancel_add_payment_method_modal_open}
             small
             title={
                 <Text color='prominent' size='s' weight='bold'>

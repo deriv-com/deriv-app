@@ -37,7 +37,9 @@ const PlatformLauncher = ({
 
     const TradeButton = (
         <Button primary className='platform-launcher__trade-button'>
-            <Localize i18n_default_text='Trade' />
+            <Text size={isMobile() ? 'xxxs' : 's'} weight='bold' color='colored-background'>
+                {localize('Trade')}
+            </Text>
         </Button>
     );
 

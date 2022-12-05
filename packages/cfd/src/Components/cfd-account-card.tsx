@@ -4,8 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
@@ -107,6 +107,8 @@ const CFDAccountCardAction = ({
     type,
     platform,
     title,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
@@ -146,7 +148,13 @@ const CFDAccountCardAction = ({
     return (
         <Button
             className='cfd-account-card__account-selection'
-            onClick={onSelectAccount}
+            onClick={() => {
+                if (real_account_creation_unlock_date) {
+                    setShouldShowCooldownModal(true);
+                } else {
+                    onSelectAccount();
+                }
+            }}
             type='button'
             is_disabled={is_disabled}
             primary={is_button_primary}
@@ -187,6 +195,8 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -663,6 +673,8 @@ const CFDAccountCardComponent = ({
                                 type={type}
                                 platform={platform}
                                 title={title}
+                                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                setShouldShowCooldownModal={setShouldShowCooldownModal}
                             />
                         )}
                     </div>

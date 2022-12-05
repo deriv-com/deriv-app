@@ -9,6 +9,7 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
+import BlocklyLoading from '../components/blockly-loading';
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
@@ -76,6 +77,7 @@ const App = ({ passthrough }) => {
         <Loading />
     ) : (
         <MobxContentProvider store={root_store_instance.current}>
+            <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <BotFooterExtensions />
                 <BotNotificationMessages />

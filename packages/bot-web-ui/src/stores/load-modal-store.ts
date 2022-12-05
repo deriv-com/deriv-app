@@ -7,10 +7,9 @@ import React from 'react';
 
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[1]);
-    }
+    el_ref?.current?.removeChild(el_ref?.current?.children[0]);
 };
+
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;
@@ -225,9 +224,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            if (this.selected_strategy) {
-                this.previewRecentStrategy(this.selected_strategy_id);
-            }
+            this.previewRecentStrategy(this.selected_strategy_id);
         } else {
             // eslint-disable-next-line no-lonely-if
             if (this.recent_workspace) {
@@ -264,9 +261,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
-        if (this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy_id);
-        }
     };
 
     onDriveConnect = (): void => {
@@ -287,16 +281,13 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onEntered = (): void => {
         this.previewRecentStrategy(this.selected_strategy_id);
-        this.onActiveIndexChange();
     };
 
     onLoadModalClose = (): void => {
         if (this.recent_workspace) {
-            this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
         if (this.local_workspace) {
-            this.local_workspace.dispose();
             this.local_workspace = null;
         }
 
@@ -312,21 +303,20 @@ export default class LoadModalStore implements ILoadModalStore {
 
     previewRecentStrategy = (workspace_id: string): void => {
         this.setSelectedStrategyId(workspace_id);
-
         if (!this.selected_strategy) {
             return;
         }
-
         const {
             dashboard: { active_tab },
         } = this.root_store;
         //removed the dispose here so on switch of tab it does not
         //throw xml error
-        if (active_tab === 1) {
+        if (active_tab === 1 && !this.is_load_modal_open) {
             this.recent_workspace = null;
         }
         //to load the bot on first load
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
+            clearInjectionDiv();
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
@@ -350,7 +340,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
         const {
             save_modal: { updateBotName },

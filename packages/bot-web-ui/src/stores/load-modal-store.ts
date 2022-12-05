@@ -5,6 +5,11 @@ import { tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 import React from 'react';
 
+const clearInjectionDiv = () => {
+    const el_ref = document.getElementById('load-strategy__blockly-container');
+    el_ref?.current?.removeChild(el_ref?.current?.children[0]);
+};
+
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;
@@ -219,9 +224,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            if (this.selected_strategy) {
-                this.previewRecentStrategy(this.selected_strategy_id);
-            }
+            this.previewRecentStrategy(this.selected_strategy_id);
         } else {
             // eslint-disable-next-line no-lonely-if
             if (this.recent_workspace) {
@@ -300,7 +303,6 @@ export default class LoadModalStore implements ILoadModalStore {
 
     previewRecentStrategy = (workspace_id: string): void => {
         this.setSelectedStrategyId(workspace_id);
-
         if (!this.selected_strategy) {
             return;
         }
@@ -309,11 +311,12 @@ export default class LoadModalStore implements ILoadModalStore {
         } = this.root_store;
         //removed the dispose here so on switch of tab it does not
         //throw xml error
-        if (active_tab === 1) {
+        if (active_tab === 1 && !this.is_load_modal_open) {
             this.recent_workspace = null;
         }
         //to load the bot on first load
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
+            clearInjectionDiv();
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }

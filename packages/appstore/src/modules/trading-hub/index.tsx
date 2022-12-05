@@ -284,8 +284,8 @@ const TradingHub: React.FC = () => {
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
             />
             <CFDPasswordManagerModal
-                context={store}
                 is_visible={password_manager.is_visible}
+                context={store}
                 selected_login={password_manager.selected_login}
                 selected_account={password_manager.selected_account}
                 selected_account_group={password_manager.selected_account_group}

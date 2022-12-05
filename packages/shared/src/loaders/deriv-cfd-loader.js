@@ -34,6 +34,5 @@ ${checkExists(c) ? `import '@deriv/cfd/dist/cfd/css/${c}.css';` : ''}
 
         return replace;
     });
-
     return this.callback(null, mapped_lines.join('\n'), map);
 };

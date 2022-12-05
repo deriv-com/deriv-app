@@ -1,4 +1,10 @@
-module.exports = function (source, map) {
+import { SourceMap } from 'module';
+
+type Tthis = {
+    callback: any;
+    emitError: any;
+};
+module.exports = function (this: Tthis, source: string, map: SourceMap) {
     if (/import\s*React,/.test(source)) {
         this.emitError(
             new Error(

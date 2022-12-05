@@ -35,6 +35,5 @@ ${checkExists(c) ? `import '@deriv/trader/dist/trader/css/${c}.css';` : ''}
 
         return replace;
     });
-
     return this.callback(null, mapped_lines.join('\n'), map);
 };

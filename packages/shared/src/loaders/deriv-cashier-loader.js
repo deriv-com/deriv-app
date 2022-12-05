@@ -42,6 +42,5 @@ ${checkExists(getKebabCase(c)) ? `import '@deriv/cashier/dist/cashier/css/${getK
 
         return replace;
     });
-
     return this.callback(null, mapped_lines.join('\n'), map);
 };

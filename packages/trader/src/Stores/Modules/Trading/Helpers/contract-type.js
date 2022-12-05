@@ -15,6 +15,7 @@ import {
     getContractCategoriesConfig,
     getContractTypesConfig,
     getLocalizedBasis,
+    dummy_accu_in_contracts_for_available,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -40,7 +41,12 @@ export const ContractType = (() => {
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
-            r.contracts_for.available.forEach(contract => {
+            const dummy_available_contracts_with_accu = [
+                ...r.contracts_for.available,
+                dummy_accu_in_contracts_for_available,
+            ];
+
+            dummy_available_contracts_with_accu.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
                         contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&

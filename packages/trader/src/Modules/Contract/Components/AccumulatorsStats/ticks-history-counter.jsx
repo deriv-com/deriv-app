@@ -16,7 +16,7 @@ const TicksHistoryCounter = ({ has_progress_dots, value }) => {
         return () => {
             clearTimeout(emphasizing_timeout);
         };
-    }, [value]);
+    }, [has_progress_dots, value]);
 
     return (
         <div

@@ -30,7 +30,7 @@ const AccumulatorsProfitLossText = ({
             setIsBrightening(true);
             brightening_timeout = setTimeout(() => {
                 setIsBrightening(false);
-            }, 300);
+            }, 600);
         }
         return () => {
             clearTimeout(brightening_timeout);

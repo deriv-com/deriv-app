@@ -1360,7 +1360,12 @@
         }
         &-wrapper {
             overflow: scroll;
+            width: inherit;
         }
+    }
+    &__mobile-title {
+        text-align: left;
+        margin: 0 2.4rem;
     }
 }
 

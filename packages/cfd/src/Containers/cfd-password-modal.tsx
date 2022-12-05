@@ -766,7 +766,7 @@ const CFDPasswordModal = ({
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. '
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
@@ -775,7 +775,7 @@ const CFDPasswordModal = ({
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !is_eu ? jurisdiction_label : '',
                         }}
-                        components={[<strong className='cfd-account__platform' key={0} />]}
+                        components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
@@ -792,13 +792,13 @@ const CFDPasswordModal = ({
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
                 values={{
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<strong className='cfd-account__platform' key={0} />]}
+                components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
             />
         );
     };

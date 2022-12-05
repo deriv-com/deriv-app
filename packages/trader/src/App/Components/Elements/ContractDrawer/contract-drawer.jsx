@@ -53,7 +53,7 @@ const ContractDrawer = ({
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier}
+                has_result={!!is_sold || is_multiplier || is_vanilla}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );
@@ -101,7 +101,7 @@ const ContractDrawer = ({
             duration={getDurationTime(contract_info)}
             duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
             exit_spot={exit_spot}
-            has_result={!!is_sold || is_multiplier}
+            has_result={!!is_sold || is_multiplier || is_vanilla}
             toggleHistoryTab={toggleHistoryTab}
         />
     );

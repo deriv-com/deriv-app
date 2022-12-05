@@ -6,9 +6,17 @@ import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from 'Components/icon-message-content';
+import { TPlatformContext } from 'Types';
+import classNames from 'classnames';
 
-export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+type TUploadComplete = {
+    needs_poa?: boolean;
+    redirect_button?: React.ReactElement;
+    is_from_external?: boolean;
+};
+
+export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }: TUploadComplete) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const message = localize('Your proof of identity was submitted successfully');
     if (!needs_poa) {
         return (
@@ -22,7 +30,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
                         <Icon icon='IcPoiVerified' size={128} />
                     )
                 }
-                className={is_appstore && 'account-management-dashboard'}
+                className={classNames({ 'account-management-dashboard': is_appstore })}
             >
                 {!is_from_external && (redirect_button || <ContinueTradingButton />)}
             </IconMessageContent>
@@ -38,7 +46,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
                     <Icon icon='IcPoiVerified' size={128} />
                 )
             }
-            className={is_appstore && 'account-management-dashboard'}
+            className={classNames({ 'account-management-dashboard': is_appstore })}
         >
             <React.Fragment>
                 <div className='account-management__text-container'>
@@ -54,12 +62,6 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
             {!is_from_external && redirect_button}
         </IconMessageContent>
     );
-};
-
-UploadComplete.protoTypes = {
-    is_description_enabled: PropTypes.bool,
-    has_poa: PropTypes.bool,
-    redirect_button: PropTypes.object,
 };
 
 export default UploadComplete;

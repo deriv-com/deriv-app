@@ -22,7 +22,7 @@ function checkExists(component: string) {
 }
 
 type Tthis = {
-    callback: any;
+    callback: any & unknown;
 };
 module.exports = function (this: Tthis, source: string, map: SourceMap) {
     const lines = source.split(/\n/);

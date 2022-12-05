@@ -14,6 +14,10 @@ import {
     filterUrlQuery,
     CFD_PLATFORMS,
     routes,
+    isTestLink,
+    isProduction,
+    isLocal,
+    isStaging,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import Cookies from 'js-cookie';
@@ -136,6 +140,8 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    prev_real_account_loginid = '';
+
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -195,6 +201,7 @@ export default class ClientStore extends BaseStore {
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
+            prev_real_account_loginid: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -364,6 +371,9 @@ export default class ClientStore extends BaseStore {
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
+            isEuropeCountry: action.bound,
+            setPrevRealAccountLoginid: action.bound,
+            switchAccountHandlerForAppstore: action.bound,
         });
 
         reaction(
@@ -1000,6 +1010,10 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    isEuropeCountry() {
+        return this.is_eu_country || this.is_eu;
+    }
+
     get is_options_blocked() {
         return isOptionsBlocked(this.residence);
     }
@@ -1408,6 +1422,9 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
+        if (!this.is_virtual && /VRTC/.test(loginid)) {
+            this.setPrevRealAccountLoginid(this.loginid);
+        }
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -1517,6 +1534,9 @@ export default class ClientStore extends BaseStore {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
+            if (!this.is_virtual) {
+                this.setPrevRealAccountLoginid(this.loginid);
+            }
         }
 
         this.selectCurrency('');
@@ -2003,8 +2023,19 @@ export default class ClientStore extends BaseStore {
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+
         if (is_client_logging_in) {
-            window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            const is_pre_appstore = window.localStorage.getItem('is_pre_appstore');
+            const redirect_url = sessionStorage.getItem('redirect_url');
+            if (
+                is_pre_appstore === 'true' &&
+                redirect_url?.endsWith('/') &&
+                (isTestLink() || isProduction() || isLocal() || isStaging())
+            ) {
+                window.history.replaceState({}, document.title, '/appstore/trading-hub');
+            } else {
+                window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            }
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
@@ -2154,14 +2185,6 @@ export default class ClientStore extends BaseStore {
                     this.root_store.gtm.pushDataLayer({
                         event: 'virtual_signup',
                     });
-
-                    if (
-                        !this.country_standpoint.is_france &&
-                        !this.country_standpoint.is_belgium &&
-                        residence !== 'im'
-                    ) {
-                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                    }
                 }
             }
         );
@@ -2459,6 +2482,25 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    setPrevRealAccountLoginid = logind => {
+        this.prev_real_account_loginid = logind;
+    };
+
+    async switchAccountHandlerForAppstore(tab_current_account_type) {
+        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
+            if (this.prev_real_account_loginid) {
+                await this.switchAccount(this.prev_real_account_loginid);
+            } else {
+                await this.switchAccount(
+                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
+                );
+            }
+        } else if (tab_current_account_type === 'real') {
+            this.setPrevRealAccountLoginid(this.loginid);
+            await this.switchAccount(this.virtual_account_loginid);
+        }
     }
 }
 /* eslint-enable */

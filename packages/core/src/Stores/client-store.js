@@ -2032,7 +2032,7 @@ export default class ClientStore extends BaseStore {
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
-                window.history.replaceState({}, document.title, '/appstore/trading-hub');
+                window.history.replaceState({}, document.title, '/appstore/traders-hub');
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }

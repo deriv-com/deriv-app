@@ -47,33 +47,35 @@ const DashboardComponent = ({
                         </div>
                         <Cards />
                     </div>
-                    <div className='tab__dashboard__home__retrigger'>
-                        <button
-                            onClick={() => {
-                                setActiveTab(4);
-                            }}
-                        >
-                            <Icon
-                                className='tab__dashboard__home__retrigger__icon'
-                                width='2.4rem'
-                                height='2.4rem'
-                                icon={'IcDbotUserGuide'}
-                            />
-                            <Text
-                                color='prominent'
-                                size='xs'
-                                line_height='s'
-                                className={'tab__dashboard__home__retrigger__text'}
+                    <DesktopWrapper>
+                        <div className='tab__dashboard__home__retrigger'>
+                            <button
+                                onClick={() => {
+                                    setActiveTab(4);
+                                }}
                             >
-                                {localize('User Guide')}
-                            </Text>
-                        </button>
-                    </div>
-                    {has_dashboard_strategies && (
-                        <div className='tab__dashboard__preview'>
-                            <Local />
+                                <Icon
+                                    className='tab__dashboard__home__retrigger__icon'
+                                    width='2.4rem'
+                                    height='2.4rem'
+                                    icon={'IcDbotUserGuide'}
+                                />
+                                <Text
+                                    color='prominent'
+                                    size='xs'
+                                    line_height='s'
+                                    className={'tab__dashboard__home__retrigger__text'}
+                                >
+                                    {localize('User Guide')}
+                                </Text>
+                            </button>
                         </div>
-                    )}
+                        {has_dashboard_strategies && (
+                            <div className='tab__dashboard__preview'>
+                                <Local />
+                            </div>
+                        )}
+                    </DesktopWrapper>
                 </div>
             </div>
             <DesktopWrapper>

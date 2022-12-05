@@ -195,6 +195,9 @@
             align-items: center;
             justify-content: center;
             width: 50%;
+            @include mobile {
+                width: 100%;
+            }
         }
 
         &__preview {
@@ -279,6 +282,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                @include mobile {
+                    flex-wrap: wrap;
+                }
             }
 
             &__disabled-card {

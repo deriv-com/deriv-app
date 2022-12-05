@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { SourceMap } from 'module';
 /* Using this loader you can import components from @deriv/components without having to manually
 import the corresponding stylesheet. The deriv-cashier-loader will automatically import
 stylesheets.
@@ -19,8 +20,10 @@ function getKebabCase(str: string) {
 function checkExists(component: string) {
     return fs.existsSync(path.resolve(__dirname, '../../../cashier/src/Components/', component, `${component}.scss`));
 }
-
-module.exports = function (source: string, map: any) {
+type Tthis = {
+    callback: any;
+};
+module.exports = function (this: Tthis, source: string, map: SourceMap) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/cashier/.exec(line); // eslint-disable-line no-useless-escape
@@ -42,6 +45,5 @@ ${checkExists(getKebabCase(c)) ? `import '@deriv/cashier/dist/cashier/css/${getK
 
         return replace;
     });
-
-    return exports.callback(null, mapped_lines.join('\n'), map);
+    return this.callback(null, mapped_lines.join('\n'), map);
 };

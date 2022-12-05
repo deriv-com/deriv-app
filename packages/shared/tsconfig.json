@@ -6,5 +6,4 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src"]
 }

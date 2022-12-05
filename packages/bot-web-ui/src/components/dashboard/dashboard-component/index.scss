@@ -24,6 +24,9 @@
         transform: translateX(calc(367px));
         transition: all 0.4s;
         margin-top: 1rem;
+        &__tour {
+            transform: translateX(calc(0px)) !important;
+        }
     }
 
     .dc-drawer--open {

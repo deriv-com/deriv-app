@@ -24,7 +24,7 @@
         transform: translateX(calc(367px));
         transition: all 0.4s;
         margin-top: 1rem;
-        &--tour {
+        &--tour-active {
             transform: translateX(calc(0px)) !important;
         }
     }

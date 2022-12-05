@@ -239,7 +239,7 @@ const RunPanel = ({
                     anchor='right'
                     className={classNames(undefined, {
                         'run-panel__container': !is_mobile,
-                        'run-panel__container--tour': !is_mobile && has_started_onboarding_tour,
+                        'run-panel__container--tour-active': !is_mobile && has_started_onboarding_tour,
                     })}
                     contentClassName='run-panel__content'
                     header={header}

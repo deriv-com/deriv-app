@@ -1,21 +1,14 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from 'Components/icon-message-content';
-import { TPlatformContext } from 'Types';
+import { TPlatformContext, TPOIStatus } from 'Types';
 import classNames from 'classnames';
 
-type TUploadComplete = {
-    needs_poa?: boolean;
-    redirect_button?: React.ReactElement;
-    is_from_external?: boolean;
-};
-
-export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }: TUploadComplete) => {
+export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }: TPOIStatus) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const message = localize('Your proof of identity was submitted successfully');
     if (!needs_poa) {

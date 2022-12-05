@@ -136,7 +136,11 @@ export default class ClientStore extends BaseStore {
     dxtrade_trading_servers = [];
     is_cfd_poi_completed = false;
 
+    cfd_score = 0;
+
     is_mt5_account_list_updated = false;
+
+    prev_real_account_loginid = '';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -185,6 +189,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
             statement: observable,
+            cfd_score: observable,
             obj_total_balance: observable,
             verification_code: observable,
             new_email: observable,
@@ -196,6 +201,7 @@ export default class ClientStore extends BaseStore {
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
+            prev_real_account_loginid: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -229,8 +235,11 @@ export default class ClientStore extends BaseStore {
             currency: computed,
             default_currency: computed,
             should_allow_authentication: computed,
+            is_risky_client: computed,
+            is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
+            real_account_creation_unlock_date: computed,
             is_tnc_needed: computed,
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
@@ -284,6 +293,7 @@ export default class ClientStore extends BaseStore {
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
+            setCFDScore: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -358,8 +368,12 @@ export default class ClientStore extends BaseStore {
             setRealityCheckDuration: action.bound,
             cleanupRealityCheck: action.bound,
             fetchFinancialAssessment: action.bound,
+            setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
             getTwoFAStatus: action.bound,
+            isEuropeCountry: action.bound,
+            setPrevRealAccountLoginid: action.bound,
+            switchAccountHandlerForAppstore: action.bound,
         });
 
         reaction(
@@ -632,6 +646,19 @@ export default class ClientStore extends BaseStore {
         );
     }
 
+    get is_risky_client() {
+        if (isEmptyObject(this.account_status)) return false;
+        return (
+            this.is_logged_in &&
+            !this.is_virtual &&
+            ['standard', 'high'].includes(this.account_status.risk_classification)
+        );
+    }
+
+    get is_financial_assessment_incomplete() {
+        return this.account_status?.status?.includes('financial_assessment_not_complete');
+    }
+
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
@@ -641,9 +668,13 @@ export default class ClientStore extends BaseStore {
         return needs_verification?.length === 1 && needs_verification?.includes('identity');
     }
 
+    get real_account_creation_unlock_date() {
+        const { cooling_off_expiration_date } = this.account_settings;
+        return cooling_off_expiration_date;
+    }
+
     get is_tnc_needed() {
         if (this.is_virtual) return false;
-
         const { client_tnc_status } = this.account_settings;
         const { terms_conditions_version } = this.website_status;
 
@@ -979,6 +1010,10 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
+    isEuropeCountry() {
+        return this.is_eu_country || this.is_eu;
+    }
+
     get is_options_blocked() {
         return isOptionsBlocked(this.residence);
     }
@@ -1080,6 +1115,7 @@ export default class ClientStore extends BaseStore {
             preferred_language,
             user_id,
         } = this;
+
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
@@ -1101,6 +1137,12 @@ export default class ClientStore extends BaseStore {
             this.has_cookie_account = false;
         }
     }
+
+    // CFD score is the computed points based on the CFD related questions that the user answers in trading-assessment.
+    setCFDScore(score) {
+        this.cfd_score = score;
+    }
+
     getSelfExclusion() {
         return new Promise(resolve => {
             WS.authorized.storage.getSelfExclusion().then(data => {
@@ -1219,10 +1261,8 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
-
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = form_values.accept_risk || 0;
         }
         const { document_number, document_type, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
@@ -1257,7 +1297,6 @@ export default class ClientStore extends BaseStore {
                     : {}),
             });
         }
-
         return Promise.reject(response.error);
     }
 
@@ -1383,6 +1422,9 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeAllNotificationMessages(true);
+        if (!this.is_virtual && /VRTC/.test(loginid)) {
+            this.setPrevRealAccountLoginid(this.loginid);
+        }
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -1492,6 +1534,9 @@ export default class ClientStore extends BaseStore {
                 window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
+            if (!this.is_virtual) {
+                this.setPrevRealAccountLoginid(this.loginid);
+            }
         }
 
         this.selectCurrency('');
@@ -2409,11 +2454,16 @@ export default class ClientStore extends BaseStore {
 
     fetchFinancialAssessment() {
         return new Promise(async resolve => {
-            const { get_financial_assessment } = await WS.getFinancialAssessment();
+            const { get_financial_assessment } = await WS.authorized.storage.getFinancialAssessment();
 
             runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
         });
+    }
+
+    async setFinancialAndTradingAssessment(payload) {
+        const response = await WS.setFinancialAndTradingAssessment(payload);
+        return response;
     }
 
     setTwoFAStatus(status) {
@@ -2432,6 +2482,25 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    setPrevRealAccountLoginid = logind => {
+        this.prev_real_account_loginid = logind;
+    };
+
+    async switchAccountHandlerForAppstore(tab_current_account_type) {
+        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
+            if (this.prev_real_account_loginid) {
+                await this.switchAccount(this.prev_real_account_loginid);
+            } else {
+                await this.switchAccount(
+                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
+                );
+            }
+        } else if (tab_current_account_type === 'real') {
+            this.setPrevRealAccountLoginid(this.loginid);
+            await this.switchAccount(this.virtual_account_loginid);
+        }
     }
 }
 /* eslint-enable */

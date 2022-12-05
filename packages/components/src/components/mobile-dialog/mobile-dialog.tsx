@@ -31,6 +31,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         renderTitle,
         wrapper_classname,
         footer,
+        has_close_icon = true,
         header_classname,
     } = props;
 
@@ -110,9 +111,11 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                         >
                             {renderTitle ? renderTitle() : title}
                         </Text>
-                        <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                            <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                        </div>
+                        {has_close_icon && (
+                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                            </div>
+                        )}
                     </div>
                     <div
                         className={classNames('dc-mobile-dialog__content', {
@@ -138,6 +141,20 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         </CSSTransition>,
         portal_element
     );
+};
+
+MobileDialog.propTypes = {
+    content_height_offset: PropTypes.string,
+    children: PropTypes.any,
+    onClose: PropTypes.func,
+    has_content_scroll: PropTypes.bool,
+    has_close_icon: PropTypes.bool,
+    portal_element_id: PropTypes.string.isRequired,
+    renderTitle: PropTypes.func,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
+    wrapper_classname: PropTypes.string,
+    header_classname: PropTypes.string,
 };
 
 export default MobileDialog;

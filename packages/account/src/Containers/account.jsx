@@ -104,11 +104,13 @@ const PageOverlayWrapper = ({
 };
 
 const Account = ({
+    active_account_landing_company,
     currency,
     history,
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
+    is_risky_client,
     is_virtual,
     is_visible,
     location,
@@ -137,7 +139,11 @@ const Account = ({
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled = is_virtual;
+                route.is_disabled =
+                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+            }
+            if (route.path === shared_routes.trading_assessment) {
+                route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
@@ -198,11 +204,13 @@ const Account = ({
 };
 
 Account.propTypes = {
+    active_account_landing_company: PropTypes.string,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
+    is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -215,10 +223,12 @@ Account.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
+    active_account_landing_company: client.landing_company_shortcode,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_from_derivgo: common.is_from_derivgo,
+    is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

@@ -296,8 +296,7 @@ const AccountSwitcher = props => {
                     existing_cfd_accounts[key].market_type === 'financial'
             );
 
-            if (has_account) return [...gaming_config, ...financial_config];
-            return [...all_config];
+            return has_account ? [...gaming_config, ...financial_config] : [...all_config];
         }
 
         return [...gaming_config, ...financial_config];

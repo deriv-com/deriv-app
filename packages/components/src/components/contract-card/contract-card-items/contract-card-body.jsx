@@ -192,7 +192,7 @@ const AccumulatorCardBody = ({
                     is_loss={+profit < 0}
                     is_won={+profit > 0}
                 >
-                    {profit ? <Money amount={profit} currency={currency} /> : <strong>-</strong>}
+                    {typeof profit === 'number' ? <Money amount={profit} currency={currency} /> : <strong>-</strong>}
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,

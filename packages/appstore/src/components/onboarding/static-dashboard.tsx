@@ -70,7 +70,7 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
         { text: 'CFDs', value: 0 },
-        { text: 'Options', value: 1 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options and...'}`, value: 1 },
     ];
 
     const [index, setIndex] = React.useState(0);

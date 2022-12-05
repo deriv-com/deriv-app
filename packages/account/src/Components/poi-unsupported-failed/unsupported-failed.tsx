@@ -3,7 +3,11 @@ import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UnsupportedFailed = ({ error }: { error: string }) => (
+type TUnsupportedFailed = {
+    error: string;
+};
+
+const UnsupportedFailed = ({ error }: TUnsupportedFailed) => (
     <IconMessageContent
         message={localize('Proof of identity documents upload failed')}
         text={error}

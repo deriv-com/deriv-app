@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
@@ -8,7 +8,7 @@ import { GetAccountStatus } from '@deriv/api-types';
 type TPoiPoaDocsSubmitted = {
     account_status: GetAccountStatus;
     is_vanuatu_selected: boolean;
-    onClickOK: MouseEventHandler;
+    onClickOK: React.MouseEventHandler;
     updateAccountStatus: () => void;
 };
 

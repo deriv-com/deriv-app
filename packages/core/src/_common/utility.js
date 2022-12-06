@@ -89,7 +89,7 @@ const isSyntheticsUnavailable = country => countries_without_synthetics.includes
 const blocked_options_countries = ['au', 'fr'];
 const isOptionsBlocked = country => blocked_options_countries.includes(country);
 // countries where only multipliers are offered
-const multipliers_only_countries = ['de', 'es', 'it', 'lu', 'gr', 'au', 'fr'];
+const multipliers_only_countries = ['de', 'es', 'it', 'lu', 'gr', 'au', 'fr', 'nl'];
 const isMultipliersOnly = country => multipliers_only_countries.includes(country);
 
 module.exports = {

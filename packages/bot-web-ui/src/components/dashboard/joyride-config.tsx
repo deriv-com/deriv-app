@@ -197,6 +197,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         disableOverlay: false,
+        locale: { last: 'Next' },
         ...joyride_props,
     },
 ];
@@ -336,6 +337,7 @@ export const BOT_BUILDER_TOUR = [
             />,
         ],
         disableOverlay: true,
+        locale: { last: 'Next' },
         ...joyride_props,
     },
 ];

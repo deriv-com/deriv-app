@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper, Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { TCFDPersonalDetailsModalProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
@@ -15,7 +15,7 @@ const CFDPersonalDetailsModal = ({
     account_settings,
     disableApp,
     enableApp,
-    getChangeableFields,
+    context,
     is_from_mt5_compare_accounts_table,
     is_open,
     landing_company,
@@ -78,7 +78,7 @@ const CFDPersonalDetailsModal = ({
     }, [is_open]);
 
     const transform = (value: unknown) => {
-        const [result] = residence_list.filter(item => item.value === value);
+        const [result] = residence_list?.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
@@ -132,10 +132,10 @@ const CFDPersonalDetailsModal = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    changeable_fields={getChangeableFields()}
                     form_error={form_error}
                     has_previous_button
                     index={0}
+                    context={context}
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onCancel={prevStep}
@@ -157,6 +157,7 @@ const CFDPersonalDetailsModal = ({
                     enableApp={enableApp}
                     has_close_icon={true}
                     height='688px'
+                    context={context}
                     id='cfd-personal-details-modal'
                     is_open={is_open}
                     title={localize('Add a real MT5 account')}
@@ -173,6 +174,7 @@ const CFDPersonalDetailsModal = ({
                     portal_element_id='modal_root'
                     title={localize('Add a real MT5 account')}
                     visible={is_open}
+                    context={context}
                     wrapper_classname='account-signup-mobile-dialog'
                 >
                     {getPersonalDetailsForm()}
@@ -186,7 +188,6 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    getChangeableFields: client.getChangeableFields,
     is_open: cfd.is_cfd_personal_details_modal_visible,
     is_from_mt5_compare_accounts_table: cfd.is_from_mt5_compare_accounts_table,
     landing_company: client.landing_company,

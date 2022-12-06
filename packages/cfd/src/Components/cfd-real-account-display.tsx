@@ -7,8 +7,8 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts, TCFDPlatform } from './props.types';
-import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
+import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
+import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -200,7 +200,7 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={
                 platform === 'mt5'
-                    ? localize('Trade CFDs on our synthetics and basket indices.')
+                    ? localize('Trade CFDs on our synthetics, baskets, and derived FX.')
                     : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
             }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}

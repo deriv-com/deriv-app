@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
+import { isSequentialNumber, recurringNumberRegex } from '../utils';
 
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('../utils.js', () => ({
@@ -22,7 +23,9 @@ jest.mock('../utils.js', () => ({
         };
         return data[country_code][key];
     },
-    getRegex: jest.fn(() => /a-52431/i),
+    getRegex: jest.fn(() => /a-54321/i),
+    isSequentialNumber: jest.fn(() => false),
+    recurringNumberRegex: jest.fn(() => false),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -99,9 +102,47 @@ describe('<IdvDocumentSubmit/>', () => {
         });
     });
 
+    it.only('should not allow users to fill in repetitive document numbers', async () => {
+        //invalid document number- error should be shown
+        isDesktop.mockReturnValue(false);
+        isMobile.mockReturnValue(true);
+        isSequentialNumber.mockReturnValue(true);
+        recurringNumberRegex.mockReturnValue(true);
+
+        const selected_doc_msg =
+            'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
+
+        render(<IdvDocumentSubmit {...mock_props} />);
+
+        const verifyBtn = screen.getByRole('button', { name: /verify/i });
+        expect(verifyBtn).toBeDisabled();
+
+        const document_type_input = screen.getByRole('combobox');
+        expect(document_type_input.name).toBe('document_type');
+        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        expect(document_number_input.name).toBe('document_number');
+        expect(document_number_input).toBeDisabled();
+        expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
+
+        fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
+        expect(document_number_input).not.toBeDisabled();
+        expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
+
+        fireEvent.keyUp(document_number_input);
+        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
+        await waitFor(() => {
+            expect(awaiscreen.find(/please enter a valid ID number/i)).toBeInTheDocument();
+        });
+
+        // fireEvent.change(document_number_input, { target: { value: '111112' } });
+        // expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
+    });
+
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
+        isSequentialNumber.mockReturnValue(false);
+        recurringNumberRegex.mockReturnValue(false);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
@@ -127,22 +168,16 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
         fireEvent.keyUp(document_number_input);
-        fireEvent.change(document_number_input, { target: { value: '98765' } });
-        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
-
-        fireEvent.change(document_number_input, { target: { value: '111112' } });
-        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
-
-        fireEvent.change(document_number_input, { target: { value: 'D06253' } });
+        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
-        await waitFor(() => {
-            expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-            expect(verifyBtn).not.toBeDisabled();
-        });
-
+        fireEvent.change(document_number_input, { target: { value: '12345-A' } });
+        // await waitFor(() => {
+        //     expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
+        //     expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
+        //     expect(verifyBtn).not.toBeDisabled();
+        // });
+        expect(verifyBtn).not.toBeDisabled();
         fireEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);

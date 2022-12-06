@@ -5,7 +5,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { isSequentialNumber, recurringNumberRegex , getDocumentData, getRegex } from './utils';
+import { isSequentialNumber, recurringNumberRegex, getDocumentData, getRegex } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';

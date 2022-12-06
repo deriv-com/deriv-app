@@ -250,7 +250,9 @@ const CFDRealAccountDisplay = ({
     const derivx_all_account = platform === 'dxtrade' && isDxtradeAllCardVisible('real') && (
         <CFDAccountCard
             commission_message={localize('No commission')}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+            descriptor={localize(
+                'Trade CFDs on forex, derived indices, cryptocurrencies, and commodities with high leverage.'
+            )}
             existing_accounts_data={existing_accounts_data('all')}
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}

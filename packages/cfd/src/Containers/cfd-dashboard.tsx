@@ -338,6 +338,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
         if (has_synthetic_account || has_financial_account) return false;
 
+        if (props.is_dxtrade_allowed && !props.is_logged_in) return true;
+
         return isLandingCompanyEnabled({
             landing_companies,
             platform,

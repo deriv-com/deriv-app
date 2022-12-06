@@ -67,6 +67,11 @@
 
             @include mobile {
                 z-index: 0;
+                .dc-button-menu {
+                    &--highlight {
+                        background: none;
+                    }
+                }
             }
         }
 

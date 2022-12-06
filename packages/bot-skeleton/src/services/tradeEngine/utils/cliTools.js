@@ -1,11 +1,10 @@
 import TicksService from '../../api/ticks_service';
 import Observer from '../../../utils/observer';
-import { generateDerivApiInstance } from '../../api/appId';
+import { api_base } from '../../api/appId';
 
 export const createScope = () => {
     const observer = new Observer();
-    const api = generateDerivApiInstance();
-    const ticksService = new TicksService(api);
+    const ticksService = new TicksService(api_base.api);
     const stopped = false;
-    return { observer, api, ticksService, stopped };
+    return { observer, api: api_base, ticksService, stopped };
 };

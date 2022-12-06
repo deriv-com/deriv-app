@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, isVanillaContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -141,10 +141,11 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
+const shadowed_text = ({ ctx, color, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
     ctx.font = `bold ${size}px BinarySymbols, Roboto`;
+    if (color) ctx.fillStyle = color;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
@@ -338,7 +339,7 @@ const NonTickContract = RawMarkerMaker(
         granularity,
         currency,
         contract_info: {
-            // contract_type,
+            contract_type,
             // exit_tick_time,
             // is_expired,
             is_sold,
@@ -359,7 +360,7 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        const color = get_color({ status, profit, is_dark_theme });
+        const color = isVanillaContract(contract_type) ? '#377cfc' : get_color({ status, profit, is_dark_theme });
 
         ctx.save();
         ctx.strokeStyle = color;
@@ -455,6 +456,7 @@ const NonTickContract = RawMarkerMaker(
             const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
             shadowed_text({
                 ctx,
+                color: get_color({ status: 'open', profit }),
                 scale,
                 text,
                 is_dark_theme,

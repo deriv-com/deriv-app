@@ -3,6 +3,7 @@ import PropTypes, { bool } from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { isVanillaContract } from '@deriv/shared';
 
 const generateMessageForVanillaTrade = contract_info => (
     <Localize
@@ -18,7 +19,7 @@ const generateMessageForVanillaTrade = contract_info => (
 );
 
 const InfoBoxLongcode = ({ contract_info }) => {
-    const is_vanilla = ['VANILLALONGCALL', 'VANILLALONGPUT'].includes(contract_info.contract_type);
+    const is_vanilla = isVanillaContract(contract_info.contract_type);
     return (
         <div className='info-box-longcode'>
             <Icon icon='IcContractFlag' className='info-box-longcode-icon' size={24} />

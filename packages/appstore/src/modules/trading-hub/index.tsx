@@ -3,7 +3,16 @@ import { observer } from 'mobx-react-lite';
 import { platform_config, mf_platform_config } from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
-import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
+import {
+    Text,
+    Button,
+    ButtonToggle,
+    Div100vhContainer,
+    Dropdown,
+    DesktopWrapper,
+    MobileWrapper,
+    Loading,
+} from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
@@ -207,22 +216,24 @@ const TradingHub: React.FC = () => {
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <ButtonToggle
-                        buttons_arr={platform_toggle_options}
-                        className='trading-hub_body--platform_type_toggle'
-                        has_rounded_button
-                        is_animated
-                        name='platforn_type'
-                        onChange={platformTypeChange}
-                        value={platform_type}
-                    />
-                    {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
-                    {platform_type === 'options' && (
-                        <OptionsAccounts
-                            platformlauncherprops={is_eu ? mf_platform_config : platform_config}
-                            accountType={tab_account_type}
+                    <Div100vhContainer height_offset='160px'>
+                        <ButtonToggle
+                            buttons_arr={platform_toggle_options}
+                            className='trading-hub_body--platform_type_toggle'
+                            has_rounded_button
+                            is_animated
+                            name='platforn_type'
+                            onChange={platformTypeChange}
+                            value={platform_type}
                         />
-                    )}
+                        {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
+                        {platform_type === 'options' && (
+                            <OptionsAccounts
+                                platformlauncherprops={is_eu ? mf_platform_config : platform_config}
+                                accountType={tab_account_type}
+                            />
+                        )}
+                    </Div100vhContainer>
                 </MobileWrapper>
             </div>
             <Joyride

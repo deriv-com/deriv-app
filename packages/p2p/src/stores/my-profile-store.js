@@ -34,6 +34,7 @@ export default class MyProfileStore extends BaseStore {
     selected_payment_method_display_name = '';
     selected_payment_method_fields = [];
     selected_payment_method_type = '';
+    selected_sort_value = 'all_users';
     should_hide_my_profile_tab = false;
     should_show_add_payment_method_error_modal = false;
     should_show_add_payment_method_form = false;
@@ -72,12 +73,14 @@ export default class MyProfileStore extends BaseStore {
             selected_payment_method_display_name: observable,
             selected_payment_method_fields: observable,
             selected_payment_method_type: observable,
+            selected_sort_value: observable,
             should_hide_my_profile_tab: observable,
             should_show_add_payment_method_error_modal: observable,
             should_show_add_payment_method_form: observable,
             should_show_edit_payment_method_form: observable,
             advertiser_has_payment_methods: computed,
             advertiser_payment_methods_list: computed,
+            block_user_sort_list: computed,
             payment_method_field_set: computed,
             initial_values: computed,
             payment_method_info: computed,
@@ -92,6 +95,7 @@ export default class MyProfileStore extends BaseStore {
             getPaymentMethodDisplayName: action.bound,
             getPaymentMethodValue: action.bound,
             getSelectedPaymentMethodDetails: action.bound,
+            handleChange: action.bound,
             handleSubmit: action.bound,
             handleToggle: action.bound,
             hideAddPaymentMethodForm: action.bound,
@@ -131,6 +135,7 @@ export default class MyProfileStore extends BaseStore {
             setSelectedPaymentMethodDisplayName: action.bound,
             setSelectedPaymentMethodFields: action.bound,
             setSelectedPaymentMethodType: action.bound,
+            setSelectedSortValue: action.bound,
             setShouldHideMyProfileTab: action.bound,
             setShouldShowAddPaymentMethodErrorModal: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
@@ -156,6 +161,14 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get block_user_sort_list() {
+        return [
+            { text: localize('All'), value: 'all_users' },
+            { text: localize('Blocked'), value: 'blocked_users' },
+        ];
     }
 
     get payment_method_field_set() {
@@ -391,6 +404,11 @@ export default class MyProfileStore extends BaseStore {
             }
         });
     }
+
+    handleChange(e) {
+        this.setSelectedSortValue(e.target.value);
+    }
+
     handleSubmit(values) {
         requestWS({
             p2p_advertiser_update: 1,
@@ -702,6 +720,10 @@ export default class MyProfileStore extends BaseStore {
 
     setSelectedPaymentMethodType(selected_payment_method_type) {
         this.selected_payment_method_type = selected_payment_method_type;
+    }
+
+    setSelectedSortValue(selected_sort_value) {
+        this.selected_sort_value = selected_sort_value;
     }
 
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {

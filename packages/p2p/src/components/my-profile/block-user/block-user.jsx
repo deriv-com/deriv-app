@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import BlockUserDropdown from './block-user-dropdown';
 import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
 import SearchBox from 'Components/search-box';
@@ -33,7 +34,10 @@ const BlockUserList = observer(() => {
     return (
         <div className='block-user__list'>
             {my_profile_store.blocked_advertisers_list.length > 0 && !general_store.is_barred && (
-                <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search')} />
+                <div className='block-user__list-header'>
+                    <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search by nickname')} />
+                    <BlockUserDropdown />
+                </div>
             )}
             <BlockUserTable />
         </div>

@@ -22,13 +22,36 @@ const BlockUserRow = ({ row: advertiser }) => {
                 </div>
             </Table.Cell>
             <Table.Cell className='block-user__row-button'>
-                <Button secondary large onClick={() => my_profile_store.onClickUnblock(advertiser)}>
-                    {localize('Unblock')}
+                <Button alternate medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+                    {localize('Block')}
                 </Button>
             </Table.Cell>
         </Table.Row>
     );
 };
+
+// const BlockUserRow = ({ row: advertiser }) => {
+//     const { my_profile_store } = useStores();
+//     return (
+//         <Table.Row className='block-user-row'>
+//             <Table.Cell>
+//                 <div className='block-user-row__cell'>
+//                     <UserAvatar nickname={advertiser.name} size={32} text_size='s' />
+//                     <div className='block-user-row__cell-container'>
+//                         <Text size='xs' line_height='m' color='general'>
+//                             {advertiser.name}
+//                         </Text>
+//                     </div>
+//                 </div>
+//             </Table.Cell>
+//             <Table.Cell className='block-user-row__button'>
+//                 <Button secondary large onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+//                     {localize('Block')}
+//                 </Button>
+//             </Table.Cell>
+//         </Table.Row>
+//     );
+// };
 
 BlockUserRow.propTypes = {
     advertiser: PropTypes.object,

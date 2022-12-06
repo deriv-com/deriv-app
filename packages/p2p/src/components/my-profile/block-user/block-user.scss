@@ -19,6 +19,12 @@
 
         & .search-box {
             margin: 0rem 0.8rem 2.4rem;
+            width: 20rem;
+        }
+
+        &-header {
+            display: flex;
+            flex-direction: row;
         }
     }
 

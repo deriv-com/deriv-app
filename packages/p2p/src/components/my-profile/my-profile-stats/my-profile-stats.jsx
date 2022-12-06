@@ -25,8 +25,8 @@ const MyStats = () => {
             onClick: () => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE),
         },
         {
-            default_text: 'Blocked advertisers',
-            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCKED_ADVERTISERS),
+            default_text: 'Block Users',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCK_USERS),
         },
     ];
 

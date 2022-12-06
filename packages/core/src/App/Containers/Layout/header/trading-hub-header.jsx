@@ -45,7 +45,7 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode }) => {
+const TradingHubOnboarding = ({ is_dark_mode, unsetIsOnboardingVisited }) => {
     const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
@@ -62,6 +62,7 @@ const TradingHubOnboarding = ({ is_dark_mode }) => {
                         size={20}
                         onClick={() => {
                             history.push(routes.onboarding);
+                            unsetIsOnboardingVisited();
                         }}
                     />
                 </Popover>
@@ -91,6 +92,7 @@ const TradingHubHeader = ({
     loginid,
     is_eu,
     is_eu_country,
+    unsetIsOnboardingVisited,
     header_extension,
     is_dark_mode,
     is_logged_in,
@@ -175,7 +177,10 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
-                    <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                    <TradingHubOnboarding
+                        is_dark_mode={is_dark_mode}
+                        unsetIsOnboardingVisited={unsetIsOnboardingVisited}
+                    />
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
                         notifications_count={notifications_count}
@@ -259,6 +264,7 @@ TradingHubHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
     location: PropTypes.object,
+    unsetIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
     menu_items: PropTypes.array,
@@ -295,5 +301,6 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     menu_items: menu.extensions,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     toggleIsTourOpen: tradinghub.toggleIsTourOpen,
+    unsetIsOnboardingVisited: tradinghub.unsetIsOnboardingVisited,
     loginid: client.loginid,
 }))(withRouter(TradingHubHeader));

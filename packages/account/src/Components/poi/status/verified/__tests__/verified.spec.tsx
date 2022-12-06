@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import { Button } from '@deriv/components';
 import { Verified } from '../verified';
 
-jest.mock('Components/poa/poa-button', () => () => <div data-testid='poa-button' />);
+jest.mock('Components/poa/poa-button', () => jest.fn(() => <div data-testid='poa-button' />));
 
 describe('<Verified/>', () => {
     const message = 'Your proof of identity is verified';
@@ -16,8 +16,9 @@ describe('<Verified/>', () => {
     });
 
     it('should show icon with message if needs_poa is false', () => {
-        const { container } = render(<Verified />);
-        expect(container.getElementsByClassName('dc-icon').length).toBe(1);
+        render(<Verified />);
+
+        expect(screen.getByTestId('dt_IcPoaVerified')).toBeInTheDocument();
         expect(screen.getByText(message)).toBeInTheDocument();
     });
 

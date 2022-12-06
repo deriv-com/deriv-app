@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UnsupportedFailed = ({ error }) => (
+type TUnsupportedFailed = {
+    error: string;
+};
+
+const UnsupportedFailed = ({ error }: TUnsupportedFailed) => (
     <IconMessageContent
         message={localize('Proof of identity documents upload failed')}
         text={error}
@@ -12,9 +15,5 @@ const UnsupportedFailed = ({ error }) => (
         className='account-management-dashboard'
     />
 );
-
-UnsupportedFailed.propTypes = {
-    error: PropTypes.string,
-};
 
 export default UnsupportedFailed;

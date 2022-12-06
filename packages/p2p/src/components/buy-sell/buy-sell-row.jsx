@@ -66,11 +66,13 @@ const BuySellRow = ({ row: advert }) => {
             <div className='buy-sell-row'>
                 <div
                     className='buy-sell-row__advertiser'
-                    onClick={() =>
-                        general_store.is_barred || !general_store.is_advertiser
-                            ? undefined
-                            : buy_sell_store.showAdvertiserPage(advert)
-                    }
+                    onClick={() => {
+                        if (!general_store.is_advertiser) {
+                            buy_sell_store.setShouldShowVerification(true);
+                        } else if (!general_store.is_barred) {
+                            buy_sell_store.showAdvertiserPage(advert);
+                        }
+                    }}
                 >
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}
@@ -173,11 +175,13 @@ const BuySellRow = ({ row: advert }) => {
             <Table.Cell>
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
-                    onClick={() =>
-                        general_store.is_barred || !general_store.is_advertiser
-                            ? undefined
-                            : buy_sell_store.showAdvertiserPage(advert)
-                    }
+                    onClick={() => {
+                        if (!general_store.is_advertiser) {
+                            buy_sell_store.setShouldShowVerification(true);
+                        } else if (!general_store.is_barred) {
+                            buy_sell_store.showAdvertiserPage(advert);
+                        }
+                    }}
                 >
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}

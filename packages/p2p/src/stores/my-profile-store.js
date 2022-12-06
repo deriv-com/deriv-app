@@ -166,8 +166,18 @@ export default class MyProfileStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get block_user_sort_list() {
         return [
-            { text: localize('All'), value: 'all_users' },
-            { text: localize('Blocked'), value: 'blocked_users' },
+            {
+                text: localize('All ({{blocked_advertisers_list}})', {
+                    blocked_advertisers_list: this.blocked_advertisers_list.length,
+                }),
+                value: 'all_users',
+            },
+            {
+                text: localize('Blocked ({{blocked_advertisers_list}})', {
+                    blocked_advertisers_list: this.blocked_advertisers_list.length,
+                }),
+                value: 'blocked_users',
+            },
         ];
     }
 

@@ -5,9 +5,10 @@ import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
-import BlockUserRow from './block-user-row.jsx';
+import BlockUserRow from './block-user-row';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
-import BlockUserTableError from './block-user-table-error.jsx';
+import BlockUserTableError from './block-user-table-error/block-user-table-error.jsx';
+import './block-user-table.scss';
 
 const BlockUserTable = () => {
     const { general_store, my_profile_store } = useStores();
@@ -39,7 +40,7 @@ const BlockUserTable = () => {
 
     if (my_profile_store.search_term && my_profile_store.search_results.length === 0) {
         return (
-            <Text align='center' className='block-user__text' line_height='m' size='s' weight='normal'>
+            <Text align='center' className='block-user-table__text' line_height='m' size='s' weight='bold'>
                 {localize('There are no matching name.')}
             </Text>
         );
@@ -48,10 +49,10 @@ const BlockUserTable = () => {
     if (my_profile_store.blocked_advertisers_list.length) {
         return (
             <React.Fragment>
-                <Table className='block-user__table'>
-                    <Table.Body className='block-user__table-body'>
+                <Table className='block-user-table'>
+                    <Table.Body className='block-user-table__body'>
                         <InfiniteDataList
-                            data_list_className='block-user__data-list'
+                            data_list_className='block-use-table__data-list'
                             has_more_items_to_load={false}
                             items={my_profile_store.rendered_blocked_advertisers_list}
                             keyMapperFn={item => item.id}

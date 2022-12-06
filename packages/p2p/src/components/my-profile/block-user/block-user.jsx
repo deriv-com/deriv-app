@@ -9,6 +9,7 @@ import SearchBox from 'Components/search-box';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
+import './block-user.scss';
 
 const BlockUserList = observer(() => {
     const { general_store, my_profile_store } = useStores();

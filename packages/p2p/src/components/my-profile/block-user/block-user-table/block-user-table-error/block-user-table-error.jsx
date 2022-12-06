@@ -12,16 +12,16 @@ const BlockUserTableError = ({ error_message }) => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div className='block-user__table--error'>
+                <div className='block-user-table-error'>
                     <Icon
-                        className='block-user__table--error-icon'
+                        className='block-user-table-error__icon'
                         icon='IcBlockedAdvertisersBarred'
                         height={128}
                         width={128}
                     />
                     <Text
                         align='center'
-                        className='block-user__table--error-text'
+                        className='block-user-table-error__text'
                         line_height='m'
                         size='s'
                         weight='bold'
@@ -32,7 +32,7 @@ const BlockUserTableError = ({ error_message }) => {
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileFullPageModal
-                    body_className='block-user__table--error'
+                    body_className='block-user-table-error'
                     height_offset='80px'
                     is_modal_open
                     page_header_text={localize('Blocked advertisers')}
@@ -40,13 +40,13 @@ const BlockUserTableError = ({ error_message }) => {
                 >
                     <Icon
                         icon='IcBlockedAdvertisersBarred'
-                        className='block-user__table--error-icon'
+                        className='block-user-table-error__icon'
                         height={128}
                         width={128}
                     />
                     <Text
                         align='center'
-                        className='block-user__table--error-text'
+                        className='block-user-table-error__text'
                         line_height='m'
                         size='s'
                         weight='bold'

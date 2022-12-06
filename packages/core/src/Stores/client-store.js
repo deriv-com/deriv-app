@@ -370,6 +370,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
+            is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
@@ -995,14 +996,14 @@ export default class ClientStore extends BaseStore {
     isBotAllowed = () => {
         // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
         if (!this.is_logged_in && this.is_eu_country) return false;
-
         const is_mf = this.landing_company_shortcode === 'maltainvest';
-        return this.is_virtual
-            ? !this.is_multipliers_only
-                ? !isEuCountry(this.residence)
-                : !this.is_multipliers_only
-            : !is_mf && !this.is_options_blocked;
+        return this.is_virtual ? this.is_eu_or_multipliers_only : !is_mf && !this.is_options_blocked;
     };
+
+    get is_eu_or_multipliers_only() {
+        // Will not show BinaryBot, DBot, SmartTrader if account is multipliers_only and is from Eu Countries
+        return !this.is_multipliers_only ? !isEuCountry(this.residence) : !this.is_multipliers_only;
+    }
 
     get clients_country() {
         return this.website_status?.clients_country;

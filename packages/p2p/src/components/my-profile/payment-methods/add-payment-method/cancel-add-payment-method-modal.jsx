@@ -72,7 +72,7 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
                 <Button
                     large
                     onClick={() => {
-                        // my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                         general_store.closeModal();
                     }}
                     primary

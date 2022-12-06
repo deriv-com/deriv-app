@@ -129,7 +129,6 @@ const BuySellModal = () => {
                 showModal({
                     key: 'CancelAddPaymentMethodModal',
                 });
-                // my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
             } else {
                 my_profile_store.hideAddPaymentMethodForm();
             }
@@ -160,11 +159,6 @@ const BuySellModal = () => {
         if (!is_modal_open) {
             setErrorMessage(null);
         }
-
-        // these will screw up the form history, refactor these out!
-        // my_profile_store.setSelectedPaymentMethod('');
-        // my_profile_store.setSelectedPaymentMethodDisplayName('');
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
 

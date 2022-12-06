@@ -176,6 +176,8 @@ import './cashier/ic-cashier-viettle-pay.svg';
 import './cashier/ic-cashier-visa-dark.svg';
 import './cashier/ic-cashier-visa-light.svg';
 import './cashier/ic-cashier-wallet.svg';
+import './cashier/ic-cashier-web-money-dark.svg';
+import './cashier/ic-cashier-web-money-light.svg';
 import './cashier/ic-cashier-wechatpay-dark.svg';
 import './cashier/ic-cashier-wechatpay-light.svg';
 import './cashier/ic-cashier-withdraw-wallet.svg';

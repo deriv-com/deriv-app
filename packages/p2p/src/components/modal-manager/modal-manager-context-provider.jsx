@@ -16,10 +16,10 @@ const ModalManagerContextProvider = props => {
             setPreviousModal(active_modal);
             setActiveModal(modal);
         } else if (Object.keys(active_modal).length === 0) {
-                setActiveModal(modal);
-            } else {
-                setStackedModal(modal);
-            }
+            setActiveModal(modal);
+        } else {
+            setStackedModal(modal);
+        }
         setIsModalOpen(true);
     };
 
@@ -39,11 +39,11 @@ const ModalManagerContextProvider = props => {
                 setIsModalOpen(false);
             }
         } else if (Object.keys(stacked_modal).length !== 0) {
-                setStackedModal({});
-            } else {
-                setActiveModal({});
-                setIsModalOpen(false);
-            }
+            setStackedModal({});
+        } else {
+            setActiveModal({});
+            setIsModalOpen(false);
+        }
     };
 
     const state = {

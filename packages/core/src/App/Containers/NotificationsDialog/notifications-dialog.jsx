@@ -15,7 +15,7 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
+import { toTitleCase, isEmptyObject, isMobile, PlatformContext } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -91,8 +91,14 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
 };
 const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog }, ref) => {
     const is_empty = !notifications.length;
+    const { is_pre_appstore } = React.useContext(PlatformContext);
     return (
-        <div className='notifications-dialog' ref={ref}>
+        <div
+            className={classNames('notifications-dialog', {
+                'notifications-dialog--pre-appstore': is_pre_appstore,
+            })}
+            ref={ref}
+        >
             <div className='notifications-dialog__header'>
                 <Text
                     as='h2'

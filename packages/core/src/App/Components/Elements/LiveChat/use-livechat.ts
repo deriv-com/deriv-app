@@ -15,8 +15,8 @@ const useLiveChat = (has_cookie_account = false) => {
             if (window.LiveChatWidget) {
                 window.LiveChatWidget.on('ready', () => {
                     try {
-                        if (window.LiveChatWidget.get('customer_data').status !== 'chatting') {
-                            window.LiveChatWidget.call('destroy');
+                        if (window.LiveChatWidget?.get('customer_data').status !== 'chatting') {
+                            window.LiveChatWidget?.call('destroy');
                             resolve();
                         }
                     } catch (e) {
@@ -70,29 +70,33 @@ const useLiveChat = (has_cookie_account = false) => {
                 utm_medium: utm_medium ?? ' ',
                 utm_campaign: utm_campaign ?? ' ',
             };
-            window.LiveChatWidget.call('set_session_variables', session_variables);
+            window.LiveChatWidget?.call('set_session_variables', session_variables);
 
             if (is_logged_in) {
                 // client logged in
                 // prepfill name and email
-                window.LiveChatWidget.call('set_customer_email', session_variables.email);
-                window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
+                window.LiveChatWidget?.call('set_customer_email', session_variables.email);
+                window.LiveChatWidget?.call('set_customer_name', `${client_first_name} ${client_last_name}`);
 
                 // prefill name and email fields after chat has ended
-                window.LC_API.on_chat_ended = () => {
-                    window.LiveChatWidget.call('set_customer_email', session_variables.email);
-                    window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
-                };
+                if (window.LC_API?.on_chat_ended) {
+                    window.LC_API.on_chat_ended = () => {
+                        window.LiveChatWidget?.call('set_customer_email', session_variables.email);
+                        window.LiveChatWidget?.call('set_customer_name', `${client_first_name} ${client_last_name}`);
+                    };
+                }
             } else {
                 // client not logged in
                 // clear name and email fields
-                window.LiveChatWidget.call('set_customer_email', ' ');
-                window.LiveChatWidget.call('set_customer_name', ' ');
+                window.LiveChatWidget?.call('set_customer_email', ' ');
+                window.LiveChatWidget?.call('set_customer_name', ' ');
                 // clear name and email fields after chat has ended
-                window.LC_API.on_chat_ended = () => {
-                    window.LiveChatWidget.call('set_customer_email', ' ');
-                    window.LiveChatWidget.call('set_customer_name', ' ');
-                };
+                if (window.LC_API?.on_chat_ended) {
+                    window.LC_API.on_chat_ended = () => {
+                        window.LiveChatWidget?.call('set_customer_email', ' ');
+                        window.LiveChatWidget?.call('set_customer_name', ' ');
+                    };
+                }
             }
         });
     };

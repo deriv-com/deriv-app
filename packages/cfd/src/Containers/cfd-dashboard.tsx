@@ -629,6 +629,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 is_real_enabled={is_real_enabled}
                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                has_unmerged_account={
+                                    hasAccount('real', 'synthetic') || hasAccount('real', 'financial')
+                                }
                             />
                             <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />

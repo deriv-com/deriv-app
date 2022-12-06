@@ -122,7 +122,7 @@ const CFDAccountCardAction = ({
                     i18n_default_text='<0>Switch to your real account</0><1> to create a {{platform}} {{account_title}} account.</1>'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        account_title: title,
+                        account_title: title === 'Deriv X' ? '' : title,
                     }}
                     components={[
                         <a

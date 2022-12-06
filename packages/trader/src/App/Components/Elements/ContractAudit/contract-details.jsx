@@ -4,8 +4,10 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
+    formatMoney,
     toGMTFormat,
     getCancellationPrice,
+    getCurrencyDisplayCode,
     isMobile,
     isMultiplierContract,
     isUserSold,
@@ -99,7 +101,15 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractPayout' size={24} />}
                                     label={localize('Payout per point')}
-                                    value={number_of_contracts || ' - '}
+                                    value={
+                                        `${formatMoney(
+                                            currency,
+                                            number_of_contracts,
+                                            true,
+                                            2,
+                                            0
+                                        )} ${getCurrencyDisplayCode(currency)}` || ' - '
+                                    }
                                 />
                             </React.Fragment>
                         ) : (

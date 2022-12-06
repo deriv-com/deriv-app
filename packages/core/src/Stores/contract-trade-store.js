@@ -1,6 +1,5 @@
 import { action, computed, observable, toJS, makeObservable, override } from 'mobx';
 import {
-    getDummyPOCResponseForACCU,
     isDesktop,
     isEnded,
     isMultiplierContract,
@@ -193,15 +192,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     // Called from portfolio
-    updateProposal(_response) {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACCU(Date.now());
-        let response;
-        if (this.root_store.portfolio.is_accumulator) {
-            response = dummy_response;
-        } else {
-            response = _response;
-        }
+    updateProposal(response) {
         if ('error' in response) {
             this.has_error = true;
             this.error_message = response.error.message;

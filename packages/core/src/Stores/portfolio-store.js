@@ -2,9 +2,6 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
-    getDummyAllPositionsForACCU,
-    getDummyPOCResponseForACCU,
-    getDummyPortfolioContractsForACCU,
     isEmptyObject,
     isEnded,
     isUserSold,
@@ -38,7 +35,7 @@ export default class PortfolioStore extends BaseStore {
     // barriers
     barriers = [];
     main_barrier = null;
-    contract_type = 'accumulator'; // TODO: remove - temporary value!
+    contract_type = '';
 
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
@@ -87,7 +84,6 @@ export default class PortfolioStore extends BaseStore {
             updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
-            is_accumulator: computed,
             is_multiplier: computed,
         });
 
@@ -125,15 +121,8 @@ export default class PortfolioStore extends BaseStore {
             return;
         }
         this.error = '';
-        // maryia: temporary dummy data for accumulators
-        const dummy_contracts = getDummyPortfolioContractsForACCU(Date.now());
-
-        let contracts;
-        if (this.is_accumulator) {
-            contracts = dummy_contracts;
-        } else contracts = response.portfolio.contracts;
-        if (contracts) {
-            this.positions = contracts
+        if (response.portfolio.contracts) {
+            this.positions = response.portfolio.contracts
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -193,15 +182,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     deepClone = obj => JSON.parse(JSON.stringify(obj));
-    updateContractTradeStore(_response) {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACCU(Date.now());
-        let response;
-        if (this.is_accumulator) {
-            response = dummy_response;
-        } else {
-            response = _response;
-        }
+    updateContractTradeStore(response) {
         const contract_trade = this.root_store.contract_trade;
         const has_poc = !isEmptyObject(response.proposal_open_contract);
         const has_error = !!response.error;
@@ -212,15 +193,7 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    updateContractReplayStore(_response) {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACCU(Date.now());
-        let response;
-        if (this.is_accumulator) {
-            response = dummy_response;
-        } else {
-            response = _response;
-        }
+    updateContractReplayStore(response) {
         const contract_replay = this.root_store.contract_replay;
         if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
             contract_replay.populateConfig(response);
@@ -241,35 +214,18 @@ export default class PortfolioStore extends BaseStore {
     };
 
     proposalOpenContractHandler(response) {
-        // maryia: temporary dummy data for accumulators
-        const now = Date.now();
-        const dummy_response = getDummyPOCResponseForACCU(now);
-
-        let proposal, portfolio_position;
-        if (this.is_accumulator) {
-            if ('error' in dummy_response) {
-                this.updateContractTradeStore(dummy_response);
-                this.updateContractReplayStore(dummy_response);
-                return;
-            }
-            proposal = dummy_response.proposal_open_contract;
-            portfolio_position = getDummyAllPositionsForACCU(now)[0];
-
-            this.updateContractTradeStore(dummy_response);
-            this.updateContractReplayStore(dummy_response);
-        } else {
-            if ('error' in response) {
-                this.updateContractTradeStore(response);
-                this.updateContractReplayStore(response);
-                return;
-            }
-            proposal = response.proposal_open_contract;
-            portfolio_position = this.positions_map[proposal.contract_id];
-
-            if (!portfolio_position) return;
+        if ('error' in response) {
             this.updateContractTradeStore(response);
             this.updateContractReplayStore(response);
+            return;
         }
+
+        const proposal = response.proposal_open_contract;
+        const portfolio_position = this.positions_map[proposal.contract_id];
+
+        if (!portfolio_position) return;
+        this.updateContractTradeStore(response);
+        this.updateContractReplayStore(response);
 
         const formatted_position = formatPortfolioPosition(
             proposal,
@@ -322,10 +278,9 @@ export default class PortfolioStore extends BaseStore {
             }
         }
 
-        if (portfolio_position.contract_info.is_sold === 1 && !this.is_accumulator) {
+        if (portfolio_position.contract_info.is_sold === 1) {
             this.populateResultDetails(response);
-            // maryia: temporary dummy data for accumulators
-        } else if (portfolio_position.contract_info.is_sold === 1) this.populateResultDetails(dummy_response);
+        }
     }
 
     onClickCancel(contract_id) {
@@ -409,14 +364,7 @@ export default class PortfolioStore extends BaseStore {
     };
 
     populateResultDetails = response => {
-        // maryia: temporary dummy data for accumulators
-        const dummy_response = getDummyPOCResponseForACCU(Date.now());
-        let contract_response;
-        if (this.is_accumulator) {
-            contract_response = dummy_response.proposal_open_contract;
-        } else {
-            contract_response = response.proposal_open_contract;
-        }
+        const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         if (!this.positions[i]) {
@@ -558,16 +506,8 @@ export default class PortfolioStore extends BaseStore {
     }
 
     setActivePositions() {
-        // maryia: temporary dummy data for accumulators
-        const dummy_contracts = getDummyAllPositionsForACCU(Date.now());
-
-        if (this.is_accumulator) {
-            this.active_positions = dummy_contracts;
-            this.all_positions = [...dummy_contracts];
-        } else {
-            this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
-            this.all_positions = [...this.positions];
-        }
+        this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
+        this.all_positions = [...this.positions];
     }
 
     updatePositions = () => {
@@ -637,10 +577,6 @@ export default class PortfolioStore extends BaseStore {
 
     setContractType(contract_type) {
         this.contract_type = contract_type;
-    }
-
-    get is_accumulator() {
-        return this.contract_type === 'accumulator';
     }
 
     get is_multiplier() {

@@ -1,10 +1,4 @@
-import {
-    getDummyProposalInfoForACCU,
-    getDecimalPlaces,
-    getPropertyValue,
-    convertToUnix,
-    toMoment,
-} from '@deriv/shared';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -47,10 +41,6 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
-    if (store.contract_type === 'accumulator') {
-        // maryia: temporary dummy proposal info for accumulators:
-        return getDummyProposalInfoForACCU(store.growth_rate, response);
-    }
     const accumulators_details = {
         ...proposal.contract_details,
         growth_rate: store.growth_rate,

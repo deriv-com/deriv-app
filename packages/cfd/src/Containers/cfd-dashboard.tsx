@@ -353,9 +353,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
 
-        if (is_eu && !has_synthetic_account) return false;
+        if (is_eu && !has_synthetic_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
-        if (!has_synthetic_account && !has_financial_account) return false;
+        if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
         return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     };
@@ -366,7 +366,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         const has_synthetic_account = hasAccount('real', 'synthetic');
         const has_financial_account = hasAccount('real', 'financial');
 
-        if (!has_synthetic_account && !has_financial_account) return false;
+        if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
         return (
             !is_logged_in ||

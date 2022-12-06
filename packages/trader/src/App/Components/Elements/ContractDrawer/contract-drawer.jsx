@@ -53,7 +53,7 @@ const ContractDrawer = ({
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier}
+                has_result={!!is_sold || is_multiplier || is_vanilla}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );
@@ -101,7 +101,7 @@ const ContractDrawer = ({
             duration={getDurationTime(contract_info)}
             duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
             exit_spot={exit_spot}
-            has_result={!!is_sold || is_multiplier}
+            has_result={!!is_sold || is_multiplier || is_vanilla}
             toggleHistoryTab={toggleHistoryTab}
         />
     );
@@ -120,7 +120,7 @@ const ContractDrawer = ({
                 id='dt_contract_drawer'
                 className={classNames('contract-drawer', {
                     'contract-drawer--with-collapsible-btn':
-                        !!getEndTime(contract_info) || (is_multiplier && isMobile()),
+                        !!getEndTime(contract_info) || ((is_multiplier || is_vanilla) && isMobile()),
                     'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                     'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                 })}

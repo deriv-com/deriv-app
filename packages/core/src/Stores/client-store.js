@@ -997,7 +997,11 @@ export default class ClientStore extends BaseStore {
         if (!this.is_logged_in && this.is_eu_country) return false;
 
         const is_mf = this.landing_company_shortcode === 'maltainvest';
-        return this.is_virtual ? !this.is_multipliers_only : !is_mf && !this.is_options_blocked;
+        return this.is_virtual
+            ? !this.is_multipliers_only
+                ? !isEuCountry(this.residence)
+                : !this.is_multipliers_only
+            : !is_mf && !this.is_options_blocked;
     };
 
     get clients_country() {

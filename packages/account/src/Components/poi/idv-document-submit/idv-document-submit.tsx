@@ -78,7 +78,6 @@ const IdvDocumentSubmit = ({
     type TsetFieldValue = FormikHelpers<FormikValues>['setFieldValue'];
 
     const resetDocumentItemSelected = (setFieldValue: TsetFieldValue) => {
-        // debugger;
         setFieldValue(
             'document_type',
             {

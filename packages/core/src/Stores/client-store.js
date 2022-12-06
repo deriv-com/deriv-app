@@ -1001,7 +1001,7 @@ export default class ClientStore extends BaseStore {
     };
 
     get is_eu_or_multipliers_only() {
-        // Will not show BinaryBot, DBot, SmartTrader if account is multipliers_only and is from Eu Countries
+        // Check whether account is multipliers only and if the account is from eu countries
         return !this.is_multipliers_only ? !isEuCountry(this.residence) : !this.is_multipliers_only;
     }
 

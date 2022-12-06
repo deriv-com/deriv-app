@@ -1057,13 +1057,13 @@
     &__manage--mt5 {
         display: flex;
         width: 100%;
-        margin-left: 0.4rem;
-        padding-top: 0.2rem;
+        padding: 0.2rem 0.8rem 0;
 
         .dc-btn {
             min-width: 12rem;
-            margin-bottom: 1.6rem;
             height: 4rem;
+            width: 100%;
+            margin: 0 0 0.8rem;
 
             &:not(:last-child) {
                 margin-right: 0.6rem;

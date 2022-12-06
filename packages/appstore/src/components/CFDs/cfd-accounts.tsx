@@ -90,7 +90,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                 {!is_demo_tab && (
                     <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
                         <Text weight='bold' size='xxs' color='red'>
-                            <Localize i18n_default_text='Compare accounts' />
+                            <Localize i18n_default_text={is_eu ? 'Account Information' : 'Compare accounts'} />
                         </Text>
                     </div>
                 )}

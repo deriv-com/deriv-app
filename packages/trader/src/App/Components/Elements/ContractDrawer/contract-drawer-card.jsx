@@ -143,7 +143,7 @@ const ContractDrawerCard = ({
                     onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
                     onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
                 >
-                    {(is_sold || is_multiplier) && (
+                    {(is_sold || is_multiplier || is_vanilla) && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}

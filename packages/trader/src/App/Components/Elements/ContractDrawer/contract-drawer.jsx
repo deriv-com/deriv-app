@@ -122,7 +122,7 @@ const ContractDrawer = ({
                 id='dt_contract_drawer'
                 className={classNames('contract-drawer', {
                     'contract-drawer--with-collapsible-btn':
-                        !!getEndTime(contract_info) || (is_multiplier && isMobile()),
+                        !!getEndTime(contract_info) || ((is_multiplier || is_vanilla) && isMobile()),
                     'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                     'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                 })}

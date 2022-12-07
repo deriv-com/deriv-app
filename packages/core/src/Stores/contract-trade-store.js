@@ -25,6 +25,7 @@ export default class ContractTradeStore extends BaseStore {
     // Accumulators data:
     accumulators_high_barrier = '';
     accumulators_low_barrier = '';
+    current_symbol_spot = null;
     current_symbol_spot_time = null;
 
     constructor(root_store) {
@@ -33,6 +34,7 @@ export default class ContractTradeStore extends BaseStore {
         makeObservable(this, {
             accumulators_high_barrier: observable,
             accumulators_low_barrier: observable,
+            current_symbol_spot: observable,
             current_symbol_spot_time: observable,
             contracts: observable.shallow,
             has_error: observable,

@@ -48,6 +48,7 @@ describe('Proposal', () => {
                     value: '',
                 },
                 growth_rate: undefined,
+                spot: undefined,
                 spot_time: undefined,
             });
         });
@@ -86,6 +87,7 @@ describe('Proposal', () => {
                     value: 200,
                 },
                 growth_rate: undefined,
+                spot: undefined,
                 spot_time: undefined,
             });
         });

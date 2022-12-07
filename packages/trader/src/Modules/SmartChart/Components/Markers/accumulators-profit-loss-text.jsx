@@ -15,7 +15,6 @@ const AccumulatorsProfitLossText = ({
     const timeout_ids = React.useRef([]);
     const counter = React.useRef(null);
     const prev_profit = React.useRef(profit);
-    const animated_ref = React.useRef();
     const won = profit > 0;
     const sign = won ? '+' : '';
     const new_arr = profit.toFixed(2).split('.');
@@ -23,46 +22,33 @@ const AccumulatorsProfitLossText = ({
     const new_counter = +new_arr[1][0];
     const prev_counter = +prev_arr[1][0];
     const [is_brightening, setIsBrightening] = React.useState(false);
+    const [is_jumping, setIsJumping] = React.useState(false);
+    const brightening_timeout = React.useRef();
+    const jumping_timeout = React.useRef();
 
-    React.useLayoutEffect(() => {
-        let brightening_timeout;
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(brightening_timeout.current);
+            clearTimeout(jumping_timeout.current);
+        };
+    }, []);
+
+    React.useEffect(() => {
         if (profit) {
             setIsBrightening(true);
-            brightening_timeout = setTimeout(() => {
+            setIsJumping(true);
+            brightening_timeout.current = setTimeout(() => {
                 setIsBrightening(false);
             }, 600);
+            jumping_timeout.current = setTimeout(() => {
+                setIsJumping(false);
+            }, 300);
         }
-        return () => {
-            clearTimeout(brightening_timeout);
-        };
     }, [profit]);
 
     React.useEffect(() => {
-        if (animated_ref?.current) {
-            animated_ref.current.animate(
-                [
-                    { transform: 'translateY(0)', opacity: '1' },
-                    { transform: 'translateY(-15px)', opacity: '0.2' },
-                    { transform: 'translateY(-30px)', opacity: '0' },
-                    { transform: 'translateY(-15px)', opacity: '0.2' },
-                    { transform: 'translateY(0)', opacity: '1' },
-                ],
-                {
-                    duration: 20,
-                    fill: 'both',
-                    iterations: 15,
-                    easing: 'cubic-bezier(.49,-.4,.11,.65)',
-                }
-            );
-        }
         update(prev_counter, new_counter);
-        const timeouts = timeout_ids.current;
-        return () => {
-            timeouts?.forEach(id => {
-                clearTimeout(id);
-            });
-        };
-    }, [profit]);
+    }, [profit, prev_counter, new_counter]);
 
     // TODO: maryia-binary: refactor this function
     const update = (start, end) => {
@@ -70,7 +56,7 @@ const AccumulatorsProfitLossText = ({
             clearTimeout(id);
         });
 
-        const delta = Math.abs(end - start) || 1;
+        const delta = Math.abs(end - start);
         counter.current = start;
         if (start < end) {
             const runLoop = () => {
@@ -148,7 +134,7 @@ const AccumulatorsProfitLossText = ({
                 as='div'
             >
                 {`${sign}${new_arr[0]}.`}
-                <div ref={animated_ref}>{value}</div>
+                <div className={is_jumping ? `${className}__jumping-decimal` : ''}>{value}</div>
                 {`${new_arr[1].slice(1)}`}
             </Text>
             <Text size='xxs' as='div' className={`${className}__currency`}>

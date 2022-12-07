@@ -1059,8 +1059,10 @@ export default class TradeStore extends BaseStore {
                 maximum_payout,
                 high_barrier,
                 low_barrier,
+                spot,
                 spot_time,
             } = this.proposal_info.ACCU;
+            this.root_store.contract_trade.current_symbol_spot = spot;
             this.root_store.contract_trade.current_symbol_spot_time = spot_time;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,

@@ -272,7 +272,7 @@ const TickContract = RawMarkerMaker(
                 previous_tick &&
                 (status === 'open' || is_in_contract_details)
             ) {
-                // draw 2 barriers with a shade between them for an open Accumulate contract
+                // draw 2 barriers with a shade between them for an open ACCU contract
                 draw_partial_shade({
                     ctx,
                     start_left: previous_tick.left,
@@ -297,9 +297,8 @@ const TickContract = RawMarkerMaker(
                 tick: { zoom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
-            if (is_accumulators_contract) {
-                ctx.setLineDash([]);
-            } else ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = color + opacity;
+            ctx.setLineDash([3, 3]);
             ctx.moveTo(start.left - 1 * scale, 0);
             if (ticks.length && barrier && !is_accumulators_contract) {
                 ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);

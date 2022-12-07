@@ -42,7 +42,7 @@ const AccumulatorsProfitLossTooltip = ({
         }
     };
 
-    if (!is_sold && profit)
+    if (!is_sold && typeof profit === 'number')
         return (
             <AccumulatorsProfitLossText
                 currency={currency}
@@ -51,7 +51,7 @@ const AccumulatorsProfitLossTooltip = ({
                 profit={profit}
             />
         );
-    if (!profit) return null;
+    if (typeof profit !== 'number') return null;
 
     return (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>

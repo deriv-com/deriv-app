@@ -12,6 +12,7 @@ import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widge
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsProfitLossTooltip from '../../SmartChart/Components/Markers/accumulators-profit-loss-tooltip.jsx';
+import CurrentSpotHighlighter from '../../SmartChart/Components/Markers/current-spot-highlighter.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
@@ -298,6 +299,9 @@ const Chart = props => {
         chart_layout,
         chart_type,
         chartStateChange,
+        current_symbol_spot,
+        current_symbol_spot_time,
+        ticks_history_stats,
         exportLayout,
         extra_barriers = [],
         end_epoch,
@@ -410,6 +414,12 @@ const Chart = props => {
                 accumulators_positions.map(({ contract_info }) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
+            {is_accumulator && current_symbol_spot_time && ticks_history_stats?.ticks_stayed_in?.[0] === 0 && (
+                <CurrentSpotHighlighter
+                    current_spot={current_symbol_spot}
+                    current_spot_time={current_symbol_spot_time}
+                />
+            )}
         </SmartChartWithRef>
     );
 };
@@ -422,6 +432,8 @@ Chart.propTypes = {
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
     chartStateChange: PropTypes.func,
+    current_symbol_spot: PropTypes.number,
+    current_symbol_spot_time: PropTypes.number,
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
@@ -434,6 +446,7 @@ Chart.propTypes = {
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
     symbol: PropTypes.string,
+    ticks_history_stats: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
@@ -446,6 +459,8 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) 
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
     chartStateChange: modules.trade.chartStateChange,
+    current_symbol_spot: contract_trade.current_symbol_spot,
+    current_symbol_spot_time: contract_trade.current_symbol_spot_time,
     updateChartType: contract_trade.updateChartType,
     updateGranularity: contract_trade.updateGranularity,
     settings: {
@@ -468,6 +483,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) 
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,
     setChartStatus: modules.trade.setChartStatus,
+    ticks_history_stats: modules.trade.ticks_history_stats,
     chart_layout: modules.trade.chart_layout,
     wsForget: modules.trade.wsForget,
     wsForgetStream: modules.trade.wsForgetStream,

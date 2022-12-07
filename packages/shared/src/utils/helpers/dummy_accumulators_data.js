@@ -43,11 +43,11 @@
 // ];
 // const tick_passed = 14;
 // const tick_count = 1000;
-const symbol = 'R_10';
+// const symbol = 'R_10';
 // const symbol_display_name = 'Volatility 10 Index';
-const market = 'synthetic_index';
-const submarket = 'random_index';
-const exchange_name = 'RANDOM';
+// const market = 'synthetic_index';
+// const submarket = 'random_index';
+// const exchange_name = 'RANDOM';
 
 // let contract_status = 'open'; // 'lost', 'won' or 'open'
 // let position_status = 'profit'; // 'profit' or 'loss'
@@ -72,6 +72,18 @@ const exchange_name = 'RANDOM';
 // result = 'won'; // 'won' or 'lost'
 // profit = +0.15;
 // profit_percentage = +1.5;
+// is_sold = 1; // 0 || 1
+// exit_tick = current_spot;
+// exit_tick_display_value = `${current_spot}`;
+// exit_tick_time = dummy_current_time;
+// is_expired = 1;
+//         }, ms1);
+//         setTimeout(() => {
+// contract_status = 'lost'; // 'lost', 'won' or 'open'
+// position_status = 'loss'; // 'profit' or 'loss'
+// result = 'lost'; // 'won' or 'lost'
+// profit = -10;
+// profit_percentage = -100;
 // is_sold = 1; // 0 || 1
 // exit_tick = current_spot;
 // exit_tick_display_value = `${current_spot}`;

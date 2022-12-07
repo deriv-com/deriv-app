@@ -35,6 +35,7 @@ import Divider from 'Components/elements/divider';
 import { TAccountCategory } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './trading-hub.scss';
+import { useStore } from '@deriv/stores';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
@@ -243,7 +244,7 @@ const TradingHub: React.FC = () => {
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog />
+            <CFDServerErrorDialog useStore={useStore} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

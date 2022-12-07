@@ -126,6 +126,7 @@ export const getAccountTypeFields = ({ category, type }: TGetAccountTypeFields) 
 type TGetCFDAccountDisplay = TGetCFDAccountKey & {
     is_eu: boolean;
     is_mt5_trade_modal?: boolean;
+    is_transfer_form?: boolean;
 };
 
 export const getCFDAccountDisplay = ({
@@ -135,6 +136,7 @@ export const getCFDAccountDisplay = ({
     is_eu,
     shortcode,
     is_mt5_trade_modal,
+    is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
@@ -148,6 +150,7 @@ export const getCFDAccountDisplay = ({
 
     // TODO condition will be changed when card 74063 is merged
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return 'Synthetic';
+    if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
 
     return cfd_account_display;
 };
@@ -204,6 +207,7 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
         if (type === 'financial') return !!landing_companies?.mt_financial_company?.financial;
         if (type === 'financial_stp') return !!landing_companies?.mt_financial_company?.financial_stp;
     } else if (platform === CFD_PLATFORMS.DXTRADE) {
+        if (type === 'all') return !!landing_companies?.dxtrade_all_company?.standard;
         if (type === 'gaming') return !!landing_companies?.dxtrade_gaming_company?.standard;
         if (type === 'financial') return !!landing_companies?.dxtrade_financial_company?.standard;
     }

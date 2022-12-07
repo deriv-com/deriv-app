@@ -287,7 +287,7 @@ export default class CFDStore extends BaseStore {
             password: values.password,
             platform: values.platform,
             account_type: this.account_type.category,
-            market_type: this.account_type.type,
+            market_type: this.account_type.type === 'dxtrade' ? 'all' : this.account_type.type,
         });
     }
 
@@ -309,6 +309,8 @@ export default class CFDStore extends BaseStore {
                 else this.enableMt5FinancialStpModal();
                 break;
             case 'synthetic':
+            case 'dxtrade':
+            case 'all':
                 this.enableCFDPasswordModal();
                 break;
             default:

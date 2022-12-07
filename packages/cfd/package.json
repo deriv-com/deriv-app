@@ -11,7 +11,7 @@
         "build:travis": "echo \"No build:travis specified\"",
         "test": "echo \"No mocha:test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
-        "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-stor  age NODE_OPTIONS='-r ts-node/register' --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
+        "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage NODE_OPTIONS='-r ts-node/register' --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

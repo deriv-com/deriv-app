@@ -17,5 +17,5 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src", "@deriv-stores.d.ts"]
+    "include": ["src"]
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { useStore as useStoreHook } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 
-const CFDServerErrorDialog = ({ useStore = useStoreHook }: { useStore?: typeof useStoreHook }) => {
+const CFDServerErrorDialog = () => {
     const { ui, modules } = useStore();
     const { enableApp, disableApp } = ui;
     const { cfd } = modules;

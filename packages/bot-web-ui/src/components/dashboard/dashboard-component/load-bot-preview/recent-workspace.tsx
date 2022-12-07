@@ -1,12 +1,11 @@
-import classnames from 'classnames';
-import React from 'react';
-import { Icon } from '@deriv/components';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { Icon } from '@deriv/components';
+import classnames from 'classnames';
+import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
-import Condition from 'yup/lib/Condition';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -22,8 +21,6 @@ type TRecentWorkspace = {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     loadFileFromRecent: () => void;
     setActiveTab: (active_tab: number) => void;
-    toggleStrategies: (param: boolean) => void;
-    is_delete_modal_open: boolean;
     dashboard_strategies: [];
     setLoaderVisible: (param: boolean) => void;
 };
@@ -130,9 +127,7 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     setFileLoaded: dashboard.setFileLoaded,
     has_file_loaded: dashboard.has_file_loaded,
     toggleSaveModal: save_modal.toggleSaveModal,
-    toggleStrategies: load_modal.toggleStrategies,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
-    is_delete_modal_open: load_modal.is_delete_modal_open,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setActiveTab: dashboard.setActiveTab,
     recent_strategies: load_modal.recent_strategies,

@@ -275,6 +275,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
+        this.getDashboardStrategies();
     }
 
     onEntered = (): void => {

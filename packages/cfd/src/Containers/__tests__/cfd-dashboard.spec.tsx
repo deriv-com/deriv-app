@@ -59,6 +59,7 @@ jest.mock('../../Components/success-dialog.jsx', () => () => 'SuccessDialog');
 jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_modal_enabled ? 'CFDPasswordModal' : '');
 jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
 jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
+jest.mock('../cfd-server-error-dialog.tsx', () => () => 'CFDServerErrorDialog');
 jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
 jest.mock(
     '../jurisdiction-modal/jurisdiction-modal',

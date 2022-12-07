@@ -16,10 +16,11 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('<UploadComplete />', () => {
-    const successful_upload_message = /your proof of identity was submitted successfully/i;
-    const poi_under_review_message = /We’ll review your document and notify you of its status within 1-3 days./i;
+    const successful_upload_message = /your documents were submitted successfully/i;
+    const poi_under_review_message = /We’ll review your documents and notify you of its status within 5 minutes./i;
+    const poi_under_review_message_for_manual =
+        /We’ll review your documents and notify you of its status within 1 - 3 working days./i;
     const redirect_button = <Button>Lorem Ipsom</Button>;
-    const poa_under_review_message = /your document is being reviewed, please check back in 1-3 days./i;
     const needs_poa_extra_submit_message = /you must also submit a proof of address./i;
 
     const renderWithRouter = (component, is_appstore) =>
@@ -35,11 +36,19 @@ describe('<UploadComplete />', () => {
         expect(screen.getByTestId(/dt_mocked_icon/)).toBeInTheDocument();
     });
 
-    it('should render <UploadComplete /> component and is_appstore is true', () => {
-        renderWithRouter(<UploadComplete />, true);
+    it('should render <UploadComplete /> component for manual upload', () => {
+        renderWithRouter(<UploadComplete is_manual_upload />, true);
 
         expect(screen.getByText(successful_upload_message)).toBeInTheDocument();
-        expect(screen.getByText(poi_under_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message_for_manual)).toBeInTheDocument();
+        expect(screen.getByTestId(/dt_mocked_icon/i)).toBeInTheDocument();
+        expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+    it('should render <UploadComplete /> component for manual upload', () => {
+        renderWithRouter(<UploadComplete is_manual_upload />, true);
+
+        expect(screen.getByText(successful_upload_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message_for_manual)).toBeInTheDocument();
         expect(screen.getByTestId(/dt_mocked_icon/i)).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
@@ -60,7 +69,7 @@ describe('<UploadComplete />', () => {
         renderWithRouter(<UploadComplete needs_poa redirect_button={redirect_button} />, true);
 
         expect(screen.getByTestId('dt_poa_button')).toBeInTheDocument();
-        expect(screen.getByText(poa_under_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
@@ -69,7 +78,7 @@ describe('<UploadComplete />', () => {
         renderWithRouter(<UploadComplete needs_poa is_from_external redirect_button={redirect_button} />, true);
 
         expect(screen.getByTestId('dt_poa_button')).toBeInTheDocument();
-        expect(screen.getByText(poa_under_review_message)).toBeInTheDocument();
+        expect(screen.getByText(poi_under_review_message)).toBeInTheDocument();
         expect(screen.getByText(needs_poa_extra_submit_message)).toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });

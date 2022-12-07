@@ -23,17 +23,14 @@ import RootStore from '../Stores/index';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
-    has_previous_button?: boolean;
+    form_error?: string;
+    index: number;
     is_loading: boolean;
     context: RootStore;
     landing_company: LandingCompany;
-    residence_list: ResidenceList;
-    onCancel: () => void;
-    onSave: (index: number, values: TFormValues) => void;
     onSubmit: TOnSubmit;
+    residence_list: ResidenceList;
     value: TFormValues;
-    index: number;
-    form_error?: string;
 };
 
 type TValidatePersonalDetailsParams = {
@@ -199,7 +196,7 @@ const findDefaultValuesInResidenceList: TFindDefaultValuesInResidenceList = ({
     return { citizen, place_of_birth, tax_residence };
 };
 
-const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) => {
+const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, residence_list) => {
     const { citizen, place_of_birth, tax_residence } = findDefaultValuesInResidenceList({
         residence_list,
         citizen_text: values.citizen,
@@ -213,30 +210,22 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmitFn, is_dirty, res
         place_of_birth: place_of_birth?.value || '',
         tax_residence: tax_residence?.value || '',
     };
-    onSubmitFn(idx, payload, actions.setSubmitting, is_dirty);
+    onSubmit(idx, payload, actions.setSubmitting, is_dirty);
 };
 
 const CFDPersonalDetailsForm = ({
     changeable_fields,
-    has_previous_button,
     is_loading,
     landing_company,
     residence_list,
-    onCancel,
-    onSave,
-    context,
     onSubmit,
+    context,
     value,
     index,
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = !!(landing_company?.config?.tax_details_required ?? false);
-
-    const handleCancel = (values: TFormValues) => {
-        onSave(index, values);
-        onCancel();
-    };
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
@@ -500,13 +489,10 @@ const CFDPersonalDetailsForm = ({
                                 <Modal.Footer is_bypassed={isMobile()} has_separator>
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
-                                        cancel_label={localize('Previous')}
                                         is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         context={context}
-                                        onCancel={() => handleCancel(values)}
-                                        has_cancel={has_previous_button}
                                     />
                                 </Modal.Footer>
                             </form>

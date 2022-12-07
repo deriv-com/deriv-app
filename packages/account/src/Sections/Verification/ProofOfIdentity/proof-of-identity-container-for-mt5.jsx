@@ -1,27 +1,13 @@
 import React from 'react';
-import { Icon, Loading, Text } from '@deriv/components';
-import { WS, isMobile } from '@deriv/shared';
+import { Loading } from '@deriv/components';
+import { WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
+import IconWithMessage from 'Components/icon-with-message';
 import POISubmissionForMT5 from './proof-of-identity-submission-for-mt5.jsx';
 import { service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ShowDemoMessage = () => (
-    <div className='da-icon-with-message'>
-        <Icon icon={'IcPoaLock'} size={128} />
-        <Text
-            className='da-icon-with-message__text'
-            as='p'
-            color='general'
-            size={isMobile ? 'xs' : 's'}
-            line_height='m'
-            weight='bold'
-        >
-            {localize('Switch to your real account to create a Deriv MT5 account')}
-        </Text>
-    </div>
-);
 const ProofOfIdentityContainerForMt5 = ({
     account_status,
     fetchResidenceList,
@@ -62,7 +48,13 @@ const ProofOfIdentityContainerForMt5 = ({
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
-        return <ShowDemoMessage />;
+        return (
+            <IconWithMessage
+                icon='IcPoaVerified'
+                message={localize('Switch to your real account to submit your documents')}
+                has_button
+            />
+        );
     } else if (api_error) {
         return <ErrorMessage error_message={api_error?.message || api_error} />;
     }

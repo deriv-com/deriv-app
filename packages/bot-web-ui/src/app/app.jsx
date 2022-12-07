@@ -1,7 +1,7 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers, api_base } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
     Audio,
     BlocklyLoading,
@@ -29,11 +29,6 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
-    const { loginid = undefined } = root_store?.client || {};
-
-    React.useEffect(() => {
-        api_base.createNewInstance(loginid);
-    }, [loginid]);
 
     React.useEffect(() => {
         /**

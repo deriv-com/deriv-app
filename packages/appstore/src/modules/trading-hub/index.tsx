@@ -23,6 +23,7 @@ import {
     CFDDbviOnBoarding,
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
+    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
@@ -44,7 +45,7 @@ const TradingHub: React.FC = () => {
         is_eu_country,
         is_populating_mt5_account_list,
         is_populating_dxtrade_account_list,
-        loginid,
+        switchAccountHandlerForAppstore,
     } = client;
     const {
         setAccountType,
@@ -106,6 +107,7 @@ const TradingHub: React.FC = () => {
             name: string;
         };
     }) => {
+        switchAccountHandlerForAppstore(tab_account_type);
         setTabAccountType(event.target.value as TAccountCategory);
     };
     const platformTypeChange = (event: {
@@ -124,7 +126,7 @@ const TradingHub: React.FC = () => {
 
     const platform_toggle_options = [
         { text: 'CFD', value: 'cfd' },
-        { text: 'Options', value: 'options' },
+        { text: `${is_eu ? 'Multipliers' : 'Options and...'}`, value: 'options' },
     ];
 
     tour_step_locale.last = (
@@ -229,9 +231,9 @@ const TradingHub: React.FC = () => {
                 disableScrolling
                 hideCloseButton
                 disableCloseOnEsc
-                steps={is_eu ? eu_tour_step_config : tour_step_config}
+                steps={tour_step_config}
                 styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-                locale={is_eu ? eu_tour_step_locale : tour_step_locale}
+                locale={tour_step_locale}
                 floaterProps={{
                     disableAnimation: true,
                 }}
@@ -241,6 +243,7 @@ const TradingHub: React.FC = () => {
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
+            <CFDServerErrorDialog context={store} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

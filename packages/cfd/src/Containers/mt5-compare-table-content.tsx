@@ -57,8 +57,12 @@ type TDMT5CompareModalContentProps = {
     show_eu_related: boolean;
     account_status: GetAccountStatus;
     upgradeable_landing_companies: unknown[];
+    setAppstorePlatform: (platform: string) => void;
     should_show_derivx: boolean;
     should_restrict_bvi_account_creation: boolean;
+    updateAccountStatus: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 const eucontent: TModalContentProps[] = [
@@ -245,8 +249,12 @@ const DMT5CompareModalContent = ({
     setJurisdictionSelectedShortcode,
     account_status,
     upgradeable_landing_companies,
+    setAppstorePlatform,
     should_show_derivx,
     should_restrict_bvi_account_creation,
+    updateAccountStatus,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -282,6 +290,7 @@ const DMT5CompareModalContent = ({
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
+        updateAccountStatus();
         if (!has_submitted_personal_details) {
             let get_settings_response: GetSettings = {};
             if (!account_settings) {
@@ -358,11 +367,13 @@ const DMT5CompareModalContent = ({
         switch (item.action) {
             case 'synthetic_svg':
             case 'financial_svg':
+                setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('svg');
                 openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
+                setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('bvi');
                 if (
                     poi_verified_for_bvi_labuan_maltainvest &&
@@ -375,6 +386,7 @@ const DMT5CompareModalContent = ({
                 }
                 break;
             case 'financial_vanuatu':
+                setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (poi_verified_for_vanuatu && !poi_or_poa_not_submitted) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
@@ -383,6 +395,7 @@ const DMT5CompareModalContent = ({
                 }
                 break;
             case 'financial_labuan':
+                setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('labuan');
                 if (poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
                     openPersonalDetailsFormOrPasswordForm(type_of_account);
@@ -391,6 +404,7 @@ const DMT5CompareModalContent = ({
                 }
                 break;
             case 'financial_maltainvest':
+                setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('maltainvest');
                 if (poi_poa_verified_for_bvi_labuan_maltainvest && !poi_or_poa_not_submitted) {
                     openPasswordModal(type_of_account);
@@ -399,6 +413,7 @@ const DMT5CompareModalContent = ({
                 }
                 break;
             case 'derivx':
+                setAppstorePlatform(CFD_PLATFORMS.DXTRADE);
                 openPasswordModal(type_of_account);
                 break;
             default:
@@ -428,7 +443,11 @@ const DMT5CompareModalContent = ({
             is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0 && is_real_enabled;
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
-            openDerivRealAccountNeededModal();
+            if (real_account_creation_unlock_date) {
+                setShouldShowCooldownModal(true);
+            } else {
+                openDerivRealAccountNeededModal();
+            }
         } else if (is_virtual && !['synthetic_svg', 'financial_svg'].includes(item.action)) {
             openSwitchToRealAccountModal();
         } else onSelectRealAccount(item);
@@ -456,7 +475,7 @@ const DMT5CompareModalContent = ({
         const type = item.action.split('_')[1];
         if (isAccountAdded(item)) {
             return false;
-        } else if (type === 'svg') {
+        } else if (type === 'svg' || item.action === 'derivx') {
             return false;
         } else if (type === 'vanuatu') {
             return poi_pending_for_vanuatu && !poi_or_poa_not_submitted;
@@ -654,7 +673,7 @@ const DMT5CompareModalContent = ({
     );
 };
 
-export default connect(({ modules, client, ui }: RootStore) => ({
+export default connect(({ modules, client, common, ui }: RootStore) => ({
     account_type: modules.cfd.account_type,
     account_settings: client.account_settings,
     has_real_account: client.has_active_real_account,
@@ -672,4 +691,6 @@ export default connect(({ modules, client, ui }: RootStore) => ({
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
     openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
+    setAppstorePlatform: common.setAppstorePlatform,
+    updateAccountStatus: client.updateAccountStatus,
 }))(DMT5CompareModalContent);

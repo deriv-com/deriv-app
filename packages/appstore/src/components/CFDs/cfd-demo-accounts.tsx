@@ -124,20 +124,12 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
                             <div className={`cfd-demo-account__accounts--item ${account.name}`} key={account.name}>
                                 {existing_demo_accounts ? (
                                     existing_demo_accounts.map(existing_account => {
-                                        const non_eu_accounts =
-                                            existing_account.landing_company_short &&
-                                            !['svg', 'bvi'].includes(existing_account.landing_company_short)
-                                                ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
-                                                  existing_account.landing_company_short?.slice(1)
-                                                : existing_account.landing_company_short?.toUpperCase();
-
-                                        const title_shortcode = is_eu ? '' : non_eu_accounts;
                                         return (
                                             <div className='existing-accounts' key={existing_account.name}>
                                                 <AccountManager
                                                     has_account={true}
                                                     type={existing_account.market_type}
-                                                    appname={`${account.name} ${title_shortcode}`}
+                                                    appname={`${account.name} Demo`}
                                                     platform={account.platform}
                                                     disabled={false}
                                                     loginid={existing_account.display_login}

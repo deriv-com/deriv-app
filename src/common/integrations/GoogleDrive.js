@@ -59,28 +59,25 @@ class GoogleDriveUtil {
                     .then(
                         () => {
                             this.auth = gapi.auth2.getAuthInstance();
-                            if(this.auth) {
+                            if (this.auth) {
                                 this.auth.isSignedIn.listen(is_logged_in => this.updateLoginStatus(is_logged_in));
                                 this.updateLoginStatus(this.auth.isSignedIn.get());
                                 store.dispatch(setGdReady(true));
                             }
                         },
-                        (error) => {
-                            if (error.error === "idpiframe_initialization_failed" && error.details.includes('Cookies')) {
-                              $.notify(
-                                translate(
-                                  "To use Google Drive, enable cookies in your browser settings."
-                                ),
-                                { position: "bottom left" }
-                              );
-                            } else{
-                              errLogger(
-                                error,
-                                translate("There was an error initialising Google Drive.")
-                              );
+                        error => {
+                            if (
+                                error.error === 'idpiframe_initialization_failed' &&
+                                error.details.includes('Cookies')
+                            ) {
+                                $.notify(translate('To use Google Drive, enable cookies in your browser settings.'), {
+                                    position: 'bottom left',
+                                });
+                            } else {
+                                errLogger(error, translate('There was an error initialising Google Drive.'));
                             }
-                          }
-                        )
+                        }
+                    );
             },
             onerror: error => errLogger(error, translate('There was an error loading Google Drive libraries')),
         });

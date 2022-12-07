@@ -39,20 +39,20 @@ const Summary = ({ accountID }) => {
             </thead>
             <tbody>
                 <tr>
-                    <td className="accountID">{accountID}</td>
-                    <td className="totalRuns">{totalRuns}</td>
-                    <td className="totalStake">{totalStake}</td>
-                    <td className="totalPayout">{totalPayout}</td>
-                    <td style={style.green} className="totalWins">
+                    <td className='accountID'>{accountID}</td>
+                    <td className='totalRuns'>{totalRuns}</td>
+                    <td className='totalStake'>{totalStake}</td>
+                    <td className='totalPayout'>{totalPayout}</td>
+                    <td style={style.green} className='totalWins'>
                         {totalWins}
                     </td>
-                    <td style={style.red} className="totalLosses">
+                    <td style={style.red} className='totalLosses'>
                         {totalLosses}
                     </td>
-                    <td style={profit_color} className="totalProfit">
+                    <td style={profit_color} className='totalProfit'>
                         {totalProfit}
                     </td>
-                    <td className="balance">{balance?.includes('UST') ? balance.replace('UST', 'USDT') : balance}</td>
+                    <td className='balance'>{balance?.includes('UST') ? balance.replace('UST', 'USDT') : balance}</td>
                 </tr>
             </tbody>
         </table>

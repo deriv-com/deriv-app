@@ -30,7 +30,8 @@ Blockly.Blocks.loader = {
         }
         if (
             !this.isInFlyout &&
-            (ev.type === 'change' && ev.element === 'field') &&
+            ev.type === 'change' &&
+            ev.element === 'field' &&
             ev.blockId === this.id &&
             !this.disabled
         ) {
@@ -54,5 +55,5 @@ Blockly.Blocks.loader = {
 Blockly.JavaScript.loader = block =>
     block.loadedVariables.length
         ? // eslint-disable-next-line no-underscore-dangle
-        `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
+          `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()};`
         : '';

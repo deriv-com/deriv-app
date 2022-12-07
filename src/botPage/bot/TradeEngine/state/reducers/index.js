@@ -1,7 +1,7 @@
 import * as constants from '../constants';
 
 const initialState = {
-    scope         : constants.STOP,
+    scope: constants.STOP,
     proposalsReady: false,
 };
 
@@ -9,7 +9,7 @@ const signal = (state = initialState, action) => {
     switch (action.type) {
         case constants.START:
             return {
-                scope         : constants.BEFORE_PURCHASE,
+                scope: constants.BEFORE_PURCHASE,
                 proposalsReady: state.proposalsReady,
             };
         case constants.PROPOSALS_READY:
@@ -24,19 +24,19 @@ const signal = (state = initialState, action) => {
             };
         case constants.PURCHASE_SUCCESSFUL:
             return {
-                scope         : constants.DURING_PURCHASE,
-                openContract  : false,
+                scope: constants.DURING_PURCHASE,
+                openContract: false,
                 proposalsReady: state.proposalsReady,
             };
         case constants.OPEN_CONTRACT:
             return {
-                scope         : constants.DURING_PURCHASE,
-                openContract  : true,
+                scope: constants.DURING_PURCHASE,
+                openContract: true,
                 proposalsReady: state.proposalsReady,
             };
         case constants.SELL:
             return {
-                scope         : constants.STOP,
+                scope: constants.STOP,
                 proposalsReady: state.proposalsReady,
             };
         case constants.NEW_TICK:

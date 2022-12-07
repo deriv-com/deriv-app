@@ -42,15 +42,14 @@ const ChartContent = () => {
     const ticksService = new ChartTicksService(api);
     const listeners = [];
 
-
     React.useEffect(() => {
         globalObserver.register('bot.init', initializeBot);
-        globalObserver.register('bot.contract', updateContract)
+        globalObserver.register('bot.contract', updateContract);
         return () => {
             globalObserver.unregister('bot.init', initializeBot);
             globalObserver.unregister('bot.contract', updateContract);
-        }
-    }, [state.symbol])
+        };
+    }, [state.symbol]);
 
     const initializeBot = symbol => {
         if (symbol && state.symbol !== symbol) {
@@ -58,12 +57,12 @@ const ChartContent = () => {
             setState({
                 ...state,
                 symbol,
-            })
+            });
             setTimeout(() => {
                 setVisibility(true);
-            }, 500)
+            }, 500);
         }
-    }
+    };
 
     const updateContract = contract => {
         if (!contract) return;
@@ -71,7 +70,7 @@ const ChartContent = () => {
             setState({
                 ...state,
                 should_barrier_display: false,
-            })
+            });
         } else {
             const updated_state = {
                 ...state,
@@ -85,19 +84,16 @@ const ChartContent = () => {
             }
             setState(updated_state);
         }
-    }
+    };
 
     const getKey = request => `${request.ticks_history}-${request.granularity}`;
-    const requestAPI = (data) => ticksService.api.send(data).catch(e => {
-        globalObserver.emit('Error', e);
-    });
+    const requestAPI = data =>
+        ticksService.api.send(data).catch(e => {
+            globalObserver.emit('Error', e);
+        });
 
     const requestSubscribe = (request, callback) => {
-        const {
-            ticks_history: symbol,
-            style: dataType,
-            granularity,
-        } = request;
+        const { ticks_history: symbol, style: dataType, granularity } = request;
 
         if (dataType === 'candles') {
             listeners[getKey(request)] = ticksService.monitor({
@@ -111,14 +107,10 @@ const ChartContent = () => {
                 callback,
             });
         }
-    }
+    };
 
-    const requestForget = (request) => {
-        const {
-            ticks_history: symbol,
-            style: dataType,
-            granularity,
-        } = request;
+    const requestForget = request => {
+        const { ticks_history: symbol, style: dataType, granularity } = request;
 
         const requested_key = getKey(request);
         if (dataType === 'candles') {
@@ -134,25 +126,29 @@ const ChartContent = () => {
             });
         }
         delete listeners[requested_key];
-    }
+    };
 
     const renderTopWidgets = () => <span />;
 
     const renderToolbarWidgets = () => (
         <ToolbarWidget>
             <ChartMode
-                onChartType={chart_type => setState({
-                    ...state,
-                    chart_type,
-                })}
-                onGranularity={granularity => setState({
-                    ...state,
-                    granularity,
-                })}
+                onChartType={chart_type =>
+                    setState({
+                        ...state,
+                        chart_type,
+                    })
+                }
+                onGranularity={granularity =>
+                    setState({
+                        ...state,
+                        granularity,
+                    })
+                }
             />
-            <StudyLegend searchInputClassName="data-hj-whitelist" />
+            <StudyLegend searchInputClassName='data-hj-whitelist' />
             <DrawTools />
-            <Views searchInputClassName="data-hj-whitelist" />
+            <Views searchInputClassName='data-hj-whitelist' />
             <Share />
         </ToolbarWidget>
     );
@@ -166,7 +162,7 @@ const ChartContent = () => {
             chartType={state.chart_type}
             enabledChartFooter={false}
             granularity={state.granularity}
-            id="binary-bot-chart"
+            id='binary-bot-chart'
             isMobile={false}
             requestAPI={requestAPI}
             requestForget={requestForget}
@@ -176,8 +172,8 @@ const ChartContent = () => {
             toolbarWidget={renderToolbarWidgets}
             topWidgets={renderTopWidgets}
         />
-    )
-}
+    );
+};
 
 export default class Chart extends Dialog {
     constructor() {

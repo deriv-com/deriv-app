@@ -25,7 +25,6 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
-import { getExchangeRate } from 'Utils/ExchangeCurrencyRate/exchange_currency_rate';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -33,7 +32,7 @@ import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
+        !props.is_virtual || props.should_show_real_accounts_list || props.is_real_tab_enabled ? 0 : 1
     );
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -70,7 +69,7 @@ const AccountSwitcher = props => {
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (currency, setExchangeRate) => {
-            getExchangeRate(currency, account_total_balance_currency).then(res => {
+            props.getExchangeRate(currency, account_total_balance_currency).then(res => {
                 setExchangeRate(res);
             });
         };
@@ -741,7 +740,12 @@ const AccountSwitcher = props => {
                             <Button
                                 id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
-                                    props.openRealAccountSignup(account);
+                                    if (props.real_account_creation_unlock_date) {
+                                        closeAccountsDialog();
+                                        props.setShouldShowCooldownModal(true);
+                                    } else {
+                                        props.openRealAccountSignup(account);
+                                    }
                                 }}
                                 className='acc-switcher__new-account-btn'
                                 secondary
@@ -834,7 +838,14 @@ const AccountSwitcher = props => {
                                             {account.title}
                                         </Text>
                                         <Button
-                                            onClick={() => openMt5RealAccount(account.type)}
+                                            onClick={() => {
+                                                if (props.real_account_creation_unlock_date) {
+                                                    closeAccountsDialog();
+                                                    props.setShouldShowCooldownModal(true);
+                                                } else {
+                                                    openMt5RealAccount(account.type);
+                                                }
+                                            }}
                                             className='acc-switcher__new-account-btn'
                                             secondary
                                             small
@@ -1012,6 +1023,7 @@ AccountSwitcher.propTypes = {
     country_standpoint: PropTypes.object,
     dxtrade_accounts_list: PropTypes.array,
     dxtrade_accounts_list_error: PropTypes.string, // is this correct?
+    getExchangeRate: PropTypes.func,
     has_active_real_account: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     has_fiat: PropTypes.bool,
@@ -1057,6 +1069,8 @@ AccountSwitcher.propTypes = {
     trading_platform_available_accounts: PropTypes.array,
     upgradeable_landing_companies: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
+    real_account_creation_unlock_date: PropTypes.number,
+    setShouldShowCooldownModal: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1071,6 +1085,7 @@ const account_switcher = withRouter(
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
         country_standpoint: client.country_standpoint,
+        getExchangeRate: common.getExchangeRate,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,
@@ -1114,6 +1129,8 @@ const account_switcher = withRouter(
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
     }))(AccountSwitcher)
 );

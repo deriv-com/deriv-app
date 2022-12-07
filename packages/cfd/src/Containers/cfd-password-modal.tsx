@@ -196,6 +196,8 @@ const ReviewMessageForMT5 = ({
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
+            case 'all':
+                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
             case 'synthetic':
                 return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
             case 'financial':

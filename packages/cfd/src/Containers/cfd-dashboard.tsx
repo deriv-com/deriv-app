@@ -217,7 +217,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
         if (props.is_logged_in) {
             ['demo', 'real'].forEach(account_type => {
-                const should_enable_tab = isSyntheticCardVisible(account_type) || isFinancialCardVisible();
+                const should_enable_tab =
+                    isDxtradeAllCardVisible(account_type) ||
+                    isSyntheticCardVisible(account_type) ||
+                    isFinancialCardVisible();
 
                 if (account_type === 'real' && is_real_enabled !== should_enable_tab) {
                     setIsRealEnabled(should_enable_tab);
@@ -322,22 +325,49 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         props.openPasswordModal();
     };
 
+    const hasAccount = (category: string, type: string) => {
+        return Object.keys(current_list).some(key => key.startsWith(`${platform}.${category}.${type}`));
+    };
+
+    const isDxtradeAllCardVisible = (account_category: string) => {
+        const { platform, landing_companies } = props;
+
+        const has_synthetic_account = hasAccount(account_category, 'synthetic');
+        const has_financial_account = hasAccount(account_category, 'financial');
+
+        if (has_synthetic_account || has_financial_account) return false;
+
+        if (props.is_dxtrade_allowed && !props.is_logged_in) return true;
+
+        return isLandingCompanyEnabled({
+            landing_companies,
+            platform,
+            type: 'all',
+        });
+    };
+
     const isSyntheticCardVisible = (account_category: string) => {
-        const { current_list, platform, is_eu, is_eu_country, landing_companies, is_logged_in } = props;
-        const has_synthetic_account = Object.keys(current_list).some(key =>
-            key.startsWith(`${platform}.${account_category}.synthetic`)
-        );
+        const { platform, is_eu, is_eu_country, landing_companies, is_logged_in } = props;
+        const has_synthetic_account = hasAccount(account_category, 'synthetic');
+        const has_financial_account = hasAccount(account_category, 'financial');
 
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
 
-        if (is_eu && !has_synthetic_account) return false;
+        if (is_eu && !has_synthetic_account && platform === CFD_PLATFORMS.DXTRADE) return false;
+
+        if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
         return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     };
 
     const isFinancialCardVisible = () => {
         const { platform, landing_companies, is_logged_in } = props;
+
+        const has_synthetic_account = hasAccount('real', 'synthetic');
+        const has_financial_account = hasAccount('real', 'financial');
+
+        if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
         return (
             !is_logged_in ||
@@ -525,6 +555,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_virtual={is_virtual}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
+                                                isDxtradeAllCardVisible={isDxtradeAllCardVisible}
                                                 openAccountTransfer={openAccountTransfer}
                                                 openPasswordManager={togglePasswordManagerModal}
                                                 platform={platform}
@@ -599,6 +630,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 is_real_enabled={is_real_enabled}
                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                has_unmerged_account={
+                                    hasAccount('real', 'synthetic') || hasAccount('real', 'financial')
+                                }
                             />
                             <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />

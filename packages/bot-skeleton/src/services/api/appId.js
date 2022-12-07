@@ -12,48 +12,67 @@ export const generateDerivApiInstance = () => {
     return deriv_api;
 };
 
+const getToken = () => {
+    const active_loginid = localStorage.getItem('active_loginid');
+    const client_accounts = JSON.parse(localStorage.getItem('client.accounts'));
+    const active_account = client_accounts[active_loginid] || {};
+    return {
+        token: active_account?.token || undefined,
+        account_id: active_loginid || undefined,
+    };
+};
+
 class GetAPI {
     api;
     token;
+    account_id;
     pipSizes = [];
     account_info = {};
 
     constructor() {
+        this.init();
+    }
+
+    init(force_update = false) {
+        if (force_update && this.api) this.api.disconnect();
         this.api = generateDerivApiInstance();
         this.initEventListeners();
+        this.authorizeAndSubscribe();
     }
 
     initEventListeners() {
         if (window) {
-            window.addEventListener('offline', this.offline);
-            window.addEventListener('online', this.online);
-            this.authorize();
+            window.addEventListener('online', this.reconnectIfNotConnected);
+            window.addEventListener('focus', this.reconnectIfNotConnected);
         }
     }
 
-    offline = () => {
-        // eslint-disable-next-line
-        console.log('offline');
+    createNewInstance(account_id) {
+        if (this.account_id !== account_id) {
+            this.init(true);
+        }
+    }
+
+    reconnectIfNotConnected = () => {
+        // eslint-disable-next-line no-console
+        console.log('connection state: ', this.api.connection.readyState);
+        if (this.api.connection.readyState !== 1) {
+            // eslint-disable-next-line no-console
+            console.log('Info: Connection to the server was closed, trying to reconnect.');
+            this.init();
+        }
     };
 
-    online = () => {
-        this.api.send({ ping: 1 }).catch(err => {
-            // eslint-disable-next-line
-            console.log(err, 'error');
-        });
-    };
-
-    authorize() {
-        const active_loginid = localStorage.getItem('active_loginid');
-        const client_accounts = JSON.parse(localStorage.getItem('client.accounts'));
-        const active_account = client_accounts[active_loginid] || {};
-
-        if (active_account && active_account.token) {
-            this.token = active_account.token;
+    authorizeAndSubscribe() {
+        const { token, account_id } = getToken();
+        if (token) {
+            this.token = token;
+            this.account_id = account_id;
             this.api
                 .authorize(this.token)
                 .then(({ authorize }) => {
                     this.subscribe();
+                    this.getActiveSymbols();
                     this.account_info = authorize;
                 })
                 .catch(e => {
@@ -74,9 +93,11 @@ class GetAPI {
     getActiveSymbols = async () => {
         await api_base.api.expectResponse('authorize');
         const { active_symbols = [] } = await api_base.api.send({ active_symbols: 'brief' });
-        this.pipSizes = active_symbols
-            .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-            .toObject();
+        const pip_size = {};
+        active_symbols.forEach(({ symbol, pip }) => {
+            pip_size[symbol] = +(+pip).toExponential().substring(3);
+        });
+        this.pip_size = pip_size;
     };
 }
 

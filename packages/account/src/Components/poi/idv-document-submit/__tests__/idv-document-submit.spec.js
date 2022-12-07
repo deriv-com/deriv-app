@@ -11,7 +11,7 @@ jest.mock('../utils.js', () => ({
             tc: {
                 document_1: {
                     new_display_name: '',
-                    example_format: '12345-A',
+                    example_format: '5436454364243',
                     sample_image: '',
                 },
                 document_2: {
@@ -23,7 +23,7 @@ jest.mock('../utils.js', () => ({
         };
         return data[country_code][key];
     },
-    getRegex: jest.fn(() => /a-54321/i),
+    getRegex: jest.fn(() => /5436454364243/i),
     isSequentialNumber: jest.fn(() => false),
     recurringNumberRegex: jest.fn(() => false),
 }));
@@ -32,7 +32,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
-    formatInput: jest.fn(() => 'A-52431'),
+    formatInput: jest.fn(() => '5436454364243'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),
     },
@@ -49,7 +49,7 @@ describe('<IdvDocumentSubmit/>', () => {
                 services: {
                     idv: {
                         documents_supported: {
-                            document_1: { display_name: 'Test document 1 name', format: '12345A' },
+                            document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
                         has_visual_sample: 1,
@@ -102,7 +102,7 @@ describe('<IdvDocumentSubmit/>', () => {
         });
     });
 
-    it.only('should not allow users to fill in repetitive document numbers', async () => {
+    it('should not allow users to fill in repetitive document numbers', async () => {
         //invalid document number- error should be shown
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
@@ -128,14 +128,15 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(document_number_input).not.toBeDisabled();
         expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
 
-        fireEvent.keyUp(document_number_input);
-        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
-        await waitFor(() => {
-            expect(awaiscreen.find(/please enter a valid ID number/i)).toBeInTheDocument();
-        });
+        fireEvent.blur(document_number_input);
+        expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
-        // fireEvent.change(document_number_input, { target: { value: '111112' } });
-        // expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
+        fireEvent.keyUp(document_number_input);
+        fireEvent.change(document_number_input, { target: { value: 'A-54321' } });
+        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
+
+        fireEvent.change(document_number_input, { target: { value: '111112' } });
+        expect(await screen.findByText(/please enter a valid ID number/i)).toBeInTheDocument();
     });
 
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
@@ -168,16 +169,16 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
         fireEvent.keyUp(document_number_input);
-        fireEvent.change(document_number_input, { target: { value: 'A-52431' } });
+        fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: '12345-A' } });
-        // await waitFor(() => {
-        //     expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-        //     expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-        //     expect(verifyBtn).not.toBeDisabled();
-        // });
-        expect(verifyBtn).not.toBeDisabled();
+        fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
+        await waitFor(() => {
+            expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
+            expect(verifyBtn).not.toBeDisabled();
+        });
+
         fireEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);

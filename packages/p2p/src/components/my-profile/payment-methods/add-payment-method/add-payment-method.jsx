@@ -7,7 +7,7 @@ import AddPaymentMethodForm from './add-payment-method-form.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
     const { my_ads_store, my_profile_store } = useStores();

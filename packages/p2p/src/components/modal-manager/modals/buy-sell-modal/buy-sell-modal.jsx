@@ -20,7 +20,7 @@ import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-
 import NicknameForm from 'Components/nickname-form';
 import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>

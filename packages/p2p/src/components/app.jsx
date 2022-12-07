@@ -8,9 +8,9 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ModalManagerContextProvider } from './modal-manager';
 import ModalManager from 'Components/modal-manager/modal-manager';
 import './app.scss';
-import ModalManagerContextProvider from './modal-manager/modal-manager-context-provider.jsx';
 
 const App = props => {
     const { general_store, order_store } = useStores();

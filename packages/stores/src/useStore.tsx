@@ -3,11 +3,11 @@ import { TRootStore } from '../types';
 
 const StoreContext = createContext<TRootStore | null>(null);
 
-export const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
+const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
     return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
-export const useStore = () => {
+const useStore = () => {
     const store = useContext(StoreContext);
 
     if (!store) {
@@ -16,3 +16,5 @@ export const useStore = () => {
 
     return store;
 };
+
+export { StoreProvider, useStore };

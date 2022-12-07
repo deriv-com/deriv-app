@@ -103,6 +103,7 @@ export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
     ui: TUiStore;
+    modules: Record<string, any>;
 };
 
 export type DeepPartial<T> = T extends string | number | bigint | boolean | null | undefined | symbol | Date

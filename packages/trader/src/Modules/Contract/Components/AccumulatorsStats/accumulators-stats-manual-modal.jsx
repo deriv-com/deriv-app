@@ -20,7 +20,6 @@ const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, t
                 should_header_stick_body={false}
                 title={title}
                 toggleModal={toggleManual}
-                height={is_mobile ? '605px' : '615px'}
                 width={is_mobile ? '328px' : '596px'}
                 className='accumulators-stats-manual-modal'
             >
@@ -37,10 +36,7 @@ const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, t
                         className='accumulators-stats-modal-body__text'
                     >
                         {localize(
-                            'The numbers show the history (last 100 results from the current spot) of tick counts that stayed inside the barrier of your selected market and accumulator.'
-                        )}{' '}
-                        {localize(
-                            'For example, a tick count of 5 means that the price “stayed inside” for 5 ticks before breaking outside the barrier for Volatility 10 index with a 3% accumulator.'
+                            'Stats show the history of consecutive tick counts, i.e. the number of ticks the price remained within range continuously.'
                         )}
                     </Text>
                 </Modal.Body>

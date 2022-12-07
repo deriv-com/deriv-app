@@ -88,5 +88,5 @@ export const MultiplierOptionsWidget = connect(({ modules }) => ({
 
 export const AccumulatorOptionsWidget = connect(({ modules }) => ({
     displayed_trade_param: `${getGrowthRatePercentage(modules.trade.growth_rate)}%`,
-    modal_title: localize('Accumulator'),
+    modal_title: localize('Accumulate'),
 }))(RadioGroupOptionsWidget);

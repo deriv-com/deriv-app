@@ -19,7 +19,7 @@ export const ROW_SIZES = {
 const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) => {
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
-    const widget_title = localize('Stay in history');
+    const widget_title = localize('Stats');
     const ticks_history = ticks_history_stats?.ticks_stayed_in || [];
     const history_text_size = isDesktop() || !is_collapsed ? 'xxs' : 'xxxs';
 

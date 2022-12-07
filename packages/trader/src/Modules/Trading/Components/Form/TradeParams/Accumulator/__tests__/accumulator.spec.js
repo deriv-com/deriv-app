@@ -17,7 +17,7 @@ jest.mock('Stores/connect.js', () => ({
 describe('Accumulator', () => {
     it('should render with the initially selected 1% growth_rate', () => {
         render(<Accumulator />);
-        expect(screen.getByText('Accumulator')).toBeInTheDocument();
+        expect(screen.getByText('Accumulate')).toBeInTheDocument();
         expect(screen.getByText('1%')).toBeInTheDocument();
         expect(screen.getByText('2%')).toBeInTheDocument();
         expect(screen.getByText('3%')).toBeInTheDocument();

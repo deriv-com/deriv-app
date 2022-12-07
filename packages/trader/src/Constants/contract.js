@@ -202,7 +202,7 @@ export const getUnsupportedContracts = () => ({
 
 export const getSupportedContracts = is_high_low => ({
     ACCU: {
-        name: <Localize i18n_default_text='Accumulate' />,
+        name: <Localize i18n_default_text='Buy' />,
         position: 'top',
     },
     CALL: {

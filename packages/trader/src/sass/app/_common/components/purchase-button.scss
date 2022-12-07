@@ -283,7 +283,8 @@
     &__shadow-wrapper:hover:after {
         opacity: 0;
     }
-    &--multiplier {
+    &--multiplier,
+    &--accumulator {
         .btn-purchase__info--left {
             width: 35%;
             flex: none;
@@ -321,46 +322,6 @@
         @include mobile {
             &-deal-cancel {
                 height: 64px;
-            }
-        }
-    }
-    &--accumulator {
-        .btn-purchase__info {
-            &--left {
-                width: 55%;
-                padding-left: 1.6rem;
-            }
-            &--right {
-                width: 30%;
-                padding-right: 1.6rem;
-            }
-        }
-        .btn-purchase__effect-detail--arrow {
-            left: 110px;
-        }
-        &.btn-purchase--swoosh {
-            .btn-purchase {
-                &__effect-detail {
-                    transform: scale3d(4, 1, 1);
-                    &--arrow {
-                        transform: translate3d(160px, 0, 0) rotate(45deg);
-                    }
-                }
-                &__type-wrapper {
-                    transform: translate3d(46px, 0, 0);
-                }
-            }
-        }
-        @include mobile {
-            .btn-purchase {
-                &__bottom,
-                &__top {
-                    width: unset;
-                    gap: 0.3rem;
-                }
-                &__icon_wrapper {
-                    height: 1.6rem;
-                }
             }
         }
     }

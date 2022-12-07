@@ -117,7 +117,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: [],
     },
     accumulator: {
-        title: localize('Accumulate'),
+        title: localize('Accumulator'),
         trade_types: ['ACCU'],
         basis: ['stake'],
         components: ['take_profit', 'accumulator', 'accu_info_display'],

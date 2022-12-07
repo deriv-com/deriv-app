@@ -300,9 +300,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                             general_store.is_barred || is_activate_ad_disabled,
                                     }
                                 )}
-                                message={localize('{{status}}', {
-                                    status: is_advert_active && !general_store.is_barred ? 'Deactivate' : 'Activate',
-                                })}
+                                message={is_advert_active ? localize('Deactivate') : localize('Activate')}
                             >
                                 <Icon
                                     icon={`${

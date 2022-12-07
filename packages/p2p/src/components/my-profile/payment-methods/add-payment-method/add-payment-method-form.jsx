@@ -6,8 +6,7 @@ import { Field, Form } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import ModalForm from 'Components/modal-manager/modal-form.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { ModalForm, useModalManagerContext } from 'Components/modal-manager';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_ads_store, my_profile_store } = useStores();

@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import RecentTransaction from 'Components/recent-transaction';
 import VerificationEmail from 'Components/verification-email';
-import { useStore } from '../../../hooks';
 import './withdrawal-verification-email.scss';
 
 const WithdrawalVerificationEmail = () => {

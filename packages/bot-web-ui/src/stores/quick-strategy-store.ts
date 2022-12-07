@@ -265,7 +265,7 @@ export default class QuickStrategyStore {
         const duration_unit = this.selected_duration_unit.value;
         const duration_value = this.input_duration_value;
         const stake = this.input_stake;
-        const martingale_size = this.input_martingale_size;
+        const size = this.input_martingale_size;
         const alembert_unit = this.input_alembert_unit;
         const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
@@ -307,7 +307,7 @@ export default class QuickStrategyStore {
             durationtype: duration_unit,
             duration: duration_value,
             stake,
-            martingale_size,
+            size,
             alembert_unit,
             oscar_unit,
             loss,

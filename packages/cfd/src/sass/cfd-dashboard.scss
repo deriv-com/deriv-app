@@ -1070,6 +1070,10 @@
             &:not(:last-child) {
                 margin-right: 0.6rem;
             }
+
+            @include mobile {
+                min-width: 13rem;
+            }
         }
     }
 

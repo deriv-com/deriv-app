@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { TRootStore } from '../types';
 
-export const StoreContext = createContext<TRootStore | null>(null);
+const StoreContext = createContext<TRootStore | null>(null);
 
 export const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
     return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;

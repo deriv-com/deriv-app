@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import PropTypes from 'prop-types';
 import React from 'react';
+import { StoreProvider } from '@deriv/stores';
 import Routes from './Containers/routes.jsx';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './init-store'; // eslint-disable-line import/extensions
@@ -17,9 +18,11 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <React.Fragment>
-                <Routes />
-            </React.Fragment>
+            <StoreProvider store={root_store}>
+                <React.Fragment>
+                    <Routes />
+                </React.Fragment>
+            </StoreProvider>
         </MobxContentProvider>
     );
 };

@@ -67,9 +67,7 @@ const CFDRealAccounts = ({
             is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
             disabled: has_cfd_account_error(CFD_PLATFORMS.DXTRADE),
             platform: CFD_PLATFORMS.DXTRADE,
-            type: 'synthetic',
-            // ToDo: deriv x should have type of all in new API
-            // type: 'all'
+            type: 'all',
         },
     ];
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';

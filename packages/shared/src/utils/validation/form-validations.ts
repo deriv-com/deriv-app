@@ -5,6 +5,7 @@ type TConfig = {
     default_value: string;
     supported_in: string[];
     rules: Array<(TOptions & string)[]>;
+    values: Record<string, string | boolean>;
 };
 type TSchema = { [key: string]: TConfig };
 
@@ -14,7 +15,7 @@ type TSchema = { [key: string]: TConfig };
  * @param {object} schema
  */
 export const getDefaultFields = (landing_company: string, schema: TSchema) => {
-    const output: { [key: string]: string } = {};
+    const output: { [key: string]: any } = {};
     Object.entries(filterByLandingCompany(landing_company, schema)).forEach(([field_name, opts]) => {
         output[field_name] = opts.default_value;
     });
@@ -46,9 +47,11 @@ export const generateValidationFunction = (landing_company: string, schema: TSch
                 rules[field_name].some(([rule, message, options]) => {
                     if (
                         checkForErrors({
+                            field_name,
                             value,
                             rule,
                             options,
+                            values,
                         })
                     ) {
                         errors[field_name] = typeof message === 'string' ? ['error', message] : message;
@@ -68,6 +71,7 @@ type TCheckForErrors = {
     value: string;
     rule: string;
     options: TOptions;
+    values: Record<string, string | boolean>;
 };
 /**
  * Returns true if the rule has error, false otherwise.
@@ -76,9 +80,9 @@ type TCheckForErrors = {
  * @param options
  * @return {boolean}
  */
-const checkForErrors = ({ value, rule, options }: TCheckForErrors) => {
+const checkForErrors = ({ value, rule, options, values }: TCheckForErrors) => {
     const validate = getValidationFunction(rule);
-    return !validate(value, options);
+    return !validate(value, options, values);
 };
 
 /**
@@ -88,7 +92,7 @@ const checkForErrors = ({ value, rule, options }: TCheckForErrors) => {
  * @return {function(*=): *}
  */
 export const getValidationFunction = (rule: string) => {
-    const func = getPreBuildDVRs()[rule as keyof TInitPreBuildDVRs]?.func ?? rule;
+    const func = getPreBuildDVRs()[rule]?.func ?? rule;
     if (typeof func !== 'function') {
         throw new Error(
             `validation rule ${rule} not found. Available validations are: ${JSON.stringify(
@@ -96,9 +100,8 @@ export const getValidationFunction = (rule: string) => {
             )}`
         );
     }
-
     /**
      * Generated validation function from the DVRs.
      */
-    return (value: string, options: TOptions) => !!func(value, options);
+    return (value: any, options: any, values: any) => !!func(value, options, values);
 };

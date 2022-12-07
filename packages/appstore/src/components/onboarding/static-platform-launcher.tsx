@@ -5,7 +5,7 @@ import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import WalletIcon, { Icons } from 'Assets/svgs/wallet';
+import WalletIcon from 'Assets/svgs/wallet';
 
 import './static-platform-launcher.scss';
 import { PlatformConfig } from 'Constants/platform-config';

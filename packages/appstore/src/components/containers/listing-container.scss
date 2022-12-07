@@ -1,5 +1,22 @@
-.listing_container {
-    &__main-container {
-        border: 1px solid var(--general-hover);
+.listing-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--general-hover);
+    padding: 2.4rem;
+    border-radius: 2.4rem;
+
+    &__title {
+        display: inline-flex;
+    }
+
+    &__description {
+        margin-bottom: 2.4rem;
+    }
+
+    &__content {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.6rem 4.8rem;
     }
 }

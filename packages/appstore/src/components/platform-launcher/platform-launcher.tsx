@@ -1,21 +1,17 @@
 import React from 'react';
 import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import WalletIcon, { Icons } from 'Assets/svgs/wallet';
+import WalletIcon from 'Assets/svgs/wallet';
 import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
+import { PlatformConfig } from 'Constants/platform-config';
 
-type TPlatformLauncherProps = {
-    app_icon: keyof typeof Icons;
-    app_title?: string;
-    app_desc?: string;
-    link_to?: string;
-    href?: string;
+interface PlatformLauncherProps extends Omit<PlatformConfig, 'name'> {
     has_real_account: boolean;
     account_type: string;
-};
+}
 
 const PlatformLauncher = ({
     app_icon,
@@ -25,7 +21,7 @@ const PlatformLauncher = ({
     href,
     has_real_account,
     account_type,
-}: TPlatformLauncherProps) => {
+}: PlatformLauncherProps) => {
     const { client } = useStores();
 
     const { is_eu } = client;

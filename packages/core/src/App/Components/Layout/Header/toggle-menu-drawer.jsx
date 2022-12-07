@@ -152,7 +152,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.markets,
                     ];
                     secondary_routes = [];
-                } else if ((is_pre_appstore && location === routes.trading_hub) || is_trading_hub_category) {
+                } else if ((is_pre_appstore && location === routes.traders_hub) || is_trading_hub_category) {
                     primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
@@ -319,7 +319,7 @@ const ToggleMenuDrawer = React.forwardRef(
         const history = useHistory();
 
         const is_trading_hub_category =
-            route.startsWith(routes.trading_hub) ||
+            route.startsWith(routes.traders_hub) ||
             route.startsWith(routes.cashier) ||
             route.startsWith(routes.account);
 
@@ -331,7 +331,7 @@ const ToggleMenuDrawer = React.forwardRef(
             } else {
                 setIsPreAppStore(true);
                 toggleDrawer();
-                history.push(routes.trading_hub);
+                history.push(routes.traders_hub);
             }
         };
 
@@ -440,7 +440,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         {is_logged_in && (
                                             <MobileDrawer.Item>
                                                 <MenuLink
-                                                    link_to={routes.trading_hub}
+                                                    link_to={routes.traders_hub}
                                                     icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
                                                     text={localize('Trading Hub')}
                                                     onClickLink={toggleDrawer}

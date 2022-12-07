@@ -42,7 +42,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
             setIsPreAppStore(true);
-            history.push(routes.trading_hub);
+            history.push(routes.traders_hub);
             toggleIsTourOpen(true);
         }
     };
@@ -71,7 +71,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     onClick={() => {
                         setIsPreAppStore(true);
                         toggleIsTourOpen(false);
-                        history.push(routes.trading_hub);
+                        history.push(routes.traders_hub);
                     }}
                 />
             </div>

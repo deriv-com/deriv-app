@@ -21,7 +21,7 @@ const TradingHubMenuHomepage = () => {
     const history = useHistory();
 
     return (
-        <div className='trading-hub-header__tradinghub' onClick={() => history.push(routes.trading_hub)}>
+        <div className='trading-hub-header__tradinghub' onClick={() => history.push(routes.traders_hub)}>
             <Icon icon='IcAppstoreMenuHomepage' size={30} />
         </div>
     );

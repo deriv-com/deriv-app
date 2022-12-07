@@ -15,11 +15,10 @@ type TSchema = { [key: string]: TConfig };
  * @param {object} schema
  */
 export const getDefaultFields = (landing_company: string, schema: TSchema) => {
-    const output: { [key: string]: any } = {};
+    const output: { [key: string]: string } = {};
     Object.entries(filterByLandingCompany(landing_company, schema)).forEach(([field_name, opts]) => {
         output[field_name] = opts.default_value;
     });
-
     return output;
 };
 
@@ -68,6 +67,7 @@ export const generateValidationFunction = (landing_company: string, schema: TSch
 };
 
 type TCheckForErrors = {
+    field_name: string;
     value: string;
     rule: string;
     options: TOptions;
@@ -92,7 +92,7 @@ const checkForErrors = ({ value, rule, options, values }: TCheckForErrors) => {
  * @return {function(*=): *}
  */
 export const getValidationFunction = (rule: string) => {
-    const func = getPreBuildDVRs()[rule]?.func ?? rule;
+    const func = getPreBuildDVRs()[rule as keyof TInitPreBuildDVRs]?.func ?? rule;
     if (typeof func !== 'function') {
         throw new Error(
             `validation rule ${rule} not found. Available validations are: ${JSON.stringify(
@@ -103,5 +103,6 @@ export const getValidationFunction = (rule: string) => {
     /**
      * Generated validation function from the DVRs.
      */
-    return (value: any, options: any, values: any) => !!func(value, options, values);
+    return (value: string, options: TOptions, values: Record<string, string | boolean>) =>
+        !!func(value, options, values);
 };

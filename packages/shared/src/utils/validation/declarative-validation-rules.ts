@@ -35,7 +35,7 @@ const confirmRequired = (value: string) => !!value === true;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
 
-let pre_build_dvrs: any, form_error_messages: TFormErrorMessagesTypes;
+let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 
 const isMoreThanMax = (value: number, options: TOptions) =>
     options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1;
@@ -111,7 +111,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.letter_symbol,
     },
     number: {
-        func: (value: string, opts: TOptions) => validNumber(value, opts),
+        func: (value: string, opts: TOptions, _values?: Record<string, string | boolean>) => validNumber(value, opts),
         message: form_error_messages.number,
     },
     password: {

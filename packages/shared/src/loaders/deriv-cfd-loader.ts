@@ -1,5 +1,6 @@
-const resolve = require('path').resolve;
-const existsSync = require('fs').existsSync;
+import path from 'path';
+import fs from 'fs';
+import { SourceMap } from 'module';
 /* Using this loader you can import components from @deriv/cfd without having to manually
 import the corresponding stylesheet. The deriv-account-loader will automatically import
 stylesheets.
@@ -8,11 +9,13 @@ stylesheets.
     import CFDStore from '@deriv/cfd/dist/js/CFDStore';
 */
 
-function checkExists(component) {
-    return existsSync(resolve(__dirname, '../../../cfd/src/Components/', component, `${component}.scss`));
+function checkExists(component: string) {
+    return fs.existsSync(path.resolve(__dirname, '../../../cfd/src/Components/', component, `${component}.scss`));
 }
-
-module.exports = function (source, map) {
+type Tthis = {
+    callback: any;
+};
+module.exports = function (this: Tthis, source: string, map: SourceMap) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/cfd/.exec(line); // eslint-disable-line no-useless-escape

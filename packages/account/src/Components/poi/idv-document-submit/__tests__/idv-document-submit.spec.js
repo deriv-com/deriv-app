@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
-import { isSequentialNumber, recurringNumberRegex } from '../utils';
+import { isSequentialNumber, isRecurringNumberRegex } from '../utils';
 
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('../utils.js', () => ({
@@ -25,7 +25,7 @@ jest.mock('../utils.js', () => ({
     },
     getRegex: jest.fn(() => /5436454364243/i),
     isSequentialNumber: jest.fn(() => false),
-    recurringNumberRegex: jest.fn(() => false),
+    isRecurringNumberRegex: jest.fn(() => false),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -107,7 +107,7 @@ describe('<IdvDocumentSubmit/>', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
         isSequentialNumber.mockReturnValue(true);
-        recurringNumberRegex.mockReturnValue(true);
+        isRecurringNumberRegex.mockReturnValue(true);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
@@ -143,7 +143,7 @@ describe('<IdvDocumentSubmit/>', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
         isSequentialNumber.mockReturnValue(false);
-        recurringNumberRegex.mockReturnValue(false);
+        isRecurringNumberRegex.mockReturnValue(false);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';

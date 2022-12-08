@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon, useOnClickOutside } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
@@ -84,6 +85,16 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                 setPaymentMethodsList(payment_methods_list.filter(payment_method => payment_method.value !== value));
             }
             if (typeof touched === 'function') touched(true);
+        }
+    };
+
+    const onClickIcon = (payment_method, key, setFieldValue) => {
+        if (close_icon) {
+            onEditPaymentMethodItem(payment_method, key);
+            setShowList(true);
+            setFieldValue('payment_method', '');
+        } else if (!close_icon && !my_ads_store.current_method.is_deleted) {
+            onClickDeletePaymentMethodItem(payment_method);
         }
     };
 
@@ -205,17 +216,14 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                                     ? 'IcCloseCircle'
                                                                     : 'IcDelete'
                                                             }
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                if (isMobile())
+                                                                    onClickIcon(payment_method, key, setFieldValue);
+                                                            }}
                                                             onMouseDown={() => {
-                                                                if (close_icon) {
-                                                                    onEditPaymentMethodItem(payment_method, key);
-                                                                    setShowList(true);
-                                                                    setFieldValue('payment_method', '');
-                                                                } else if (
-                                                                    !close_icon &&
-                                                                    !my_ads_store.current_method.is_deleted
-                                                                ) {
-                                                                    onClickDeletePaymentMethodItem(payment_method);
-                                                                }
+                                                                if (isDesktop())
+                                                                    onClickIcon(payment_method, key, setFieldValue);
                                                             }}
                                                         />
                                                     }

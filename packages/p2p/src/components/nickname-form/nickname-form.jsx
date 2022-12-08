@@ -3,14 +3,17 @@ import { useFormikContext, Formik, Field, Form } from 'formik';
 import { Button, Input, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
 import NicknameFormWrapper from './nickname-form-wrapper.jsx';
 import './nickname-form.scss';
 
 const ButtonGroupComponent = observer(() => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
     const { errors, isSubmitting, values } = useFormikContext();
 
     return (
@@ -33,7 +36,10 @@ const ButtonGroupComponent = observer(() => {
 });
 
 const InputComponent = observer(({ field }) => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
     const { errors, handleChange } = useFormikContext();
 
     return (
@@ -53,7 +59,10 @@ const InputComponent = observer(({ field }) => {
 });
 
 const NicknameForm = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     return (
         <NicknameFormWrapper>

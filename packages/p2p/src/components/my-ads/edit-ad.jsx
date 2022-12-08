@@ -1,11 +1,14 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import EditAdForm from './edit-ad-form.jsx';
 
 const EditAd = () => {
-    const { my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store } = p2p_store;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => my_ads_store.getAdvertInfo(), []);

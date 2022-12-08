@@ -7,12 +7,15 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import BuySellRow from './buy-sell-row.jsx';
 import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
 
 const BuySellRowRendererComponent = row_props => {
-    const { buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
 
     return (
         <BuySellRow
@@ -27,7 +30,10 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { buy_sell_store, general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, general_store, my_profile_store } = p2p_store;
 
     React.useEffect(
         () => {

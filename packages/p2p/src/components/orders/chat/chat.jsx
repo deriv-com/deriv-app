@@ -7,11 +7,14 @@ import ChatHeader from 'Components/orders/chat/chat-header.jsx';
 import ChatMessages from 'Components/orders/chat/chat-messages.jsx';
 import ChatFooter from 'Components/orders/chat/chat-footer.jsx';
 import ChatWrapper from 'Components/orders/chat/chat-wrapper.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import 'Components/orders/chat/chat.scss';
 
 const Chat = observer(() => {
-    const { sendbird_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { sendbird_store } = p2p_store;
 
     if (sendbird_store.is_chat_loading) {
         return (

@@ -4,13 +4,16 @@ import { InfiniteDataList, Loading, Table, Tabs } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import Empty from 'Components/empty/empty.jsx';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page.scss';
 
 const AdvertiserPageAdverts = () => {
-    const { advertiser_page_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store, general_store } = p2p_store;
 
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />

@@ -2,11 +2,14 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Formik, Field } from 'formik';
 import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 
 const SelectPaymentMethod = () => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();

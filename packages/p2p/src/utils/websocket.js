@@ -1,6 +1,7 @@
 import { setCurrencies, getCurrencies, isEmptyObject } from '@deriv/shared';
 
-let ws;
+// eslint-disable-next-line import/no-mutable-exports
+export let ws;
 
 const initial_responses = {};
 

@@ -6,11 +6,14 @@ import { formatMilliseconds } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import ChatMessage from 'Utils/chat-message';
 
 const ChatMessages = observer(() => {
-    const { sendbird_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { sendbird_store } = p2p_store;
     const scroll_ref = React.useRef(null);
 
     const isImageType = type => ['image/jpeg', 'image/png', 'image/gif'].includes(type);

@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MobileFullPageModal } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import CurrencySelector from './currency-selector.jsx';
 
 const CurrencySelectorModal = ({ is_modal_open }) => {
-    const { buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
     const { local_currencies, onLocalCurrencySelect, selected_local_currency, setShouldShowCurrencySelectorModal } =
         buy_sell_store;
 

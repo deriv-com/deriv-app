@@ -3,10 +3,13 @@ import { Money, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const MyProfileBalance = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
     // const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
 
     return (

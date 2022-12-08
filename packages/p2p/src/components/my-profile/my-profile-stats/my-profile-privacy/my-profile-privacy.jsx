@@ -2,11 +2,14 @@ import * as React from 'react';
 import { Text, ToggleSwitch } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { isDesktop } from '@deriv/shared';
 
 const MyProfilePrivacy = () => {
-    const { general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_profile_store } = p2p_store;
 
     return (
         <div className='my-profile-privacy'>

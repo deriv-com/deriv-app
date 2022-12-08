@@ -3,7 +3,7 @@ import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components'
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
@@ -24,7 +24,10 @@ import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { general_store, advertiser_page_store, buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, advertiser_page_store, buy_sell_store } = p2p_store;
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error

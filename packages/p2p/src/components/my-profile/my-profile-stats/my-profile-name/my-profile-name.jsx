@@ -2,7 +2,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { daysSince, isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import TradeBadge from '../../../trade-badge';
@@ -12,7 +12,10 @@ import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
 
 const MyProfileName = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     const {
         basic_verification,

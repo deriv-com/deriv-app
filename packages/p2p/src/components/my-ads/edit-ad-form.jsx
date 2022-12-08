@@ -8,7 +8,7 @@ import { Localize, localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { ad_type } from 'Constants/floating-rate';
 import FloatingRate from 'Components/floating-rate';
 import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
@@ -26,7 +26,10 @@ const EditAdFormWrapper = ({ children }) => {
 };
 
 const EditAdForm = () => {
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = p2p_store;
     const os = mobileOSDetect();
 
     const {

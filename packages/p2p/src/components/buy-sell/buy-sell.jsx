@@ -6,7 +6,7 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
 import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
@@ -15,7 +15,10 @@ import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {

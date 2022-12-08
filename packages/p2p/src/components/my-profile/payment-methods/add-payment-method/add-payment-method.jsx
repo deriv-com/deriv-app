@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
@@ -10,7 +10,10 @@ import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 
 const AddPaymentMethod = ({ formik_ref, should_show_page_return = true, should_show_separated_footer }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);

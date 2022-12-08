@@ -1,12 +1,15 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 
 const BlockUserOverlay = ({ children, is_visible, onClickUnblock }) => {
-    const { advertiser_page_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store } = p2p_store;
 
     if (is_visible) {
         return (

@@ -3,11 +3,14 @@ import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './advertiser-page.scss';
 
 const AdvertiserPageStats = () => {
-    const { advertiser_page_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store, general_store } = p2p_store;
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error

@@ -2,11 +2,14 @@ import * as React from 'react';
 import { Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './nickname-form.scss';
 
 const NicknameFormWrapper = ({ children }) => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     if (isMobile()) {
         return (

@@ -3,11 +3,14 @@ import { Dropdown, Icon } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import 'Components/buy-sell/sort-dropdown.scss';
 
 const SortDropdown = () => {
-    const { buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
 
     if (isDesktop()) {
         return (

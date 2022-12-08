@@ -3,14 +3,17 @@ import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const EditPaymentMethodForm = ({ formik_ref }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         return () => {

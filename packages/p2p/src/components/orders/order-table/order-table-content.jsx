@@ -9,7 +9,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import Empty from 'Components/empty/empty.jsx';
 import OrderRow from 'Components/orders/order-table/order-table-row.jsx';
 import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 
 const ContentWrapper = ({ children }) => {
@@ -20,7 +20,10 @@ const ContentWrapper = ({ children }) => {
 };
 
 const OrderTableContent = () => {
-    const { general_store, order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, order_store } = p2p_store;
 
     React.useEffect(
         () =>

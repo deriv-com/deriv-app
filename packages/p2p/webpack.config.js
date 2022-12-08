@@ -136,10 +136,14 @@ module.exports = function () {
             {
                 react: 'react',
                 'react-dom': 'react-dom',
+                'react-router-dom': 'react-router-dom',
+                'react-router': 'react-router',
                 'prop-types': 'prop-types',
+                '@deriv/translations': '@deriv/translations',
                 ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),
                 ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),
             },
+            /^@deriv\/translations\/.+$/,
         ],
     };
 };

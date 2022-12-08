@@ -3,10 +3,13 @@ import { Localize } from 'Components/i18next';
 import { Button, Modal } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const MyAdsFloatingRateSwitchModal = () => {
-    const { floating_rate_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, my_ads_store } = p2p_store;
 
     return (
         <React.Fragment>

@@ -3,12 +3,15 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 
 const CreateAdAddPaymentMethodModal = () => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
     const formik_ref = React.useRef();
 
     const onCancel = () => {

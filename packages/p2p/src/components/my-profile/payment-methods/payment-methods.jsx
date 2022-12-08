@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import AddPaymentMethod from './add-payment-method';
 import EditPaymentMethodForm from './payment-methods-list/edit-payment-method-form.jsx';
 import PaymentMethodsEmpty from './payment-methods-empty';
@@ -10,7 +10,10 @@ import { isMobile } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 
 const PaymentMethods = ({ formik_ref }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.setIsLoading(true);

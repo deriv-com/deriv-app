@@ -1,10 +1,13 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const PaymentMethodCardMenu = ({ payment_method }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     return (
         <div className='payment-method-card__menu'>

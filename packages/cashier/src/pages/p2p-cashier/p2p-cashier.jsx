@@ -16,6 +16,7 @@ const P2PCashier = ({
     filterNotificationMessages,
     history,
     is_dark_mode_on,
+    is_logged_in,
     is_logging_in,
     is_mobile,
     is_virtual,
@@ -131,6 +132,8 @@ const P2PCashier = ({
             filterNotificationMessages={filterNotificationMessages}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
+            is_logged_in={is_logged_in}
+            is_logging_in={is_logging_in}
             is_mobile={is_mobile}
             lang={getLanguage()}
             modal_root_id='modal_root'
@@ -161,9 +164,12 @@ P2PCashier.propTypes = {
     balance: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    error: PropTypes.object,
     filterNotificationMessages: PropTypes.func,
+    has_error: PropTypes.bool,
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -185,10 +191,13 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     addNotificationMessage: notifications.addNotificationMessage,
     balance: client.balance,
     currency: client.currency,
+    error: common.error,
     filterNotificationMessages: notifications.filterNotificationMessages,
+    has_error: common.has_error,
     local_currency_config: client.local_currency_config,
     loginid: client.loginid,
     is_dark_mode_on: ui.is_dark_mode_on,
+    is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_virtual: client.is_virtual,
     Notifications: ui.notification_messages_ui,

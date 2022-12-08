@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { reaction } from 'mobx';
 
 const CancelAddPaymentMethodModal = ({ is_floating }) => {
-    const { my_profile_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store, my_ads_store } = p2p_store;
 
     // TODO: Refactor this code to avoid manual DOM updates
     // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true

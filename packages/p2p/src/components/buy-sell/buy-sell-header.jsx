@@ -10,7 +10,7 @@ import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import CurrencyDropdown from 'Components/buy-sell/currency-dropdown.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
 
@@ -26,7 +26,10 @@ const getBuySellFilters = () => [
 ];
 
 const BuySellHeader = ({ table_type }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, general_store } = p2p_store;
     const is_currency_selector_visible = general_store.feature_level >= 2;
 
     const returnedFunction = debounce(() => {

@@ -3,10 +3,13 @@ import { Text } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const BuySellFormReceiveAmount = () => {
-    const { buy_sell_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
 
     return (
         <React.Fragment>

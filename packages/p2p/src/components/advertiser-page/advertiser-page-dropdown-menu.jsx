@@ -2,13 +2,16 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { useOnClickOutside } from '../../../../components/src/hooks';
 import './advertiser-page.scss';
 
 const AdvertiserPageDropdownMenu = () => {
     const dropdown_menu_ref = React.useRef();
-    const { advertiser_page_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store } = p2p_store;
 
     const onClickOutside = () => {
         advertiser_page_store.setIsDropdownMenuVisible(false);

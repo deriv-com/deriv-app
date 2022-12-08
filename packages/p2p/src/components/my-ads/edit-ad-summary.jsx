@@ -6,11 +6,14 @@ import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 
 const EditAdSummary = ({ offer_amount, price_rate, type }) => {
-    const { floating_rate_store, general_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store, my_ads_store } = p2p_store;
     const { currency, local_currency_config } = general_store.client;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
     const market_feed = my_ads_store.required_ad_type === ad_type.FLOAT ? floating_rate_store.market_rate : null;

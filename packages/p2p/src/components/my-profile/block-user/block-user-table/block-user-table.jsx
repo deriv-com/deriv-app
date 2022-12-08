@@ -4,13 +4,16 @@ import { observer } from 'mobx-react-lite';
 import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import BlockUserRow from './block-user-row.jsx';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
 import BlockUserTableError from './block-user-table-error.jsx';
 
 const BlockUserTable = () => {
-    const { general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.setBlockedAdvertisersList([]);

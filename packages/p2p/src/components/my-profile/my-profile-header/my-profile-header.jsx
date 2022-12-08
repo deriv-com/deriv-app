@@ -4,10 +4,13 @@ import { ButtonToggle } from '@deriv/components';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const MyProfileHeader = () => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     const getMyProfileTabFilters = () => [
         {

@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const OrderTableHeader = observer(({ children }) => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     return (
         <Table className='orders__table'>

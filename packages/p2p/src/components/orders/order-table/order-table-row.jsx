@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { localize } from 'Components/i18next';
@@ -33,7 +33,11 @@ const OrderRow = ({ row: order }) => {
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),
         };
     };
-    const { general_store, order_store, sendbird_store } = useStores();
+
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, order_store, sendbird_store } = p2p_store;
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const should_show_order_details = React.useRef(true);

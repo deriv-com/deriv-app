@@ -5,7 +5,7 @@ import React from 'react';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import './floating-rate.scss';
 
@@ -20,7 +20,10 @@ const FloatingRate = ({
     data_testid,
     ...props
 }) => {
-    const { floating_rate_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store } = p2p_store;
     const os = mobileOSDetect();
     const { name, value, required } = props;
     const market_feed = value ? percentOf(floating_rate_store.market_rate, value) : floating_rate_store.market_rate;

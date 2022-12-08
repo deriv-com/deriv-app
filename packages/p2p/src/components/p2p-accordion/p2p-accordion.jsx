@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const usePrevious = value => {
     const ref = React.useRef();
@@ -16,7 +16,10 @@ const usePrevious = value => {
 // 1. Expand all, collapse all
 // 2. Opening one tab must not close the previous opened tab
 const P2PAccordion = ({ className, icon_close, icon_open, list, is_expand_all, onChange }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
     const [open_idx, setOpenIdx] = React.useState({});
     const prev_list = usePrevious(list);
     const first_render = React.useRef(true);

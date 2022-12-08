@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -16,7 +16,10 @@ const SellAdPaymentMethodsList = ({
     onClickPaymentMethodCard,
     selected_methods,
 }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     const style = {
         borderColor: 'var(--brand-secondary)',

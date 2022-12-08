@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Button, Table, Text } from '@deriv/components';
 import UserAvatar from 'Components/user/user-avatar';
 import { localize } from 'Components/i18next';
 import '../block-user.scss';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
     return (
         <Table.Row className='block-user__row'>
             <Table.Cell>

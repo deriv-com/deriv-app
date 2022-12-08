@@ -3,10 +3,13 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const CreateAdErrorModal = () => {
-    const { my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store } = p2p_store;
 
     if (my_ads_store.error_code === api_error_codes.DUPLICATE_ADVERT) {
         return (

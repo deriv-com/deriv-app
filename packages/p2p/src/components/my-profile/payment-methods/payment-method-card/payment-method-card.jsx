@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import PropTypes from 'prop-types';
 
 const PaymentMethodCard = ({
@@ -20,7 +20,10 @@ const PaymentMethodCard = ({
     small,
     style,
 }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
     const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;

@@ -3,19 +3,28 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
+import { StoreProvider, useStore } from '@deriv/stores';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
-import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import './app.scss';
+import Routes from '../routes/routes.jsx';
 
-const App = props => {
-    const { general_store, order_store } = useStores();
+const App = ({ passthrough, ...props }) => {
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, order_store } = p2p_store;
+
     const {
         balance,
         className,
+        error,
+        has_error,
         history,
+        is_logged_in,
+        is_logging_in,
         lang,
         Notifications,
         order_id,
@@ -99,20 +108,34 @@ const App = props => {
     }, [verification_action, verification_code]);
 
     return (
-        <main className={classNames('p2p-cashier', className)}>
-            <Notifications />
-            <AppContent />
-        </main>
+        <StoreProvider root_store={passthrough.root_store}>
+            <Routes
+                error={error}
+                has_error={has_error}
+                is_logged_in={is_logged_in}
+                is_logging_in={is_logging_in}
+                passthrough={passthrough}
+            />
+            <main className={classNames('p2p-cashier', className)}>
+                <Notifications />
+                <AppContent />
+            </main>
+        </StoreProvider>
     );
 };
 
 App.propTypes = {
     balance: PropTypes.string,
     className: PropTypes.string,
+    error: PropTypes.object,
+    has_error: PropTypes.bool,
     history: PropTypes.object,
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
+    passthrough: PropTypes.object,
     server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
     setOnRemount: PropTypes.func,

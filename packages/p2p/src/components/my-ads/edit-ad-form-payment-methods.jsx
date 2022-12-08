@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
 import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
 
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {

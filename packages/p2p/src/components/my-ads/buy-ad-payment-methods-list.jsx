@@ -2,13 +2,16 @@ import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
 
 const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
 

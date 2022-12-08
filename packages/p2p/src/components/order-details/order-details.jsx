@@ -14,7 +14,7 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
@@ -27,7 +27,10 @@ import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(() => {
-    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_profile_store, order_store, sendbird_store } = p2p_store;
 
     const {
         account_currency,

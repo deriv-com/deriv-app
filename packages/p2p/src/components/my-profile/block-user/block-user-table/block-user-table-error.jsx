@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const BlockUserTableError = ({ error_message }) => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     return (
         <React.Fragment>

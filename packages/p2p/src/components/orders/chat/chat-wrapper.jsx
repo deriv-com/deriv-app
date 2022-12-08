@@ -3,11 +3,14 @@ import { MobileFullPageModal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import ChatHeader from './chat-header.jsx';
 
 const ChatWrapper = observer(({ children, is_modal_open }) => {
-    const { sendbird_store, order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { sendbird_store, order_store } = p2p_store;
 
     return isMobile() ? (
         <MobileFullPageModal

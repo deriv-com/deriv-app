@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const OrderDetailsTimer = observer(() => {
     const getTimeLeft = time => {
@@ -15,7 +15,10 @@ const OrderDetailsTimer = observer(() => {
         };
     };
 
-    const { order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_store } = p2p_store;
     const { order_expiry_milliseconds, should_show_order_timer } = order_store.order_information;
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);

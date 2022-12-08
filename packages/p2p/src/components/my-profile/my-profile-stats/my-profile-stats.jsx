@@ -2,14 +2,17 @@ import React from 'react';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import MyProfileStatsTable from './my-profile-stats-table';
 import MyProfileSeparatorContainer from '../my-profile-separator-container';
 import { Localize, localize } from 'Components/i18next';
 import MyProfilePrivacy from './my-profile-privacy';
 
 const MyStats = () => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
     const tabs = [
         {

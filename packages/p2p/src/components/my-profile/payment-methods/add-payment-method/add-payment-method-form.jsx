@@ -5,10 +5,13 @@ import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 
 const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();

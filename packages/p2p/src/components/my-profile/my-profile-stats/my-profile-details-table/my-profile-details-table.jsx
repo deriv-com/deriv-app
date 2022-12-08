@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Money, Table, Text } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
 
 const MyProfileDetailsTable = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
     const { advertiser_buy_limit, advertiser_sell_limit, client } = general_store;

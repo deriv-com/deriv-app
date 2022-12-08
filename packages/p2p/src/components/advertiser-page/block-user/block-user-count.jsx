@@ -2,12 +2,15 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileWrapper, Modal, Popover, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { isDesktop } from '@deriv/shared';
 import './block-user-count.scss';
 
 const BlockUserCount = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
     const { user_blocked_count } = general_store;
 
     const [is_block_user_count_modal_open, setIsBlockUserCountModalOpen] = React.useState(false);

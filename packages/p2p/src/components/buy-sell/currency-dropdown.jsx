@@ -3,14 +3,19 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { CurrencySelector } from 'Components/buy-sell/currency-selector';
 import './currency-dropdown.scss';
 
 const CurrencyDropdown = () => {
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store } = p2p_store;
+
     const [is_list_visible, setIsListVisible] = React.useState(false);
     const currency_selector_ref = React.useRef(null);
-    const { buy_sell_store } = useStores();
+
     const { local_currencies, onLocalCurrencySelect, selected_local_currency, setShouldShowCurrencySelectorModal } =
         buy_sell_store;
 

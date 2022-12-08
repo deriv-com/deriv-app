@@ -8,7 +8,7 @@ import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { generateErrorDialogTitle } from 'Utils/adverts';
 import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
@@ -27,7 +27,10 @@ const getHeaders = offered_currency => [
 ];
 
 const AdSwitchHintBox = () => {
-    const { floating_rate_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store } = p2p_store;
 
     if (floating_rate_store.rate_type === ad_type.FLOAT) {
         return floating_rate_store.reached_target_date ? (
@@ -51,7 +54,10 @@ const AdSwitchHintBox = () => {
 };
 
 const MyAdsTable = () => {
-    const { floating_rate_store, general_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store, my_ads_store } = p2p_store;
     const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
     React.useEffect(() => {

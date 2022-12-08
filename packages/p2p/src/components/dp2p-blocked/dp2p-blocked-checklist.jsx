@@ -2,11 +2,14 @@ import * as React from 'react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from '../i18next';
 
 const Dp2pBlockedChecklist = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
     const { history } = general_store.props;
 
     if (general_store.is_high_risk_fully_authed_without_fa && !general_store.is_p2p_blocked_for_pa) {

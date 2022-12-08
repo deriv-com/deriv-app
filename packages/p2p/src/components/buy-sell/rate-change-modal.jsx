@@ -3,11 +3,14 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './rate-change-modal.scss';
 
 const RateChangeModal = ({ onMount }) => {
-    const { buy_sell_store, floating_rate_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, floating_rate_store, general_store } = p2p_store;
     const local_currency = general_store.client?.local_currency_config?.currency;
     const is_mobile = isMobile();
 

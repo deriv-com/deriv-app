@@ -8,12 +8,15 @@ import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Components/my-ads/ad-status.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = p2p_store;
 
     const {
         account_currency,

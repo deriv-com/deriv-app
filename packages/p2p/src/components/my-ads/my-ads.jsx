@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { TableError } from 'Components/table/table-error.jsx';
 import CreateAd from './create-ad.jsx';
 import EditAd from './edit-ad.jsx';
@@ -18,7 +18,10 @@ const MyAdsState = ({ message }) => (
 );
 
 const MyAds = () => {
-    const { general_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_ads_store } = p2p_store;
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);

@@ -6,11 +6,14 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Components/orders/chat/chat-footer-icon.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import ChatMessage from 'Utils/chat-message';
 
 const ChatFooter = observer(() => {
-    const { order_store, sendbird_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_store, sendbird_store } = p2p_store;
     const file_input_ref = React.useRef(null);
     const text_input_ref = React.useRef(null);
     const [character_count, setCharacterCount] = React.useState(0);

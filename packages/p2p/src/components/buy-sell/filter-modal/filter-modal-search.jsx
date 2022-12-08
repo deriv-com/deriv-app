@@ -5,11 +5,14 @@ import { Icon, Input } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './filter-modal-search.scss';
 
 const FilterModalSearch = () => {
-    const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, my_profile_store } = p2p_store;
 
     const returnedFunction = debounce(() => {
         my_profile_store.getPaymentMethodsList();

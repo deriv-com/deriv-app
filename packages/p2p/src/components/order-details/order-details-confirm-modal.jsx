@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
@@ -16,7 +16,10 @@ const OrderDetailsConfirmModal = ({
     const { account_currency, amount, amount_display, id, local_currency, other_user_details, rate } =
         order_information;
 
-    const { order_details_store, order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_details_store, order_store } = p2p_store;
 
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
 

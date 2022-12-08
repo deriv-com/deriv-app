@@ -1,14 +1,17 @@
 import React from 'react';
 import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
 
 const MyProfile = () => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     React.useEffect(() => {
         my_profile_store.getSettings();

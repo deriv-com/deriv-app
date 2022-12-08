@@ -3,14 +3,17 @@ import React from 'react';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
 import './advertiser-page.scss';
 
 const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = p2p_store;
     const { currency } = general_store.client;
     const {
         effective_rate,

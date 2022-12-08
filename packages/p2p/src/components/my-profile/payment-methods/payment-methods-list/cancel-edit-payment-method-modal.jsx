@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 
 const CancelEditPaymentMethodModal = () => {
-    const { my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_profile_store } = p2p_store;
 
     return (
         <Modal

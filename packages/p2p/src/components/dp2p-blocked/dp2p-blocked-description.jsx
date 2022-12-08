@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from '../i18next';
 
 const Dp2pBlockedDescription = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     let blocked_description;
 

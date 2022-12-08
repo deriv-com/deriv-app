@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { HintBox, Text } from '@deriv/components';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from '../i18next';
 
 const TemporarilyBarredHint = () => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     if (general_store.is_barred) {
         return (

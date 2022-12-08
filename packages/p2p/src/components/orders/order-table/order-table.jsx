@@ -5,11 +5,14 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { order_list } from 'Constants/order-list';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import OrderTableContent from './order-table-content.jsx';
 
 const OrderTable = ({ showDetails }) => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     const orders_list_filters = [
         {

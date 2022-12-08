@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
@@ -10,7 +10,10 @@ import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 
 const BlockUserList = observer(() => {
-    const { general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_profile_store } = p2p_store;
 
     const loadBlockedAdvertisers = debounce(search => {
         my_profile_store.setSearchTerm(search.trim());
@@ -41,7 +44,10 @@ const BlockUserList = observer(() => {
 });
 
 const BlockUser = () => {
-    const { general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_profile_store } = p2p_store;
 
     return (
         <React.Fragment>

@@ -3,12 +3,15 @@ import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import OrderDetails from 'Components/order-details/order-details.jsx';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_store } = p2p_store;
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE

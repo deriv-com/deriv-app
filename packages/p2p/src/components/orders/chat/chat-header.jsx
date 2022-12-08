@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import ExtendedOrderDetails from 'Utils/orders';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
 const ChatHeaderBody = observer(() => {
-    const { order_store, sendbird_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_store, sendbird_store } = p2p_store;
     const { other_user_details } = order_store.order_information;
     const icon_background_colour = generateHexColourFromNickname(other_user_details.name);
     const short_nickname = getShortNickname(other_user_details.name);

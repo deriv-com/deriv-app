@@ -1,14 +1,14 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import * as React from 'react';
 import { TRootStore } from '../types';
 
-export const StoreContext = createContext<TRootStore | null>(null);
+export const StoreContext = React.createContext<TRootStore | null>(null);
 
-export const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
+export const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TRootStore }>) => {
     return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
 export const useStore = () => {
-    const store = useContext(StoreContext);
+    const store = React.useContext(StoreContext);
 
     if (!store) {
         throw new Error('useStore must be used within StoreContext');

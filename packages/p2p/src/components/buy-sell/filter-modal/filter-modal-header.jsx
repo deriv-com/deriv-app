@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 
 const FilterModalHeader = () => {
-    const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, my_profile_store } = p2p_store;
 
     if (buy_sell_store.show_filter_payment_methods) {
         return (

@@ -4,12 +4,15 @@ import { Button, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-cancel-modal.scss';
 
 const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
-    const { general_store, order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, order_store } = p2p_store;
     const { cancels_remaining } = general_store.advertiser_info;
 
     const isMounted = useIsMounted();

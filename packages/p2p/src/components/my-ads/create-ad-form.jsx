@@ -18,7 +18,7 @@ import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
@@ -32,7 +32,10 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = p2p_store;
     const os = mobileOSDetect();
 
     const { currency, local_currency_config } = general_store.client;

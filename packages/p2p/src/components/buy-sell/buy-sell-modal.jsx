@@ -14,7 +14,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
@@ -87,7 +87,10 @@ const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_a
 };
 
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = p2p_store;
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);

@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import OrderDetailsCancelModal from './order-details-cancel-modal.jsx';
 import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
 import OrderDetailsConfirmModal from './order-details-confirm-modal.jsx';
 
 const OrderDetailsFooter = observer(() => {
-    const { order_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { order_store } = p2p_store;
     const {
         id,
         is_buy_order_for_user,

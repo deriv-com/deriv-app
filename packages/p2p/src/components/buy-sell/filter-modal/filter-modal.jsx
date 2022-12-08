@@ -2,13 +2,16 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Checkbox, Icon, Loading, Modal, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import FilterModalHeader from './filter-modal-header.jsx';
 import FilterModalSearch from './filter-modal-search.jsx';
 import FilterModalNoResults from './filter-modal-no-results.jsx';
 
 const FilterModal = () => {
-    const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { buy_sell_store, my_profile_store } = p2p_store;
 
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [selected_methods_text, setSelectedMethodsText] = React.useState([]);

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
@@ -27,7 +27,10 @@ const VerificationWrapper = ({ should_wrap, children }) => {
 };
 
 const Verification = ({ should_wrap }) => {
-    const { general_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store } = p2p_store;
 
     if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
         return <Dp2pBlocked />;

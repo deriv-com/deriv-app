@@ -6,11 +6,14 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './my-ads.scss';
 
 const ToggleAds = observer(() => {
-    const { general_store, my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { general_store, my_ads_store } = p2p_store;
     const isMounted = useIsMounted();
 
     const handleToggle = () => {

@@ -5,11 +5,14 @@ import { isDesktop, useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import 'Components/my-ads/my-ads-delete-modal.scss';
 
 const MyAdsDeleteModal = () => {
-    const { my_ads_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store } = p2p_store;
     const isMounted = useIsMounted();
 
     const onClickCancel = () => {

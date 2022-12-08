@@ -20,6 +20,7 @@ import {
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { P2PStore } from '@deriv/p2p';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -58,6 +59,14 @@ const AppWithoutTranslation = ({ root_store }) => {
     };
 
     React.useEffect(initCFDStore, []);
+
+    const initP2PStore = () => {
+        root_store.modules.attachModule('p2p', new P2PStore({ root_store }));
+        // root_store.modules.p2p_store.general_store.init();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(initP2PStore, []);
 
     React.useEffect(() => {
         initializeTranslations();

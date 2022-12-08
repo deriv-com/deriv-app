@@ -8,7 +8,7 @@ import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
@@ -17,7 +17,10 @@ import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailin
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = p2p_store;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
 

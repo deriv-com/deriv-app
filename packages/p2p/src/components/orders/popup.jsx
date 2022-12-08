@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import { localize } from '../i18next';
 import FormError from '../form/error.jsx';
 
@@ -22,7 +22,10 @@ const FormWithConfirmation = observer(
         title,
         width,
     }) => {
-        const { general_store } = useStores();
+        const {
+            modules: { p2p_store },
+        } = useStore();
+        const { general_store } = p2p_store;
         const handleSubmit = (values, { setStatus }) => onClickConfirm(setStatus);
 
         return (
@@ -115,7 +118,11 @@ const FormWithoutConfirmation = observer(
     }) => {
         const [should_disable_confirm, setShouldDisableConfirm] = useSafeState(true);
         const [api_error_message, setApiErrorMessage] = useSafeState(null);
-        const { general_store } = useStores();
+
+        const {
+            modules: { p2p_store },
+        } = useStore();
+        const { general_store } = p2p_store;
 
         React.useEffect(() => {
             setApiErrorMessage(null);

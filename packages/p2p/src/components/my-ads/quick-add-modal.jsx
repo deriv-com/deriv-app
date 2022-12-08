@@ -6,13 +6,16 @@ import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
 import './quick-add-modal.scss';
 
 const QuickAddModal = ({ advert }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const {
+        modules: { p2p_store },
+    } = useStore();
+    const { my_ads_store, my_profile_store } = p2p_store;
 
     const type = advert ? advert.type : null;
 

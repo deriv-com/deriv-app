@@ -8,7 +8,7 @@ type TFooter = {
 };
 
 const Footer = ({ children, className, has_separator, is_bypassed }: React.PropsWithChildren<Partial<TFooter>>) => {
-    if (is_bypassed) return children;
+    if (is_bypassed) return <React.Fragment>{children}</React.Fragment>;
     return (
         <div
             data-testid='dt_modal_footer'

@@ -4,7 +4,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import Button from '../button/button';
 import Modal from '../modal/modal';
-import Popover from '../popover/popover.jsx';
+import Popover from '../popover/popover';
 import Text from '../text/text';
 import './popover-mobile.scss';
 

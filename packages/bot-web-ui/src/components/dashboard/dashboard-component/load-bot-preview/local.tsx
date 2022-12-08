@@ -95,8 +95,8 @@ const LocalComponent = ({
                         <button
                             className='load-strategy__button-group--open'
                             onClick={() => {
-                                setActiveTab(1);
                                 loadedLocalFileLocation();
+                                setActiveTab(1);
                             }}
                         >
                             Open

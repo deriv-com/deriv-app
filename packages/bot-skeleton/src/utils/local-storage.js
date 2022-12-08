@@ -11,7 +11,10 @@ import { save_types } from '../constants/save-type';
 export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED) => {
     // Ensure strategies don't go through expensive conversion.
     xml.setAttribute('is_dbot', true);
-    const { save_modal } = DBotStore.instance;
+    const {
+        load_modal: { updateListStrategies },
+        save_modal,
+    } = DBotStore.instance;
     const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
     const workspaces = await getSavedWorkspaces();
     const current_xml = Blockly.Xml.domToText(xml);
@@ -43,7 +46,7 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
     if (workspaces.length > 10) {
         workspaces.pop();
     }
-
+    updateListStrategies(workspaces);
     localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
 };
 

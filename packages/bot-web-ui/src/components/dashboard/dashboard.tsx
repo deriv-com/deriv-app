@@ -221,7 +221,7 @@ const Dashboard = ({
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
                         </div>
-                        <div icon='IcTutorialsTabs' label={localize('Tutorial')} id='id-tutorials'>
+                        <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
                                 <Tutorial />
                             </div>
@@ -266,6 +266,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    onEntered: load_modal.onEntered,
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
@@ -279,5 +280,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setActiveTab: dashboard.setActiveTab,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    onEntered: load_modal.onEntered,
 }))(Dashboard);

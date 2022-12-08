@@ -221,6 +221,7 @@ export default class AppStore {
             populateConfig,
             toolbar,
             save_modal,
+            load_modal,
             startLoading,
             setContractUpdateConfig,
             endLoading,

@@ -15,10 +15,7 @@ export default class TradingHubStore extends BaseStore {
     toggleIsTourOpen(is_tour_open) {
         this.is_tour_open = is_tour_open;
     }
-    setIsOnboardingVisited() {
-        this.is_onboarding_visited = true;
-    }
-    unsetIsOnboardingVisited() {
-        this.is_onboarding_visited = false;
+    setIsOnboardingVisited(is_visited) {
+        this.is_onboarding_visited = is_visited;
     }
 }

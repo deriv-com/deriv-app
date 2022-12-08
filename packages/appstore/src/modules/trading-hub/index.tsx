@@ -131,7 +131,7 @@ const TradingHub: React.FC = () => {
     tour_step_locale.last = (
         <div
             onClick={() => {
-                setIsOnboardingVisited();
+                setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
             }}
         >
@@ -142,7 +142,7 @@ const TradingHub: React.FC = () => {
     eu_tour_step_locale.last = (
         <div
             onClick={() => {
-                setIsOnboardingVisited();
+                setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
             }}
         >

@@ -67,9 +67,7 @@ const CFDRealAccounts = ({
             is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
             disabled: has_cfd_account_error(CFD_PLATFORMS.DXTRADE),
             platform: CFD_PLATFORMS.DXTRADE,
-            type: 'synthetic',
-            // ToDo: deriv x should have type of all in new API
-            // type: 'all'
+            type: 'all',
         },
     ];
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
@@ -145,12 +143,18 @@ const CFDRealAccounts = ({
             if (existing_platform === CFD_PLATFORMS.MT5) {
                 return key.startsWith(`${existing_platform}.real.${market_type}`);
             }
+            if (existing_platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
+                return key.startsWith(`${existing_platform}.real.${existing_platform}@${market_type}`);
+            }
             return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
         })
             ? Object.keys(current_list)
                   .filter(key => {
                       if (existing_platform === CFD_PLATFORMS.MT5) {
                           return key.startsWith(`${existing_platform}.real.${market_type}`);
+                      }
+                      if (existing_platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
+                          return key.startsWith(`${existing_platform}.real.${existing_platform}@${market_type}`);
                       }
                       return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
                   })
@@ -162,7 +166,7 @@ const CFDRealAccounts = ({
         return acc;
     };
 
-    const numberOfExistingAccounts = (account: TStaticAccountProps, market_type: 'financial' | 'synthetic') => {
+    const numberOfExistingAccounts = (account: TStaticAccountProps, market_type: 'financial' | 'synthetic' | 'all') => {
         return existingRealAccounts(account.platform, account?.type)?.filter(acc => acc.market_type === market_type)
             .length;
     };

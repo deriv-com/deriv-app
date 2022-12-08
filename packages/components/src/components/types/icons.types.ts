@@ -29,6 +29,7 @@ export type TIconProps = {
     onMouseDown?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
+    onTouchStart?: () => void;
     size?: number | string;
     width?: number | string;
     id?: string;

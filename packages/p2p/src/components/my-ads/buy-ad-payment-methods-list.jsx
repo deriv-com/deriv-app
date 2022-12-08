@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon, useOnClickOutside } from '@deriv/components';
-// import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
@@ -216,16 +216,15 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
                                                                     ? 'IcCloseCircle'
                                                                     : 'IcDelete'
                                                             }
-                                                            onClick={e => {
+                                                            onTouchStart={e => {
                                                                 e.preventDefault();
-                                                                // if (isMobile())
-                                                                onClickIcon(payment_method, key, setFieldValue);
+                                                                if (isMobile())
+                                                                    onClickIcon(payment_method, key, setFieldValue);
                                                             }}
-                                                            // onMouseDown={e => {
-                                                            //     e.preventDefault();
-                                                            //     if (isDesktop())
-                                                            //         onClickIcon(payment_method, key, setFieldValue);
-                                                            // }}
+                                                            onMouseDown={() => {
+                                                                if (isDesktop())
+                                                                    onClickIcon(payment_method, key, setFieldValue);
+                                                            }}
                                                         />
                                                     }
                                                     type='text'

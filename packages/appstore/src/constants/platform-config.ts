@@ -2,6 +2,7 @@ import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared
 import { localize } from '@deriv/translations';
 import { Icons } from 'Assets/svgs/wallet';
 
+export type AccountType = 'real' | 'demo';
 export type RegionAvailability = 'all' | 'eu' | 'non-eu';
 
 export interface PlatformConfig {
@@ -13,6 +14,8 @@ export interface PlatformConfig {
     link_to?: string;
     availability?: RegionAvailability;
 }
+
+export const account_types: AccountType[] = ['real', 'demo'];
 
 export const platform_config: PlatformConfig[] = [
     {

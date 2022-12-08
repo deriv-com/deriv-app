@@ -2,10 +2,22 @@ import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
-
 import IconMessageContent from 'Components/icon-message-content';
+import { GetAccountStatus } from '@deriv/api-types';
 
-const PoiPoaDocsSubmitted = ({ account_status, is_vanuatu_selected, onClickOK, updateAccountStatus }) => {
+type TPoiPoaDocsSubmitted = {
+    account_status: GetAccountStatus;
+    is_vanuatu_selected: boolean;
+    onClickOK: React.MouseEventHandler;
+    updateAccountStatus: () => void;
+};
+
+const PoiPoaDocsSubmitted = ({
+    account_status,
+    is_vanuatu_selected,
+    onClickOK,
+    updateAccountStatus,
+}: TPoiPoaDocsSubmitted) => {
     React.useEffect(() => {
         updateAccountStatus();
         //eslint-disable-next-line react-hooks/exhaustive-deps

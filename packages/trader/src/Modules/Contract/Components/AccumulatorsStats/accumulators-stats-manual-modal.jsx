@@ -7,16 +7,20 @@ import 'Sass/app/modules/contract/accumulators-stats.scss';
 
 const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, toggleManual }) => {
     const is_mobile = isMobile();
-    const image_src = React.useMemo(() => {
-        // memoize image source and open the modal only after we get it to avoid showing empty modal
-        return getUrlBase(`/public/images/common/accumulators_stats_manual_${is_mobile ? 'mobile' : 'desktop'}.svg`);
-    }, [is_mobile]);
+    // memoize video sources and open the modal only after we get them to avoid showing half-empty modal
+    const getVideoSource = React.useCallback(
+        extension => {
+            return getUrlBase(
+                `/public/images/common/accumulators_stats_manual_${is_mobile ? 'mobile' : 'desktop'}.${extension}`
+            );
+        },
+        [is_mobile]
+    );
     return (
         <React.Fragment>
             <Icon icon='IcInfoOutline' onClick={toggleManual} size={16} className={icon_classname} />
             <Modal
-                id='dt_accumulators_stats_manual_modal'
-                is_open={is_manual_open && !!image_src}
+                is_open={is_manual_open && !!getVideoSource('mp4') && !!getVideoSource('webm')}
                 should_header_stick_body={false}
                 title={title}
                 toggleModal={toggleManual}
@@ -24,11 +28,14 @@ const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, t
                 className='accumulators-stats-manual-modal'
             >
                 <Modal.Body className='accumulators-stats-modal-body'>
-                    <img
-                        src={image_src}
-                        alt='accumulators_stats_manual'
-                        className='accumulators-stats-modal-body__image'
-                    />
+                    <div className='accumulators-stats-modal-body__video' data-testid='dt_accumulators_stats_manual'>
+                        <video width={is_mobile ? 296 : 563} autoPlay loop playsInline>
+                            {/* a browser will select a source with extension it recognizes */}
+                            <source src={getVideoSource('mp4')} type='video/mp4' />
+                            <source src={getVideoSource('webm')} type='video/webm' />
+                            {localize('Unfortunately, your browser does not support the video.')}
+                        </video>
+                    </div>
                     <Text
                         as='p'
                         size={is_mobile ? 'xs' : 's'}

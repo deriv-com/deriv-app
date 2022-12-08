@@ -30,6 +30,7 @@
         left: -0.8rem;
         margin: 0 0.8rem;
         width: calc(100vw - 1.6rem);
+        padding-right: 3rem;
     }
 
     /* Screen height fixes due to UI space restrictions */
@@ -53,6 +54,7 @@
         @include mobile {
             width: 100%;
             height: 4rem;
+            overflow-x: hidden;
         }
     }
     &__title {
@@ -204,12 +206,19 @@
     align-items: center;
     padding: 1.6rem;
 
-    &__image {
+    &__video {
         margin-bottom: 0.8rem;
+        overflow: hidden;
+        width: 56.3rem;
+        height: 44.8rem;
+        video {
+            transform: scale(1);
+        }
 
         @include mobile {
-            margin: 0.8rem 0 1.6rem;
-            max-width: 100%;
+            margin: 0 0 0.8rem;
+            width: 29.6rem;
+            height: 30.3rem;
         }
     }
     @include mobile {

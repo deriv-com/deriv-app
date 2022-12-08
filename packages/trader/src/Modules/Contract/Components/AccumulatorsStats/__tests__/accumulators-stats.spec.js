@@ -44,7 +44,7 @@ describe('AccumulatorsStats', () => {
     it('should show manual after info icon is clicked', () => {
         const { container } = render(<AccumulatorsStats />);
         fireEvent.click(container.querySelector('.info'));
-        expect(screen.getByAltText('accumulators_stats_manual')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_accumulators_stats_manual')).toBeInTheDocument();
     });
     it('should render partial history values (tick counters) when initially collapsed in desktop', () => {
         render(<AccumulatorsStats />);

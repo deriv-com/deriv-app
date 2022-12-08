@@ -263,8 +263,13 @@ function calculate_marker(contract_info) {
         high_barrier,
         low_barrier,
     } = contract_info;
-    const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
+    const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
+    const ticks_epochs =
+        (is_accumulator_contract && tick_stream?.length === 10
+            ? [entry_tick_time, ...tick_stream.map(t => t.epoch).slice(1)]
+            : tick_stream?.map(t => t.epoch)) || [];
+    const ticks_epoch_array = tick_stream ? ticks_epochs : [];
 
     // window.ci = toJS(contract_info);
 

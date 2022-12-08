@@ -12,7 +12,7 @@ import 'Sass/app/modules/contract/accumulators-stats.scss';
 export const ROW_SIZES = {
     DESKTOP_COLLAPSED: 10,
     DESKTOP_EXPANDED: 10,
-    MOBILE_COLLAPSED: 6,
+    MOBILE_COLLAPSED: 15,
     MOBILE_EXPANDED: 5,
 };
 
@@ -69,13 +69,6 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
                         rows[0]?.map((el, i) => <TicksHistoryCounter key={i} value={el} has_progress_dots={i === 0} />)
                     )}
                 </Text>
-                {is_expandable && (
-                    <Icon
-                        icon={is_collapsed ? 'IcArrowUp' : 'IcArrowDown'}
-                        onClick={() => setIsCollapsed(!is_collapsed)}
-                        className='accordion-toggle-arrow'
-                    />
-                )}
             </div>
             {is_expandable && !is_collapsed && (
                 <DynamicWrapper.Component {...DynamicWrapper.props}>
@@ -93,6 +86,13 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
                         ))}
                     </Text>
                 </DynamicWrapper.Component>
+            )}
+            {is_expandable && (
+                <Icon
+                    icon={is_collapsed ? 'IcArrowUp' : 'IcArrowDown'}
+                    onClick={() => setIsCollapsed(!is_collapsed)}
+                    className='accordion-toggle-arrow'
+                />
             )}
         </div>
     );

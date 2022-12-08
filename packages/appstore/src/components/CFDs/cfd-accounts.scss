@@ -1886,6 +1886,13 @@
                 grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
             }
         }
+        &--platform {
+            grid-template-columns: 233.01fr 1070fr 233.39fr;
+
+            &__pre-appstore {
+                grid-template-columns: 233.01fr 1070fr 233.39fr;
+            }
+        }
     }
 
     &__table-row-item {
@@ -1985,6 +1992,7 @@
             &-footer,
             &-row,
             &-row--leverage,
+            &-row--platform,
             &-row--instruments {
                 width: 250vw;
                 &__pre-appstore {

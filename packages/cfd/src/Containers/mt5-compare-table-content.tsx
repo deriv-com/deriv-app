@@ -1,15 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, PlatformContext } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import { TTradingPlatformAvailableAccount } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse, GetAccountStatus } from '@deriv/api-types';
+import routes from './routes';
 
 type TRowItem = {
-    text: string | Array<string>;
+    text: string | React.ReactElement | Array<string | React.ReactElement>;
     tooltip_msg?: string;
 };
 
@@ -67,6 +68,13 @@ type TDMT5CompareModalContentProps = {
 
 const eucontent: TModalContentProps[] = [
     {
+        id: 'platform',
+        attribute: localize('Platform'),
+        values: {
+            financial_maltainvest: { text: localize('MT5') },
+        },
+    },
+    {
         id: 'jurisdiction',
         attribute: localize('Jurisdiction'),
         values: {
@@ -104,18 +112,39 @@ const eucontent: TModalContentProps[] = [
         values: {
             financial_maltainvest: {
                 text: [
-                    localize('Forex'),
+                    <Text as='p' color='prominent' size='xxxs' key={1}>
+                        <Localize
+                            i18n_default_text='Synthetics<0>*</0>'
+                            components={[<Text size='xxs' key={0} weight='bold' color='red' />]}
+                        />
+                    </Text>,
+                    localize('Forex: standard'),
                     localize('Stocks'),
-                    localize('Commodities'),
                     localize('Stock indices'),
-                    localize('Synthetic indices'),
-                    localize('Cryptocurrencies'),
+                    localize('Commodities'),
+                    <Text as='p' color='prominent' size='xxxs' key={8}>
+                        <Localize
+                            i18n_default_text='Cryptocurrencies<0/><1/>'
+                            components={[<br key={0} />, <br key={1} />]}
+                        />
+                    </Text>,
+                    <Text as='p' size='xxxs' color='red' weight='bold' key={0}>
+                        {localize('*Boom 300 and Crash 300 Index')}
+                    </Text>,
                 ],
             },
         },
     },
 ];
 const content: TModalContentProps[] = [
+    {
+        id: 'platform',
+        attribute: localize('Platform'),
+        values: {
+            financial_labuan: { text: localize('MT5') },
+            derivx: { text: localize('Deriv X') },
+        },
+    },
     {
         id: 'jurisdiction',
         attribute: localize('Jurisdiction'),
@@ -173,7 +202,7 @@ const content: TModalContentProps[] = [
         values: {
             synthetic_svg: { text: localize('Up to 1:1000') },
             synthetic_bvi: { text: localize('Up to 1:1000') },
-            financial_vanuatu: { text: localize('Up to 1:1000') },
+            financial_vanuatu: { text: localize('Up to 1:10000') },
             financial_labuan: { text: localize('Up to 1:100') },
             derivx: { text: localize('Up to 1:1000') },
         },
@@ -183,7 +212,7 @@ const content: TModalContentProps[] = [
         id: 'instruments',
         attribute: localize('Trading instruments'),
         values: {
-            synthetic_svg: { text: [localize('Synthetics'), localize('Basket indices'), localize('Derived FX')] },
+            synthetic_svg: { text: [localize('Synthetics'), localize('Baskets'), localize('Derived FX')] },
             financial_svg: {
                 text: [
                     localize('Forex: standard/micro'),
@@ -258,6 +287,10 @@ const DMT5CompareModalContent = ({
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+
     const mt5_platforms = trading_platform_available_accounts.map(
         account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
     );
@@ -329,6 +362,7 @@ const DMT5CompareModalContent = ({
                     'financial_vanuatu',
                     'financial_labuan',
                     ...(should_show_derivx && synthetic_accounts_count > 0 ? ['derivx'] : []),
+                    // ...(is_pre_appstore ? ['platform'] : []),
                 ];
                 content_data.values = sorted_values.reduce(
                     (acc, el) => (available_accounts_keys.includes(el) ? { ...acc, [el]: undefined } : acc),
@@ -456,7 +490,7 @@ const DMT5CompareModalContent = ({
     const modal_content = show_eu_related ? eucontent : content;
     const modal_footer = show_eu_related ? eu_footer_button : footer_buttons;
     const getContentSize = (id: string) => {
-        if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
+        if (id === 'counterparty' || id === 'leverage' || id === 'platform') return isDesktop() ? 'xxs' : 'xxxs';
         return isDesktop() ? 'xxxs' : 'xxxxs';
     };
 
@@ -527,18 +561,55 @@ const DMT5CompareModalContent = ({
         </Table.Row>
     );
 
+    const PlatformRow = ({ attr, val }: TInstrumentsRowProps) => (
+        <Table.Row
+            className={classNames(`cfd-real-compare-accounts__table-row--platform${pre_appstore_class}`, {
+                [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
+                    available_accounts_count < 6,
+            })}
+        >
+            <Table.Cell fixed>
+                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                    {attr}
+                </Text>
+            </Table.Cell>
+
+            {Object.keys(val).map(rowKey => (
+                <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
+                    {Array.isArray(val[rowKey]?.text) ? (
+                        (val[rowKey]?.text as []).map((item, index) => (
+                            <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
+                                {item}
+                            </Text>
+                        ))
+                    ) : (
+                        <Text as='p' weight='normal' align='center' color='prominent' size='xxxs'>
+                            {val[rowKey]?.text}
+                        </Text>
+                    )}
+                </Table.Cell>
+            ))}
+        </Table.Row>
+    );
+
     const Row = ({ id, attribute, values }: TModalContentProps) => {
         const is_leverage = id === 'leverage';
+        const is_platform = id === 'platform';
         if (id === 'instruments') {
             return <InstrumentsRow attr={attribute} val={values} />;
+        } else if (id === 'platform') {
+            return <PlatformRow attr={attribute} val={values} />;
         }
         return (
             <Table.Row
                 className={
                     show_eu_related
                         ? 'cfd-real-compare-accounts-row-eu'
-                        : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}`, {
+                        : classNames({
+                              [`cfd-real-compare-accounts__table-row`]: !is_pre_appstore,
+                              [`cfd-real-compare-accounts__table-row${pre_appstore_class}`]: is_pre_appstore,
                               [`cfd-real-compare-accounts__table-row--leverage${pre_appstore_class}`]: is_leverage,
+                              [`cfd-real-compare-accounts__table-row--platform${pre_appstore_class}`]: is_platform,
                               [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
                                   available_accounts_count < 6,
                           })

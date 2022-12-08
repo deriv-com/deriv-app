@@ -138,12 +138,16 @@ const CompareAccountsModal = ({
             ? localize('Account Information')
             : localize('Compare accounts');
 
-    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
+    const cfd_account_title = show_eu_related
+        ? localize('Deriv MT5 CFDs real account')
+        : localize('Compare CFDs real accounts');
+
+    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : cfd_account_title);
 
     const getModalStyle = () => {
         if (should_show_derivx) {
             return {
-                height: '506px',
+                height: '545px',
                 width: '1200px',
             };
         } else if (is_dxtrade) {
@@ -153,13 +157,13 @@ const CompareAccountsModal = ({
             };
         } else if (show_eu_related) {
             return {
-                height: '506px',
-                width: '300px',
+                height: '560px',
+                width: '483px',
             };
         }
         return {
-            height: '506px',
-            width: '996px',
+            height: '545px',
+            width: '1200px',
         };
     };
 

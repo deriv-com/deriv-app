@@ -31,6 +31,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_real_enabled: boolean;
     residence: string;
     is_demo_tab: boolean;
+    has_unmerged_account: boolean;
     toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     openDerivRealAccountNeededModal: () => void;
@@ -42,6 +43,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
     is_demo_tab: boolean;
     show_eu_related: boolean;
+    has_unmerged_account: boolean;
     residence: string;
     is_eu: boolean;
 };
@@ -53,11 +55,12 @@ const DxtradeCompareAccountContent = ({
     landing_companies,
     platform,
     show_eu_related,
+    has_unmerged_account,
     residence,
     is_eu,
     is_uk,
 }: TDxtradeCompareAccountContent) => {
-    if (is_demo_tab) {
+    if (is_demo_tab || !has_unmerged_account) {
         return (
             <CfdDxtradeCompareContent
                 is_logged_in={is_logged_in}
@@ -95,6 +98,7 @@ const CompareAccountsModal = ({
     is_uk,
     is_eu_country,
     is_real_enabled,
+    has_unmerged_account,
     platform,
     residence,
     is_demo_tab,
@@ -134,7 +138,9 @@ const CompareAccountsModal = ({
     ];
 
     const cfd_account_button_label =
-        mt5_accounts.filter(Boolean).length === 1 || (is_demo_tab && platform === CFD_PLATFORMS.DXTRADE)
+        mt5_accounts.filter(Boolean).length === 1 ||
+        (is_demo_tab && platform === CFD_PLATFORMS.DXTRADE) ||
+        (!has_unmerged_account && platform === CFD_PLATFORMS.DXTRADE)
             ? localize('Account Information')
             : localize('Compare accounts');
 
@@ -198,6 +204,7 @@ const CompareAccountsModal = ({
                                     platform={platform}
                                     show_eu_related={show_eu_related}
                                     residence={residence}
+                                    has_unmerged_account={has_unmerged_account}
                                     is_eu={is_eu}
                                     is_uk={is_uk}
                                 />
@@ -234,6 +241,7 @@ const CompareAccountsModal = ({
                                     landing_companies={landing_companies}
                                     platform={platform}
                                     show_eu_related={show_eu_related}
+                                    has_unmerged_account={has_unmerged_account}
                                     residence={residence}
                                     is_eu={is_eu}
                                     is_uk={is_uk}

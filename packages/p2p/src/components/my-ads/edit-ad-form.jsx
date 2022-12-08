@@ -11,7 +11,6 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
 import FloatingRate from 'Components/floating-rate';
-import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
 import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
@@ -47,7 +46,6 @@ const EditAdForm = () => {
 
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
-    const [is_cancel_edit_modal_open, setIsCancelEditModalOpen] = React.useState(false);
     const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
 
     const setInitialAdRate = () => {
@@ -77,14 +75,12 @@ const EditAdForm = () => {
 
     const handleEditAdFormCancel = is_form_edited => {
         if (is_form_edited || payment_methods_changed) {
-            setIsCancelEditModalOpen(true);
+            general_store.showModal({ key: 'EditAdCancelModal', props: {} });
         } else {
             my_ads_store.setShowEditAdForm(false);
         }
     };
 
-    const toggleEditAdCancelModal = is_cancel_edit =>
-        is_cancel_edit ? my_ads_store.setShowEditAdForm(false) : setIsCancelEditModalOpen(false);
     const is_api_error = [api_error_codes.ADVERT_SAME_LIMITS, api_error_codes.DUPLICATE_ADVERT].includes(
         my_ads_store.error_code
     );
@@ -461,7 +457,6 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <CreateAdAddPaymentMethodModal />
-            <EditAdCancelModal onClick={toggleEditAdCancelModal} is_open={is_cancel_edit_modal_open} />
             <Modal
                 className='p2p-my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}

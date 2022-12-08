@@ -278,7 +278,7 @@ const addBindings = blockly => {
         }
 
         const token = document.getElementById('active-token')?.value;
-        const tokenObj = getToken(token);
+        const tokenObj = token ? getToken(token) : false;
 
         if (tokenObj && tokenObj.hasTradeLimitation) {
             const limits = new Limits(api);

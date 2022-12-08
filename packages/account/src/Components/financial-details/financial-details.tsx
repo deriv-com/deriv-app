@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import React from 'react';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 
@@ -26,6 +26,60 @@ import {
 import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
+export interface TFinancialDetails {
+    goToPreviousStep: () => void;
+    goToNextStep: () => void;
+    getCurrentStep: () => number;
+    onSave: (current_step: number, values: FormikValues) => void;
+    onSubmit: (
+        current_step: number,
+        values: FormikValues,
+        actions: (isSubmitting: boolean) => void,
+        props: () => void
+    ) => void;
+    onCancel: (current_step: number, props: () => void) => void;
+    validate: (values: FormikValues) => object;
+    income_source_enum: object[];
+    employment_status_enum: object[];
+    employment_industry_enum: object[];
+    occupation_enum: object[];
+    source_of_wealth_enum: object[];
+    education_level_enum: object[];
+    net_income_enum: object[];
+    estimated_worth_enum: object[];
+    account_turnover_enum: object[];
+    forex_trading_experience_enum: object[];
+    forex_trading_frequency_enum: object[];
+    binary_options_trading_experience_enum: object[];
+    binary_options_trading_frequency_enum: object[];
+    cfd_trading_experience_enum: object[];
+    cfd_trading_frequency_enum: object[];
+    other_instruments_trading_experience_enum: object[];
+    other_instruments_trading_frequency_enum: object[];
+    value: object;
+}
+
+export type TFinancialInformationAndTradingExperience = {
+    shared_props?: object;
+    income_source_enum: object[];
+    employment_status_enum: object[];
+    employment_industry_enum: object[];
+    occupation_enum: object[];
+    source_of_wealth_enum: object[];
+    education_level_enum: object[];
+    net_income_enum: object[];
+    estimated_worth_enum: object[];
+    account_turnover_enum: object[];
+    forex_trading_experience_enum?: object[];
+    forex_trading_frequency_enum?: object[];
+    binary_options_trading_experience_enum?: object[];
+    binary_options_trading_frequency_enum?: object[];
+    cfd_trading_experience_enum?: object[];
+    cfd_trading_frequency_enum?: object[];
+    other_instruments_trading_experience_enum?: object[];
+    other_instruments_trading_frequency_enum?: object[];
+};
+
 const FinancialInformation = ({
     shared_props,
     income_source_enum,
@@ -37,7 +91,7 @@ const FinancialInformation = ({
     net_income_enum,
     estimated_worth_enum,
     account_turnover_enum,
-}) => (
+}: TFinancialInformationAndTradingExperience) => (
     <React.Fragment>
         <FormSubHeader
             title={localize('Financial information')}
@@ -66,7 +120,7 @@ const TradingExperience = ({
     cfd_trading_frequency_enum,
     other_instruments_trading_experience_enum,
     other_instruments_trading_frequency_enum,
-}) => (
+}: TFinancialInformationAndTradingExperience) => (
     <React.Fragment>
         <FormSubHeader
             title={localize('Trading experience')}
@@ -96,14 +150,14 @@ const TradingExperience = ({
     </React.Fragment>
 );
 
-const FinancialDetails = props => {
-    const handleCancel = values => {
+const FinancialDetails = (props: TFinancialDetails) => {
+    const handleCancel = (values: FormikValues) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const handleValidate = values => {
+    const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
     };
@@ -129,14 +183,14 @@ const FinancialDetails = props => {
 
                 return (
                     <AutoHeightWrapper default_height={200}>
-                        {({ setRef, height }) => (
+                        {({ setRef, height }: { setRef: (instance: HTMLFormElement) => void; height?: any }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
+                                    <ThemedScrollbars autohide={!(window.innerHeight < 890)} height={height - 77}>
                                         <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}
@@ -168,6 +222,15 @@ const FinancialDetails = props => {
                                                 other_instruments_trading_frequency_enum={
                                                     props.other_instruments_trading_frequency_enum
                                                 }
+                                                income_source_enum={[]}
+                                                employment_status_enum={[]}
+                                                employment_industry_enum={[]}
+                                                occupation_enum={[]}
+                                                source_of_wealth_enum={[]}
+                                                education_level_enum={[]}
+                                                net_income_enum={[]}
+                                                estimated_worth_enum={[]}
+                                                account_turnover_enum={[]}
                                             />
                                         </div>
                                     </ThemedScrollbars>

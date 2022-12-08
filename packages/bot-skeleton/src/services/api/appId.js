@@ -12,10 +12,14 @@ export const generateDerivApiInstance = () => {
     return deriv_api;
 };
 
-const getToken = () => {
-    const active_loginid = localStorage.getItem('active_loginid');
-    const client_accounts = JSON.parse(localStorage.getItem('client.accounts'));
-    const active_account = client_accounts[active_loginid] || {};
+export const getLoginId = () => {
+    return localStorage.getItem('active_loginid');
+};
+
+export const getToken = () => {
+    const active_loginid = getLoginId();
+    const client_accounts = JSON.parse(localStorage.getItem('client.accounts')) || undefined;
+    const active_account = (client_accounts && client_accounts[active_loginid]) || {};
     return {
         token: active_account?.token || undefined,
         account_id: active_loginid || undefined,
@@ -29,15 +33,13 @@ class GetAPI {
     pipSizes = [];
     account_info = {};
 
-    constructor() {
-        this.init();
-    }
-
     init(force_update = false) {
-        if (force_update && this.api) this.api.disconnect();
-        this.api = generateDerivApiInstance();
-        this.initEventListeners();
-        this.authorizeAndSubscribe();
+        if (getLoginId()) {
+            if (force_update && this.api) this.api.disconnect();
+            this.api = generateDerivApiInstance();
+            this.initEventListeners();
+            this.authorizeAndSubscribe();
+        }
     }
 
     initEventListeners() {

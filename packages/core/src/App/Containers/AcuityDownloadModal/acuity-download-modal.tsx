@@ -24,6 +24,15 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
         closeModal();
     };
 
+    const openGuide = () => {
+        window.open(
+            is_eu ? 'https://deriv.link/3GXrhz6' : 'https://deriv.link/3Vk37Ds',
+            '_blank',
+            'noopener,noreferrer'
+        );
+        closeModal();
+    };
+
     return (
         <Modal
             is_open={is_acuity_modal_open}
@@ -47,6 +56,25 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
                     Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>
                     This suite is only available for Windows, and is most recommended for financial assets."
                             components={[<br key={0} />, <Text key={1} weight='bold' />]}
+                        />
+                    </Text>
+                </div>
+                <div className='acuity-download-modal__body--guide'>
+                    <Text as='p' line_height='m' align='center'>
+                        <Localize
+                            i18n_default_text='<1>Need help using Acuity?</1><0/>Check out this <2>user guide</2>.'
+                            components={[
+                                <br key={0} />,
+                                <Text key={1} weight='bold' />,
+                                <Text
+                                    key={2}
+                                    className='acuity-download-modal__body--guide__link'
+                                    as='a'
+                                    color='red'
+                                    weight='bold'
+                                    onClick={openGuide}
+                                />,
+                            ]}
                         />
                     </Text>
                 </div>

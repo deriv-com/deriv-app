@@ -6,7 +6,7 @@ import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon', boolean>;
+type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
 
 type TStep = {
     label?: string;
@@ -88,6 +88,7 @@ const joyride_props: TJoyrideConfig = {
     showProgress: false,
     spotlightClicks: true,
     disableBeacon: true,
+    disableOverlay: false,
 };
 
 export const DBOT_ONBOARDING = [
@@ -107,7 +108,6 @@ export const DBOT_ONBOARDING = [
                 step_index={1}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -125,7 +125,6 @@ export const DBOT_ONBOARDING = [
                 step_index={2}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -139,7 +138,6 @@ export const DBOT_ONBOARDING = [
                 step_index={3}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -157,7 +155,6 @@ export const DBOT_ONBOARDING = [
                 step_index={4}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -170,7 +167,6 @@ export const DBOT_ONBOARDING = [
                 step_index={5}
             />
         ),
-        disableOverlay: false,
         placement: 'right',
         ...joyride_props,
     },
@@ -185,7 +181,6 @@ export const DBOT_ONBOARDING = [
                 step_index={6}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -199,7 +194,6 @@ export const DBOT_ONBOARDING = [
                 step_index={7}
             />
         ),
-        disableOverlay: false,
         placement: 'left',
         ...joyride_props,
     },
@@ -224,7 +218,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
         ...joyride_props,
     },
@@ -240,7 +233,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -256,7 +248,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
         ...joyride_props,
     },
@@ -273,7 +264,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
         ...joyride_props,
     },
@@ -295,7 +285,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
         ...joyride_props,
     },
@@ -322,7 +311,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
         ...joyride_props,
     },
@@ -339,7 +327,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        disableOverlay: false,
         ...joyride_props,
     },
 ];

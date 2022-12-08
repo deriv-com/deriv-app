@@ -211,14 +211,13 @@
         overflow: hidden;
         width: 56.3rem;
         height: 44.8rem;
-        video {
-            transform: scale(1);
-        }
 
         @include mobile {
-            margin: 0 0 0.8rem;
             width: 29.6rem;
             height: 30.3rem;
+        }
+        video {
+            transform: scale(1);
         }
     }
     @include mobile {

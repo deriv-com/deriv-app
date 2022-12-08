@@ -232,6 +232,13 @@ const AccountSwitcher = props => {
         props.toggleSetCurrencyModal();
     };
 
+    // TODO: Remove this and all usage after real release (74063)
+    const hasUnmergedAccounts = accounts => {
+        return Object.keys(accounts).some(
+            key => accounts[key].market_type === 'synthetic' || accounts[key].market_type === 'financial'
+        );
+    };
+
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -288,6 +295,13 @@ const AccountSwitcher = props => {
         if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
             return [...all_config];
         }
+
+        if (!is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return hasUnmergedAccounts(existing_cfd_accounts)
+                ? [...gaming_config, ...financial_config]
+                : [...all_config];
+        }
+
         return [...gaming_config, ...financial_config];
     };
 
@@ -334,8 +348,10 @@ const AccountSwitcher = props => {
     };
 
     const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(
-            account => !isDemo(account) && account.enabled === 1
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(account =>
+            hasUnmergedAccounts(props.dxtrade_accounts_list)
+                ? !isDemo(account) && account.enabled === 1 && account.market_type !== 'all'
+                : !isDemo(account) && account.enabled === 1 && account.market_type === 'all'
         );
     };
 

@@ -13,7 +13,9 @@ type TOnboardingProps = {
         string,
         {
             component: React.ReactNode;
+            eu_footer_header?: string;
             footer_header: string;
+            eu_footer_text?: string;
             footer_text: string;
             next_content?: string;
             has_next_content: boolean;
@@ -24,8 +26,9 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { tradinghub } = useStores();
+    const { tradinghub, client } = useStores();
     const { toggleIsTourOpen } = tradinghub;
+    const { is_eu, is_eu_country, is_logged_in } = client;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
     const { setIsPreAppStore } = React.useContext(PlatformContext);
@@ -38,13 +41,24 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const nextStep = () => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
-            history.push(routes.trading_hub);
             setIsPreAppStore(true);
+            history.push(routes.trading_hub);
             toggleIsTourOpen(true);
         }
     };
+    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const onboarding_step = number_of_steps[step - 1];
+
+    const footer_header = contents[onboarding_step]?.footer_header;
+    const footer_text = contents[onboarding_step]?.footer_text;
+
+    const eu_footer_header = contents[onboarding_step]?.eu_footer_header || footer_header;
+    const eu_footer_text = contents[onboarding_step]?.eu_footer_text || footer_text;
+
+    const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
+
+    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
 
     return (
         <div className='onboarding-wrapper'>
@@ -55,6 +69,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     custom_color='var(--general-main-1)'
                     className='onboarding-header__cross-icon'
                     onClick={() => {
+                        setIsPreAppStore(true);
                         toggleIsTourOpen(false);
                         history.push(routes.trading_hub);
                     }}
@@ -68,10 +83,10 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
                     <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {contents[onboarding_step]?.footer_header}
+                        {footer_header_text}
                     </Text>
                     <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {contents[onboarding_step]?.footer_text}
+                        {footer_desctiption}
                     </Text>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>

@@ -276,7 +276,7 @@ const OptionsAccount = ({
             </div>
             {!is_modal && (
                 <div className='account-container__button-wrapper'>
-                    {has_reset_balance ? (
+                    {is_virtual && has_reset_balance ? (
                         <Button
                             is_disabled={is_disabled}
                             onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -286,9 +286,10 @@ const OptionsAccount = ({
                             secondary
                             small
                         >
-                            {localize('Reset')}
+                            {localize('Reset balance')}
                         </Button>
                     ) : (
+                        !is_virtual &&
                         has_balance && (
                             <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
                                 {localize('Deposit')}

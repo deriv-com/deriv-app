@@ -45,7 +45,7 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf, is_eu }) => {
+const TradingHubOnboarding = ({ is_dark_mode }) => {
     const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
@@ -61,11 +61,7 @@ const TradingHubOnboarding = ({ is_dark_mode, toggleIsTourOpen, is_mf, is_eu }) 
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            if (is_mf || is_eu) {
-                                toggleIsTourOpen(true);
-                            } else {
-                                history.push(routes.onboarding);
-                            }
+                            history.push(routes.onboarding);
                         }}
                     />
                 </Popover>
@@ -179,15 +175,7 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
-                    {window.location.pathname.startsWith(routes.appstore) && (
-                        <TradingHubOnboarding
-                            is_dark_mode={is_dark_mode}
-                            toggleIsTourOpen={toggleIsTourOpen}
-                            is_mf={is_mf}
-                            is_eu={is_eu}
-                            is_eu_country={is_eu_country}
-                        />
-                    )}
+                    <TradingHubOnboarding is_dark_mode={is_dark_mode} />
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
                         notifications_count={notifications_count}

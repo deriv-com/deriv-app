@@ -1,20 +1,29 @@
 import React from 'react';
-import DocumentsUpload from './documents-upload.jsx';
-import SelfieUpload from './selfie-upload.jsx';
+import DocumentsUpload from './documents-upload';
+import SelfieUpload from './selfie-upload';
 import { SELFIE_DOCUMENT } from '../constants';
 import './card-details.scss';
+import { FormikValues } from 'formik';
 
-const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPoiCompleted }) => {
-    const [documents, setDocuments] = React.useState();
-    const [selfie, setSelfie] = React.useState();
+type TCardDetails = {
+    data: FormikValues;
+    onComplete: (e: object) => void;
+    goToCards: () => void;
+    is_from_external: boolean;
+    setIsCfdPoiCompleted: (e: boolean) => void;
+};
+
+const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPoiCompleted }: TCardDetails) => {
+    const [documents, setDocuments] = React.useState<FormikValues>();
+    const [selfie, setSelfie] = React.useState<FormikValues>();
     const [is_selfie_upload, setIsSelfieUpload] = React.useState(false);
 
-    const onSubmitDocuments = values => {
+    const onSubmitDocuments = (values: FormikValues) => {
         setDocuments(values);
         setIsSelfieUpload(true);
     };
 
-    const onConfirmDocuments = values => {
+    const onConfirmDocuments = (values?: FormikValues) => {
         onComplete({ ...documents, ...values });
         setIsCfdPoiCompleted(true);
     };
@@ -34,7 +43,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
                     initial_values={selfie}
                     goBack={() => setIsSelfieUpload(false)}
                     onConfirm={onConfirmDocuments}
-                    onFileDrop={value => setSelfie({ [SELFIE_DOCUMENT.name]: value })}
+                    onFileDrop={(value?: string) => setSelfie({ [SELFIE_DOCUMENT.name]: value })}
                 />
             )}
         </React.Fragment>

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Button } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
-import { UploadComplete } from '../upload-complete.jsx';
+import { UploadComplete } from '../upload-complete';
 import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('Components/poa/poa-button', () => jest.fn(() => <div data-testid='dt_poa_button' />));
@@ -24,7 +24,7 @@ describe('<UploadComplete />', () => {
 
     const renderWithRouter = (component, is_appstore) =>
         render(
-            <PlatformContext.Provider value={{ is_appstore: is_appstore }}>
+            <PlatformContext.Provider value={{ is_appstore }}>
                 <BrowserRouter>{component}</BrowserRouter>
             </PlatformContext.Provider>
         );

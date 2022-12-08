@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'formik';
+import { Field, FormikValues } from 'formik';
 import { DatePicker, Input } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import { ROOT_CLASS } from '../constants';
 
-const InputField = ({ data }) => {
+const InputField = ({ data }: FormikValues) => {
     const min_date = toMoment().add(6, 'months').format('YYYY-MM-DD');
     switch (data.type) {
         case 'text':
             return (
                 <Field name={data.name}>
-                    {({ field, form: { errors, touched } }) => (
+                    {({ field, form: { errors, touched } }: FormikValues) => (
                         <Input
                             {...field}
                             className={`${ROOT_CLASS}__field`}
@@ -25,7 +25,7 @@ const InputField = ({ data }) => {
         case 'date':
             return (
                 <Field name={data.name}>
-                    {({ field, form: { errors, touched } }) => (
+                    {({ field, form: { errors, touched } }: FormikValues) => (
                         <DatePicker
                             {...field}
                             className={`${ROOT_CLASS}__field`}

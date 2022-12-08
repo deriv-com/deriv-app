@@ -10,45 +10,43 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 
 describe('<ScrollbarsContainer />', () => {
     it('should render children with ScrollbarsContainer component for desktop without scroll_offset for desktop ', () => {
-        const { container } = render(
+        render(
             <ScrollbarsContainer>
                 <div>Test children</div>
             </ScrollbarsContainer>
         );
 
-        expect(container.firstChild).not.toHaveClass('account__scrollbars_container');
-        expect(container.firstChild.style.maxHeight).toBe('100%');
+        const el_child_div = screen.getByText('Test children');
 
-        const child_div_el = screen.getByText('Test children');
-        expect(child_div_el).toBeInTheDocument();
-        expect(child_div_el.parentElement).toHaveClass('account__scrollbars_container');
+        expect(el_child_div).toBeInTheDocument();
+        expect(screen.getByTestId('dt_themed_scrollbars')).toHaveStyle('max-height: 100%');
     });
+
     it('should render children with ScrollbarsContainer component for desktop with scroll_offset and extra className for desktop ', () => {
-        const { container } = render(
+        render(
             <ScrollbarsContainer scroll_offset='33%' className='test__class-name'>
                 <div>Test children</div>
             </ScrollbarsContainer>
         );
 
-        expect(container.firstChild.style.maxHeight).toBe('calc(100% - 33%)');
+        const el_child_div = screen.getByText('Test children');
 
-        const child_div_el = screen.getByText('Test children');
-        expect(child_div_el).toBeInTheDocument();
-        expect(child_div_el.parentElement).toHaveClass('account__scrollbars_container test__class-name');
+        expect(el_child_div).toBeInTheDocument();
+        expect(screen.getByTestId('dt_themed_scrollbars')).toHaveStyle('max-height: calc(100% - 33%)');
     });
-    it('should render children with ScrollbarsContainer component with scroll_offset and extra className for mobile', () => {
-        isMobile.mockReturnValue(true);
 
-        const { container } = render(
+    it('should render children with ScrollbarsContainer component with scroll_offset and extra className for mobile', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+
+        render(
             <ScrollbarsContainer scroll_offset='33%' className='test__class-name'>
                 <div>Test children</div>
             </ScrollbarsContainer>
         );
-        expect(container.firstChild).toHaveClass('account__scrollbars_container');
-        expect(container.firstChild.style.maxHeight).not.toBe('calc(100% - 33%)');
 
-        const child_div_el = screen.getByText('Test children');
-        expect(child_div_el).toBeInTheDocument();
-        expect(child_div_el.parentElement).toHaveClass('account__scrollbars_container test__class-name');
+        const el_child_div = screen.getByText('Test children');
+
+        expect(el_child_div).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_themed_scrollbars')).not.toBeInTheDocument();
     });
 });

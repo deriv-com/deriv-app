@@ -144,12 +144,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-tutorials',
         content: (
             <TourGuide
-                label={localize('Start with a tutorials')}
-                content={[
-                    localize(
-                        "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
-                    ),
-                ]}
+                label={localize('Guides and FAQs to help you')}
+                content={[localize('Start with a video guide and the FAQs.')]}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 dashboard_tab_index={0}
                 step_index={4}
@@ -171,19 +167,6 @@ export const DBOT_ONBOARDING = [
         ...joyride_props,
     },
     {
-        target: '.animation__wrapper',
-        content: (
-            <TourGuide
-                label={localize('Run or stop your bot')}
-                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('ic-new-user-step-seven.png')}
-                dashboard_tab_index={0}
-                step_index={6}
-            />
-        ),
-        ...joyride_props,
-    },
-    {
         target: '[data-testid="drawer"]',
         content: (
             <TourGuide
@@ -191,10 +174,24 @@ export const DBOT_ONBOARDING = [
                 content={[localize("See your bot's performance in real-time.")]}
                 img={getImageLocation('ic-new-user-step-six.png')}
                 dashboard_tab_index={0}
-                step_index={7}
+                step_index={6}
             />
         ),
         placement: 'left',
+        ...joyride_props,
+    },
+    {
+        target: '.animation__wrapper',
+        content: (
+            <TourGuide
+                label={localize('Run or stop your bot')}
+                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
+                img={getImageLocation('ic-new-user-step-seven.png')}
+                dashboard_tab_index={0}
+                step_index={7}
+            />
+        ),
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];
@@ -327,7 +324,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: false,
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

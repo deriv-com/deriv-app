@@ -7,7 +7,7 @@ import { Localize } from 'Components/i18next';
 import { reaction } from 'mobx';
 
 const CancelAddPaymentMethodModal = ({ is_floating }) => {
-    const { my_profile_store, my_ads_store, general_store } = useStores();
+    const { my_profile_store, my_ads_store } = useStores();
 
     // TODO: Refactor this code to avoid manual DOM updates
     // mounts the modal in a seperate modal-root container to show/float the modal over another modal if is_floating is true
@@ -42,7 +42,7 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
     return (
         <Modal
             has_close_icon={false}
-            is_open={general_store.is_modal_open}
+            is_open={my_profile_store.is_cancel_add_payment_method_modal_open}
             small
             title={
                 <Text color='prominent' size='s' weight='bold'>
@@ -72,8 +72,7 @@ const CancelAddPaymentMethodModal = ({ is_floating }) => {
                 <Button
                     large
                     onClick={() => {
-                        // my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-                        general_store.closeModal();
+                        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
                     }}
                     primary
                 >

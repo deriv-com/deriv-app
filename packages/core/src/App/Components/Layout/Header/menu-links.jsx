@@ -26,7 +26,6 @@ const MenuItems = ({ item, hide_menu_item }) => {
         </BinaryLink>
     );
 };
-
 const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => {
     return (
         <React.Fragment>

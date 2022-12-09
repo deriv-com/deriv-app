@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
-import { PlatformContext } from '@deriv/shared';
 
 const MenuItems = ({ item, hide_menu_item }) => {
     const { id, link_to, href, text, image, logo, icon } = item;
@@ -28,8 +27,7 @@ const MenuItems = ({ item, hide_menu_item }) => {
     );
 };
 
-const MenuLinks = ({ is_logged_in, items }) => {
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => {
     return (
         <React.Fragment>
             {!!items.length && (
@@ -63,6 +61,7 @@ MenuLinks.propTypes = {
         })
     ),
     is_logged_in: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export { MenuLinks };

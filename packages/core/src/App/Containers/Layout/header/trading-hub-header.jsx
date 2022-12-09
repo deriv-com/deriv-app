@@ -124,7 +124,6 @@ const TradingHubHeader = ({
         });
     const history = useHistory();
     const { is_pre_appstore } = React.useContext(PlatformContext);
-
     return (
         <header className='trading-hub-header'>
             <div className='trading-hub-header__menu-left'>

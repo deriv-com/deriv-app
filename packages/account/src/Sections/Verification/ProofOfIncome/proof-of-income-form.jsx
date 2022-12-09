@@ -42,9 +42,7 @@ const ProofOfIncomeForm = ({
         const errors = {};
         const { document_type } = values;
 
-        if (!document_type) {
-            errors.document_type = localize('This field is required.');
-        } else if (!poinc_documents_list.find(c => c.text === document_type)) {
+        if (!document_type || !poinc_documents_list.find(c => c.text === document_type)) {
             errors.document_type = localize('This field is required.');
         }
 

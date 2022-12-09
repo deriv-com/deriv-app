@@ -27,12 +27,14 @@ type TSettings = {
     lifetimeValid?: boolean;
 };
 
-type TFileObject = TSettings & {
-    filename: File['name'];
-    buffer: FileReader['result'];
-    documentFormat: string;
-    file_size: File['size'];
-};
+type TFileObject =
+    | TSettings
+    | {
+          filename: File['name'];
+          buffer: FileReader['result'];
+          documentFormat: string;
+          file_size: File['size'];
+      };
 
 export const truncateFileName = (file: TFile, limit: number) => {
     const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
@@ -66,7 +68,7 @@ export const compressImageFiles = (files: TFile[]) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
+export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) => string, settings?: TSettings) => {
     const promises: Promise<TFileObject | { message: string }>[] = [];
 
     files.forEach(f => {

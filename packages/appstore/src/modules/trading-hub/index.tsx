@@ -216,24 +216,22 @@ const TradingHub: React.FC = () => {
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <Div100vhContainer height_offset='160px'>
-                        <ButtonToggle
-                            buttons_arr={platform_toggle_options}
-                            className='trading-hub_body--platform_type_toggle'
-                            has_rounded_button
-                            is_animated
-                            name='platforn_type'
-                            onChange={platformTypeChange}
-                            value={platform_type}
+                    <ButtonToggle
+                        buttons_arr={platform_toggle_options}
+                        className='trading-hub_body--platform_type_toggle'
+                        has_rounded_button
+                        is_animated
+                        name='platforn_type'
+                        onChange={platformTypeChange}
+                        value={platform_type}
+                    />
+                    {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
+                    {platform_type === 'options' && (
+                        <OptionsAccounts
+                            platformlauncherprops={is_eu ? mf_platform_config : platform_config}
+                            accountType={tab_account_type}
                         />
-                        {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
-                        {platform_type === 'options' && (
-                            <OptionsAccounts
-                                platformlauncherprops={is_eu ? mf_platform_config : platform_config}
-                                accountType={tab_account_type}
-                            />
-                        )}
-                    </Div100vhContainer>
+                    )}
                 </MobileWrapper>
             </div>
             <Joyride

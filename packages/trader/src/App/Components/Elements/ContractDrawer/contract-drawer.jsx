@@ -55,6 +55,7 @@ const ContractDrawer = ({
                 exit_spot={exit_spot}
                 has_result={!!is_sold || is_multiplier || is_vanilla}
                 toggleHistoryTab={toggleHistoryTab}
+                is_vanilla={is_vanilla}
             />
         );
 
@@ -103,6 +104,7 @@ const ContractDrawer = ({
             exit_spot={exit_spot}
             has_result={!!is_sold || is_multiplier || is_vanilla}
             toggleHistoryTab={toggleHistoryTab}
+            is_vanilla={is_vanilla}
         />
     );
 

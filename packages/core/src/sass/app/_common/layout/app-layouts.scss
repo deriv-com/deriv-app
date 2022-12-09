@@ -13,7 +13,7 @@
     body,
     .deriv-app,
     .modal-root,
-    .dc-mobile-drawer__wrapper {
+    .dc-mobile-drawer__overlay {
         /* Break the flow */
         position: absolute !important;
         top: 0 !important;
@@ -33,7 +33,7 @@
             position: fixed !important;
         }
     }
-    .dc-mobile-drawer__wrapper {
+    .dc-mobile-drawer__overlay {
         position: fixed !important;
         &.exit {
             animation-name: closeDrawerWrapper;

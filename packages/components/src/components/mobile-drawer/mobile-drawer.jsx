@@ -27,12 +27,12 @@ const MobileDrawer = ({
         return (
             <>
                 <div
-                    className={`dc-mobile-drawer__wrapper ${transitionExit ? 'exit' : ''}`}
+                    className={`dc-mobile-drawer__overlay ${transitionExit ? 'exit' : ''}`}
                     onClick={e => {
                         e.stopPropagation();
                         toggle();
                     }}
-                 />
+                />
                 <div className={`dc-mobile-drawer ${transitionExit ? 'exit' : ''}`}>
                     <div
                         id={id}

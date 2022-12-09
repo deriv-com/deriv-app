@@ -11,7 +11,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const { is_eu } = client;
     const account_name = is_eu ? 'CFDs' : 'Financial';
     const account_desc = is_eu
-        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities'
+        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
         : 'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.';
     const available_demo_accounts: TStaticAccountProps[] = [
         {

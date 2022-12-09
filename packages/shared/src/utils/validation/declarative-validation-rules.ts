@@ -113,7 +113,7 @@ const initPreBuildDVRs = () => ({
     number: {
         func: (...args: [string, TOptions, Record<string, string | boolean>]) => {
             const [value, opts] = args;
-            validNumber(value, opts);
+            return validNumber(value, opts);
         },
         message: form_error_messages.number,
     },

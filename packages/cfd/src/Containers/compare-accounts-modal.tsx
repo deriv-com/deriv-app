@@ -113,7 +113,7 @@ const CompareAccountsModal = ({
     // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
     const { is_pre_appstore } = React.useContext(PlatformContext);
     const location = window.location.pathname;
-    const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/trading-hub');
+    const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/traders-hub');
 
     // TODO : should change the type to all after changing derivx api
     const has_derivx =

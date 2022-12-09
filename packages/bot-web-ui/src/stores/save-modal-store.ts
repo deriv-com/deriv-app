@@ -93,12 +93,12 @@ export default class SaveModalStore implements ISaveModalStore {
             const {
                 load_modal: { getSaveType },
             } = this.root_store;
-            const type = save_as_collection
-                ? save_types.UNSAVED
-                : is_local
-                ? save_types.LOCAL
-                : save_types.GOOGLE_DRIVE;
+            const local_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+            const save_collection = save_as_collection ? save_types.UNSAVED : local_type;
+            const type = save_collection;
+
             save_type = getSaveType(type)?.toLowerCase();
+
             const workspace_structure = {
                 id: workspace_id,
                 xml: Blockly.Xml.domToText(xml),

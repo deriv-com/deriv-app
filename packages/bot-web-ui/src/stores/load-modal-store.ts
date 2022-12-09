@@ -319,7 +319,6 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            //TODO: this was the check check used on the older functionality
             const ref = document.getElementById('load-strategy__blockly-container');
 
             if (!ref) {

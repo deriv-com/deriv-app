@@ -22,7 +22,7 @@ const Selects = ({
     selected_symbol,
     is_input_field,
 }: TSelects & { is_input_field: boolean }) =>
-    !is_input_field && !(id === 'duration-unit') ? (
+    !is_input_field && id !== 'duration-unit' ? (
         <div className='quick-strategy__form-row'>
             <SelectField
                 field_name={field_name as TSelectsFieldNames}

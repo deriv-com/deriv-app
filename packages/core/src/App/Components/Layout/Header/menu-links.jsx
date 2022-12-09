@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
+import { PlatformContext } from '@deriv/shared';
 
 const MenuItems = ({ item, hide_menu_item }) => {
     const { id, link_to, href, text, image, logo, icon } = item;
@@ -27,25 +28,28 @@ const MenuItems = ({ item, hide_menu_item }) => {
     );
 };
 
-const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
-    <React.Fragment>
-        {!!items.length && (
-            <div className='header__menu-links'>
-                {items.map(item => {
-                    return (
-                        is_logged_in && (
-                            <MenuItems
-                                key={`${item.icon}${item.id}`}
-                                item={item}
-                                hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
-                            />
-                        )
-                    );
-                })}
-            </div>
-        )}
-    </React.Fragment>
-);
+const MenuLinks = ({ is_logged_in, items }) => {
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+    return (
+        <React.Fragment>
+            {!!items.length && (
+                <div className='header__menu-links'>
+                    {items.map(item => {
+                        return (
+                            is_logged_in && (
+                                <MenuItems
+                                    key={`${item.icon}${item.id}`}
+                                    item={item}
+                                    hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
+                                />
+                            )
+                        );
+                    })}
+                </div>
+            )}
+        </React.Fragment>
+    );
+};
 
 MenuLinks.propTypes = {
     items: PropTypes.arrayOf(
@@ -59,7 +63,6 @@ MenuLinks.propTypes = {
         })
     ),
     is_logged_in: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
 };
 
 export { MenuLinks };

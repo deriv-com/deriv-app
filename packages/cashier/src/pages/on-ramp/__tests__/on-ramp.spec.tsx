@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import OnRamp from '../on-ramp';
-import { StoreProvider } from '../../../hooks';
-import { TRootStore, DeepPartial } from '../../../types';
+import { TRootStore } from '../../../types';
 import type { TOnRampProps } from '../on-ramp';
 
 jest.mock('Stores/connect.js', () => ({

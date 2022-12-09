@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import EmailVerificationEmptyState from '../email-verification-empty-state';
 import { StoreProvider } from '@deriv/stores';
-import { DeepPartial } from '@deriv/stores/types';
 import { TRootStore } from '../../../types';
 
 const mock_store: DeepPartial<TRootStore> = {

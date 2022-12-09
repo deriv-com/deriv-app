@@ -1,4 +1,4 @@
-import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
+import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps, FormikValues } from 'formik';
 import React from 'react';
 import { LandingCompany, ResidenceList } from '@deriv/api-types';
 import {
@@ -134,24 +134,29 @@ const validatePersonalDetails = ({
     account_opening_reason,
     is_tin_required,
 }: TValidatePersonalDetailsParams) => {
-    const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
+    const [tax_residence_obj] = residence_list.filter(
+        (res: FormikValues) => res.text === values.tax_residence && res.tin_format
+    );
 
     const tin_format = tax_residence_obj?.tin_format;
 
     const tin_regex = tin_format || ['^[A-Za-z0-9./s-]{0,25}$']; // fallback to API's default rule check
 
     const validations: { [key: string]: ((v: string) => boolean | RegExpMatchArray | null)[] } = {
-        citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
-        tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
+        citizen: [(v: string) => !!v, (v: string) => residence_list.map((i: FormikValues) => i.text).includes(v)],
+        tax_residence: [(v: string) => !!v, (v: string) => residence_list.map((i: FormikValues) => i.text).includes(v)],
         tax_identification_number: [
             (v: string) => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
-            (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
+            (v: string) => (tin_regex ? tin_regex?.some((regex: string) => v.match(regex)) : true),
         ],
         account_opening_reason: [
             (v: string) => !!v,
             (v: string) => account_opening_reason.map(i => i.value).includes(v),
         ],
-        place_of_birth: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
+        place_of_birth: [
+            (v: string) => !!v,
+            (v: string) => residence_list.map((i: FormikValues) => i.text).includes(v),
+        ],
     };
     const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
@@ -501,7 +506,12 @@ const CFDPersonalDetailsForm = ({
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
-                                        is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !isValid ||
+                                            Object.keys(errors).length > 0 ||
+                                            !values.tax_identification_number
+                                        }
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         context={context}

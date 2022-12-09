@@ -1,10 +1,6 @@
-import { SourceMap } from 'module';
+import { LoaderContext } from 'webpack';
 
-type Tthis = {
-    callback: any;
-    emitError: any;
-};
-module.exports = function (this: Tthis, source: string, map: SourceMap) {
+module.exports = function (this: LoaderContext<Record<string, never>>, source: string, map: string) {
     if (/import\s*React,/.test(source)) {
         this.emitError(
             new Error(

@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { SourceMap } from 'module';
+import { LoaderContext } from 'webpack';
 /* Using this loader you can import components from @deriv/trader without having to manually
 import the corresponding stylesheet. The deriv-account-loader will automatically import
 stylesheets.
@@ -13,11 +13,7 @@ stylesheets.
 function checkExists(component: string) {
     return fs.existsSync(path.resolve(__dirname, '../../../trader/src/Components/', component, `${component}.scss`));
 }
-type Tthis = {
-    callback: any;
-};
-
-module.exports = function (this: Tthis, source: string, map: SourceMap) {
+module.exports = function (this: LoaderContext<Record<string, never>>, source: string, map: string) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/trader/.exec(line); // eslint-disable-line no-useless-escape

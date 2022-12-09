@@ -2,7 +2,6 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { StoreProvider } from '@deriv/stores';
-import type { DeepPartial } from '@deriv/stores/types';
 import DepositLocked from '../deposit-locked';
 import { TRootStore } from '../../../../types';
 

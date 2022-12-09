@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider } from '@deriv/stores';
-import type { DeepPartial } from '@deriv/stores/types';
 import Deposit from '../deposit';
 import { TRootStore } from '../../../types';
 

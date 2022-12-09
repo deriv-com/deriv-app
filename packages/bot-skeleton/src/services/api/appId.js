@@ -30,10 +30,14 @@ class GetAPI {
     api;
     token;
     account_id;
-    pipSizes = [];
+    pip_sizes = {};
     account_info = {};
+    subscriptions = {
+        ticks_history: null,
+    };
 
     init(force_update = false) {
+        this.toggleRunButton(true);
         if (getLoginId()) {
             if (force_update && this.api) this.api.disconnect();
             this.api = generateDerivApiInstance();
@@ -95,11 +99,22 @@ class GetAPI {
     getActiveSymbols = async () => {
         await api_base.api.expectResponse('authorize');
         const { active_symbols = [] } = await api_base.api.send({ active_symbols: 'brief' });
-        const pip_size = {};
+        const pip_sizes = {};
         active_symbols.forEach(({ symbol, pip }) => {
-            pip_size[symbol] = +(+pip).toExponential().substring(3);
+            pip_sizes[symbol] = +(+pip).toExponential().substring(3);
         });
-        this.pip_size = pip_size;
+        this.pip_sizes = pip_sizes;
+        this.toggleRunButton(false);
+    };
+
+    toggleRunButton = toggle => {
+        const run_button = document.getElementById('db-animation__run-button');
+        if (!run_button) return;
+        if (toggle) {
+            run_button.disabled = true;
+        } else {
+            run_button.disabled = false;
+        }
     };
 }
 

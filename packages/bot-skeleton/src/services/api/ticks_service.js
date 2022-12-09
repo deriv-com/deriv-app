@@ -60,7 +60,7 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                this.pipSizes = api_base.pipSizes;
+                this.pipSizes = api_base.pip_sizes;
                 resolve(this.pipSizes);
             });
         }

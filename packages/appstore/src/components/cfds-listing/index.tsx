@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
@@ -13,8 +13,13 @@ const CFDsListing = () => {
                 </Text>
             }
             description={
-                <Text size='xs' line_height='s'>
-                    Trade with leverage and tight spreads for better returns on successful trades. Learn more
+                <Text size='s'>
+                    <Localize
+                        i18n_default_text={
+                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                        }
+                        components={[<StaticUrl key={0} className='link' href='/dmt5' />]}
+                    />
                 </Text>
             }
         >

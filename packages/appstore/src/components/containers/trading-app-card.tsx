@@ -17,7 +17,7 @@ const TradingAppCard = ({ app_icon, app_title, app_desc }: Omit<PlatformConfig, 
                 </Text>
             </div>
             <div className='trading-app-card__actions'>
-                <Button>Get</Button>
+                <Button primary_light>Get</Button>
             </div>
         </div>
     );

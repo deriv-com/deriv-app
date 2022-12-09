@@ -13,7 +13,7 @@ import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.js';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();

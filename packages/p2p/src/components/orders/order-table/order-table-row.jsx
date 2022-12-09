@@ -10,7 +10,7 @@ import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/compone
 import { formatMoney } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (

@@ -24,7 +24,7 @@ import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.js';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();

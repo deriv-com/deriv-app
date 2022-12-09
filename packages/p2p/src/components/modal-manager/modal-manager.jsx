@@ -13,7 +13,6 @@ const ModalManager = () => {
             return current_modal.props;
         }
         if (modal_props.has(current_modal.key)) {
-            console.log('[ModalManager] has stored props', modal_props.get(current_modal.key));
             return modal_props.get(current_modal.key);
         }
         return {};

@@ -111,7 +111,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.letter_symbol,
     },
     number: {
-        func: (...args: [string, TOptions, ...Record<string, string | boolean>[]]) => {
+        func: (...args: [string, TOptions, Record<string, string | boolean>]) => {
             const [value, opts] = args;
             validNumber(value, opts);
         },

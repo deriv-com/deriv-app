@@ -7,7 +7,7 @@ import StarRating from 'Components/star-rating';
 import RecommendUser from 'Components/recommend-user';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager';
 
 const RatingModal = ({
     is_buy_order_for_user,

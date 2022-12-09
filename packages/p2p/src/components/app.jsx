@@ -10,7 +10,7 @@ import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import ModalManager from 'Components/modal-manager/modal-manager';
 import './app.scss';
-import ModalManagerContextProvider from './modal-manager/modal-manager-context-provider.jsx';
+import { ModalManagerContextProvider } from 'Components/modal-manager';
 
 const App = props => {
     const { general_store, order_store } = useStores();

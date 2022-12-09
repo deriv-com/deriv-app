@@ -20,8 +20,12 @@ export default class MyProfileStore extends BaseStore {
     is_cancel_add_payment_method_modal_open = false;
     is_cancel_edit_payment_method_modal_open = false;
     is_confirm_delete_modal_open = false;
+    is_daily_limit_modal_open = false;
+    is_daily_limit_success_modal_open = false;
     is_delete_payment_method_error_modal_open = false;
+    is_error_modal_open = false;
     is_loading = true;
+    is_loading_modal_open = false;
     is_submit_success = false;
     payment_method_value = undefined;
     payment_methods_list = [];
@@ -58,8 +62,12 @@ export default class MyProfileStore extends BaseStore {
             is_cancel_add_payment_method_modal_open: observable,
             is_cancel_edit_payment_method_modal_open: observable,
             is_confirm_delete_modal_open: observable,
+            is_daily_limit_modal_open: observable,
+            is_daily_limit_success_modal_open: observable,
             is_delete_payment_method_error_modal_open: observable,
+            is_error_modal_open: observable,
             is_loading: observable,
+            is_loading_modal_open: observable,
             is_submit_success: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
@@ -117,8 +125,12 @@ export default class MyProfileStore extends BaseStore {
             setIsCancelAddPaymentMethodModalOpen: action.bound,
             setIsCancelEditPaymentMethodModalOpen: action.bound,
             setIsConfirmDeleteModalOpen: action.bound,
+            setIsDailyLimitModalOpen: action.bound,
+            setIsDailyLimitSuccessModalOpen: action.bound,
             setIsDeletePaymentMethodErrorModalOpen: action.bound,
+            setIsErrorModalOpen: action.bound,
             setIsLoading: action.bound,
+            setIsLoadingModalOpen: action.bound,
             setIsSubmitSuccess: action.bound,
             setPaymentMethodValue: action.bound,
             setPaymentMethodsList: action.bound,
@@ -135,6 +147,7 @@ export default class MyProfileStore extends BaseStore {
             setShouldShowAddPaymentMethodErrorModal: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
+            upgradeDailyLimit: action.bound,
         });
     }
 
@@ -648,12 +661,28 @@ export default class MyProfileStore extends BaseStore {
         this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
+    setIsDailyLimitModalOpen(is_daily_limit_modal_open) {
+        this.is_daily_limit_modal_open = is_daily_limit_modal_open;
+    }
+
+    setIsDailyLimitSuccessModalOpen(is_daily_limit_success_modal_open) {
+        this.is_daily_limit_success_modal_open = is_daily_limit_success_modal_open;
+    }
+
     setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
         this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
+    setIsErrorModalOpen(is_error_modal_open) {
+        this.is_error_modal_open = is_error_modal_open;
+    }
+
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    setIsLoadingModalOpen(is_loading_modal_open) {
+        this.is_loading_modal_open = is_loading_modal_open;
     }
 
     setIsSubmitSuccess(is_submit_success) {
@@ -718,5 +747,11 @@ export default class MyProfileStore extends BaseStore {
 
     setShouldShowEditPaymentMethodForm(should_show_edit_payment_method_form) {
         this.should_show_edit_payment_method_form = should_show_edit_payment_method_form;
+    }
+
+    upgradeDailyLimit() {
+        this.setIsLoadingModalOpen(true);
+
+        /* TODO: Implement daily limit upgrade once API is ready */
     }
 }

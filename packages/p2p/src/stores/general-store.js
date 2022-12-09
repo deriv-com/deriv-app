@@ -378,6 +378,30 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    showDailyLimitIncreaseNotification() {
+        const { id, upgradable_band_limit } = this.advertiser_info;
+        const { max_daily_buy, max_daily_sell } = upgradable_band_limit;
+
+        this.props.addNotificationMessage({
+            action: {
+                onClick: () => {
+                    this.redirectTo('my_profile');
+                },
+                text: localize('Go to My profile'),
+            },
+            header: <Localize i18n_default_text='Enjoy higher daily limits' />,
+            key: `daily-limit-increase-${id}`,
+            message: (
+                <Localize
+                    i18n_default_text='Want to increase your daily limits to {{max_daily_buy}} for buy and {{max_daily_sell}} for sell?'
+                    values={{ max_daily_buy, max_daily_sell }}
+                />
+            ),
+            platform: 'P2P',
+            type: 'announce',
+        });
+    }
+
     handleTabClick(idx) {
         this.setActiveIndex(idx);
         this.setParameters(null);
@@ -780,6 +804,7 @@ export default class GeneralStore extends BaseStore {
             name,
             payment_info,
             show_name,
+            upgradable_band_limit,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
@@ -797,6 +822,8 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+
+            if (upgradable_band_limit) this.showDailyLimitIncreaseNotification();
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

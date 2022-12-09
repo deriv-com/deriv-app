@@ -12,7 +12,6 @@ type TRadioGroup = {
     onToggle: (e: ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     selected: string;
-    is_left?: boolean;
 } & TItemWrapper;
 
 const ItemWrapper = ({ children, should_wrap_items }: React.PropsWithChildren<TItemWrapper>) => {
@@ -29,7 +28,6 @@ const RadioGroup = ({
     onToggle,
     required,
     selected,
-    is_left = false,
     should_wrap_items,
     children,
 }: React.PropsWithChildren<TRadioGroup>) => {
@@ -45,11 +43,7 @@ const RadioGroup = ({
     };
 
     return (
-        <div
-            className={classNames('dc-radio-group', className, {
-                'dc-radio-group--is-left': is_left,
-            })}
-        >
+        <div className={classNames('dc-radio-group', className)}>
             {Array.isArray(children) &&
                 children.map(item => (
                     <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>

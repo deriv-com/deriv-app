@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey, isDesktop } from '@deriv/shared';
+import { CFD_PLATFORMS, getAccountListKey, getCFDAccountKey, isDesktop, routes } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';

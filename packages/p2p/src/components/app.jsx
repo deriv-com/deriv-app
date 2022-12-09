@@ -8,12 +8,9 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
-<<<<<<< HEAD
-import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-=======
-import ModalManager from 'Components/modals/modal-manager';
->>>>>>> f0b127bf7 (saved draft)
+import ModalManager from 'Components/modal-manager/modal-manager';
 import './app.scss';
+import ModalManagerContextProvider from './modal-manager/modal-manager-context-provider.jsx';
 
 const App = props => {
     const { general_store, order_store } = useStores();
@@ -72,11 +69,10 @@ const App = props => {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
-        general_store.props.setP2POrderProps({
-            order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
-            setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-        });
+        // general_store.props.setP2POrderProps({
+        //     order_id,
+        //     redirectToOrderDetails: general_store.redirectToOrderDetails,
+        // });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
@@ -106,8 +102,10 @@ const App = props => {
     return (
         <main className={classNames('p2p-cashier', className)}>
             <Notifications />
-            <ModalManager />
-            <AppContent />
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
         </main>
     );
 };

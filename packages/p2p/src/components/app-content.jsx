@@ -13,9 +13,11 @@ import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.js';
 
-const AppContent = () => {
+const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
+    const { showModal, hideModal } = useModalManagerContext();
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -35,6 +37,20 @@ const AppContent = () => {
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return <AdvertiserPage />;
+    }
+
+    if (general_store.props.setP2POrderProps) {
+        general_store.props.setP2POrderProps({
+            order_id,
+            redirectToOrderDetails: general_store.redirectToOrderDetails,
+            setIsRatingModalOpen: is_open => {
+                if (is_open) {
+                    showModal({ key: 'RatingModal' });
+                } else {
+                    hideModal();
+                }
+            },
+        });
     }
 
     return (

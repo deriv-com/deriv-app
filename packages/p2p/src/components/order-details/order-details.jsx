@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
 import EmailVerificationModal from 'Components/email-verification-modal';
-import RatingModal from 'Components/rating-modal';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
@@ -25,9 +24,11 @@ import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.js';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const { hideModal, registerModalProps, showModal } = useModalManagerContext();
 
     const {
         account_currency,
@@ -72,6 +73,12 @@ const OrderDetails = observer(() => {
 
     const rating_average_decimal = review_details ? Number(review_details.rating).toFixed(1) : undefined;
 
+    const showRatingModal = () => {
+        showModal({
+            key: 'RatingModal',
+        });
+    };
+
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
@@ -81,6 +88,29 @@ const OrderDetails = observer(() => {
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
+        registerModalProps({
+            key: 'RatingModal',
+            props: {
+                is_buy_order_for_user,
+                is_user_recommended_previously: is_recommended_by_user,
+                onClickClearRecommendation: () => order_store.setIsRecommended(null),
+                onClickDone: () => {
+                    order_store.setOrderRating(id);
+                    general_store.props.removeNotificationMessage({
+                        key: `order-${id}`,
+                    });
+                    general_store.props.removeNotificationByKey({
+                        key: `order-${id}`,
+                    });
+                },
+                onClickNotRecommended: () => order_store.setIsRecommended(0),
+                onClickRecommended: () => order_store.setIsRecommended(1),
+                onClickSkip: () => {
+                    order_store.setRatingValue(0);
+                    hideModal();
+                },
+            },
+        });
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -97,7 +127,7 @@ const OrderDetails = observer(() => {
             general_store.props.setP2POrderProps({
                 order_id: order_store.order_id,
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
-                setIsRatingModalOpen: order_store.setIsRatingModalOpen,
+                setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -126,27 +156,6 @@ const OrderDetails = observer(() => {
 
     return (
         <OrderDetailsWrapper page_title={page_title}>
-            {is_active_order && (
-                <RatingModal
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_recommended_previously={is_recommended_by_user}
-                    onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                    onClickDone={() => {
-                        order_store.setOrderRating(id);
-                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
-                    }}
-                    onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                    onClickRecommended={() => order_store.setIsRecommended(1)}
-                    onClickSkip={() => {
-                        order_store.setRatingValue(0);
-                        order_store.setIsRatingModalOpen(false);
-                    }}
-                    onClickStar={order_store.handleRating}
-                    rating_value={order_store.rating_value}
-                />
-            )}
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
                     <HintBox
@@ -325,25 +334,6 @@ const OrderDetails = observer(() => {
                         )}
                         {is_completed_order && !review_details && (
                             <React.Fragment>
-                                <RatingModal
-                                    is_buy_order_for_user={is_buy_order_for_user}
-                                    is_rating_modal_open={order_store.is_rating_modal_open}
-                                    is_user_recommended_previously={is_recommended_by_user}
-                                    onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                                    onClickDone={() => {
-                                        order_store.setOrderRating(id);
-                                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
-                                    }}
-                                    onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                                    onClickRecommended={() => order_store.setIsRecommended(1)}
-                                    onClickSkip={() => {
-                                        order_store.setRatingValue(0);
-                                        order_store.setIsRatingModalOpen(false);
-                                    }}
-                                    onClickStar={order_store.handleRating}
-                                    rating_value={order_store.rating_value}
-                                />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
                                 <div className='order-details-card--rating'>
                                     <UserRatingButton
@@ -352,7 +342,7 @@ const OrderDetails = observer(() => {
                                         }
                                         is_disabled={!is_reviewable}
                                         large
-                                        onClick={() => order_store.setIsRatingModalOpen(true)}
+                                        onClick={showRatingModal}
                                     />
                                 </div>
                                 <Text className='order-details-card--rating__text' color='less-prominent' size='xxxs'>

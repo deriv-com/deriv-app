@@ -510,7 +510,7 @@
     }
 
     @include desktop {
-        height: 100%;
+        height: auto;
         margin: 0 0.8rem;
     }
 
@@ -519,10 +519,10 @@
         margin-top: 2.4rem;
         display: flex;
         justify-content: center;
-        align-items: center;
 
         @include mobile {
             flex-direction: column;
+            align-items: center;
         }
     }
     &--selected {
@@ -553,6 +553,7 @@
         &--poi_verified {
             background: var(--text-status-info-blue);
             border-radius: 0.5rem;
+            padding: 0.1rem;
         }
         &--account_added {
             background-color: #4bb4b3;
@@ -576,7 +577,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 1.6rem auto 0;
+        margin: 1.6rem auto;
         @include desktop {
             width: 99.2rem;
         }
@@ -593,7 +594,7 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
-        margin-top: 1.6rem;
+        margin-bottom: 1.6rem;
     }
 
     &__over-header {
@@ -657,6 +658,7 @@
     min-height: 21rem;
     width: 30.4em;
     position: relative;
+    justify-content: space-between;
     @include desktop {
         height: 100%;
     }

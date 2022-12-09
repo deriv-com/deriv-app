@@ -2,7 +2,7 @@ import * as React from 'react';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, useStore } from '../useStore';
-import { TRootStore, DeepPartial } from '../../types';
+import { TRootStore } from '../../types';
 
 const UseStoreExample = () => {
     const store = useStore();
@@ -31,7 +31,7 @@ describe('useStore', () => {
         };
 
         render(<UseStoreExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const email = screen.getByTestId('dt_email');

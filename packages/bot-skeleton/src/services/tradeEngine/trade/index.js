@@ -15,7 +15,7 @@ import { doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
-import { api_base } from '../../api/appId';
+import { api_base } from '../../api/api-base';
 
 const watchBefore = store =>
     watchScope({

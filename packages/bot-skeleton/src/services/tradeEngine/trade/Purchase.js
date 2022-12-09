@@ -3,7 +3,7 @@ import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
-import { api_base } from '../../api/appId';
+import { api_base } from '../../api/api-base';
 
 let delayIndex = 0;
 let purchase_reference;

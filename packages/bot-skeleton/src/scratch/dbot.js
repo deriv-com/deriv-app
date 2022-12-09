@@ -10,7 +10,7 @@ import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { setColors } from './hooks/colours';
-import { api_base } from '../services/api/appId';
+import { api_base } from '../services/api/api-base';
 
 class DBot {
     constructor() {

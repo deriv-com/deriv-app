@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
-import { api_base } from '../../api/appId';
+import { api_base } from '../../api/api-base';
 
 export default Engine =>
     class Proposal extends Engine {

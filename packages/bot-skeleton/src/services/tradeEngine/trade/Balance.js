@@ -1,7 +1,7 @@
 import { getFormattedText } from '@deriv/shared';
 import { info } from '../utils/broadcast';
 import DBotStore from '../../../scratch/dbot-store';
-import { api_base } from '../../api/appId';
+import { api_base } from '../../api/api-base';
 
 let balance_string = '';
 

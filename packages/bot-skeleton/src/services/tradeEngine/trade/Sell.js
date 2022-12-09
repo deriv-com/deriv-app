@@ -3,7 +3,7 @@ import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
-import { api_base } from '../../api/appId';
+import { api_base } from '../../api/api-base';
 
 export default Engine =>
     class Sell extends Engine {

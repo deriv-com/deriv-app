@@ -216,6 +216,7 @@ const CFDRealAccounts = ({
                                                         amount={existing_account.display_balance}
                                                         onClickTopUp={() => onClickFundReal(existing_account)}
                                                         onClickTrade={() => {
+                                                            setAppstorePlatform(account.platform);
                                                             toggleMT5TradeModal();
                                                             setMT5TradeAccount(existing_account);
                                                         }}

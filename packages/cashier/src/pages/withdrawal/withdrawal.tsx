@@ -89,7 +89,6 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
         is_withdraw_confirmed,
         is_withdrawal_locked,
         error: { setErrorMessage },
-        verification: { error: verify_error },
         willMountWithdraw,
     } = withdraw;
 
@@ -140,18 +139,23 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             return <CashierLocked />;
         }
     }
+
     if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen={false} />;
     }
+
     if (is_virtual) {
         return <Virtual />;
     }
+
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
+
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
+
     if (!Number(balance)) {
         return (
             <>
@@ -160,15 +164,15 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             </>
         );
     }
+
     if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
     }
-    if (verify_error.message) {
-        return <Error error={verify_error} />;
-    }
+
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
+
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return (
             <>
@@ -177,9 +181,11 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             </>
         );
     }
+
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
     }
+
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }

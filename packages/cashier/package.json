@@ -38,6 +38,7 @@
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

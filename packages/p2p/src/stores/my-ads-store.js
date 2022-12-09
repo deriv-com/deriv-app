@@ -253,6 +253,8 @@ export default class MyAdsStore extends BaseStore {
                     } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
+                        }
+                        if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
                             this.setIsAdExceedsDailyLimitModalOpen(true);
                         }
                         this.setShowAdForm(false);

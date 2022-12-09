@@ -60,7 +60,7 @@ export const routes = {
 
     // Appstore
     appstore: '/appstore',
-    trading_hub: '/appstore/trading-hub',
+    trading_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
 
     // P2P

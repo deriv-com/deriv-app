@@ -176,7 +176,11 @@ const ContractUpdateForm = props => {
                     </div>
                 </div>
             </MobileWrapper>
-            <div className='dc-contract-card-dialog__form'>
+            <div
+                className={classNames('dc-contract-card-dialog__form', {
+                    'dc-contract-card-dialog__form-accumulator': is_accumulator,
+                })}
+            >
                 <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
                 {!is_accumulator && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
                 <div className='dc-contract-card-dialog__button'>

@@ -585,6 +585,8 @@
 /** @define dc-tick-counter-bar; */
 .dc-tick-counter-bar {
     &__container {
+        grid-column-start: 1;
+        grid-column-end: 3;
         position: relative;
         width: 100%;
         padding: unset;

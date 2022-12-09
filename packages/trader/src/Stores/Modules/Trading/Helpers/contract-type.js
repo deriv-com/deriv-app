@@ -122,7 +122,6 @@ export const ContractType = (() => {
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
                 config.growth_rate_range = contract.growth_rate_range;
-                config.growth_rate = contract.growth_rate;
                 config.multiplier_range = contract.multiplier_range;
                 config.cancellation_range = contract.cancellation_range;
 
@@ -153,7 +152,6 @@ export const ContractType = (() => {
             basis,
             duration_unit,
             expiry_type,
-            growth_rate,
             multiplier,
             start_date,
             cancellation_duration,
@@ -173,7 +171,7 @@ export const ContractType = (() => {
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
-        const obj_accumulator_range_list = getAccumulatorRange(contract_type, growth_rate);
+        const obj_accumulator_range_list = getAccumulatorRange(contract_type);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -538,16 +536,10 @@ export const ContractType = (() => {
         };
     };
 
-    const getAccumulatorRange = (contract_type, stored_growth_rate) => {
-        const arr_growth_rates =
-            getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [];
-        const growth_rate = getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate']);
-
-        return {
-            accumulator_range_list: arr_growth_rates,
-            growth_rate: stored_growth_rate || growth_rate,
-        };
-    };
+    const getAccumulatorRange = contract_type => ({
+        accumulator_range_list:
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [],
+    });
 
     const getMultiplierRange = (contract_type, multiplier) => {
         const arr_multiplier =

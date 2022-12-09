@@ -364,7 +364,7 @@ export const getUnsupportedContracts = () => ({
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
     ACCU: {
-        name: <Localize i18n_default_text='Accumulate' />,
+        name: <Localize i18n_default_text='Buy' />,
         position: 'top',
     },
     CALL: {

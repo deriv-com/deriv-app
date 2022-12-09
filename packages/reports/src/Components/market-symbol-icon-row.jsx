@@ -4,7 +4,13 @@ import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
-const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true }) => {
+const MarketSymbolIconRow = ({
+    icon,
+    payload,
+    show_description,
+    should_show_multiplier = true,
+    should_show_accumulator = true,
+}) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
@@ -55,6 +61,9 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
                 {should_show_multiplier && info_from_shortcode.multiplier && (
                     <div className='market-symbol-icon__multiplier'>x{info_from_shortcode.multiplier}</div>
                 )}
+                {should_show_accumulator && info_from_shortcode.growth_rate && (
+                    <div className='market-symbol-icon__multiplier'>{info_from_shortcode.growth_rate * 100}%</div>
+                )}
             </div>
         );
     } else if (['deposit', 'hold', 'release', 'withdrawal', 'transfer'].includes(payload.action_type)) {
@@ -89,6 +98,7 @@ MarketSymbolIconRow.propTypes = {
     payload: PropTypes.object,
     show_description: PropTypes.bool,
     should_show_multiplier: PropTypes.bool,
+    should_show_accumulator: PropTypes.bool,
 };
 
 export default MarketSymbolIconRow;

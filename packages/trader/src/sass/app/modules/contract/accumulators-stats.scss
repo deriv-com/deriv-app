@@ -22,7 +22,7 @@
     margin: 0 2.5em 0 1em;
     background-color: var(--general-section-1);
     border-radius: $BORDER_RADIUS * 2;
-    width: 50rem;
+    width: 51.4rem;
 
     @include mobile {
         position: absolute;
@@ -62,6 +62,8 @@
         justify-content: space-between;
         align-items: center;
         gap: 1.6rem;
+        width: 7.8rem;
+        padding-right: 1.6rem;
 
         @include mobile {
             width: unset;
@@ -83,8 +85,9 @@
     &__history {
         display: flex;
         align-items: center;
-        padding: 0 3.2rem 0 1.6rem;
+        padding: 0 3.2rem 0 0.8rem;
         justify-content: flex-start;
+        border-left: 1px solid $color-grey-5;
 
         @include mobile {
             padding: 0 2.4rem 0 0.8rem;

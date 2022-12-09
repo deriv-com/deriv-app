@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconTradeTypes from '../../icon-trade-types';
+import { localize } from '@deriv/translations';
 
 const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_high_low, type }) => (
     <div className='dc-contract-type'>
@@ -12,7 +13,7 @@ const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_hi
             />
         </div>
         <div className='dc-contract-type__type-label'>
-            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
+            {type === 'ACCU' ? localize('Accumulator') : <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>}
             {displayed_trade_param && (
                 <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
             )}

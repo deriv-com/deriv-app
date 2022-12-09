@@ -433,6 +433,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
                     key={row_obj.id}
                     payload={row_obj.contract_info}
                     should_show_multiplier={false}
+                    should_show_accumulator={false}
                 />
             );
         },
@@ -455,7 +456,8 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     {
         title: localize('Stake'),
         col_index: 'buy_price',
-        renderCellContent: ({ row_obj }) => {
+        renderCellContent: ({ is_footer, row_obj }) => {
+            if (is_footer) return '';
             if (row_obj.contract_info) {
                 const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
                 return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
@@ -466,7 +468,8 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     {
         title: localize('Take profit'),
         col_index: 'limit_order',
-        renderCellContent: ({ row_obj }) => {
+        renderCellContent: ({ is_footer, row_obj }) => {
+            if (is_footer) return '';
             const { take_profit } = row_obj.contract_info?.limit_order || {};
             return (
                 <React.Fragment>
@@ -484,7 +487,8 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     {
         title: localize('Current stake'),
         col_index: 'bid_price',
-        renderCellContent: ({ row_obj }) => {
+        renderCellContent: ({ is_footer, row_obj }) => {
+            if (is_footer) return '';
             if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
 
             const total_profit = getTotalProfit(row_obj.contract_info);

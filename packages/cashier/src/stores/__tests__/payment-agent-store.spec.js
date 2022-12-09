@@ -1,8 +1,6 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 
-jest.mock('../verification-store');
-
 describe('PaymentAgentStore', () => {
     let payment_agent_store;
     const mocked_payment_agent_list = {
@@ -134,13 +132,6 @@ describe('PaymentAgentStore', () => {
 
         payment_agent_store.setActiveTabIndex(1);
         expect(payment_agent_store.active_tab_index).toBe(1);
-    });
-
-    it('should set active_tab_index then send verification email if it is equal to 1', () => {
-        payment_agent_store.verification.sendVerificationEmail = jest.fn();
-
-        payment_agent_store.setActiveTab(1);
-        expect(payment_agent_store.verification.sendVerificationEmail).toHaveBeenCalled();
     });
 
     it('should get is_payment_agent_visible', async () => {
@@ -441,12 +432,10 @@ describe('PaymentAgentStore', () => {
 
     // it('should reset payment agent withdrawal form', () => {
     //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-    //     const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
     //     payment_agent_store.resetPaymentAgent();
     //     expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
     //     expect(payment_agent_store.is_withdraw).toBeFalsy();
-    //     expect(spyClearVerification).toHaveBeenCalled();
     //     expect(payment_agent_store.active_tab_index).toBe(0);
     // });
 

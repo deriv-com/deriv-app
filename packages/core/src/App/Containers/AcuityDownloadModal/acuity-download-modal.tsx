@@ -60,16 +60,17 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
                     </Text>
                 </div>
                 <div className='acuity-download-modal__body--guide'>
-                    <Text as='p' line_height='m' align='center'>
+                    <Text as='p' size='xs' line_height='m' align='center' weight='bold'>
+                        <Localize i18n_default_text='Need help using Acuity?' />
+                    </Text>
+                    <Text as='p' size='xxs' line_height='s' align='center'>
                         <Localize
-                            i18n_default_text='<1>Need help using Acuity?</1><0/>Check out this <2>user guide</2>.'
+                            i18n_default_text='Check out this <0>user guide.</0>'
                             components={[
-                                <br key={0} />,
-                                <Text key={1} weight='bold' />,
                                 <Text
-                                    key={2}
+                                    key={0}
                                     className='acuity-download-modal__body--guide__link'
-                                    as='a'
+                                    size='xxs'
                                     color='red'
                                     weight='bold'
                                     onClick={openGuide}

@@ -3,7 +3,6 @@ import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import VerificationStore from './verification-store';
 
 export default class PaymentAgentStore {
     constructor({ WS, root_store }) {
@@ -22,7 +21,6 @@ export default class PaymentAgentStore {
             receipt: observable,
             selected_bank: observable,
             supported_banks: observable,
-            verification: observable,
             active_tab_index: observable,
             all_payment_agent_list: observable,
             search_term: observable,
@@ -58,7 +56,6 @@ export default class PaymentAgentStore {
             requestPaymentAgentWithdraw: action.bound,
         });
 
-        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
@@ -77,7 +74,6 @@ export default class PaymentAgentStore {
     receipt = {};
     selected_bank = 0;
     supported_banks = [];
-    verification = new VerificationStore({ root_store: this.root_store, WS: this.WS });
     active_tab_index = 0;
     all_payment_agent_list = [];
     search_term = '';
@@ -89,10 +85,6 @@ export default class PaymentAgentStore {
 
     setActiveTab(index) {
         this.setActiveTabIndex(index);
-
-        if (index === 1) {
-            this.verification.sendVerificationEmail();
-        }
     }
 
     get is_payment_agent_visible() {
@@ -355,11 +347,15 @@ export default class PaymentAgentStore {
     }
 
     resetPaymentAgent = () => {
+        const { client, modules } = this.root_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
+
+        client.setVerificationCode('', container);
         this.error.setErrorMessage('');
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);
         this.setIsTryWithdrawSuccessful(false);
-        this.verification.clearVerification();
         this.setActiveTabIndex(0);
     };
 

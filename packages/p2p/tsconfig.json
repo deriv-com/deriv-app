@@ -9,9 +9,9 @@
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],
             "Utils/*": ["src/utils/*"],
-            "@deriv/*":["../*/src"]
+            "@deriv/*": ["../*/src"]
         },
-        "outDir": "./lib",
+        "outDir": "./lib"
     },
-    "include": ["src"]
+    "include": ["src", "../../utils.d.ts"]
 }

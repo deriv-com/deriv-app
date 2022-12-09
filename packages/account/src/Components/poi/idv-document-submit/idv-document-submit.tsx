@@ -89,7 +89,7 @@ const IdvDocumentSubmit = ({
             },
             true
         );
-        setDocumentImage(null);
+        setDocumentImage('');
     };
 
     const initial_form_values: TFormValues = {

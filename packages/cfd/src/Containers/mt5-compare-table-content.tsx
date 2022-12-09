@@ -311,7 +311,16 @@ const DMT5CompareModalContent = ({
     }, []);
 
     const getAvailableAccountsContent = (_content: TModalContentProps[]) => {
-        if (!is_logged_in) return _content;
+        if (!is_logged_in) {
+            if (show_eu_related) {
+                return _content;
+            }
+            const mt5_data = _content.map(item => {
+                const { derivx, ...rest } = item.values; // eslint-disable-line @typescript-eslint/no-unused-vars
+                return { ...item, values: rest };
+            });
+            return mt5_data;
+        }
         return _content.map(row_data => {
             const available_accounts_values = Object.entries(row_data.values).reduce(
                 (acc, [key, value]) => (available_accounts_keys.includes(key) ? { ...acc, [key]: value } : acc),

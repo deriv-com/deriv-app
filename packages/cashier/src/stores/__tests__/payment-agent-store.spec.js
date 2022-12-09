@@ -217,7 +217,7 @@ describe('PaymentAgentStore', () => {
 
     it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
-        payment_agent_store.filterPaymentAgentList('mastercard');
+        payment_agent_store.filterPaymentAgentList('card');
         expect(payment_agent_store.filtered_list).toEqual(
             expect.arrayContaining([
                 {
@@ -231,6 +231,20 @@ describe('PaymentAgentStore', () => {
                     paymentagent_loginid: 'CR90000002',
                     phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                    urls: [{ url: 'http://www.pa.com' }],
+                    withdrawal_commission: 0,
+                },
+                {
+                    currency: 'USD',
+                    deposit_commission: 0,
+                    email: 'pa@example.com',
+                    further_information: 'further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
+                    name: 'Payment Agent of CR90000000',
+                    paymentagent_loginid: 'CR90000000',
+                    phones: [{ phone_number: '+12345678' }],
+                    supported_banks: [{ payment_method: 'Visa' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
@@ -280,7 +294,7 @@ describe('PaymentAgentStore', () => {
         payment_agent_store.onChangePaymentMethod({ target: { value: '0' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
 
-        payment_agent_store.onChangePaymentMethod({ target: { value: 'visa' } });
+        payment_agent_store.onChangePaymentMethod({ target: { value: 'card' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
     });
 

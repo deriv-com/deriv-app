@@ -33,7 +33,6 @@ const GuideContent = ({
         const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
             if (storage.onboard_tour_token) {
-                const onBoardingToken = storage.onboard_tour_token;
                 removeKeyValue('onboard_tour_token');
                 removeKeyValue('onboard_tour_status');
                 removeKeyValue('bot_builder_status');
@@ -43,7 +42,6 @@ const GuideContent = ({
             setActiveTab(0);
         } else {
             if (storage.bot_builder_token) {
-                const builderToken = storage.bot_builder_token;
                 removeKeyValue('bot_builder_token');
                 removeKeyValue('bot_builder_status');
                 removeKeyValue('onboard_tour_status');

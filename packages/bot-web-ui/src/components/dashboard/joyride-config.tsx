@@ -65,7 +65,7 @@ export const tour_status_ended: TTourStatus = {
 let tour: { [key: string]: string } = {};
 let current_target: number | undefined;
 export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status, type } = data;
+    const { action, index, status } = data;
     if (status === 'finished') {
         tour_status_ended.key = status;
     }

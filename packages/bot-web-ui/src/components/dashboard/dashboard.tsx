@@ -154,9 +154,10 @@ const Dashboard = ({
 
     React.useEffect(() => {
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
-        if (active_tab === 0 && !dbot_settings?.onboard_tour_token) {
-            setTourDialogVisibility(true);
-        } else if (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour) {
+        if (
+            (active_tab === 0 && !dbot_settings?.onboard_tour_token) ||
+            (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour)
+        ) {
             setTourDialogVisibility(true);
         }
     }, [active_tab]);

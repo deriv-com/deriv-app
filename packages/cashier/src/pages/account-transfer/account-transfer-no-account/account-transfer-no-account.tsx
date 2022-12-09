@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import './account-transfer-no-account.scss';
-import { useStore } from '../../../hooks';
 
 const AccountTransferNoAccount = () => {
     const {

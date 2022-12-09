@@ -5,7 +5,9 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const DailyLimitSuccessModal = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
+    const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
+    const { currency } = general_store.client;
 
     return (
         <Modal
@@ -21,8 +23,8 @@ const DailyLimitSuccessModal = () => {
             <Modal.Body>
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
-                        i18n_default_text='Your daily limits have been increased to {{daily_buy_limit}} USD (buy) and {{daily_sell_limit}} USD (sell).'
-                        values={{ daily_buy_limit: '10,000', daily_sell_limit: '10,000' }}
+                        i18n_default_text='Your daily limits have been increased to {{daily_buy_limit}} {{currency}} (buy) and {{daily_sell_limit}} {{currency}} (sell).'
+                        values={{ daily_buy_limit, currency, daily_sell_limit }}
                     />
                 </Text>
             </Modal.Body>

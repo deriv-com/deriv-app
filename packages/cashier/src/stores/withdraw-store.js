@@ -31,6 +31,7 @@ export default class WithdrawStore {
             setMaxWithdrawAmount: action.bound,
             check10kLimit: action.bound,
             set10kLimitation: action.bound,
+            setCryptoConfig: action.bound,
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
@@ -87,6 +88,7 @@ export default class WithdrawStore {
         }).then(response => {
             if (response.error) {
                 this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
+                this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
                 this.saveWithdraw(verification_code);
             }
@@ -228,9 +230,13 @@ export default class WithdrawStore {
                 this.verification.clearVerification();
             }
         } else {
-            this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
+            await this.setCryptoConfig();
             general_store.setLoading(false);
         }
+    }
+
+    async setCryptoConfig() {
+        this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
     }
 
     get is_withdrawal_locked() {

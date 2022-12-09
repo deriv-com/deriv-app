@@ -24,8 +24,13 @@
         transform: translateX(calc(367px));
         transition: all 0.4s;
         margin-top: 1rem;
+
         &--tour-active {
             transform: translateX(calc(0px)) !important;
+
+            .dc-drawer__toggle-icon--right {
+                transform: rotate(180deg) !important;
+            }
         }
     }
 
@@ -87,6 +92,7 @@
                     width: 100%;
                     overflow-x: auto;
                 }
+
                 &--dashboard {
                     &__tabs {
                         display: flex;
@@ -165,6 +171,7 @@
 
     &__content {
         cursor: pointer;
+
         &:hover {
             text-decoration: underline;
         }
@@ -229,6 +236,7 @@
                 top: 0;
                 right: 0;
                 padding: 2rem;
+
                 button {
                     background: $color-grey-2;
                     border-radius: 2.4rem;
@@ -297,6 +305,7 @@
                 flex-direction: column;
                 width: 10.2rem;
                 margin: 1rem;
+
                 &:hover {
                     cursor: pointer;
                 }

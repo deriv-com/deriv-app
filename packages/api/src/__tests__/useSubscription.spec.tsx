@@ -36,7 +36,8 @@ describe('useSubscription', () => {
         mockUseWSShared.mockReturnValue({
             subscribe: jest.fn(() => {
                 return {
-                    subscribe: async (onData, onError) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    subscribe: async (onData: (response: any) => void, onError: (response: any) => void) => {
                         const delay = (ms: number) => new Promise<never>(resolve => setTimeout(resolve, ms));
 
                         await delay(500);

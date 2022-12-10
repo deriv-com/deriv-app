@@ -30,6 +30,7 @@ const TradingAssessmentExistingUser = ({
     const [should_move_to_next, setShouldMoveToNext] = React.useState(false);
 
     React.useEffect(() => {
+        localStorage.removeItem('current_question_index');
         setIsTradingAssessmentForExistingUserEnabled(true);
         const { form_value, props } = tradingAssessmentConfig(
             { real_account_signup_target: active_account_landing_company },

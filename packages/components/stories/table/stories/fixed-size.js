@@ -6,7 +6,7 @@ import sample_data from '../sample-data.json';
 
 const FixedSize = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>
-        <Table fixed scroll_width={400} scroll_height={400}>
+        <Table fixed scroll_width='400' scroll_height='400'>
             <Table.Header>
                 <Table.Row className='table-storybook-row'>
                     {sample_data.fields.map((field, index) => (

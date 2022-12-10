@@ -1,5 +1,6 @@
-const resolve = require('path').resolve;
-const existsSync = require('fs').existsSync;
+import path from 'path';
+import fs from 'fs';
+import { LoaderContext } from 'webpack';
 /* Using this loader you can import components from @deriv/components without having to manually
 import the corresponding stylesheet. The deriv-account-loader will automatically import
 stylesheets.
@@ -9,18 +10,17 @@ stylesheets.
     import PoaExpired from '@deriv/account/dist/js/poa-expired';
 */
 
-function getKebabCase(str) {
+function getKebabCase(str: string) {
     return str
         .split(/(?=[A-Z])/)
         .join('-')
         .toLowerCase();
 }
 
-function checkExists(component) {
-    return existsSync(resolve(__dirname, '../../../account/src/Components/', component, `${component}.scss`));
+function checkExists(component: string) {
+    return fs.existsSync(path.resolve(__dirname, '../../../account/src/Components/', component, `${component}.scss`));
 }
-
-module.exports = function (source, map) {
+module.exports = function (this: LoaderContext<Record<string, never>>, source: string, map: string) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/account/.exec(line); // eslint-disable-line no-useless-escape

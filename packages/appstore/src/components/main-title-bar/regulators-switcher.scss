@@ -2,6 +2,7 @@
     display: inline-flex;
     align-items: center;
     margin: 0 auto;
+    user-select: none;
 
     &__switch {
         display: inline-flex;
@@ -17,6 +18,7 @@
             width: 9.6rem;
             height: 3.2rem;
             border-radius: 6px;
+            text-transform: capitalize;
             cursor: pointer;
         }
 

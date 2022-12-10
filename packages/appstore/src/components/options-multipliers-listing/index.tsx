@@ -1,11 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { platform_config } from 'Constants/platform-config';
+import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
+import { useStores } from 'Stores/index';
 
 const OptionsAndMultipliersListing = () => {
+    const { tradinghub } = useStores();
+
     return (
         <ListingContainer
             title={
@@ -26,11 +30,11 @@ const OptionsAndMultipliersListing = () => {
                 </Text>
             }
         >
-            {platform_config.map(p => (
-                <TradingAppCard key={p.app_desc} {...p} />
+            {tradinghub.available_platforms.map((p: BrandConfig) => (
+                <TradingAppCard key={`trading_app_card_${p.name}`} {...p} />
             ))}
         </ListingContainer>
     );
 };
 
-export default OptionsAndMultipliersListing;
+export default observer(OptionsAndMultipliersListing);

@@ -6,21 +6,19 @@ import React from 'react';
 import './account-type-dropdown.scss';
 
 const AccountTypeDropdown = () => {
-    const { tradinghub, client } = useStores();
+    const { tradinghub } = useStores();
+
     return (
         <select
             className={classNames(
                 'account-type-dropdown',
-                `account-type-dropdown${tradinghub.current_account_type === 'real' ? '--real' : '--demo'}`
+                `account-type-dropdown--${tradinghub.selected_account_type}`
             )}
-            value={tradinghub.current_account_type}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                client.switchAccountHandlerForAppstore(e.target.value);
-                tradinghub.setCurrentAccountType(e.target.value);
-            }}
+            value={tradinghub.selected_account_type}
+            onChange={e => tradinghub.selectAccountType(e.target.value)}
         >
             {account_types.map((account_type: AccountType) => (
-                <option className='account-type-dropdown__item' value={account_type} key={account_type}>
+                <option key={account_type} className='account-type-dropdown__item' value={account_type}>
                     {account_type}
                 </option>
             ))}

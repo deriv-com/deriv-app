@@ -13,7 +13,7 @@ const CFDsListing = () => {
                 </Text>
             }
             description={
-                <Text size='s'>
+                <Text size='xs' line_height='s'>
                     <Localize
                         i18n_default_text={
                             'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'

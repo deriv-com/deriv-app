@@ -1,19 +1,23 @@
 .account-type-dropdown {
-    &:focus {
-        outline: none;
-    }
-    &--real {
-        border: 1px solid var(--status-info);
-        color: var(--status-info);
-    }
-    &--demo {
-        border: 1px solid var(--status-success);
-        color: var(--status-success);
-    }
     padding: 4px 8px 4px 10px;
     border-radius: 4px;
     font-size: 1.4rem;
     font-weight: 700;
     line-height: 2rem;
     text-transform: capitalize;
+    border: 1px solid;
+
+    &:focus {
+        outline: none;
+    }
+
+    &--real {
+        border-color: var(--status-info);
+        color: var(--status-info);
+    }
+
+    &--demo {
+        border-color: var(--status-success);
+        color: var(--status-success);
+    }
 }

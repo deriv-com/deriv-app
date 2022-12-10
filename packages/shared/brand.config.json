@@ -46,23 +46,28 @@
     "platforms_appstore": {
         "trader": {
             "name": "DTrader",
-            "icon": "DTrader"
+            "icon": "DTrader",
+            "availability": "All"
         },
         "dbot": {
             "name": "DBot",
-            "icon": "DBot"
+            "icon": "DBot",
+            "availability": "Non-EU"
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "SmartTrader"
+            "icon": "SmartTrader",
+            "availability": "Non-EU"
         },
         "bbot": {
             "name": "Binary Bot",
-            "icon": "BinaryBot"
+            "icon": "BinaryBot",
+            "availability": "Non-EU"
         },
         "go": {
             "name": "Deriv Go",
-            "icon": "DerivGo"
+            "icon": "DerivGo",
+            "availability": "Non-EU"
         }
     }
 }

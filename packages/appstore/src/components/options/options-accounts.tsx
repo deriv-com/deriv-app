@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: To be removed after refactor
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';

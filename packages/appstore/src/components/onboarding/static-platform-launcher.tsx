@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: To be removed after refactor
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';

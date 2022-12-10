@@ -32,7 +32,7 @@ const Popover = ({
     window_border,
     zIndex = '1',
     data_testid,
-}: React.PropsWithChildren<Partial<TPopoverProps>>) => {
+}: React.PropsWithChildren<TPopoverProps>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
 
@@ -74,6 +74,8 @@ const Popover = ({
                             : is_open ?? (is_hovered && message)) as boolean
                     }
                     positions={[alignment]}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     transitionDuration={0.25}
                     padding={margin + 8}
                     containerClassName={classNames({
@@ -147,19 +149,21 @@ const Popover = ({
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                 arrowSize={5}
                                 arrowStyle={
-                                    relative_render && {
-                                        borderTop: '10px solid transparent',
-                                        borderLeft: '10px solid transparent',
-                                        borderRight: `10px solid ${
-                                            has_error ? 'var(--status-danger)' : 'var(--general-active)'
-                                        }`,
-                                        transform: 'rotate(315deg)',
-                                        right: '0px',
-                                        top: '5px',
-                                        height: '10px',
-                                        margin: 'auto',
-                                        bottom: '0px',
-                                    }
+                                    relative_render
+                                        ? {
+                                              borderTop: '10px solid transparent',
+                                              borderLeft: '10px solid transparent',
+                                              borderRight: `10px solid ${
+                                                  has_error ? 'var(--status-danger)' : 'var(--general-active)'
+                                              }`,
+                                              transform: 'rotate(315deg)',
+                                              right: '0px',
+                                              top: '5px',
+                                              height: '10px',
+                                              margin: 'auto',
+                                              bottom: '0px',
+                                          }
+                                        : {}
                                 }
                             >
                                 <div

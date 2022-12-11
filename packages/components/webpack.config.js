@@ -75,7 +75,6 @@ module.exports = function () {
                 formik: 'formik',
                 classnames: 'classnames',
                 'react-div-100vh': 'react-div-100vh',
-                'rc-drawer': 'rc-drawer',
                 'framer-motion': 'framer-motion',
                 'babel-polyfill': 'babel-polyfill',
                 'prop-types': 'prop-types',

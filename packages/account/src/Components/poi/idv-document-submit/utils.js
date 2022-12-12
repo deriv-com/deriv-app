@@ -2,7 +2,7 @@ import { getUrlBase } from '@deriv/shared';
 
 const PATTERN_SIZE = 5;
 
-export const isRecurringNumberRegex = document_number => document_number.match(/([0-9])\1{4,}/g);
+export const isRecurringNumberRegex = document_number => document_number.replace(/[.-]*/g, '').match(/([0-9])\1{4,}/g);
 
 const createDocumentPatterns = () => {
     const ID_PATTERN = '0123456789';
@@ -22,11 +22,12 @@ const createDocumentPatterns = () => {
 };
 
 export const isSequentialNumber = document_number => {
+    const trimmed_document_number = document_number.replace(/[.-]*/g, '');
     const pattern_results = [];
 
     if (document_number.length >= PATTERN_SIZE) {
         createDocumentPatterns().forEach(pattern => {
-            pattern_results.push(document_number.includes(pattern));
+            pattern_results.push(trimmed_document_number.includes(pattern));
         });
     }
 

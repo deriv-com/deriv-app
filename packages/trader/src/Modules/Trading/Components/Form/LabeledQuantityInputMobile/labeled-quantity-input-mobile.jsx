@@ -5,7 +5,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 
 const LabeledQuantityInputMobile = ({ input_label, ...props }) => {
     return (
-        <div className={`${props.name}__widget`}>
+        <div className={`${props.name}__widget`} data-testid={`dt_${props.name}_widget`}>
             <Fieldset className={`${props.name}__fields`}>
                 <InputField {...props} />
             </Fieldset>

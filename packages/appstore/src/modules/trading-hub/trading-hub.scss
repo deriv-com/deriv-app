@@ -80,9 +80,10 @@
             margin: 0;
             padding: 0 2.4rem 2.4rem;
 
-            // &--mobile_wrapper {
-            //     overflow-y: scroll;
-            // }
+            &--mobile_wrapper {
+                overflow-y: scroll;
+                background-color: beige
+            }
         }
     }
 }

@@ -26,8 +26,7 @@ class DBotStore extends DBotStoreInterface {
         this.setContractUpdateConfig = store.setContractUpdateConfig;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
-        this.startLoading = store.startLoading;
-        this.endLoading = store.endLoading;
+        this.setLoading = store.setLoading;
     }
 
     static setInstance(store) {

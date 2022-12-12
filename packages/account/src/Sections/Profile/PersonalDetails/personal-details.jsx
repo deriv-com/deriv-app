@@ -1125,10 +1125,7 @@ export const PersonalDetailsForm = ({
                                     <>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
-                                            <FormSubHeader
-                                                className='account-form__red-header'
-                                                title={localize('Professional Client')}
-                                            />
+                                            <FormSubHeader title={localize('Professional Client')} />
                                             <FormBodySection>
                                                 <fieldset className='account-form__fieldset'>
                                                     <div>

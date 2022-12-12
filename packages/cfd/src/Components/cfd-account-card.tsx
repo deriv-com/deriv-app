@@ -4,8 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
@@ -122,7 +122,7 @@ const CFDAccountCardAction = ({
                     i18n_default_text='<0>Switch to your real account</0><1> to create a {{platform}} {{account_title}} account.</1>'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        account_title: title,
+                        account_title: title === 'Deriv X' ? '' : title,
                     }}
                     components={[
                         <a
@@ -209,7 +209,7 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu ? 'cfd' : type.type;
+    const platform_icon = is_eu && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
@@ -529,16 +529,17 @@ const CFDAccountCardComponent = ({
                                                     show_currency
                                                 />
                                             </Text>
-                                            {checkMultipleSvgAcc()?.length > 1 && acc.landing_company_short === 'svg' && (
-                                                <Text
-                                                    className='cfd-account-card__balance--region'
-                                                    color='colored-background'
-                                                    size='xxxs'
-                                                    weight='bold'
-                                                >
-                                                    {getServerName(acc)}
-                                                </Text>
-                                            )}
+                                            {checkMultipleSvgAcc()?.length > 1 &&
+                                                acc.landing_company_short === 'svg' && (
+                                                    <Text
+                                                        className='cfd-account-card__balance--region'
+                                                        color='colored-background'
+                                                        size='xxxs'
+                                                        weight='bold'
+                                                    >
+                                                        {getServerName(acc)}
+                                                    </Text>
+                                                )}
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>

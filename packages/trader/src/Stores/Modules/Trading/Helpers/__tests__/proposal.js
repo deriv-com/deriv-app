@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import React from 'react';
 import * as Proposal from '../proposal';
 
@@ -28,7 +27,7 @@ describe('Proposal', () => {
                     message: 'This is error',
                 },
             };
-            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
+            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).toEqual({
                 profit: '0.00',
                 returns: '0.00%',
                 stake: undefined,
@@ -64,7 +63,7 @@ describe('Proposal', () => {
                 text: 'payout',
                 value: 1234,
             };
-            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
+            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).toEqual({
                 cancellation: undefined,
                 commission: undefined,
                 error_code: undefined,
@@ -124,7 +123,7 @@ describe('Proposal', () => {
                 },
             };
 
-            expect(Proposal.createProposalRequests(store)).to.deep.eql({
+            expect(Proposal.createProposalRequests(store)).toEqual({
                 CALL: {
                     amount: 10,
                     basis: 'payout',
@@ -185,7 +184,7 @@ describe('Proposal', () => {
                 },
             };
 
-            expect(Proposal.createProposalRequests(store)).to.deep.eql({
+            expect(Proposal.createProposalRequests(store)).toEqual({
                 CALL: {
                     amount: 10,
                     basis: 'payout',
@@ -206,7 +205,7 @@ describe('Proposal', () => {
                 proposal_requests: {},
             };
 
-            expect(Proposal.createProposalRequests(store)).to.be.empty;
+            expect(Proposal.createProposalRequests(store)).toHaveLength(0);
         });
     });
 });

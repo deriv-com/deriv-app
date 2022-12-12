@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
@@ -12,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe('<ToggleButton />', () => {
     it('should render a <Button /> element', () => {
         const wrapper = shallow(<ToggleButton value='test'>Test</ToggleButton>);
-        expect(wrapper.type()).to.equal(Button);
+        expect(wrapper.type()).toBe(Button);
     });
 
     it('should render a <Button /> element with selected class name', () => {
@@ -21,7 +20,7 @@ describe('<ToggleButton />', () => {
                 Test
             </ToggleButton>
         );
-        expect(wrapper.hasClass('toggle-button--selected')).be.true;
+        expect(wrapper.hasClass('toggle-button--selected')).toBe(true);
     });
 
     describe('prop: onClick', () => {
@@ -42,7 +41,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.called).be.true;
+            expect(callback.called).toBe(true);
         });
 
         it('should be called with the button value when the button clicked', () => {
@@ -53,7 +52,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.lastArg).to.equal('test');
+            expect(callback.lastArg).toBe('test');
         });
     });
 
@@ -78,7 +77,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.called).be.true;
+            expect(callback.called).toBe(true);
         });
 
         it('should be called with the button value when the button clicked', () => {
@@ -89,7 +88,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.lastArg).to.equal('test');
+            expect(callback.lastArg).toBe('test');
         });
 
         it('should not be called when the click is prevented', () => {
@@ -101,7 +100,7 @@ describe('<ToggleButton />', () => {
             );
 
             wrapper.simulate('click', event);
-            expect(callback.callCount).to.equal(0);
+            expect(callback.callCount).toBe(0);
         });
     });
 });

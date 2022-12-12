@@ -1,5 +1,4 @@
 import React from 'react';
-import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { PlatformDropdown, PlatformBox } from '../platform-dropdown';
@@ -21,16 +20,16 @@ describe('PlatformDropdown', () => {
 
     it('should render one <PlatformDropdown /> component', () => {
         const wrapper = shallow(<PlatformDropdown platform_config={platform_config} />);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).toHaveLength(1);
     });
 
     it('should not have .platform-dropdown__list-platform if platform_config is an empty array', () => {
         const wrapper = shallow(<PlatformDropdown platform_config={[]} />);
-        expect(wrapper.find('.platform-dropdown__list-platform').exists()).to.be.false;
+        expect(wrapper.find('.platform-dropdown__list-platform').exists()).toBe(false);
     });
 
     it('should not contain <PlatformBox /> if platform_config is an empty array', () => {
         const wrapper = shallow(<PlatformDropdown platform_config={[]} />);
-        expect(wrapper.find(PlatformBox)).to.have.length(0);
+        expect(wrapper.find(PlatformBox)).toHaveLength(0);
     });
 });

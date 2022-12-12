@@ -1,5 +1,4 @@
 import React from 'react';
-import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
@@ -16,7 +15,7 @@ describe('<RouteWithSubRoutes />', () => {
             </PlatformContext.Provider>
         );
         const wrapper = shallow(comp);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).toHaveLength(1);
     });
     it('should have props as passed as route', () => {
         const route = { path: '/', component: Redirect, title: '', exact: true, to: '/root' };
@@ -26,7 +25,7 @@ describe('<RouteWithSubRoutes />', () => {
             </PlatformContext.Provider>
         );
         const wrapper = shallow(comp);
-        expect(wrapper.prop('exact')).to.equal(true);
-        expect(wrapper.prop('path')).to.equal('/');
+        expect(wrapper.prop('exact')).toBe(true);
+        expect(wrapper.prop('path')).toBe('/');
     });
 });

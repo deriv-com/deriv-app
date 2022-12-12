@@ -1,5 +1,4 @@
 import React from 'react';
-import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ContractTypeList from '../contract-type-list.jsx';
@@ -16,6 +15,6 @@ describe('ContractTypeList', () => {
     };
     it('should render one <ContractTypeList /> component', () => {
         const wrapper = shallow(<ContractTypeList list={list['Up/Down']} />);
-        expect(wrapper).to.have.length(2);
+        expect(wrapper).toHaveLength(2);
     });
 });

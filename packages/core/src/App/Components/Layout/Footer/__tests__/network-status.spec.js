@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { Popover } from '@deriv/components';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -14,15 +13,15 @@ describe('NetworkStatus', () => {
     };
     it('should render one <NetworkStatus /> component', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).toHaveLength(1);
     });
     it('should have correct class based on class passed in status', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
-        expect(wrapper.find('.network-status__circle--online').exists()).to.be.true;
+        expect(wrapper.find('.network-status__circle--online').exists()).toBe(true);
         wrapper.setProps({ status: { class: 'offline' } });
-        expect(wrapper.find('.network-status__circle--offline').exists()).to.be.true;
+        expect(wrapper.find('.network-status__circle--offline').exists()).toBe(true);
         wrapper.setProps({ status: { class: 'blinker' } });
-        expect(wrapper.find('.network-status__circle--blinker').exists()).to.be.true;
+        expect(wrapper.find('.network-status__circle--blinker').exists()).toBe(true);
     });
     it('should contain Tooltip message passed in status', () => {
         const wrapper = shallow(<NetworkStatus status={status} />);
@@ -32,7 +31,7 @@ describe('NetworkStatus', () => {
                     <div className='network-status__circle network-status__circle--online' />
                 </Popover>
             )
-        ).to.be.true;
+        ).toBe(true);
     });
     it('should contain Popover with default message and div with only default class if status does not contain them', () => {
         status = {};
@@ -47,6 +46,6 @@ describe('NetworkStatus', () => {
                     <div className='network-status__circle' />
                 </Popover>
             )
-        ).to.be.true;
+        ).toBe(true);
     });
 });

@@ -1,5 +1,4 @@
 import React from 'react';
-import { expect } from 'chai';
 import { configure, mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { NavLink } from 'react-router-dom';
@@ -28,7 +27,7 @@ describe('<BinaryLink />', () => {
             </Mock>
         );
         const wrapper = shallow(comp);
-        expect(wrapper).to.have.length(1);
+        expect(wrapper).toHaveLength(1);
     });
     it('should render children when passed in', () => {
         const child_div = <div className='sweet-child-of-mine' />;
@@ -38,7 +37,7 @@ describe('<BinaryLink />', () => {
             </Mock>
         );
         const wrapper = shallow(comp);
-        expect(wrapper.contains(child_div)).to.equal(true);
+        expect(wrapper.contains(child_div)).toBe(true);
     });
     it("should render <a /> when property 'to' is not passed", () => {
         const comp = (
@@ -47,7 +46,7 @@ describe('<BinaryLink />', () => {
             </Mock>
         );
         const wrapper = mount(comp);
-        expect(wrapper.contains(<a />)).to.equal(true);
+        expect(wrapper.contains(<a />)).toBe(true);
     });
     it("should not render <a> when property 'to' is passed", () => {
         const comp = (
@@ -56,7 +55,7 @@ describe('<BinaryLink />', () => {
             </MobxContentProvider>
         );
         const wrapper = shallow(comp);
-        expect(wrapper.contains(<a />)).to.equal(false);
+        expect(wrapper.contains(<a />)).toBe(false);
     });
     it('should render component with props if any given', () => {
         const comp = (

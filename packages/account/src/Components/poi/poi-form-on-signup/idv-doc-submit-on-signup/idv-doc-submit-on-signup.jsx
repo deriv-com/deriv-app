@@ -15,9 +15,11 @@ import {
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile, getPlatformFromUrl } from '@deriv/shared';
 import { getDocumentData, getRegex, isSequentialNumber, isRecurringNumberRegex } from '../../idv-document-submit/utils';
+import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
+    const validation_is_enabled = useToggleValidation();
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -74,11 +76,11 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         const { document_type, document_number } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
-        const { is_staging_deriv_app, is_test_link } = getPlatformFromUrl();
+        const { is_staging_deriv_app } = getPlatformFromUrl();
 
-        // We use tools certain 3rd party tools that uses hardcoded repetitive values to test
-        // So it is necessary to disable this regex for staging and test links for QA
-        const is_not_staging_or_test_link = !is_staging_deriv_app || !is_test_link;
+        // QA can manually toggle this regex now through this feature flag.
+        // Otherwise it blocks their test suite.
+        const is_allowing_validation = validation_is_enabled || is_staging_deriv_app;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -89,7 +91,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_not_staging_or_test_link && (is_recurring_number || is_sequential_number)) {
+        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);

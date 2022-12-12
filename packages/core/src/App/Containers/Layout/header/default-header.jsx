@@ -134,7 +134,7 @@ const DefaultHeader = ({
         return (
             <div className='header__menu__redirect'>
                 <BinaryLink
-                    to={routes.trading_hub}
+                    to={routes.traders_hub}
                     className='header__menu__redirect--link'
                     onClick={EnablePreAppstore}
                 >

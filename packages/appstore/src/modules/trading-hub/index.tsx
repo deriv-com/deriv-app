@@ -38,14 +38,8 @@ import './trading-hub.scss';
 const TradingHub: React.FC = () => {
     const store = useStores();
     const { ui, modules, common, client, tradinghub } = useStores();
-    const {
-        is_logged_in,
-        is_eu,
-        is_eu_country,
-        is_populating_mt5_account_list,
-        is_populating_dxtrade_account_list,
-        switchAccountHandlerForAppstore,
-    } = client;
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
+        client;
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -120,7 +114,6 @@ const TradingHub: React.FC = () => {
             name: string;
         };
     }) => {
-        switchAccountHandlerForAppstore(tab_account_type);
         setTabAccountType(event.target.value as TAccountCategory);
     };
     const platformTypeChange = (event: {

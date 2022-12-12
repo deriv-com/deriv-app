@@ -11,7 +11,7 @@ const Header = ({ is_logged_in }) => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
     const trading_hub_routes =
-        pathname === routes.trading_hub || pathname.startsWith(routes.cashier) || pathname.startsWith(routes.account);
+        pathname === routes.traders_hub || pathname.startsWith(routes.cashier) || pathname.startsWith(routes.account);
 
     if (is_appstore) {
         return <DashboardHeader />;

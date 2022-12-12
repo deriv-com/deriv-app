@@ -217,7 +217,7 @@ const getModules = ({ is_pre_appstore }) => {
             ],
         },
         {
-            path: routes.trading_hub,
+            path: routes.traders_hub,
             component: AppStore,
             is_authenticated: true,
             getTitle: () => localize('Traders Hub'),
@@ -229,7 +229,7 @@ const getModules = ({ is_pre_appstore }) => {
             getTitle: () => localize('Appstore'),
             routes: [
                 {
-                    path: routes.trading_hub,
+                    path: routes.traders_hub,
                     component: AppStore,
                     getTitle: () => localize('Traders Hub'),
                 },

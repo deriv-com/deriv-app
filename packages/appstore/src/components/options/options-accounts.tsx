@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: To be removed after refactor
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -11,17 +14,10 @@ import OptionsAccount from '../account';
 import AddOptions from '../add-options';
 import { getSortedAccountList } from '../../helpers';
 import AccountManager from '../account-manager';
-import { Icons } from 'Assets/svgs/wallet';
+import { PlatformConfig } from 'Constants/platform-config';
 
-type TPlatformLauncherPropsArray = {
-    app_icon: keyof typeof Icons;
-    app_title: string;
-    app_desc: string;
-    link_to?: string;
-    href?: string;
-}[];
 type TOptionsAccountsProps = {
-    platformlauncherprops: TPlatformLauncherPropsArray;
+    platformlauncherprops: PlatformConfig[];
     accountType: string;
 };
 
@@ -39,7 +35,7 @@ type TAccount = {
     token: string;
 };
 
-const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComponentProps> = props => {
+const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => {
     const { client, ui } = useStores();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const {

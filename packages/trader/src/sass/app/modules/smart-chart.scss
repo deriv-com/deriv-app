@@ -383,6 +383,15 @@
             gap: 0.4rem;
             padding: 0.8rem;
             opacity: 0.72;
+            transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+
+            &--enter,
+            &--exit {
+                opacity: 0;
+            }
+            &--enter-done {
+                opacity: 0.72;
+            }
 
             &:after,
             &:before {
@@ -437,12 +446,6 @@
 
             #{$self}__text {
                 color: var(--text-colored-background);
-            }
-            #{$self}__close-icon {
-                position: absolute;
-                right: 0.8rem;
-                top: 0.8rem;
-                cursor: pointer;
             }
         }
     }

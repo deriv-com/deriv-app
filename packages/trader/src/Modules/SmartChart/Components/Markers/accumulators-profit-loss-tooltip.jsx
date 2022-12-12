@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv/components';
+import { CSSTransition } from 'react-transition-group';
+import { Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
@@ -18,9 +20,25 @@ const AccumulatorsProfitLossTooltip = ({
     profit,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(true);
-    const [has_close_icon, setHasCloseIcon] = React.useState(true);
     const won = profit > 0;
     const sign = won ? '+' : '';
+    const tooltip_timeout = React.useRef(null);
+    const is_mobile = isMobile();
+
+    React.useEffect(() => {
+        return () => clearTimeout(tooltip_timeout.current);
+    }, []);
+
+    React.useEffect(() => {
+        if (is_sold) {
+            tooltip_timeout.current = onCloseDelayed(5000);
+        }
+    }, [is_sold]);
+
+    const onCloseDelayed = duration =>
+        setTimeout(() => {
+            setIsTooltipOpen(false);
+        }, duration);
 
     const opposite_arrow_position = React.useMemo(() => {
         const horizontal = ['left', 'right'];
@@ -28,6 +46,13 @@ const AccumulatorsProfitLossTooltip = ({
             ? horizontal.find(el => el !== alignment)
             : ['top', 'bottom'].find(el => el !== alignment);
     }, [alignment]);
+
+    const onClickMobileHandler = () => {
+        if (is_mobile) {
+            setIsTooltipOpen(true);
+            tooltip_timeout.current = onCloseDelayed(2000);
+        }
+    };
 
     const onRef = ref => {
         if (ref) {
@@ -51,16 +76,33 @@ const AccumulatorsProfitLossTooltip = ({
                 profit={profit}
             />
         );
+
     if (typeof profit !== 'number') return null;
 
     return (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
-                onMouseEnter={() => !is_tooltip_open && setIsTooltipOpen(true)}
-                onMouseLeave={() => is_tooltip_open && !has_close_icon && setIsTooltipOpen(false)}
+                onMouseEnter={() => setIsTooltipOpen(true)}
+                onMouseLeave={() => setIsTooltipOpen(false)}
+                // onTouchStart for open tooltip on mobile
+                onTouchStart={onClickMobileHandler}
             />
-            {is_tooltip_open && (
+            <CSSTransition
+                in={is_tooltip_open}
+                timeout={{
+                    appear: 500,
+                    enter: 0,
+                    exit: 500,
+                }}
+                unmountOnExit
+                classNames={{
+                    appear: `${className}__content--enter`,
+                    enter: `${className}__content--enter`,
+                    enterDone: `${className}__content--enter-done`,
+                    exit: `${className}__content--exit`,
+                }}
+            >
                 <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
                     <Text size='xxs' className={`${className}__text`}>
                         {localize('Total profit/loss:')}
@@ -70,18 +112,8 @@ const AccumulatorsProfitLossTooltip = ({
                         className={`${className}__text`}
                         weight='bold'
                     >{`${sign}${profit} ${currency}`}</Text>
-                    {has_close_icon && (
-                        <Icon
-                            className={`${className}__close-icon`}
-                            icon='IcCloseLight'
-                            onClick={() => {
-                                setHasCloseIcon(false);
-                                setIsTooltipOpen(false);
-                            }}
-                        />
-                    )}
                 </div>
-            )}
+            </CSSTransition>
         </FastMarker>
     );
 };

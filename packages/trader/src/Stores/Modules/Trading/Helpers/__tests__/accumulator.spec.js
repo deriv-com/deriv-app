@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { getUpdatedTicksHistoryStats } from '../accumulator';
 
 describe('getUpdatedTicksHistoryStats', () => {
@@ -22,14 +21,14 @@ describe('getUpdatedTicksHistoryStats', () => {
                 new_ticks_history_stats,
                 last_tick_epoch: new_tick_epoch,
             })
-        ).to.eql(expected_ticks_history_stats);
+        ).toEqual(expected_ticks_history_stats);
         const new_ticks_history = getUpdatedTicksHistoryStats({
             previous_ticks_history_stats: existing_ticks_history_stats,
             new_ticks_history_stats,
             last_tick_epoch: new_tick_epoch,
         });
-        expect(new_ticks_history).to.eql(expected_ticks_history_stats);
-        expect(new_ticks_history).to.not.eql(existing_ticks_history_stats);
+        expect(new_ticks_history).toEqual(expected_ticks_history_stats);
+        expect(new_ticks_history).not.toEqual(existing_ticks_history_stats);
     });
 
     it('returns the same ticks_history_stats when new_ticks_history_stats is undefined', () => {
@@ -38,7 +37,7 @@ describe('getUpdatedTicksHistoryStats', () => {
                 previous_ticks_history_stats: existing_ticks_history_stats,
                 last_tick_epoch: new_tick_epoch,
             })
-        ).to.eql(existing_ticks_history_stats);
+        ).toEqual(existing_ticks_history_stats);
     });
 
     it('returns the same ticks_history_stats when new_ticks_history_stats contains the same single value of the current counter', () => {
@@ -48,7 +47,7 @@ describe('getUpdatedTicksHistoryStats', () => {
                 new_ticks_history_stats: [current_counter_same_value.counter_value],
                 last_tick_epoch: current_counter_same_value.epoch,
             })
-        ).to.eql(existing_ticks_history_stats);
+        ).toEqual(existing_ticks_history_stats);
     });
 
     it('returns a new ticks_history_stats with 1st item in ticks_stayed_in replaced with a current counter new value', () => {
@@ -62,7 +61,7 @@ describe('getUpdatedTicksHistoryStats', () => {
                 new_ticks_history_stats: [current_counter_new_value.counter_value],
                 last_tick_epoch: current_counter_new_value.epoch,
             })
-        ).to.eql(expected_ticks_history_stats);
+        ).toEqual(expected_ticks_history_stats);
     });
 
     it('returns a new ticks_history_stats with a shifted ticks_stayed_in array of the same length & with new_ticks_history_stats[0] placed as 1st item when its a counter_value < previous counter_value & an epoch > a previous epoch', () => {
@@ -75,8 +74,8 @@ describe('getUpdatedTicksHistoryStats', () => {
             new_ticks_history_stats: [next_counter_initial_value.counter_value],
             last_tick_epoch: next_counter_initial_value.epoch,
         });
-        expect(new_ticks_history).to.eql(expected_ticks_history_stats);
-        expect(new_ticks_history.ticks_stayed_in).to.have.lengthOf(existing_ticks_history_stats.ticks_stayed_in.length);
+        expect(new_ticks_history).toEqual(expected_ticks_history_stats);
+        expect(new_ticks_history.ticks_stayed_in).toHaveLength(existing_ticks_history_stats.ticks_stayed_in.length);
     });
 
     it('returns a new ticks_history_stats with a shifted ticks_stayed_in array of the same length & with new_ticks_history_stats[0] placed as 1st item when counter value === previous counter_value & an epoch > previous epoch', () => {
@@ -89,7 +88,7 @@ describe('getUpdatedTicksHistoryStats', () => {
             new_ticks_history_stats: [next_counter_latest_value.counter_value],
             last_tick_epoch: next_counter_latest_value.epoch,
         });
-        expect(new_ticks_history).to.eql(expected_ticks_history_stats);
-        expect(new_ticks_history.ticks_stayed_in).to.have.lengthOf(existing_ticks_history_stats.ticks_stayed_in.length);
+        expect(new_ticks_history).toEqual(expected_ticks_history_stats);
+        expect(new_ticks_history.ticks_stayed_in).toHaveLength(existing_ticks_history_stats.ticks_stayed_in.length);
     });
 });

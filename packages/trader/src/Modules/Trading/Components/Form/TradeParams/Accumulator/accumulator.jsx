@@ -45,6 +45,7 @@ Accumulator.propTypes = {
     accumulator_range_list: MobxPropTypes.arrayOrObservableArray,
     growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChange: PropTypes.func,
+    tick_size_barrier: PropTypes.number,
 };
 
 export default connect(({ modules }) => ({

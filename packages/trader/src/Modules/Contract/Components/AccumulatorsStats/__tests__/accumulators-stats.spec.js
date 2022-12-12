@@ -19,14 +19,12 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(),
     isMobile: jest.fn(),
-    getUrlBase: jest.fn(() => 'image_src.svg'),
+    getUrlBase: jest.fn(() => 'video_src.mp4'),
 }));
 
 describe('AccumulatorsStats', () => {
     const modal_root_el = document.createElement('div');
     modal_root_el.setAttribute('id', 'modal_root');
-    document.body.appendChild(modal_root_el);
-    const ticks_history = mock_connect_props.ticks_history_stats.ticks_stayed_in;
 
     beforeEach(() => {
         isMobile.mockReturnValue(false);
@@ -42,9 +40,11 @@ describe('AccumulatorsStats', () => {
         expect(container.querySelector('.accordion-toggle-arrow')).not.toBeInTheDocument();
     });
     it('should show manual after info icon is clicked', () => {
-        const { container } = render(<AccumulatorsStats />);
+        const { container } = render(<AccumulatorsStats />, {
+            container: document.body.appendChild(modal_root_el),
+        });
         fireEvent.click(container.querySelector('.info'));
-        expect(screen.getByTestId('dt_accumulators_stats_manual')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_accumulators_stats_manual_video')).toBeInTheDocument();
     });
     it('should render partial history values (tick counters) when initially collapsed in desktop', () => {
         render(<AccumulatorsStats />);
@@ -68,7 +68,9 @@ describe('AccumulatorsStats', () => {
     it('should show MobileDialog with full "Stay in history" in mobile when accordion_toggle_arrow is clicked', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
-        const { container } = render(<AccumulatorsStats />);
+        const { container } = render(<AccumulatorsStats />, {
+            container: document.body.appendChild(modal_root_el),
+        });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
 
         fireEvent.click(container.querySelector('.accordion-toggle-arrow'));

@@ -11,8 +11,7 @@ import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
-import AccumulatorsProfitLossTooltip from '../../SmartChart/Components/Markers/accumulators-profit-loss-tooltip.jsx';
-import CurrentSpotHighlighter from '../../SmartChart/Components/Markers/current-spot-highlighter.jsx';
+import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
@@ -260,7 +259,6 @@ export default connect(({ client, common, modules, ui }) => ({
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
 import classNames from 'classnames';
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper.js';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
@@ -301,6 +299,7 @@ const Chart = props => {
         chartStateChange,
         current_symbol_spot,
         current_symbol_spot_time,
+        last_contract,
         ticks_history_stats,
         exportLayout,
         extra_barriers = [],
@@ -353,13 +352,6 @@ const Chart = props => {
 
     if (!symbol || active_symbols.length === 0) return null;
 
-    const accumulators_positions = all_positions.filter(
-        p =>
-            p.contract_info &&
-            symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, 'accumulator')
-    );
-
     return (
         <SmartChartWithRef
             ref={charts_ref}
@@ -410,14 +402,14 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
-            {is_accumulator &&
-                accumulators_positions.map(({ contract_info }) => (
-                    <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
-                ))}
-            {is_accumulator && current_symbol_spot_time && ticks_history_stats?.ticks_stayed_in?.[0] === 0 && (
-                <CurrentSpotHighlighter
-                    current_spot={current_symbol_spot}
-                    current_spot_time={current_symbol_spot_time}
+            {is_accumulator && (
+                <AccumulatorsChartElements
+                    all_positions={all_positions}
+                    current_symbol_spot={current_symbol_spot}
+                    current_symbol_spot_time={current_symbol_spot_time}
+                    is_stats_highlighted={ticks_history_stats?.ticks_stayed_in?.[0] === 0}
+                    last_contract_info={last_contract?.contract_info}
+                    symbol={symbol}
                 />
             )}
         </SmartChartWithRef>
@@ -441,6 +433,7 @@ Chart.propTypes = {
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
+    last_contract: PropTypes.object,
     main_barrier: PropTypes.any,
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
@@ -474,6 +467,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) 
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
+        contract_info: contract_trade.last_contract.contract_info,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,

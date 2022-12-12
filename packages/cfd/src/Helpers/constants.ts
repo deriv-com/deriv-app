@@ -16,8 +16,10 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
-    switch (platform) {
+const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei') => {
+    switch (platform || OSDetect()) {
+        case 'android':
+            return DXTRADE_ANDROID_APP_URL;
         case 'ios':
             return DXTRADE_IOS_APP_URL;
         case 'huawei':

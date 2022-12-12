@@ -22,7 +22,7 @@ type TMobileDownloadProps = {
     platform: TCFDDashboardContainer['platform'];
 };
 
-const mobileDownloadLink = (platform: string, type: 'ios' | 'android' | 'huawei') => {
+const mobileDownloadLink = (platform: string, type?: 'ios' | 'android' | 'huawei') => {
     return platform === CFD_PLATFORMS.MT5 ? getPlatformMt5DownloadLink(type) : getPlatformDXTradeDownloadLink(type);
 };
 
@@ -155,7 +155,7 @@ const QRCodeBox = ({ platform }: { platform: string }) => {
     return (
         <DesktopWrapper>
             <div className='cfd-dashboard__download-container-qrcode'>
-                <QRCode value={mobileDownloadLink(platform, 'android')} size={160} />
+                <QRCode value={mobileDownloadLink(platform)} size={160} />
                 <span className='cfd-dashboard__download-container-qrcode__hint'>
                     {localize('Scan the QR code to download the Deriv X Mobile App')}
                 </span>

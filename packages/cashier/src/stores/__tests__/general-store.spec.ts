@@ -52,9 +52,6 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    verification: {
-                        clearVerification: jest.fn(),
-                    },
                     getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
                     setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
@@ -72,9 +69,6 @@ beforeEach(() => {
                 withdraw: {
                     check10kLimit: jest.fn(),
                     setIsWithdrawConfirmed: jest.fn(),
-                    verification: {
-                        clearVerification: jest.fn(),
-                    },
                 },
             },
         },
@@ -521,10 +515,8 @@ describe('GeneralStore', () => {
     //     const spyOnRemount = jest.spyOn(general_store, 'onRemount');
     //     general_store.accountSwitcherListener();
 
-    //     const { iframe, payment_agent, withdraw } = general_store.root_store.modules.cashier;
+    //     const { iframe, payment_agent } = general_store.root_store.modules.cashier;
 
-    //     expect(withdraw.verification.clearVerification).toHaveBeenCalledTimes(1);
-    //     expect(payment_agent.verification.clearVerification).toHaveBeenCalledTimes(1);
     //     expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
     //     expect(general_store.payment_agent).toEqual(payment_agent);
     //     expect(general_store.is_populating_values).toBeFalsy();

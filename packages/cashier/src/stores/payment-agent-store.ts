@@ -1,9 +1,9 @@
 import { action, computed, observable, IObservableArray, makeObservable } from 'mobx';
 import { PaymentAgentDetailsResponse, PaymentAgentWithdrawRequest } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
+import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import VerificationStore from './verification-store';
 import {
     TAgent,
     TExtendedPaymentAgentList,
@@ -36,7 +36,6 @@ export default class PaymentAgentStore {
             receipt: observable,
             selected_bank: observable,
             supported_banks: observable,
-            verification: observable,
             active_tab_index: observable,
             all_payment_agent_list: observable,
             search_term: observable,
@@ -71,7 +70,8 @@ export default class PaymentAgentStore {
             requestPaymentAgentWithdraw: action.bound,
         });
 
-        this.verification = new VerificationStore(WS, root_store);
+        this.root_store = root_store;
+        this.WS = WS;
     }
 
     list: TPartialPaymentAgent[] = [];
@@ -88,7 +88,6 @@ export default class PaymentAgentStore {
     receipt: TPaymentAgentWithdrawReceipt = {};
     selected_bank: number | string = 0;
     supported_banks: IObservableArray<TSupportedBank> | [] = [];
-    verification = new VerificationStore(this.WS, this.root_store);
     active_tab_index = 0;
     all_payment_agent_list: TPaymentAgentList = {
         paymentagent_list: { list: [] },
@@ -107,10 +106,6 @@ export default class PaymentAgentStore {
 
     setActiveTab(index: number): void {
         this.setActiveTabIndex(index);
-
-        if (index === 1) {
-            this.verification.sendVerificationEmail();
-        }
     }
 
     get is_payment_agent_visible(): boolean {
@@ -187,8 +182,17 @@ export default class PaymentAgentStore {
                     urls: payment_agent?.urls,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
-                const supported_banks_array = payment_agent?.supported_payment_methods.map(bank => bank.payment_method);
-                supported_banks_array.forEach(bank => bank && this.addSupportedBank(bank));
+                const supported_banks_array = payment_agent?.supported_payment_methods
+                    .map(bank => {
+                        const payment_method = getNormalizedPaymentMethod(
+                            bank.payment_method,
+                            Constants.payment_methods
+                        );
+                        //remove Skrill and Neteller from payment methods list (dropdown menu) as per mandate from Paysafe
+                        return ['Neteller', 'Skrill'].includes(payment_method) ? '' : payment_method;
+                    })
+                    .filter(Boolean);
+                supported_banks_array.forEach(bank => this.addSupportedBank(bank));
             });
             shuffleArray(this.list);
         } catch (e) {
@@ -211,9 +215,15 @@ export default class PaymentAgentStore {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
                     const bank_index = supported_banks
-                        .map(x => x.payment_method.toLowerCase())
-                        .indexOf((bank || this.selected_bank) as string);
-                    if (bank_index !== -1) (this.filtered_list as TPartialPaymentAgent[]).push(payment_agent);
+                        .map(supported_bank =>
+                            getNormalizedPaymentMethod(
+                                supported_bank.payment_method,
+                                Constants.payment_methods
+                            ).toLowerCase()
+                        )
+                        .indexOf(bank || this.selected_bank);
+
+                    if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }
             });
         } else {
@@ -363,12 +373,16 @@ export default class PaymentAgentStore {
         }
     }
 
-    resetPaymentAgent = (): void => {
+    resetPaymentAgent = () => {
+        const { client, modules } = this.root_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
+
+        client.setVerificationCode('', container);
         this.error.setErrorMessage({ code: '', message: '' });
         this.setIsWithdraw(false);
         this.setIsWithdrawSuccessful(false);
         this.setIsTryWithdrawSuccessful(false);
-        this.verification.clearVerification();
         this.setActiveTabIndex(0);
     };
 

@@ -12,6 +12,7 @@ export type TAccount = {
     error?: JSX.Element | string;
     is_crypto?: boolean;
     is_dxtrade?: boolean;
+    is_derivez?: boolean;
     is_mt?: boolean;
     market_type?: string;
     nativepicker_text?: string;

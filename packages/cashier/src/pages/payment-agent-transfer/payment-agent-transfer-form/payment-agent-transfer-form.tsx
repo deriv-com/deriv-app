@@ -192,7 +192,7 @@ const PaymentAgentTransferForm = ({
                                     }
                                     data-testid='dt_payment_agent_transfer_form_input_amount'
                                     autoComplete='off'
-                                    maxLength='30'
+                                    maxLength={30}
                                 />
                             )}
                         </Field>

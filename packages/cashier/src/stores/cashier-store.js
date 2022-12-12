@@ -10,7 +10,6 @@ import OnRampStore from './on-ramp-store';
 import PaymentAgentStore from './payment-agent-store';
 import PaymentAgentTransferStore from './payment-agent-transfer-store';
 import TransactionHistoryStore from './transaction-history-store';
-import VerificationStore from './verification-store';
 import WithdrawStore from './withdraw-store';
 
 export default class CashierStore {
@@ -27,7 +26,6 @@ export default class CashierStore {
         this.payment_agent = new PaymentAgentStore(WS, root_store);
         this.payment_agent_transfer = new PaymentAgentTransferStore(WS, root_store);
         this.transaction_history = new TransactionHistoryStore(WS, root_store);
-        this.verification = new VerificationStore(WS, root_store);
         this.withdraw = new WithdrawStore(WS, root_store);
     }
 }

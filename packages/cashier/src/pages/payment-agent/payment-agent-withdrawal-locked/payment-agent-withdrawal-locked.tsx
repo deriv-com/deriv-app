@@ -76,7 +76,11 @@ const PaymentAgentWithdrawalLocked = ({ error, history }: PaymentAgentWithdrawal
             : []),
     ];
 
-    if (error.onClickButton || error.code === 'PaymentAgentJustification') {
+    if (
+        error.onClickButton ||
+        error.code !== 'PaymentAgentWithdrawSameMethod' ||
+        error.code !== 'PaymentAgentUseOtherMethod'
+    ) {
         return <Error error={error} />;
     }
 

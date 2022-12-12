@@ -16,7 +16,7 @@ export const ROW_SIZES = {
     MOBILE_EXPANDED: 5,
 };
 
-const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) => {
+const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_stats = {} }) => {
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const widget_title = localize('Stats');
@@ -53,9 +53,10 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
             <div className={classNames('accumulators-stats__container--collapsed')}>
                 <div className='accumulators-stats__title'>
                     <AccumulatorsStatsManualModal
-                        title={widget_title}
+                        is_dark_theme={is_dark_theme}
                         icon_classname='info'
                         is_manual_open={is_manual_open}
+                        title={widget_title}
                         toggleManual={() => setIsManualOpen(!is_manual_open)}
                     />
                     <Text weight='bold' size={isMobile() ? 'xxxs' : 'xxs'} className='accumulators-stats__title-text'>
@@ -99,10 +100,12 @@ const AccumulatorsStats = ({ is_expandable = true, ticks_history_stats = {} }) =
 };
 
 AccumulatorsStats.propTypes = {
+    is_dark_theme: PropTypes.bool,
     is_expandable: PropTypes.bool,
     ticks_history_stats: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
+    is_dark_theme: ui.is_dark_mode_on,
     ticks_history_stats: modules.trade.ticks_history_stats,
 }))(AccumulatorsStats);

@@ -5,16 +5,18 @@ import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 
-const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, toggleManual }) => {
+const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual_open, title, toggleManual }) => {
     const is_mobile = isMobile();
     // memoize file paths for videos and open the modal only after we get them
     const getVideoSource = React.useCallback(
         extension => {
             return getUrlBase(
-                `/public/images/common/accumulators_stats_manual_${is_mobile ? 'mobile' : 'desktop'}.${extension}`
+                `/public/images/common/accumulators_manual_${is_mobile ? 'mobile' : 'desktop'}${
+                    is_dark_theme ? '_dark' : ''
+                }.${extension}`
             );
         },
-        [is_mobile]
+        [is_mobile, is_dark_theme]
     );
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
@@ -62,9 +64,10 @@ const AccumulatorsStatsManualModal = ({ title, icon_classname, is_manual_open, t
 };
 
 AccumulatorsStatsManualModal.propTypes = {
-    title: PropTypes.string,
     icon_classname: PropTypes.string,
+    is_dark_theme: PropTypes.bool,
     is_manual_open: PropTypes.bool,
+    title: PropTypes.string,
     toggleManual: PropTypes.func,
 };
 

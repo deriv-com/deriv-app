@@ -9,10 +9,9 @@ describe('TickCounterBar', () => {
     };
 
     it('should render properly', () => {
-        const { container } = render(<TickCounterBar {...mock_props} />);
+        render(<TickCounterBar {...mock_props} />);
 
         const ticks_info_el = screen.getByText('12345/67890 Ticks');
         expect(ticks_info_el).toHaveClass('dc-tick-counter-bar__text');
-        expect(container.querySelector('.dc-tick-counter-bar__track')).toBeInTheDocument();
     });
 });

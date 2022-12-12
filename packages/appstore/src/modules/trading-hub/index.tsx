@@ -246,7 +246,7 @@ const TradingHub: React.FC = () => {
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <Div100vhContainer className='test' height_offset='80px'>
+                    <Div100vhContainer className='trading-hub_body--mobile_wrapper' height_offset='80px'>
                         <ButtonToggle
                             buttons_arr={platform_toggle_options}
                             className='trading-hub_body--platform_type_toggle'

@@ -110,6 +110,7 @@ const AccumulatorsProfitLossText = ({
                     [`${className}__profit--fading-in`]: is_fading_in,
                 })}
                 as='div'
+                data-testid={'dt_accumulator_profit_text'}
             >
                 {`${sign}${profit_whole_number}.`}
                 <div className={is_sliding ? `${className}__sliding-tenth` : ''}>{current_profit_tenth}</div>

@@ -383,13 +383,14 @@
             gap: 0.4rem;
             padding: 0.8rem;
             opacity: 0.72;
-            transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
-            &--enter,
-            &--exit {
+            &-enter,
+            &-exit {
                 opacity: 0;
             }
-            &--enter-done {
+
+            &-enter-done {
                 opacity: 0.72;
             }
 

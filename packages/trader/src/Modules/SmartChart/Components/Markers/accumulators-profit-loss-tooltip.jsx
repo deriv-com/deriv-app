@@ -19,7 +19,7 @@ const AccumulatorsProfitLossTooltip = ({
     is_sold,
     profit,
 }) => {
-    const [is_tooltip_open, setIsTooltipOpen] = React.useState(true);
+    const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit > 0;
     const sign = won ? '+' : '';
     const tooltip_timeout = React.useRef(null);
@@ -31,6 +31,7 @@ const AccumulatorsProfitLossTooltip = ({
 
     React.useEffect(() => {
         if (is_sold) {
+            setIsTooltipOpen(true);
             tooltip_timeout.current = onCloseDelayed(5000);
         }
     }, [is_sold]);
@@ -47,7 +48,7 @@ const AccumulatorsProfitLossTooltip = ({
             : ['top', 'bottom'].find(el => el !== alignment);
     }, [alignment]);
 
-    const onClickMobileHandler = () => {
+    const onTapMobileHandler = () => {
         if (is_mobile) {
             setIsTooltipOpen(true);
             tooltip_timeout.current = onCloseDelayed(2000);
@@ -85,23 +86,17 @@ const AccumulatorsProfitLossTooltip = ({
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
                 onMouseLeave={() => setIsTooltipOpen(false)}
-                // onTouchStart for open tooltip on mobile
-                onTouchStart={onClickMobileHandler}
+                // onTouchStart to open tooltip on mobile
+                onTouchStart={onTapMobileHandler}
+                data-testid={'dt_accumulator_tooltip_spot'}
             />
             <CSSTransition
                 in={is_tooltip_open}
                 timeout={{
-                    appear: 500,
-                    enter: 0,
                     exit: 500,
                 }}
                 unmountOnExit
-                classNames={{
-                    appear: `${className}__content--enter`,
-                    enter: `${className}__content--enter`,
-                    enterDone: `${className}__content--enter-done`,
-                    exit: `${className}__content--exit`,
-                }}
+                classNames={`${className}__content`}
             >
                 <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
                     <Text size='xxs' className={`${className}__text`}>

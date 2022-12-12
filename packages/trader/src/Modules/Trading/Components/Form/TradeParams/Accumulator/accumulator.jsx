@@ -23,7 +23,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
             header={localize('Accumulate')}
             is_center
             header_tooltip={localize(
-                'Your stake will grow by {{growth_rate}}% per tick if the price remains within a range of ± {{tick_size_barrier}}% from the previous tick price.',
+                'Your stake will grow by {{growth_rate}}% at every tick starting from 2nd tick, as long as price remains within a range of ±{{tick_size_barrier}}% from the previous tick price.',
                 {
                     growth_rate: getGrowthRatePercentage(growth_rate),
                     tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier),

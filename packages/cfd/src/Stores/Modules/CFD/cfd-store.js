@@ -36,8 +36,6 @@ export default class CFDStore extends BaseStore {
         real: '',
     };
 
-    is_from_mt5_compare_accounts_table = false;
-
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
 
@@ -64,9 +62,10 @@ export default class CFDStore extends BaseStore {
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
             dxtrade_tokens: observable,
-            is_from_mt5_compare_accounts_table: observable,
             account_title: computed,
             current_list: computed,
+            has_created_account_for_selected_jurisdiction: computed,
+            has_submitted_cfd_personal_details: computed,
             onMount: action.bound,
             onUnmount: override,
             checkShouldOpenAccount: action.bound,
@@ -101,8 +100,6 @@ export default class CFDStore extends BaseStore {
             disableMt5FinancialStpModal: action.bound,
             topUpVirtual: action.bound,
             sendVerifyEmail: action.bound,
-            setIsFromMt5CompareAccountsTable: action.bound,
-            toggleCFDPersonalDetailsModal: action.bound,
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -126,9 +123,14 @@ export default class CFDStore extends BaseStore {
             : '';
     }
 
+    get has_submitted_cfd_personal_details() {
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            this.root_store.client.account_settings;
+        return !!(citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason);
+    }
+
     get current_list() {
         const list = {};
-
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
             list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
@@ -154,6 +156,15 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get dxtrade_companies() {
         return getDxCompanies();
+    }
+    get has_created_account_for_selected_jurisdiction() {
+        return this.account_type.type === 'synthetic'
+            ? this.real_synthetic_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              )
+            : this.real_financial_accounts_existing_data?.some(
+                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
+              );
     }
 
     onMount() {
@@ -591,14 +602,6 @@ export default class CFDStore extends BaseStore {
                 );
             }
         });
-    }
-    setIsFromMt5CompareAccountsTable(is_from_compare_accounts) {
-        this.is_from_mt5_compare_accounts_table = is_from_compare_accounts;
-    }
-
-    toggleCFDPersonalDetailsModal(is_from_compare_accounts = false) {
-        this.setIsFromMt5CompareAccountsTable(is_from_compare_accounts);
-        this.is_cfd_personal_details_modal_visible = !this.is_cfd_personal_details_modal_visible;
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

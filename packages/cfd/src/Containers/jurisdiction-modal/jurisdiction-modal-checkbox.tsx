@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text, Checkbox, StaticUrl } from '@deriv/components';
-import { isMobile, getAuthenticationStatusInfo } from '@deriv/shared';
+import { Checkbox, StaticUrl, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 
 const JurisdictionCheckBox = ({
-    account_status,
     class_name,
     is_checked,
     jurisdiction_selected_shortcode,
@@ -13,36 +12,15 @@ const JurisdictionCheckBox = ({
     context,
     should_restrict_bvi_account_creation,
 }: TJurisdictionCheckBoxProps) => {
-    const {
-        poi_verified_for_bvi_labuan_maltainvest,
-        poi_verified_for_vanuatu,
-        poa_not_submitted,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
-    } = getAuthenticationStatusInfo(account_status);
-
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
-            if (jurisdiction_selected_shortcode === 'svg') {
+            if (
+                jurisdiction_selected_shortcode === 'svg' ||
+                (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation)
+            ) {
                 return false;
-            } else if (
-                jurisdiction_selected_shortcode === 'vanuatu' &&
-                poi_verified_for_vanuatu &&
-                !poa_not_submitted
-            ) {
-                return true;
-            } else if (
-                jurisdiction_selected_shortcode === 'bvi' &&
-                !should_restrict_bvi_account_creation &&
-                poi_verified_for_bvi_labuan_maltainvest &&
-                !poa_not_submitted
-            ) {
-                return true;
-            } else if (
-                ['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode) &&
-                poi_poa_verified_for_bvi_labuan_maltainvest
-            ) {
-                return true;
             }
+            return true;
         }
         return false;
     };
@@ -76,7 +54,13 @@ const JurisdictionCheckBox = ({
         <React.Fragment>
             {shouldShowCheckBox() && (
                 <div className={class_name}>
-                    <Checkbox context={context} onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
+                    <Checkbox
+                        context={context}
+                        value={is_checked}
+                        onChange={onCheck}
+                        label={getCheckboxLabel()}
+                        defaultChecked={!!is_checked}
+                    />
                 </div>
             )}
         </React.Fragment>

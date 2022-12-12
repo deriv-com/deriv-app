@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStore, useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';

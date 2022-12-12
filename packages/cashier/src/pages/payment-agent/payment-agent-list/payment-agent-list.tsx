@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
-import { useStore } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import SideNote from 'Components/side-note';

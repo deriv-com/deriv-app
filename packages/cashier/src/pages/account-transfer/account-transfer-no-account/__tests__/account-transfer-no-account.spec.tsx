@@ -1,7 +1,7 @@
 import React from 'react';
-import AccountTransferNoAccount from '../account-transfer-no-account';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { StoreProvider } from '../../../../hooks';
+import { StoreProvider } from '@deriv/stores';
+import AccountTransferNoAccount from '../account-transfer-no-account';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

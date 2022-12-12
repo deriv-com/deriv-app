@@ -1,8 +1,6 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 
-jest.mock('../verification-store');
-
 describe('PaymentAgentStore', () => {
     let payment_agent_store;
     const mocked_payment_agent_list = {
@@ -136,13 +134,6 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.active_tab_index).toBe(1);
     });
 
-    it('should set active_tab_index then send verification email if it is equal to 1', () => {
-        payment_agent_store.verification.sendVerificationEmail = jest.fn();
-
-        payment_agent_store.setActiveTab(1);
-        expect(payment_agent_store.verification.sendVerificationEmail).toHaveBeenCalled();
-    });
-
     it('should get is_payment_agent_visible', async () => {
         expect(payment_agent_store.is_payment_agent_visible).toBe(false);
 
@@ -217,7 +208,7 @@ describe('PaymentAgentStore', () => {
 
     it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
-        payment_agent_store.filterPaymentAgentList('mastercard');
+        payment_agent_store.filterPaymentAgentList('card');
         expect(payment_agent_store.filtered_list).toEqual(
             expect.arrayContaining([
                 {
@@ -231,6 +222,20 @@ describe('PaymentAgentStore', () => {
                     paymentagent_loginid: 'CR90000002',
                     phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                    urls: [{ url: 'http://www.pa.com' }],
+                    withdrawal_commission: 0,
+                },
+                {
+                    currency: 'USD',
+                    deposit_commission: 0,
+                    email: 'pa@example.com',
+                    further_information: 'further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
+                    name: 'Payment Agent of CR90000000',
+                    paymentagent_loginid: 'CR90000000',
+                    phones: [{ phone_number: '+12345678' }],
+                    supported_banks: [{ payment_method: 'Visa' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
@@ -280,7 +285,7 @@ describe('PaymentAgentStore', () => {
         payment_agent_store.onChangePaymentMethod({ target: { value: '0' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
 
-        payment_agent_store.onChangePaymentMethod({ target: { value: 'visa' } });
+        payment_agent_store.onChangePaymentMethod({ target: { value: 'card' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
     });
 
@@ -427,12 +432,10 @@ describe('PaymentAgentStore', () => {
 
     // it('should reset payment agent withdrawal form', () => {
     //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-    //     const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
     //     payment_agent_store.resetPaymentAgent();
     //     expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
     //     expect(payment_agent_store.is_withdraw).toBeFalsy();
-    //     expect(spyClearVerification).toHaveBeenCalled();
     //     expect(payment_agent_store.active_tab_index).toBe(0);
     // });
 

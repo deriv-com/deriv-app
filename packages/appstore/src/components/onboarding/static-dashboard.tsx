@@ -15,6 +15,7 @@ type TStaticDashboard = {
     loginid?: string;
     is_grey?: boolean;
     currency?: string;
+    mf_currency?: string;
     has_account?: boolean;
     is_last_step?: boolean;
     derived_amount?: string;
@@ -48,7 +49,9 @@ type TStaticDashboard = {
 
 const StaticDashboard = ({
     currency,
+    mf_currency,
     financial_amount,
+    derived_amount,
     has_account,
     has_applauncher_account,
     is_blurry,
@@ -67,7 +70,7 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
         { text: 'CFDs', value: 0 },
-        { text: 'Options', value: 1 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options and...'}`, value: 1 },
     ];
 
     const [index, setIndex] = React.useState(0);
@@ -85,8 +88,9 @@ const StaticDashboard = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options and Multipliers');
-    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
+    const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
         <div className='static-dashboard'>
@@ -104,7 +108,7 @@ const StaticDashboard = ({
                                         setIndex(item.target.value);
                                     }}
                                     name='CFDs'
-                                    value={'CFDs'}
+                                    value={index}
                                 />
                             ) : (
                                 <Text
@@ -118,7 +122,8 @@ const StaticDashboard = ({
                                     }
                                 >
                                     <Localize
-                                        i18n_default_text='CFDs <0>Compare accounts</0>'
+                                        i18n_default_text='CFDs <0>{{compare_accounts_title}}</0>'
+                                        values={{ compare_accounts_title }}
                                         components={[
                                             <Text
                                                 key={0}
@@ -170,7 +175,7 @@ const StaticDashboard = ({
                                             is_blurry.cfd_description || is_blurry.cfd_text,
                                     })}
                                 >
-                                    {localize('Compare accounts')}
+                                    {compare_accounts_title}
                                 </Text>
                             )}
                         </div>
@@ -180,13 +185,16 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='synthetic'
                                         platform='mt5'
-                                        appname='Derived'
+                                        appname={has_account ? 'Derived SVG' : 'Derived'}
                                         description='Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}
+                                        derived_amount={derived_amount}
+                                        financial_amount={financial_amount}
                                         is_blurry={is_blurry}
                                         is_onboarding_animated={is_onboarding_animated}
+                                        is_eu_user={is_eu_user}
                                     />
                                     {has_account && (
                                         <div className='static-dashboard-wrapper__body--add-button'>
@@ -207,41 +215,62 @@ const StaticDashboard = ({
                                     )}
                                 </div>
                             )}
-
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname='Financial'
-                                    description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
-                                    financial_amount={financial_amount}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_financial_last_step={is_financial_last_step}
-                                />
-                                {has_account && (
-                                    <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon
-                                            icon='icAppstoreAddRounded'
-                                            width='24'
-                                            height='24'
-                                            className='Add-Rounded'
-                                        />
-                                        <Text
-                                            size='xs'
-                                            color='less-prominent'
-                                            className='static-dashboard-wrapper__body--add-button-text'
-                                        >
-                                            {localize('More [account name] accounts')}
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                            {is_eu_user && (
+                                <div>
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={'CFDs'}
+                                        description='Trade CFDs on forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities with leverage.'
+                                        loginid={loginid}
+                                        currency={is_eu_user ? mf_currency : currency}
+                                        has_account={has_account}
+                                        derived_amount={derived_amount}
+                                        financial_amount={is_eu_user ? '0.00' : financial_amount}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </div>
+                            )}
+                            {!is_eu_user && (
+                                <div>
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={has_account ? 'Financial BVI' : 'Financial'}
+                                        description='Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.'
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                    {has_account && (
+                                        <div className='static-dashboard-wrapper__body--add-button'>
+                                            <Icon
+                                                icon='icAppstoreAddRounded'
+                                                width='24'
+                                                height='24'
+                                                className='Add-Rounded'
+                                            />
+                                            <Text
+                                                size='xs'
+                                                color='less-prominent'
+                                                className='static-dashboard-wrapper__body--add-button-text'
+                                            >
+                                                {localize('More [account name] accounts')}
+                                            </Text>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             {!is_eu_user && (
                                 <div>
                                     <StaticCFDAccountManager
@@ -257,6 +286,7 @@ const StaticDashboard = ({
                                         is_onboarding_animated={is_onboarding_animated}
                                         is_derivx_last_step={is_derivx_last_step}
                                         is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
                                     />
                                 </div>
                             )}
@@ -278,7 +308,7 @@ const StaticDashboard = ({
                                         setIndex(item.target.value);
                                     }}
                                     name='Options'
-                                    value={'Options and Multipliers'}
+                                    value={index}
                                 />
                             ) : (
                                 <Text
@@ -305,7 +335,7 @@ const StaticDashboard = ({
                                         : 'prominent'
                                 }
                             >
-                                {is_eu ? (
+                                {is_eu_user ? (
                                     <Localize
                                         i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
                                         components={[
@@ -358,6 +388,7 @@ const StaticDashboard = ({
                                     has_account={has_account}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
+                                    is_eu_user={is_eu_user}
                                 />
                             ) : (
                                 <div
@@ -367,17 +398,31 @@ const StaticDashboard = ({
                                 >
                                     {!isMobile() ? (
                                         <React.Fragment>
-                                            <StaticAppLauncher icon_type={'USD'} is_grey />
-                                            <StaticAppLauncher icon_type={'Bitcoin'} />
-                                            <StaticAppLauncher icon_type={'Ethereum'} />
-                                            <StaticAppLauncher icon_type={'Litecoin'} />
-                                            <div className='Add-Square'>
-                                                <Icon icon='icAppstoreAddSquare' width='36' height='36' />
-                                            </div>
+                                            {is_eu_user ? (
+                                                <StaticAppLauncher icon_type={'EUR'} is_grey is_eu_user={is_eu_user} />
+                                            ) : (
+                                                <>
+                                                    <StaticAppLauncher
+                                                        icon_type={'USD'}
+                                                        is_grey
+                                                        is_eu_user={is_eu_user}
+                                                    />
+                                                    <StaticAppLauncher icon_type={'Bitcoin'} is_eu_user={is_eu_user} />
+                                                    <StaticAppLauncher icon_type={'Ethereum'} is_eu_user={is_eu_user} />
+                                                    <StaticAppLauncher icon_type={'Litecoin'} is_eu_user={is_eu_user} />
+                                                    <div className='Add-Square'>
+                                                        <Icon icon='icAppstoreAddSquare' width='36' height='36' />
+                                                    </div>
+                                                </>
+                                            )}
                                         </React.Fragment>
                                     ) : (
                                         <div className={classNames('static-dashboard-wrapper__body--with-add')}>
-                                            <StaticAppLauncher icon_type={'USD'} is_grey />
+                                            {is_eu_user ? (
+                                                <StaticAppLauncher icon_type={'EUR'} is_grey is_eu_user={is_eu_user} />
+                                            ) : (
+                                                <StaticAppLauncher icon_type={'USD'} is_grey is_eu_user={is_eu_user} />
+                                            )}
                                             <div className='Add-Square'>
                                                 <Icon icon='icAppstoreAddSquare' width='36' height='36' />
                                             </div>
@@ -397,7 +442,11 @@ const StaticDashboard = ({
                                 is_grey={is_grey}
                                 app_icon={`DTrader`}
                                 app_title={'DTrader'}
-                                app_desc={'Options & multipliers trading platform.'}
+                                app_desc={
+                                    is_eu_user
+                                        ? 'Multipliers trading platform.'
+                                        : 'Options & multipliers trading platform.'
+                                }
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}
                             />

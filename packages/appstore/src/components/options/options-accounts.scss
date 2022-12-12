@@ -22,9 +22,9 @@
             }
             .account-container {
                 width: 20%;
-                min-width: 24rem;
+                min-width: 26rem;
                 @include mobile {
-                    width: 70%;
+                    width: 80%;
                 }
             }
         }
@@ -68,11 +68,11 @@
         }
     }
 
-    &__platformLauncher {
+    &__platformLauncher,
+    &__platformLauncher--applauncher {
         width: 100%;
         display: flex;
         flex-direction: row;
-        background: var(--general-section-5);
         border-radius: 0rem 0.6rem 0.6rem;
         padding: 1.6rem 2.4rem;
         overflow-x: auto;
@@ -81,7 +81,7 @@
             flex-direction: row;
             align-items: center;
             width: 20%;
-            min-width: 24rem;
+            min-width: 25rem;
             &_divider {
                 width: 4rem;
                 height: 0.1rem;
@@ -96,5 +96,15 @@
             flex-direction: column;
             padding: 1.6rem 0;
         }
+    }
+    &__platformLauncher {
+        background: var(--general-section-5);
+    }
+    &__divider {
+        margin: 1.1rem 0;
+        height: 0.2rem;
+        width: 100%;
+        border: none;
+        background-color: var(--general-section-1);
     }
 }

@@ -56,7 +56,7 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const getModules = ({ is_pre_appstore, is_eu_country }) => {
+const getModules = ({ is_pre_appstore }) => {
     const modules = [
         {
             path: routes.bot,
@@ -124,6 +124,17 @@ const getModules = ({ is_pre_appstore, is_eu_country }) => {
                             component: Account,
                             getTitle: () => localize('Personal details'),
                             default: true,
+                        },
+                    ],
+                },
+                {
+                    getTitle: () => localize('Assessments'),
+                    icon: 'IcAssessment',
+                    subroutes: [
+                        {
+                            path: routes.trading_assessment,
+                            component: Account,
+                            getTitle: () => localize('Trading assessment'),
                         },
                         {
                             path: routes.financial_assessment,
@@ -208,14 +219,27 @@ const getModules = ({ is_pre_appstore, is_eu_country }) => {
         {
             path: routes.trading_hub,
             component: AppStore,
-            is_authenticated: !is_eu_country,
-            getTitle: () => localize('Trading hub'),
+            is_authenticated: true,
+            getTitle: () => localize('Traders Hub'),
         },
         {
             path: routes.onboarding,
             component: AppStore,
             is_authenticated: false,
-            getTitle: () => localize('Onboarding'),
+            getTitle: () => localize('Appstore'),
+            routes: [
+                {
+                    path: routes.trading_hub,
+                    component: AppStore,
+                    getTitle: () => localize('Traders Hub'),
+                },
+                {
+                    path: routes.onboarding,
+                    component: AppStore,
+                    is_authenticated: false,
+                    getTitle: () => localize('Onboarding'),
+                },
+            ],
         },
         {
             path: routes.cashier,

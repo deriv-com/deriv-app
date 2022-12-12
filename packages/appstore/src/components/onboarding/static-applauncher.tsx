@@ -7,9 +7,18 @@ import { Localize, localize } from '@deriv/translations';
 import './static-applauncher.scss';
 
 type TStaticAppLauncher = {
-    icon_type: 'USD' | 'Bitcoin' | 'Ethereum' | 'Litecoin';
+    icon_type: 'USD' | 'EUR' | 'Bitcoin' | 'Ethereum' | 'Litecoin';
     is_item_blurry?: boolean;
     is_grey?: boolean;
+    is_eu_user: boolean;
+};
+
+const eu_currency_config = {
+    EUR: 'Euro',
+};
+
+const eu_icon_config = {
+    EUR: 'EUR',
 };
 
 const crypto_icon_config = {
@@ -27,51 +36,57 @@ const crypto_config = {
 };
 
 type TCryptoIcon = {
-    currency: keyof typeof crypto_icon_config;
+    currency: string;
+    is_eu_user: boolean;
 };
 
 type TCryptoConfig = {
-    currency: keyof typeof crypto_config;
+    currency: string;
     is_item_blurry?: boolean;
+    is_eu_user: boolean;
 };
 
-const CryptoIcon = ({ currency }: TCryptoIcon) => {
-    return currency === 'USD' ? (
+const CryptoIcon = ({ currency, is_eu_user }: TCryptoIcon) => {
+    const currency_icon_classname =
+        currency === ('USD' && 'EUR') ? 'static-applauncher__icon--selected' : 'static-applauncher__icon--blurry';
+    const currency_icon = is_eu_user ? eu_icon_config : crypto_icon_config;
+    const icon_selector: keyof typeof crypto_icon_config & keyof typeof eu_icon_config =
+        currency as keyof typeof crypto_icon_config & keyof typeof eu_icon_config;
+    return (
         <Icon
-            icon={`IcCurrency${crypto_icon_config[currency]}`}
+            icon={`IcCurrency${currency_icon[icon_selector]}`}
             is_item_blurry
             size={38}
-            className={'static-applauncher__icon--selected'}
-        />
-    ) : (
-        <Icon
-            icon={`IcCurrency${crypto_icon_config[currency]}`}
-            is_item_blurry
-            size={38}
-            className={'static-applauncher__icon--blurry'}
+            className={currency_icon_classname}
         />
     );
 };
 
-const CurrencyIcon = ({ currency, is_item_blurry }: TCryptoConfig) => {
+const CurrencyIcon = ({ currency, is_item_blurry, is_eu_user }: TCryptoConfig) => {
+    const loginid = is_eu_user ? localize('MF4581125') : localize('CR5236585');
+    const currency_icon = is_eu_user ? eu_icon_config : crypto_icon_config;
+    const currency_config = is_eu_user ? eu_currency_config : crypto_config;
+    //infer the exact value of the keys it can return a union of their literal types instead of just returning "string".
+    const icon_selector: keyof typeof crypto_icon_config & keyof typeof eu_icon_config =
+        currency as keyof typeof crypto_icon_config & keyof typeof eu_icon_config;
     return (
         <React.Fragment>
             <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                {localize(`${crypto_config[currency]}`)}
+                {localize(`${currency_config[icon_selector]}`)}
             </Text>
             <Text size='xxxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                {localize('CR5236585')}
+                {loginid}
             </Text>
-            <Text size='xxxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>{`${formatMoney(
-                crypto_icon_config[currency],
-                '0',
-                true
-            )} ${crypto_icon_config[currency]}`}</Text>
+            <Text
+                size={is_eu_user ? 'xs' : 'xxxs'}
+                weight='bold'
+                color={is_item_blurry ? 'less-prominent' : 'prominent'}
+            >{`${formatMoney(currency_icon[icon_selector], '0', true)} ${currency_icon[icon_selector]}`}</Text>
         </React.Fragment>
     );
 };
 
-const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLauncher) => {
+const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey, is_eu_user }: TStaticAppLauncher) => {
     return (
         <div
             className={classNames('static-applauncher', {
@@ -79,10 +94,10 @@ const StaticAppLauncher = ({ icon_type, is_item_blurry, is_grey }: TStaticAppLau
             })}
         >
             <div className='static-applauncher__icon'>
-                <CryptoIcon currency={icon_type} />
+                <CryptoIcon currency={icon_type} is_eu_user={is_eu_user} />
             </div>
             <div className='static-applauncher__details'>
-                <CurrencyIcon is_item_blurry={is_item_blurry} currency={icon_type} />
+                <CurrencyIcon is_item_blurry={is_item_blurry} currency={icon_type} is_eu_user={is_eu_user} />
             </div>
             <div className='static-applauncher__buttons'>
                 <Button secondary small className='static-applauncher__buttons-topup'>

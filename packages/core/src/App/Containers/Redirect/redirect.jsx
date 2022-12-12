@@ -8,7 +8,6 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
-    is_eu,
     currency,
     setVerificationCode,
     verification_code,
@@ -20,7 +19,6 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
-    is_eu_country,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -41,20 +39,14 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
-            } else if (is_eu_country || is_eu) {
-                history.push({
-                    pathname: routes.trading_hub,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
             } else {
                 history.push({
                     pathname: routes.onboarding,
                     search: url_query_string,
                 });
-                redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
+            redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
         }
@@ -200,8 +192,6 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
-    is_eu: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
 };
 
 export default withRouter(
@@ -209,7 +199,6 @@ export default withRouter(
         currency: client.currency,
         loginid: client.loginid,
         is_eu: client.is_eu,
-        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

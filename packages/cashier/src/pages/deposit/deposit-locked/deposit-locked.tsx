@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { routes, WS } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import CashierLocked from 'Components/cashier-locked';
-import { useStore } from '../../../hooks';
 
 const DepositLocked = () => {
     const { client, modules } = useStore();

@@ -20,7 +20,7 @@ import {
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
-import { P2PStore } from '@deriv/p2p';
+import P2PStore from '@deriv/p2p';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';

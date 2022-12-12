@@ -11,7 +11,7 @@ import { setLanguage } from './i18next';
 import './app.scss';
 import Routes from '../routes/routes.jsx';
 
-const App = ({ passthrough, ...props }) => {
+const App = ({ passthrough: { root_store }, ...props }) => {
     const {
         modules: { p2p_store },
     } = useStore();
@@ -108,14 +108,8 @@ const App = ({ passthrough, ...props }) => {
     }, [verification_action, verification_code]);
 
     return (
-        <StoreProvider root_store={passthrough.root_store}>
-            <Routes
-                error={error}
-                has_error={has_error}
-                is_logged_in={is_logged_in}
-                is_logging_in={is_logging_in}
-                passthrough={passthrough}
-            />
+        <StoreProvider root_store={root_store}>
+            <Routes error={error} has_error={has_error} is_logged_in={is_logged_in} is_logging_in={is_logging_in} />
             <main className={classNames('p2p-cashier', className)}>
                 <Notifications />
                 <AppContent />

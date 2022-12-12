@@ -59,7 +59,7 @@ export default class GeneralStore extends BaseStore {
     ws_subscriptions = {};
     service_token_timeout;
 
-    constructor(root_store) {
+    constructor({ root_store }) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super(root_store);
 
@@ -156,6 +156,8 @@ export default class GeneralStore extends BaseStore {
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
         });
+
+        this.root_store = root_store;
     }
 
     get client() {

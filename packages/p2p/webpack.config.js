@@ -12,11 +12,12 @@ module.exports = function () {
     return {
         entry: {
             index: path.resolve(__dirname, 'src/components', 'app.jsx'),
+            P2PStore: path.resolve(__dirname, 'src/stores', 'p2p-store.js'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
             path: path.resolve(__dirname, 'lib'),
-            filename: 'index.js',
+            filename: '[name].js',
             libraryExport: 'default',
             library: '@deriv/p2p',
             libraryTarget: 'umd',

@@ -189,7 +189,7 @@ const generateSWConfig = is_release => ({
             },
         },
         {
-            urlPattern: /(account|appstore|bot|cashier|cfd|trader|reports)\//,
+            urlPattern: /(account|appstore|bot|cashier|cfd|trader|reports|p2p)\//,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'packages-files',

@@ -10,11 +10,11 @@ describe('Error', () => {
     describe('.add', () => {
         it('should add error to errors', () => {
             errors.add('Error', 101);
-            expect(errors.errors).to.have.property('Error').toHaveLength(2);
+            expect(errors.errors).toHaveProperty('Error').toHaveLength(2);
         });
         it('should not add error if already existed', () => {
             errors.add('Error', 100);
-            expect(errors.errors).to.have.property('Error').toHaveLength(1);
+            expect(errors.errors).toHaveProperty('Error').toHaveLength(1);
         });
     });
 

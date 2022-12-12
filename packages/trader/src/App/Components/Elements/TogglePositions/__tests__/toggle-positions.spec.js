@@ -28,6 +28,6 @@ describe('TogglePositions', () => {
         const callback = fake();
         const wrapper = shallow(<TogglePositions togglePositions={callback} />);
         wrapper.prop('onClick')();
-        expect(callback.called).toBe(true);
+        expect(callback.toBeCalled()).toBe(true);
     });
 });

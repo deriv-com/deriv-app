@@ -41,7 +41,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.called).toBe(true);
+            expect(callback.toBeCalled()).toBe(true);
         });
 
         it('should be called with the button value when the button clicked', () => {
@@ -77,7 +77,7 @@ describe('<ToggleButton />', () => {
                 </ToggleButton>
             );
             wrapper.simulate('click', event);
-            expect(callback.called).toBe(true);
+            expect(callback.toBeCalled()).toBe(true);
         });
 
         it('should be called with the button value when the button clicked', () => {

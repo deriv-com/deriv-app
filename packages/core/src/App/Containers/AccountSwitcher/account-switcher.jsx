@@ -55,7 +55,7 @@ const AccountSwitcher = props => {
         props.mt5_login_list.find(account => !isDemo(account))?.currency ||
         props.dxtrade_accounts_list.find(account => !isDemo(account))?.currency;
 
-    const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
+    const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
     const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
     const cfd_demo_currency =
         props.mt5_login_list.find(account => isDemo(account))?.currency ||
@@ -232,6 +232,13 @@ const AccountSwitcher = props => {
         props.toggleSetCurrencyModal();
     };
 
+    // TODO: Remove this and all usage after real release (74063)
+    const hasUnmergedAccounts = accounts => {
+        return Object.keys(accounts).some(
+            key => accounts[key].market_type === 'synthetic' || accounts[key].market_type === 'financial'
+        );
+    };
+
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -288,6 +295,13 @@ const AccountSwitcher = props => {
         if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
             return [...all_config];
         }
+
+        if (!is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return hasUnmergedAccounts(existing_cfd_accounts)
+                ? [...gaming_config, ...financial_config]
+                : [...all_config];
+        }
+
         return [...gaming_config, ...financial_config];
     };
 
@@ -334,8 +348,10 @@ const AccountSwitcher = props => {
     };
 
     const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(
-            account => !isDemo(account) && account.enabled === 1
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(account =>
+            hasUnmergedAccounts(props.dxtrade_accounts_list)
+                ? !isDemo(account) && account.enabled === 1 && account.market_type !== 'all'
+                : !isDemo(account) && account.enabled === 1 && account.market_type === 'all'
         );
     };
 
@@ -524,40 +540,42 @@ const AccountSwitcher = props => {
 
     const demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
-            <AccountWrapper
-                header={localize('Deriv Accounts')}
-                is_visible={is_deriv_demo_visible}
-                toggleVisibility={() => {
-                    toggleVisibility('demo_deriv');
-                }}
-            >
-                <div className='acc-switcher__accounts'>
-                    {getSortedAccountList(props.account_list, props.accounts)
-                        .filter(account => account.is_virtual)
-                        .map(account => (
-                            <AccountList
-                                is_dark_mode_on={props.is_dark_mode_on}
-                                key={account.loginid}
-                                balance={props.accounts[account.loginid].balance}
-                                currency={props.accounts[account.loginid].currency}
-                                currency_icon={`IcCurrency-${account.icon}`}
-                                country_standpoint={props.country_standpoint}
-                                display_type={'currency'}
-                                has_balance={'balance' in props.accounts[account.loginid]}
-                                has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
-                                is_disabled={account.is_disabled}
-                                is_virtual={account.is_virtual}
-                                loginid={account.loginid}
-                                redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
-                                onClickResetVirtualBalance={resetBalance}
-                                selected_loginid={props.account_loginid}
-                            />
-                        ))}
-                </div>
-            </AccountWrapper>
+            {vrtc_loginid && (
+                <AccountWrapper
+                    header={localize('Deriv Accounts')}
+                    is_visible={is_deriv_demo_visible}
+                    toggleVisibility={() => {
+                        toggleVisibility('demo_deriv');
+                    }}
+                >
+                    <div className='acc-switcher__accounts'>
+                        {getSortedAccountList(props.account_list, props.accounts)
+                            .filter(account => account.is_virtual)
+                            .map(account => (
+                                <AccountList
+                                    is_dark_mode_on={props.is_dark_mode_on}
+                                    key={account.loginid}
+                                    balance={props.accounts[account.loginid].balance}
+                                    currency={props.accounts[account.loginid].currency}
+                                    currency_icon={`IcCurrency-${account.icon}`}
+                                    country_standpoint={props.country_standpoint}
+                                    display_type={'currency'}
+                                    has_balance={'balance' in props.accounts[account.loginid]}
+                                    has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
+                                    is_disabled={account.is_disabled}
+                                    is_virtual={account.is_virtual}
+                                    loginid={account.loginid}
+                                    redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                    onClickResetVirtualBalance={resetBalance}
+                                    selected_loginid={props.account_loginid}
+                                />
+                            ))}
+                    </div>
+                </AccountWrapper>
+            )}
             {isMT5Allowed('demo') && (
                 <React.Fragment>
-                    <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
+                    {vrtc_loginid && <div className='acc-switcher__separator acc-switcher__separator--no-padding' />}
                     <AccountWrapper
                         header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_demo_visible}

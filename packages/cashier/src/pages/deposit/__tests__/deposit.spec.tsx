@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider } from '@deriv/stores';
-import { DeepPartial } from '@deriv/stores/types';
 import Deposit from '../deposit';
 import { TRootStore } from '../../../types';
 
@@ -85,7 +84,7 @@ describe('<Deposit />', () => {
         };
 
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -130,7 +129,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
@@ -170,7 +169,7 @@ describe('<Deposit />', () => {
             },
         };
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
@@ -221,7 +220,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('FundsProtection')).toBeInTheDocument();
@@ -262,7 +261,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('DepositLocked')).toBeInTheDocument();
@@ -303,7 +302,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
@@ -344,7 +343,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Error')).toBeInTheDocument();
@@ -386,7 +385,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
@@ -427,7 +426,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
@@ -468,7 +467,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
@@ -513,7 +512,7 @@ describe('<Deposit />', () => {
         const setSideNotes = jest.fn();
 
         render(<Deposit setSideNotes={setSideNotes} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(setSideNotes).toHaveBeenCalledTimes(2);

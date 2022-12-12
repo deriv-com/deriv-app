@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { isEmptyObject } from '../object';
-import { isUserSold } from '../contract';
+import { isAccumulatorContract, isUserSold } from '../contract';
 
 export const isContractElapsed = (contract_info, tick) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
@@ -25,6 +25,7 @@ export const isUserCancelled = contract_info => contract_info.status === 'cancel
 
 export const getEndTime = contract_info => {
     const {
+        contract_type,
         exit_tick_time,
         date_expiry,
         is_expired,
@@ -34,7 +35,7 @@ export const getEndTime = contract_info => {
         tick_count: is_tick_contract,
     } = contract_info;
 
-    const is_finished = is_expired && status !== 'open';
+    const is_finished = status !== 'open' && (is_expired || isAccumulatorContract(contract_type));
 
     if (!is_finished && !isUserSold(contract_info) && !isUserCancelled(contract_info)) return undefined;
 

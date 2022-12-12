@@ -4,6 +4,12 @@ import { Text } from '@deriv/components';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 
+const ACTIONS = {
+    INC: 'increment',
+    DEC: 'decrement',
+    ADD10: 'add10',
+};
+
 const AccumulatorsProfitLossText = ({
     current_spot,
     current_spot_time = 0,
@@ -11,103 +17,75 @@ const AccumulatorsProfitLossText = ({
     className = 'sc-accumulators-profit-loss-text',
     profit,
 }) => {
-    const [value, setValue] = React.useState(0);
-    const timeout_ids = React.useRef([]);
-    const counter = React.useRef(null);
+    const [is_fading_in, setIsFadingIn] = React.useState(false);
+    const [is_sliding, setIsSliding] = React.useState(false);
     const prev_profit = React.useRef(profit);
+    const prev_profit_tenth = +prev_profit.current?.toFixed(2).split('.')[1][0];
+    const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
+    const profit_tenth_ref = React.useRef();
+    const interval_id_ref = React.useRef(null);
+    const fading_in_timeout_id = React.useRef();
+    const sliding_timeout_id = React.useRef();
+    const profit_portions_array = profit.toFixed(2).split('.');
+    const profit_whole_number = +profit_portions_array[0];
+    const profit_tenth = +profit_portions_array[1][0];
+    const profit_hundredths = +profit_portions_array[1].slice(1);
     const won = profit > 0;
     const sign = won ? '+' : '';
-    const new_arr = profit.toFixed(2).split('.');
-    const prev_arr = prev_profit.current?.toFixed(2).split('.');
-    const new_counter = +new_arr[1][0];
-    const prev_counter = +prev_arr[1][0];
-    const [is_brightening, setIsBrightening] = React.useState(false);
-    const [is_jumping, setIsJumping] = React.useState(false);
-    const brightening_timeout = React.useRef();
-    const jumping_timeout = React.useRef();
+
+    const runThroughTenthDigit = (action, interval_ms, start, end) => {
+        clearInterval(interval_id_ref.current);
+        const interval_id = setInterval(() => {
+            if (action === ACTIONS.INC && profit_tenth_ref.current < end) {
+                profit_tenth_ref.current = (profit_tenth_ref.current + 1) % 10;
+            } else if (action === ACTIONS.DEC && profit_tenth_ref.current > end) {
+                profit_tenth_ref.current = Math.abs(profit_tenth_ref.current - 1) % 10;
+            } else if (action === ACTIONS.ADD10 && profit_tenth_ref.current < start + 10) {
+                profit_tenth_ref.current += 1;
+            } else if (
+                action === ACTIONS.ADD10 ? profit_tenth_ref.current === start + 10 : profit_tenth_ref.current === end
+            ) {
+                clearInterval(interval_id);
+            }
+            setCurrentProfitTenth(profit_tenth_ref.current % 10);
+        }, interval_ms);
+        interval_id_ref.current = interval_id;
+    };
 
     React.useEffect(() => {
         return () => {
-            clearTimeout(brightening_timeout.current);
-            clearTimeout(jumping_timeout.current);
+            clearTimeout(fading_in_timeout_id.current);
+            clearTimeout(sliding_timeout_id.current);
+            clearInterval(interval_id_ref.current);
         };
     }, []);
 
     React.useEffect(() => {
         if (profit) {
-            setIsBrightening(true);
-            setIsJumping(true);
-            brightening_timeout.current = setTimeout(() => {
-                setIsBrightening(false);
+            setIsFadingIn(true);
+            setIsSliding(true);
+            fading_in_timeout_id.current = setTimeout(() => {
+                setIsFadingIn(false);
             }, 600);
-            jumping_timeout.current = setTimeout(() => {
-                setIsJumping(false);
+            sliding_timeout_id.current = setTimeout(() => {
+                setIsSliding(false);
             }, 300);
         }
-    }, [profit]);
-
-    React.useEffect(() => {
-        update(prev_counter, new_counter);
-    }, [profit, prev_counter, new_counter]);
-
-    // TODO: maryia-binary: refactor this function
-    const update = (start, end) => {
-        timeout_ids.current.forEach(id => {
-            clearTimeout(id);
-        });
-
-        const delta = Math.abs(end - start);
-        counter.current = start;
-        if (start < end) {
-            const runLoop = () => {
-                const timeout_id = setTimeout(() => {
-                    if (counter.current < end) {
-                        counter.current = (counter.current + 1) % 10;
-                        setValue(counter.current % 10);
-
-                        runLoop();
-                    } else if (counter.current === end) {
-                        setValue(counter.current % 10);
-                    }
-                }, 300 / delta);
-                timeout_ids.current.push(timeout_id);
+        if (profit !== 0) {
+            const updateTenth = (start, end) => {
+                const delta = Math.abs(end - start);
+                profit_tenth_ref.current = start;
+                if (start < end) {
+                    runThroughTenthDigit(ACTIONS.INC, 300 / delta, start, end);
+                } else if (start > end) {
+                    runThroughTenthDigit(ACTIONS.DEC, 300 / delta, start, end);
+                } else {
+                    runThroughTenthDigit(ACTIONS.ADD10, 30, start, end);
+                }
             };
-
-            runLoop();
-        } else if (start > end) {
-            const runLoop = () => {
-                const timeout_id = setTimeout(() => {
-                    if (counter.current > end) {
-                        counter.current = Math.abs(counter.current - 1) % 10;
-                        setValue(counter.current % 10);
-
-                        runLoop();
-                    } else if (counter.current === end) {
-                        setValue(counter.current % 10);
-                    }
-                }, 300 / delta);
-                timeout_ids.current.push(timeout_id);
-            };
-
-            runLoop();
-        } else {
-            const runLoop = () => {
-                const timeout_id = setTimeout(() => {
-                    if (counter.current < start + 10) {
-                        counter.current += 1;
-                        setValue(counter.current % 10);
-
-                        runLoop();
-                    } else if (counter.current === start + 10) {
-                        setValue(counter.current % 10);
-                    }
-                }, 30);
-                timeout_ids.current.push(timeout_id);
-            };
-
-            runLoop();
+            updateTenth(prev_profit_tenth, profit_tenth);
         }
-    };
+    }, [profit, prev_profit_tenth, profit_tenth]);
 
     const onRef = ref => {
         if (ref) {
@@ -129,13 +107,13 @@ const AccumulatorsProfitLossText = ({
                 size='m'
                 color={won ? 'profit-success' : 'loss-danger'}
                 className={classNames(`${className}__profit`, {
-                    [`${className}__profit--brightening`]: is_brightening,
+                    [`${className}__profit--fading-in`]: is_fading_in,
                 })}
                 as='div'
             >
-                {`${sign}${new_arr[0]}.`}
-                <div className={is_jumping ? `${className}__jumping-decimal` : ''}>{value}</div>
-                {`${new_arr[1].slice(1)}`}
+                {`${sign}${profit_whole_number}.`}
+                <div className={is_sliding ? `${className}__sliding-tenth` : ''}>{current_profit_tenth}</div>
+                {`${profit_hundredths}`}
             </Text>
             <Text size='xxs' as='div' className={`${className}__currency`}>
                 {currency}

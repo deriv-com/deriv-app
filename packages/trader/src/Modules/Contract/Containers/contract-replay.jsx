@@ -9,6 +9,7 @@ import {
     PageOverlay,
     SwipeableWrapper,
     FadeWrapper,
+    usePrevious,
 } from '@deriv/components';
 import {
     isAccumulatorContract,
@@ -241,7 +242,7 @@ const Chart = props => {
 
         return margin;
     };
-
+    const prev_start_epoch = usePrevious(props.start_epoch);
     const passthrough_contract_info = props.is_accumulator_contract
         ? {
               ...props.contract_info,
@@ -275,14 +276,16 @@ const Chart = props => {
             allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
-            isStaticChart={false}
+            isStaticChart={
+                // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
+                props.is_accumulator_contract &&
+                props.contract_info.status !== 'open' &&
+                props.start_epoch < prev_start_epoch
+            }
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory={
-                props.is_accumulator_contract ||
-                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'
-            }
+            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
             contractInfo={passthrough_contract_info}
         >
             {props.markers_array.map(marker => (

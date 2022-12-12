@@ -230,9 +230,9 @@ const TickContract = RawMarkerMaker(
             profit: is_sold ? profit : null,
         });
 
-        ctx.save();
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
+        ctx.save();
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
         const is_accumulators_contract = contract_type === 'ACCU';
@@ -259,7 +259,6 @@ const TickContract = RawMarkerMaker(
                 bottom: barrier_2,
                 scale,
             });
-            ctx.restore();
             return;
         }
 
@@ -285,10 +284,10 @@ const TickContract = RawMarkerMaker(
             }
 
             if (is_in_contract_details) {
-                ctx.restore();
                 return;
             }
         }
+        ctx.restore();
 
         if (draw_start_line) {
             render_label({
@@ -297,7 +296,6 @@ const TickContract = RawMarkerMaker(
                 tick: { zoom: start.zoom, left: start.left - 1 * scale, top: canvas_height - 50 },
             });
             ctx.beginPath();
-            ctx.strokeStyle = color + opacity;
             ctx.setLineDash([3, 3]);
             ctx.moveTo(start.left - 1 * scale, 0);
             if (ticks.length && barrier && !is_accumulators_contract) {

@@ -8,6 +8,7 @@ import Derived from 'Assets/svgs/wallet/ic-appstore-derived.svg';
 import DerivGo from 'Assets/svgs/wallet/ic-brand-derivgo.svg';
 import DerivGoBlack from 'Assets/svgs/wallet/ic-appstore-derivgo-black.svg';
 import DerivLogo from 'Assets/svgs/wallet/ic-appstore-deriv-logo.svg';
+import DerivTradingLogo from 'Assets/svgs/wallet/ic-appstore-deriv-trading-logo.svg';
 import DerivX from 'Assets/svgs/wallet/ic-appstore-derivx.svg';
 import DropDown from 'Assets/svgs/wallet/drop-down.svg';
 import DTrader from 'Assets/svgs/wallet/ic-brand-dtrader.svg';
@@ -34,6 +35,7 @@ export const Icons = {
     DerivGo,
     DerivGoBlack,
     DerivLogo,
+    DerivTradingLogo,
     DerivX,
     DropDown,
     DTrader,

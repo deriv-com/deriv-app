@@ -7,6 +7,7 @@ import { trading_hub_contents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {
     contents: Record<
@@ -59,6 +60,10 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
     const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
+
+    if (!is_logged_in) {
+        return <EmptyOnboarding />;
+    }
 
     return (
         <div className='onboarding-wrapper'>

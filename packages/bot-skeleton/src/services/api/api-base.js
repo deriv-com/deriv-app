@@ -1,7 +1,7 @@
 import { observer as globalObserver } from '../../utils/observer';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
-class GetAPI {
+class APIBase {
     api;
     token;
     account_id;
@@ -87,12 +87,8 @@ class GetAPI {
     toggleRunButton = toggle => {
         const run_button = document.querySelector('#db-animation__run-button');
         if (!run_button) return;
-        if (toggle) {
-            run_button.disabled = true;
-        } else {
-            run_button.disabled = false;
-        }
+        this.run_button = toggle;
     };
 }
 
-export const api_base = new GetAPI();
+export const api_base = new APIBase();

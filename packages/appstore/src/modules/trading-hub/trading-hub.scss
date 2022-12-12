@@ -58,7 +58,9 @@
         margin: 2.4rem 0;
         padding: 2.4rem;
         overflow-y: auto;
-
+        .test {
+            overflow-y: scroll;
+        }
         &--platform_type_toggle {
             margin-bottom: 1.6rem;
             border-radius: $BORDER_RADIUS;

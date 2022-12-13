@@ -24,11 +24,7 @@ type TCryptoFiatConverterProps = {
     from_currency: string;
     hint: string | TReactChildren;
     is_timer_visible: boolean;
-    onChangeConverterFromAmount: (
-        event: { target: { value: string } },
-        from_currency: string,
-        to_currency: string
-    ) => void;
+    onChangeConverterFromAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
     resetConverter: () => void;
     to_currency: string;

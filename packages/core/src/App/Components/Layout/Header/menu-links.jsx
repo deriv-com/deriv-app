@@ -26,27 +26,26 @@ const MenuItems = ({ item, hide_menu_item }) => {
         </BinaryLink>
     );
 };
-const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => {
-    return (
-        <React.Fragment>
-            {!!items.length && (
-                <div className='header__menu-links'>
-                    {items.map(item => {
-                        return (
-                            is_logged_in && (
-                                <MenuItems
-                                    key={`${item.icon}${item.id}`}
-                                    item={item}
-                                    hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
-                                />
-                            )
-                        );
-                    })}
-                </div>
-            )}
-        </React.Fragment>
-    );
-};
+
+const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
+    <React.Fragment>
+        {!!items.length && (
+            <div className='header__menu-links'>
+                {items.map(item => {
+                    return (
+                        is_logged_in && (
+                            <MenuItems
+                                key={`${item.icon}${item.id}`}
+                                item={item}
+                                hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
+                            />
+                        )
+                    );
+                })}
+            </div>
+        )}
+    </React.Fragment>
+);
 
 MenuLinks.propTypes = {
     items: PropTypes.arrayOf(

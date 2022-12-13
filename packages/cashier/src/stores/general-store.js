@@ -331,7 +331,6 @@ export default class GeneralStore extends BaseStore {
 
     async onMountCommon(should_remount) {
         const { client, common, modules } = this.root_store;
-        const { is_from_derivgo } = common;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
 
@@ -360,7 +359,7 @@ export default class GeneralStore extends BaseStore {
             }
 
             if (!account_transfer.accounts_list.length) {
-                account_transfer.sortAccountsTransfer(null, is_from_derivgo);
+                account_transfer.sortAccountsTransfer();
             }
 
             if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {

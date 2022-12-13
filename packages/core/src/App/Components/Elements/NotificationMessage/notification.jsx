@@ -88,6 +88,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     className={classNames('notification', types[data.type], {
                         'notification--small': data.size === 'small',
                     })}
+                    data-testid='default-component'
                 >
                     <div
                         className={classNames('notification__icon-background', {

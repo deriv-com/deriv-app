@@ -1,3 +1,3 @@
-import FinancialDetails from './financial-details.jsx';
+import FinancialDetails from './financial-details';
 
 export default FinancialDetails;

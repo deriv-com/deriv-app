@@ -1,7 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
-import FinancialDetails from '../financial-details';
+import FinancialDetails, { TFinancialInformationAndTradingExperience, TFinancialDetails } from '../financial-details';
+import { FormikValues } from 'formik';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -13,7 +14,7 @@ const modal_root_el = document.createElement('div');
 modal_root_el.setAttribute('id', 'modal_root');
 document.body.appendChild(modal_root_el);
 
-const fields_enums = {
+const fields_enums: TFinancialInformationAndTradingExperience = {
     account_turnover_enum: [
         { value: 'account turnover 1', text: 'account turnover 1' },
         { value: 'account turnover 2', text: 'account turnover 2' },
@@ -85,17 +86,37 @@ const fields_enums = {
 };
 
 describe('<FinancialDetails />', () => {
-    let mock_props = {};
+    let mock_props: TFinancialDetails = {
+        getCurrentStep: jest.fn(),
+        goToNextStep: jest.fn(),
+        onCancel: jest.fn(),
+        onSave: jest.fn(),
+        onSubmit: jest.fn(),
+        validate: jest.fn(() => ({ errors: {} })),
+        goToPreviousStep: jest.fn(() => ({ errors: {} })),
+        value: {},
+        income_source_enum: [{}],
+        employment_status_enum: [{}],
+        employment_industry_enum: [{}],
+        occupation_enum: [{}],
+        source_of_wealth_enum: [{}],
+        education_level_enum: [{}],
+        net_income_enum: [{}],
+        estimated_worth_enum: [{}],
+        account_turnover_enum: [{}],
+        forex_trading_experience_enum: [{}],
+        forex_trading_frequency_enum: [{}],
+        binary_options_trading_experience_enum: [{}],
+        binary_options_trading_frequency_enum: [{}],
+        cfd_trading_experience_enum: [{}],
+        cfd_trading_frequency_enum: [{}],
+        other_instruments_trading_experience_enum: [{}],
+        other_instruments_trading_frequency_enum: [{}],
+    };
 
     beforeEach(() => {
         mock_props = {
-            getCurrentStep: jest.fn(),
-            goToNextStep: jest.fn(),
-            onCancel: jest.fn(),
-            onSave: jest.fn(),
-            onSubmit: jest.fn(),
-            validate: jest.fn(() => ({ errors: {} })),
-            value: {},
+            ...mock_props,
             ...fields_enums,
         };
     });
@@ -137,37 +158,38 @@ describe('<FinancialDetails />', () => {
     };
 
     it('should render "FinancialDetails" for desktop', () => {
-        const { container } = render(<FinancialDetails {...mock_props} />);
+        fieldsNotRenderCheck();
+        render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
         expect(inputs.length).toBe(17);
 
-        expect(container.querySelector('.dc-form-submit-button')).toBeInTheDocument();
-        expect(container.querySelector('.dc-modal-footer')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_modal_footer')).toBeInTheDocument();
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
     });
 
     it('should render "FinancialDetails" for mobile', () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        fieldsNotRenderCheck();
 
-        const { container } = render(<FinancialDetails {...mock_props} />);
+        render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
         expect(inputs.length).toBe(17);
 
-        expect(container.querySelector('.dc-form-submit-button')).toBeInTheDocument();
-        expect(container.querySelector('.dc-modal-footer')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
     });
 
     it('should trigger "Previous" button', () => {
+        fieldsNotRenderCheck();
         render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
@@ -180,8 +202,9 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" or "Submit" button', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        fieldsNotRenderCheck();
 
         render(<FinancialDetails {...mock_props} />);
 
@@ -189,59 +212,79 @@ describe('<FinancialDetails />', () => {
 
         const select_inputs = screen.getAllByRole('combobox');
 
-        const account_turnover_select = select_inputs.find(option => option.name === 'account_turnover');
+        const account_turnover_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'account_turnover'
+        );
         const binary_options_trading_experience_select = select_inputs.find(
-            option => option.name === 'binary_options_trading_experience'
+            (option: FormikValues) => option.name === 'binary_options_trading_experience'
         );
         const binary_options_trading_frequency_select = select_inputs.find(
-            option => option.name === 'binary_options_trading_frequency'
+            (option: FormikValues) => option.name === 'binary_options_trading_frequency'
         );
-        const cfd_trading_experience_select = select_inputs.find(option => option.name === 'cfd_trading_experience');
-        const cfd_trading_frequency_select = select_inputs.find(option => option.name === 'cfd_trading_frequency');
-        const education_level_select = select_inputs.find(option => option.name === 'education_level');
-        const employment_indystry_select = select_inputs.find(option => option.name === 'employment_industry');
-        const employment_status_select = select_inputs.find(option => option.name === 'employment_status');
-        const estimated_worth_select = select_inputs.find(option => option.name === 'estimated_worth');
+        const cfd_trading_experience_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'cfd_trading_experience'
+        );
+        const cfd_trading_frequency_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'cfd_trading_frequency'
+        );
+        const education_level_select = select_inputs.find((option: FormikValues) => option.name === 'education_level');
+        const employment_indystry_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'employment_industry'
+        );
+        const employment_status_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'employment_status'
+        );
+        const estimated_worth_select = select_inputs.find((option: FormikValues) => option.name === 'estimated_worth');
         const forex_trading_experience_select = select_inputs.find(
-            option => option.name === 'forex_trading_experience'
+            (option: FormikValues) => option.name === 'forex_trading_experience'
         );
-        const forex_trading_frequency_select = select_inputs.find(option => option.name === 'forex_trading_frequency');
-        const income_source_select = select_inputs.find(option => option.name === 'income_source');
-        const net_income_select = select_inputs.find(option => option.name === 'net_income');
-        const occuppation_select = select_inputs.find(option => option.name === 'occupation');
+        const forex_trading_frequency_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'forex_trading_frequency'
+        );
+        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const net_income_select = select_inputs.find((option: FormikValues) => option.name === 'net_income');
+        const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
         const other_instruments_trading_experience_select = select_inputs.find(
-            option => option.name === 'other_instruments_trading_experience'
+            (option: FormikValues) => option.name === 'other_instruments_trading_experience'
         );
         const other_instruments_trading_frequency_select = select_inputs.find(
-            option => option.name === 'other_instruments_trading_frequency'
+            (option: FormikValues) => option.name === 'other_instruments_trading_frequency'
         );
-        const source_of_wealth_select = select_inputs.find(option => option.name === 'source_of_wealth');
+        const source_of_wealth_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'source_of_wealth'
+        );
 
-        fireEvent.change(account_turnover_select, { target: { value: 'account turnover 1' } });
-        fireEvent.change(binary_options_trading_experience_select, {
+        fireEvent.change(account_turnover_select as HTMLElement, { target: { value: 'account turnover 1' } });
+        fireEvent.change(binary_options_trading_experience_select as HTMLElement, {
             target: { value: 'binary options trading experience 2' },
         });
-        fireEvent.change(binary_options_trading_frequency_select, {
+        fireEvent.change(binary_options_trading_frequency_select as HTMLElement, {
             target: { value: 'binary options trading frequency 2' },
         });
-        fireEvent.change(cfd_trading_experience_select, { target: { value: 'cfd trading experience 1' } });
-        fireEvent.change(cfd_trading_frequency_select, { target: { value: 'cfd trading frequency 2' } });
-        fireEvent.change(education_level_select, { target: { value: 'education level 2' } });
-        fireEvent.change(employment_indystry_select, { target: { value: 'employment industry 1' } });
-        fireEvent.change(employment_status_select, { target: { value: 'employment status 2' } });
-        fireEvent.change(estimated_worth_select, { target: { value: 'estimated worth 2' } });
-        fireEvent.change(forex_trading_experience_select, { target: { value: 'forex trading experience 2' } });
-        fireEvent.change(forex_trading_frequency_select, { target: { value: 'forex trading frequency 1' } });
-        fireEvent.change(income_source_select, { target: { value: 'income source 1' } });
-        fireEvent.change(net_income_select, { target: { value: 'net income 1' } });
-        fireEvent.change(occuppation_select, { target: { value: 'occupation 2' } });
-        fireEvent.change(other_instruments_trading_experience_select, {
+        fireEvent.change(cfd_trading_experience_select as HTMLElement, {
+            target: { value: 'cfd trading experience 1' },
+        });
+        fireEvent.change(cfd_trading_frequency_select as HTMLElement, { target: { value: 'cfd trading frequency 2' } });
+        fireEvent.change(education_level_select as HTMLElement, { target: { value: 'education level 2' } });
+        fireEvent.change(employment_indystry_select as HTMLElement, { target: { value: 'employment industry 1' } });
+        fireEvent.change(employment_status_select as HTMLElement, { target: { value: 'employment status 2' } });
+        fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
+        fireEvent.change(forex_trading_experience_select as HTMLElement, {
+            target: { value: 'forex trading experience 2' },
+        });
+        fireEvent.change(forex_trading_frequency_select as HTMLElement, {
+            target: { value: 'forex trading frequency 1' },
+        });
+        fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
+        fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
+        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'occupation 2' } });
+        fireEvent.change(other_instruments_trading_experience_select as HTMLElement, {
             target: { value: 'other instruments trading experience 1' },
         });
-        fireEvent.change(other_instruments_trading_frequency_select, {
+        fireEvent.change(other_instruments_trading_frequency_select as HTMLElement, {
             target: { value: 'other instruments trading frequency 2' },
         });
-        fireEvent.change(source_of_wealth_select, { target: { value: 'source of wealth 1' } });
+        fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
 
         const btns = screen.getAllByRole('button');
         expect(btns[1]).toHaveTextContent('Next');

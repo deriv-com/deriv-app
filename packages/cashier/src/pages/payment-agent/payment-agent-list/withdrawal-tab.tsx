@@ -1,11 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStore, useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 
-const WithdrawalTab = () => {
+const WithdrawalTab = observer(() => {
     const verify = useVerifyEmail('paymentagent_withdraw');
     const { client, modules } = useStore();
     const { payment_agent } = modules.cashier;
@@ -24,6 +24,6 @@ const WithdrawalTab = () => {
         return <PaymentAgentContainer verification_code={verification_code} />;
 
     return null;
-};
+});
 
-export default observer(WithdrawalTab);
+export default WithdrawalTab;

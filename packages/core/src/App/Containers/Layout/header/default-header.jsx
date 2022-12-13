@@ -15,7 +15,6 @@ import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Prel
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 
-const MemoizedMenuLinks = React.memo(MenuLinks);
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
@@ -204,7 +203,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 {is_logged_in && (
                     <DesktopWrapper>

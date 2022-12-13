@@ -10,11 +10,33 @@ import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfi
 
 import CardDetails from './card-details';
 import { SELFIE_DOCUMENT } from './constants';
+import { FormikValues } from 'formik';
 
 const STATUS = {
     IS_UPLOADING: 'IS_UPLOADING',
     IS_COMPLETED: 'IS_COMPLETED',
     IS_FAILED: 'IS_FAILED',
+};
+
+type TDetailComponent = {
+    document: {
+        onfido_name: string;
+        details: {
+            documents: object[];
+        };
+    };
+    onClickBack: () => void;
+    root_class: string;
+    country_code_key: string;
+    documents_supported: string;
+    onfido_service_token: string;
+    height: string | number;
+    handleComplete: () => void;
+    is_onfido_supported: boolean;
+    is_from_external: boolean;
+    setIsCfdPoiCompleted: () => void;
+    is_mt5: boolean;
+    handlePOIforMT5Complete: () => void;
 };
 
 const DetailComponent = ({
@@ -32,19 +54,19 @@ const DetailComponent = ({
     is_mt5,
     handlePOIforMT5Complete,
     ...props
-}) => {
-    const [status, setStatus] = React.useState();
-    const [response_error, setError] = React.useState();
+}: TDetailComponent) => {
+    const [status, setStatus] = React.useState<string>();
+    const [response_error, setError] = React.useState<string | undefined>();
 
     let is_any_failed = false;
 
-    const uploadFiles = data =>
+    const uploadFiles = (data: FormikValues) =>
         new Promise((resolve, reject) => {
-            const docs = document.details.documents.map(item => item.name);
+            const docs = document.details.documents.map((item: FormikValues) => item.name);
             const files = Object.values(data).filter(item => [...docs, SELFIE_DOCUMENT.name].includes(item.name));
             const files_length = files.length;
             let file_to_upload_index = 0;
-            const results = [];
+            const results: object[] = [];
             const uploadNext = () => {
                 const item = files[file_to_upload_index];
                 const { file, document_type, pageType, lifetime_valid } = item;
@@ -83,7 +105,7 @@ const DetailComponent = ({
             uploadNext();
         });
 
-    const onComplete = values => {
+    const onComplete = (values: FormikValues) => {
         setStatus(STATUS.IS_UPLOADING);
         uploadFiles(values).then(() => {
             if (!is_any_failed) {
@@ -124,7 +146,7 @@ const DetailComponent = ({
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
-                                handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 is_from_external={false}
                                 {...props}
                             />
@@ -141,16 +163,6 @@ const DetailComponent = ({
                 </React.Fragment>
             );
     }
-};
-
-DetailComponent.propTypes = {
-    handleComplete: PropTypes.func,
-    has_poa: PropTypes.bool,
-    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    country_code_key: PropTypes.number,
-    height: PropTypes.number,
-    handlePOIforMT5Complete: PropTypes.func,
-    is_mt5: PropTypes.bool,
 };
 
 export default DetailComponent;

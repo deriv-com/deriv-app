@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import { ReadMore } from '@deriv/components';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import VerificationStore from './verification-store';
 
 export default class WithdrawStore {
     constructor({ WS, root_store }) {
@@ -24,20 +23,19 @@ export default class WithdrawStore {
             saveWithdraw: action.bound,
             resetWithrawForm: action.bound,
             setBlockchainAddress: action.bound,
-            willMountWithdraw: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
             is_withdrawal_locked: computed,
             setMaxWithdrawAmount: action.bound,
             check10kLimit: action.bound,
             set10kLimitation: action.bound,
+            setCryptoConfig: action.bound,
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
             account_platform_icon: computed,
         });
 
-        this.verification = new VerificationStore({ root_store, WS });
         this.root_store = root_store;
         this.WS = WS;
     }
@@ -57,8 +55,12 @@ export default class WithdrawStore {
 
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
 
-        if (!is_withdraw_confirmed && this.verification) {
-            this.verification.clearVerification();
+        if (!is_withdraw_confirmed) {
+            const { client, modules } = this.root_store;
+            const { active_container } = modules.cashier.general_store;
+            const container = Constants.map_action[active_container];
+
+            client.setVerificationCode('', container);
         }
     }
 
@@ -87,6 +89,7 @@ export default class WithdrawStore {
         }).then(response => {
             if (response.error) {
                 this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
+                this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
                 this.saveWithdraw(verification_code);
             }
@@ -105,8 +108,11 @@ export default class WithdrawStore {
             if (response.error) {
                 this.error.setErrorMessage(response.error);
                 if (verification_code) {
-                    // clear verification code on error
-                    this.verification.clearVerification();
+                    const { client, modules } = this.root_store;
+                    const { active_container } = modules.cashier.general_store;
+                    const container = Constants.map_action[active_container];
+
+                    client.setVerificationCode('', container);
                 }
                 this.resetWithrawForm();
             } else {
@@ -117,10 +123,14 @@ export default class WithdrawStore {
 
     resetWithrawForm() {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const { client, modules } = this.root_store;
+        const { active_container } = modules.cashier.general_store;
+        const container = Constants.map_action[active_container];
+
         this.setBlockchainAddress('');
         setConverterFromAmount('');
         setConverterToAmount('');
-        this.verification.clearVerification();
+        client.setVerificationCode('', container);
     }
 
     setBlockchainAddress(address) {
@@ -128,8 +138,12 @@ export default class WithdrawStore {
     }
 
     willMountWithdraw(verification_code) {
-        if (verification_code) {
-            this.verification.clearVerification();
+        if (this && this.root_store && verification_code) {
+            const { client, modules } = this.root_store;
+            const { active_container } = modules.cashier.general_store;
+            const container = Constants.map_action[active_container];
+
+            client.setVerificationCode('', container);
         }
     }
 
@@ -186,8 +200,9 @@ export default class WithdrawStore {
             setSessionTimeout(true);
             clearTimeoutCashierUrl();
             if (verification_code) {
-                // clear verification code on error
-                this.verification.clearVerification();
+                const container = Constants.map_action[active_container];
+
+                client.setVerificationCode('', container);
             }
         } else if (is_crypto) {
             setLoading(false);
@@ -224,13 +239,20 @@ export default class WithdrawStore {
             iframe.setSessionTimeout(true);
             iframe.clearTimeoutCashierUrl();
             if (verification_code) {
-                // clear verification code on error
-                this.verification.clearVerification();
+                const { client, modules } = this.root_store;
+                const { active_container } = modules.cashier.general_store;
+                const container = Constants.map_action[active_container];
+
+                client.setVerificationCode('', container);
             }
         } else {
-            this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
+            await this.setCryptoConfig();
             general_store.setLoading(false);
         }
+    }
+
+    async setCryptoConfig() {
+        this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
     }
 
     get is_withdrawal_locked() {

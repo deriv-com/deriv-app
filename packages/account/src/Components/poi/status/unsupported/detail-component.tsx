@@ -52,7 +52,7 @@ const DetailComponent = ({
     ...props
 }: TDetailComponent) => {
     const [status, setStatus] = React.useState<string>();
-    const [response_error, setError] = React.useState<string | undefined>('');
+    const [response_error, setError] = React.useState<string>('');
 
     let is_any_failed = false;
 

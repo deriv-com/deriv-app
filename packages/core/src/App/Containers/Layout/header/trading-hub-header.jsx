@@ -82,7 +82,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
         </div>
     );
 };
-
+const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
     account_status,
     app_routing_history,
@@ -169,7 +169,7 @@ const TradingHubHeader = ({
                 )}
                 <Divider />
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
+                <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>

@@ -209,6 +209,7 @@
         padding: 1rem;
         margin: 0 auto;
         border-radius: 1rem;
+        width: 25.5rem;
 
         &--dark {
             display: flex;
@@ -216,6 +217,11 @@
             margin: 0 auto;
             border-radius: 1rem;
             background-color: var(--general-main-1);
+        }
+        .dc-btn__text {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
         }
     }
 
@@ -235,7 +241,6 @@
     &__menu-mobile-right-arrow {
         align-items: flex-end;
         display: inline-flex;
-        margin-left: 9rem;
     }
 
     &__menu-toggle {

@@ -51,8 +51,8 @@ const DetailComponent = ({
     handlePOIforMT5Complete,
     ...props
 }: TDetailComponent) => {
-    const [status, setStatus] = React.useState<string>();
-    const [response_error, setError] = React.useState<string>('');
+    const [status, setStatus] = React.useState('');
+    const [response_error, setError] = React.useState('');
 
     let is_any_failed = false;
 

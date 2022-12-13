@@ -579,6 +579,10 @@ export default class PortfolioStore extends BaseStore {
         this.contract_type = contract_type;
     }
 
+    get is_accumulator() {
+        return this.contract_type === 'accumulator';
+    }
+
     get is_multiplier() {
         return this.contract_type === 'multiplier';
     }

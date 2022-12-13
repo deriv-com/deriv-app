@@ -49,7 +49,7 @@ module.exports = function () {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/react-import-loader.js',
+                            loader: '@deriv/shared/src/loaders/react-import-loader.ts',
                         },
                         {
                             loader: 'babel-loader',

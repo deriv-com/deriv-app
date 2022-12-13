@@ -75,6 +75,7 @@ const ContractDrawerCard = ({
             is_multiplier={is_multiplier}
             is_sold={is_sold}
             is_vanilla={is_vanilla}
+            has_progress_slider={has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}

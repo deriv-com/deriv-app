@@ -2031,12 +2031,7 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             const is_pre_appstore = window.localStorage.getItem('is_pre_appstore');
-            const redirect_url = sessionStorage.getItem('redirect_url');
-            if (
-                is_pre_appstore === 'true' &&
-                redirect_url?.endsWith('/') &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
-            ) {
+            if (is_pre_appstore === 'true' && (isTestLink() || isProduction() || isLocal() || isStaging())) {
                 window.history.replaceState({}, document.title, '/appstore/traders-hub');
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));

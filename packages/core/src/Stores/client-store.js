@@ -286,6 +286,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pre_appstore: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -375,6 +376,7 @@ export default class ClientStore extends BaseStore {
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
+            setIsPreAppStore: action.bound,
         });
 
         reaction(
@@ -932,6 +934,11 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    get is_pre_appstore() {
+        const { trading_hub } = this.account_settings;
+        return !!trading_hub;
     }
 
     getIsMarketTypeMatching = (account, market_type) =>
@@ -2030,7 +2037,7 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            const is_pre_appstore = window.localStorage.getItem('is_pre_appstore');
+            const is_pre_appstore = !!this.account_settings.trading_hub;
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
                 is_pre_appstore === 'true' &&
@@ -2506,6 +2513,18 @@ export default class ClientStore extends BaseStore {
             this.setPrevRealAccountLoginid(this.loginid);
             await this.switchAccount(this.virtual_account_loginid);
         }
+    }
+
+    setIsPreAppStore(is_pre_appstore) {
+        const trading_hub = is_pre_appstore ? 1 : 0;
+        WS.setSettings({
+            set_settings: 1,
+            trading_hub,
+        }).then(response => {
+            if (!response.error) {
+                this.account_settings = { ...this.account_settings, trading_hub };
+            }
+        });
     }
 }
 /* eslint-enable */

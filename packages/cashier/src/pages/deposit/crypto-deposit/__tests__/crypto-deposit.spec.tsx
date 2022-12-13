@@ -4,7 +4,6 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
-import { DeepPartial } from '@deriv/stores/types';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from '../../../../types';
 
@@ -29,8 +28,8 @@ jest.mock('Components/recent-transaction', () => {
 });
 
 describe('<CryptoDeposit />', () => {
-    let history;
-    const renderWithRouter = (component, mockRootStore) => {
+    let history: ReturnType<typeof createBrowserHistory>;
+    const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
@@ -61,7 +60,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -90,7 +89,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(
             screen.getByText(
@@ -124,7 +123,7 @@ describe('<CryptoDeposit />', () => {
             },
         };
 
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         const refresh_btn = screen.getByRole('button', { name: 'Refresh' });
         fireEvent.click(refresh_btn);
@@ -157,7 +156,7 @@ describe('<CryptoDeposit />', () => {
         };
 
         (getCurrencyName as jest.Mock).mockReturnValueOnce('Bitcoin');
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Send only Bitcoin (BTC) to this address.')).toBeInTheDocument();
         expect(
@@ -197,7 +196,7 @@ describe('<CryptoDeposit />', () => {
         };
 
         (getCurrencyName as jest.Mock).mockReturnValueOnce('Ethereum');
-        renderWithRouter(<CryptoDeposit />, mockRootStore);
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Send only Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
@@ -231,7 +230,7 @@ describe('<CryptoDeposit />', () => {
                 },
             };
 
-            const { rerender, unmount } = renderWithRouter(<CryptoDeposit />, mockRootStore);
+            const { rerender, unmount } = renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
             const rerenderAndOpenDropdownOptions = () => {
                 rerender(
                     <Router history={history}>
@@ -362,7 +361,7 @@ describe('<CryptoDeposit />', () => {
             <Router history={history}>
                 <CryptoDeposit />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider> }
+            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();

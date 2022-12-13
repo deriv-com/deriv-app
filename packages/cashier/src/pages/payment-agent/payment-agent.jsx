@@ -37,16 +37,12 @@ const PaymentAgent = ({
     if (is_virtual) {
         return <Virtual />;
     }
+
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
-    return (
-        <PaymentAgentList
-            verification_code={verification_code}
-            is_payment_agent_withdraw={is_payment_agent_withdraw}
-            setSideNotes={setSideNotes}
-        />
-    );
+
+    return <PaymentAgentList setSideNotes={setSideNotes} />;
 };
 
 PaymentAgent.propTypes = {

@@ -25,7 +25,7 @@
         "downlevelIteration": true
     },
     "exclude": ["node_modules", "build", "**/__tests__/**/*", "**/*.js", "**/*.jsx"], // *** The files to not type check ***
-     "ts-node": {
+    "ts-node": {
         "compilerOptions": {
             "module": "commonjs"
         }

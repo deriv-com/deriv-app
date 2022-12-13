@@ -8,7 +8,7 @@ import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 
 import './static-platform-launcher.scss';
 import { PlatformConfig } from 'Constants/platform-config';
@@ -45,7 +45,7 @@ const PlatformLauncher = ({
                             : 'static-platform-launcher__container--icon'
                     }
                 >
-                    <WalletIcon icon={app_icon} />
+                    <TradigPlatformIconProps icon={app_icon} />
                 </div>
                 <div className='static-platform-launcher__container--title-desc-wrapper'>
                     <Text as='h2' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'} size='xs'>

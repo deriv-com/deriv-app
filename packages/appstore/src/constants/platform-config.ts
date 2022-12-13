@@ -1,6 +1,6 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { Icons } from 'Assets/svgs/wallet';
+import { PlatformIcons } from 'Assets/svgs/trading-platform';
 
 export type AccountType = 'real' | 'demo';
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
@@ -9,7 +9,7 @@ export const region_availability: RegionAvailability[] = ['Non-EU', 'EU'];
 
 export type BrandConfig = {
     name: string;
-    icon: keyof typeof Icons;
+    icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
 };
 

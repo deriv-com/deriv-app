@@ -1,11 +1,11 @@
 import React from 'react';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 
 const EmptyOnboarding = () => {
     return (
         <div className='empty-onboarding-wrapper'>
             <div className='empty-onboarding-header'>
-                <WalletIcon icon='DerivTradingLogo' />
+                <TradigPlatformIconProps icon='DerivTradingLogo' />
             </div>
         </div>
     );

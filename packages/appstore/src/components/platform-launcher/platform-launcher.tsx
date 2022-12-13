@@ -4,7 +4,7 @@
 import React from 'react';
 import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
@@ -46,7 +46,7 @@ const PlatformLauncher = ({
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
-                    <WalletIcon icon={app_icon} />
+                    <TradigPlatformIconProps icon={app_icon} />
                 </div>
                 <div className='platform-launcher__container--title-desc-wrapper'>
                     <Text

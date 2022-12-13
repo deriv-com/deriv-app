@@ -11,7 +11,7 @@ import {
     formatMoney,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 
 type TCountryStandpoint = {
     is_united_kingdom: boolean;
@@ -300,7 +300,7 @@ const OptionsAccount = ({
             )}
             {!is_modal && isMobile() && !is_virtual && (
                 <div className='account-container__dropdown'>
-                    <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />
+                    <TradigPlatformIconProps icon={'DropDown'} onClick={switchAccountModal} />
                 </div>
             )}
         </div>

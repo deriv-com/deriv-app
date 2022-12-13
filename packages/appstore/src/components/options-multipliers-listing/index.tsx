@@ -29,6 +29,7 @@ const OptionsAndMultipliersListing = () => {
                     />
                 </Text>
             }
+            is_deriv_platform
         >
             {tradinghub.available_platforms.map((p: BrandConfig) => (
                 <TradingAppCard key={`trading_app_card_${p.name}`} {...p} />

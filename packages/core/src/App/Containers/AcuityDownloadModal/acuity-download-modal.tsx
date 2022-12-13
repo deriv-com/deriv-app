@@ -9,16 +9,10 @@ import 'Sass/app/modules/acuity-download.scss';
 type TAcuityDownloadModal = {
     is_acuity_modal_open: boolean;
     is_eu: boolean;
-    current_language: string;
     setIsAcuityModalOpen: (value: boolean) => void;
 };
 
-const AcuityDownloadModal = ({
-    is_acuity_modal_open,
-    is_eu,
-    setIsAcuityModalOpen,
-    current_language,
-}: TAcuityDownloadModal) => {
+const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen }: TAcuityDownloadModal) => {
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
@@ -31,17 +25,12 @@ const AcuityDownloadModal = ({
     };
 
     const openGuide = () => {
-        window.open(getLink(current_language), '_blank', 'noopener,noreferrer');
+        window.open(
+            is_eu ? 'https://publuu.com/flip-book/63495/184974' : 'https://publuu.com/flip-book/63495/184972',
+            '_blank',
+            'noopener,noreferrer'
+        );
         closeModal();
-    };
-
-    const getLink = (language: string): string => {
-        if (language === 'PT') {
-            return 'https://docs.google.com/document/d/15GhxU-G6ASkfXr3s3bazyXhflUuRrRYN/edit#heading=h.gjdgxs';
-        } else if (language === 'ES') {
-            return 'https://docs.google.com/document/d/1t-FMeTgRp2S-a5z21pLQyPgTI_sbILV_/edit#heading=h.gjdgxs';
-        }
-        return 'https://docs.google.com/document/d/1zQsP6z6I60dJCg7PsM7gD2LQ4CEWYX-L/edit?usp=sharing&ouid=102174637690694801870&rtpof=true&sd=true';
     };
 
     return (
@@ -63,9 +52,9 @@ const AcuityDownloadModal = ({
                 <div className='acuity-download-modal__body--description'>
                     <Text as='p' line_height='m' align='center'>
                         <Localize
-                            i18n_default_text="We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
+                            i18n_default_text={`We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
                     Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>
-                    This suite is only available for Windows, and is most recommended for financial assets."
+                    This suite is only available for Windows, and is most recommended for financial assets.`}
                             components={[<br key={0} />, <Text key={1} weight='bold' />]}
                         />
                     </Text>
@@ -103,9 +92,8 @@ const AcuityDownloadModal = ({
     );
 };
 
-export default connect(({ client, ui, common }: RootStore) => ({
+export default connect(({ client, ui }: RootStore) => ({
     is_acuity_modal_open: ui.is_acuity_modal_open,
     is_eu: client.is_eu,
-    current_language: common.current_language,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
 }))(AcuityDownloadModal);

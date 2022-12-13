@@ -43,6 +43,7 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
+            getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onCancel: action.bound,
             onCancelClick: action.bound,
@@ -137,6 +138,24 @@ export default class AdvertiserPageStore extends BaseStore {
         this.setIsLoading(false);
     }
 
+    getCounterpartyAdvertiserList(advertiser_id) {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advert_list: 1,
+            advertiser_id,
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    const { list } = response.p2p_advert_list;
+                    this.setAdverts(list.filter(advert => advert.counterparty_type === this.counterparty_type));
+                } else {
+                    this.setErrorMessage(response.error);
+                }
+            }
+            this.setIsLoading(false);
+        });
+    }
+
     handleTabItemClick(idx) {
         this.setActiveIndex(idx);
         if (idx === 0) {
@@ -178,6 +197,7 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked,
             this.advertiser_details_id
         );
+        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 

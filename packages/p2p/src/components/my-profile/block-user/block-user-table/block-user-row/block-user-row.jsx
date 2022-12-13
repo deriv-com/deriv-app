@@ -30,11 +30,19 @@ import { localize } from 'Components/i18next';
 // };
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { my_profile_store } = useStores();
+    const { buy_sell_store, my_profile_store } = useStores();
     return (
         <Table.Row className='block-user-row'>
             <Table.Cell>
-                <div className='block-user-row__cell'>
+                <div
+                    className='block-user-row__cell'
+                    onClick={() => {
+                        my_profile_store.getCounterpartyAdvertiserInfo(advertiser.id);
+                        buy_sell_store.setSelectedAdState({
+                            advertiser_details: { id: advertiser.id, name: advertiser.name },
+                        });
+                    }}
+                >
                     <UserAvatar nickname={advertiser.name} size={32} text_size='s' />
                     <div className='block-user-row__cell-container'>
                         <Text size='xs' line_height='m' color='general'>

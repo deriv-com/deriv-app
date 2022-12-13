@@ -89,8 +89,9 @@ export default class MyProfileStore extends BaseStore {
             payment_methods_list_values: computed,
             rendered_blocked_advertisers_list: computed,
             createPaymentMethod: action.bound,
-            getBlockedAdvertisersList: action.bound,
             getAdvertiserPaymentMethods: action.bound,
+            getBlockedAdvertisersList: action.bound,
+            getCounterpartyAdvertiserInfo: action.bound,
             getPaymentMethodsList: action.bound,
             getPaymentMethodDisplayName: action.bound,
             getPaymentMethodValue: action.bound,
@@ -302,6 +303,20 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    getAdvertiserPaymentMethods() {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advertiser_payment_methods: 1,
+        }).then(response => {
+            if (response.error) {
+                this.setAdvertiserPaymentMethodsError(response.error.message);
+            } else {
+                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
+            }
+            this.setIsLoading(false);
+        });
+    }
+
     getBlockedAdvertisersList() {
         this.setIsLoading(true);
         requestWS({
@@ -319,17 +334,20 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    getAdvertiserPaymentMethods() {
-        this.setIsLoading(true);
+    getCounterpartyAdvertiserInfo(advertiser_id) {
+        const { advertiser_page_store, buy_sell_store, general_store } = this.root_store;
         requestWS({
-            p2p_advertiser_payment_methods: 1,
+            p2p_advertiser_info: 1,
+            id: advertiser_id,
         }).then(response => {
-            if (response.error) {
-                this.setAdvertiserPaymentMethodsError(response.error.message);
-            } else {
-                this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
+            if (response) {
+                if (!response.error) {
+                    advertiser_page_store.setCounterpartyAdvertiserInfo(response.p2p_advertiser_info);
+                    buy_sell_store.setShowAdvertiserPage(true);
+                } else {
+                    general_store.setBlockUnblockUserError(response.error.message);
+                }
             }
-            this.setIsLoading(false);
         });
     }
 

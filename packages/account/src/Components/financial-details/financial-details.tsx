@@ -26,7 +26,7 @@ import {
 import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
-export interface TFinancialDetails {
+export type TFinancialDetails = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     getCurrentStep: () => number;
@@ -39,25 +39,8 @@ export interface TFinancialDetails {
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
     validate: (values: FormikValues) => object;
-    income_source_enum: object[];
-    employment_status_enum: object[];
-    employment_industry_enum: object[];
-    occupation_enum: object[];
-    source_of_wealth_enum: object[];
-    education_level_enum: object[];
-    net_income_enum: object[];
-    estimated_worth_enum: object[];
-    account_turnover_enum: object[];
-    forex_trading_experience_enum: object[];
-    forex_trading_frequency_enum: object[];
-    binary_options_trading_experience_enum: object[];
-    binary_options_trading_frequency_enum: object[];
-    cfd_trading_experience_enum: object[];
-    cfd_trading_frequency_enum: object[];
-    other_instruments_trading_experience_enum: object[];
-    other_instruments_trading_frequency_enum: object[];
     value: object;
-}
+};
 
 export type TFinancialInformationAndTradingExperience = {
     shared_props?: object;
@@ -150,7 +133,7 @@ const TradingExperience = ({
     </React.Fragment>
 );
 
-const FinancialDetails = (props: TFinancialDetails) => {
+const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTradingExperience) => {
     const handleCancel = (values: FormikValues) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);

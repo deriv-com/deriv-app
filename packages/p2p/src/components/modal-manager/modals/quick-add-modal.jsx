@@ -7,12 +7,13 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AddPaymentMethod from '../my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
-import './quick-add-modal.scss';
+import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const QuickAddModal = ({ advert }) => {
     const { my_ads_store, my_profile_store } = useStores();
+    const { is_modal_open } = useModalManagerContext();
 
     const type = advert ? advert.type : null;
 
@@ -94,7 +95,7 @@ const QuickAddModal = ({ advert }) => {
                     body_className='quick-add-modal--body'
                     height_offset='80px'
                     is_flex
-                    is_modal_open={my_ads_store.is_quick_add_modal_open}
+                    is_modal_open={is_modal_open}
                     page_header_text={localize('Add payment method')}
                     pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                     secondary
@@ -258,7 +259,7 @@ const QuickAddModal = ({ advert }) => {
                 body_className='quick-add-modal--body'
                 height_offset='80px'
                 is_flex
-                is_modal_open={my_ads_store.is_quick_add_modal_open}
+                is_modal_open={is_modal_open}
                 page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                 secondary
@@ -312,7 +313,7 @@ const QuickAddModal = ({ advert }) => {
                 className='p2p-my-ads__modal-error'
                 has_close_icon
                 height='452px'
-                is_open={my_ads_store.is_quick_add_modal_open}
+                is_open={is_modal_open}
                 title={localize('Add payment method')}
                 toggleModal={e => {
                     if (!e.target || e.target.className !== 'dc-dropdown-list__item') setShouldCloseAllModals(true);
@@ -468,7 +469,7 @@ const QuickAddModal = ({ advert }) => {
             className='p2p-my-ads__modal-error'
             has_close_icon
             height={my_ads_store.should_show_add_payment_method ? '660px' : 'auto'}
-            is_open={my_ads_store.is_quick_add_modal_open}
+            is_open={is_modal_open}
             title={localize('Add payment method')}
             width='440px'
             toggleModal={e => {

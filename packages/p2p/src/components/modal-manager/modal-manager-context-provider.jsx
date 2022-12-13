@@ -1,9 +1,11 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import { ModalManagerContext } from './modal-manager-context';
 
 const ModalManagerContextProvider = props => {
-    const [active_modal, setActiveModal] = React.useState(null);
+    const [active_modal, setActiveModal] = React.useState({});
     const [is_modal_open, setIsModalOpen] = React.useState(false);
+    const { general_store } = useStores();
 
     const showModal = modal => {
         setActiveModal(modal);
@@ -11,7 +13,7 @@ const ModalManagerContextProvider = props => {
     };
 
     const hideModal = () => {
-        setActiveModal(null);
+        setActiveModal({});
         setIsModalOpen(false);
     };
 
@@ -21,6 +23,9 @@ const ModalManagerContextProvider = props => {
         modal: active_modal,
         showModal,
     };
+
+    general_store.showModal = showModal;
+    general_store.hideModal = hideModal;
 
     return <ModalManagerContext.Provider value={state}>{props.children}</ModalManagerContext.Provider>;
 };

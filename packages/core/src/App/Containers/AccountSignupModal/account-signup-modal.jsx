@@ -79,6 +79,8 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         }
     };
 
+    const same_citizenship_condition = !is_pasword_modal && !is_citizenship_modal;
+
     return (
         <div className='account-signup'>
             {is_loading ? (
@@ -103,7 +105,11 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         <Form>
                             {!selected_residence || !is_same_citizenship_modal ? (
                                 <ResidenceForm
-                                    header_text={localize('Thanks for verifying your email')}
+                                    header_text={
+                                        same_citizenship_condition
+                                            ? localize('Citizenship')
+                                            : localize('Thanks for verifying your email')
+                                    }
                                     class_prefix='account-signup'
                                     errors={errors}
                                     touched={touched}
@@ -130,7 +136,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                 </ResidenceForm>
                             ) : (
                                 <>
-                                    {!is_pasword_modal && !is_citizenship_modal ? (
+                                    {same_citizenship_condition ? (
                                         <SameCitizenshipModal
                                             onCitizenshipSelection={onCitizenshipSelection}
                                             residence={values.residence}

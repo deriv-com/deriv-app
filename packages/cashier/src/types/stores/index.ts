@@ -1,4 +1,12 @@
-export * from './client-store.types';
-export * from './common-store.types';
-export * from './root-store.types';
-export * from './ui-store.types';
+import { TRootStore as TRootStoreBase } from '@deriv/stores/types';
+import type CashierStore from '../../stores/cashier-store';
+
+export type TRootStore = TRootStoreBase & {
+    modules: {
+        cashier: CashierStore;
+    };
+};
+
+export type TClientStore = TRootStore['client'];
+export type TCommonStore = TRootStore['common'];
+export type TUiStore = TRootStore['ui'];

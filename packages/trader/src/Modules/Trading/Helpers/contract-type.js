@@ -29,7 +29,8 @@ export const getContractTypeCategoryIcons = () => ({
 export const getAvailableContractTypes = (contract_types_list, unsupported_list) => {
     return Object.keys(contract_types_list)
         .map(key => {
-            const contract_types = contract_types_list[key];
+            const contract_types = contract_types_list[key].categories;
+            const contract_name = contract_types_list[key].name;
             const available_contract_types = contract_types.filter(type =>
                 type.value &&
                 // TODO: remove this check once all contract types are supported
@@ -41,11 +42,11 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
             if (available_contract_types.length) {
                 return {
                     key,
-                    label: key,
+                    label: contract_name,
                     contract_types: available_contract_types,
-                    icon: contract_category_icon[key],
+                    icon: contract_category_icon[contract_name],
                     component:
-                        key === localize('Multipliers') ? (
+                        contract_name === localize('Multipliers') ? (
                             <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
                         ) : null,
                 };

@@ -48,6 +48,10 @@ const PositionsDrawerCard = ({
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
+    const contract_card_classname = classNames('dc-contract-card', {
+        'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
+        'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
+    });
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -119,32 +123,16 @@ const PositionsDrawerCard = ({
     );
 
     const supported_contract_card = (
-        <div
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
-            })}
-            onClick={() => toggleUnsupportedContractModal(true)}
-        >
+        <div className={contract_card_classname} onClick={() => toggleUnsupportedContractModal(true)}>
             {contract_info.underlying ? contract_el : loader_el}
         </div>
     );
 
     const unsupported_contract_card = is_link_disabled ? (
-        <div
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
-            })}
-        >
-            {contract_info.underlying ? contract_el : loader_el}
-        </div>
+        <div className={contract_card_classname}>{contract_info.underlying ? contract_el : loader_el}</div>
     ) : (
         <NavLink
-            className={classNames('dc-contract-card', {
-                'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
-                'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
-            })}
+            className={contract_card_classname}
             to={{
                 pathname: `/contract/${contract_info.contract_id}`,
             }}

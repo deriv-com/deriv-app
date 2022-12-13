@@ -18,6 +18,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: 'Buy price:',
     POTENTIAL_PAYOUT: 'Payout limit:',
     TICK: 'Tick ',
+    TICKS: 'Ticks',
     WON: 'Won',
     LOST: 'Lost',
     DAYS: 'Days',

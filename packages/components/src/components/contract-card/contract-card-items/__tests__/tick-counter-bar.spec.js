@@ -5,9 +5,9 @@ import TickCounterBar from '../tick-counter-bar';
 describe('TickCounterBar', () => {
     const mock_props = {
         current_tick: 12345,
+        label: 'Ticks',
         max_ticks_duration: 67890,
     };
-
     it('should render properly', () => {
         render(<TickCounterBar {...mock_props} />);
 

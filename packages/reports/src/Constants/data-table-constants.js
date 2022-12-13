@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money, ContractCard, Popover } from '@deriv/components';
+import { Icon, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
 import {
     isMobile,
     getCurrencyDisplayCode,
@@ -17,7 +17,6 @@ import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 import CurrencyWrapper from '../Components/currency-wrapper.jsx';
-import ContractCardSell from '@deriv/components/src/components/contract-card/contract-card-items/contract-card-sell.jsx';
 
 const getModeFromValue = key => {
     const map = {

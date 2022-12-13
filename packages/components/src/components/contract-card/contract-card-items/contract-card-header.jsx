@@ -101,7 +101,11 @@ const ContractCardHeader = ({
                     ) : null}
                 </MobileWrapper>
                 {!is_sold && is_accumulator && (
-                    <TickCounterBar current_tick={tick_passed} max_ticks_duration={tick_count} />
+                    <TickCounterBar
+                        current_tick={tick_passed}
+                        max_ticks_duration={tick_count}
+                        label={getCardLabels().TICKS}
+                    />
                 )}
             </div>
             <MobileWrapper>

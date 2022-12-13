@@ -28,7 +28,7 @@ const AccumulatorsChartElements = ({
         : current_symbol_spot_time;
 
     return (
-        <>
+        <React.Fragment>
             {accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
@@ -36,7 +36,7 @@ const AccumulatorsChartElements = ({
             {should_highlight_tick && (
                 <CurrentSpotHighlighter current_spot={current_spot} current_spot_time={current_spot_time} />
             )}
-        </>
+        </React.Fragment>
     );
 };
 

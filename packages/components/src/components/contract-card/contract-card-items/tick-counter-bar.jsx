@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { localize } from '@deriv/translations';
 import Text from '../../text';
 
-const TickCounterBar = ({ current_tick, max_ticks_duration }) => (
+const TickCounterBar = ({ current_tick, label, max_ticks_duration }) => (
     <div className='dc-tick-counter-bar__container'>
         <div className='dc-tick-counter-bar__track'>
             <Text size='xxs' weight='bold' className='dc-tick-counter-bar__text'>
-                {localize('{{current_tick}}/{{max_ticks_duration}} Ticks', {
-                    current_tick,
-                    max_ticks_duration,
-                })}
+                {`${current_tick}/${max_ticks_duration} ${label}`}
             </Text>
         </div>
     </div>
@@ -18,6 +14,7 @@ const TickCounterBar = ({ current_tick, max_ticks_duration }) => (
 
 TickCounterBar.propTypes = {
     current_tick: PropTypes.number,
+    label: PropTypes.string,
     max_ticks_duration: PropTypes.number,
 };
 

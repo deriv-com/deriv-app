@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import PaymentAgentContainer from '../payment-agent-container';
 
 const DepositTab = () => {

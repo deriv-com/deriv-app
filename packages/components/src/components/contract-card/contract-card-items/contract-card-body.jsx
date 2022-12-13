@@ -171,7 +171,7 @@ const AccumulatorCardBody = ({
 
     return (
         <React.Fragment>
-            <div className={classNames('dc-contract-card-items-wrapper')}>
+            <div className='dc-contract-card-items-wrapper'>
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>

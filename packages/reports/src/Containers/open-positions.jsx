@@ -385,11 +385,8 @@ const OpenPositions = ({
         (has_accumulator_contract && active_index === 2);
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
-            if (is_multiplier_selected) {
-                return isMultiplierContract(p.contract_info.contract_type);
-            } else if (is_accumulator_selected) {
-                return isAccumulatorContract(p.contract_info.contract_type);
-            }
+            if (is_multiplier_selected) return isMultiplierContract(p.contract_info.contract_type);
+            if (is_accumulator_selected) return isAccumulatorContract(p.contract_info.contract_type);
             return (
                 !isMultiplierContract(p.contract_info.contract_type) &&
                 !isAccumulatorContract(p.contract_info.contract_type)
@@ -413,7 +410,8 @@ const OpenPositions = ({
                 getPositionById,
                 server_time,
             });
-        } else if (is_accumulator_selected) {
+        }
+        if (is_accumulator_selected) {
             return getAccumulatorOpenPositionsColumnsTemplate({
                 currency,
                 onClickSell,

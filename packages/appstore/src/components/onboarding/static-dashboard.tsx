@@ -70,7 +70,7 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
         { text: 'CFDs', value: 0 },
-        { text: 'Options', value: 1 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options and...'}`, value: 1 },
     ];
 
     const [index, setIndex] = React.useState(0);
@@ -90,6 +90,7 @@ const StaticDashboard = ({
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
     const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
+    const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
         <div className='static-dashboard'>
@@ -121,7 +122,8 @@ const StaticDashboard = ({
                                     }
                                 >
                                     <Localize
-                                        i18n_default_text='CFDs <0>Compare accounts</0>'
+                                        i18n_default_text='CFDs <0>{{compare_accounts_title}}</0>'
+                                        values={{ compare_accounts_title }}
                                         components={[
                                             <Text
                                                 key={0}
@@ -173,7 +175,7 @@ const StaticDashboard = ({
                                             is_blurry.cfd_description || is_blurry.cfd_text,
                                     })}
                                 >
-                                    {localize('Compare accounts')}
+                                    {compare_accounts_title}
                                 </Text>
                             )}
                         </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
+import { StoreProvider } from '@deriv/stores';
 import DepositLocked from '../deposit-locked';
-import { StoreProvider } from '../../../../hooks';
-import { TRootStore, DeepPartial } from '../../../../types';
+import { TRootStore } from '../../../../types';
 
 jest.mock('Components/cashier-locked', () => {
     const CashierLocked = () => (
@@ -44,7 +44,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -128,7 +128,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(

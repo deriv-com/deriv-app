@@ -30,12 +30,13 @@ const WithdrawalLocked = () => {
 
     const document = account_status.authentication?.document;
     const identity = account_status.authentication?.identity;
+    const standard_client = account_status.risk_classification === 'standard';
     const needs_verification = account_status.authentication?.needs_verification;
     const is_poi_needed = is_10K_limit && identity?.status !== 'verified';
     const has_poi_submitted = identity?.status !== 'none';
     const is_poa_needed = is_10K_limit && (needs_verification?.includes('document') || document?.status !== 'verified');
     const has_poa_submitted = document?.status !== 'none';
-    const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
+    const is_ask_financial_risk_approval_needed = standard_client && is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
     const items: TItem[] = [
         ...(is_poi_needed

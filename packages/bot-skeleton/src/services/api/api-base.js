@@ -12,8 +12,8 @@ class APIBase {
     };
 
     init(force_update = false) {
-        this.toggleRunButton(true);
         if (getLoginId()) {
+            this.toggleRunButton(true);
             if (force_update && this.api) this.api.disconnect();
             this.api = generateDerivApiInstance();
             this.initEventListeners();
@@ -87,7 +87,7 @@ class APIBase {
     toggleRunButton = toggle => {
         const run_button = document.querySelector('#db-animation__run-button');
         if (!run_button) return;
-        this.run_button = toggle;
+        run_button.disabled = toggle;
     };
 }
 

@@ -12,7 +12,9 @@ export const generateDerivApiInstance = () => {
 };
 
 export const getLoginId = () => {
-    return localStorage.getItem('active_loginid');
+    const login_id = localStorage.getItem('active_loginid');
+    if (login_id && login_id !== 'null') return login_id;
+    return null;
 };
 
 export const getToken = () => {

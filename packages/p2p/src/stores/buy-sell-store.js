@@ -13,7 +13,6 @@ import { api_error_codes } from '../constants/api-error-codes';
 
 export default class BuySellStore extends BaseStore {
     api_error_message = '';
-    contact_info = '';
     error_message = '';
     form_error_code = '';
     has_more_items_to_load = false;
@@ -25,7 +24,6 @@ export default class BuySellStore extends BaseStore {
     items = [];
     local_currencies = [];
     local_currency = null;
-    payment_info = '';
     receive_amount = 0;
     search_results = [];
     search_term = '';
@@ -49,7 +47,7 @@ export default class BuySellStore extends BaseStore {
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
         // For sell orders we require extra information.
-        ...(this.is_sell_advert ? { contact_info: this.contact_info } : {}),
+        ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
     filter_payment_methods = [];
     payment_method_ids = [];
@@ -60,7 +58,6 @@ export default class BuySellStore extends BaseStore {
 
         makeObservable(this, {
             api_error_message: observable,
-            contact_info: observable,
             error_message: observable,
             form_error_code: observable,
             has_more_items_to_load: observable,
@@ -72,7 +69,6 @@ export default class BuySellStore extends BaseStore {
             items: observable,
             local_currencies: observable,
             local_currency: observable,
-            payment_info: observable,
             receive_amount: observable,
             search_results: observable,
             search_term: observable,
@@ -101,12 +97,12 @@ export default class BuySellStore extends BaseStore {
             modal_title: computed,
             rendered_items: computed,
             should_filter_by_payment_method: computed,
-            getAdvertiserInfo: action.bound,
             getSupportedPaymentMethods: action.bound,
             getWebsiteStatus: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
+            hidePopup: action.bound,
             hideVerification: action.bound,
             loadMoreItems: action.bound,
             onCancelClick: action.bound,
@@ -116,7 +112,6 @@ export default class BuySellStore extends BaseStore {
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
-            setContactInfo: action.bound,
             setErrorMessage: action.bound,
             setFormErrorCode: action.bound,
             setFormProps: action.bound,
@@ -129,7 +124,6 @@ export default class BuySellStore extends BaseStore {
             setItems: action.bound,
             setLocalCurrency: action.bound,
             setLocalCurrencies: action.bound,
-            setPaymentInfo: action.bound,
             setInitialReceiveAmount: action.bound,
             setReceiveAmount: action.bound,
             setSearchResults: action.bound,
@@ -167,7 +161,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     get has_payment_info() {
-        return this.contact_info.length;
+        return this.root_store.general_store.contact_info.length;
     }
 
     get is_buy() {
@@ -226,7 +220,7 @@ export default class BuySellStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get sort_list() {
         return [
-            { text: localize('Exchange rate (Default)'), value: 'rate' },
+            { text: localize('Exchange rate'), value: 'rate' },
             { text: localize('User rating'), value: 'rating' },
         ];
     }
@@ -238,24 +232,6 @@ export default class BuySellStore extends BaseStore {
         if (!this.is_buy) {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
-    }
-
-    getAdvertiserInfo() {
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            // Added a check to prevent console errors
-            if (response) {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setContactInfo(p2p_advertiser_info.contact_info);
-                    this.setPaymentInfo(p2p_advertiser_info.payment_info);
-                } else {
-                    this.setContactInfo('');
-                    this.setPaymentInfo('');
-                }
-            }
-        });
     }
 
     getSupportedPaymentMethods(payment_method_names) {
@@ -338,6 +314,10 @@ export default class BuySellStore extends BaseStore {
 
     hideAdvertiserPage() {
         this.setShowAdvertiserPage(false);
+    }
+
+    hidePopup() {
+        this.should_show_popup = false;
     }
 
     hideVerification() {
@@ -476,10 +456,6 @@ export default class BuySellStore extends BaseStore {
         this.api_error_message = api_error_message;
     }
 
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
-    }
-
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -552,10 +528,6 @@ export default class BuySellStore extends BaseStore {
         });
 
         this.local_currencies = currency_list;
-    }
-
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
     }
 
     setInitialReceiveAmount(initial_price) {
@@ -633,7 +605,6 @@ export default class BuySellStore extends BaseStore {
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
-            this.getAdvertiserInfo();
             this.setSelectedAdState(selected_advert);
             this.setShouldShowPopup(true);
         } else {

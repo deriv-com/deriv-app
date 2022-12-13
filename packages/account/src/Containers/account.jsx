@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
 import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Styles/account.scss';
+import { useHistory } from 'react-router';
 
 const AccountLogout = ({ logout, history }) => {
     return (
@@ -19,7 +20,27 @@ const AccountLogout = ({ logout, history }) => {
             }}
         >
             <div className='dc-vertical-tab__header-group account__logout-tab'>
-                <Text color='general' size='xxs' weight='normal'>
+                <Text size='xxs' weight='normal'>
+                    {localize('Log out')}
+                </Text>
+            </div>
+        </div>
+    );
+};
+
+const TradingHubLogout = ({ logout }) => {
+    const history = useHistory();
+    return (
+        <div
+            className='dc-vertical-tab__header-account__logout-tab'
+            onClick={() => {
+                logout();
+                history.push(shared_routes.index);
+            }}
+        >
+            <div className='dc-vertical-tab__header-account__logout'>
+                <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
+                <Text size='xs' weight='bold'>
                     {localize('Log out')}
                 </Text>
             </div>
@@ -30,11 +51,13 @@ const AccountLogout = ({ logout, history }) => {
 const PageOverlayWrapper = ({
     is_from_derivgo,
     is_appstore,
+    is_pre_appstore,
     list_groups,
     logout,
     onClickClose,
     selected_route,
     subroutes,
+    history,
 }) => {
     if (isMobile() && selected_route) {
         return (
@@ -74,17 +97,20 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
+                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} />}
             />
         </PageOverlay>
     );
 };
 
 const Account = ({
+    active_account_landing_company,
     currency,
     history,
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
+    is_risky_client,
     is_virtual,
     is_visible,
     location,
@@ -95,7 +121,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -113,7 +139,11 @@ const Account = ({
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled = is_virtual;
+                route.is_disabled =
+                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+            }
+            if (route.path === shared_routes.trading_assessment) {
+                route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
@@ -159,12 +189,14 @@ const Account = ({
                 <PageOverlayWrapper
                     is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
+                    is_pre_appstore={is_pre_appstore}
                     list_groups={list_groups}
                     logout={logout}
                     onClickClose={onClickClose}
                     platform={platform}
                     selected_route={selected_route}
                     subroutes={subroutes}
+                    history={history}
                 />
             </div>
         </FadeWrapper>
@@ -172,11 +204,13 @@ const Account = ({
 };
 
 Account.propTypes = {
+    active_account_landing_company: PropTypes.string,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
+    is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -189,10 +223,12 @@ Account.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
+    active_account_landing_company: client.landing_company_shortcode,
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_from_derivgo: common.is_from_derivgo,
+    is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

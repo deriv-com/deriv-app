@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
-import { useStore } from '../../../hooks';
 
 type TItem = {
     content: string;

@@ -607,7 +607,7 @@
         background: var(--general-section-1);
         border-radius: #{$BORDER_RADIUS};
         position: relative;
-        margin: 0 0 0.8rem;
+        margin-bottom: 0.8rem;
         width: 100%;
 
         @include mobile {

@@ -51,6 +51,16 @@ const MultiplierCardBody = ({
     const cancellation_price = getCancellationPrice(contract_info);
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
+    const {
+        BUY_PRICE,
+        CURRENT_STAKE,
+        DEAL_CANCEL_FEE,
+        NOT_AVAILABLE,
+        STAKE,
+        STOP_LOSS,
+        TAKE_PROFIT,
+        TOTAL_PROFIT_LOSS,
+    } = getCardLabels();
 
     return (
         <React.Fragment>
@@ -61,10 +71,10 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
-                <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().CURRENT_STAKE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': +profit > 0,
@@ -74,29 +84,26 @@ const MultiplierCardBody = ({
                         <Money amount={bid_price} currency={currency} />
                     </div>
                 </ContractCardItem>
-                <ContractCardItem
-                    header={getCardLabels().DEAL_CANCEL_FEE}
-                    className='dc-contract-card__deal-cancel-fee'
-                >
+                <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
                     ) : (
                         <React.Fragment>
-                            {shouldShowCancellation(underlying) ? <strong>-</strong> : getCardLabels().NOT_AVAILABLE}
+                            {shouldShowCancellation(underlying) ? <strong>-</strong> : NOT_AVAILABLE}
                         </React.Fragment>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
+                <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 {has_progress_slider && is_mobile && !is_sold && (
                     <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
                 )}
                 <div className='dc-contract-card__limit-order-info'>
-                    <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                    <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     </ContractCardItem>
-                    <ContractCardItem header={getCardLabels().STOP_LOSS} className='dc-contract-card__stop-loss'>
+                    <ContractCardItem header={STOP_LOSS} className='dc-contract-card__stop-loss'>
                         {stop_loss ? (
                             <React.Fragment>
                                 <strong>-</strong>
@@ -128,7 +135,7 @@ const MultiplierCardBody = ({
             </div>
             <ContractCardItem
                 className='dc-contract-card-item__total-profit-loss'
-                header={getCardLabels().TOTAL_PROFIT_LOSS}
+                header={TOTAL_PROFIT_LOSS}
                 is_crypto={isCryptocurrency(currency)}
                 is_loss={+total_profit < 0}
                 is_won={+total_profit > 0}
@@ -168,14 +175,15 @@ const AccumulatorCardBody = ({
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
+    const { INDICATIVE_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
 
     return (
         <React.Fragment>
             <div className='dc-contract-card-items-wrapper'>
-                <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
+                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().INDICATIVE_PRICE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={INDICATIVE_PRICE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': +profit > 0,
@@ -194,7 +202,7 @@ const AccumulatorCardBody = ({
                     </div>
                 </ContractCardItem>
                 <ContractCardItem
-                    header={getCardLabels().TOTAL_PROFIT_LOSS}
+                    header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
                     is_loss={+profit < 0}
                     is_won={+profit > 0}
@@ -209,7 +217,7 @@ const AccumulatorCardBody = ({
                         {status === 'loss' && <Icon icon='IcLoss' />}
                     </div>
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     {is_valid_to_sell && (
                         <ToggleCardDialog
@@ -271,6 +279,8 @@ const ContractCardBody = ({
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
+    const { INDICATIVE_PRICE, PAYOUT, POTENTIAL_PAYOUT, POTENTIAL_PROFIT_LOSS, PROFIT_LOSS, PURCHASE_PRICE } =
+        getCardLabels();
 
     const progress_slider_mobile_el = (
         <ProgressSliderMobile
@@ -336,7 +346,7 @@ const ContractCardBody = ({
             <React.Fragment>
                 <div className='dc-contract-card-items-wrapper'>
                     <ContractCardItem
-                        header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
+                        header={is_sold ? PROFIT_LOSS : POTENTIAL_PROFIT_LOSS}
                         is_crypto={isCryptocurrency(currency)}
                         is_loss={+profit < 0}
                         is_won={+profit > 0}
@@ -351,7 +361,7 @@ const ContractCardBody = ({
                             {status === 'loss' && <Icon icon='IcLoss' />}
                         </div>
                     </ContractCardItem>
-                    <ContractCardItem header={is_sold ? getCardLabels().PAYOUT : getCardLabels().INDICATIVE_PRICE}>
+                    <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
                         <Money currency={currency} amount={sell_price || indicative} />
                         <div
                             className={classNames('dc-contract-card__indicative--movement', {
@@ -362,10 +372,10 @@ const ContractCardBody = ({
                             {status === 'loss' && <Icon icon='IcLoss' />}
                         </div>
                     </ContractCardItem>
-                    <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
+                    <ContractCardItem header={PURCHASE_PRICE}>
                         <Money amount={buy_price} currency={currency} />
                     </ContractCardItem>
-                    <ContractCardItem header={getCardLabels().POTENTIAL_PAYOUT}>
+                    <ContractCardItem header={POTENTIAL_PAYOUT}>
                         <Money currency={currency} amount={payout} />
                     </ContractCardItem>
                 </div>

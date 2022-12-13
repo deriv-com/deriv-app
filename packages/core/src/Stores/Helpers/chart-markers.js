@@ -67,9 +67,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 
 const createTickMarkers = contract_info => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-    const available_ticks = is_accumulator
-        ? contract_info.audit_details?.all_ticks || contract_info.tick_stream
-        : contract_info.tick_stream;
+    const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;
     const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
     const result = [];
 

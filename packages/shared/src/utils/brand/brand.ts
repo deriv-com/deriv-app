@@ -20,6 +20,7 @@ type TPlatforms = {
     dbot: TPlatform;
     mt5: TPlatform;
     dxtrade: TPlatform;
+    derivez: TPlatform;
     smarttrader: TPlatform;
     bbot: TPlatform;
     go: TPlatform;

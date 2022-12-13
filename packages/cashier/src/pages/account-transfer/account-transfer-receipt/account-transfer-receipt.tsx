@@ -11,7 +11,7 @@ type TSwitch = {
     currency?: string;
 };
 
-const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
+const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
     const {
         ui,
         common,
@@ -166,6 +166,6 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
             </Modal>
         </div>
     );
-};
+});
 
-export default withRouter(observer(AccountTransferReceipt));
+export default withRouter(AccountTransferReceipt);

@@ -588,6 +588,7 @@
 
     &__wrapper__question {
         .dc-radio-group {
+            display: grid;
             gap: 1.6rem;
         }
         @include mobile() {

@@ -28,14 +28,12 @@ type TDetailComponent = {
     onClickBack: () => void;
     root_class: string;
     country_code_key: string;
-    documents_supported: string;
-    onfido_service_token: string;
-    height: string | number;
+    height?: string | number;
     handleComplete: () => void;
-    is_onfido_supported: boolean;
+    is_onfido_supported?: boolean;
     is_from_external: boolean;
     setIsCfdPoiCompleted: () => void;
-    is_mt5: boolean;
+    is_mt5?: boolean;
     handlePOIforMT5Complete: () => void;
 };
 
@@ -44,8 +42,6 @@ const DetailComponent = ({
     onClickBack,
     root_class,
     country_code_key,
-    documents_supported,
-    onfido_service_token,
     height,
     handleComplete,
     is_onfido_supported,
@@ -56,7 +52,7 @@ const DetailComponent = ({
     ...props
 }: TDetailComponent) => {
     const [status, setStatus] = React.useState<string>();
-    const [response_error, setError] = React.useState<string | undefined>();
+    const [response_error, setError] = React.useState<string | undefined>('');
 
     let is_any_failed = false;
 

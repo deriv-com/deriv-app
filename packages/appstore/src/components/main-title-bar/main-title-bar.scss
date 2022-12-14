@@ -1,0 +1,12 @@
+.main-title-bar {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 2.4rem;
+
+    &__right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}

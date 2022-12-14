@@ -11,9 +11,9 @@ type TBinaryLink = {
 };
 
 const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore, is_pre_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const path = normalizePath(to as string);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_appstore, is_pre_appstore }));
 
     if (!route) {
         throw new Error(`Route not found: ${to}`);

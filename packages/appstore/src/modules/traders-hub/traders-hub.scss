@@ -1,0 +1,10 @@
+.traders-hub {
+    width: 100%;
+    padding: 5rem 4rem;
+
+    &__main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+    }
+}

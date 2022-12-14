@@ -222,12 +222,12 @@ const AccountSignupModal = ({
 
     return (
         <Dialog
+            className='account-signup__dialog'
             is_visible={is_visible}
             disableApp={disableApp}
             enableApp={enableApp}
             is_loading={is_loading || !residence_list.length}
             is_mobile_full_width={false}
-            is_content_centered
         >
             <AccountSignup
                 clients_country={clients_country}

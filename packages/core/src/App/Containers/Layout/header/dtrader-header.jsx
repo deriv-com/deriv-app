@@ -21,7 +21,7 @@ const TradingHubMenuHomepage = () => {
         <div
             className='trading-hub-header__tradinghub'
             onClick={() => {
-                redirect.push(routes.trading_hub);
+                redirect.push(routes.traders_hub);
             }}
         >
             <Icon icon='IcAppstoreMenuHomepage' size={30} />

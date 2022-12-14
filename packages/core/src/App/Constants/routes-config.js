@@ -125,6 +125,15 @@ const getModules = ({ is_pre_appstore }) => {
                             getTitle: () => localize('Personal details'),
                             default: true,
                         },
+                        ...(is_pre_appstore
+                            ? [
+                                  {
+                                      path: routes.languages,
+                                      component: Account,
+                                      getTitle: () => localize('Languages'),
+                                  },
+                              ]
+                            : []),
                     ],
                 },
                 {
@@ -141,15 +150,6 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
                         },
-                        ...(is_pre_appstore
-                            ? [
-                                  {
-                                      path: routes.languages,
-                                      component: Account,
-                                      getTitle: () => localize('Languages'),
-                                  },
-                              ]
-                            : []),
                     ],
                 },
                 {
@@ -217,7 +217,7 @@ const getModules = ({ is_pre_appstore }) => {
             ],
         },
         {
-            path: routes.trading_hub,
+            path: routes.traders_hub,
             component: AppStore,
             is_authenticated: true,
             getTitle: () => localize('Traders Hub'),
@@ -229,7 +229,7 @@ const getModules = ({ is_pre_appstore }) => {
             getTitle: () => localize('Appstore'),
             routes: [
                 {
-                    path: routes.trading_hub,
+                    path: routes.traders_hub,
                     component: AppStore,
                     getTitle: () => localize('Traders Hub'),
                 },
@@ -333,7 +333,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
+const initRoutesConfig = ({ is_appstore, is_pre_appstore, is_eu_country }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -344,7 +344,7 @@ const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_appstore, is_pre_appstore }),
+    ...getModules({ is_appstore, is_pre_appstore, is_eu_country }),
 ];
 
 let routesConfig;
@@ -353,9 +353,9 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_appstore = true, is_pre_appstore }) => {
+const getRoutesConfig = ({ is_appstore = true, is_pre_appstore, is_eu_country }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore, is_pre_appstore });
+        routesConfig = initRoutesConfig({ is_appstore, is_pre_appstore, is_eu_country });
         routesConfig.push(route_default);
     }
     return routesConfig;

@@ -55,6 +55,15 @@ const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
                         getTitle: () => localize('Personal details'),
                         default: true,
                     },
+                    ...(is_pre_appstore
+                        ? [
+                              {
+                                  path: routes.languages,
+                                  component: LanguageSettings,
+                                  getTitle: () => localize('Languages'),
+                              },
+                          ]
+                        : []),
                 ],
             },
             {
@@ -71,15 +80,6 @@ const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
                     },
-                    ...(is_pre_appstore
-                        ? [
-                              {
-                                  path: routes.languages,
-                                  component: LanguageSettings,
-                                  getTitle: () => localize('Languages'),
-                              },
-                          ]
-                        : []),
                 ],
             },
             {

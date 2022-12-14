@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
@@ -12,7 +13,8 @@ import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
-    const validation_is_enabled = useToggleValidation();
+    const { hash } = useLocation();
+    const validation_is_enabled = useToggleValidation(hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);

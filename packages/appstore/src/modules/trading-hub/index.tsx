@@ -57,7 +57,7 @@ const TradingHub: React.FC = () => {
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen } = tradinghub;
+    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
     const real_active = !/^VRT/.test(login_id);
@@ -143,13 +143,23 @@ const TradingHub: React.FC = () => {
     ];
 
     tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
 
     eu_tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
@@ -256,7 +266,7 @@ const TradingHub: React.FC = () => {
                 </MobileWrapper>
             </div>
             <Joyride
-                run={is_tour_open}
+                run={!is_onboarding_visited && is_tour_open}
                 continuous
                 disableScrolling
                 hideCloseButton

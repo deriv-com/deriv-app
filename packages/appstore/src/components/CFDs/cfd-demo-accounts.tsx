@@ -11,14 +11,12 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     const { is_eu } = client;
     const account_name = is_eu ? 'CFDs' : 'Financial';
     const account_desc = is_eu
-        ? 'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
-        : 'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.';
+        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+        : 'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.';
     const available_demo_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
-            description: localize(
-                'Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
-            ),
+            description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,
@@ -35,9 +33,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         {
             name: 'Deriv X',
             is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
-            description: localize(
-                'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
-            ),
+            description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
             disabled: false,
             platform: CFD_PLATFORMS.DXTRADE,
             type: 'all',

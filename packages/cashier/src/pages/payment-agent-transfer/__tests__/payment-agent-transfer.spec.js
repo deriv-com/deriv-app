@@ -3,6 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        is_dark_mode_on: false,
+        toggleAccountsDialog: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -53,7 +61,9 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should render the component', () => {
-        render(<PaymentAgentTransfer {...props} />);
+        render(<PaymentAgentTransfer {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedPaymentAgentTransferForm')).toBeInTheDocument();
     });
@@ -62,7 +72,10 @@ describe('<PaymentAgentTransfer />', () => {
         render(
             <Router history={history}>
                 <PaymentAgentTransfer is_virtual {...props} />
-            </Router>
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(
@@ -71,13 +84,17 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show the loading component if in loading state', () => {
-        render(<PaymentAgentTransfer is_loading {...props} />);
+        render(<PaymentAgentTransfer is_loading {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        render(<PaymentAgentTransfer is_cashier_locked {...props} />);
+        render(<PaymentAgentTransfer is_cashier_locked {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -87,25 +104,33 @@ describe('<PaymentAgentTransfer />', () => {
             is_show_full_page: true,
         };
 
-        render(<PaymentAgentTransfer {...props} error={cta_error} />);
+        render(<PaymentAgentTransfer {...props} error={cta_error} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedError')).toBeInTheDocument();
     });
 
     it('should show the no balance component if account has no balance', () => {
-        render(<PaymentAgentTransfer {...props} balance='0' />);
+        render(<PaymentAgentTransfer {...props} balance='0' />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedNoBalance')).toBeInTheDocument();
     });
 
     it('should show the confirmation if validations are passed', () => {
-        render(<PaymentAgentTransfer is_try_transfer_successful {...props} />);
+        render(<PaymentAgentTransfer is_try_transfer_successful {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedPaymentAgentTransferConfirm')).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', () => {
-        render(<PaymentAgentTransfer is_transfer_successful {...props} />);
+        render(<PaymentAgentTransfer is_transfer_successful {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedPaymentAgentTransferReceipt')).toBeInTheDocument();
     });

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { getGrowthRatePercentage, getRoundedTickSizeBarrier } from '@deriv/shared';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import classNames from 'classnames';
 
 const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier }) => {
@@ -23,10 +23,10 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
             header={localize('Accumulate')}
             is_center
             header_tooltip={localize(
-                'Your stake will grow by {{growth_rate}}% at every tick starting from the second tick, as long as the price remains within a range of ±{{tick_size_barrier}}% from the previous tick price.',
+                'Your stake will grow by {{growth_rate}}% at every tick starting from the second tick, as long as the price remains within a range of ±{{tick_size_barrier}} from the previous tick price.',
                 {
                     growth_rate: getGrowthRatePercentage(growth_rate),
-                    tick_size_barrier: getRoundedTickSizeBarrier(tick_size_barrier),
+                    tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
                 }
             )}
         >

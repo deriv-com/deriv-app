@@ -121,7 +121,7 @@ export default class TradeStore extends BaseStore {
     maximum_payout = 0;
     maximum_ticks = 0;
     ticks_history_stats = {};
-    tick_size_barrier = 0; // TODO: maryia - remove if still unused before Accumulators release
+    tick_size_barrier = 0;
 
     // Multiplier trade params
     multiplier;

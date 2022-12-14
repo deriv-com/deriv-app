@@ -299,6 +299,7 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
                     },
                 },
             },
+            purchase: buy_price,
         };
     } else {
         let indicative = 0;

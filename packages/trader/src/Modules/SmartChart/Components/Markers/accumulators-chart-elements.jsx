@@ -18,7 +18,7 @@ const AccumulatorsChartElements = ({
             symbol === p.contract_info.underlying &&
             filterByContractType(p.contract_info, 'accumulator')
     );
-    const should_highlight_tick_without_contract = current_symbol_spot_time && is_stats_highlighted;
+    const should_highlight_tick_without_contract = !!current_symbol_spot_time && is_stats_highlighted;
     const should_highlight_contract_tick =
         last_contract_info?.status === 'lost' && current_symbol_spot_time === last_contract_info?.exit_tick_time;
     const should_highlight_tick = should_highlight_tick_without_contract || should_highlight_contract_tick;
@@ -29,11 +29,11 @@ const AccumulatorsChartElements = ({
 
     return (
         <React.Fragment>
-            {accumulators_positions.length &&
+            {!!accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
-            {should_highlight_tick && (
+            {should_highlight_tick && current_spot_time && (
                 <CurrentSpotHighlighter current_spot={current_spot} current_spot_time={current_spot_time} />
             )}
         </React.Fragment>

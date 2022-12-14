@@ -1,3 +1,29 @@
+type TIsHighLow = {
+    shortcode?: string;
+    shortcode_info?: {
+        category?: string;
+        underlying?: string;
+        barrier_1?: string;
+        multiplier?: string;
+        start_time?: string;
+    };
+};
+
+type TInfoFromShortcode = Partial<
+    Record<
+        | 'category'
+        | 'underlying'
+        | 'barrier_1'
+        | 'multiplier'
+        | 'start_time'
+        | 'payout_tick'
+        | 'growth_rate'
+        | 'growth_frequency'
+        | 'tick_size_barrier',
+        string
+    >
+>;
+
 // category_underlying_amount
 const base_pattern =
     '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+[A-Z]?)|(?:cry_[A-Z]+)|(?:JD[0-9]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
@@ -11,7 +37,7 @@ const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 // category_underlying_amount_starttime_endtime_barrier
 const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
-export const extractInfoFromShortcode = (shortcode: string) => {
+export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode => {
     const info_from_shortcode = {
         category: '',
         underlying: '',
@@ -55,17 +81,6 @@ export const extractInfoFromShortcode = (shortcode: string) => {
     }
 
     return info_from_shortcode;
-};
-
-type TIsHighLow = {
-    shortcode?: string;
-    shortcode_info?: {
-        category?: string;
-        underlying?: string;
-        barrier_1?: string;
-        multiplier?: string;
-        start_time?: string;
-    };
 };
 
 export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {

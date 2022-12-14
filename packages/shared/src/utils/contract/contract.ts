@@ -125,8 +125,8 @@ export const getTimePercentage = (server_time: moment.Moment, start_time: number
     return Math.round(percentage);
 };
 
-export const getRoundedTickSizeBarrier = (tick_size_barrier: number) =>
-    (tick_size_barrier * 100 + Number.EPSILON).toFixed(5);
+export const getTickSizeBarrierPercentage = (tick_size_barrier: number) =>
+    `${(tick_size_barrier * 100 + Number.EPSILON).toFixed(5)}%`;
 
 export const getGrowthRatePercentage = (growth_rate: number) => growth_rate * 100;
 

@@ -33,6 +33,7 @@
     "dependencies": {
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@deriv/translations": "^1.0.0",
         "@testing-library/react": "^12.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",

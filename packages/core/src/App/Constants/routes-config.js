@@ -285,6 +285,36 @@ const getModules = ({ is_pre_appstore }) => {
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
+                    routes: [
+                        {
+                            path: routes.p2p_advertiser_page,
+                            component: Cashier,
+                            getTitle: () => localize('Deriv P2P'),
+                            // icon_component: 'IcDp2p',
+                            // is_invisible: true,
+                        },
+                        {
+                            path: routes.p2p_my_ads,
+                            component: Cashier,
+                            getTitle: () => localize('Deriv P2P'),
+                            // icon_component: 'IcDp2p',
+                            // is_invisible: true,
+                        },
+                        {
+                            path: routes.p2p_my_profile,
+                            component: Cashier,
+                            getTitle: () => localize('Deriv P2P'),
+                            // icon_component: 'IcDp2p',
+                            // is_invisible: true,
+                        },
+                        {
+                            path: routes.p2p_orders,
+                            component: Cashier,
+                            getTitle: () => localize('Deriv P2P'),
+                            // icon_component: 'IcDp2p',
+                            // is_invisible: true,
+                        },
+                    ],
                 },
                 {
                     path: routes.cashier_p2p_verification,

@@ -6,3 +6,96 @@
         border-bottom: 1px solid var(--border-normal);
     }
 }
+.regulators-compare-table {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    background: inherit;
+    height: 100%;
+    position: relative;
+    margin: 0.5rem 0 2.5rem;
+
+    &__table-header {
+        grid-template-columns: 1.58fr 2.3fr 2.3fr;
+    }
+
+    &__table-header-item {
+        justify-content: center;
+    }
+
+    &__table-row-wrapper {
+        .regulators-compare-table__table-row {
+            grid-template-columns: 1.58fr 2.3fr 2.3fr;
+            &:first-child {
+                background-color: var(--button-primary-light-default);
+            }
+        }
+    }
+
+    &__table-row-item {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .dc-table {
+        margin: 0 4.9rem;
+
+        &__header {
+            border: none;
+            height: 4rem;
+            top: 0;
+            z-index: 10;
+        }
+        &__cell:not(.regulators-compare-table__table-empty-cell),
+        &__head:not(.regulators-compare-table__table-empty-cell) {
+            border: 1px solid var(--general-active);
+            margin-left: -1px;
+            margin-bottom: -1px;
+        }
+        &__cell {
+            padding: 1rem 0.8rem;
+        }
+        &__row {
+            border-bottom: none;
+            min-height: 4rem;
+        }
+    }
+    @include mobile {
+        height: 100%;
+        font-size: 1rem;
+
+        .dc-table {
+            height: 100%;
+            margin: 25px;
+            overflow-x: auto;
+            &__cell {
+                &--fixed {
+                    background-color: var(--general-main-1);
+                    .dc-text {
+                        font-size: var(--text-size-xxxs);
+                        text-align: left;
+                    }
+                }
+            }
+        }
+        &__table {
+            &-header,
+            &-row {
+                width: 250vw;
+                grid-template-columns: 0.1fr 0.2fr 0.2fr;
+            }
+        }
+        .regulators-compare-table {
+            &__table-empty-cell.dc-table {
+                &__cell--fixed {
+                    margin-left: -1px;
+                    border: 1px solid var(--general-active);
+                    border-width: 1px 1px 0px 0px;
+                }
+                &__head {
+                    border-top: none;
+                }
+            }
+        }
+    }
+}

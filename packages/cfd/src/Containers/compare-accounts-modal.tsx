@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    Button,
-    Modal,
-    DesktopWrapper,
-    MobileDialog,
-    MobileWrapper,
-    ThemedScrollbars,
-    UILoader,
-} from '@deriv/components';
+import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';

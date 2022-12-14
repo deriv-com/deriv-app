@@ -1,10 +1,10 @@
 import React from 'react';
 import { Table, Div100vhContainer, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
-import { cfd_content, options_content } from 'Constants/regulators-modal-content';
+import { isDesktop, isMobile } from '@deriv/shared';
+import { cfd_content, options_content, TRegulatorsContentProps, TRowItem } from 'Constants/regulators-modal-content';
 
-const Row = ({ id, attribute, content }) => {
+const Row = ({ attribute, content }: TRegulatorsContentProps) => {
     return (
         <Table.Row className='regulators-compare-table__table-row'>
             <Table.Cell fixed>
@@ -14,15 +14,15 @@ const Row = ({ id, attribute, content }) => {
             </Table.Cell>
             {Object.keys(content).map(rowKey => (
                 <Table.Cell key={rowKey} className='regulators-compare-table__table-row-item'>
-                    {Array.isArray(content[rowKey]?.values) ? (
-                        content[rowKey]?.values.map((item, index) => (
+                    {Array.isArray(content[rowKey]) ? (
+                        (content[rowKey] as TRowItem[])?.map((item, index) => (
                             <Text
                                 key={index}
                                 as='p'
                                 color={item?.options?.color ?? 'prominent'}
                                 weight={item?.options?.weight ?? 'normal'}
                                 align={item?.options?.align ?? 'center'}
-                                size={item?.options?.size ?? 'xxxs'}
+                                size={isMobile() ? 'xxxxs' : 'xxxs'}
                             >
                                 {item?.text}
                                 {item?.options?.should_show_asterick_at_end && (
@@ -35,12 +35,12 @@ const Row = ({ id, attribute, content }) => {
                     ) : (
                         <Text
                             as='p'
-                            align={content[rowKey]?.values?.options?.align ?? 'center'}
-                            size={content[rowKey]?.values?.options?.size ?? 'xxxs'}
-                            color={content[rowKey]?.values?.options?.color ?? 'prominent'}
-                            weight={content[rowKey]?.values?.options?.weight ?? 'normal'}
+                            align={(content[rowKey] as TRowItem)?.options?.align ?? 'center'}
+                            size={isMobile() ? 'xxxxs' : 'xxxs'}
+                            color={(content[rowKey] as TRowItem)?.options?.color ?? 'prominent'}
+                            weight={(content[rowKey] as TRowItem)?.options?.weight ?? 'normal'}
                         >
-                            {content[rowKey]?.values.text}
+                            {(content[rowKey] as TRowItem)?.text}
                         </Text>
                     )}
                 </Table.Cell>
@@ -52,12 +52,7 @@ const Row = ({ id, attribute, content }) => {
 const RegulatorsCompareModalContent = () => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
-            <ThemedScrollbars
-                className='regulators-compare-table'
-                // style={{
-                //     '--cfd-compare-accounts-template-columns': 'template_columns',
-                // }}
-            >
+            <ThemedScrollbars className='regulators-compare-table'>
                 <div className='regulators-compare-table'>
                     <Table className='regulators-compare-table__table'>
                         <Table.Header>

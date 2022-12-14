@@ -56,6 +56,13 @@ const AppStore = React.lazy(() =>
     })
 );
 
+const P2P = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
+    })
+);
+
 const getModules = ({ is_pre_appstore }) => {
     const modules = [
         {
@@ -288,31 +295,23 @@ const getModules = ({ is_pre_appstore }) => {
                     routes: [
                         {
                             path: routes.p2p_advertiser_page,
-                            component: Cashier,
+                            component: P2P,
                             getTitle: () => localize('Deriv P2P'),
-                            // icon_component: 'IcDp2p',
-                            // is_invisible: true,
                         },
                         {
                             path: routes.p2p_my_ads,
-                            component: Cashier,
+                            component: P2P,
                             getTitle: () => localize('Deriv P2P'),
-                            // icon_component: 'IcDp2p',
-                            // is_invisible: true,
                         },
                         {
                             path: routes.p2p_my_profile,
-                            component: Cashier,
+                            component: P2P,
                             getTitle: () => localize('Deriv P2P'),
-                            // icon_component: 'IcDp2p',
-                            // is_invisible: true,
                         },
                         {
                             path: routes.p2p_orders,
-                            component: Cashier,
+                            component: P2P,
                             getTitle: () => localize('Deriv P2P'),
-                            // icon_component: 'IcDp2p',
-                            // is_invisible: true,
                         },
                     ],
                 },

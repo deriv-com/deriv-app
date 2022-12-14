@@ -3,15 +3,21 @@ import BaseStore from './base-store';
 
 export default class TradingHubStore extends BaseStore {
     is_tour_open = false;
+    is_account_type_modal_visible = false;
 
     constructor(root_store) {
         super({ root_store });
         makeObservable(this, {
             is_tour_open: observable,
             toggleIsTourOpen: action.bound,
+            toggleAccountTypeModalVisibility: action.bound,
         });
     }
     toggleIsTourOpen(is_tour_open) {
         this.is_tour_open = is_tour_open;
+    }
+
+    toggleAccountTypeModalVisibility() {
+        this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
     }
 }

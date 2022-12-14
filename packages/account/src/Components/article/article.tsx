@@ -29,7 +29,7 @@ const Article = ({ title, descriptions, onClickLearnMore, className }: TArticle)
                 <React.Fragment>
                     {has_single_description ? (
                         <Text as='p' size='xxs' line_height='m'>
-                            {descriptions[0]}
+                            {'component' in descriptions[0] ? descriptions[0].component : descriptions[0]}
                         </Text>
                     ) : (
                         <ul className='da-article__list'>

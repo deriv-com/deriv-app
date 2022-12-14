@@ -41,8 +41,15 @@ const LowBalanceMessage = () => (
 );
 
 const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
+    const { my_profile_store } = useStores();
     return (
-        <React.Fragment>
+        <div
+            className={
+                my_profile_store.should_show_add_payment_method_form
+                    ? 'add-payment-method__footer'
+                    : 'buy-sell__modal-footer'
+            }
+        >
             <Button.Group>
                 <Button secondary onClick={onCancel} large>
                     {localize('Cancel')}
@@ -51,7 +58,7 @@ const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
                     {localize('Confirm')}
                 </Button>
             </Button.Group>
-        </React.Fragment>
+        </div>
     );
 };
 
@@ -107,13 +114,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
-    const [page_footer_parent, setPageFooterParent] = useSafeState(
-        <BuySellFormReceiveAmount
-            is_sell_advert={buy_sell_store.is_sell_advert}
-            local_currency={buy_sell_store?.advert && buy_sell_store.advert.local_currency}
-            receive_amount={buy_sell_store.receive_amount}
-        />
-    );
+
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
@@ -247,24 +248,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     page_header_className='buy-sell__modal-header'
                     page_header_text={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
                     pageHeaderReturnFn={onCancel}
-                    page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
-                    renderPageFooterChildren={() =>
-                        !my_profile_store.should_show_add_payment_method_form && (
-                            <BuySellModalFooter
-                                is_submit_disabled={is_submit_disabled}
-                                onCancel={onCancel}
-                                onSubmit={onSubmit}
-                            />
-                        )
-                    }
-                    page_footer_className={
-                        my_profile_store.should_show_add_payment_method_form
-                            ? 'add-payment-method__footer'
-                            : 'buy-sell__modal-footer'
-                    }
                 >
                     {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
-                    <BuySellFormError />
+                    {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                     ) : (
@@ -275,8 +261,21 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                             setIsSubmitDisabled={setIsSubmitDisabled}
                             setErrorMessage={setErrorMessage}
                             setSubmitForm={setSubmitForm}
-                            setPageFooterParent={setPageFooterParent}
                         />
+                    )}
+                    {!my_profile_store.should_show_add_payment_method_form && (
+                        <React.Fragment>
+                            <BuySellFormReceiveAmount
+                                is_sell_advert={buy_sell_store.is_sell_advert}
+                                local_currency={buy_sell_store?.advert && buy_sell_store.advert.local_currency}
+                                receive_amount={buy_sell_store.receive_amount}
+                            />
+                            <BuySellModalFooter
+                                is_submit_disabled={is_submit_disabled}
+                                onCancel={onCancel}
+                                onSubmit={submitForm.current}
+                            />
+                        </React.Fragment>
                     )}
                 </MobileFullPageModal>
             </MobileWrapper>

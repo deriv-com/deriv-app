@@ -35,7 +35,7 @@
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
     "dependencies": {
-        "@deriv/api-types": "^1.0.54",
+        "@deriv/api-types": "1.0.69",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
         "@deriv/hooks": "^1.0.0",

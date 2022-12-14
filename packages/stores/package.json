@@ -4,7 +4,8 @@
     "version": "1.0.0",
     "main": "src/index.ts",
     "dependencies": {
-        "react": "^16.14.0"
+        "react": "^16.14.0",
+        "@deriv/api-types": "1.0.69"
     },
     "devDependencies": {
         "@deriv/api-types": "^1.0.54",

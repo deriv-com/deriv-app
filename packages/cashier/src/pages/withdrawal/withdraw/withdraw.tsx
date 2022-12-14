@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '@deriv/stores';
 import { Real } from 'Components/cashier-container';
-import { useStore } from '../../../hooks';
 
 const Withdraw = () => {
     const {

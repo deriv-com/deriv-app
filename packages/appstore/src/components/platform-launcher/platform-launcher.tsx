@@ -35,6 +35,14 @@ const PlatformLauncher = ({
     const app_description =
         app_desc === 'Options & multipliers trading platform.' && is_eu ? is_eu_description : app_desc;
 
+    const TradeButton = (
+        <Button primary className='platform-launcher__trade-button'>
+            <Text size={isMobile() ? 'xxxs' : 's'} weight='bold' color='colored-background'>
+                {localize('Trade')}
+            </Text>
+        </Button>
+    );
+
     return (
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
@@ -61,23 +69,7 @@ const PlatformLauncher = ({
             </div>
             {((has_real_account && account_type === 'real') || account_type === 'demo') && (
                 <React.Fragment>
-                    {link_to ? (
-                        <Link to={link_to}>
-                            <Button primary className='platform-launcher__trade-button'>
-                                <Text color='white' weight='bold' size={isMobile() ? 'xxxs' : 's'}>
-                                    {localize('Trade')}
-                                </Text>
-                            </Button>
-                        </Link>
-                    ) : (
-                        <a href={href}>
-                            <Button primary className='platform-launcher__trade-button'>
-                                <Text color='white' weight='bold' size={isMobile() ? 'xxxs' : 's'}>
-                                    {localize('Trade')}
-                                </Text>
-                            </Button>
-                        </a>
-                    )}
+                    {link_to ? <Link to={link_to}>{TradeButton}</Link> : <a href={href}>{TradeButton}</a>}
                 </React.Fragment>
             )}
         </div>

@@ -5,18 +5,23 @@
     background: inherit;
     height: 100%;
     position: relative;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 2.5rem;
 
     &__table-header {
-        grid-template-columns: 1.55fr 2.3fr 2.3fr;
+        grid-template-columns: 1.58fr 2.3fr 2.3fr;
     }
 
     &__table-header-item {
         justify-content: center;
     }
 
-    &__table-row {
-        grid-template-columns: 1.55fr 2.3fr 2.3fr;
+    &__table-row-wrapper {
+        .regulators-compare-table__table-row {
+            grid-template-columns: 1.58fr 2.3fr 2.3fr;
+            &:first-child {
+                background-color: var(--button-primary-light-default);
+            }
+        }
     }
 
     &__table-row-item {
@@ -46,10 +51,6 @@
             border-bottom: none;
             min-height: 4rem;
         }
-
-        &--scrollbar {
-            display: block; // Safari needs this to work properly!
-        }
     }
     @include mobile {
         height: 100%;
@@ -72,13 +73,8 @@
         &__table {
             &-header,
             &-footer,
-            &-row,
-            &-row--leverage,
-            &-row--instruments {
+            &-row {
                 width: 250vw;
-                &__pre-appstore {
-                    width: 250vw;
-                }
             }
         }
         .regulators-compare-table {
@@ -91,10 +87,6 @@
                 &__head {
                     border-top: none;
                 }
-            }
-            &-row-eu {
-                width: unset;
-                height: unset;
             }
         }
     }

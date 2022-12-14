@@ -19,7 +19,7 @@ const RegulatorsCompareModal = () => {
             title={localize('Non-EU and EU regulator')}
             is_open={is_regulators_compare_modal_visible}
             toggleModal={closeModal}
-            height='900px'
+            height='792px'
             width='792px'
             className='regulator-modal'
         >

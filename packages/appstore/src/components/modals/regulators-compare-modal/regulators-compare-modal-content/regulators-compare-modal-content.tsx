@@ -1,10 +1,10 @@
 import React from 'react';
-import { Table, Div100vhContainer, Text } from '@deriv/components';
+import { Table, Div100vhContainer, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { cfd_content, options_content } from 'Constants/regulators-modal-content';
 
-const Row = ({ id, attribute, values }) => {
+const Row = ({ id, attribute, content }) => {
     return (
         <Table.Row className='regulators-compare-table__table-row'>
             <Table.Cell fixed>
@@ -12,17 +12,35 @@ const Row = ({ id, attribute, values }) => {
                     {attribute}
                 </Text>
             </Table.Cell>
-            {Object.keys(values).map(rowKey => (
+            {Object.keys(content).map(rowKey => (
                 <Table.Cell key={rowKey} className='regulators-compare-table__table-row-item'>
-                    {Array.isArray(values[rowKey]?.text) ? (
-                        (values[rowKey]?.text as []).map((item, index) => (
-                            <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
-                                {item}
+                    {Array.isArray(content[rowKey]?.values) ? (
+                        content[rowKey]?.values.map((item, index) => (
+                            <Text
+                                key={index}
+                                as='p'
+                                color={item?.options?.color ?? 'prominent'}
+                                weight={item?.options?.weight ?? 'normal'}
+                                align={item?.options?.align ?? 'center'}
+                                size={item?.options?.size ?? 'xxxs'}
+                            >
+                                {item?.text}
+                                {item?.options?.should_show_asterick_at_end && (
+                                    <Text color={'loss-danger'} size={'xxxs'}>
+                                        *
+                                    </Text>
+                                )}
                             </Text>
                         ))
                     ) : (
-                        <Text as='p' align='center' color='prominent' size='xxxs'>
-                            {values[rowKey]?.text}
+                        <Text
+                            as='p'
+                            align={content[rowKey]?.values?.options?.align ?? 'center'}
+                            size={content[rowKey]?.values?.options?.size ?? 'xxxs'}
+                            color={content[rowKey]?.values?.options?.color ?? 'prominent'}
+                            weight={content[rowKey]?.values?.options?.weight ?? 'normal'}
+                        >
+                            {content[rowKey]?.values.text}
                         </Text>
                     )}
                 </Table.Cell>
@@ -33,31 +51,42 @@ const Row = ({ id, attribute, values }) => {
 
 const RegulatorsCompareModalContent = () => {
     return (
-        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='regulators-compare-table'>
-            <div className='regulators-compare-table'>
-                <Table className='regulators-compare-table__table'>
-                    <Table.Header>
-                        <Table.Row className={'regulators-compare-table__table-header'}>
-                            <Table.Head fixed className='regulators-compare-table__table-empty-cell' />
-                            <Table.Head className='regulators-compare-table__table-header-item'>
-                                {localize('Non-EU regulators')}
-                            </Table.Head>
-                            <Table.Head className='regulators-compare-table__table-header-item'>
-                                {localize('EU regulators')}
-                            </Table.Head>
-                        </Table.Row>
-                    </Table.Header>
+        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
+            <ThemedScrollbars
+                className='regulators-compare-table'
+                // style={{
+                //     '--cfd-compare-accounts-template-columns': 'template_columns',
+                // }}
+            >
+                <div className='regulators-compare-table'>
+                    <Table className='regulators-compare-table__table'>
+                        <Table.Header>
+                            <Table.Row className={'regulators-compare-table__table-header'}>
+                                <Table.Head fixed className='regulators-compare-table__table-empty-cell' />
+                                <Table.Head className='regulators-compare-table__table-header-item'>
+                                    {localize('Non-EU regulators')}
+                                </Table.Head>
+                                <Table.Head className='regulators-compare-table__table-header-item'>
+                                    {localize('EU regulators')}
+                                </Table.Head>
+                            </Table.Row>
+                        </Table.Header>
 
-                    <Table.Body>
-                        {cfd_content.map(row => (
-                            <Row key={row.id} {...row} />
-                        ))}
-                        {options_content.map(row => (
-                            <Row key={row.id} {...row} />
-                        ))}
-                    </Table.Body>
-                </Table>
-            </div>
+                        <Table.Body>
+                            <div className='regulators-compare-table__table-row-wrapper'>
+                                {cfd_content.map(row => (
+                                    <Row key={row.id} {...row} />
+                                ))}
+                            </div>
+                            <div className='regulators-compare-table__table-row-wrapper'>
+                                {options_content.map(row => (
+                                    <Row key={row.id} {...row} />
+                                ))}
+                            </div>
+                        </Table.Body>
+                    </Table>
+                </div>
+            </ThemedScrollbars>
         </Div100vhContainer>
     );
 };

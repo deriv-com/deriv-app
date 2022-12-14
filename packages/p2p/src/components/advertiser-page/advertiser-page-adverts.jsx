@@ -67,7 +67,7 @@ const AdvertiserPageAdverts = () => {
                     ) : (
                         <Empty
                             className={classNames('', { 'advertiser-page-empty': isMobile() })}
-                            icon='IcCashierNoAds'
+                            icon='IcNoData'
                             title={localize('No ads')}
                         />
                     )}

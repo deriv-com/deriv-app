@@ -11,7 +11,7 @@ describe('EmptyNotification Component', () => {
 
     it('should render the "IcBell" Icon', () => {
         render(<EmptyNotification />);
-        const icon = screen.getByTestId('ic-box-icon');
+        const icon = screen.getByTestId('dt_ic_box_icon');
         expect(icon).toBeInTheDocument();
     });
 });

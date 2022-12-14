@@ -6,7 +6,7 @@ const EmptyNotification = () => (
     <div className='notifications-empty__container'>
         <div className='notifications-empty'>
             <Icon
-                data_testid='ic-box-icon'
+                data_testid='dt_ic_box_icon'
                 icon='IcBox'
                 className='notifications-empty__icon'
                 size={64}

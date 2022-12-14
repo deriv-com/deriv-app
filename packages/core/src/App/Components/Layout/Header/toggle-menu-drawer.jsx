@@ -314,6 +314,21 @@ const ToggleMenuDrawer = React.forwardRef(
                 </MobileDrawer.SubMenu>
             );
         };
+
+        const HelpCentreRoute = has_border_bottom => {
+            return (
+                <MobileDrawer.Item className={classNames({ 'header__menu-mobile-theme': has_border_bottom })}>
+                    <MenuLink
+                        link_to={getStaticUrl('/help-centre')}
+                        icon='IcHelpCentre'
+                        text={localize('Help centre')}
+                        onClickLink={toggleDrawer}
+                        changeCurrentLanguage={changeCurrentLanguage}
+                    />
+                </MobileDrawer.Item>
+            );
+        };
+
         const { pathname: route } = useLocation();
 
         const history = useHistory();
@@ -489,15 +504,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         </MobileDrawer.Item>
                                         {is_logged_in && (
                                             <React.Fragment>
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/help-centre')}
-                                                        icon='IcHelpCentre'
-                                                        text={localize('Help centre')}
-                                                        onClickLink={toggleDrawer}
-                                                        changeCurrentLanguage={changeCurrentLanguage}
-                                                    />
-                                                </MobileDrawer.Item>
+                                                {HelpCentreRoute()}
                                                 <MobileDrawer.Item>
                                                     <MenuLink
                                                         link_to={routes.account_limits}
@@ -631,25 +638,30 @@ const ToggleMenuDrawer = React.forwardRef(
                                         )}
                                         {getLanguageRoutes()}
                                         {
-                                            <MobileDrawer.Item
-                                                className='header__menu-mobile-theme'
-                                                onClick={e => {
-                                                    e.preventDefault();
-                                                    toggleTheme(!is_dark_mode);
-                                                }}
-                                            >
-                                                <div className={classNames('header__menu-mobile-link')}>
-                                                    <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                                    <span className='header__menu-mobile-link-text'>
-                                                        {localize('Dark theme')}
-                                                    </span>
-                                                    <ToggleSwitch
-                                                        id='dt_mobile_drawer_theme_toggler'
-                                                        handleToggle={() => toggleTheme(!is_dark_mode)}
-                                                        is_enabled={is_dark_mode}
-                                                    />
-                                                </div>
-                                            </MobileDrawer.Item>
+                                            <React.Fragment>
+                                                <MobileDrawer.Item
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                        toggleTheme(!is_dark_mode);
+                                                    }}
+                                                >
+                                                    <div className={classNames('header__menu-mobile-link')}>
+                                                        <Icon
+                                                            className='header__menu-mobile-link-icon'
+                                                            icon={'IcTheme'}
+                                                        />
+                                                        <span className='header__menu-mobile-link-text'>
+                                                            {localize('Dark theme')}
+                                                        </span>
+                                                        <ToggleSwitch
+                                                            id='dt_mobile_drawer_theme_toggler'
+                                                            handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                            is_enabled={is_dark_mode}
+                                                        />
+                                                    </div>
+                                                </MobileDrawer.Item>
+                                                {HelpCentreRoute(true)}
+                                            </React.Fragment>
                                         }
                                         {liveChat.isReady && (
                                             <MobileDrawer.Item className='header__menu-mobile-whatsapp'>

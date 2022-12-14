@@ -12,6 +12,7 @@ import {
     MT5TradeModal,
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
+import AccountTypeModal from './account-type-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 
@@ -53,6 +54,7 @@ const ModalManager = () => {
             />
             <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
             <ResetTradingPasswordModal context={store} />
+            <AccountTypeModal />
         </React.Fragment>
     );
 };

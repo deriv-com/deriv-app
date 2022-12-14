@@ -7,6 +7,7 @@ export default class TradersHubStore extends BaseStore {
     selected_region;
     selected_account_type = 'demo';
     is_tour_open = false;
+    is_account_type_modal_visible = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -18,6 +19,7 @@ export default class TradersHubStore extends BaseStore {
             selectAccountType: action.bound,
             selectRegion: action.bound,
             toggleIsTourOpen: action.bound,
+            toggleAccountTypeModalVisibility: action.bound,
         });
 
         reaction(
@@ -51,5 +53,9 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
         this.available_platforms = appstore_platforms;
+    }
+
+    toggleAccountTypeModalVisibility() {
+        this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
     }
 }

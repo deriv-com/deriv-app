@@ -4,21 +4,32 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
+    let mockRootStore;
+
+    beforeEach(() => {
+        mockRootStore = {
+            client: { currency: 'USD' },
+            modules: {
+                cashier: {
+                    deposit: { is_deposit_locked: false },
+                    general_store: { setCashierTabIndex: jest.fn() },
+                },
+            },
+        };
+    });
 
     it('component should render', () => {
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked={false} />
-            </Router>
+                <NoBalance />
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(screen.getByRole('heading')).toBeInTheDocument();
@@ -27,10 +38,15 @@ describe('<NoBalance />', () => {
     });
 
     it('must not able to make a deposit when deposit is locked', async () => {
+        mockRootStore.modules.cashier.deposit.is_deposit_locked = true;
+
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked />
-            </Router>
+                <NoBalance />
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(screen.getByRole('heading')).toBeInTheDocument();
@@ -39,12 +55,13 @@ describe('<NoBalance />', () => {
     });
 
     it('component should redirect to deposit page when button is clicked', () => {
-        const setTabIndex = jest.fn();
-
         render(
             <Router history={history}>
-                <NoBalance is_deposit_locked={false} setTabIndex={setTabIndex} />
-            </Router>
+                <NoBalance />
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         const btn = screen.getByRole('button');

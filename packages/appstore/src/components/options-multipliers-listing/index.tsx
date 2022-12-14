@@ -8,9 +8,9 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
 
 const OptionsAndMultipliersListing = () => {
-    const { tradinghub, client } = useStores();
+    const { tradinghub } = useStores();
     const is_demo = tradinghub.selected_account_type === 'demo';
-    const has_real_account = client.has_any_real_account && tradinghub.selected_account_type === 'real';
+    const has_real_account = tradinghub.has_any_real_account;
 
     return (
         <ListingContainer

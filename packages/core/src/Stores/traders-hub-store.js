@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, reaction } from 'mobx';
+import { action, makeObservable, observable, reaction, computed } from 'mobx';
 import { getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 
@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
             selectAccountType: action.bound,
             selectRegion: action.bound,
             toggleIsTourOpen: action.bound,
+            has_any_real_account: computed,
         });
 
         reaction(
@@ -51,5 +52,9 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
         this.available_platforms = appstore_platforms;
+    }
+
+    get has_any_real_account() {
+        return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
     }
 }

@@ -22,9 +22,7 @@ const CFDsListing = () => {
                     />
                 </Text>
             }
-        >
-            <div className='cfds-listing'>CFD Listing</div>
-        </ListingContainer>
+        />
     );
 };
 

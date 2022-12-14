@@ -7,7 +7,6 @@ import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
-import BlockUserTableError from './block-user-table-error/block-user-table-error.jsx';
 import './block-user-table.scss';
 
 const BlockUserTable = () => {
@@ -32,10 +31,6 @@ const BlockUserTable = () => {
 
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={isMobile()} />;
-    }
-
-    if (general_store.block_unblock_user_error && general_store.is_barred) {
-        return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
     }
 
     if (my_profile_store.search_term && my_profile_store.search_results.length === 0) {

@@ -1,0 +1,16 @@
+.block-user-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+
+    & .search-box {
+        margin: 0rem 0.8rem 2.4rem;
+        width: 20rem;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+    }
+}

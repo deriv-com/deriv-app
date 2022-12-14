@@ -2,51 +2,19 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
-import BlockUserDropdown from './block-user-dropdown';
 import BlockUserModal from 'Components/block-user/block-user-modal';
-import BlockUserTable from 'Components/my-profile/block-user/block-user-table/block-user-table';
-import SearchBox from 'Components/search-box';
+import BlockUserList from './block-user-list';
+import BlockUserTableError from './block-user-table/block-user-table-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 import './block-user.scss';
 
-const BlockUserList = observer(() => {
-    const { general_store, my_profile_store } = useStores();
-
-    const loadBlockedAdvertisers = debounce(search => {
-        my_profile_store.setSearchTerm(search.trim());
-        my_profile_store.loadMoreBlockedAdvertisers();
-    }, 200);
-
-    const onSearch = search => {
-        // Ensures that blocked advertisers list is not reloaded if search term entered is the same
-        if (my_profile_store.search_term !== search.trim()) {
-            my_profile_store.setIsLoading(true);
-            loadBlockedAdvertisers(search);
-        }
-    };
-
-    const onClear = () => {
-        my_profile_store.setSearchTerm('');
-        my_profile_store.setSearchResults([]);
-    };
-
-    return (
-        <div className='block-user__list'>
-            {my_profile_store.blocked_advertisers_list.length > 0 && !general_store.is_barred && (
-                <div className='block-user__list-header'>
-                    <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search by nickname')} />
-                    <BlockUserDropdown />
-                </div>
-            )}
-            <BlockUserTable />
-        </div>
-    );
-});
-
 const BlockUser = () => {
     const { general_store, my_profile_store } = useStores();
+
+    if (general_store.is_barred) {
+        return <BlockUserTableError error_message={'test'} />;
+    }
 
     return (
         <React.Fragment>

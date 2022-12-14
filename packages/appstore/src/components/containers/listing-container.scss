@@ -23,3 +23,10 @@
         gap: 1.6rem 4.8rem;
     }
 }
+.full-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1 / span 3;
+    gap: 1.6rem 4.8rem;
+}

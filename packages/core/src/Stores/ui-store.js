@@ -140,6 +140,9 @@ export default class UIStore extends BaseStore {
 
     manage_real_account_tab_index = 0;
 
+    //traders-hub
+    is_real_tab_enabled = false;
+
     // onboarding
     should_show_multipliers_onboarding = false;
     choose_crypto_currency_target = null;
@@ -147,6 +150,15 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_risk_warning_modal = false;
+    should_show_appropriateness_warning_modal = false;
+    should_show_risk_accept_modal = false;
+    should_show_cooldown_modal = false;
+    should_show_trading_assessment_modal = false;
+    should_show_trade_assessment_form = false;
+    is_trading_assessment_for_existing_user_enabled = false;
+    is_trading_assessment_for_new_user_enabled = false;
+    should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
 
@@ -255,8 +267,18 @@ export default class UIStore extends BaseStore {
             choose_crypto_currency_target: observable,
             should_show_cancel: observable,
             app_contents_scroll_ref: observable,
+            is_real_tab_enabled: observable,
             is_deriv_account_needed_modal_visible: observable,
+            should_show_trade_assessment_form: observable,
+            should_show_appropriateness_warning_modal: observable,
+            should_show_risk_accept_modal: observable,
+            should_show_cooldown_modal: observable,
+            should_show_trading_assessment_modal: observable,
+            is_trading_assessment_for_existing_user_enabled: observable,
+            is_trading_assessment_for_new_user_enabled: observable,
+            should_show_assessment_complete_modal: observable,
             is_switch_to_deriv_account_modal_visible: observable,
+            should_show_risk_warning_modal: observable,
             is_warning_scam_message_modal_visible: computed,
             setScamMessageLocalStorage: action.bound,
             setIsNewAccount: action.bound,
@@ -336,6 +358,16 @@ export default class UIStore extends BaseStore {
             continueRouteAfterChooseCrypto: action.bound,
             openDerivRealAccountNeededModal: action.bound,
             openSwitchToRealAccountModal: action.bound,
+            setShouldShowRiskWarningModal: action.bound,
+            setIsTradingAssessmentForExistingUserEnabled: action.bound,
+            setIsTradingAssessmentForNewUserEnabled: action.bound,
+            setShouldShowAppropriatenessWarningModal: action.bound,
+            setShouldShowWarningModal: action.bound,
+            setShouldShowAssessmentCompleteModal: action.bound,
+            setShouldShowCooldownModal: action.bound,
+            setShouldShowTradingAssessmentModal: action.bound,
+            setShouldShowTradeAssessmentForm: action.bound,
+            setIsRealTabEnabled: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -360,6 +392,10 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    setIsRealTabEnabled(is_real_tab_enabled) {
+        this.is_real_tab_enabled = is_real_tab_enabled;
     }
 
     setScamMessageLocalStorage() {
@@ -547,6 +583,7 @@ export default class UIStore extends BaseStore {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
+        localStorage.removeItem('current_question_index');
     }
 
     setShouldShowCancel(value) {
@@ -789,6 +826,42 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setShouldShowRiskWarningModal(value) {
+        this.should_show_risk_warning_modal = value;
+    }
+
+    setIsTradingAssessmentForExistingUserEnabled(value) {
+        this.is_trading_assessment_for_existing_user_enabled = value;
+    }
+
+    setIsTradingAssessmentForNewUserEnabled(value) {
+        this.is_trading_assessment_for_new_user_enabled = value;
+    }
+
+    setShouldShowAppropriatenessWarningModal(value) {
+        this.should_show_appropriateness_warning_modal = value;
+    }
+
+    setShouldShowWarningModal(value) {
+        this.should_show_risk_accept_modal = value;
+    }
+
+    setShouldShowAssessmentCompleteModal(value) {
+        this.should_show_assessment_complete_modal = value;
+    }
+
+    setShouldShowCooldownModal(value) {
+        this.should_show_cooldown_modal = value;
+    }
+
+    setShouldShowTradingAssessmentModal(value) {
+        this.should_show_trading_assessment_modal = value;
+    }
+
+    setShouldShowTradeAssessmentForm(value) {
+        this.should_show_trade_assessment_form = value;
     }
 
     openSwitchToRealAccountModal() {

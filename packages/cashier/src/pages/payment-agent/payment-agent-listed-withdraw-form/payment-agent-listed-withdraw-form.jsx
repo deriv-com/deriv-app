@@ -138,7 +138,7 @@ const PaymentAgentListedWithdrawForm = ({
                                         error={touched.amount && errors.amount}
                                         required
                                         autoComplete='off'
-                                        maxLength='30'
+                                        maxLength={30}
                                         hint={getHint()}
                                         ref={input_ref}
                                         trailing_icon={

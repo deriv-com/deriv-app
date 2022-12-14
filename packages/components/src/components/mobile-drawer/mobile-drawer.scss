@@ -73,6 +73,7 @@
             visibility: hidden;
         }
     }
+
     &__submenu {
         &-back {
             width: 16px;
@@ -181,6 +182,12 @@
         justify-content: flex-start;
         align-items: center;
         padding: 1.6rem;
+
+        &--servertime {
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid var(--general-section-2);
+        }
     }
     &__wrapper {
         z-index: 9999 !important;

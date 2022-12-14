@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Modal, Text } from '@deriv/components';
+import { Icon, Loading, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 
 const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual_open, title, toggleManual }) => {
+    const [is_loading, setIsLoading] = React.useState(true);
     const is_mobile = isMobile();
     // memoize file paths for videos and open the modal only after we get them
     const getVideoSource = React.useCallback(
@@ -34,12 +35,15 @@ const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual
             >
                 <Modal.Body className='accumulators-stats-modal-body'>
                     <div className='accumulators-stats-modal-body__video'>
+                        {is_loading && <Loading is_fullscreen={false} />}
                         <video
-                            width={is_mobile ? 296 : 563}
                             autoPlay
-                            loop
-                            playsInline
                             data-testid='dt_accumulators_stats_manual_video'
+                            loop
+                            onLoadedData={() => setIsLoading(false)}
+                            playsInline
+                            preload='auto'
+                            width={is_mobile ? 296 : 563}
                         >
                             {/* a browser will select a source with extension it recognizes */}
                             <source src={mp4_src} type='video/mp4' />

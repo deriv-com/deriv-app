@@ -224,7 +224,7 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
-    const AccumulatorsMarkerWithBarriers = allMarkers[props.accumulators_barriers_marker?.type];
+    const AccumulatorsShadedBarriers = allMarkers[props.accumulators_barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
@@ -297,7 +297,7 @@ const Chart = props => {
                 />
             ))}
             {props.is_accumulator_contract && (
-                <AccumulatorsMarkerWithBarriers
+                <AccumulatorsShadedBarriers
                     key={props.accumulators_barriers_marker.key}
                     is_dark_theme={props.is_dark_theme}
                     granularity={props.granularity}
@@ -373,7 +373,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         chart_type: contract_config.chart_type,
         start_epoch: should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? allowed_scroll_to_epoch : undefined,
+        scroll_to_epoch: allow_scroll_to_epoch && allowed_scroll_to_epoch,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

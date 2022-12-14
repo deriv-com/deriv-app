@@ -1,21 +1,22 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TReactMouseEvent, TRootStore } from 'Types';
+import { useStore } from '@deriv/stores';
 
-type TCryptoTransactionsStatusModalProps = {
-    hideCryptoTransactionsStatusModal: (e: TReactMouseEvent) => void;
-    is_status_modal_visible: boolean;
-    selected_crypto_status: string;
-    selected_crypto_status_description: string;
-};
-const CryptoTransactionsStatusModal = ({
-    hideCryptoTransactionsStatusModal,
-    is_status_modal_visible,
-    selected_crypto_status,
-    selected_crypto_status_description,
-}: TCryptoTransactionsStatusModalProps) => {
+const CryptoTransactionsStatusModal = () => {
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+    } = useStore();
+    const {
+        hideCryptoTransactionsStatusModal,
+        is_crypto_transactions_status_modal_visible: is_status_modal_visible,
+        selected_crypto_status,
+        selected_crypto_status_description,
+    } = transaction_history;
+
     return (
         <React.Fragment>
             <Modal
@@ -34,9 +35,4 @@ const CryptoTransactionsStatusModal = ({
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
-    hideCryptoTransactionsStatusModal: modules.cashier.transaction_history.hideCryptoTransactionsStatusModal,
-    is_status_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_status_modal_visible,
-    selected_crypto_status: modules.cashier.transaction_history.selected_crypto_status,
-    selected_crypto_status_description: modules.cashier.transaction_history.selected_crypto_status_description,
-}))(CryptoTransactionsStatusModal);
+export default observer(CryptoTransactionsStatusModal);

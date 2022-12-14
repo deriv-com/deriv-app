@@ -9,7 +9,7 @@ const BuySellFormReceiveAmount = () => {
     const { buy_sell_store } = useStores();
 
     return (
-        <React.Fragment>
+        <div className='buy-sell__modal-receive-amount'>
             <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                 {buy_sell_store?.is_sell_advert ? (
                     <Localize i18n_default_text="You'll receive" />
@@ -23,7 +23,7 @@ const BuySellFormReceiveAmount = () => {
                     buy_sell_store?.advert?.local_currency
                 )}
             </Text>
-        </React.Fragment>
+        </div>
     );
 };
 

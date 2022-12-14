@@ -1,25 +1,22 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import './cashier-onboarding.scss';
-import { TClientStore, TRootStore, TUiStore } from 'Types';
 
-type TCashierOnboardingSideNoteProps = {
-    currency: TClientStore['currency'];
-    is_crypto: boolean;
-    mt5_login_list: TClientStore['mt5_login_list'];
-    openRealAccountSignup: TUiStore['openRealAccountSignup'];
-    setDepositTarget: (path: string) => void;
-};
-
-const CashierOnboardingSideNote = ({
-    currency,
-    is_crypto,
-    openRealAccountSignup,
-    setDepositTarget,
-}: TCashierOnboardingSideNoteProps) => {
+const CashierOnboardingSideNote = ({ is_crypto }) => {
+    const {
+        client,
+        ui,
+        modules: {
+            cashier: { general_store },
+        },
+    } = useStore();
+    const { currency } = client;
+    const { openRealAccountSignup } = ui;
+    const { setDepositTarget } = general_store;
     const currency_code = getCurrencyDisplayCode(currency);
 
     const getSideNoteDescription = () => {
@@ -64,8 +61,8 @@ const CashierOnboardingSideNote = ({
             </Text>
             {is_crypto && (
                 <div
-                    className='cashier-onboarding-side-note__link'
                     data-testid='dt_cashier_onboarding_side_note_link'
+                    className='cashier-onboarding-side-note__link'
                     onClick={() => {
                         setDepositTarget(routes.cashier_deposit);
                         openRealAccountSignup('add_crypto');
@@ -81,9 +78,4 @@ const CashierOnboardingSideNote = ({
     );
 };
 
-export default connect(({ client, modules, ui }: TRootStore) => ({
-    currency: client.currency,
-    mt5_login_list: client.mt5_login_list,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    setDepositTarget: modules.cashier.general_store.setDepositTarget,
-}))(CashierOnboardingSideNote);
+export default observer(CashierOnboardingSideNote);

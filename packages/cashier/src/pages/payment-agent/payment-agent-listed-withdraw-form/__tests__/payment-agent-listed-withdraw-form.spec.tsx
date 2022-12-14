@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        is_dark_mode_on: false,
+        toggleAccountsDialog: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -76,7 +84,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     };
 
     it('should render the component', () => {
-        render(<PaymentAgentListedWithdrawForm {...props} />);
+        render(<PaymentAgentListedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Withdrawal amount')).toBeInTheDocument();
         expect(screen.getByText('USD')).toBeInTheDocument();
@@ -88,7 +98,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should show loader when is_loading equal to true or there is no payment agents', () => {
-        const { rerender } = render(<PaymentAgentListedWithdrawForm {...props} is_loading />);
+        const { rerender } = render(<PaymentAgentListedWithdrawForm {...props} is_loading />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
@@ -99,7 +111,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
 
     it('should show error message, if amount is not valid', async () => {
         validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
-        render(<PaymentAgentListedWithdrawForm {...props} />);
+        render(<PaymentAgentListedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
@@ -113,7 +127,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should show Insufficient balance error', async () => {
-        render(<PaymentAgentListedWithdrawForm {...props} />);
+        render(<PaymentAgentListedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
@@ -126,7 +142,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should trigger requestTryPaymentAgentWithdraw, when all data are valid', async () => {
-        render(<PaymentAgentListedWithdrawForm {...props} />);
+        render(<PaymentAgentListedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });

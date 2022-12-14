@@ -1,31 +1,20 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { useStore } from '@deriv/stores';
 
-type TAccountPromptDialog = TRootStore['modules']['cashier']['account_prompt_dialog'];
+const AccountPromptDialog = () => {
+    const {
+        client: { accounts },
+        modules: {
+            cashier: {
+                account_prompt_dialog: { continueRoute, is_confirmed, last_location, onCancel, onConfirm, should_show },
+            },
+        },
+    } = useStore();
 
-type TAccountPromptDialogProps = {
-    accounts: TRootStore['client']['accounts'];
-    continueRoute: TAccountPromptDialog['continueRoute'];
-    is_confirmed: TAccountPromptDialog['is_confirmed'];
-    last_location: TAccountPromptDialog['last_location'];
-    onCancel: TAccountPromptDialog['onCancel'];
-    onConfirm: TAccountPromptDialog['onConfirm'];
-    should_show: TAccountPromptDialog['should_show'];
-};
-
-const AccountPromptDialog = ({
-    accounts,
-    continueRoute,
-    is_confirmed,
-    last_location,
-    onCancel,
-    onConfirm,
-    should_show,
-}: TAccountPromptDialogProps) => {
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     const non_crypto_account_loginid = React.useMemo(
@@ -58,12 +47,14 @@ const AccountPromptDialog = ({
     );
 };
 
-export default connect(({ modules, client }: TRootStore) => ({
-    accounts: client.accounts,
-    continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
-    is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,
-    last_location: modules.cashier.account_prompt_dialog.last_location,
-    onCancel: modules.cashier.account_prompt_dialog.onCancel,
-    onConfirm: modules.cashier.account_prompt_dialog.onConfirm,
-    should_show: modules.cashier.account_prompt_dialog.should_show,
-}))(AccountPromptDialog);
+AccountPromptDialog.propTypes = {
+    accounts: PropTypes.object,
+    continueRoute: PropTypes.func,
+    is_confirmed: PropTypes.bool,
+    last_location: PropTypes.string,
+    onCancel: PropTypes.func,
+    onConfirm: PropTypes.func,
+    should_show: PropTypes.bool,
+};
+
+export default observer(AccountPromptDialog);

@@ -220,43 +220,44 @@ const OptionsAccount = ({
                 />
             </div>
             <div className='account-container__details-wrapper'>
-                <Text
-                    size={isMobile() ? 'xxxs' : 'xxs'}
-                    line_height={isMobile() ? 's' : 'l'}
-                    className='account-container__details-wrapper--name'
-                    weight={is_modal ? '' : 'bold'}
-                >
-                    {display_type === 'currency' ? (
-                        <CurrencyDisplay
-                            country_standpoint={country_standpoint}
-                            currency={currency}
-                            loginid={loginid_text}
-                            is_virtual={is_virtual}
-                        />
-                    ) : (
-                        <AccountDisplay
-                            is_eu={is_eu}
-                            market_type={market_type}
-                            server={server}
-                            sub_account_type={sub_account_type}
-                            has_error={has_error}
-                            platform={platform}
-                            is_dark_mode_on={is_dark_mode_on}
-                            shortcode={shortcode}
-                            should_show_server_name={should_show_server_name}
-                        />
-                    )}
-                </Text>
-                {!is_modal && (
+                <div className='account-container__details-wrapper--text'>
                     <Text
-                        size={isMobile() ? 'xxxxs' : 'xxxs'}
-                        line_height={isMobile() ? 'xs' : 's'}
-                        weight='bold'
-                        className='account-container__details-wrapper--number'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        line_height={isMobile() ? 's' : 'l'}
+                        weight={is_modal ? '' : 'bold'}
                     >
-                        {loginid_text}
+                        {display_type === 'currency' ? (
+                            <CurrencyDisplay
+                                country_standpoint={country_standpoint}
+                                currency={currency}
+                                loginid={loginid_text}
+                                is_virtual={is_virtual}
+                            />
+                        ) : (
+                            <AccountDisplay
+                                is_eu={is_eu}
+                                market_type={market_type}
+                                server={server}
+                                sub_account_type={sub_account_type}
+                                has_error={has_error}
+                                platform={platform}
+                                is_dark_mode_on={is_dark_mode_on}
+                                shortcode={shortcode}
+                                should_show_server_name={should_show_server_name}
+                            />
+                        )}
                     </Text>
-                )}
+                    {!is_modal && (
+                        <Text
+                            size={isMobile() ? 'xxxxs' : 'xxxs'}
+                            line_height={isMobile() ? 'xs' : 's'}
+                            weight='bold'
+                            className='account-container__details-wrapper--text-id'
+                        >
+                            {loginid_text}
+                        </Text>
+                    )}
+                </div>
                 <Text
                     size={isMobile() ? 'xs' : 's'}
                     // eslint-disable-next-line no-nested-ternary
@@ -273,31 +274,31 @@ const OptionsAccount = ({
                         />
                     )}
                 </Text>
-            </div>
-            {!is_modal && (
-                <div className='account-container__button-wrapper'>
-                    {is_virtual && has_reset_balance ? (
-                        <Button
-                            is_disabled={is_disabled}
-                            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                e.stopPropagation();
-                                onClickResetVirtualBalance();
-                            }}
-                            secondary
-                            small
-                        >
-                            {localize('Reset balance')}
-                        </Button>
-                    ) : (
-                        !is_virtual &&
-                        has_balance && (
-                            <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
-                                {localize('Deposit')}
+                {!is_modal && (
+                    <div className='account-container__details-wrapper--btn'>
+                        {is_virtual && has_reset_balance ? (
+                            <Button
+                                is_disabled={is_disabled}
+                                onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    e.stopPropagation();
+                                    onClickResetVirtualBalance();
+                                }}
+                                secondary
+                                small
+                            >
+                                {localize('Reset balance')}
                             </Button>
-                        )
-                    )}
-                </div>
-            )}
+                        ) : (
+                            !is_virtual &&
+                            has_balance && (
+                                <Button is_disabled={is_disabled} onClick={onClickDeposit} secondary small>
+                                    {localize('Deposit')}
+                                </Button>
+                            )
+                        )}
+                    </div>
+                )}
+            </div>
             {!is_modal && isMobile() && !is_virtual && (
                 <div className='account-container__dropdown'>
                     <WalletIcon icon={'DropDown'} onClick={switchAccountModal} />

@@ -46,53 +46,6 @@ const DXR_USD_account: TTransferAccount = {
     market_type: 'financial',
 };
 
-const trading_platform_accounts: Array<TMT5LoginAccount> = [
-    {
-        account_id: 'DXR1002',
-        account_type: 'real',
-        balance: 0,
-        currency: 'USD',
-        login: '52',
-        market_type: 'synthetic',
-    },
-    {
-        account_id: 'DXR1003',
-        account_type: 'real',
-        balance: 0,
-        currency: 'USD',
-        login: '52',
-        market_type: 'financial',
-    },
-];
-
-const mt5_login_list: Array<TTransferAccount> = [
-    {
-        ...MT_USD_account,
-        loginid: 'MTR111176',
-        market_type: 'financial',
-        sub_account_type: 'financial',
-    },
-    {
-        ...MT_USD_account,
-        loginid: 'MTR111177',
-        market_type: 'financial',
-        sub_account_type: 'financial',
-    },
-    {
-        ...MT_USD_account,
-        loginid: 'MTR40000265',
-        market_type: 'synthetic',
-        sub_account_type: 'financial',
-    },
-];
-const DEZ_USD_account = {
-    account_type: 'derivez',
-    balance: '10.00',
-    currency: 'USD',
-    loginid: 'EZR10001',
-    market_type: 'all',
-};
-
 beforeEach(() => {
     accounts = [
         CR_USD_account,
@@ -102,7 +55,6 @@ beforeEach(() => {
         { ...MT_USD_account, loginid: 'MTR40000265' },
         { ...DXR_USD_account, loginid: 'DXR1002' },
         { ...DXR_USD_account, loginid: 'DXR1003' },
-        { ...DEZ_USD_account, loginid: 'EZR10001' },
     ];
     WS = {
         authorized: {
@@ -117,7 +69,26 @@ beforeEach(() => {
         balanceAll: jest.fn().mockResolvedValue({ balance_response: { balance: '20' } }),
         mt5LoginList: jest.fn().mockResolvedValue({}),
         tradingPlatformAccountsList: jest.fn().mockResolvedValue({
-            trading_platform_accounts,
+            trading_platform_accounts: [
+                {
+                    account_id: 'DXR1002',
+                    account_type: 'real',
+                    balance: 0,
+                    currency: 'USD',
+                    login: '52',
+                    market_type: 'synthetic',
+                    platform: 'dxtrade',
+                },
+                {
+                    account_id: 'DXR1003',
+                    account_type: 'real',
+                    balance: 0,
+                    currency: 'USD',
+                    login: '52',
+                    market_type: 'financial',
+                    platform: 'dxtrade',
+                },
+            ],
         }),
         wait: jest.fn(),
     };
@@ -139,9 +110,6 @@ beforeEach(() => {
             responseTradingPlatformAccountsList: jest.fn(),
             setAccountStatus: jest.fn(),
             setBalanceOtherAccounts: jest.fn(),
-        },
-        common: {
-            is_from_derivgo: false,
         },
         modules: {
             cashier: {
@@ -447,23 +415,6 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.accounts_list[7].text).toBe('USD');
         expect(account_transfer_store.accounts_list[8].text).toBe('eUSDT');
         expect(account_transfer_store.accounts_list.length).toBe(9);
-    });
-
-    it('should sort and set accounts when calling sortAccountsTransfer method when from derivgo', async () => {
-        await account_transfer_store.sortAccountsTransfer(
-            {
-                accounts: [...accounts, MT_USD_account, DXR_USD_account],
-            },
-            true
-        );
-
-        expect(account_transfer_store.accounts_list[0].text).toMatch(/^Deriv X(.)*$/);
-        expect(account_transfer_store.accounts_list[1].text).toMatch(/^Deriv X(.)*$/);
-        expect(account_transfer_store.accounts_list[2].text).toMatch(/^Deriv X(.)*$/);
-        expect(account_transfer_store.accounts_list[3].text).toMatch(/^Deriv EZ(.)*$/);
-        expect(account_transfer_store.accounts_list[8].text).toBe('USD');
-        expect(account_transfer_store.accounts_list[9].text).toBe('eUSDT');
-        expect(account_transfer_store.accounts_list.length).toBe(10);
     });
 
     it('should set current logged in client as the default transfer from account when calling sortAccountsTransfer method', async () => {

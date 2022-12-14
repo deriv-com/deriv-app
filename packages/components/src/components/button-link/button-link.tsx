@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 type TButtonLinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, 'size'> & {
     to: string;
-    size: 'small' | 'medium' | 'large';
+    size?: 'small' | 'medium' | 'large';
 };
 
 const ButtonLink = ({

@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import { isMobile, validNumber } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        disableApp: jest.fn(),
+        enableApp: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -40,7 +48,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     };
 
     it('should render the component', () => {
-        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByTestId('dt-back-arrow-icon')).toBeInTheDocument();
         expect(screen.getByText('Back to list')).toBeInTheDocument();
@@ -53,7 +63,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     it('should trigger onclick callback when arrow back button was clicked', () => {
-        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_back_arrow_icon = screen.getByTestId('dt-back-arrow-icon');
         fireEvent.click(el_back_arrow_icon);
@@ -63,7 +75,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
 
     it('should show different error messages', async () => {
         validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
-        const { rerender } = render(<PaymentAgentUnlistedWithdrawForm {...props} />);
+        const { rerender } = render(<PaymentAgentUnlistedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
         const el_input_amount = screen.getByLabelText('Enter amount');
@@ -94,7 +108,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     it('should trigger requestTryPaymentAgentWithdraw, when all data are valid', async () => {
-        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
         const el_input_amount = screen.getByLabelText('Enter amount');
@@ -115,7 +131,9 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<PaymentAgentUnlistedWithdrawForm {...props} />);
+        render(<PaymentAgentUnlistedWithdrawForm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });

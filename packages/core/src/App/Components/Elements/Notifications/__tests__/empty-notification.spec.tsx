@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 describe('EmptyNotification Component', () => {
     it('should render EmptyNotification component', () => {
         render(<EmptyNotification />);
-        const text = screen.getByText(/No notifications/i);
+        const text = screen.getByText(/no notifications/i);
         expect(text).toBeInTheDocument();
     });
 

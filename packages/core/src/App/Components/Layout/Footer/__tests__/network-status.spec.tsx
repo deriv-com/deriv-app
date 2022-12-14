@@ -12,7 +12,7 @@ const status = {
 describe('NetworkStatus Component', () => {
     it('should has "network-status__wrapper--is-mobile" class when the "is_mobile" is true', () => {
         render(<NetworkStatus status={status} is_mobile />);
-        const divElement = screen.getByTestId('network-status-id');
+        const divElement = screen.getByTestId('dt_network_status_id');
         expect(divElement).toHaveClass('network-status__wrapper--is-mobile');
     });
 

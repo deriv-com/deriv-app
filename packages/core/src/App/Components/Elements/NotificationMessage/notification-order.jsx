@@ -12,7 +12,7 @@ const NotificationOrder = ({ action, header, message, onClose }) => {
 
     return (
         <div
-            data-testid='notification-order'
+            data-testid='dt_notification_order'
             className='notification notification-announce notification--order-successful'
         >
             <div className='notification__icon-background'>

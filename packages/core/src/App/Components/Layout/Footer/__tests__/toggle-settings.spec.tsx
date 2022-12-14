@@ -17,7 +17,7 @@ describe('ToggleSettings Component', () => {
     //     render(<ToggleSettings toggleSettings={mockFunction} />);
     //     const aElement = screen.getByTestId('dt_settings_toggle');
     //     fireEvent.click(aElement);
-    //     const modal = screen.getByTestId('modal-test-id');
+    //     const modal = screen.getByTestId('');
     //     // expect(modal).
     // });
 

@@ -74,7 +74,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
                 height='616px'
                 width='736px'
             >
-                <ModalContent data-testid='modal-test-id' settings_extension={settings_extension} />
+                <ModalContent settings_extension={settings_extension} />
             </Modal>
         </React.Fragment>
     );

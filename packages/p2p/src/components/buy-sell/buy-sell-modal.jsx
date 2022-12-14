@@ -63,7 +63,7 @@ BuySellModalFooter.propTypes = {
 
 const generateModalTitle = (formik_ref, my_profile_store, table_type, selected_ad) => {
     if (my_profile_store.should_show_add_payment_method_form) {
-        if (!isMobile()) {
+        if (isDesktop()) {
             return (
                 <React.Fragment>
                     <Icon
@@ -139,7 +139,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             () => buy_sell_store.form_error_code,
             () => {
                 if (buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
-                    if (!isMobile()) {
+                    if (isDesktop()) {
                         buy_sell_store.hidePopup();
                         setTimeout(() => setShowMarketRateChangeErrorModal(true), 280);
                     } else {

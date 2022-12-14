@@ -389,9 +389,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &--tin {
                 display: grid;
-                grid-gap: 4px;
+                grid-gap: 0.4rem;
                 grid-template-rows: 1fr 1fr;
-                max-width: 400px;
+                max-width: 40rem;
                 margin-bottom: 1rem;
             }
 

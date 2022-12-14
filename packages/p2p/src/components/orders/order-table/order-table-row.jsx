@@ -37,7 +37,6 @@ const OrderRow = ({ style, row: order }) => {
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const should_show_order_details = React.useRef(true);
-    // const [should_show_rating_modal, setShouldShowRatingModal] = React.useState(false); // Need a separate state to prevent re-render. DON'T REMOVE!
     const { showModal, hideModal } = useModalManagerContext();
 
     const {

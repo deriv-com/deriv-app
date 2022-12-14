@@ -68,7 +68,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
-    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
+    const onClickSwitchAd = () => {
+        if (!general_store.is_barred) {
+            general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });
+            my_ads_store.onToggleSwitchModal(id);
+        }
+    };
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 

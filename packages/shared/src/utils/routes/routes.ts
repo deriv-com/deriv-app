@@ -63,4 +63,10 @@ export const routes = {
     appstore: '/appstore',
     traders_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
+
+    // P2P
+    p2p_advertiser_page: 'cashier/p2p/advertiser/:advertiser_id',
+    p2p_my_ads: 'cashier/p2p/my-ads/:ad_id',
+    p2p_my_profile: 'cashier/p2p/my-profile',
+    p2p_orders: 'cashier/p2p/orders/:order_id',
 };

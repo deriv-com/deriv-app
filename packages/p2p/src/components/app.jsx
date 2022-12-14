@@ -9,6 +9,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import './app.scss';
+import Routes from './routes/routes.jsx';
 
 const App = props => {
     const { general_store, order_store } = useStores();
@@ -99,10 +100,13 @@ const App = props => {
     }, [verification_action, verification_code]);
 
     return (
-        <main className={classNames('p2p-cashier', className)}>
-            <Notifications />
-            <AppContent />
-        </main>
+        <>
+            <Routes />
+            <main className={classNames('p2p-cashier', className)}>
+                <Notifications />
+                <AppContent />
+            </main>
+        </>
     );
 };
 

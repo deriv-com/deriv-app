@@ -15,9 +15,9 @@ const Basic = () => (
                     'You may have followed a broken link, or the page has moved to a new address.',
                     'Error code: 404 page not found',
                 ]}
-                redirect_label='Return to trade'
+                redirect_labels={['Return to trade']}
                 buttonOnClick={action('buttonOnClick')}
-                redirect_url={routes.trade}
+                redirect_urls={[routes.trade]}
             />
         </Wrapper>
     </Router>

@@ -212,10 +212,15 @@
 
     &__menu--explore-trading-hub {
         border-radius: 1rem;
-        min-width: 100%;
-        width: 100%;
+        width: 25.5rem;
+
         &--dark {
             background-color: var(--general-main-1);
+        }
+        .dc-btn__text {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
         }
     }
 
@@ -242,6 +247,11 @@
             color: var(--text-prominent);
             align-items: flex-start;
         }
+    }
+
+    &__menu-mobile-right-arrow {
+        align-items: flex-end;
+        display: inline-flex;
     }
 
     &__menu-toggle {

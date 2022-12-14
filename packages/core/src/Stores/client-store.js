@@ -286,6 +286,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pre_appstore: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -370,10 +371,12 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
+            is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
+            setIsPreAppStore: action.bound,
         });
 
         reaction(
@@ -933,6 +936,11 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    get is_pre_appstore() {
+        const { trading_hub } = this.account_settings;
+        return !!trading_hub;
+    }
+
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'
             ? account.market_type === market_type || account.market_type === 'gaming'
@@ -995,10 +1003,14 @@ export default class ClientStore extends BaseStore {
     isBotAllowed = () => {
         // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
         if (!this.is_logged_in && this.is_eu_country) return false;
-
         const is_mf = this.landing_company_shortcode === 'maltainvest';
-        return this.is_virtual ? !this.is_multipliers_only : !is_mf && !this.is_options_blocked;
+        return this.is_virtual ? this.is_eu_or_multipliers_only : !is_mf && !this.is_options_blocked;
     };
+
+    get is_eu_or_multipliers_only() {
+        // Check whether account is multipliers only and if the account is from eu countries
+        return !this.is_multipliers_only ? !isEuCountry(this.residence) : !this.is_multipliers_only;
+    }
 
     get clients_country() {
         return this.website_status?.clients_country;
@@ -2025,14 +2037,14 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            const is_pre_appstore = window.localStorage.getItem('is_pre_appstore');
+            const is_pre_appstore = !!this.account_settings.trading_hub;
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
                 is_pre_appstore === 'true' &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
-                window.history.replaceState({}, document.title, '/appstore/trading-hub');
+                window.history.replaceState({}, document.title, '/appstore/traders-hub');
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }
@@ -2501,6 +2513,18 @@ export default class ClientStore extends BaseStore {
             this.setPrevRealAccountLoginid(this.loginid);
             await this.switchAccount(this.virtual_account_loginid);
         }
+    }
+
+    setIsPreAppStore(is_pre_appstore) {
+        const trading_hub = is_pre_appstore ? 1 : 0;
+        WS.setSettings({
+            set_settings: 1,
+            trading_hub,
+        }).then(response => {
+            if (!response.error) {
+                this.account_settings = { ...this.account_settings, trading_hub };
+            }
+        });
     }
 }
 /* eslint-enable */

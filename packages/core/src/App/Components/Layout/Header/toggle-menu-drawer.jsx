@@ -375,25 +375,29 @@ const ToggleMenuDrawer = React.forwardRef(
                                             })}
                                         >
                                             <Button
-                                                className={`header__menu--back-to-ui${is_dark_mode ? '--dark' : ''}`}
+                                                className={`header__menu--exit-trading-hub ${
+                                                    is_dark_mode ? 'header__menu--exit-trading-hub--dark' : ''
+                                                }`}
                                                 type='button'
                                                 large
                                                 onClick={tradingHubRedirect}
                                             >
-                                                <Text
-                                                    className={`header__menu--back-to-ui-text${
-                                                        is_dark_mode ? '--dark' : ''
-                                                    }`}
-                                                    size='xs'
-                                                >
-                                                    {localize("Exit Trader's hub")}
-                                                </Text>
-                                                <Icon
-                                                    className='header__menu-mobile-right-arrow'
-                                                    icon='IcArrowRight'
-                                                    size={18}
-                                                    color='red'
-                                                />
+                                                <div className='header__menu--trading-hub-container'>
+                                                    <Text className='header__menu--trading-hub-text' size='xs'>
+                                                        {localize("Exit Trader's hub")}
+                                                    </Text>
+                                                    <Icon
+                                                        className='header__menu--exit-trading-hub-beta-icon'
+                                                        icon='IcAppstoreTradingHubBeta'
+                                                        size={30}
+                                                    />
+                                                    <Icon
+                                                        className='header__menu-mobile-right-arrow'
+                                                        icon='IcArrowRight'
+                                                        size={18}
+                                                        color='red'
+                                                    />
+                                                </div>
                                             </Button>
                                         </MobileDrawer.SubHeader>
                                     ) : (
@@ -411,29 +415,31 @@ const ToggleMenuDrawer = React.forwardRef(
                                             id='mobile_platform_switcher'
                                         />
                                         {is_logged_in && !is_trading_hub_category && (
-                                            <MobileDrawer.Item className='header__menu--back-to-old-ui--dtrader'>
+                                            <MobileDrawer.Item className='header__menu--trading-hub'>
                                                 <Button
-                                                    className={`header__menu--back-to-ui${
-                                                        is_dark_mode ? '--dark' : ''
+                                                    className={`header__menu--explore-trading-hub ${
+                                                        is_dark_mode ? 'header__menu--explore-trading-hub--dark' : ''
                                                     }`}
                                                     type='button'
                                                     large
                                                     onClick={tradingHubRedirect}
                                                 >
-                                                    <Text
-                                                        className={`header__menu--back-to-ui-text${
-                                                            is_dark_mode ? '--dark' : ''
-                                                        }`}
-                                                        size='xs'
-                                                    >
-                                                        {localize("Exit Trader's hub")}
-                                                    </Text>
-                                                    <Icon
-                                                        className='header__menu-mobile-right-arrow'
-                                                        icon='IcArrowRight'
-                                                        size={18}
-                                                        color='red'
-                                                    />
+                                                    <div className='header__menu--trading-hub-container'>
+                                                        <Text className='header__menu--trading-hub-text' size='xs'>
+                                                            {localize("Exit Trader's hub")}
+                                                        </Text>
+                                                        <Icon
+                                                            className='header__menu--exit-trading-hub-beta-icon'
+                                                            icon='IcAppstoreTradingHubBeta'
+                                                            size={30}
+                                                        />
+                                                        <Icon
+                                                            className='header__menu-mobile-right-arrow'
+                                                            icon='IcArrowRight'
+                                                            size={18}
+                                                            color='red'
+                                                        />
+                                                    </div>
                                                 </Button>
                                             </MobileDrawer.Item>
                                         )}
@@ -442,7 +448,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 <MenuLink
                                                     link_to={routes.trading_hub}
                                                     icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
-                                                    text={localize('Trading Hub')}
+                                                    text={localize("Trader's hub")}
                                                     onClickLink={toggleDrawer}
                                                     changeCurrentLanguage={changeCurrentLanguage}
                                                 />
@@ -593,15 +599,22 @@ const ToggleMenuDrawer = React.forwardRef(
                                                 large
                                                 onClick={tradingHubRedirect}
                                             >
-                                                <Text className='header__menu--trading-hub-text' size='xs'>
-                                                    {localize("Trader's hub beta")}
-                                                </Text>
-                                                <Icon
-                                                    className='header__menu-mobile-right-arrow'
-                                                    icon='IcArrowRight'
-                                                    size={18}
-                                                    color='red'
-                                                />
+                                                <div className='header__menu--trading-hub-container'>
+                                                    <Text className='header__menu--trading-hub-text' size='xs'>
+                                                        {localize("Explore Trader's hub")}
+                                                    </Text>
+                                                    <Icon
+                                                        className='header__menu--trading-hub-beta-icon'
+                                                        icon='IcAppstoreTradingHubBeta'
+                                                        size={30}
+                                                    />
+                                                    <Icon
+                                                        className='header__menu-mobile-right-arrow'
+                                                        icon='IcArrowRight'
+                                                        size={18}
+                                                        color='red'
+                                                    />
+                                                </div>
                                             </Button>
                                         </MobileDrawer.Item>
                                         <MobileDrawer.Item>

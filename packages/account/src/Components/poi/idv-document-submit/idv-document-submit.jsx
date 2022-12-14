@@ -13,8 +13,8 @@ import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
-    const { hash } = useLocation();
-    const validation_is_enabled = useToggleValidation(hash);
+    const location = useLocation();
+    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);

@@ -142,6 +142,7 @@ const ProofOfIdentityContainer = ({
                         is_from_external={!!is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
+                        is_manual_upload={manual?.status === 'pending'}
                     />
                 );
             case identity_status_codes.verified:

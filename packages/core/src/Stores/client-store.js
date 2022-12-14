@@ -372,6 +372,7 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
+            updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
@@ -2487,6 +2488,11 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    async updateMT5Status() {
+        this.updateAccountStatus();
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
     }
 
     setPrevRealAccountLoginid = logind => {

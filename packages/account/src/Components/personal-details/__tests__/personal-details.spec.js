@@ -695,36 +695,36 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 
-    // it('should close tax_residence pop-over when scrolled', () => {
-    //     renderwithRouter(<PersonalDetails {...props} />);
+    it('should close tax_residence pop-over when scrolled', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
-    //     const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
-    //     expect(tax_residence_pop_over).toBeInTheDocument();
-    //     fireEvent.click(tax_residence_pop_over);
+        const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
+        expect(tax_residence_pop_over).toBeInTheDocument();
+        fireEvent.click(tax_residence_pop_over);
 
-    //     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
+        expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-    //     fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
-    //         target: { scrollY: 100 },
-    //     });
+        fireEvent.scroll(screen.getByTestId('personal-details-container'), {
+            target: { scrollY: 100 },
+        });
 
-    //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    // });
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
+    });
 
-    // it('should close tax_identification_number_pop_over when scrolled', () => {
-    //     renderwithRouter(<PersonalDetails {...props} />);
+    it('should close tax_identification_number_pop_over when scrolled', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
-    //     const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
-    //     expect(tax_identification_number_pop_over).toBeInTheDocument();
-    //     fireEvent.click(tax_identification_number_pop_over);
-    //     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
-    //     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
+        const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
+        expect(tax_identification_number_pop_over).toBeInTheDocument();
+        fireEvent.click(tax_identification_number_pop_over);
+        expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
-    //     fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
-    //         target: { scrollY: 100 },
-    //     });
+        fireEvent.scroll(screen.getByTestId('personal-details-container'), {
+            target: { scrollY: 100 },
+        });
 
-    //     expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
-    //     expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
-    // });
+        expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
 });

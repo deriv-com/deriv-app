@@ -181,7 +181,11 @@ const PersonalDetails = ({
                                         }
                                     />
                                 </Text>
-                                <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
+                                <ThemedScrollbars
+                                    height={height}
+                                    onScroll={closeTooltipOnScroll}
+                                    testId='personal-details-container'
+                                >
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>

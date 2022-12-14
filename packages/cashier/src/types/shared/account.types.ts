@@ -8,7 +8,6 @@ export type TAccount = {
     currency?: string;
     disabled?: boolean;
     is_dxtrade?: boolean;
-    is_derivez?: boolean;
     is_mt?: boolean;
     market_type?: string;
     nativepicker_text: string;

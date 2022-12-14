@@ -567,6 +567,7 @@ import './currency/ic-currency-usdc.svg';
 import './currency/ic-currency-usdk.svg';
 import './currency/ic-currency-ust.svg';
 import './currency/ic-currency-virtual.svg';
+import './derivez/ic-derivez.svg';
 import './dxtrade/ic-dxtrade-deriv-x.svg';
 import './dxtrade/ic-dxtrade-derived.svg';
 import './dxtrade/ic-dxtrade-derivx-platform.svg';

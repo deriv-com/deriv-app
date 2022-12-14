@@ -3,6 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        is_dark_mode_on: false,
+        toggleAccountsDialog: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -33,14 +41,18 @@ describe('<PaymentAgent />', () => {
     };
 
     it('should render the payment agent list', () => {
-        render(<PaymentAgent {...props} />);
+        render(<PaymentAgent {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
         expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
     });
 
     it('should render the loading component if in loading state', () => {
-        render(<PaymentAgent is_switching {...props} />);
+        render(<PaymentAgent is_switching {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
@@ -51,7 +63,10 @@ describe('<PaymentAgent />', () => {
         render(
             <Router history={history}>
                 <PaymentAgent is_virtual {...props} />
-            </Router>
+            </Router>,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(
@@ -60,7 +75,9 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        render(<PaymentAgent is_cashier_locked {...props} />);
+        render(<PaymentAgent is_cashier_locked {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -73,7 +90,9 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should set the active tab index accordingly', () => {
-        render(<PaymentAgent {...props} verification_code='7GbuuVaX' />);
+        render(<PaymentAgent {...props} verification_code='7GbuuVaX' />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(1);
     });

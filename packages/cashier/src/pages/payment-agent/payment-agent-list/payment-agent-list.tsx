@@ -9,6 +9,7 @@ import SideNote from 'Components/side-note';
 import { TSideNotesProps } from 'Types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
+import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-list.scss';
 
@@ -25,6 +26,9 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
             setSideNotes?.([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
+                </SideNote>,
+                <SideNote has_title={false} key={0}>
+                    <MissingPaymentMethodNote />
                 </SideNote>,
             ]);
         } else {

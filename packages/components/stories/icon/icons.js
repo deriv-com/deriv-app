@@ -582,6 +582,9 @@ export const icons =
         'IcCurrencyUst',
         'IcCurrencyVirtual',
     ],
+    'derivez': [
+        'IcDerivez',
+    ],
     'dxtrade': [
         'IcDxtradeDerivX',
         'IcDxtradeDerived',

@@ -5,12 +5,14 @@ import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, T
 import { localize, Localize } from '@deriv/translations';
 import SideNote from 'Components/side-note';
 import { connect } from 'Stores/connect';
+import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import './payment-agent-container.scss';
 
 const PaymentAgentSearchWarning = () => {
     return (
@@ -25,7 +27,6 @@ const PaymentAgentSearchWarning = () => {
         </div>
     );
 };
-
 const PaymentAgentContainer = ({
     app_contents_scroll_ref,
     has_payment_agent_search_warning,
@@ -91,6 +92,9 @@ const PaymentAgentContainer = ({
                     <PaymentAgentDisclaimer />
                 </SideNote>
             )}
+            <SideNote className='payment-agent-list__side-note-second' has_title={false} is_mobile>
+                <MissingPaymentMethodNote />
+            </SideNote>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>

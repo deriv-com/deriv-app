@@ -120,6 +120,7 @@ const RealAccountSignup = ({
     fetchAccountSettings,
     setIsTradingAssessmentForNewUserEnabled,
 }) => {
+    const [is_add_or_manage_acc, setIsAddOrManageAcc] = React.useState(false);
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -160,6 +161,7 @@ const RealAccountSignup = ({
                 />
             ),
             title: local_props => {
+                setIsAddOrManageAcc(true);
                 if (local_props.real_account_signup_target === 'add_crypto') {
                     return localize('Create a cryptocurrency account');
                 } else if (local_props.real_account_signup_target === 'add_fiat') {
@@ -265,6 +267,9 @@ const RealAccountSignup = ({
                 )
             ) {
                 return 'auto';
+            }
+            if (is_add_or_manage_acc) {
+                return '644px'; // Add or manage account modal
             }
         }
         return '740px'; // Account wizard modal

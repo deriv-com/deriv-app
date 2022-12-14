@@ -1,3 +1,4 @@
+// TODO refactor old tests in this component
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import ContractTypeDialog from '../contract-type-dialog.jsx';

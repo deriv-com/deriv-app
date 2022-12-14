@@ -1,3 +1,4 @@
+// TODO refactor old tests in this component
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Modal, Icon } from '@deriv/components';

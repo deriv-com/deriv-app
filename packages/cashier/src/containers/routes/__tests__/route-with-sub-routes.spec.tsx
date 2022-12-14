@@ -1,3 +1,4 @@
+// TODO refactor old tests in this component
 import React from 'react';
 import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
 import { MemoryRouter, Redirect } from 'react-router-dom';

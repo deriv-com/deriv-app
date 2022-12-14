@@ -1,3 +1,4 @@
+// TODO refactor old tests in this component
 import React from 'react';
 import { ToggleFullScreen } from '../toggle-fullscreen.jsx';
 import { Icon } from '@deriv/components';

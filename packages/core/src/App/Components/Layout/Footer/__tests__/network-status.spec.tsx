@@ -1,3 +1,4 @@
+// TODO refactor old tests in this component
 import React from 'react';
 import { Popover } from '@deriv/components';
 import { NetworkStatus } from '../network-status.jsx';

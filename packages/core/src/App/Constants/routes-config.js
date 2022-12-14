@@ -125,6 +125,15 @@ const getModules = ({ is_pre_appstore }) => {
                             getTitle: () => localize('Personal details'),
                             default: true,
                         },
+                        ...(is_pre_appstore
+                            ? [
+                                  {
+                                      path: routes.languages,
+                                      component: Account,
+                                      getTitle: () => localize('Languages'),
+                                  },
+                              ]
+                            : []),
                     ],
                 },
                 {
@@ -141,15 +150,6 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Financial assessment'),
                         },
-                        ...(is_pre_appstore
-                            ? [
-                                  {
-                                      path: routes.languages,
-                                      component: Account,
-                                      getTitle: () => localize('Languages'),
-                                  },
-                              ]
-                            : []),
                     ],
                 },
                 {

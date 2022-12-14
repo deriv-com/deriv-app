@@ -123,14 +123,38 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
             () => buy_sell_store?.advert?.rate,
-            () => {
-                setHasRateChangedRecently(true);
-                setTimeout(() => {
-                    setHasRateChangedRecently(false);
-                }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
+            (_, previous_rate) => {
+                // check to see if previous rate is not undefined
+                // if it is undefined, we do not want to show rate change modal when store is initialized
+                if (previous_rate) {
+                    setHasRateChangedRecently(true);
+                    setTimeout(() => {
+                        setHasRateChangedRecently(false);
+                    }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
+                }
             }
         );
-        return disposeHasRateChangedReaction;
+
+        const disposeFormErrorCodeReaction = reaction(
+            () => buy_sell_store.form_error_code,
+            () => {
+                if (buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
+                    if (!isMobile()) {
+                        buy_sell_store.hidePopup();
+                        setTimeout(() => setShowMarketRateChangeErrorModal(true), 280);
+                    } else {
+                        setShowMarketRateChangeErrorModal(true);
+                    }
+                    buy_sell_store.setFormErrorCode('');
+                    setErrorMessage(null);
+                }
+            }
+        );
+
+        return () => {
+            disposeHasRateChangedReaction();
+            disposeFormErrorCodeReaction();
+        };
     }, []);
 
     const onSubmitWhenRateChanged = () => {
@@ -188,29 +212,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     const has_rate_changed =
-        (!!error_message && buy_sell_store.form_error_code !== api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) ||
+        (!!error_message && buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) ||
         has_rate_changed_recently;
     const onSubmit = has_rate_changed ? onSubmitWhenRateChanged : submitForm.current;
-
-    React.useEffect(() => {
-        const disposeFormErrorCodeReaction = reaction(
-            () => buy_sell_store.form_error_code,
-            () => {
-                if (buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
-                    if (!isMobile()) {
-                        buy_sell_store.hidePopup();
-                        setTimeout(() => setShowMarketRateChangeErrorModal(true), 280);
-                    } else {
-                        setShowMarketRateChangeErrorModal(true);
-                    }
-                    buy_sell_store.setFormErrorCode('');
-                    setErrorMessage(null);
-                }
-            }
-        );
-
-        return disposeFormErrorCodeReaction;
-    }, []);
 
     React.useEffect(() => {
         const balance_check =

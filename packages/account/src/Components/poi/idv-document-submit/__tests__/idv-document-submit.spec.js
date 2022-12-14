@@ -4,7 +4,11 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
 import { isSequentialNumber, isRecurringNumberRegex } from '../utils';
 
+jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
+jest.mock('../../../hooks/useToggleValidation', () => ({
+    useToggleValidation: jest.fn(() => '#toggle_id_validation'),
+}));
 jest.mock('../utils.js', () => ({
     getDocumentData: function (country_code, key) {
         const data = {
@@ -130,6 +134,12 @@ describe('<IdvDocumentSubmit/>', () => {
 
         fireEvent.blur(document_number_input);
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
+
+        Object.defineProperty(window, 'location', {
+            get() {
+                return { hash: '#toggle_id_validation' };
+            },
+        });
 
         fireEvent.keyUp(document_number_input);
         fireEvent.change(document_number_input, { target: { value: 'A-54321' } });

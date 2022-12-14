@@ -21,7 +21,7 @@ const createMarkerConfig = (marker_type, x, y, content_config) =>
 
 export const getSpotCount = (contract_info, spot_count) => {
     if (isDigitContract(contract_info.contract_type)) return spot_count + 1;
-    if (isAccumulatorContract(contract_info.contract_type)) return undefined;
+    if (isAccumulatorContract(contract_info.contract_type)) return null;
     return spot_count;
 };
 

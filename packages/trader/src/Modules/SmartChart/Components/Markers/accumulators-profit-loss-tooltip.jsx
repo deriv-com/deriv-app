@@ -3,7 +3,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
@@ -23,10 +22,11 @@ const AccumulatorsProfitLossTooltip = ({
     const won = profit > 0;
     const sign = won ? '+' : '';
     const tooltip_timeout = React.useRef(null);
-    const is_mobile = isMobile();
 
     React.useEffect(() => {
-        return () => clearTimeout(tooltip_timeout.current);
+        return () => {
+            clearTimeout(tooltip_timeout.current);
+        };
     }, []);
 
     React.useEffect(() => {
@@ -41,19 +41,17 @@ const AccumulatorsProfitLossTooltip = ({
             setIsTooltipOpen(false);
         }, duration);
 
+    const onHoverOrTapHandler = () => {
+        clearTimeout(tooltip_timeout.current);
+        tooltip_timeout.current = onCloseDelayed(3000);
+    };
+
     const opposite_arrow_position = React.useMemo(() => {
         const horizontal = ['left', 'right'];
         return horizontal.includes(alignment)
             ? horizontal.find(el => el !== alignment)
             : ['top', 'bottom'].find(el => el !== alignment);
     }, [alignment]);
-
-    const onTapMobileHandler = () => {
-        if (is_mobile) {
-            setIsTooltipOpen(true);
-            tooltip_timeout.current = onCloseDelayed(2000);
-        }
-    };
 
     const onRef = ref => {
         if (ref) {
@@ -68,8 +66,8 @@ const AccumulatorsProfitLossTooltip = ({
         }
     };
 
-    if (typeof profit !== 'number' || !current_spot_time) return null;
-    if (!is_sold)
+    if (typeof profit !== 'number') return null;
+    if (!is_sold && current_spot_time)
         return (
             <AccumulatorsProfitLossText
                 currency={currency}
@@ -78,15 +76,15 @@ const AccumulatorsProfitLossTooltip = ({
                 profit={profit}
             />
         );
-    return (
+    return is_sold ? (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
-                onMouseLeave={() => setIsTooltipOpen(false)}
-                // onTouchStart to open tooltip on mobile
-                onTouchStart={onTapMobileHandler}
-                data-testid={'dt_accumulator_tooltip_spot'}
+                onMouseLeave={onHoverOrTapHandler}
+                onTouchStart={() => setIsTooltipOpen(true)}
+                onTouchEnd={onHoverOrTapHandler}
+                data-testid='dt_accumulator_tooltip_spot'
             />
             <CSSTransition
                 in={is_tooltip_open}
@@ -108,7 +106,7 @@ const AccumulatorsProfitLossTooltip = ({
                 </div>
             </CSSTransition>
         </FastMarker>
-    );
+    ) : null;
 };
 
 AccumulatorsProfitLossTooltip.propTypes = {

@@ -23,14 +23,12 @@ describe('Accumulator', () => {
         expect(screen.getByText('3%')).toBeInTheDocument();
         expect(screen.getByText('4%')).toBeInTheDocument();
         expect(screen.getByText('5%')).toBeInTheDocument();
-
         expect(screen.getByText('1%').getAttribute('class')).toContain('--selected');
     });
 
-    it('3% growth_rate should be selected when 0.03 is a currently selected and stored growth_rate value', async () => {
+    it('3% growth_rate should be selected when 0.03 is a currently selected and stored growth_rate value', () => {
         mock_connect_props.growth_rate = 0.03;
         render(<Accumulator />);
-
         expect(screen.getByText('3%').getAttribute('class')).toContain('--selected');
         expect(screen.getByText('1%').getAttribute('class')).not.toContain('--selected');
     });

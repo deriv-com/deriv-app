@@ -134,7 +134,7 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_partial_shade = ({ ctx, start_left, top, bottom, stroke_color, fill_color, scale }) => {
+const draw_shaded_barriers = ({ ctx, start_left, top, bottom, stroke_color, fill_color, scale }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
     const is_top_visible = top < end_top;
@@ -250,7 +250,7 @@ const TickContract = RawMarkerMaker(
 
         if (start && is_accumulators_trade_without_contract) {
             // draw 2 barriers with a shade in-between only
-            draw_partial_shade({
+            draw_shaded_barriers({
                 ctx,
                 start_left: start.left,
                 fill_color: 'rgba(55, 124, 252, 0.08)',
@@ -272,7 +272,7 @@ const TickContract = RawMarkerMaker(
                 (status === 'open' || is_in_contract_details)
             ) {
                 // draw 2 barriers with a shade between them for an open ACCU contract
-                draw_partial_shade({
+                draw_shaded_barriers({
                     ctx,
                     start_left: previous_tick.left,
                     fill_color: 'rgba(0, 167, 158, 0.08)',

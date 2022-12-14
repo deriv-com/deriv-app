@@ -358,7 +358,7 @@ const CFDPersonalDetailsForm = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='off'
                                                                 type='text'
-                                                                label={localize('Place of birth')}
+                                                                label={localize('Place of birth*')}
                                                                 error={place_of_birth_error}
                                                                 disabled={is_place_of_birth_disabled}
                                                                 list_items={residence_list}
@@ -374,7 +374,7 @@ const CFDPersonalDetailsForm = ({
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Place of birth')}
+                                                        label={localize('Place of birth*')}
                                                         value={values.place_of_birth}
                                                         list_items={residence_list}
                                                         error={place_of_birth_error}
@@ -397,7 +397,7 @@ const CFDPersonalDetailsForm = ({
                                                                 data-lpignore='true'
                                                                 type='text'
                                                                 autoComplete='off'
-                                                                label={localize('Tax residence')}
+                                                                label={localize('Tax residence*')}
                                                                 error={tax_residence_error}
                                                                 disabled={is_tax_residence_disabled}
                                                                 list_items={residence_list}
@@ -413,7 +413,7 @@ const CFDPersonalDetailsForm = ({
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Tax residence')}
+                                                        label={localize('Tax residence*')}
                                                         value={values.tax_residence}
                                                         error={tax_residence_error}
                                                         disabled={is_tax_residence_disabled}
@@ -447,7 +447,7 @@ const CFDPersonalDetailsForm = ({
                                                         <DesktopWrapper>
                                                             <Dropdown
                                                                 {...field}
-                                                                placeholder={localize('Account opening reason')}
+                                                                placeholder={localize('Account opening reason*')}
                                                                 is_align_text_left
                                                                 name={field.name}
                                                                 list={account_opening_reason}
@@ -464,7 +464,7 @@ const CFDPersonalDetailsForm = ({
                                                                 {...field}
                                                                 placeholder={localize('Please select')}
                                                                 name={field.name}
-                                                                label={localize('Account opening reason')}
+                                                                label={localize('Account opening reason*')}
                                                                 list_items={account_opening_reason}
                                                                 value={values.account_opening_reason}
                                                                 disabled={is_account_opening_reason_disabled}

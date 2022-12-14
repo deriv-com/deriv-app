@@ -558,27 +558,9 @@ const DMT5CompareModalContent = ({
                         })}
                     >
                         <>
-                            <Text
-                                as='p'
-                                weight={id === 'jurisdiction' ? 'bold' : 'normal'}
-                                align='center'
-                                color='prominent'
-                                size={getContentSize(id)}
-                            >
+                            <Text as='p' align='center' color='prominent' size={getContentSize(id)}>
                                 {values[item]?.text}
                             </Text>
-                            {values[item]?.tooltip_msg && (
-                                <Popover
-                                    alignment='left'
-                                    className='cfd-compare-accounts-tooltip'
-                                    classNameBubble='cfd-compare-accounts-tooltip--msg'
-                                    icon='info'
-                                    disable_message_icon
-                                    is_bubble_hover_enabled
-                                    message={values[item]?.tooltip_msg}
-                                    zIndex={9999}
-                                />
-                            )}
                         </>
                     </Table.Cell>
                 ))}

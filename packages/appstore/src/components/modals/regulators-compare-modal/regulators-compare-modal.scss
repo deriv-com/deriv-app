@@ -1,0 +1,8 @@
+.regulator-modal {
+    overflow-y: scroll;
+    &__separator {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid var(--border-normal);
+    }
+}

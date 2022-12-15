@@ -102,7 +102,7 @@ const BuySellHeader = ({ table_type }) => {
                     <Icon
                         className='buy-sell__header-row--filter'
                         icon='IcFilter'
-                        onClick={() => buy_sell_store.setIsFilterModalOpen(true)}
+                        onClick={() => general_store.showModal({ key: 'FilterModal', props: {} })}
                         size={40}
                     />
                 </div>

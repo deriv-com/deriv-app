@@ -17,6 +17,9 @@ const ModalManagerContextProvider = props => {
         setIsModalOpen(false);
     };
 
+    general_store.showModal = showModal;
+    general_store.hideModal = hideModal;
+
     const state = {
         hideModal,
         is_modal_open,

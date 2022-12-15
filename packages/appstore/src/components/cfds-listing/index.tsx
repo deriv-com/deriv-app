@@ -3,8 +3,14 @@ import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
+import { useStores } from 'Stores/index';
+import { observer } from 'mobx-react-lite';
+import AddOptionsAccount from 'Components/add-options-account';
 
 const CFDsListing = () => {
+    const { tradinghub } = useStores();
+    const is_real = tradinghub.selected_account_type === 'real';
+    const has_no_real_account = !tradinghub.has_any_real_account;
     return (
         <ListingContainer
             title={
@@ -22,8 +28,16 @@ const CFDsListing = () => {
                     />
                 </Text>
             }
-        />
+        >
+            {is_real && has_no_real_account && (
+                <div className='cfd-full-row'>
+                    <AddOptionsAccount />
+                </div>
+            )}
+
+            <div className='cfds-listing'>CFD Listing</div>
+        </ListingContainer>
     );
 };
 
-export default CFDsListing;
+export default observer(CFDsListing);

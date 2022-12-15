@@ -27,6 +27,9 @@ const ModalManagerContextProvider = props => {
         showModal,
     };
 
+    general_store.showModal = showModal;
+    general_store.hideModal = hideModal;
+
     return <ModalManagerContext.Provider value={state}>{props.children}</ModalManagerContext.Provider>;
 };
 

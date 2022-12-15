@@ -114,7 +114,7 @@ const PaymentAgentContainer = ({
             </div>
             <div className='payment-agent-list__list-selector'>
                 <PaymentAgentSearchBox />
-                {supported_banks.length > 1 && (
+                {supported_banks.length >= 1 && (
                     <React.Fragment>
                         <DesktopWrapper>
                             <Dropdown

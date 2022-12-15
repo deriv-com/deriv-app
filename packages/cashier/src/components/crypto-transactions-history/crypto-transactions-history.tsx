@@ -1,12 +1,13 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TCryptoTransactionDetails } from 'Types';
+import { TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
+import { useStore } from '@deriv/stores';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -18,21 +19,17 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
-type TCryptoTransactionsHistoryProps = {
-    crypto_transactions: TCryptoTransactionDetails[];
-    currency: string;
-    is_loading: boolean;
-    setIsCryptoTransactionsVisible: (is_crypto_transactions_visible: boolean) => void;
-    setIsDeposit: (is_deposit: boolean) => void;
-};
+const CryptoTransactionsHistory = () => {
+    const {
+        modules: {
+            cashier: { transaction_history, general_store },
+        },
+        client,
+    } = useStore();
+    const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
+    const { setIsDeposit } = general_store;
+    const { currency } = client;
 
-const CryptoTransactionsHistory = ({
-    crypto_transactions,
-    currency,
-    is_loading,
-    setIsCryptoTransactionsVisible,
-    setIsDeposit,
-}: TCryptoTransactionsHistoryProps) => {
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
     }, [setIsCryptoTransactionsVisible, currency]);
@@ -102,10 +99,4 @@ const CryptoTransactionsHistory = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    is_loading: modules.cashier.transaction_history.is_loading,
-    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-}))(CryptoTransactionsHistory);
+export default observer(CryptoTransactionsHistory);

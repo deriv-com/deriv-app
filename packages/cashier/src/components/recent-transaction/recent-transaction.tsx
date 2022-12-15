@@ -1,33 +1,25 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
 import { getStatus } from 'Constants/transaction-status';
+import { useStore } from '@deriv/stores';
 import './recent-transaction.scss';
 
-type TRecentTransactionProps = {
-    crypto_transactions: {
-        address_hash: string;
-        status_code: string;
-        submit_date: Date;
-        transaction_hash: string;
-        transaction_type: string;
-        amount: number;
-    }[];
-    currency: string;
-    onMount: () => void;
-    setIsCryptoTransactionsVisible: (visible: boolean) => void;
-};
+const RecentTransaction = () => {
+    const {
+        client,
+        modules: {
+            cashier: { transaction_history },
+        },
+    } = useStore();
 
-const RecentTransaction = ({
-    crypto_transactions,
-    currency,
-    onMount,
-    setIsCryptoTransactionsVisible,
-}: TRecentTransactionProps) => {
+    const { currency } = client;
+
+    const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -35,7 +27,6 @@ const RecentTransaction = ({
     if (!crypto_transactions.length) {
         return null;
     }
-
     let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
     const { status_code, transaction_hash } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
@@ -132,9 +123,4 @@ const RecentTransaction = ({
     );
 };
 
-export default connect(({ modules, client }: TRootStore) => ({
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    onMount: modules.cashier.transaction_history.onMount,
-    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-}))(RecentTransaction);
+export default observer(RecentTransaction);

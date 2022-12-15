@@ -18,7 +18,6 @@ export default class BuySellStore extends BaseStore {
     has_more_items_to_load = false;
     has_payment_methods = false;
     is_filter_modal_loading = false;
-    is_filter_modal_open = false;
     is_loading = true;
     is_sort_dropdown_open = false;
     is_submit_disabled = true;
@@ -64,7 +63,6 @@ export default class BuySellStore extends BaseStore {
             has_more_items_to_load: observable,
             has_payment_methods: observable,
             is_filter_modal_loading: observable,
-            is_filter_modal_open: observable,
             is_loading: observable,
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
@@ -120,7 +118,6 @@ export default class BuySellStore extends BaseStore {
             setHasMoreItemsToLoad: action.bound,
             setHasPaymentMethods: action.bound,
             setIsFilterModalLoading: action.bound,
-            setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
@@ -419,7 +416,6 @@ export default class BuySellStore extends BaseStore {
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-        this.setIsFilterModalOpen(false);
     }
 
     onClickReset() {
@@ -482,10 +478,6 @@ export default class BuySellStore extends BaseStore {
 
     setIsFilterModalLoading(is_filter_modal_loading) {
         this.is_filter_modal_loading = is_filter_modal_loading;
-    }
-
-    setIsFilterModalOpen(is_filter_modal_open) {
-        this.is_filter_modal_open = is_filter_modal_open;
     }
 
     setIsLoading(is_loading) {

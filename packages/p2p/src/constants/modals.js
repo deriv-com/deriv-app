@@ -11,6 +11,9 @@ export const modals = {
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'
         )
     ),
+    FilterModal: React.lazy(() =>
+        import(/* webpackChunkName: "filter-modal" */ 'Components/modal-manager/modals/filter-modal')
+    ),
     MyAdsDeleteErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "my-ads-delete-error-modal" */ 'Components/modal-manager/modals/my-ads-delete-error-modal'

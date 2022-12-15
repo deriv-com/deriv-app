@@ -65,6 +65,35 @@
                 &__cell--fixed {
                     margin-left: -1px;
                     border-right: 1px solid var(--general-active);
+                    background-color: var(--general-main-1);
+                }
+            }
+            &__table-row {
+                .dc-table__cell {
+                    background-color: var(--general-main-1);
+                }
+
+                &:first-child {
+                    background-color: var(--button-primary-light-default);
+
+                    .dc-table__cell {
+                        background-color: unset;
+
+                        &--fixed {
+                            background-color: var(--general-main-1);
+
+                            &:before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                right: 0;
+                                left: 0;
+                                z-index: -1;
+                                background-color: var(--button-primary-light-default);
+                            }
+                        }
+                    }
                 }
             }
         }

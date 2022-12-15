@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import { ModalManagerContext } from './modal-manager-context';
 import { useStores } from 'Stores';
 import { isDesktop } from '@deriv/shared';
@@ -22,7 +23,7 @@ const ModalManagerContextProvider = props => {
         }
         setIsModalOpen(true);
     };
-
+    
     const hideModal = (should_save_form_history = false) => {
         if (isDesktop()) {
             if (should_save_form_history) {

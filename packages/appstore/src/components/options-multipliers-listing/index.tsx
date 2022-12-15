@@ -6,18 +6,21 @@ import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
+import { isMobile } from '@deriv/shared';
 
 const OptionsAndMultipliersListing = () => {
-    const { tradinghub, client } = useStores();
+    const { tradinghub } = useStores();
     const is_demo = tradinghub.selected_account_type === 'demo';
-    const has_real_account = client.has_any_real_account && tradinghub.selected_account_type === 'real';
+    const has_real_account = tradinghub.has_any_real_account;
 
     return (
         <ListingContainer
             title={
-                <Text size='sm' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='Options & Multiplier' />
-                </Text>
+                !isMobile() && (
+                    <Text size='sm' line_height='m' weight='bold'>
+                        <Localize i18n_default_text='Options & Multipliers' />
+                    </Text>
+                )
             }
             description={
                 <Text size='xs' line_height='s'>

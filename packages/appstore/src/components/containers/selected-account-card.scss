@@ -9,9 +9,19 @@
     gap: 1.6rem;
     flex-shrink: 0;
 
+    @include mobile {
+        width: 100%;
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+
+    &__deposit {
+        @include mobile {
+            margin-left: 7rem;
+        }
     }
 }

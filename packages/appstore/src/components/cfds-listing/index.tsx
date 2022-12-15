@@ -3,14 +3,17 @@ import { Text, StaticUrl } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
+import { isMobile } from '@deriv/shared';
 
 const CFDsListing = () => {
     return (
         <ListingContainer
             title={
-                <Text size='sm' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='CFD Listing' />
-                </Text>
+                !isMobile() && (
+                    <Text size='sm' line_height='m' weight='bold'>
+                        <Localize i18n_default_text='CFD Listing' />
+                    </Text>
+                )
             }
             description={
                 <Text size='xs' line_height='s'>

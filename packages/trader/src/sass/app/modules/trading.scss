@@ -115,6 +115,9 @@
                 }
             }
         }
+        &--no-padding {
+            padding: 0;
+        }
         .dc-datepicker {
             .dc-input {
                 border: 1px solid var(--fill-normal);

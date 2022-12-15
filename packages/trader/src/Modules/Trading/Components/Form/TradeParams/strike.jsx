@@ -70,7 +70,7 @@ const Strike = ({
             <DesktopWrapper>
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
-                    header={localize('Strike')}
+                    header={localize('Strike Price')}
                     header_tooltip={
                         <Localize
                             i18n_default_text='<0>For Call:</0> You will earn a payout if the market is above this price at the expiry time. Otherwise, your payout will be zero.<1/><1/><0>For Put:</0> You will earn a payout if the market is below this price at the expiry time. Otherwise, your payout will be zero.'

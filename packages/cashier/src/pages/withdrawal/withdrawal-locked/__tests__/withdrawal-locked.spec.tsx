@@ -3,8 +3,8 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import WithdrawalLocked from '../withdrawal-locked';
-import { StoreProvider } from '../../../../hooks';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 

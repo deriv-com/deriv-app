@@ -10,7 +10,6 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { generateErrorDialogTitle } from 'Utils/adverts';
-import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import QuickAddModal from './quick-add-modal.jsx';
 import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
@@ -142,7 +141,6 @@ const MyAdsTable = () => {
                         </Button>
                     </div>
                 )}
-                <MyAdsFloatingRateSwitchModal />
                 <Modal
                     className='p2p-my-ads__modal-error'
                     has_close_icon={false}

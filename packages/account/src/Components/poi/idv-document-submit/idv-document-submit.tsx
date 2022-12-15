@@ -97,8 +97,8 @@ const IdvDocumentSubmit = ({
         document_number: '',
     };
 
-    const getDocument = (text: FormikValues) => {
-        return document_list.find((d: any) => d.text === text);
+    const getDocument = (text: string) => {
+        return document_list.find((d: FormikValues) => d.text === text);
     };
 
     const getExampleFormat = (example_format: boolean) => {

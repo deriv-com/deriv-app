@@ -18,4 +18,8 @@
         padding: 0.4rem;
         background-color: var(--general-section-1);
     }
+
+    &--mobile {
+        overflow: scroll;
+    }
 }

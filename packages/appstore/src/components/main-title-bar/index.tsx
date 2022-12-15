@@ -1,12 +1,15 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Div100vhContainer } from '@deriv/components';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import { localize } from '@deriv/translations';
 import './main-title-bar.scss';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
+    const { tradinghub } = useStores();
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -27,11 +30,23 @@ const MainTitleBar = () => {
                         {localize("Trader's Hub")}
                     </Text>
                 </div>
-                <AccountTypeDropdown />
+                <div className='main-title-bar-mobile'>
+                    <AccountTypeDropdown />
+                    <Tabs
+                        active_index={tradinghub.selected_region}
+                        onTabItemClick={tradinghub.selectRegion}
+                        top
+                        is_scrollable
+                        is_overflow_hidden
+                    >
+                        <div label={localize('Non-EU')} />
+                        <div label={localize('EU')} />
+                    </Tabs>
+                </div>
                 <AssetSummary />
             </MobileWrapper>
         </React.Fragment>
     );
 };
 
-export default MainTitleBar;
+export default observer(MainTitleBar);

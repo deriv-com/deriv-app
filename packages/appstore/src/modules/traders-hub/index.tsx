@@ -27,15 +27,15 @@ const TradersHub = () => {
     return (
         <>
             <div id='traders-hub' className='traders-hub'>
-                <MainTitleBar />
-                <DesktopWrapper>
-                    <div className='traders-hub__main-container'>
-                        <OptionsAndMultipliersListing />
-                        <CFDsListing />
-                    </div>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <Div100vhContainer is_disabled={isDesktop()}>
+                <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
+                    <MainTitleBar />
+                    <DesktopWrapper>
+                        <div className='traders-hub__main-container'>
+                            <OptionsAndMultipliersListing />
+                            <CFDsListing />
+                        </div>
+                    </DesktopWrapper>
+                    <MobileWrapper>
                         <ButtonToggle
                             buttons_arr={platform_toggle_options}
                             className='traders-hub__button-toggle'
@@ -47,9 +47,9 @@ const TradersHub = () => {
                         />
                         {tradinghub.selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {tradinghub.selected_platform_type === 'cfd' && <CFDsListing />}
-                    </Div100vhContainer>
-                </MobileWrapper>
-                <ModalManager />
+                    </MobileWrapper>
+                    <ModalManager />
+                </Div100vhContainer>
             </div>
         </>
     );

@@ -134,6 +134,9 @@ export default class TradeStore extends BaseStore {
     cancellation_duration = '60m';
     cancellation_range_list = [];
 
+    // Vanilla trade params
+    vanilla_trade_type = 'VANILLALONGCALL';
+
     // Mobile
     is_trade_params_expanded = true;
 

@@ -11,20 +11,21 @@ const Purchase = ({
     contract_type,
     currency,
     has_cancellation,
-    is_multiplier,
-    is_vanilla,
-    is_mobile,
-    is_purchase_enabled,
     is_market_closed,
-    purchased_states_arr,
+    is_mobile,
+    is_multiplier,
+    is_purchase_enabled,
     is_trade_enabled,
+    is_vanilla,
     onClickPurchase,
     onHoverPurchase,
-    purchase_info,
     proposal_info,
+    purchase_info,
+    purchased_states_arr,
     setPurchaseState,
     trade_types,
     validation_errors,
+    vanilla_trade_type,
 }) => {
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
     const isLoading = info => {
@@ -83,17 +84,21 @@ const Purchase = ({
             </div>
         );
 
-        switch (getContractTypePosition(type)) {
-            case 'top':
-                components.unshift(purchase_fieldset);
-                break;
-            case 'bottom':
+        if (!is_vanilla) {
+            switch (getContractTypePosition(type)) {
+                case 'top':
+                    components.unshift(purchase_fieldset);
+                    break;
+                case 'bottom':
+                    components.push(purchase_fieldset);
+                    break;
+                default:
+                    components.push(purchase_fieldset);
+                    break;
+            }
+        } else if (vanilla_trade_type === type) {
                 components.push(purchase_fieldset);
-                break;
-            default:
-                components.push(purchase_fieldset);
-                break;
-        }
+            }
     });
     return components;
 };
@@ -119,13 +124,13 @@ Purchase.propTypes = {
 };
 
 export default connect(({ modules, ui }) => ({
-    currency: modules.trade.currency,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
+    currency: modules.trade.currency,
     has_cancellation: modules.trade.has_cancellation,
+    is_multiplier: modules.trade.is_multiplier,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
-    is_multiplier: modules.trade.is_multiplier,
     is_vanilla: modules.trade.is_vanilla,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,
@@ -133,6 +138,7 @@ export default connect(({ modules, ui }) => ({
     purchase_info: modules.trade.purchase_info,
     trade_types: modules.trade.trade_types,
     validation_errors: modules.trade.validation_errors,
+    vanilla_trade_type: modules.trade.vanilla_trade_type,
     is_mobile: ui.is_mobile,
     purchased_states_arr: ui.purchase_states,
     setPurchaseState: ui.setPurchaseState,

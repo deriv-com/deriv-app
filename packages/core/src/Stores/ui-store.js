@@ -66,6 +66,9 @@ export default class UIStore extends BaseStore {
     duration_h = 1;
     duration_d = 1;
 
+    // vanilla trade type selection
+    vanilla_trade_type = 'VANILLALONGCALL';
+
     // purchase button states
     purchase_states = [false, false];
 
@@ -234,6 +237,7 @@ export default class UIStore extends BaseStore {
             duration_m: observable,
             duration_h: observable,
             duration_d: observable,
+            vanilla_trade_type: observable,
             purchase_states: observable,
             is_app_disabled: observable,
             is_route_modal_on: observable,

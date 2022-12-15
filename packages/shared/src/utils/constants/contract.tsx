@@ -131,7 +131,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         title: localize('Call/Put'),
         trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
         basis: ['stake'],
-        components: ['duration', 'strike', 'amount'],
+        components: ['duration', 'strike', 'amount', 'vanilla_trade_type'],
         barrier_count: 1,
         config: { should_override: true },
     },

@@ -8,7 +8,7 @@ import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 import BlockUser from './block-user';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const MyProfileContent = () => {
     const { my_profile_store, general_store } = useStores();

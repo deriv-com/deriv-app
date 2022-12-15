@@ -34,7 +34,6 @@ export default class BuySellStore extends BaseStore {
     selected_payment_method_text = [];
     selected_value = 'rate';
     should_show_currency_selector_modal = false;
-    should_show_popup = false;
     should_show_verification = false;
     should_use_client_limits = false;
     show_advertiser_page = false;
@@ -80,7 +79,6 @@ export default class BuySellStore extends BaseStore {
             selected_payment_method_text: observable,
             selected_value: observable,
             should_show_currency_selector_modal: observable,
-            should_show_popup: observable,
             should_show_verification: observable,
             should_use_client_limits: observable,
             show_advertiser_page: observable,
@@ -104,10 +102,8 @@ export default class BuySellStore extends BaseStore {
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
-            hidePopup: action.bound,
             hideVerification: action.bound,
             loadMoreItems: action.bound,
-            onCancelClick: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
             onClickReset: action.bound,
@@ -137,7 +133,6 @@ export default class BuySellStore extends BaseStore {
             setSelectedPaymentMethodText: action.bound,
             setSelectedValue: action.bound,
             setShouldShowCurrencySelectorModal: action.bound,
-            setShouldShowPopup: action.bound,
             setShouldShowVerification: action.bound,
             setShouldUseClientLimits: action.bound,
             setShowAdvertiserPage: action.bound,
@@ -319,10 +314,6 @@ export default class BuySellStore extends BaseStore {
         this.setShowAdvertiserPage(false);
     }
 
-    hidePopup() {
-        this.should_show_popup = false;
-    }
-
     hideVerification() {
         this.setShouldShowVerification(false);
     }
@@ -403,10 +394,6 @@ export default class BuySellStore extends BaseStore {
                 resolve();
             });
         });
-    }
-
-    onCancelClick() {
-        this.setShouldShowPopup(false);
     }
 
     onChangeTableType(event) {
@@ -576,13 +563,6 @@ export default class BuySellStore extends BaseStore {
 
     setShouldShowCurrencySelectorModal(should_show_currency_selector_modal) {
         this.should_show_currency_selector_modal = should_show_currency_selector_modal;
-    }
-
-    setShouldShowPopup(should_show_popup) {
-        this.should_show_popup = should_show_popup;
-        if (!this.should_show_popup) {
-            this.fetchAdvertiserAdverts();
-        }
     }
 
     setShouldShowVerification(should_show_verification) {

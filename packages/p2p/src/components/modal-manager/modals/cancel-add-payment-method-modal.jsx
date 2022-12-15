@@ -3,7 +3,7 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CancelAddPaymentMethodModal = () => {
     const { my_profile_store, my_ads_store } = useStores();

@@ -1,5 +1,5 @@
 import ModalForm from './modal-form';
+import ModalManager from './modal-manager';
 import ModalManagerContextProvider from './modal-manager-context-provider';
-import { useModalManagerContext } from './modal-manager-context';
 
-export { ModalForm, ModalManagerContextProvider, useModalManagerContext };
+export { ModalForm, ModalManagerContextProvider, ModalManager };

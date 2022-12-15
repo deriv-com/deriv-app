@@ -20,7 +20,7 @@ import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-
 import NicknameForm from 'Components/nickname-form';
 import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>
@@ -72,7 +72,6 @@ const BuySellModal = () => {
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
-    const formik_ref = React.useRef();
 
     const generateModalTitle = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -173,7 +172,7 @@ const BuySellModal = () => {
                 is_flex
                 is_modal_open={is_modal_open}
                 page_header_className='buy-sell__modal-header'
-                page_header_text={generateModalTitle(formik_ref)}
+                page_header_text={generateModalTitle()}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={my_profile_store.should_show_add_payment_method_form ? '' : page_footer_parent}
                 renderPageFooterChildren={() =>
@@ -194,7 +193,7 @@ const BuySellModal = () => {
                 {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                 {!!error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
-                    <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
+                    <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
                     <Form
                         advert={buy_sell_store.selected_ad_state}
@@ -215,7 +214,7 @@ const BuySellModal = () => {
             height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
             is_open={is_modal_open}
-            title={generateModalTitle(formik_ref)}
+            title={generateModalTitle()}
             portalId={general_store.props.modal_root_id}
             toggleModal={onCancel}
         >
@@ -227,7 +226,7 @@ const BuySellModal = () => {
                     {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
+                        <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
                         <Form
                             advert={buy_sell_store.selected_ad_state}

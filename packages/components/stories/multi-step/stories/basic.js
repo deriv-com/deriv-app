@@ -4,7 +4,11 @@ import Button from 'Components/button';
 import MultiStep from 'Components/multi-step';
 import Wrapper from '../../shared/wrapper';
 
-const steps = [{ component: 'Step 1' }, { component: 'Step 2' }, { component: 'Step 3' }];
+const steps = [
+    { component: <span>{'Step 1'}</span> },
+    { component: <span>{'Step 2'}</span> },
+    { component: <span>{'Step 3'}</span> },
+];
 
 const Basic = () => {
     const multi_step_ref = React.createRef();

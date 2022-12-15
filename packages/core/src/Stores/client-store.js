@@ -2505,5 +2505,17 @@ export default class ClientStore extends BaseStore {
             await this.switchAccount(this.virtual_account_loginid);
         }
     }
+
+    setIsPreAppStore(is_pre_appstore) {
+        const trading_hub = is_pre_appstore ? 1 : 0;
+        WS.setSettings({
+            set_settings: 1,
+            trading_hub,
+        }).then(response => {
+            if (!response.error) {
+                this.account_settings = { ...this.account_settings, trading_hub };
+            }
+        });
+    }
 }
 /* eslint-enable */

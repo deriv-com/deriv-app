@@ -27,9 +27,9 @@
     "scripts": {
         "test": "echo \"No test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
-        "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
+        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
         "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
-        "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1;}; f"
+        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1;}; f"
     },
     "bugs": {
         "url": "https://github.com/binary-com/deriv-app/issues"
@@ -38,6 +38,7 @@
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

@@ -104,6 +104,7 @@ export default class BuySellStore extends BaseStore {
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
+            hidePopup: action.bound,
             hideVerification: action.bound,
             loadMoreItems: action.bound,
             onCancelClick: action.bound,
@@ -316,6 +317,10 @@ export default class BuySellStore extends BaseStore {
 
     hideAdvertiserPage() {
         this.setShowAdvertiserPage(false);
+    }
+
+    hidePopup() {
+        this.should_show_popup = false;
     }
 
     hideVerification() {

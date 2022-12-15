@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils.js';
-import DetailComponent from './detail-component.jsx';
+import DetailComponent from './detail-component';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';

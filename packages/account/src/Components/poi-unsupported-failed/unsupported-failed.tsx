@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 type TUnsupportedFailed = {
-    error: string;
+    error?: string;
 };
 
 const UnsupportedFailed = ({ error }: TUnsupportedFailed) => (

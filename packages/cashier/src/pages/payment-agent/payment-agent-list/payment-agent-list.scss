@@ -74,6 +74,8 @@
                         padding-left: 0.8rem;
                         padding-right: 3.2rem;
                         color: var(--text-less-prominent);
+                        overflow: hidden;
+                        max-width: 14.6rem;
                     }
                 }
                 &__select-arrow {

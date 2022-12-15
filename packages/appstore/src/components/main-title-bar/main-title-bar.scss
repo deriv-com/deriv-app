@@ -9,4 +9,9 @@
         align-items: center;
         gap: 0.8rem;
     }
+
+    &-mobile {
+        display: flex;
+        justify-content: space-between;
+    }
 }

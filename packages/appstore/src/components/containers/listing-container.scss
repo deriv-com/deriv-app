@@ -5,15 +5,32 @@
     padding: 2.4rem;
     border-radius: 2.4rem;
 
+    @include mobile {
+        border: none;
+        padding: 2.4rem 0;
+    }
+
     &__top-container {
         display: inline-flex;
         width: 100%;
+
+        @include mobile {
+            display: block;
+            width: 100%;
+        }
     }
 
     &__title {
         display: flex;
         flex-direction: column;
         margin-right: 4.8rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+            margin-right: 0;
+            padding-bottom: 2rem;
+        }
     }
 
     &__content {
@@ -21,5 +38,24 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 1.6rem 4.8rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+        }
     }
+}
+
+.full-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1 / span 3;
+    gap: 1.6rem 4.8rem;
+}
+
+.cfd-full-row {
+    display: grid;
+    width: 100%;
+    grid-column: 1 / span 3;
 }

@@ -3,9 +3,17 @@
     flex-direction: column;
     margin-left: auto;
 
+    @include mobile {
+        align-items: center;
+    }
+
     &--total {
         display: flex;
         border-bottom: 4px dotted var(--checkbox-disabled-grey);
+
+        @include mobile {
+            margin-top: 3rem;
+        }
     }
 
     &-amount {

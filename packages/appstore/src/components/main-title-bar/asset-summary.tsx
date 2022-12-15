@@ -20,7 +20,7 @@ const AssetSummary = () => {
         is_eu,
     } = client;
     const { getExchangeRate } = common;
-    const { current_account_type } = tradinghub;
+    const { selected_account_type } = tradinghub;
 
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
@@ -39,7 +39,8 @@ const AssetSummary = () => {
 
     const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
     const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
-    const account_total_balance_currency = current_account_type === 'demo' ? vrtc_currency : obj_total_balance.currency;
+    const account_total_balance_currency =
+        selected_account_type === 'demo' ? vrtc_currency : obj_total_balance.currency;
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (
@@ -50,17 +51,17 @@ const AssetSummary = () => {
                 setExchangeRate(res);
             });
         };
-        if (current_account_type === 'real') {
+        if (selected_account_type === 'real') {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
             setTotalAssets(getTotalRealAssets());
-        } else if (current_account_type === 'demo') {
+        } else if (selected_account_type === 'demo') {
             getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
             setTotalAssets(getTotalDemoAssets());
         } else if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [current_account_type]);
+    }, [selected_account_type]);
 
     const getTotalBalanceCfd = (mt5_accounts: Mt5LoginList, is_demo: boolean, exchange_rate: number) => {
         return mt5_accounts
@@ -92,6 +93,16 @@ const AssetSummary = () => {
         return total;
     };
 
+    const getTextClassName = () => {
+        if (selected_account_type === 'demo') {
+            return has_active_real_account ? 'asset-summary-demo' : 'asset-summary-amount';
+        }
+        if (selected_account_type === 'real') {
+            return has_active_real_account ? 'asset-summary-real' : 'asset-summary-no-amount';
+        }
+        return '';
+    };
+
     const getTotalRealAssets = (): number => {
         const mt5_total = getTotalBalanceCfd(mt5_login_list, false, exchanged_rate_cfd_real);
         const dxtrade_total = getTotalBalanceCfd(dxtrade_accounts_list, false, exchanged_rate_cfd_real);
@@ -112,49 +123,40 @@ const AssetSummary = () => {
 
     const currency = account_total_balance_currency;
     const is_eu_popover_text = is_eu
-        ? localize(`Total assets in your Multipliers and DMT5 ${current_account_type} accounts`)
-        : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${current_account_type} accounts`);
+        ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
+        : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${selected_account_type} accounts`);
 
     return (
         <div className='asset-summary'>
-            {has_active_real_account ? (
-                <>
-                    <Text align='right' size='xs' line_height='s'>
-                        {localize('Total assets')}
-                    </Text>
+            {has_active_real_account || selected_account_type === 'demo' ? (
+                <React.Fragment>
+                    {!isMobile() ? (
+                        <Text align='right' size='xs' line_height='s'>
+                            {localize('Total assets')}
+                        </Text>
+                    ) : null}
                     <div className='asset-summary--total'>
                         <Popover alignment='left' message={is_eu_popover_text}>
                             <Text
                                 weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
+                                size='m'
                                 className={classNames({
-                                    'asset-summary-amount': current_account_type === 'demo' && !has_active_real_account,
+                                    'asset-summary-amount':
+                                        selected_account_type === 'demo' && !has_active_real_account,
                                     'asset-summary-no-amount':
-                                        current_account_type === 'real' && !has_active_real_account,
-                                    'asset-summary-real': current_account_type === 'real' && has_active_real_account,
-                                    'asset-summary-demo': current_account_type === 'demo' && has_active_real_account,
+                                        selected_account_type === 'real' && !has_active_real_account,
+                                    'asset-summary-real': selected_account_type === 'real' && has_active_real_account,
+                                    'asset-summary-demo': selected_account_type === 'demo' && has_active_real_account,
                                 })}
                             >
                                 {formatMoney(currency, total_assets, true)}
                             </Text>
-                            <Text
-                                weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
-                                color='prominent'
-                                className={classNames({
-                                    'asset-summary-currency':
-                                        current_account_type === 'demo' && !has_active_real_account,
-                                    'asset-summary-no-currency':
-                                        current_account_type === 'real' && !has_active_real_account,
-                                    'asset-summary-real': current_account_type === 'real' && has_active_real_account,
-                                    'asset-summary-demo': current_account_type === 'demo' && has_active_real_account,
-                                })}
-                            >
+                            <Text weight='bold' size='m' color='prominent' className={getTextClassName()}>
                                 {currency}
                             </Text>
                         </Popover>
                     </div>
-                </>
+                </React.Fragment>
             ) : null}
         </div>
     );

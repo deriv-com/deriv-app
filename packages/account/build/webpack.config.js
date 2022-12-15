@@ -44,7 +44,6 @@ module.exports = function (env) {
             'poi-expired': 'Components/poi/status/expired',
             'poi-missing-personal-details': 'Components/poi/missing-personal-details',
             'poi-unsupported': 'Components/poi/status/unsupported',
-            'poi-unverified': 'Components/poi/status/unverified',
             'poi-upload-complete': 'Components/poi/status/upload-complete',
             'poi-verified': 'Components/poi/status/verified',
             'poinc-file-uploader-container': 'Components/poinc/file-uploader-container',

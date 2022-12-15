@@ -1,20 +1,13 @@
 import React from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 import { whatsapp_url } from '@deriv/shared';
 
-type TWhatsAppProps = {
-    can_have_whatsapp: boolean;
-};
-
-const WhatsApp = ({ can_have_whatsapp }: TWhatsAppProps) => {
+const WhatsApp = () => {
     const liveChat = useLiveChat();
 
     if (!liveChat.isReady) return null;
-
-    if (!can_have_whatsapp) return null;
 
     return (
         <a
@@ -31,6 +24,4 @@ const WhatsApp = ({ can_have_whatsapp }: TWhatsAppProps) => {
     );
 };
 
-export default connect(({ client }) => ({
-    can_have_whatsapp: client.can_have_whatsapp,
-}))(WhatsApp);
+export default WhatsApp;

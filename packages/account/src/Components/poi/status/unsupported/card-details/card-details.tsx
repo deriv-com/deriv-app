@@ -9,7 +9,7 @@ type TCardDetails = {
     data: FormikValues;
     onComplete: (e: object) => void;
     goToCards: () => void;
-    is_from_external: boolean;
+    is_from_external?: boolean;
     setIsCfdPoiCompleted: (e: boolean) => void;
 };
 
@@ -36,7 +36,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
                     is_from_external={is_from_external}
                     data={data}
                     goToCards={goToCards}
-                    onSubmit={onSubmitDocuments}
+                    onSubmit={() => onSubmitDocuments}
                 />
             ) : (
                 <SelfieUpload

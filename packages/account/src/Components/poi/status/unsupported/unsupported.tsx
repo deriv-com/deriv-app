@@ -42,11 +42,11 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }: Partia
         return (
             <DetailComponent
                 is_onfido_supported={country_code === 'ng' && !checkNimcStep(documents[detail].details.documents)}
-                country_code={country_code}
+                country_code_key={country_code}
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
-                handlePOIforMT5Complete={handlePOIforMT5Complete}
+                handlePOIforMT5Complete={() => handlePOIforMT5Complete}
                 {...props}
             />
         );

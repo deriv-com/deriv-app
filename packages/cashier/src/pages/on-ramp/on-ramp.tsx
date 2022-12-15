@@ -1,43 +1,29 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useStore } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
-import { TCommonStore, TClientStore, TProviderDetails, TReactFormEvent, TRootStore } from 'Types';
+import { TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
 
 type TMenuOption = {
     count?: number;
-    default: boolean;
-    icon: string;
+    default?: boolean;
+    icon?: string;
     label: string;
-    value: string;
+    value?: string;
     path: string;
-    has_side_note: boolean;
+    has_side_note?: boolean;
 };
 
-type TOnRampProps = {
-    filtered_onramp_providers: TProviderDetails[];
-    is_cashier_locked: boolean;
-    is_cashier_onboarding: boolean;
-    is_deposit_locked: boolean;
-    is_onramp_modal_open: boolean;
-    is_switching: TClientStore['is_switching'];
-    is_loading: boolean;
+export type TOnRampProps = {
     menu_options: TMenuOption[];
-    onMountOnramp: () => void;
-    onUnmountOnramp: () => void;
-    onramp_popup_modal_title: string;
-    resetPopup: () => void;
-    routeTo: TCommonStore['routeTo'];
-    setIsOnRampModalOpen: (set_is_on_ramp_modal_open: boolean) => void;
     setSideNotes: (ReactComponent: React.ReactElement[]) => void;
-    should_show_dialog: boolean;
-    tab_index: number;
 };
 
 const OnRampSideNote = () => {
@@ -69,25 +55,24 @@ const OnRampInfo = () => (
     </div>
 );
 
-const OnRamp = ({
-    filtered_onramp_providers,
-    is_cashier_locked,
-    is_cashier_onboarding,
-    is_deposit_locked,
-    is_loading,
-    is_onramp_modal_open,
-    is_switching,
-    menu_options,
-    onMountOnramp,
-    onUnmountOnramp,
-    onramp_popup_modal_title,
-    resetPopup,
-    routeTo,
-    setIsOnRampModalOpen,
-    should_show_dialog,
-    setSideNotes,
-    tab_index,
-}: TOnRampProps) => {
+const OnRamp = ({ menu_options, setSideNotes }: TOnRampProps) => {
+    const { modules, common, client } = useStore();
+    const { onramp, general_store, deposit } = modules.cashier;
+    const {
+        filtered_onramp_providers,
+        is_onramp_modal_open,
+        onMountOnramp,
+        onUnmountOnramp,
+        onramp_popup_modal_title,
+        resetPopup,
+        setIsOnRampModalOpen,
+        should_show_dialog,
+    } = onramp;
+    const { is_cashier_onboarding, is_cashier_locked, is_loading, cashier_route_tab_index } = general_store;
+    const { is_deposit_locked } = deposit;
+    const { is_switching } = client;
+    const { routeTo } = common;
+
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
     React.useEffect(() => {
@@ -104,7 +89,7 @@ const OnRamp = ({
 
         return () => onUnmountOnramp();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, tab_index]);
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
@@ -170,20 +155,4 @@ const OnRamp = ({
     );
 };
 
-export default connect(({ modules, common, client }: TRootStore) => ({
-    filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
-    is_cashier_onboarding: modules.cashier.general_store.is_cashier_onboarding,
-    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
-    is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
-    is_loading: modules.cashier.general_store.is_loading,
-    is_switching: client.is_switching,
-    onMountOnramp: modules.cashier.onramp.onMountOnramp,
-    onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
-    onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
-    resetPopup: modules.cashier.onramp.resetPopup,
-    routeTo: common.routeTo,
-    setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
-    should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    tab_index: modules.cashier.general_store.cashier_route_tab_index,
-}))(OnRamp);
+export default observer(OnRamp);

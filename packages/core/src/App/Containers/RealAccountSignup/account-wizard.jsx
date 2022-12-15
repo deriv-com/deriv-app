@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
 
     React.useEffect(() => {
+        props.setIsTradingAssessmentForNewUserEnabled(true);
         props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
@@ -189,7 +190,7 @@ const AccountWizard = props => {
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
-
+        props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
                 ...clone,
@@ -200,13 +201,13 @@ const AccountWizard = props => {
         return props.realAccountSignup(clone);
     };
 
-    const updateValue = (index, value, setSubmitting, goToNextStep) => {
+    const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
         saveFormData(index, value);
         clearError();
 
         // Check if account wizard is not finished
-        if (index + 1 >= state_items.length) {
-            createRealAccount();
+        if (should_override || index + 1 >= state_items.length) {
+            createRealAccount({});
         } else {
             goToNextStep();
         }
@@ -247,6 +248,7 @@ const AccountWizard = props => {
 
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
+        const form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
                 props.setIsRiskWarningVisible(false);
@@ -268,25 +270,38 @@ const AccountWizard = props => {
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
+                } else if (error.code === 'AppropriatenessTestFailed') {
+                    if (form_data?.risk_tolerance === 'No') {
+                        props.fetchAccountSettings();
+                        props.setShouldShowRiskWarningModal(true);
+                    } else {
+                        props.setShouldShowAppropriatenessWarningModal(true);
+                    }
                 } else {
                     props.onError(error, state_items);
                 }
             })
-            .finally(() => props.setLoading(false));
+            .finally(() => {
+                props.setLoading(false);
+                localStorage.removeItem('current_question_index');
+            });
     };
 
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+
     const onDeclineRisk = () => {
         props.onClose();
         props.setIsRiskWarningVisible(false);
     };
 
     if (props.is_loading) return <LoadingModal />;
+
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
+
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
@@ -351,7 +366,6 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
-
     fetchStatesList: PropTypes.func,
     fetchFinancialAssessment: PropTypes.func,
     onClose: PropTypes.func,
@@ -381,4 +395,9 @@ export default connect(({ client, notifications, ui }) => ({
     refreshNotifications: notifications.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     financial_assessment: client.financial_assessment,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
+    fetchAccountSettings: client.fetchAccountSettings,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(AccountWizard);

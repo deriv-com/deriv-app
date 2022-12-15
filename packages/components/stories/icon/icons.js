@@ -290,6 +290,7 @@ export const icons =
         'IcArrowRight',
         'IcArrowUpBold',
         'IcArrowUp',
+        'IcAssessment',
         'IcAttachment',
         'IcBankDashboard',
         'IcBank',
@@ -543,6 +544,7 @@ export const icons =
         'IcUserOutline',
         'IcUser',
         'IcUtility',
+        'IcVerificationSuccess',
         'IcVerification',
         'IcWebTerminal',
         'IcWebsite',
@@ -576,6 +578,7 @@ export const icons =
         'IcCurrencyBusd',
         'IcCurrencyDai',
         'IcCurrencyEth',
+        'IcCurrencyEurCheck',
         'IcCurrencyEur',
         'IcCurrencyEurs',
         'IcCurrencyEusdt',
@@ -591,6 +594,9 @@ export const icons =
         'IcCurrencyUsdk',
         'IcCurrencyUst',
         'IcCurrencyVirtual',
+    ],
+    'derivez': [
+        'IcDerivez',
     ],
     'dxtrade': [
         'IcDxtradeDerivX',

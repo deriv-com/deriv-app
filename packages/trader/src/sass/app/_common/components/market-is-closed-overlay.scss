@@ -36,8 +36,10 @@
         margin-bottom: 2rem;
     }
     &__button {
-        height: 40px;
+        min-height: 40px;
+        max-width: 24rem;
         margin-top: 1rem;
+        white-space: normal;
     }
 
     @include mobile {

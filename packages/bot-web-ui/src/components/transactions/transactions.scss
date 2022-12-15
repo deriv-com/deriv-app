@@ -1,6 +1,6 @@
 .transactions {
     $transaction: &;
-    $grid-template-columns: 0.9fr 1fr 1fr;
+    $grid-template-columns: 0.8fr 1fr 1.1fr;
 
     &-empty {
         height: 100%;

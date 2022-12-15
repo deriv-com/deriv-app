@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';
 import RecentTransaction from 'Components/recent-transaction';
-import { useStore } from '../../../hooks';
 import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {

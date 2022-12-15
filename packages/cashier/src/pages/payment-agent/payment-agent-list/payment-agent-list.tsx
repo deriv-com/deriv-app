@@ -17,7 +17,7 @@ type TProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const PaymentAgentList = ({ setSideNotes }: TProps) => {
+const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
     const { modules } = useStore();
     const { payment_agent, general_store } = modules.cashier;
 
@@ -27,7 +27,7 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
                 </SideNote>,
-                <SideNote has_title={false} key={0}>
+                <SideNote has_title={false} key={1}>
                     <MissingPaymentMethodNote />
                 </SideNote>,
             ]);
@@ -60,6 +60,6 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
             </div>
         </div>
     );
-};
+});
 
-export default observer(PaymentAgentList);
+export default PaymentAgentList;

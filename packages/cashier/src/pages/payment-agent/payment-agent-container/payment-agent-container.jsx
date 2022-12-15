@@ -1,10 +1,11 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import SideNote from 'Components/side-note';
-import { connect } from 'Stores/connect';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentCard from '../payment-agent-card';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
@@ -27,21 +28,29 @@ const PaymentAgentSearchWarning = () => {
         </div>
     );
 };
-const PaymentAgentContainer = ({
-    app_contents_scroll_ref,
-    has_payment_agent_search_warning,
-    is_dark_mode_on,
-    is_deposit,
-    is_search_loading,
-    is_try_withdraw_successful,
-    is_withdraw_successful,
-    onChangePaymentMethod,
-    payment_agent_list,
-    resetPaymentAgent,
-    selected_bank,
-    supported_banks,
-    verification_code,
-}) => {
+
+const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
+    const {
+        ui,
+        modules: {
+            cashier: { payment_agent: payment_agent_store },
+        },
+    } = useStore();
+
+    const { app_contents_scroll_ref, is_dark_mode_on } = ui;
+
+    const {
+        has_payment_agent_search_warning,
+        is_search_loading,
+        is_try_withdraw_successful,
+        is_withdraw_successful,
+        onChangePaymentMethod,
+        filtered_list: payment_agent_list,
+        resetPaymentAgent,
+        selected_bank,
+        supported_banks,
+    } = payment_agent_store;
+
     React.useEffect(() => {
         return () => {
             if (!is_deposit) {
@@ -173,7 +182,7 @@ const PaymentAgentContainer = ({
             )}
         </React.Fragment>
     );
-};
+});
 
 PaymentAgentContainer.propTypes = {
     app_contents_scroll_ref: PropTypes.object,
@@ -191,16 +200,4 @@ PaymentAgentContainer.propTypes = {
     verification_code: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
-    app_contents_scroll_ref: ui.app_contents_scroll_ref,
-    has_payment_agent_search_warning: modules.cashier.payment_agent.has_payment_agent_search_warning,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_search_loading: modules.cashier.payment_agent.is_search_loading,
-    is_try_withdraw_successful: modules.cashier.payment_agent.is_try_withdraw_successful,
-    is_withdraw_successful: modules.cashier.payment_agent.is_withdraw_successful,
-    onChangePaymentMethod: modules.cashier.payment_agent.onChangePaymentMethod,
-    payment_agent_list: modules.cashier.payment_agent.filtered_list,
-    resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
-    selected_bank: modules.cashier.payment_agent.selected_bank,
-    supported_banks: modules.cashier.payment_agent.supported_banks,
-}))(PaymentAgentContainer);
+export default PaymentAgentContainer;

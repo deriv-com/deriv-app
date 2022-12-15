@@ -8,7 +8,9 @@ const path = require('path');
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
-module.exports = function () {
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
+
     return {
         entry: {
             index: path.resolve(__dirname, 'src/components', 'app.jsx'),
@@ -17,6 +19,7 @@ module.exports = function () {
         output: {
             chunkFilename: 'p2p/js/p2p.[name].[contenthash].js',
             path: path.resolve(__dirname, 'dist'),
+            publicPath: base,
             filename: 'p2p/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/p2p',

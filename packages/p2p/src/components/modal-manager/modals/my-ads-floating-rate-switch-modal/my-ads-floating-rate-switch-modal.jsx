@@ -4,14 +4,16 @@ import { Button, Modal } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const MyAdsFloatingRateSwitchModal = () => {
     const { floating_rate_store, my_ads_store } = useStores();
+    const { is_modal_open } = useModalManagerContext();
 
     return (
         <React.Fragment>
             <Modal
-                is_open={my_ads_store.is_switch_modal_open}
+                is_open={is_modal_open}
                 toggleModal={() => my_ads_store.toggleMyAdsRateSwitchModal(my_ads_store.selected_ad_type)}
                 small
                 className='switch-ads'

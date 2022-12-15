@@ -15,7 +15,9 @@ const SelectedAccountCard = () => {
                     0.00 USD
                 </Text>
             </div>
-            <Button secondary>Deposit</Button>
+            <div className='selected-account-card__deposit'>
+                <Button secondary>Deposit</Button>
+            </div>
         </div>
     );
 };

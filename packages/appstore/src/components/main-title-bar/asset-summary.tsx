@@ -120,14 +120,16 @@ const AssetSummary = () => {
         <div className='asset-summary'>
             {has_active_real_account || selected_account_type === 'demo' ? (
                 <>
-                    <Text align='right' size='xs' line_height='s'>
-                        {localize('Total assets')}
-                    </Text>
+                    {!isMobile() ? (
+                        <Text align='right' size='xs' line_height='s'>
+                            {localize('Total assets')}
+                        </Text>
+                    ) : null}
                     <div className='asset-summary--total'>
                         <Popover alignment='left' message={is_eu_popover_text}>
                             <Text
                                 weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
+                                size='m'
                                 className={classNames({
                                     'asset-summary-amount':
                                         selected_account_type === 'demo' && !has_active_real_account,
@@ -141,7 +143,7 @@ const AssetSummary = () => {
                             </Text>
                             <Text
                                 weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
+                                size='m'
                                 color='prominent'
                                 className={classNames({
                                     'asset-summary-currency':

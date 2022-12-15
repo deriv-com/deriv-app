@@ -18,7 +18,6 @@ import { Localize } from '@deriv/translations';
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
-    can_have_whatsapp,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -173,7 +172,6 @@ const DefaultHeader = ({
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
-                            can_have_whatsapp={can_have_whatsapp}
                             enableApp={enableApp}
                             disableApp={disableApp}
                             location={location}
@@ -272,7 +270,6 @@ DefaultHeader.propTypes = {
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
-    can_have_whatsapp: PropTypes.bool,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -322,7 +319,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
-    can_have_whatsapp: client.can_have_whatsapp,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: notifications.addNotificationMessage,

@@ -6,6 +6,7 @@ import './cfds-listing.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import AddOptionsAccount from 'Components/add-options-account';
+import { isMobile } from '@deriv/shared';
 
 const CFDsListing = () => {
     const { tradinghub } = useStores();
@@ -14,9 +15,11 @@ const CFDsListing = () => {
     return (
         <ListingContainer
             title={
-                <Text size='sm' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='CFD Listing' />
-                </Text>
+                !isMobile() && (
+                    <Text size='sm' line_height='m' weight='bold'>
+                        <Localize i18n_default_text='CFD Listing' />
+                    </Text>
+                )
             }
             description={
                 <Text size='xs' line_height='s'>

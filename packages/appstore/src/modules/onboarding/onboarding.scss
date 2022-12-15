@@ -76,13 +76,15 @@
     }
 }
 
-.empty-onboarding-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: inherit;
+.empty-onboarding {
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: inherit;
+    }
 
-    .empty-onboarding-header {
+    &__header {
         width: 100%;
         height: 7.2rem;
         background-color: $color-black;

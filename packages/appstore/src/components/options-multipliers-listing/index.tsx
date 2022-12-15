@@ -6,6 +6,7 @@ import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
+import { isMobile } from '@deriv/shared';
 
 const OptionsAndMultipliersListing = () => {
     const { tradinghub } = useStores();
@@ -15,9 +16,11 @@ const OptionsAndMultipliersListing = () => {
     return (
         <ListingContainer
             title={
-                <Text size='sm' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='Options & Multiplier' />
-                </Text>
+                !isMobile() && (
+                    <Text size='sm' line_height='m' weight='bold'>
+                        <Localize i18n_default_text='Options & Multipliers' />
+                    </Text>
+                )
             }
             description={
                 <Text size='xs' line_height='s'>

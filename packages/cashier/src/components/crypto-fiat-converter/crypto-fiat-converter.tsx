@@ -1,10 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TReactChangeEvent, TReactChildren } from 'Types';
+import { TReactChangeEvent, TReactChildren } from 'Types';
+import { useStore } from '@deriv/stores';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -17,14 +18,13 @@ type TInputGroupProps = {
 };
 
 type TCryptoFiatConverterProps = {
-    converter_from_amount: string;
-    converter_from_error: string;
-    converter_to_error: string;
-    converter_to_amount: string;
     from_currency: string;
     hint: string | TReactChildren;
-    is_timer_visible: boolean;
-    onChangeConverterFromAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterFromAmount: (
+        event: { target: { value: string } },
+        from_currency: string,
+        to_currency: string
+    ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
     resetConverter: () => void;
     to_currency: string;
@@ -65,13 +65,8 @@ const InputGroup = ({ children, className }: TInputGroupProps) => {
 };
 
 const CryptoFiatConverter = ({
-    converter_from_amount,
-    converter_from_error,
-    converter_to_error,
-    converter_to_amount,
     from_currency,
     hint,
-    is_timer_visible,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
     resetConverter,
@@ -79,6 +74,15 @@ const CryptoFiatConverter = ({
     validateFromAmount,
     validateToAmount,
 }: TCryptoFiatConverterProps) => {
+    const {
+        modules: {
+            cashier: { crypto_fiat_converter },
+        },
+    } = useStore();
+
+    const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount, is_timer_visible } =
+        crypto_fiat_converter;
+
     const { handleChange } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
 
@@ -166,10 +170,4 @@ const CryptoFiatConverter = ({
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
-    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
-    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
-    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
-    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
-    is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
-}))(CryptoFiatConverter);
+export default observer(CryptoFiatConverter);

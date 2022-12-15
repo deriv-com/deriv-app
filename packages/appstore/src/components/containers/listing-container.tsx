@@ -1,6 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import './listing-container.scss';
 import SelectedAccountCard from './selected-account-card';
+import GridContainer from 'Components/containers/grid-container';
 
 type ListingContainerProps = {
     title: ReactNode;
@@ -23,7 +24,7 @@ const ListingContainer = ({
                 </div>
                 {is_deriv_platform && <SelectedAccountCard />}
             </div>
-            <div className='listing-container__content'>{children}</div>
+            <GridContainer>{children}</GridContainer>
         </div>
     );
 };

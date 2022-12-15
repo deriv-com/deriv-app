@@ -7,16 +7,19 @@ export default class TradersHubStore extends BaseStore {
     selected_region;
     selected_account_type = 'demo';
     is_tour_open = false;
+    selected_platform_type = 'options';
 
     constructor(root_store) {
         super({ root_store });
         makeObservable(this, {
             available_platforms: observable,
             selected_account_type: observable,
+            selected_platform_type: observable,
             selected_region: observable,
             is_tour_open: observable,
             selectAccountType: action.bound,
             selectRegion: action.bound,
+            setTogglePlatformType: action.bound,
             toggleIsTourOpen: action.bound,
             has_any_real_account: computed,
         });
@@ -56,5 +59,9 @@ export default class TradersHubStore extends BaseStore {
 
     get has_any_real_account() {
         return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
+    }
+
+    setTogglePlatformType(platform_type) {
+        this.selected_platform_type = platform_type;
     }
 }

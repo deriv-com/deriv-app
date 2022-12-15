@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Button, Div100vhContainer, Input, Loading, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -27,7 +27,6 @@ const EditAdFormWrapper = ({ children }) => {
 
 const EditAdForm = () => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
-    const os = mobileOSDetect();
 
     const {
         account_currency,
@@ -160,117 +159,157 @@ const EditAdForm = () => {
                                     : is_payment_method_touched;
                             return (
                                 <div className='p2p-my-ads__form'>
-                                    <Form
-                                        className={classNames('p2p-my-ads__form-element', {
-                                            'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',
-                                        })}
-                                        noValidate
-                                    >
+                                    <Form noValidate>
                                         <ThemedScrollbars
                                             className='p2p-my-ads__form-scrollbar'
                                             is_scrollbar_hidden={isMobile()}
                                         >
                                             <EditAdFormWrapper>
-                                                <div className='p2p-my-ads__form-summary'>
-                                                    <EditAdSummary
-                                                        offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                        price_rate={values.rate_type}
-                                                        type={values.type}
-                                                    />
-                                                </div>
-                                                <div className='p2p-my-ads__form-container'>
-                                                    <Field name='offer_amount'>
-                                                        {({ field }) => (
-                                                            <Input
-                                                                {...field}
-                                                                data-testid='offer_amount'
-                                                                data-lpignore='true'
-                                                                type='text'
-                                                                error={touched.offer_amount && errors.offer_amount}
-                                                                label={localize('Total amount')}
-                                                                className={classNames(
-                                                                    'p2p-my-ads__form-field',
-                                                                    'edit-ad__offer-amt'
-                                                                )}
-                                                                trailing_icon={
-                                                                    <Text
-                                                                        color={
-                                                                            isDesktop() ? 'less-prominent' : 'prominent'
-                                                                        }
-                                                                        line_height='m'
-                                                                        size={isDesktop() ? 'xxs' : 's'}
-                                                                    >
-                                                                        {account_currency}
-                                                                    </Text>
-                                                                }
-                                                                onChange={e => {
-                                                                    my_ads_store.restrictLength(e, handleChange);
-                                                                }}
-                                                                hint={
-                                                                    // Using two "==" is intentional as we're checking for nullish
-                                                                    // rather than falsy values.
-                                                                    !is_sell_advert ||
-                                                                    general_store.advertiser_info.balance_available ==
-                                                                        null
-                                                                        ? undefined
-                                                                        : localize(
-                                                                              'Your DP2P balance is {{ dp2p_balance }}',
-                                                                              {
-                                                                                  dp2p_balance: `${formatMoney(
-                                                                                      account_currency,
-                                                                                      general_store.advertiser_info
-                                                                                          .balance_available,
-                                                                                      true
-                                                                                  )} ${account_currency}`,
-                                                                              }
-                                                                          )
-                                                                }
-                                                                is_relative_hint
-                                                                disabled
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                    <Field name='rate_type'>
-                                                        {({ field }) =>
-                                                            my_ads_store.required_ad_type === ad_type.FLOAT ? (
-                                                                <FloatingRate
-                                                                    className='p2p-my-ads__form-field'
-                                                                    data_testid='float_rate_type'
-                                                                    error_messages={errors.rate_type}
-                                                                    fiat_currency={account_currency}
-                                                                    local_currency={local_currency}
-                                                                    offset={{
-                                                                        upper_limit:
-                                                                            floating_rate_store.float_rate_offset_limit,
-                                                                        lower_limit:
-                                                                            // eslint-disable-next-line max-len
-                                                                            floating_rate_store.float_rate_offset_limit *
-                                                                            -1,
-                                                                    }}
-                                                                    required
-                                                                    change_handler={e => {
-                                                                        my_ads_store.restrictDecimalPlace(
-                                                                            e,
-                                                                            handleChange
-                                                                        );
-                                                                    }}
-                                                                    place_holder='Floating rate'
-                                                                    {...field}
-                                                                />
-                                                            ) : (
+                                                <div className='p2p-my-ads__form-scrollbar-container'>
+                                                    <div className='p2p-my-ads__form-summary'>
+                                                        <EditAdSummary
+                                                            offer_amount={
+                                                                errors.offer_amount ? '' : values.offer_amount
+                                                            }
+                                                            price_rate={values.rate_type}
+                                                            type={values.type}
+                                                        />
+                                                    </div>
+                                                    <div className='p2p-my-ads__form-container'>
+                                                        <Field name='offer_amount'>
+                                                            {({ field }) => (
                                                                 <Input
                                                                     {...field}
-                                                                    data-testid='fixed_rate_type'
+                                                                    data-testid='offer_amount'
                                                                     data-lpignore='true'
                                                                     type='text'
-                                                                    error={touched.rate_type && errors.rate_type}
-                                                                    label={localize(
-                                                                        'Fixed rate (1 {{account_currency}})',
-                                                                        {
-                                                                            account_currency,
-                                                                        }
+                                                                    error={touched.offer_amount && errors.offer_amount}
+                                                                    label={localize('Total amount')}
+                                                                    className={classNames(
+                                                                        'p2p-my-ads__form-field',
+                                                                        'edit-ad__offer-amt'
                                                                     )}
-                                                                    label_className='p2p-my-ads__form-label--focused'
+                                                                    trailing_icon={
+                                                                        <Text
+                                                                            color={
+                                                                                isDesktop()
+                                                                                    ? 'less-prominent'
+                                                                                    : 'prominent'
+                                                                            }
+                                                                            line_height='m'
+                                                                            size={isDesktop() ? 'xxs' : 's'}
+                                                                        >
+                                                                            {account_currency}
+                                                                        </Text>
+                                                                    }
+                                                                    onChange={e => {
+                                                                        my_ads_store.restrictLength(e, handleChange);
+                                                                    }}
+                                                                    hint={
+                                                                        // Using two "==" is intentional as we're checking for nullish
+                                                                        // rather than falsy values.
+                                                                        !is_sell_advert ||
+                                                                        general_store.advertiser_info
+                                                                            .balance_available == null
+                                                                            ? undefined
+                                                                            : localize(
+                                                                                  'Your DP2P balance is {{ dp2p_balance }}',
+                                                                                  {
+                                                                                      dp2p_balance: `${formatMoney(
+                                                                                          account_currency,
+                                                                                          general_store.advertiser_info
+                                                                                              .balance_available,
+                                                                                          true
+                                                                                      )} ${account_currency}`,
+                                                                                  }
+                                                                              )
+                                                                    }
+                                                                    is_relative_hint
+                                                                    disabled
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                        <Field name='rate_type'>
+                                                            {({ field }) =>
+                                                                my_ads_store.required_ad_type === ad_type.FLOAT ? (
+                                                                    <FloatingRate
+                                                                        className='p2p-my-ads__form-field'
+                                                                        data_testid='float_rate_type'
+                                                                        error_messages={errors.rate_type}
+                                                                        fiat_currency={account_currency}
+                                                                        local_currency={local_currency}
+                                                                        offset={{
+                                                                            upper_limit:
+                                                                                // eslint-disable-next-line max-len
+                                                                                floating_rate_store.float_rate_offset_limit,
+                                                                            lower_limit:
+                                                                                // eslint-disable-next-line max-len
+                                                                                floating_rate_store.float_rate_offset_limit *
+                                                                                -1,
+                                                                        }}
+                                                                        required
+                                                                        change_handler={e => {
+                                                                            my_ads_store.restrictDecimalPlace(
+                                                                                e,
+                                                                                handleChange
+                                                                            );
+                                                                        }}
+                                                                        place_holder='Floating rate'
+                                                                        {...field}
+                                                                    />
+                                                                ) : (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-testid='fixed_rate_type'
+                                                                        data-lpignore='true'
+                                                                        type='text'
+                                                                        error={touched.rate_type && errors.rate_type}
+                                                                        label={localize(
+                                                                            'Fixed rate (1 {{account_currency}})',
+                                                                            {
+                                                                                account_currency,
+                                                                            }
+                                                                        )}
+                                                                        label_className='p2p-my-ads__form-label--focused'
+                                                                        className='p2p-my-ads__form-field'
+                                                                        trailing_icon={
+                                                                            <Text
+                                                                                color={
+                                                                                    isDesktop()
+                                                                                        ? 'less-prominent'
+                                                                                        : 'prominent'
+                                                                                }
+                                                                                line_height='m'
+                                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                                            >
+                                                                                {local_currency}
+                                                                            </Text>
+                                                                        }
+                                                                        onChange={e => {
+                                                                            my_ads_store.restrictLength(
+                                                                                e,
+                                                                                handleChange
+                                                                            );
+                                                                        }}
+                                                                        required
+                                                                    />
+                                                                )
+                                                            }
+                                                        </Field>
+                                                    </div>
+                                                    <div className='p2p-my-ads__form-container'>
+                                                        <Field name='min_transaction'>
+                                                            {({ field }) => (
+                                                                <Input
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    data-testid='min_transaction'
+                                                                    type='text'
+                                                                    error={
+                                                                        touched.min_transaction &&
+                                                                        errors.min_transaction
+                                                                    }
+                                                                    label={localize('Min order')}
                                                                     className='p2p-my-ads__form-field'
                                                                     trailing_icon={
                                                                         <Text
@@ -282,7 +321,7 @@ const EditAdForm = () => {
                                                                             line_height='m'
                                                                             size={isDesktop() ? 'xxs' : 's'}
                                                                         >
-                                                                            {local_currency}
+                                                                            {account_currency}
                                                                         </Text>
                                                                     }
                                                                     onChange={e => {
@@ -290,141 +329,114 @@ const EditAdForm = () => {
                                                                     }}
                                                                     required
                                                                 />
-                                                            )
-                                                        }
-                                                    </Field>
-                                                </div>
-                                                <div className='p2p-my-ads__form-container'>
-                                                    <Field name='min_transaction'>
-                                                        {({ field }) => (
-                                                            <Input
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                data-testid='min_transaction'
-                                                                type='text'
-                                                                error={
-                                                                    touched.min_transaction && errors.min_transaction
-                                                                }
-                                                                label={localize('Min order')}
-                                                                className='p2p-my-ads__form-field'
-                                                                trailing_icon={
-                                                                    <Text
-                                                                        color={
-                                                                            isDesktop() ? 'less-prominent' : 'prominent'
-                                                                        }
-                                                                        line_height='m'
-                                                                        size={isDesktop() ? 'xxs' : 's'}
-                                                                    >
-                                                                        {account_currency}
-                                                                    </Text>
-                                                                }
-                                                                onChange={e => {
-                                                                    my_ads_store.restrictLength(e, handleChange);
-                                                                }}
-                                                                required
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                    <Field name='max_transaction'>
-                                                        {({ field }) => (
-                                                            <Input
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                data-testid='max_transaction'
-                                                                type='text'
-                                                                error={
-                                                                    touched.max_transaction && errors.max_transaction
-                                                                }
-                                                                label={localize('Max order')}
-                                                                className='p2p-my-ads__form-field'
-                                                                trailing_icon={
-                                                                    <Text
-                                                                        color={
-                                                                            isDesktop() ? 'less-prominent' : 'prominent'
-                                                                        }
-                                                                        line_height='m'
-                                                                        size={isDesktop() ? 'xxs' : 's'}
-                                                                    >
-                                                                        {account_currency}
-                                                                    </Text>
-                                                                }
-                                                                onChange={e => {
-                                                                    my_ads_store.restrictLength(e, handleChange);
-                                                                }}
-                                                                required
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                </div>
-                                                {is_sell_advert && (
-                                                    <React.Fragment>
-                                                        <Field name='contact_info'>
+                                                            )}
+                                                        </Field>
+                                                        <Field name='max_transaction'>
                                                             {({ field }) => (
                                                                 <Input
                                                                     {...field}
                                                                     data-lpignore='true'
-                                                                    data-testid='contact_info'
-                                                                    type='textarea'
-                                                                    label={
-                                                                        <Text color='less-prominent' size='xs'>
-                                                                            <Localize i18n_default_text='Your contact details' />
+                                                                    data-testid='max_transaction'
+                                                                    type='text'
+                                                                    error={
+                                                                        touched.max_transaction &&
+                                                                        errors.max_transaction
+                                                                    }
+                                                                    label={localize('Max order')}
+                                                                    className='p2p-my-ads__form-field'
+                                                                    trailing_icon={
+                                                                        <Text
+                                                                            color={
+                                                                                isDesktop()
+                                                                                    ? 'less-prominent'
+                                                                                    : 'prominent'
+                                                                            }
+                                                                            line_height='m'
+                                                                            size={isDesktop() ? 'xxs' : 's'}
+                                                                        >
+                                                                            {account_currency}
                                                                         </Text>
                                                                     }
-                                                                    error={touched.contact_info && errors.contact_info}
-                                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                                    initial_character_count={contact_info.length}
+                                                                    onChange={e => {
+                                                                        my_ads_store.restrictLength(e, handleChange);
+                                                                    }}
                                                                     required
-                                                                    has_character_counter
-                                                                    max_characters={300}
                                                                 />
                                                             )}
                                                         </Field>
-                                                    </React.Fragment>
-                                                )}
-                                                <Field name='description'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            data-testid='description'
-                                                            type='textarea'
-                                                            error={touched.description && errors.description}
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Instructions (optional)' />
-                                                                </Text>
-                                                            }
-                                                            hint={localize(
-                                                                'This information will be visible to everyone.'
-                                                            )}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={
-                                                                description ? description.length : 0
-                                                            }
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
+                                                    </div>
+                                                    {is_sell_advert && (
+                                                        <React.Fragment>
+                                                            <Field name='contact_info'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        data-testid='contact_info'
+                                                                        type='textarea'
+                                                                        label={
+                                                                            <Text color='less-prominent' size='xs'>
+                                                                                <Localize i18n_default_text='Your contact details' />
+                                                                            </Text>
+                                                                        }
+                                                                        error={
+                                                                            touched.contact_info && errors.contact_info
+                                                                        }
+                                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                        initial_character_count={contact_info.length}
+                                                                        required
+                                                                        has_character_counter
+                                                                        max_characters={300}
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </React.Fragment>
                                                     )}
-                                                </Field>
-                                                <div className='p2p-my-ads__form-payment-methods--text'>
-                                                    <Text color='prominent'>
-                                                        <Localize i18n_default_text='Payment methods' />
-                                                    </Text>
-                                                    <Text color='less-prominent'>
-                                                        {is_sell_advert ? (
-                                                            <Localize i18n_default_text='You may tap and choose up to 3.' />
-                                                        ) : (
-                                                            <Localize i18n_default_text='You may choose up to 3.' />
+                                                    <Field name='description'>
+                                                        {({ field }) => (
+                                                            <Input
+                                                                {...field}
+                                                                data-lpignore='true'
+                                                                data-testid='description'
+                                                                type='textarea'
+                                                                error={touched.description && errors.description}
+                                                                label={
+                                                                    <Text color='less-prominent' size='xs'>
+                                                                        <Localize i18n_default_text='Instructions (optional)' />
+                                                                    </Text>
+                                                                }
+                                                                hint={localize(
+                                                                    'This information will be visible to everyone.'
+                                                                )}
+                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                initial_character_count={
+                                                                    description ? description.length : 0
+                                                                }
+                                                                has_character_counter
+                                                                max_characters={300}
+                                                            />
                                                         )}
-                                                    </Text>
+                                                    </Field>
+                                                    <div className='p2p-my-ads__form-payment-methods--text'>
+                                                        <Text color='prominent'>
+                                                            <Localize i18n_default_text='Payment methods' />
+                                                        </Text>
+                                                        <Text color='less-prominent'>
+                                                            {is_sell_advert ? (
+                                                                <Localize i18n_default_text='You may tap and choose up to 3.' />
+                                                            ) : (
+                                                                <Localize i18n_default_text='You may choose up to 3.' />
+                                                            )}
+                                                        </Text>
+                                                    </div>
+                                                    <EditAdFormPaymentMethods
+                                                        is_sell_advert={is_sell_advert}
+                                                        payment_method_names={payment_method_names}
+                                                        selected_methods={[...selected_methods]}
+                                                        setSelectedMethods={setSelectedMethods}
+                                                        touched={setIsPaymentMethodTouched}
+                                                    />
                                                 </div>
-                                                <EditAdFormPaymentMethods
-                                                    is_sell_advert={is_sell_advert}
-                                                    payment_method_names={payment_method_names}
-                                                    selected_methods={[...selected_methods]}
-                                                    setSelectedMethods={setSelectedMethods}
-                                                    touched={setIsPaymentMethodTouched}
-                                                />
                                                 <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                                     <Button
                                                         className='p2p-my-ads__form-button'

@@ -177,7 +177,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (!is_open) setIsOpen(!is_open);
             else {
                 setTransitionExit(true);
-                timeout.curent = setTimeout(() => {
+                timeout.current = setTimeout(() => {
                     setIsOpen(false);
                     setTransitionExit(false);
                 }, 400);

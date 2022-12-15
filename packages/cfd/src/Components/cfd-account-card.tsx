@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
@@ -107,6 +107,8 @@ const CFDAccountCardAction = ({
     type,
     platform,
     title,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
@@ -120,7 +122,7 @@ const CFDAccountCardAction = ({
                     i18n_default_text='<0>Switch to your real account</0><1> to create a {{platform}} {{account_title}} account.</1>'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        account_title: title,
+                        account_title: title === 'Deriv X' ? '' : title,
                     }}
                     components={[
                         <a
@@ -146,7 +148,13 @@ const CFDAccountCardAction = ({
     return (
         <Button
             className='cfd-account-card__account-selection'
-            onClick={onSelectAccount}
+            onClick={() => {
+                if (real_account_creation_unlock_date) {
+                    setShouldShowCooldownModal(true);
+                } else {
+                    onSelectAccount();
+                }
+            }}
             type='button'
             is_disabled={is_disabled}
             primary={is_button_primary}
@@ -187,6 +195,8 @@ const CFDAccountCardComponent = ({
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
     const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
@@ -199,7 +209,7 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu ? 'cfd' : type.type;
+    const platform_icon = is_eu && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
@@ -330,21 +340,25 @@ const CFDAccountCardComponent = ({
                             )}
                     </div>
                 </div>
-                {platform === CFD_PLATFORMS.MT5 && type.type === 'financial' && !isMobile() && is_logged_in && (
-                    <Button
-                        onClick={() => setIsAcuityModalOpen(true)}
-                        className='cfd-account-card__acuity-banner'
-                        type='button'
-                        transparent
-                    >
-                        <div className='cfd-account-card__acuity-banner--wrapper'>
-                            <Icon icon='icMt5Acuity' />
-                            <Text as='p' size='xxs' weight='bold' color='prominent'>
-                                <Localize i18n_default_text='Get Acuity trading tools' />
-                            </Text>
-                            <Icon icon='IcAddOutline' color='secondary' />
-                        </div>
-                    </Button>
+                {platform === CFD_PLATFORMS.MT5 && isDesktop() && is_logged_in && (
+                    <div className='cfd-account-card__acuity-container'>
+                        {type.type === 'financial' && (
+                            <Button
+                                onClick={() => setIsAcuityModalOpen(true)}
+                                className='cfd-account-card__acuity-banner'
+                                type='button'
+                                transparent
+                            >
+                                <div className='cfd-account-card__acuity-banner--wrapper'>
+                                    <Icon icon='icMt5Acuity' />
+                                    <Text as='p' size='xxs' weight='bold' color='prominent'>
+                                        <Localize i18n_default_text='Get Acuity trading tools' />
+                                    </Text>
+                                    <Icon icon='IcAddOutline' color='secondary' />
+                                </div>
+                            </Button>
+                        )}
+                    </div>
                 )}
                 {existing_data && <div className='cfd-account-card__divider' />}
 
@@ -515,16 +529,17 @@ const CFDAccountCardComponent = ({
                                                     show_currency
                                                 />
                                             </Text>
-                                            {checkMultipleSvgAcc()?.length > 1 && acc.landing_company_short === 'svg' && (
-                                                <Text
-                                                    className='cfd-account-card__balance--region'
-                                                    color='colored-background'
-                                                    size='xxxs'
-                                                    weight='bold'
-                                                >
-                                                    {getServerName(acc)}
-                                                </Text>
-                                            )}
+                                            {checkMultipleSvgAcc()?.length > 1 &&
+                                                acc.landing_company_short === 'svg' && (
+                                                    <Text
+                                                        className='cfd-account-card__balance--region'
+                                                        color='colored-background'
+                                                        size='xxxs'
+                                                        weight='bold'
+                                                    >
+                                                        {getServerName(acc)}
+                                                    </Text>
+                                                )}
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
@@ -659,6 +674,8 @@ const CFDAccountCardComponent = ({
                                 type={type}
                                 platform={platform}
                                 title={title}
+                                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                setShouldShowCooldownModal={setShouldShowCooldownModal}
                             />
                         )}
                     </div>

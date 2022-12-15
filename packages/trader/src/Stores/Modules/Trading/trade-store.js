@@ -457,7 +457,7 @@ export default class TradeStore extends BaseStore {
             } else if (is_on_mf_account) {
                 showDigitalOptionsUnavailableError(showError, {
                     text: localize(
-                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                     ),
                     title: localize('{{platform_name_trader}} is not available for this account', {
                         platform_name_trader: getPlatformSettings('trader').name,
@@ -921,6 +921,12 @@ export default class TradeStore extends BaseStore {
 
     get is_synthetics_available() {
         return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
+    }
+
+    get is_synthetics_trading_market_available() {
+        return !!this.active_symbols?.find(
+            item => item.market === 'synthetic_index' && !isMarketClosed(this.active_symbols, item.symbol)
+        );
     }
 
     get show_digits_stats() {

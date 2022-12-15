@@ -1,0 +1,27 @@
+{
+    "extends": ["@commitlint/config-conventional", "@commitlint/config-nx-scopes"],
+    "rules": {
+        "subject-case": [0, "always"],
+        "type-enum": [
+            2,
+            "always",
+            [
+                "build",
+                "bugfix",
+                "ci",
+                "chore",
+                "docs",
+                "feat",
+                "fix",
+                "hotfix",
+                "perf",
+                "refactor",
+                "revert",
+                "style",
+                "test",
+                "redeploy",
+                "translations"
+            ]
+        ]
+    }
+}

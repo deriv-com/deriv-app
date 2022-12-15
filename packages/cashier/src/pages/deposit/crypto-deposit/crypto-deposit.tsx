@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import QRCode from 'qrcode.react';
 import { observer } from 'mobx-react-lite';
 import RecentTransaction from 'Components/recent-transaction';
-import { useStore } from '../../../hooks';
 import './crypto-deposit.scss';
 
 const CryptoDeposit = () => {

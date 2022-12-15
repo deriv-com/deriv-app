@@ -349,7 +349,7 @@ export default class AccountTransferStore {
 
         accounts.forEach(account => {
             const cfd_platforms = {
-                mt5: { name: 'DMT5', icon: 'IcMt5' },
+                mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
             };
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type);
@@ -380,6 +380,7 @@ export default class AccountTransferStore {
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
+                          is_transfer_form: true,
                       })}`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency

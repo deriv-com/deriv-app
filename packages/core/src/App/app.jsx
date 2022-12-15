@@ -13,11 +13,13 @@ import {
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
+    routes,
     setSharedCFDText,
     useOnLoadTranslation,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
+import { CFDStore } from '@deriv/cfd';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -51,6 +53,12 @@ const AppWithoutTranslation = ({ root_store }) => {
     // TODO: investigate the order of cashier store initialization
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(initCashierStore, []);
+    const initCFDStore = () => {
+        root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
+    };
+
+    React.useEffect(initCFDStore, []);
+
     React.useEffect(() => {
         initializeTranslations();
 
@@ -69,7 +77,12 @@ const AppWithoutTranslation = ({ root_store }) => {
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;
             const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (view_width <= view_height) {
+
+            if (
+                view_width <= view_height ||
+                root_store.modules?.cashier?.general_store?.is_user_on_p2p ||
+                window.location.pathname.endsWith(routes.cashier_p2p)
+            ) {
                 root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
@@ -77,6 +90,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                 el_landscape_blocker.classList.add('landscape-blocker--visible');
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [root_store.ui]);
 
     React.useEffect(() => {

@@ -117,7 +117,7 @@
         }
 
         &-real-name {
-            margin-top: 0.4rem;
+            margin: 0.4rem 0;
             max-width: 500px;
         }
         &-verification {
@@ -205,7 +205,8 @@
     }
 
     &__joined-since {
-        margin-bottom: 0.7rem;
+        margin-bottom: 0.35rem;
+        margin-top: 0.35rem;
     }
 
     &__stats {

@@ -199,7 +199,6 @@ const CFDAccountCardComponent = ({
     setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
-    const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
 
     const should_show_extra_add_account_button =
         is_logged_in &&
@@ -240,6 +239,7 @@ const CFDAccountCardComponent = ({
     };
 
     const checkMultipleSvgAcc = () => {
+        const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
         existing_accounts_data?.map(acc => {
             if (acc.landing_company_short === 'svg') {
                 if (all_svg_acc.length) {

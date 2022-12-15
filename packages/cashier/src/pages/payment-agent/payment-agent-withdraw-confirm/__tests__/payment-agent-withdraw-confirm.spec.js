@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        disableApp: jest.fn(),
+        enableApp: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -33,7 +41,9 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     };
 
     it('should show proper messages and buttons', () => {
-        render(<PaymentAgentWithdrawConfirm {...props} />);
+        render(<PaymentAgentWithdrawConfirm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
 
@@ -59,7 +69,10 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
                     code: 'code',
                     message: 'error_message',
                 }}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
@@ -68,7 +81,9 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     });
 
     it('should trigger setIsTryWithdrawSuccessful method when the client clicks on Back button', () => {
-        render(<PaymentAgentWithdrawConfirm {...props} />);
+        render(<PaymentAgentWithdrawConfirm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const [back_btn, _] = screen.getAllByRole('button');
         fireEvent.click(back_btn);
@@ -77,7 +92,9 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     });
 
     it('should enable Transfer now button when checkbox is checked', () => {
-        render(<PaymentAgentWithdrawConfirm {...props} />);
+        render(<PaymentAgentWithdrawConfirm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_checkbox = screen.getByRole('checkbox');
         const [_, transfer_now_btn] = screen.getAllByRole('button');
@@ -87,7 +104,9 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     });
 
     it('should trigger requestPaymentAgentWithdraw method when the client clicks on Transfer now button', () => {
-        render(<PaymentAgentWithdrawConfirm {...props} />);
+        render(<PaymentAgentWithdrawConfirm {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const el_checkbox = screen.getByRole('checkbox');
         const [_, transfer_now_btn] = screen.getAllByRole('button');

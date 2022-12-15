@@ -11,6 +11,7 @@ export default class TradersHubStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
+
         makeObservable(this, {
             available_platforms: observable,
             selected_account_type: observable,

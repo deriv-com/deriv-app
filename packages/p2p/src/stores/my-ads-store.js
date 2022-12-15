@@ -32,7 +32,6 @@ export default class MyAdsStore extends BaseStore {
     is_quick_add_modal_open = false;
     is_table_loading = false;
     is_loading = false;
-    is_switch_modal_open = false;
     item_offset = 0;
     p2p_advert_information = {};
     show_ad_form = false;
@@ -75,7 +74,6 @@ export default class MyAdsStore extends BaseStore {
             is_quick_add_modal_open: observable,
             is_table_loading: observable,
             is_loading: observable,
-            is_switch_modal_open: observable,
             item_offset: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
@@ -136,7 +134,7 @@ export default class MyAdsStore extends BaseStore {
             setShouldShowAddPaymentMethodModal: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
-            setIsSwitchModalOpen: action.bound,
+            onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             setUpdatePaymentMethodsErrorMessage: action.bound,
             validateCreateAdForm: action.bound,
@@ -604,10 +602,9 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
+    onToggleSwitchModal(ad_id) {
         this.setSelectedAdId(ad_id);
         this.getAdvertInfo();
-        this.is_switch_modal_open = is_switch_modal_open;
     }
 
     setRequiredAdType(change_ad_type) {
@@ -914,6 +911,8 @@ export default class MyAdsStore extends BaseStore {
         if (is_open_edit_form) {
             this.setShowEditAdForm(true);
         }
-        this.setIsSwitchModalOpen(false, this.selected_ad_id);
+
+        this.root_store.general_store.hideModal();
+        this.onToggleSwitchModal(this.selected_ad_id);
     }
 }

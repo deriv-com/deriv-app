@@ -3,13 +3,14 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import BlockUserDropdown from '../block-user-dropdown';
 import BlockUserTable from '../block-user-table';
+import BlockUserTableError from '../block-user-table/block-user-table-error';
 import SearchBox from 'Components/search-box';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 import './block-user-list.scss';
 
 const BlockUserList = observer(() => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     const loadBlockedAdvertisers = debounce(search => {
         my_profile_store.setSearchTerm(search.trim());
@@ -28,6 +29,10 @@ const BlockUserList = observer(() => {
         my_profile_store.setSearchTerm('');
         my_profile_store.setSearchResults([]);
     };
+
+    if (general_store.is_barred && general_store.block_unblock_user_error) {
+        return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
+    }
 
     return (
         <div className='block-user-list'>

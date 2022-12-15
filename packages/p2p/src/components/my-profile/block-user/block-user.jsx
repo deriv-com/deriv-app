@@ -4,17 +4,12 @@ import { useStores } from 'Stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserList from './block-user-list';
-import BlockUserTableError from './block-user-table/block-user-table-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { localize } from 'Components/i18next';
 import './block-user.scss';
 
 const BlockUser = () => {
     const { general_store, my_profile_store } = useStores();
-
-    if (general_store.is_barred) {
-        return <BlockUserTableError error_message={'test'} />;
-    }
 
     return (
         <React.Fragment>

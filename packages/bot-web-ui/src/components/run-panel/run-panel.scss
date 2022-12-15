@@ -46,6 +46,9 @@
         width: 35rem;
         background-color: var(--general-section-2);
         margin: -2.5rem 0;
+        &--tour-active {
+            display: none;
+        }
         &--info {
             display: flex;
             justify-content: center;

@@ -23,10 +23,7 @@ export default class MyAdsStore extends BaseStore {
     error_message = '';
     has_more_items_to_load = false;
     is_ad_created_modal_visible = false;
-    is_ad_exceeds_daily_limit_modal_open = false;
     is_api_error_modal_visible = false;
-    is_delete_error_modal_open = false;
-    is_delete_modal_open = false;
     is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
     is_quick_add_error_modal_open = false;
@@ -66,10 +63,7 @@ export default class MyAdsStore extends BaseStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
-            is_ad_exceeds_daily_limit_modal_open: observable,
             is_api_error_modal_visible: observable,
-            is_delete_error_modal_open: observable,
-            is_delete_modal_open: observable,
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_quick_add_error_modal_open: observable,
@@ -119,10 +113,7 @@ export default class MyAdsStore extends BaseStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
-            setIsAdExceedsDailyLimitModalOpen: action.bound,
             setIsApiErrorModalVisible: action.bound,
-            setIsDeleteErrorModalOpen: action.bound,
-            setIsDeleteModalOpen: action.bound,
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
@@ -253,7 +244,7 @@ export default class MyAdsStore extends BaseStore {
                             this.setAdvertDetails(response.p2p_advert_create);
                         }
                         if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
-                            this.setIsAdExceedsDailyLimitModalOpen(true);
+                            this.root_store.general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
                         }
                         this.setShowAdForm(false);
                     }
@@ -312,7 +303,9 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickDelete(id) {
-        if (!this.root_store.general_store.is_barred) {
+        const { general_store } = this.root_store;
+
+        if (!general_store.is_barred) {
             requestWS({ p2p_advert_info: 1, id }).then(response => {
                 if (!response?.error) {
                     const { p2p_advert_info } = response;
@@ -325,9 +318,12 @@ export default class MyAdsStore extends BaseStore {
                                 'You have open orders for this ad. Complete all open orders before deleting this ad.'
                             )
                         );
-                        this.setIsDeleteErrorModalOpen(true);
+                        general_store.showModal({
+                            key: 'MyAdsDeleteErrorModal',
+                            props: {},
+                        });
                     } else {
-                        this.setIsDeleteModalOpen(true);
+                        general_store.showModal({ key: 'MyAdsDeleteModal', props: {} });
                     }
                 }
             });
@@ -534,20 +530,8 @@ export default class MyAdsStore extends BaseStore {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
     }
 
-    setIsAdExceedsDailyLimitModalOpen(is_ad_exceeds_daily_limit_modal_open) {
-        this.is_ad_exceeds_daily_limit_modal_open = is_ad_exceeds_daily_limit_modal_open;
-    }
-
     setIsApiErrorModalVisible(is_api_error_modal_visible) {
         this.is_api_error_modal_visible = is_api_error_modal_visible;
-    }
-
-    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
-        this.is_delete_error_modal_open = is_delete_error_modal_open;
-    }
-
-    setIsDeleteModalOpen(is_delete_modal_open) {
-        this.is_delete_modal_open = is_delete_modal_open;
     }
 
     setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {

@@ -25,15 +25,12 @@ export default class MyAdsStore extends BaseStore {
     is_ad_created_modal_visible = false;
     is_ad_exceeds_daily_limit_modal_open = false;
     is_api_error_modal_visible = false;
-    is_delete_error_modal_open = false;
-    is_delete_modal_open = false;
     is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
     is_quick_add_error_modal_open = false;
     is_quick_add_modal_open = false;
     is_table_loading = false;
     is_loading = false;
-    is_switch_modal_open = false;
     item_offset = 0;
     p2p_advert_information = {};
     show_ad_form = false;
@@ -69,15 +66,12 @@ export default class MyAdsStore extends BaseStore {
             is_ad_created_modal_visible: observable,
             is_ad_exceeds_daily_limit_modal_open: observable,
             is_api_error_modal_visible: observable,
-            is_delete_error_modal_open: observable,
-            is_delete_modal_open: observable,
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_quick_add_error_modal_open: observable,
             is_quick_add_modal_open: observable,
             is_table_loading: observable,
             is_loading: observable,
-            is_switch_modal_open: observable,
             item_offset: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
@@ -123,8 +117,6 @@ export default class MyAdsStore extends BaseStore {
             setIsAdCreatedModalVisible: action.bound,
             setIsAdExceedsDailyLimitModalOpen: action.bound,
             setIsApiErrorModalVisible: action.bound,
-            setIsDeleteErrorModalOpen: action.bound,
-            setIsDeleteModalOpen: action.bound,
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
@@ -139,7 +131,7 @@ export default class MyAdsStore extends BaseStore {
             setShouldShowAddPaymentMethodModal: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
-            setIsSwitchModalOpen: action.bound,
+            onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             setUpdatePaymentMethodsErrorMessage: action.bound,
             validateCreateAdForm: action.bound,
@@ -314,7 +306,9 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickDelete(id) {
-        if (!this.root_store.general_store.is_barred) {
+        const { general_store } = this.root_store;
+
+        if (!general_store.is_barred) {
             requestWS({ p2p_advert_info: 1, id }).then(response => {
                 if (!response?.error) {
                     const { p2p_advert_info } = response;
@@ -327,9 +321,12 @@ export default class MyAdsStore extends BaseStore {
                                 'You have open orders for this ad. Complete all open orders before deleting this ad.'
                             )
                         );
-                        this.setIsDeleteErrorModalOpen(true);
+                        general_store.showModal({
+                            key: 'MyAdsDeleteErrorModal',
+                            props: {},
+                        });
                     } else {
-                        this.setIsDeleteModalOpen(true);
+                        general_store.showModal({ key: 'MyAdsDeleteModal', props: {} });
                     }
                 }
             });
@@ -544,14 +541,6 @@ export default class MyAdsStore extends BaseStore {
         this.is_api_error_modal_visible = is_api_error_modal_visible;
     }
 
-    setIsDeleteErrorModalOpen(is_delete_error_modal_open) {
-        this.is_delete_error_modal_open = is_delete_error_modal_open;
-    }
-
-    setIsDeleteModalOpen(is_delete_modal_open) {
-        this.is_delete_modal_open = is_delete_modal_open;
-    }
-
     setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
         this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
     }
@@ -611,10 +600,9 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    setIsSwitchModalOpen(is_switch_modal_open, ad_id) {
+    onToggleSwitchModal(ad_id) {
         this.setSelectedAdId(ad_id);
         this.getAdvertInfo();
-        this.is_switch_modal_open = is_switch_modal_open;
     }
 
     setRequiredAdType(change_ad_type) {
@@ -921,6 +909,8 @@ export default class MyAdsStore extends BaseStore {
         if (is_open_edit_form) {
             this.setShowEditAdForm(true);
         }
-        this.setIsSwitchModalOpen(false, this.selected_ad_id);
+
+        this.root_store.general_store.hideModal();
+        this.onToggleSwitchModal(this.selected_ad_id);
     }
 }

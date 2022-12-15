@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalManagerContext } from './modal-manager-context';
 import { useStores } from 'Stores';
+import { ModalManagerContext } from './modal-manager-context';
 import { isDesktop } from '@deriv/shared';
 
 const ModalManagerContextProvider = props => {

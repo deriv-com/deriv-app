@@ -135,6 +135,7 @@ const ToggleMenuDrawer = React.forwardRef(
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
         const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+        const timeout = React.useRef();
 
         React.useEffect(() => {
             const processRoutes = () => {
@@ -168,13 +169,15 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
+
+            return () => clearTimeout(timeout);
         }, [is_appstore, is_pre_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             if (!is_open) setIsOpen(!is_open);
             else {
                 setTransitionExit(true);
-                setTimeout(() => {
+                timeout.curent = setTimeout(() => {
                     setIsOpen(false);
                     setTransitionExit(false);
                 }, 400);

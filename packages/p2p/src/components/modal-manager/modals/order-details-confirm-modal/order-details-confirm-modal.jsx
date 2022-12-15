@@ -78,7 +78,7 @@ const OrderDetailsConfirmModal = () => {
                 <Modal.Footer>
                     {order_details_store.error_message && <FormError message={order_details_store.error_message} />}
                     <Button.Group>
-                        <Button secondary type='button' onClick={() => hideModal()} large>
+                        <Button secondary type='button' onClick={hideModal} large>
                             {is_buy_order_for_user ? (
                                 <Localize i18n_default_text="I haven't paid yet" />
                             ) : (

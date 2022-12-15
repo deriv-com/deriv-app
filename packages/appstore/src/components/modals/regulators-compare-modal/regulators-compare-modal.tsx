@@ -25,9 +25,7 @@ const RegulatorsCompareModal = () => {
                     type='button'
                     height='792px'
                     width='792px'
-                    className='regulator-modal'
                 >
-                    <div className='regulator-modal__separator' />
                     <RegulatorsCompareModalContent />
                 </Modal>
             </DesktopWrapper>
@@ -35,11 +33,9 @@ const RegulatorsCompareModal = () => {
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={localize('Non-EU and EU regulator')}
-                    wrapper_classname='regulator-modal'
                     visible={is_regulators_compare_modal_visible}
                     onClose={closeModal}
                 >
-                    <div className='regulator-modal__separator' />
                     <RegulatorsCompareModalContent />
                 </MobileDialog>
             </MobileWrapper>

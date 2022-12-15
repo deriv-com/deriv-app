@@ -1,10 +1,3 @@
-.regulator-modal {
-    &__separator {
-        display: flex;
-        width: 100%;
-        border-bottom: 1px solid var(--border-normal);
-    }
-}
 .regulators-compare-table {
     display: flex;
     flex-flow: column nowrap;
@@ -76,4 +69,7 @@
             }
         }
     }
+}
+.dc-modal-header--regulator-modal {
+    border-bottom: 1px solid var(--border-normal);
 }

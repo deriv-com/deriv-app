@@ -8,7 +8,7 @@ const Row = ({ attribute, content }: TRegulatorsContentProps) => {
     return (
         <Table.Row className='regulators-compare-table__table-row'>
             <Table.Cell fixed>
-                <Text as='p' weight='bold' align='left' color='prominent' size='xxs'>
+                <Text as='p' weight='bold' align='left' color='prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
                     {attribute}
                 </Text>
             </Table.Cell>
@@ -52,7 +52,7 @@ const Row = ({ attribute, content }: TRegulatorsContentProps) => {
 const RegulatorsCompareModalContent = () => {
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
-            <ThemedScrollbars className='regulators-compare-table'>
+            <ThemedScrollbars is_bypassed={isMobile()}>
                 <div className='regulators-compare-table'>
                     <Table className='regulators-compare-table__table'>
                         <Table.Header>

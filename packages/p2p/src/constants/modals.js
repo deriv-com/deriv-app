@@ -1,18 +1,23 @@
 import React from 'react';
 
 export const modals = {
-    MyAdsDeleteModal: React.lazy(() =>
-        import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')
-    ),
-    MyAdsDeleteErrorModal: React.lazy(() =>
+    AdExceedsDailyLimitModal: React.lazy(() =>
         import(
-            /* webpackChunkName: "my-ads-delete-error-modal" */ 'Components/modal-manager/modals/my-ads-delete-error-modal'
+            /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
         )
     ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'
         )
+    ),
+    MyAdsDeleteErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "my-ads-delete-error-modal" */ 'Components/modal-manager/modals/my-ads-delete-error-modal'
+        )
+    ),
+    MyAdsDeleteModal: React.lazy(() =>
+        import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')
     ),
     MyAdsFloatingRateSwitchModal: React.lazy(() =>
         import(

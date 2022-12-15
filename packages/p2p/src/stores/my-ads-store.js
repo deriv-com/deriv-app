@@ -23,7 +23,6 @@ export default class MyAdsStore extends BaseStore {
     error_message = '';
     has_more_items_to_load = false;
     is_ad_created_modal_visible = false;
-    is_ad_exceeds_daily_limit_modal_open = false;
     is_api_error_modal_visible = false;
     is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
@@ -64,7 +63,6 @@ export default class MyAdsStore extends BaseStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
-            is_ad_exceeds_daily_limit_modal_open: observable,
             is_api_error_modal_visible: observable,
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
@@ -115,7 +113,6 @@ export default class MyAdsStore extends BaseStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
-            setIsAdExceedsDailyLimitModalOpen: action.bound,
             setIsApiErrorModalVisible: action.bound,
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
@@ -247,7 +244,7 @@ export default class MyAdsStore extends BaseStore {
                             this.setAdvertDetails(response.p2p_advert_create);
                         }
                         if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
-                            this.setIsAdExceedsDailyLimitModalOpen(true);
+                            this.root_store.general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
                         }
                         this.setShowAdForm(false);
                     }
@@ -531,10 +528,6 @@ export default class MyAdsStore extends BaseStore {
 
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
-    }
-
-    setIsAdExceedsDailyLimitModalOpen(is_ad_exceeds_daily_limit_modal_open) {
-        this.is_ad_exceeds_daily_limit_modal_open = is_ad_exceeds_daily_limit_modal_open;
     }
 
     setIsApiErrorModalVisible(is_api_error_modal_visible) {

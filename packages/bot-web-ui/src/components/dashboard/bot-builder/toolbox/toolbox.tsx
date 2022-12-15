@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field as FormField, Formik, Form, FieldProps } from 'formik';
-import { Input, Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';

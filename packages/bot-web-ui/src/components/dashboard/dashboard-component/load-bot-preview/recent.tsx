@@ -1,37 +1,25 @@
-import classnames from 'classnames';
 import React from 'react';
+import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentWorkspace from './recent-workspace';
 import RootStore from 'Stores/index';
+import { TWorkspace } from 'Stores/load-modal-store';
 import DeleteDialog from './delete-dialog';
-import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import './index.scss';
+import RecentWorkspace from './recent-workspace';
 
 type TRecentComponent = {
-    recent_strategies: [];
-    toggleStrategies: (param: boolean) => void;
-    dashboard_strategies: [];
-    strategy_save_type: string;
-    setDashboardStrategies: (strategies: []) => void;
+    dashboard_strategies: Array<TWorkspace>;
+    setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
 };
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
-const RecentComponent = ({
-    toggleStrategies,
-    dashboard_strategies,
-    setDashboardStrategies,
-    strategy_save_type,
-}: TRecentComponent) => {
+const RecentComponent = ({ dashboard_strategies, setDashboardStrategies }: TRecentComponent) => {
     React.useEffect(() => {
-        toggleStrategies(true);
-        const getStratagies = async () => {
-            await getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
-        };
-        getStratagies();
-    }, [strategy_save_type]);
+        getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
+    }, []);
 
     if (!dashboard_strategies?.length) return null;
 
@@ -63,12 +51,9 @@ const RecentComponent = ({
     );
 };
 
-const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
-    is_delete_modal_open: load_modal.is_delete_modal_open,
-    toggleStrategies: load_modal.toggleStrategies,
+const Recent = connect(({ load_modal }: RootStore) => ({
     dashboard_strategies: load_modal.dashboard_strategies,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    strategy_save_type: dashboard.strategy_save_type,
 }))(RecentComponent);
 
 export default Recent;

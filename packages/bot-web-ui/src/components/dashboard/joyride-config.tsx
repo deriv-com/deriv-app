@@ -6,7 +6,7 @@ import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon', boolean>;
+type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
 
 type TStep = {
     label?: string;
@@ -65,7 +65,7 @@ export const tour_status_ended: TTourStatus = {
 let tour: { [key: string]: string } = {};
 let current_target: number | undefined;
 export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status, type } = data;
+    const { action, index, status } = data;
     if (status === 'finished') {
         tour_status_ended.key = status;
     }
@@ -88,6 +88,7 @@ const joyride_props: TJoyrideConfig = {
     showProgress: false,
     spotlightClicks: true,
     disableBeacon: true,
+    disableOverlay: false,
 };
 
 export const DBOT_ONBOARDING = [
@@ -107,7 +108,6 @@ export const DBOT_ONBOARDING = [
                 step_index={1}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -125,7 +125,6 @@ export const DBOT_ONBOARDING = [
                 step_index={2}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -139,25 +138,19 @@ export const DBOT_ONBOARDING = [
                 step_index={3}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
         target: '#id-tutorials',
         content: (
             <TourGuide
-                label={localize('Start with a tutorials')}
-                content={[
-                    localize(
-                        "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
-                    ),
-                ]}
+                label={localize('Guides and FAQs to help you')}
+                content={[localize('Start with a video guide and the FAQs.')]}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 dashboard_tab_index={0}
                 step_index={4}
             />
         ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -170,22 +163,7 @@ export const DBOT_ONBOARDING = [
                 step_index={5}
             />
         ),
-        disableOverlay: false,
         placement: 'right',
-        ...joyride_props,
-    },
-    {
-        target: '.animation__wrapper',
-        content: (
-            <TourGuide
-                label={localize('Run or stop your bot')}
-                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('ic-new-user-step-seven.png')}
-                dashboard_tab_index={0}
-                step_index={6}
-            />
-        ),
-        disableOverlay: false,
         ...joyride_props,
     },
     {
@@ -196,11 +174,24 @@ export const DBOT_ONBOARDING = [
                 content={[localize("See your bot's performance in real-time.")]}
                 img={getImageLocation('ic-new-user-step-six.png')}
                 dashboard_tab_index={0}
+                step_index={6}
+            />
+        ),
+        placement: 'left',
+        ...joyride_props,
+    },
+    {
+        target: '.animation__wrapper',
+        content: (
+            <TourGuide
+                label={localize('Run or stop your bot')}
+                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
+                img={getImageLocation('ic-new-user-step-seven.png')}
+                dashboard_tab_index={0}
                 step_index={7}
             />
         ),
-        disableOverlay: false,
-        placement: 'left',
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];
@@ -224,7 +215,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
@@ -239,7 +230,6 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         ...joyride_props,
     },
     {
@@ -255,7 +245,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
@@ -271,11 +261,11 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(5)',
+        target: '.db-toolbox__row:nth-child(6)',
         content: [
             <Step
                 key='toolbox'
@@ -292,11 +282,11 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(6)',
+        target: '.db-toolbox__row:nth-child(5)',
         content: [
             <Step
                 key='dashboard__toolbox'
@@ -320,7 +310,7 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
+        placement: 'right',
         ...joyride_props,
     },
     {
@@ -336,8 +326,8 @@ export const BOT_BUILDER_TOUR = [
                 ]}
             />,
         ],
-        disableOverlay: true,
         placement: 'right',
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

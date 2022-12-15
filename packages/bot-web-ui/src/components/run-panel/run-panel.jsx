@@ -180,6 +180,7 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
 const RunPanel = ({
     active_index,
     currency,
+    has_started_onboarding_tour,
     is_clear_stat_disabled,
     is_drawer_open,
     is_mobile,
@@ -236,7 +237,10 @@ const RunPanel = ({
             <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
                 <Drawer
                     anchor='right'
-                    className={!is_mobile ? 'run-panel__container' : undefined}
+                    className={classNames(undefined, {
+                        'run-panel__container': !is_mobile,
+                        'run-panel__container--tour-active': !is_mobile && has_started_onboarding_tour,
+                    })}
                     contentClassName='run-panel__content'
                     header={header}
                     footer={!is_mobile && footer}
@@ -281,9 +285,10 @@ RunPanel.propTypes = {
     won_contracts: PropTypes.number,
 };
 
-export default connect(({ run_panel, core, ui }) => ({
+export default connect(({ run_panel, core, ui, dashboard }) => ({
     active_index: run_panel.active_index,
     currency: core.client.currency,
+    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,

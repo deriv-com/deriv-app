@@ -110,8 +110,7 @@
         height: calc(100% - 40rem);
         position: relative;
         overflow: hidden;
-        margin-bottom: 1.6rem;
-        margin-right: 1.6rem;
+        margin: 4rem 1.6rem 1.6rem 0;
 
         &-controls {
             padding: 0.7rem 0.5rem;
@@ -240,6 +239,9 @@
             &__loaded {
                 text-align: left;
                 padding: 1rem 3rem;
+                .load-strategy__recent-item-text {
+                    height: unset;
+                }
             }
 
             &__loaded--first-child {
@@ -266,6 +268,7 @@
                 width: 100%;
                 word-break: break-word;
                 margin-right: 1.6rem;
+                height: unset;
                 &.load-dialog {
                     display: block;
                     text-align: left;

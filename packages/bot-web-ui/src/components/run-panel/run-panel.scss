@@ -43,11 +43,9 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        width: 350px;
+        width: 35rem;
         background-color: var(--general-section-2);
-        position: fixed;
-        bottom: 5.7rem;
-
+        margin: -2.5rem 0;
         &--info {
             display: flex;
             justify-content: center;

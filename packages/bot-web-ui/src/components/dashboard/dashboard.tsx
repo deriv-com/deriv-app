@@ -154,9 +154,10 @@ const Dashboard = ({
 
     React.useEffect(() => {
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
-        if (active_tab === 0 && !dbot_settings?.onboard_tour_token) {
-            setTourDialogVisibility(true);
-        } else if (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour) {
+        if (
+            (active_tab === 0 && !dbot_settings?.onboard_tour_token) ||
+            (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour)
+        ) {
             setTourDialogVisibility(true);
         }
     }, [active_tab]);
@@ -265,6 +266,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
+    onEntered: load_modal.onEntered,
     setIsTourEnded: dashboard.setIsTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
@@ -278,5 +280,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setActiveTab: dashboard.setActiveTab,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
-    onEntered: load_modal.onEntered,
 }))(Dashboard);

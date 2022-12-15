@@ -52,7 +52,7 @@ const Card = ({
         });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
+    const [setIsFileSupported] = React.useState<boolean>(true);
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };

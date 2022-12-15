@@ -8,6 +8,7 @@ import GoogleDrive from './google-drive';
 import Local from './local';
 import Recent from './recent';
 import RecentFooter from './recent-footer';
+import LocalFooter from './local-footer';
 
 type TLoadModalProps = {
     active_index: number;
@@ -88,9 +89,14 @@ const LoadModal = ({
                     </div>
                 </Tabs>
             </Modal.Body>
-            {(has_recent_strategies || has_loaded_file) && (
+            {has_recent_strategies && (
                 <Modal.Footer has_separator>
                     <RecentFooter />
+                </Modal.Footer>
+            )}
+            {has_loaded_file && (
+                <Modal.Footer has_separator>
+                    <LocalFooter />
                 </Modal.Footer>
             )}
         </Modal>

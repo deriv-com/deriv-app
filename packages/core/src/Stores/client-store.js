@@ -273,7 +273,6 @@ export default class ClientStore extends BaseStore {
             can_have_mlt_account: computed,
             can_have_mx_account: computed,
             can_have_mf_account: computed,
-            can_have_whatsapp: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -890,14 +889,6 @@ export default class ClientStore extends BaseStore {
             'lv',
         ].includes(this.residence);
         return countries;
-    }
-
-    get can_have_whatsapp() {
-        const country = this.residence || this.clients_country;
-        const allowed_countries = ['za', 'ng'];
-        const is_allowed_country = allowed_countries.includes(country);
-
-        return is_allowed_country;
     }
 
     get can_upgrade() {
@@ -2512,20 +2503,6 @@ export default class ClientStore extends BaseStore {
         } else if (tab_current_account_type === 'real') {
             this.setPrevRealAccountLoginid(this.loginid);
             await this.switchAccount(this.virtual_account_loginid);
-        }
-    }
-
-    setIsPreAppStore(is_pre_appstore) {
-        const trading_hub = is_pre_appstore ? 1 : 0;
-        if (this.is_pre_appstore !== is_pre_appstore) {
-            WS.setSettings({
-                set_settings: 1,
-                trading_hub,
-            }).then(response => {
-                if (!response.error) {
-                    this.account_settings = { ...this.account_settings, trading_hub };
-                }
-            });
         }
     }
 }

@@ -60,7 +60,7 @@ const TradingHub: React.FC = () => {
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen } = tradinghub;
+    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
     const real_active = !/^VRT/.test(login_id);
@@ -145,13 +145,23 @@ const TradingHub: React.FC = () => {
     ];
 
     tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
 
     eu_tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
@@ -299,6 +309,46 @@ const TradingHub: React.FC = () => {
                 />
                 <ResetTradingPasswordModal context={store} />
             </div>
+            <Joyride
+                run={!is_onboarding_visited && is_tour_open}
+                continuous
+                disableScrolling
+                hideCloseButton
+                disableCloseOnEsc
+                steps={tour_step_config}
+                styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+                locale={tour_step_locale}
+                floaterProps={{
+                    disableAnimation: true,
+                }}
+            />
+            <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
+            <CFDPasswordModal context={store} platform={platform} />
+            <CFDDbviOnBoarding context={store} />
+            <CFDPersonalDetailsModal context={store} />
+            <CFDResetPasswordModal context={store} platform={platform} />
+            <CFDServerErrorDialog context={store} />
+            <CFDTopUpDemoModal context={store} />
+            <MT5TradeModal
+                context={store}
+                current_list={current_list}
+                is_open={is_mt5_trade_modal_visible}
+                onPasswordManager={togglePasswordManagerModal}
+                toggleModal={toggleMT5TradeModal}
+                is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+            />
+            <CFDPasswordManagerModal
+                is_visible={password_manager.is_visible}
+                context={store}
+                selected_login={password_manager.selected_login}
+                selected_account={password_manager.selected_account}
+                selected_account_group={password_manager.selected_account_group}
+                selected_account_type={password_manager.selected_account_type}
+                selected_server={password_manager.selected_server}
+                platform={platform}
+                toggleModal={togglePasswordManagerModal}
+            />
+            <ResetTradingPasswordModal context={store} />
         </Div100vhContainer>
     );
 };

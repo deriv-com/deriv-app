@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Money, Dropdown, Text, Icon } from '@deriv/components';
+import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -14,7 +14,6 @@ const Strike = ({
     onChange,
     validation_errors,
     setCurrentFocus,
-    currency,
     advanced_duration_unit,
     strike_price_choices,
     expiry_type,
@@ -122,9 +121,7 @@ const Strike = ({
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget}>
-                        <div className='mobile-widget__amount'>
-                            <Money amount={barrier_1} currency={currency} />
-                        </div>
+                        <div className='mobile-widget__amount'>{barrier_1}</div>
                         <div className='mobile-widget__type'>{localize('Strike')}</div>
                     </div>
                     <StrikeParamModal
@@ -141,10 +138,9 @@ const Strike = ({
     );
 };
 
-export default connect(({ client, modules, ui, common }) => ({
+export default connect(({ modules, ui, common }) => ({
     barrier_1: modules.trade.barrier_1,
     current_focus: ui.current_focus,
-    currency: client.currency,
     setCurrentFocus: ui.setCurrentFocus,
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,

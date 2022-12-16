@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper, Tabs, Div100vhContainer } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
@@ -10,6 +10,9 @@ import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
     const { tradinghub } = useStores();
+    const { toggleRegulatorsCompareModal } = tradinghub;
+    const is_real = tradinghub.selected_account_type === 'real';
+
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -25,23 +28,31 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
+                <Text weight='bold'>{localize("Trader's Hub")}</Text>
                 <div className='main-title-bar-mobile'>
-                    <Text size='m' weight='bold'>
-                        {localize("Trader's Hub")}
-                    </Text>
-                </div>
-                <div className='main-title-bar-mobile'>
-                    <AccountTypeDropdown />
-                    <Tabs
-                        active_index={tradinghub.selected_region}
-                        onTabItemClick={tradinghub.selectRegion}
-                        top
-                        is_scrollable
-                        is_overflow_hidden
-                    >
-                        <div label={localize('Non-EU')} />
-                        <div label={localize('EU')} />
-                    </Tabs>
+                    <div className='main-title-bar-mobile--account-type-dropdown'>
+                        <AccountTypeDropdown />
+                    </div>
+                    {is_real ? (
+                        <div className='main-title-bar-mobile--regulator'>
+                            <div
+                                className='main-title-bar-mobile--regulator--compare-modal'
+                                onClick={() => toggleRegulatorsCompareModal()}
+                            >
+                                <Icon icon='IcInfoOutline' />
+                            </div>
+                            <Tabs
+                                active_index={tradinghub.selected_region}
+                                onTabItemClick={tradinghub.selectRegion}
+                                top
+                                is_scrollable
+                                is_overflow_hidden
+                            >
+                                <div label={localize('Non-EU')} />
+                                <div label={localize('EU')} />
+                            </Tabs>
+                        </div>
+                    ) : null}
                 </div>
                 <AssetSummary />
             </MobileWrapper>

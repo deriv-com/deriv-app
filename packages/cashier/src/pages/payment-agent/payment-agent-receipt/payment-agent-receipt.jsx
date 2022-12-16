@@ -146,11 +146,7 @@ const PaymentAgentReceipt = observer(({ history }) => {
 });
 
 PaymentAgentReceipt.propTypes = {
-    currency: PropTypes.string,
     history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    receipt: PropTypes.object,
-    resetPaymentAgent: PropTypes.func,
 };
 
 export default withRouter(PaymentAgentReceipt);

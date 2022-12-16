@@ -180,17 +180,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
 });
 
 PaymentAgentListedWithdrawForm.propTypes = {
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    is_crypto: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    onMount: PropTypes.func,
     payment_agent: PropTypes.object,
-    payment_agent_list: PropTypes.array,
-    requestTryPaymentAgentWithdraw: PropTypes.func,
-    selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    verification_code: PropTypes.string,
 };
 
 export default PaymentAgentListedWithdrawForm;

@@ -51,14 +51,6 @@ const PaymentAgentWithdrawConfirm = observer(({ verification_code }) => {
 });
 
 PaymentAgentWithdrawConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    client_loginid: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    payment_agent_name: PropTypes.string,
-    requestPaymentAgentWithdraw: PropTypes.func,
-    setIsTryWithdrawSuccessful: PropTypes.func,
     verification_code: PropTypes.string,
 };
 

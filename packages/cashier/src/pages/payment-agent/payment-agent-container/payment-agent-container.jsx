@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -185,18 +184,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
 });
 
 PaymentAgentContainer.propTypes = {
-    app_contents_scroll_ref: PropTypes.object,
-    has_payment_agent_search_warning: PropTypes.bool,
-    is_dark_mode_on: PropTypes.bool,
     is_deposit: PropTypes.bool,
-    is_search_loading: PropTypes.bool,
-    is_try_withdraw_successful: PropTypes.bool,
-    is_withdraw_successful: PropTypes.bool,
-    onChangePaymentMethod: PropTypes.func,
-    payment_agent_list: PropTypes.array,
-    resetPaymentAgent: PropTypes.func,
-    selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
 };
 

@@ -167,11 +167,6 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ verification_code, setIsUnl
 });
 
 PaymentAgentUnlistedWithdrawForm.propTypes = {
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    onMount: PropTypes.func,
-    requestTryPaymentAgentWithdraw: PropTypes.func,
     verification_code: PropTypes.string,
     setIsUnlistedWithdraw: PropTypes.func,
 };

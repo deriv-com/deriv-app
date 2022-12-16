@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import debounce from 'lodash.debounce';
@@ -39,12 +38,5 @@ const PaymentAgentSearchBox = observer(() => {
         />
     );
 });
-
-PaymentAgentSearchBox.propTypes = {
-    filterPaymentAgentList: PropTypes.func,
-    setIsSearchLoading: PropTypes.func,
-    search_term: PropTypes.string,
-    setSearchTerm: PropTypes.string,
-};
 
 export default PaymentAgentSearchBox;

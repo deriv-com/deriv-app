@@ -27,7 +27,7 @@ const CFDsListing = () => {
                         i18n_default_text={
                             'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
                         }
-                        components={[<StaticUrl key={0} className='link' href='/dmt5' />]}
+                        components={[<StaticUrl key={0} className='options' href='/dmt5' />]}
                     />
                 </Text>
             }

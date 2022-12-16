@@ -28,8 +28,8 @@ const OptionsAndMultipliersListing = () => {
                         i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
                     upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
                         components={[
-                            <StaticUrl key={0} className='link' href='trade-types/options/' />,
-                            <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
+                            <StaticUrl key={0} className='options' href='trade-types/options/' />,
+                            <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
                         ]}
                     />
                 </Text>

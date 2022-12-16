@@ -35,11 +35,16 @@ const ButtonToggle = ({
         onChange({ target: { value: selected_value, name } });
     };
 
+    const pre_appstore = window.location.pathname === '/appstore/traders-hub';
+
+    const pre_appstore_class = pre_appstore ? '__toggle' : '__button';
+
     const menu = React.useMemo(
         () =>
             buttons_arr.map((val, idx) => {
-                const menuClassNames = classNames('dc-button-menu__button', {
-                    'dc-button-menu__button--active': val.value === value,
+                const menuClassNames = classNames(`dc-button-menu${pre_appstore_class}`, {
+                    'dc-button-menu__button--active': val.value === value && !pre_appstore,
+                    'dc-button-menu__toggle--active': val.value === value && pre_appstore,
                 });
                 return (
                     <Button

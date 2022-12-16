@@ -128,16 +128,10 @@ export const load = ({
                 await loadWorkspace(xml, event_group, workspace);
 
                 const is_main_workspace = workspace === Blockly.derivWorkspace;
-                const is_blockly_main_workspace = workspace === Blockly.is_main_workspace;
                 if (is_main_workspace) {
                     const { save_modal } = DBotStore.instance;
 
                     save_modal.updateBotName(file_name);
-                    workspace.clearUndo();
-                    workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                    await saveWorkspaceToRecent(xml, from);
-                }
-                if (is_blockly_main_workspace === undefined) {
                     workspace.clearUndo();
                     workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
                     await saveWorkspaceToRecent(xml, from);

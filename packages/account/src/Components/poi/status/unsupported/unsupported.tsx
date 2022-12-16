@@ -21,7 +21,7 @@ const checkNimcStep = (documents: FormikValues) => {
 };
 
 type TUnsupported = {
-    country_code: string;
+    country_code?: string;
     handlePOIforMT5Complete: () => void;
     manual?: {
         status: string;
@@ -46,7 +46,7 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }: Partia
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
-                handlePOIforMT5Complete={() => handlePOIforMT5Complete}
+                handlePOIforMT5Complete={() => handlePOIforMT5Complete?.()}
                 {...props}
             />
         );

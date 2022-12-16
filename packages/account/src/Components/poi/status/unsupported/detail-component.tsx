@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
@@ -165,7 +164,7 @@ const DetailComponent = ({
                             onComplete={onComplete}
                             goToCards={onClickBack}
                             is_from_external={is_from_external}
-                            setIsCfdPoiCompleted={() => setIsCfdPoiCompleted}
+                            setIsCfdPoiCompleted={() => setIsCfdPoiCompleted?.()}
                         />
                     )}
                 </React.Fragment>

@@ -18,7 +18,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
     const [selfie, setSelfie] = React.useState<FormikValues>();
     const [is_selfie_upload, setIsSelfieUpload] = React.useState(false);
 
-    const onSubmitDocuments = (values: FormikValues) => {
+    const onSubmitDocuments = (values?: FormikValues) => {
         setDocuments(values);
         setIsSelfieUpload(true);
     };
@@ -36,7 +36,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
                     is_from_external={is_from_external}
                     data={data}
                     goToCards={goToCards}
-                    onSubmit={() => onSubmitDocuments}
+                    onSubmit={() => onSubmitDocuments()}
                 />
             ) : (
                 <SelfieUpload

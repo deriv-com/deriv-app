@@ -246,8 +246,10 @@ const JurisdictionModal = ({
             <React.Suspense fallback={<UILoader />}>
                 <DesktopWrapper>
                     <Modal
+                        className='jurisdiction-modal'
                         disableApp={disableApp}
                         enableApp={enableApp}
+                        exit_classname='cfd-modal--custom-exit'
                         is_open={is_jurisdiction_modal_visible}
                         title={modal_title}
                         toggleModal={toggleJurisdictionModal}
@@ -255,7 +257,6 @@ const JurisdictionModal = ({
                         context={context}
                         height='664px'
                         width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
-                        exit_classname='cfd-modal--custom-exit'
                     >
                         <ModalContent />
                     </Modal>

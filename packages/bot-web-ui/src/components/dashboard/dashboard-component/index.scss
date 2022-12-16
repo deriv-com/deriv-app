@@ -209,8 +209,7 @@
 
         &__preview {
             width: 50%;
-            height: 100%;
-            margin: 1.6rem 0;
+            height: calc(100% - -2rem);
 
             &__retrigger {
                 button {

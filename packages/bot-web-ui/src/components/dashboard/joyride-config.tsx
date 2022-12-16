@@ -1,17 +1,12 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
 type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
-
-type TStep = {
-    label?: string;
-    content: string[];
-};
 
 type TTourStatus = {
     key: string;
@@ -33,19 +28,6 @@ export const getTourSettings = (type: string) => {
         return getSetting(`${tour_type.key}_token`);
     }
     return getSetting(`${tour_type.key}_status`);
-};
-
-export const Step = ({ label, content }: TStep) => {
-    return (
-        <div className='db-tour'>
-            <Text line_height='xl' as='p' weight='bold'>
-                {label}
-            </Text>
-            {content.map(item => (
-                <Text key={item} line_height='xl' as='p' dangerouslySetInnerHTML={{ __html: item }} />
-            ))}
-        </div>
-    );
 };
 
 export const tour_type: TTourType = {
@@ -200,19 +182,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
         content: [
-            <Step
-                key='Step 1'
-                content={[
-                    localize('Step 1 :'),
-                    localize('First, set the <strong>Trade parameters</strong> block.'),
-                    localize('<strong>1. Trade Parameters</strong>:'),
-                    localize(
-                        '<ul class="list"><li><strong>Market</strong>: Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index</li></ul>'
-                    ),
-                    localize('<ul class="list"><li><strong>Trade Type</strong>: Up/Down > Rise/Fall</li></ul> '),
-                    localize('<ul class="list"><li><strong>Contract type</strong>: Both</li></ul> '),
-                    localize('<ul class="list"><li><strong>Default candle interval</strong>: 1 minute</li></ul>'),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 1: <1/> First, set the <0>Trade parameters</0> block.<1/> <0>1. Trade Parameters</0><1/><2 class="list">First, set <strong>Market</strong> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.</2><2 class="list">Then, set <strong>Trade Type</strong> to Up/Down > Rise/Fall.</2><2 class="list">For <strong>Contract Type,</strong> set it to Both.</2><2 class="list">For <strong>Default candle interval,</strong> set it to 1 minute.</2>'
             />,
         ],
         placement: 'right',
@@ -221,13 +194,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
         content: [
-            <Step
-                key='trade_parameters'
-                content={[
-                    localize('For <strong>Trade options</strong>, set it as below:'),
-                    localize('<ul class="list"><li><strong>Duration</strong>: Ticks 1</li></ul>'),
-                    localize('<ul class="list"><li><strong>Stake: USD</strong> 10 (min: 0.35 - max: 50000)</li></ul>'),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='For <0>Trade options,</0> set it as below:<1/> <2 class="list"><strong>Duration:</strong> Ticks 1</2><2 class="list"><strong>Stake: USD</strong> 10 (min: 0.35 - max: 50000)</2>'
             />,
         ],
         ...joyride_props,
@@ -235,14 +205,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="purchase_conditions"]',
         content: [
-            <Step
-                key='purchase_conditions'
-                content={[
-                    localize('Step 2 :'),
-                    localize('Then, set the <strong>Purchase conditions</strong> block.'),
-                    localize('<strong>2. Purchase conditions</strong>:'),
-                    localize('<ul class="list"><li><strong>Purchase</strong>: Rise</li></ul>'),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 2 :<1/> Then, set the <0>Purchase Conditions</0> block.<1/> <strong>2. Purchase Conditions:</strong><1/><2 class="list"><strong>Purchase</strong>: Rise</2>'
             />,
         ],
         placement: 'right',
@@ -251,14 +217,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="sell_conditions"]',
         content: [
-            <Step
-                key='sell_conditions'
-                content={[
-                    localize('Step 3 :'),
-                    localize(
-                        'The third block is <strong>optional</strong>. You may use this block if you want to sell your contract before it expires. For now, lets leave the block as it is.'
-                    ),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 3 :<1/>The third block is <0>optional.</0> You may use this block if you want to sell your contract before it expires. For now, lets leave the block as it is.'
             />,
         ],
         placement: 'right',
@@ -267,19 +229,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.db-toolbox__row:nth-child(6)',
         content: [
-            <Step
-                key='toolbox'
-                content={[
-                    localize('Step 4 :'),
-                    localize(
-                        'Next, go to <strong>Utility tab</strong> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops</strong>.'
-                    ),
-                    localize(
-                        '<ul class="list"><li>Look for the <strong>Repeat While/Until</strong>, and click the + icon to add the block to the workspace area.</li></ul>'
-                    ),
-                    localize('<ul class="list"><li>Choose <strong>until</strong> as the repeat option.</li></ul>'),
-                    localize('<ul class="list"><li>Pro tip: You can also drag out the desired block</li></ul>'),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 4 :<1/>Next, go to <0>Utility tab.</0> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops.</strong><1/><2 class="list">Look for the <strong>Repeat While/Until,</strong> and click the + icon to add the block to the workspace area.</2><2 class="list">Choose <strong>until</strong> as the repeat option.</2><2 class="list">Pro tip: You can also drag out the desired block.</2>'
             />,
         ],
         placement: 'right',
@@ -288,26 +241,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.db-toolbox__row:nth-child(5)',
         content: [
-            <Step
-                key='dashboard__toolbox'
-                content={[
-                    localize('Step 5 :'),
-                    localize(
-                        'Now, tap the <strong>Analysis</strong> drop-down arrow and hit <strong>Contract</strong>.'
-                    ),
-                    localize(
-                        '<ul class="list"><li>Go to the <strong>Last trade result</strong> block and click + icon to add the <strong>Result is Win</strong> block to the workspace.</li></ul>'
-                    ),
-                    localize(
-                        '<ul class="list"><li>Then, drag the <strong>Result is win</strong> next to the <strong>repeat until</strong> block.</li></ul>'
-                    ),
-                    localize(
-                        '<ul class="list"><li>Now, go to the <strong>Restart trading conditions</strong> block.</li></ul>'
-                    ),
-                    localize(
-                        '<ul class="list"><li>Drag the <strong>Trade again</strong> block and add it next to the <strong>do</strong> part of the <strong>Repeat until</strong> block.</li></ul>'
-                    ),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 5 :<1/>Now, tap the  <0>Analysis</0> drop-down arrow and hit <strong>Contract</strong><1/><2 class="list">Go to the <strong>Last trade result</strong> block and click + icon to add the <strong>Result is Win</strong> block to the workspace.</2><2 class="list">Then, drag the  <strong>Result is win</strong> next to the <strong>repeat until</strong> block.</2><2 class="list">Now, go to the <strong>Restart trading conditions</strong> block.</2><2 class="list">Drag the <strong>Trade again</strong> block and add it next to the <strong>do</strong> part of the <strong>Repeat until</strong> block.</2>'
             />,
         ],
         placement: 'right',
@@ -316,14 +253,10 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_results"]',
         content: [
-            <Step
-                key='trade_results'
-                content={[
-                    localize('Step 6 :'),
-                    localize(
-                        'Finally, drag and add the whole <strong>Repeat</strong> block to the <strong>Restart trading conditions</strong> block.'
-                    ),
-                ]}
+            <Localize
+                key={0}
+                components={[<strong key={0} />, <br key={1} />, <li key={2} />]}
+                i18n_default_text='Step 6 :<1/>Finally, drag and add the whole <0>Repeat</0> block to the <0>Restart trading conditions</0> block.'
             />,
         ],
         placement: 'right',

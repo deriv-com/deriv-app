@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';

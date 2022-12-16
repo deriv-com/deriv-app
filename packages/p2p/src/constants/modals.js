@@ -9,12 +9,6 @@ export const modals = {
             /* webpackChunkName: "cancel-add-payment-method-modal" */ 'Components/modal-manager/modals/cancel-add-payment-method-modal'
         )
     ),
-    MyAdsDeleteModal: React.lazy(() =>
-        import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')
-    ),
-    MyAdsDeleteErrorModal: React.lazy(() =>
-        import(/* webpackChunkName: "my-ads-delete-error-modal" */ 'Components/modal-manager/modals/my-ads-delete-error-modal')
-    ),
     AdExceedsDailyLimitModal: React.lazy(() =>
         import(
             /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'

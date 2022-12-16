@@ -1,27 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getStatus } from 'Constants/transaction-status';
-import { connect } from 'Stores/connect';
-import { TRootStore, TCryptoTransactionDetails } from 'Types';
+import { TCryptoTransactionDetails } from 'Types';
+import { useStore } from '@deriv/stores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
-    cancelCryptoTransaction: (id: string) => void;
-    currency: string;
-    showCryptoTransactionsCancelModal: (id: string) => void;
-    showCryptoTransactionsStatusModal: (description: string, name: string) => void;
 };
 
-const CryptoTransactionsRenderer = ({
-    row: crypto,
-    cancelCryptoTransaction,
-    currency,
-    showCryptoTransactionsCancelModal,
-    showCryptoTransactionsStatusModal,
-}: TCryptoTransactionsRendererProps) => {
+const CryptoTransactionsRenderer = ({ row: crypto }: TCryptoTransactionsRendererProps) => {
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+        client,
+    } = useStore();
+    const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
+        transaction_history;
+    const { currency } = client;
+
     const {
         address_hash,
         address_url,
@@ -304,9 +305,4 @@ const CryptoTransactionsRenderer = ({
     );
 };
 
-export default connect(({ client, modules }: TRootStore) => ({
-    currency: client.currency,
-    cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
-    showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,
-    showCryptoTransactionsStatusModal: modules.cashier.transaction_history.showCryptoTransactionsStatusModal,
-}))(CryptoTransactionsRenderer);
+export default observer(CryptoTransactionsRenderer);

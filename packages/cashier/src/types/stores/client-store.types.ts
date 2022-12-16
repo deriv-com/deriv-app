@@ -6,6 +6,7 @@ type TAuthenticationStatus = { document_status: string; identity_status: string 
 
 export type TClientStore = {
     accounts: { [k: string]: TAccount };
+    active_account_landing_company: string;
     account_limits: {
         daily_transfers?: {
             [k: string]: {

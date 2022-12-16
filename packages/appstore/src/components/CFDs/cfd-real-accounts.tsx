@@ -38,14 +38,12 @@ const CFDRealAccounts = ({
     const history = useHistory();
     const account_name = is_eu ? 'CFDs' : 'Financial';
     const account_desc = is_eu
-        ? 'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
-        : 'Trade CFDs on Deriv MT5 with forex, stocks & indices, commodities, and cryptocurrencies.';
+        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+        : 'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.';
     const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
-            description: localize(
-                'Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
-            ),
+            description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
             is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
             disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
             platform: CFD_PLATFORMS.MT5,
@@ -61,15 +59,11 @@ const CFDRealAccounts = ({
         },
         {
             name: 'Deriv X',
-            description: localize(
-                'Trade CFDs on Deriv X with Derived indices, forex, stocks & indices, commodities and cryptocurrencies.'
-            ),
+            description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
             is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
             disabled: has_cfd_account_error(CFD_PLATFORMS.DXTRADE),
             platform: CFD_PLATFORMS.DXTRADE,
-            type: 'synthetic',
-            // ToDo: deriv x should have type of all in new API
-            // type: 'all'
+            type: 'all',
         },
     ];
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
@@ -145,12 +139,18 @@ const CFDRealAccounts = ({
             if (existing_platform === CFD_PLATFORMS.MT5) {
                 return key.startsWith(`${existing_platform}.real.${market_type}`);
             }
+            if (existing_platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
+                return key.startsWith(`${existing_platform}.real.${existing_platform}@${market_type}`);
+            }
             return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
         })
             ? Object.keys(current_list)
                   .filter(key => {
                       if (existing_platform === CFD_PLATFORMS.MT5) {
                           return key.startsWith(`${existing_platform}.real.${market_type}`);
+                      }
+                      if (existing_platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
+                          return key.startsWith(`${existing_platform}.real.${existing_platform}@${market_type}`);
                       }
                       return key.startsWith(`${existing_platform}.real.${market_type}@${market_type}`);
                   })
@@ -162,6 +162,11 @@ const CFDRealAccounts = ({
         return acc;
     };
 
+    const numberOfExistingAccounts = (account: TStaticAccountProps, market_type: 'financial' | 'synthetic' | 'all') => {
+        return existingRealAccounts(account.platform, account?.type)?.filter(acc => acc.market_type === market_type)
+            .length;
+    };
+
     return (
         <div className='cfd-real-account'>
             {!has_real_account && <AddOptionsAccount />}
@@ -171,56 +176,73 @@ const CFDRealAccounts = ({
                         account.is_visible && (
                             <div className={`cfd-real-account__accounts--item ${account.name}`} key={account.name}>
                                 {existingRealAccounts(account.platform, account?.type) ? (
-                                    existingRealAccounts(account.platform, account?.type)?.map(existing_account => {
-                                        const non_eu_accounts =
-                                            existing_account.landing_company_short &&
-                                            existing_account.landing_company_short !== 'svg' &&
-                                            existing_account.landing_company_short !== 'bvi'
-                                                ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
-                                                  existing_account.landing_company_short?.slice(1)
-                                                : existing_account.landing_company_short?.toUpperCase();
+                                    existingRealAccounts(account.platform, account?.type)?.map(
+                                        (existing_account, index) => {
+                                            const number_of_financial_accounts = numberOfExistingAccounts(
+                                                account,
+                                                'financial'
+                                            );
 
-                                        const title_shortcode = is_eu ? '' : non_eu_accounts;
-                                        return (
-                                            <div className='existing-accounts' key={existing_account.name}>
-                                                <AccountManager
-                                                    has_account={true}
-                                                    type={existing_account.market_type}
-                                                    appname={`${account.name} ${title_shortcode}`}
-                                                    platform={account.platform}
-                                                    disabled={false}
-                                                    loginid={existing_account?.display_login}
-                                                    currency={existing_account.currency}
-                                                    amount={existing_account.display_balance}
-                                                    onClickTopUp={() => onClickFundReal(existing_account)}
-                                                    onClickTrade={() => {
-                                                        toggleMT5TradeModal();
-                                                        setMT5TradeAccount(existing_account);
-                                                    }}
-                                                    dxtrade_link={getDXTradeWebTerminalLink(
-                                                        'real',
-                                                        dxtrade_tokens.real
-                                                    )}
-                                                    description={account.description}
-                                                />
-                                                {isEligibleForMoreRealMt5(existing_account.market_type) &&
-                                                    account.platform !== CFD_PLATFORMS.DXTRADE && (
-                                                        <AddDerived
-                                                            title={localize(`More ${account.name} accounts`)}
-                                                            onClickHandler={() => {
-                                                                toggleJurisdictionModal();
-                                                                setAccountType({
-                                                                    category: 'real',
-                                                                    type: account.type,
-                                                                });
-                                                                setAppstorePlatform(account.platform);
-                                                            }}
-                                                            class_names='cfd-real-account__accounts--item__add-derived'
-                                                        />
-                                                    )}
-                                            </div>
-                                        );
-                                    })
+                                            const number_of_derived_accounts = numberOfExistingAccounts(
+                                                account,
+                                                'synthetic'
+                                            );
+                                            const non_eu_accounts =
+                                                existing_account.landing_company_short &&
+                                                existing_account.landing_company_short !== 'svg' &&
+                                                existing_account.landing_company_short !== 'bvi'
+                                                    ? existing_account.landing_company_short?.charAt(0).toUpperCase() +
+                                                      existing_account.landing_company_short?.slice(1)
+                                                    : existing_account.landing_company_short?.toUpperCase();
+
+                                            const title_shortcode =
+                                                is_eu || account.platform === CFD_PLATFORMS.DXTRADE
+                                                    ? ''
+                                                    : non_eu_accounts;
+                                            return (
+                                                <div className='existing-accounts' key={existing_account.name}>
+                                                    <AccountManager
+                                                        has_account={true}
+                                                        type={existing_account.market_type}
+                                                        appname={`${account.name} ${title_shortcode}`}
+                                                        platform={account.platform}
+                                                        disabled={false}
+                                                        loginid={existing_account?.display_login}
+                                                        currency={existing_account.currency}
+                                                        amount={existing_account.display_balance}
+                                                        onClickTopUp={() => onClickFundReal(existing_account)}
+                                                        onClickTrade={() => {
+                                                            setAppstorePlatform(account.platform);
+                                                            toggleMT5TradeModal();
+                                                            setMT5TradeAccount(existing_account);
+                                                        }}
+                                                        dxtrade_link={getDXTradeWebTerminalLink(
+                                                            'real',
+                                                            dxtrade_tokens.real
+                                                        )}
+                                                        description={account.description}
+                                                    />
+                                                    {isEligibleForMoreRealMt5(existing_account.market_type) &&
+                                                        (number_of_financial_accounts === index + 1 ||
+                                                            number_of_derived_accounts === index + 1) &&
+                                                        account.platform !== CFD_PLATFORMS.DXTRADE && (
+                                                            <AddDerived
+                                                                title={localize(`More ${account.name} accounts`)}
+                                                                onClickHandler={() => {
+                                                                    toggleJurisdictionModal();
+                                                                    setAccountType({
+                                                                        category: 'real',
+                                                                        type: account.type,
+                                                                    });
+                                                                    setAppstorePlatform(account.platform);
+                                                                }}
+                                                                class_names='cfd-real-account__accounts--item__add-derived'
+                                                            />
+                                                        )}
+                                                </div>
+                                            );
+                                        }
+                                    )
                                 ) : (
                                     <div className='available-accounts' key={account.name}>
                                         <AccountManager

@@ -267,4 +267,27 @@ export default class TicksService {
                 .catch(reject);
         });
     }
+
+    forget = subscription_id => {
+        if (subscription_id) {
+            api_base.api.forget(subscription_id);
+        }
+    };
+
+    unsubscribeFromTicksService() {
+        if (this.ticks_history_promise) {
+            const { stringified_options } = this.ticks_history_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['tick', symbol]));
+            }
+        }
+        if (this.candles_promise) {
+            const { stringified_options } = this.candles_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['candle', symbol]));
+            }
+        }
+    }
 }

@@ -183,6 +183,8 @@ const Interpreter = () => {
         $scope.stopped = true;
         $scope.is_error_triggered = false;
         globalObserver.emit('bot.stop');
+        const { ticksService } = $scope;
+        ticksService.unsubscribeFromTicksService();
     }
 
     function run(code) {

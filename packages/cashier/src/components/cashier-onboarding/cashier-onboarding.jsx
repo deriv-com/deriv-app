@@ -1,40 +1,54 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 import SideNote from 'Components/side-note';
+import { useStore } from '@deriv/stores';
 
-const CashierOnboarding = ({
-    accounts,
-    available_crypto_currencies,
-    can_change_fiat_currency,
-    currency,
-    has_set_currency,
-    is_dark_mode_on,
-    is_landing_company_loaded,
-    is_mobile,
-    is_from_derivgo,
-    is_payment_agent_visible_in_onboarding,
-    is_switching,
-    onMountCashierOnboarding,
-    openRealAccountSignup,
-    shouldNavigateAfterChooseCrypto,
-    shouldNavigateAfterPrompt,
-    setIsCashierOnboarding,
-    setIsDeposit,
-    setDepositTarget,
-    setShouldShowAllAvailableCurrencies,
-    setSideNotes,
-    showP2pInCashierOnboarding,
-    show_p2p_in_cashier_onboarding,
-    toggleSetCurrencyModal,
-}) => {
+const CashierOnboarding = ({ setSideNotes }) => {
+    const {
+        client,
+        ui,
+        common,
+        modules: {
+            cashier: { general_store, payment_agent, account_prompt_dialog },
+        },
+    } = useStore();
+    const {
+        accounts,
+        available_crypto_currencies,
+        can_change_fiat_currency,
+        currency,
+        is_landing_company_loaded,
+        is_switching,
+    } = client;
+    const { is_from_derivgo } = common;
+    const {
+        has_set_currency,
+        onMountCashierOnboarding,
+        setIsCashierOnboarding,
+        setIsDeposit,
+        setDepositTarget,
+        setShouldShowAllAvailableCurrencies,
+        showP2pInCashierOnboarding,
+        show_p2p_in_cashier_onboarding,
+    } = general_store;
+    const {
+        is_dark_mode_on,
+        is_mobile,
+        openRealAccountSignup,
+        shouldNavigateAfterChooseCrypto,
+        toggleSetCurrencyModal,
+    } = ui;
+    const { is_payment_agent_visible_in_onboarding } = payment_agent;
+    const { shouldNavigateAfterPrompt } = account_prompt_dialog;
+
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = React.useMemo(
@@ -171,6 +185,7 @@ const CashierOnboarding = ({
                 {is_mobile && !is_from_derivgo && (
                     <div
                         className='cashier-onboarding-header-learn-more'
+                        data-testid='dt_cashier_onboarding_header_learn_more'
                         onClick={() => window.open(getStaticUrl('/payment-methods'))}
                     >
                         <Text size='xs' color='red'>
@@ -199,52 +214,7 @@ const CashierOnboarding = ({
 };
 
 CashierOnboarding.propTypes = {
-    accounts: PropTypes.object,
-    available_crypto_currencies: PropTypes.array,
-    can_change_fiat_currency: PropTypes.bool,
-    currency: PropTypes.string,
-    has_set_currency: PropTypes.bool,
-    is_dark_mode_on: PropTypes.bool,
-    is_landing_company_loaded: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
-    is_payment_agent_visible_in_onboarding: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    onMountCashierOnboarding: PropTypes.func,
-    openRealAccountSignup: PropTypes.func,
-    shouldNavigateAfterChooseCrypto: PropTypes.func,
-    shouldNavigateAfterPrompt: PropTypes.func,
-    setIsCashierOnboarding: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-    setDepositTarget: PropTypes.func,
-    setShouldShowAllAvailableCurrencies: PropTypes.func,
     setSideNotes: PropTypes.func,
-    showP2pInCashierOnboarding: PropTypes.func,
-    show_p2p_in_cashier_onboarding: PropTypes.bool,
-    toggleSetCurrencyModal: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, ui }) => ({
-    accounts: client.accounts,
-    available_crypto_currencies: client.available_crypto_currencies,
-    can_change_fiat_currency: client.can_change_fiat_currency,
-    currency: client.currency,
-    has_set_currency: modules.cashier.general_store.has_set_currency,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_landing_company_loaded: client.is_landing_company_loaded,
-    is_mobile: ui.is_mobile,
-    is_from_derivgo: common.is_from_derivgo,
-    is_payment_agent_visible_in_onboarding: modules.cashier.payment_agent.is_payment_agent_visible_in_onboarding,
-    is_switching: client.is_switching,
-    onMountCashierOnboarding: modules.cashier.general_store.onMountCashierOnboarding,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
-    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
-    setIsCashierOnboarding: modules.cashier.general_store.setIsCashierOnboarding,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-    setDepositTarget: modules.cashier.general_store.setDepositTarget,
-    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
-    showP2pInCashierOnboarding: modules.cashier.general_store.showP2pInCashierOnboarding,
-    show_p2p_in_cashier_onboarding: modules.cashier.general_store.show_p2p_in_cashier_onboarding,
-    toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
-}))(CashierOnboarding);
+export default observer(CashierOnboarding);

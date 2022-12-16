@@ -25,12 +25,14 @@ const StatisticsSummary = ({
     number_of_runs,
     total_stake,
     total_payout,
+    has_started_onboarding_tour,
     toggleStatisticsInfoModal,
     total_profit,
     won_contracts,
 }) => (
     <div
         className={classNames('run-panel__stat', {
+            'run-panel__stat--tour-active': has_started_onboarding_tour,
             'run-panel__stat--mobile': is_mobile,
         })}
     >
@@ -79,7 +81,7 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
         />
     );
 
-const DrawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...props }) => {
+const DrawerContent = ({ active_index, is_drawer_open, has_started_onboarding_tour, setActiveTabIndex, ...props }) => {
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
@@ -93,7 +95,9 @@ const DrawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...pro
                     <Journal />
                 </div>
             </Tabs>
-            {is_drawer_open && active_index !== 2 && <StatisticsSummary {...props} />}
+            {is_drawer_open && active_index !== 2 && (
+                <StatisticsSummary has_started_onboarding_tour={has_started_onboarding_tour} {...props} />
+            )}
         </>
     );
 };
@@ -218,6 +222,7 @@ const RunPanel = ({
             total_profit={total_profit}
             total_stake={total_stake}
             won_contracts={won_contracts}
+            has_started_onboarding_tour={has_started_onboarding_tour}
         />
     );
 

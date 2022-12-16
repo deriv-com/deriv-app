@@ -3,6 +3,7 @@ import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
 export const routes = {
     error404: '/404',
     account: '/account',
+    trading_assessment: '/account/trading-assessment',
     languages: '/account/languages',
     financial_assessment: '/account/financial-assessment',
     personal_details: '/account/personal-details',
@@ -59,6 +60,6 @@ export const routes = {
 
     // Appstore
     appstore: '/appstore',
-    trading_hub: '/appstore/trading-hub',
+    trading_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
 };

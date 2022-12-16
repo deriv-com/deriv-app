@@ -24,8 +24,10 @@
         .dc-btn__text {
             display: contents;
         }
-        &:hover:not(.dc-button-menu__button--active) {
-            background-color: var(--state-hover) !important;
+        @include desktop {
+            &:hover:not(.dc-button-menu__button--active) {
+                background-color: var(--state-hover) !important;
+            }
         }
         /* postcss-bem-linter: ignore */
         span {

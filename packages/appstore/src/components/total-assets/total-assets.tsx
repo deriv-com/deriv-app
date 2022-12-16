@@ -117,7 +117,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     const currency = account_total_balance_currency;
     const is_eu_popover_text = is_eu
         ? localize(`Total assets in your Multipliers and DMT5 ${category} accounts`)
-        : localize(`Total assets in your Options, DMT5 and Deriv X ${category} accounts`);
+        : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${category} accounts`);
 
     return (
         <div className='total-assets'>

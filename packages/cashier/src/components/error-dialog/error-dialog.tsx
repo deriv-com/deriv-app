@@ -1,15 +1,14 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore, TError, TReactElement } from 'Types';
+import { TError, TReactElement } from 'Types';
+import { useStore } from '@deriv/stores';
 
 type TErrorDialogProps = {
     className: string;
-    disableApp: () => void;
-    enableApp: () => void;
     error: TError | Record<string, never>;
 };
 
@@ -22,7 +21,11 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = ({ className, error = {} }: TErrorDialogProps) => {
+    const {
+        ui: { disableApp, enableApp },
+    } = useStore();
+
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -150,7 +153,4 @@ const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDia
     );
 };
 
-export default connect(({ ui }: TRootStore) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(ErrorDialog);
+export default observer(ErrorDialog);

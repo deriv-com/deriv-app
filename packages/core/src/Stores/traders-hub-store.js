@@ -44,8 +44,11 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCFDAccounts: action.bound,
-            checkForExistingAccounts: action.bound,
+            getExistingAccounts: action.bound,
+            getAccount: action.bound,
             startTrade: action.bound,
+            openDemoCFDAccount: action.bound,
+            openRealAccount: action.bound,
         });
 
         reaction(
@@ -165,7 +168,7 @@ export default class TradersHubStore extends BaseStore {
         return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     }
     isFinancialVisible(platform) {
-        const client = this.root_store.client;
+        const { client } = this.root_store;
         return (
             !client.is_logged_in ||
             isLandingCompanyEnabled({
@@ -175,7 +178,7 @@ export default class TradersHubStore extends BaseStore {
             })
         );
     }
-    checkForExistingAccounts(platform, market_type) {
+    getExistingAccounts(platform, market_type) {
         const { current_list } = this.root_store.modules.cfd;
         const current_list_keys = Object.keys(current_list);
         const existing_accounts = current_list_keys
@@ -192,7 +195,7 @@ export default class TradersHubStore extends BaseStore {
                 _acc.push(current_list[cur]);
                 return _acc;
             }, []);
-        return existing_accounts.length > 0;
+        return existing_accounts;
     }
     startTrade(platform, account) {
         const { common, modules } = this.root_store;
@@ -218,6 +221,61 @@ export default class TradersHubStore extends BaseStore {
             this.selected_region = 'Non-EU';
         } else {
             this.selected_region = 'EU';
+        }
+    }
+    openDemoCFDAccount(account_type, platform) {
+        const { client, common, modules } = this.root_store;
+
+        const { setAppstorePlatform } = common;
+        const {
+            standpoint,
+            createCFDAccount,
+            enableCFDPasswordModal,
+            openAccountNeededModal,
+            has_maltainvest_account,
+        } = modules.cfd;
+        const { is_eu } = client;
+        setAppstorePlatform(platform);
+        if (is_eu && !has_maltainvest_account && standpoint?.iom) {
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+            return;
+        }
+        createCFDAccount({
+            category: 'demo',
+            type: account_type,
+            platform,
+        });
+        enableCFDPasswordModal();
+    }
+    openRealAccount(account_type, platform) {
+        const { client, modules, common } = this.root_store;
+        const { has_active_real_account } = client;
+        const { setAccountType, createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
+        const { setAppstorePlatform } = common;
+        setAppstorePlatform(platform);
+        if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
+            toggleJurisdictionModal();
+            setAccountType({
+                category: 'real',
+                type: account_type,
+            });
+        } else {
+            setAccountType({
+                category: 'real',
+                type: account_type,
+            });
+            createCFDAccount({
+                category: 'real',
+                type: account_type,
+            });
+            enableCFDPasswordModal();
+        }
+    }
+    getAccount(account_type, platform) {
+        if (this.is_demo) {
+            this.openDemoCFDAccount(account_type, platform);
+        } else {
+            this.openRealAccount(account_type, platform);
         }
     }
 }

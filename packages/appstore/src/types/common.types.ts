@@ -83,6 +83,7 @@ export type TStaticAccountProps = {
 
 export interface AvailableAccount {
     name: string;
+    sub_title?: string;
     description?: string;
     is_visible?: boolean;
     is_disabled?: boolean;

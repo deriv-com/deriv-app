@@ -15,7 +15,7 @@ const TradingAppCardActions = ({ type, link_to, is_disabled, onAction }: Actions
     switch (type) {
         case 'get':
             return (
-                <Button primary_light disabled={is_disabled}>
+                <Button primary_light disabled={is_disabled} onClick={() => onAction?.()}>
                     {localize('Get')}
                 </Button>
             );

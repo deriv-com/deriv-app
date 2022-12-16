@@ -4,7 +4,7 @@ import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { platform_config, BrandConfig } from 'Constants/platform-config';
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
-import { AvailableAccount } from 'Types';
+import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { isMobile } from '@deriv/shared';
 
 const TradingAppCard = ({
@@ -14,7 +14,8 @@ const TradingAppCard = ({
     description,
     is_disabled,
     onAction,
-}: Actions & BrandConfig & AvailableAccount) => {
+    sub_title,
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { app_desc, link_to } = platform_config.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
@@ -24,6 +25,9 @@ const TradingAppCard = ({
         <div className='trading-app-card'>
             <TradigPlatformIconProps icon={icon} size={icon_size} />
             <div className='trading-app-card__details'>
+                <Text className='title' size='xs' line_height='s'>
+                    {sub_title}
+                </Text>
                 <Text className='title' size='xs' line_height='s' weight='bold'>
                     {name}
                 </Text>

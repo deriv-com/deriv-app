@@ -125,6 +125,17 @@ const getModules = ({ is_pre_appstore }) => {
                             getTitle: () => localize('Personal details'),
                             default: true,
                         },
+                    ],
+                },
+                {
+                    getTitle: () => localize('Assessments'),
+                    icon: 'IcAssessment',
+                    subroutes: [
+                        {
+                            path: routes.trading_assessment,
+                            component: Account,
+                            getTitle: () => localize('Trading assessment'),
+                        },
                         {
                             path: routes.financial_assessment,
                             component: Account,
@@ -209,13 +220,26 @@ const getModules = ({ is_pre_appstore }) => {
             path: routes.trading_hub,
             component: AppStore,
             is_authenticated: true,
-            getTitle: () => localize('Trading hub'),
+            getTitle: () => localize('Traders Hub'),
         },
         {
             path: routes.onboarding,
             component: AppStore,
             is_authenticated: false,
-            getTitle: () => localize('Onboarding'),
+            getTitle: () => localize('Appstore'),
+            routes: [
+                {
+                    path: routes.trading_hub,
+                    component: AppStore,
+                    getTitle: () => localize('Traders Hub'),
+                },
+                {
+                    path: routes.onboarding,
+                    component: AppStore,
+                    is_authenticated: false,
+                    getTitle: () => localize('Onboarding'),
+                },
+            ],
         },
         {
             path: routes.cashier,

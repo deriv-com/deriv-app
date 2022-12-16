@@ -56,7 +56,7 @@ const RedirectToOldInterface = () => {
         </div>
     );
 };
-
+const MemoizedMenuLinks = React.memo(MenuLinks);
 const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_status,
@@ -190,7 +190,7 @@ const DTraderHeader = ({
                         )}
                     </MobileWrapper>
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
 
                 <div

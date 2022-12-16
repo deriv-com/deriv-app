@@ -16,14 +16,14 @@ const CFDsListing = () => {
         available_dxtrade_accounts,
         available_mt5_accounts,
         selected_region,
-        selected_account_type,
         has_any_real_account,
         checkForExistingAccounts,
         startTrade,
         is_eu_user,
+        is_demo,
     } = tradinghub;
     const has_no_real_account = !has_any_real_account;
-    const is_real = selected_account_type === 'real';
+
     const accounts_sub_text = is_eu_user ? localize('Account Information') : localize('Compare accounts');
     return (
         <ListingContainer
@@ -34,13 +34,7 @@ const CFDsListing = () => {
                             i18n_default_text='CFDs<0>{{accounts_sub_text}}</0>'
                             values={{ accounts_sub_text }}
                             components={[
-                                <Text
-                                    key={0}
-                                    color={'red'}
-                                    size='xxxs'
-                                    weight='bold'
-                                    styles={{ marginLeft: '1rem' }}
-                                />,
+                                <Text key={0} color='red' size='xxxs' weight='bold' styles={{ marginLeft: '1rem' }} />,
                             ]}
                         />
                     </Text>
@@ -57,7 +51,7 @@ const CFDsListing = () => {
                 </Text>
             }
         >
-            {is_real && has_no_real_account && (
+            {!is_demo && has_no_real_account && (
                 <div className='cfd-full-row'>
                     <AddOptionsAccount />
                 </div>
@@ -102,7 +96,7 @@ const CFDsListing = () => {
                             checkForExistingAccounts(account.platform, account.market_type) ? 'transfer_trade' : 'get'
                         }
                         availability={selected_region}
-                        is_disabled={is_real ? !has_no_real_account : account.is_disabled}
+                        is_disabled={!is_demo ? !has_no_real_account : account.is_disabled}
                     />
                 );
             })}

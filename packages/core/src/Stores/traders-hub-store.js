@@ -157,16 +157,12 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     isDerivedVisible(platform) {
-        const client = this.root_store.client;
+        const { is_logged_in, is_eu_country, is_eu, landing_companies } = this.root_store.client;
         // Hiding card for logged out EU users
 
-        if ((!client.is_logged_in && client.is_eu_country) || (client.is_eu && this.hasAccount(platform, 'synthetic')))
-            return false;
+        if ((!is_logged_in && is_eu_country) || (is_eu && this.hasAccount(platform, 'synthetic'))) return false;
 
-        return (
-            isLandingCompanyEnabled({ landing_companies: client.landing_companies, platform, type: 'gaming' }) ||
-            !client.is_logged_in
-        );
+        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
     }
     isFinancialVisible(platform) {
         const client = this.root_store.client;
@@ -180,8 +176,7 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     checkForExistingAccounts(platform, market_type) {
-        const { modules } = this.root_store;
-        const { current_list } = modules.cfd;
+        const { current_list } = this.root_store.modules.cfd;
         const current_list_keys = Object.keys(current_list);
         const existing_accounts = current_list_keys
             .filter(key => {

@@ -1,19 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useStore } from '@deriv/stores';
 
-const AccountPromptDialog = ({
-    accounts,
-    continueRoute,
-    is_confirmed,
-    last_location,
-    onCancel,
-    onConfirm,
-    should_show,
-}) => {
+const AccountPromptDialog = () => {
+    const {
+        client: { accounts },
+        modules: {
+            cashier: {
+                account_prompt_dialog: { continueRoute, is_confirmed, last_location, onCancel, onConfirm, should_show },
+            },
+        },
+    } = useStore();
+
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 
     const non_crypto_account_loginid = React.useMemo(
@@ -56,12 +58,4 @@ AccountPromptDialog.propTypes = {
     should_show: PropTypes.bool,
 };
 
-export default connect(({ modules, client }) => ({
-    accounts: client.accounts,
-    continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
-    is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,
-    last_location: modules.cashier.account_prompt_dialog.last_location,
-    onCancel: modules.cashier.account_prompt_dialog.onCancel,
-    onConfirm: modules.cashier.account_prompt_dialog.onConfirm,
-    should_show: modules.cashier.account_prompt_dialog.should_show,
-}))(AccountPromptDialog);
+export default observer(AccountPromptDialog);

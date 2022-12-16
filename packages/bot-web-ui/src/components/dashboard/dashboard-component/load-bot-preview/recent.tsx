@@ -11,15 +11,17 @@ import RecentWorkspace from './recent-workspace';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;
+    strategy_save_type: string;
     setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
 };
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
-const RecentComponent = ({ dashboard_strategies, setDashboardStrategies }: TRecentComponent) => {
+const RecentComponent = ({ dashboard_strategies, setDashboardStrategies, strategy_save_type }: TRecentComponent) => {
     React.useEffect(() => {
         getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
-    }, []);
+        //this dependency is used when we use the save modal popup
+    }, [strategy_save_type]);
 
     if (!dashboard_strategies?.length) return null;
 
@@ -51,9 +53,10 @@ const RecentComponent = ({ dashboard_strategies, setDashboardStrategies }: TRece
     );
 };
 
-const Recent = connect(({ load_modal }: RootStore) => ({
+const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
     dashboard_strategies: load_modal.dashboard_strategies,
     setDashboardStrategies: load_modal.setDashboardStrategies,
+    strategy_save_type: dashboard.strategy_save_type,
 }))(RecentComponent);
 
 export default Recent;

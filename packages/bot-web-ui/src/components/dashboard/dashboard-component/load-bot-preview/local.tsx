@@ -38,6 +38,11 @@ const LocalComponent = ({
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    React.useEffect(() => {
+        if (el_ref.current?.children.length === 3) {
+            el_ref?.current?.removeChild(el_ref?.current?.children[1]);
+        }
+    }, [el_ref.current?.children.length]);
     const clearInjectionDiv = () => {
         el_ref?.current?.removeChild(el_ref?.current?.children[0]);
     };

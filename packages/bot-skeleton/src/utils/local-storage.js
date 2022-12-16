@@ -2,7 +2,6 @@ import LZString from 'lz-string';
 import localForage from 'localforage';
 import DBotStore from '../scratch/dbot-store';
 import { save_types } from '../constants/save-type';
-
 /**
  * Save workspace to localStorage
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
@@ -14,8 +13,14 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
     const {
         load_modal: { updateListStrategies },
         save_modal,
+        dashboard: { active_tab },
     } = DBotStore.instance;
-    const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
+
+    let current_workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
+    if (active_tab === 0) {
+        current_workspace_id = Blockly.mainWorkspace.id || Blockly.utils.genUid();
+    }
+    const workspace_id = current_workspace_id;
     const workspaces = await getSavedWorkspaces();
     const current_xml = Blockly.Xml.domToText(xml);
     const current_timestamp = Date.now();

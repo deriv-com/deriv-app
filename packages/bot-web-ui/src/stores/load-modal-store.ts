@@ -427,12 +427,16 @@ export default class LoadModalStore implements ILoadModalStore {
                     readOnly: true,
                     scrollbars: true,
                 });
-                load_options.workspace = this.local_workspace;
+                const { active_tab } = this.root_store.dashboard;
+                let blocky_workspace = this.local_workspace;
+                if (active_tab === 0) {
+                    blocky_workspace = Blockly.mainWorkspace;
+                }
+                load_options.workspace = blocky_workspace;
             } else {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
-
             load(load_options);
         });
         reader.readAsText(file);

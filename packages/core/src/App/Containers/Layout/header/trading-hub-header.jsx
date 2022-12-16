@@ -271,7 +271,7 @@ TradingHubHeader.propTypes = {
     is_eu_country: PropTypes.bool,
 };
 
-export default connect(({ client, common, modules, notifications, ui, menu, tradinghub }) => ({
+export default connect(({ client, common, modules, notifications, ui, menu, traders_hub }) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     disableApp: ui.disableApp,
@@ -297,7 +297,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    toggleIsTourOpen: tradinghub.toggleIsTourOpen,
-    setIsOnboardingVisited: tradinghub.setIsOnboardingVisited,
+    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
+    setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     loginid: client.loginid,
 }))(withRouter(TradingHubHeader));

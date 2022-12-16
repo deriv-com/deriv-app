@@ -9,9 +9,9 @@ import AddOptionsAccount from 'Components/add-options-account';
 import { isMobile } from '@deriv/shared';
 
 const CFDsListing = () => {
-    const { tradinghub } = useStores();
-    const is_real = tradinghub.selected_account_type === 'real';
-    const has_no_real_account = !tradinghub.has_any_real_account;
+    const { traders_hub } = useStores();
+    const is_real = traders_hub.selected_account_type === 'real';
+    const has_no_real_account = !traders_hub.has_any_real_account;
     return (
         <ListingContainer
             title={

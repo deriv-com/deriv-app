@@ -9,7 +9,6 @@ export default class RootStore {
     public ui: Record<string, any>;
     public modules: Record<string, any>;
     public notifications: Record<string, any>;
-    public tradinghub: Record<string, any>;
 
     public constructor(core_store: TRootStore) {
         this.config = new ConfigStore(this);
@@ -18,6 +17,5 @@ export default class RootStore {
         this.ui = core_store.ui;
         this.modules = core_store.modules;
         this.notifications = core_store.notifications;
-        this.tradinghub = core_store.tradinghub;
     }
 }

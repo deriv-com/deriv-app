@@ -1,23 +1,24 @@
-import { account_types, AccountType } from 'Constants/platform-config';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
+import { account_types } from 'Constants/platform-config';
+import { useStores } from 'Stores';
+import { TAccountCategory } from 'Types';
 import './account-type-dropdown.scss';
 
 const AccountTypeDropdown = () => {
-    const { tradinghub } = useStores();
+    const { traders_hub } = useStores();
 
     return (
         <select
             className={classNames(
                 'account-type-dropdown',
-                `account-type-dropdown--${tradinghub.selected_account_type}`
+                `account-type-dropdown--${traders_hub.selected_account_type}`
             )}
-            value={tradinghub.selected_account_type}
-            onChange={e => tradinghub.selectAccountType(e.target.value)}
+            value={traders_hub.selected_account_type}
+            onChange={e => traders_hub.selectAccountType(e.target.value)}
         >
-            {account_types.map((account_type: AccountType) => (
+            {account_types.map((account_type: TAccountCategory) => (
                 <option key={account_type} className='account-type-dropdown__item' value={account_type}>
                     {account_type}
                 </option>

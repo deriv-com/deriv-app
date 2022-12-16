@@ -15,31 +15,4 @@
             margin-top: 3rem;
         }
     }
-
-    &-amount {
-        color: var(--text-profit-success);
-    }
-
-    &-no-amount {
-        color: var(--general-section-6);
-    }
-
-    &-currency {
-        margin-left: 0.4rem;
-        color: var(--text-profit-success);
-    }
-
-    &-real {
-        padding-left: 0.5rem;
-    }
-
-    &-demo {
-        color: var(--text-profit-success);
-        padding-left: 0.5rem;
-    }
-
-    &-no-currency {
-        color: var(--general-section-6);
-        padding-left: 0.5rem;
-    }
 }

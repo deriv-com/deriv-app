@@ -5,11 +5,11 @@ import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { DetailsOfEachMT5Loginid, Mt5LoginList } from '@deriv/api-types';
-import { formatMoney, isMobile } from '@deriv/shared';
-import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
+import BalanceText from 'Components/elements/text/balance-text';
 
 const AssetSummary = () => {
-    const { client, common, tradinghub } = useStores();
+    const { client, common, traders_hub } = useStores();
     const {
         account_list,
         accounts,
@@ -20,7 +20,7 @@ const AssetSummary = () => {
         is_eu,
     } = client;
     const { getExchangeRate } = common;
-    const { selected_account_type } = tradinghub;
+    const { selected_account_type } = traders_hub;
 
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
@@ -93,16 +93,6 @@ const AssetSummary = () => {
         return total;
     };
 
-    const getTextClassName = () => {
-        if (selected_account_type === 'demo') {
-            return has_active_real_account ? 'asset-summary-demo' : 'asset-summary-amount';
-        }
-        if (selected_account_type === 'real') {
-            return has_active_real_account ? 'asset-summary-real' : 'asset-summary-no-amount';
-        }
-        return '';
-    };
-
     const getTotalRealAssets = (): number => {
         const mt5_total = getTotalBalanceCfd(mt5_login_list, false, exchanged_rate_cfd_real);
         const dxtrade_total = getTotalBalanceCfd(dxtrade_accounts_list, false, exchanged_rate_cfd_real);
@@ -121,7 +111,7 @@ const AssetSummary = () => {
         return total;
     };
 
-    const currency = account_total_balance_currency;
+    const currency = 'USD';
     const is_eu_popover_text = is_eu
         ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
         : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${selected_account_type} accounts`);
@@ -135,27 +125,9 @@ const AssetSummary = () => {
                             {localize('Total assets')}
                         </Text>
                     ) : null}
-                    <div className='asset-summary--total'>
-                        <Popover alignment='left' message={is_eu_popover_text}>
-                            <Text
-                                weight='bold'
-                                size='m'
-                                className={classNames({
-                                    'asset-summary-amount':
-                                        selected_account_type === 'demo' && !has_active_real_account,
-                                    'asset-summary-no-amount':
-                                        selected_account_type === 'real' && !has_active_real_account,
-                                    'asset-summary-real': selected_account_type === 'real' && has_active_real_account,
-                                    'asset-summary-demo': selected_account_type === 'demo' && has_active_real_account,
-                                })}
-                            >
-                                {formatMoney(currency, total_assets, true)}
-                            </Text>
-                            <Text weight='bold' size='m' color='prominent' className={getTextClassName()}>
-                                {currency}
-                            </Text>
-                        </Popover>
-                    </div>
+                    <Popover alignment='left' message={is_eu_popover_text}>
+                        <BalanceText currency={currency} balance={total_assets} underline_style='dotted' />
+                    </Popover>
                 </React.Fragment>
             ) : null}
         </div>

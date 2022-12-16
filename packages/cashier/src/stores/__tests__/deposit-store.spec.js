@@ -83,26 +83,4 @@ describe('DepositStore', () => {
         expect(checkIframeLoaded).not.toHaveBeenCalled();
         expect(setLoading).toHaveBeenCalledWith(false);
     });
-
-    it('should submit funds protection', async () => {
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: { reload: jest.fn() },
-        });
-
-        await deposit_store.submitFundsProtection();
-        expect(location.reload).toHaveBeenCalled();
-
-        window.location.reload.mockRestore();
-    });
-
-    // it('should handle the error upon submitting funds protection', async () => {
-    //     const spySetMessage = jest.spyOn(deposit_store.error, 'setMessage');
-    //     const error_message = 'Sorry, an error occurred.';
-
-    //     deposit_store.WS.send.mockResolvedValueOnce({ error: { message: error_message } });
-
-    //     await deposit_store.submitFundsProtection();
-    //     expect(spySetMessage).toHaveBeenCalledWith(error_message);
-    // });
 });

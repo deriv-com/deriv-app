@@ -9,7 +9,6 @@ export default class DepositStore {
             container: observable,
             error: observable,
             onMountDeposit: action.bound,
-            submitFundsProtection: action.bound,
         });
 
         this.root_store = root_store;
@@ -81,15 +80,5 @@ export default class DepositStore {
         }
 
         setLoading(false);
-    }
-
-    submitFundsProtection(): void {
-        this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
-            if (response.error) {
-                this.error.setMessage(response.error.message);
-            } else {
-                location.reload();
-            }
-        });
     }
 }

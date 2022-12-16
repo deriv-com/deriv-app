@@ -13,7 +13,8 @@ import { getChartType } from './logic';
 
 export const createChartMarkers = contract_info => {
     const { contract_type, status, tick_stream } = contract_info;
-    const should_show_10_last_ticks = contract_type === 'ACCU' && status === 'open' && tick_stream.length === 10;
+    const should_show_10_last_ticks =
+        isAccumulatorContract(contract_type) && status === 'open' && tick_stream.length === 10;
 
     let markers = [];
     if (contract_info) {

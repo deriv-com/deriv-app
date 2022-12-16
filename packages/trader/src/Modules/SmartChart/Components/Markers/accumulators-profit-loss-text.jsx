@@ -12,7 +12,7 @@ const ACTIONS = {
 
 const AccumulatorsProfitLossText = ({
     current_spot,
-    current_spot_time = 0,
+    current_spot_time,
     currency,
     className = 'sc-accumulators-profit-loss-text',
     profit,
@@ -30,8 +30,8 @@ const AccumulatorsProfitLossText = ({
     const profit_whole_number = +profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
     const profit_hundredths = +profit_portions_array[1].slice(1);
-    const won = profit > 0;
-    const sign = won ? '+' : '';
+    const won = profit >= 0;
+    const sign = profit > 0 ? '+' : '';
 
     const runThroughTenthDigit = (action, interval_ms, start, end) => {
         clearInterval(interval_id_ref.current);

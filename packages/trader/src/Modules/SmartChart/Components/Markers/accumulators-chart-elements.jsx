@@ -2,7 +2,7 @@ import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/he
 import PropTypes from 'prop-types';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip.jsx';
-import CurrentSpotHighlighter from './current-spot-highlighter.jsx';
+import CurrentSpotEmphasizer from './current-spot-emphasizer.jsx';
 
 const AccumulatorsChartElements = ({
     all_positions,
@@ -34,7 +34,7 @@ const AccumulatorsChartElements = ({
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
             {should_highlight_tick && current_spot_time && (
-                <CurrentSpotHighlighter current_spot={current_spot} current_spot_time={current_spot_time} />
+                <CurrentSpotEmphasizer current_spot={current_spot} current_spot_time={current_spot_time} />
             )}
         </React.Fragment>
     );

@@ -2,7 +2,7 @@
 .cq-bottom-ui-widgets {
     bottom: 14px !important;
 }
-@keyframes blink {
+@keyframes blue-emphasizer {
     0%,
     100% {
         background: transparent;
@@ -150,7 +150,7 @@
                     top: -0.3rem;
                     left: 0.3rem;
                     border-radius: 50%;
-                    animation: blink 0.8s;
+                    animation: blue-emphasizer 0.8s;
 
                     @include mobile {
                         left: 0rem;
@@ -237,19 +237,5 @@
 @include mobile {
     .dc-mobile-dialog__accumulators-stats {
         padding: 1.1rem 1.6rem;
-    }
-}
-
-.current-spot-highlighter {
-    position: relative;
-
-    &:before {
-        content: '';
-        position: absolute;
-        width: 3.2rem;
-        height: 3.2rem;
-        transform: translateX(-50%) translateY(-50%);
-        border-radius: 50%;
-        animation: blink 0.8s;
     }
 }

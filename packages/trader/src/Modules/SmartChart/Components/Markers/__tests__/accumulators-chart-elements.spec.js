@@ -6,7 +6,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper.js',
     filterByContractType: jest.fn(() => true),
 }));
 jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltip</div>);
-jest.mock('../current-spot-highlighter.jsx', () => () => <div>CurrentSpotHighlighter</div>);
+jest.mock('../current-spot-emphasizer.jsx', () => () => <div>CurrentSpotEmphasizer</div>);
 
 describe('AccumulatorsChartElements', () => {
     const mock_props = {
@@ -19,20 +19,20 @@ describe('AccumulatorsChartElements', () => {
         symbol: 'test symbol',
     };
 
-    it('should render AccumulatorsChartElements without CurrentSpotHighlighter', () => {
+    it('should render AccumulatorsChartElements without CurrentSpotEmphasizer', () => {
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
         expect(tooltip_arr.length).toBe(2);
-        expect(screen.queryByText('CurrentSpotHighlighter')).not.toBeInTheDocument();
+        expect(screen.queryByText('CurrentSpotEmphasizer')).not.toBeInTheDocument();
     });
 
-    it('should render AccumulatorsChartElements with CurrentSpotHighlighter', () => {
+    it('should render AccumulatorsChartElements with CurrentSpotEmphasizer', () => {
         mock_props.is_stats_highlighted = true;
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
         expect(tooltip_arr.length).toBe(2);
-        expect(screen.getByText('CurrentSpotHighlighter')).toBeInTheDocument();
+        expect(screen.getByText('CurrentSpotEmphasizer')).toBeInTheDocument();
     });
 });

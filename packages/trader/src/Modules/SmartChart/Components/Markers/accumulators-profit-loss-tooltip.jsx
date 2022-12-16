@@ -10,17 +10,17 @@ import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 const AccumulatorsProfitLossTooltip = ({
     alignment = 'right',
     current_spot,
-    current_spot_time = 0,
+    current_spot_time,
     className = 'sc-accumulators-profit-loss-tooltip',
     currency,
-    exit_tick = 0,
-    exit_tick_time = 0,
+    exit_tick,
+    exit_tick_time,
     is_sold,
     profit,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
-    const won = profit > 0;
-    const sign = won ? '+' : '';
+    const won = profit >= 0;
+    const sign = profit > 0 ? '+' : '';
     const tooltip_timeout = React.useRef(null);
 
     React.useEffect(() => {
@@ -32,7 +32,7 @@ const AccumulatorsProfitLossTooltip = ({
     React.useEffect(() => {
         if (is_sold) {
             setIsTooltipOpen(true);
-            tooltip_timeout.current = onCloseDelayed(5000);
+            tooltip_timeout.current = onCloseDelayed(3000);
         }
     }, [is_sold]);
 
@@ -43,7 +43,7 @@ const AccumulatorsProfitLossTooltip = ({
 
     const onHoverOrTapHandler = () => {
         clearTimeout(tooltip_timeout.current);
-        tooltip_timeout.current = onCloseDelayed(3000);
+        tooltip_timeout.current = onCloseDelayed(1500);
     };
 
     const opposite_arrow_position = React.useMemo(() => {
@@ -76,7 +76,7 @@ const AccumulatorsProfitLossTooltip = ({
                 profit={profit}
             />
         );
-    return is_sold ? (
+    return is_sold && exit_tick_time ? (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}

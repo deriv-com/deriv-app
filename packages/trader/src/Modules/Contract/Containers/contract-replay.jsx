@@ -364,7 +364,8 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
     const { contract_type, status, tick_stream } = contract_store.contract_info;
-    const should_show_10_last_ticks = contract_type === 'ACCU' && status === 'open' && tick_stream.length === 10;
+    const should_show_10_last_ticks =
+        isAccumulatorContract(contract_type) && status === 'open' && tick_stream.length === 10;
     const allowed_scroll_to_epoch = should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.scroll_to_epoch;
 
     return {

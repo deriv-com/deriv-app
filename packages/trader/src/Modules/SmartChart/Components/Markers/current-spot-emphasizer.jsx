@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FastMarker } from 'Modules/SmartChart';
 
-const CurrentSpotHighlighter = ({ current_spot, current_spot_time }) => {
+const CurrentSpotEmphasizer = ({ current_spot, current_spot_time }) => {
     const onRef = ref => {
         if (ref) {
             if (!current_spot) {
@@ -16,12 +16,12 @@ const CurrentSpotHighlighter = ({ current_spot, current_spot_time }) => {
         }
     };
 
-    return <FastMarker markerRef={onRef} className='current-spot-highlighter' />;
+    return <FastMarker markerRef={onRef} className='sc-current-spot-emphasizer' />;
 };
 
-CurrentSpotHighlighter.propTypes = {
+CurrentSpotEmphasizer.propTypes = {
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
 };
 
-export default React.memo(CurrentSpotHighlighter);
+export default React.memo(CurrentSpotEmphasizer);

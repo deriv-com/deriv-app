@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, getGrowthRatePercentage, isBot } from '@deriv/shared';
+import { isHighLow, getCurrentTick, getGrowthRatePercentage, isBot, isAccumulatorContract } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -39,7 +39,7 @@ const ContractCardHeader = ({
         tick_passed,
     } = contract_info;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
-    const is_accumulator = contract_type === 'ACCU';
+    const is_accumulator = isAccumulatorContract(contract_type);
     const displayed_accumulator = growth_rate && `${getGrowthRatePercentage(growth_rate)}%`;
     const displayed_multiplier = multiplier && `x${multiplier}`;
     const displayed_trade_param = is_accumulator ? displayed_accumulator : displayed_multiplier;

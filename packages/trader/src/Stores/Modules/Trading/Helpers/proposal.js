@@ -1,4 +1,4 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment, isAccumulatorContract } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -138,10 +138,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
               }
             : obj_expiry),
         ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
-            type_of_contract !== 'ACCU' && {
+            !isAccumulatorContract(type_of_contract) && {
                 barrier: store.barrier_1 || store.last_digit,
             }),
-        ...(store.barrier_count === 2 && type_of_contract !== 'ACCU' && { barrier2: store.barrier_2 }),
+        ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
         ...obj_accumulator,
         ...obj_multiplier,
     };

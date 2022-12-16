@@ -4,7 +4,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, isAccumulatorContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -235,7 +235,7 @@ const TickContract = RawMarkerMaker(
         ctx.save();
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
-        const is_accumulators_contract = contract_type === 'ACCU';
+        const is_accumulators_contract = isAccumulatorContract(contract_type);
         const scale = calc_scale(start.zoom);
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
 
@@ -264,13 +264,7 @@ const TickContract = RawMarkerMaker(
 
         if (is_accumulators_contract) {
             // draw custom barrier shadows with borders and labels for accumulators:
-            if (
-                contract_type === 'ACCU' &&
-                barrier &&
-                barrier_2 &&
-                previous_tick &&
-                (status === 'open' || is_in_contract_details)
-            ) {
+            if (barrier && barrier_2 && previous_tick && (status === 'open' || is_in_contract_details)) {
                 // draw 2 barriers with a shade between them for an open ACCU contract
                 draw_shaded_barriers({
                     ctx,
@@ -283,9 +277,7 @@ const TickContract = RawMarkerMaker(
                 });
             }
 
-            if (is_in_contract_details) {
-                return;
-            }
+            if (is_in_contract_details) return;
         }
         ctx.restore();
 

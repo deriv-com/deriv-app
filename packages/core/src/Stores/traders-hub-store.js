@@ -6,6 +6,7 @@ export default class TradersHubStore extends BaseStore {
     available_platforms = [];
     selected_region;
     selected_account_type = 'demo';
+    is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     selected_platform_type = 'options';
 
@@ -14,6 +15,7 @@ export default class TradersHubStore extends BaseStore {
 
         makeObservable(this, {
             available_platforms: observable,
+            is_regulators_compare_modal_visible: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
@@ -22,6 +24,7 @@ export default class TradersHubStore extends BaseStore {
             selectRegion: action.bound,
             setTogglePlatformType: action.bound,
             toggleIsTourOpen: action.bound,
+            toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
         });
 
@@ -56,6 +59,10 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
         this.available_platforms = appstore_platforms;
+    }
+
+    toggleRegulatorsCompareModal() {
+        this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
     }
 
     get has_any_real_account() {

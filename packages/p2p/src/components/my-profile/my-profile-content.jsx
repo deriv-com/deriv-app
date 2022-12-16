@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
@@ -23,12 +24,16 @@ const MyProfileContent = () => {
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
-                        body_className='payment-methods-list__modal'
+                        body_className={classNames('payment-methods-list__modal', {
+                            'payment-methods-list__modal-add':
+                                my_profile_store.selected_payment_method ||
+                                my_profile_store.should_show_edit_payment_method_form,
+                        })}
                         height_offset='80px'
                         is_modal_open
                         is_flex
                         page_header_className='buy-sell__modal-header'
-                        page_header_text={localize('Payment methods')}
+                        page_header_text={localize('Add payment method')}
                         pageHeaderReturnFn={() => {
                             if (
                                 (formik_ref.current && formik_ref.current.dirty) ||

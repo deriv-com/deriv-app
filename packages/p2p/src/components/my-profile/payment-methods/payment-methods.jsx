@@ -22,7 +22,7 @@ const PaymentMethods = ({ formik_ref }) => {
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={isMobile()} />;
     } else if (my_profile_store.should_show_add_payment_method_form) {
-        return <AddPaymentMethod formik_ref={formik_ref} />;
+        return <AddPaymentMethod formik_ref={formik_ref} should_show_separated_footer={true} />;
     } else if (!my_profile_store.advertiser_has_payment_methods) {
         return <PaymentMethodsEmpty />;
     } else if (my_profile_store.should_show_edit_payment_method_form) {

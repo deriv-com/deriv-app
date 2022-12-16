@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -94,7 +95,11 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                             </div>
                             <div
                                 className={classNames('add-payment-method-form__buttons', {
-                                    'add-payment-method-form__buttons--separated-footer': should_show_separated_footer,
+                                    'add-payment-method-form__buttons--separated-footer':
+                                        (should_show_separated_footer && isMobile()) ||
+                                        general_store.active_index !== 3,
+                                    'add-payment-method-form__buttons--separated-footer-profile':
+                                        general_store.active_index === 3 && isDesktop(),
                                 })}
                             >
                                 <Button

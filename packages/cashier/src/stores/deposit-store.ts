@@ -87,15 +87,16 @@ export default class DepositStore {
 
     get is_deposit_locked(): boolean {
         const {
+            account_status,
             is_authentication_needed,
-            is_tnc_needed,
             is_financial_account,
             is_financial_information_incomplete,
-            is_trading_experience_incomplete,
-            account_status,
-            is_eu,
-            mt5_login_list,
             is_deposit_lock,
+            is_eu,
+            is_tnc_needed,
+            is_trading_experience_incomplete,
+            landing_company_shortcode,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status?.status) return false;
 
@@ -109,6 +110,16 @@ export default class DepositStore {
                     item => item.account_type === 'real' && item.sub_account_type === 'financial_stp'
                 )) &&
             is_tnc_needed;
+
+        if (landing_company_shortcode === 'maltainvest') {
+            return (
+                is_deposit_lock ||
+                need_authentication ||
+                need_tnc ||
+                is_trading_experience_incomplete ||
+                this.error.is_ask_financial_risk_approval
+            );
+        }
 
         return (
             is_deposit_lock ||

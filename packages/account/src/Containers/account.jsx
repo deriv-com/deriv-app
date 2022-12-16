@@ -119,6 +119,7 @@ const Account = ({
     routeBackInApp,
     routes,
     should_allow_authentication,
+    should_allow_poinc_authentication,
     toggleAccount,
 }) => {
     const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
@@ -148,6 +149,10 @@ const Account = ({
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
                 route.is_disabled = !should_allow_authentication;
+            }
+
+            if (route.path === shared_routes.proof_of_income) {
+                route.is_disabled = !should_allow_poinc_authentication;
             }
         });
     });
@@ -219,6 +224,7 @@ Account.propTypes = {
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
+    should_allow_poinc_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
 };
 
@@ -235,5 +241,6 @@ export default connect(({ client, common, ui }) => ({
     platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
+    should_allow_poinc_authentication: client.should_allow_poinc_authentication,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

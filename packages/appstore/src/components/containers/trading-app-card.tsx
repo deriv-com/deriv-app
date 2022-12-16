@@ -4,12 +4,25 @@ import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { platform_config, BrandConfig } from 'Constants/platform-config';
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
+import { AvailableAccount } from 'Types';
+import { isMobile } from '@deriv/shared';
 
-const TradingAppCard = ({ name, icon, type }: Actions & BrandConfig) => {
-    const { app_desc, link_to } = platform_config.find(config => config.name === name) || platform_config[0];
+const TradingAppCard = ({
+    name,
+    icon,
+    type,
+    description,
+    is_disabled,
+    onAction,
+}: Actions & BrandConfig & AvailableAccount) => {
+    const { app_desc, link_to } = platform_config.find(config => config.name === name) || {
+        app_desc: description,
+        link_to: '',
+    };
+    const icon_size = isMobile() ? 48 : 64;
     return (
         <div className='trading-app-card'>
-            <TradigPlatformIconProps icon={icon} size={48} />
+            <TradigPlatformIconProps icon={icon} size={icon_size} />
             <div className='trading-app-card__details'>
                 <Text className='title' size='xs' line_height='s' weight='bold'>
                     {name}
@@ -19,7 +32,7 @@ const TradingAppCard = ({ name, icon, type }: Actions & BrandConfig) => {
                 </Text>
             </div>
             <div className='trading-app-card__actions'>
-                <TradingAppCardActions type={type} link_to={link_to} />
+                <TradingAppCardActions type={type} link_to={link_to} is_disabled={is_disabled} onAction={onAction} />
             </div>
         </div>
     );

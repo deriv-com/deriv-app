@@ -182,12 +182,6 @@
     &__dashboard {
         display: flex;
         width: 100%;
-        &--tour-active {
-            width: 78%;
-            .run-panel__stat {
-                display: none;
-            }
-        }
 
         &__content {
             min-width: 70%;
@@ -216,6 +210,7 @@
         &__preview {
             width: 50%;
             height: 100%;
+            margin: 1.6rem 0;
 
             &__retrigger {
                 button {

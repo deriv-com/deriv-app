@@ -53,7 +53,7 @@ type TDashboard = {
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
-    setIsTourEnded: (param: boolean) => void;
+    setHasTourEnded: (param: boolean) => void;
 };
 
 const Dashboard = ({
@@ -76,7 +76,7 @@ const Dashboard = ({
     setOnBoardTourRunState,
     setTourActive,
     setTourDialogVisibility,
-    setIsTourEnded,
+    setHasTourEnded,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -133,7 +133,7 @@ const Dashboard = ({
             } else {
                 setTourDialogVisibility(true);
             }
-            setIsTourEnded(true);
+            setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
@@ -144,7 +144,7 @@ const Dashboard = ({
         }
     };
     if (!bot_tour_token) {
-        setIsTourEnded(false);
+        setHasTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
 
@@ -267,7 +267,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     onEntered: load_modal.onEntered,
-    setIsTourEnded: dashboard.setIsTourEnded,
+    setHasTourEnded: dashboard.setHasTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,

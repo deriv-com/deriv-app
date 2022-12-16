@@ -2,13 +2,14 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
-import { useStore } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import SideNote from 'Components/side-note';
 import { TSideNotesProps } from 'Types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
+import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import './payment-agent-list.scss';
 
@@ -25,6 +26,9 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
             setSideNotes?.([
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
+                </SideNote>,
+                <SideNote has_title={false} key={0}>
+                    <MissingPaymentMethodNote />
                 </SideNote>,
             ]);
         } else {

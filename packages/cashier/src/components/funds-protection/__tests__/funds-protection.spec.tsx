@@ -1,28 +1,36 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FundsProtection from '../funds-protection';
+import { StoreProvider } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import type { DeepPartial } from '@deriv/stores/types';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+const mockRootStore: DeepPartial<TRootStore> = {
+    modules: {
+        cashier: {
+            deposit: { submitFundsProtection: jest.fn() },
+        },
+    },
+};
 
 describe('FundsProtection component tests', () => {
     it('should render the component', () => {
-        render(<FundsProtection />);
+        render(<FundsProtection />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Funds protection level')).toBeInTheDocument();
         expect(screen.getByText('Deposit now')).toBeInTheDocument();
     });
 
     it('onClick function should be triggered', () => {
-        const handleClose = jest.fn();
-        render(<FundsProtection submitFundsProtection={handleClose} />);
+        render(<FundsProtection />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        });
 
         const btn = screen.getByRole('button');
         fireEvent.click(btn);
 
-        expect(handleClose).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.deposit?.submitFundsProtection).toHaveBeenCalledTimes(1);
     });
 });

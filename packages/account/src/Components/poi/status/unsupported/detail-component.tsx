@@ -45,7 +45,7 @@ type TDetailComponent = {
     is_from_external?: boolean;
     setIsCfdPoiCompleted?: () => void;
     is_mt5?: boolean;
-    handlePOIforMT5Complete: () => void;
+    handlePOIforMT5Complete?: () => void;
 };
 
 const DetailComponent = ({
@@ -117,7 +117,7 @@ const DetailComponent = ({
         uploadFiles(values).then(() => {
             if (!is_any_failed) {
                 if (is_mt5) {
-                    handlePOIforMT5Complete();
+                    handlePOIforMT5Complete?.();
                 } else {
                     setStatus(STATUS.IS_COMPLETED);
                 }
@@ -164,7 +164,7 @@ const DetailComponent = ({
                             onComplete={onComplete}
                             goToCards={onClickBack}
                             is_from_external={is_from_external}
-                            setIsCfdPoiCompleted={() => setIsCfdPoiCompleted?.()}
+                            setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         />
                     )}
                 </React.Fragment>

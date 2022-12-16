@@ -10,7 +10,7 @@ type TCardDetails = {
     onComplete: (e: object) => void;
     goToCards: () => void;
     is_from_external?: boolean;
-    setIsCfdPoiCompleted: (is_cfd_poi_completed: boolean) => void;
+    setIsCfdPoiCompleted?: (is_cfd_poi_completed: boolean) => void;
 };
 
 const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPoiCompleted }: TCardDetails) => {
@@ -25,7 +25,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
 
     const onConfirmDocuments = (values?: FormikValues) => {
         onComplete({ ...documents, ...values });
-        setIsCfdPoiCompleted(true);
+        setIsCfdPoiCompleted?.(true);
     };
 
     return (
@@ -36,7 +36,7 @@ const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPo
                     is_from_external={is_from_external}
                     data={data}
                     goToCards={goToCards}
-                    onSubmit={() => onSubmitDocuments()}
+                    onSubmit={onSubmitDocuments}
                 />
             ) : (
                 <SelfieUpload

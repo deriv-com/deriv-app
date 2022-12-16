@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     selected_platform_type = 'options';
+    active_index = 0;
 
     constructor(root_store) {
         super({ root_store });
@@ -35,7 +36,9 @@ export default class TradersHubStore extends BaseStore {
             selectAccountType: action.bound,
             selectRegion: action.bound,
             setTogglePlatformType: action.bound,
+            setActiveIndex: action.bound,
             toggleIsTourOpen: action.bound,
+            handleTabItemClick: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
             is_demo: computed,
@@ -209,5 +212,17 @@ export default class TradersHubStore extends BaseStore {
     }
     get is_eu_user() {
         return this.root_store.client.isEuropeCountry() || this.selected_region === 'EU';
+    }
+    setActiveIndex(active_index) {
+        this.active_index = active_index;
+    }
+
+    handleTabItemClick(idx) {
+        this.setActiveIndex(idx);
+        if (idx === 0) {
+            this.selected_region = 'Non-EU';
+        } else {
+            this.selected_region = 'EU';
+        }
     }
 }

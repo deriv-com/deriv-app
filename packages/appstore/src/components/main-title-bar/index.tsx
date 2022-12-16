@@ -42,8 +42,8 @@ const MainTitleBar = () => {
                                 <Icon icon='IcInfoOutline' />
                             </div>
                             <Tabs
-                                active_index={tradinghub.selected_region}
-                                onTabItemClick={tradinghub.selectRegion}
+                                active_index={tradinghub.active_index}
+                                onTabItemClick={tradinghub.handleTabItemClick}
                                 top
                                 is_scrollable
                                 is_overflow_hidden

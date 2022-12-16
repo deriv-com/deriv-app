@@ -7,7 +7,7 @@ import './traders-hub.scss';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '@deriv/components';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 
 const TradersHub = () => {
     const { tradinghub, client } = useStores();
@@ -26,6 +26,8 @@ const TradersHub = () => {
         tradinghub.setTogglePlatformType(event.target.value);
     };
 
+    const traders_hub = window.location.pathname === routes.traders_hub;
+
     return (
         <>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
@@ -42,6 +44,7 @@ const TradersHub = () => {
                             buttons_arr={platform_toggle_options}
                             className='traders-hub__button-toggle'
                             has_rounded_button
+                            is_traders_hub={traders_hub}
                             name='platforn_type'
                             onChange={platformTypeChange}
                             value={tradinghub.selected_platform_type}

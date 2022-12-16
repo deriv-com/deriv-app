@@ -33,32 +33,28 @@ const TourTriggrerDialog = ({
                 if (active_tab === 0) {
                     setTourActive(value);
                     setOnBoardTourRunState(value);
-                    setTourDialogVisibility(false);
                 } else {
                     setBotBuilderTourState(value);
-                    setTourDialogVisibility(false);
                 }
                 setHasTourEnded(value);
             } else {
                 setBotBuilderTourState(value);
-                setTourDialogVisibility(false);
             }
+            setTourDialogVisibility(false);
             tour_type.key = 'onboard_tour';
         } else if (tour_type.key === 'bot_builder') {
             if (type === 'onConfirm') {
                 if (active_tab === 0) {
                     setTourActive(value);
                     setOnBoardTourRunState(value);
-                    setTourDialogVisibility(false);
                 } else {
                     setBotBuilderTourState(value);
-                    setTourDialogVisibility(false);
                 }
                 setHasTourEnded(value);
             } else {
                 setTourSettings(new Date().getTime(), 'bot_builder_token');
-                setTourDialogVisibility(false);
             }
+            setTourDialogVisibility(false);
             tour_type.key = 'bot_builder';
         }
     };

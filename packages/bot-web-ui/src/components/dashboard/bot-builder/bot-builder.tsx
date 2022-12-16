@@ -49,37 +49,34 @@ const BotBuilder = ({
                 >
                     <WorkspaceWrapper />
                     {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (
-                        <div className='amarshona'>
-                            <ReactJoyride
-                                steps={BOT_BUILDER_TOUR}
-                                run={is_tour_running}
-                                continuous
-                                showProgress
-                                callback={handleJoyrideCallback}
-                                locale={{ back: 'Previous' }}
-                                className='amarshona'
-                                styles={{
-                                    options: {
-                                        arrowColor: 'var(--general-main-2)',
-                                        backgroundColor: 'var(--general-main-2)',
-                                        primaryColor: 'var(--brand-red-coral)',
-                                        textColor: 'var(--text-general)',
-                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                    },
-                                    buttonBack: {
-                                        border: '0.1rem solid var(--text-less-prominent)',
-                                        marginRight: '1rem',
-                                        borderRadius: '0.4rem',
-                                        color: 'var(--text-general)',
-                                        padding: '0.6rem',
-                                    },
-                                    tooltipContainer: {
-                                        textAlign: 'left',
-                                        lineHeight: 1.8,
-                                    },
-                                }}
-                            />
-                        </div>
+                        <ReactJoyride
+                            steps={BOT_BUILDER_TOUR}
+                            run={is_tour_running}
+                            continuous
+                            showProgress
+                            callback={handleJoyrideCallback}
+                            locale={{ back: 'Previous' }}
+                            styles={{
+                                options: {
+                                    arrowColor: 'var(--general-main-2)',
+                                    backgroundColor: 'var(--general-main-2)',
+                                    primaryColor: 'var(--brand-red-coral)',
+                                    textColor: 'var(--text-general)',
+                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                },
+                                buttonBack: {
+                                    border: '0.1rem solid var(--text-less-prominent)',
+                                    marginRight: '1rem',
+                                    borderRadius: '0.4rem',
+                                    color: 'var(--text-general)',
+                                    padding: '0.6rem',
+                                },
+                                tooltipContainer: {
+                                    textAlign: 'left',
+                                    lineHeight: 1.8,
+                                },
+                            }}
+                        />
                     )}
                 </div>
             )}

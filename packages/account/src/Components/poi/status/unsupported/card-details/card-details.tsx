@@ -10,7 +10,7 @@ type TCardDetails = {
     onComplete: (e: object) => void;
     goToCards: () => void;
     is_from_external?: boolean;
-    setIsCfdPoiCompleted: (e: boolean) => void;
+    setIsCfdPoiCompleted: (is_cfd_poi_completed: boolean) => void;
 };
 
 const CardDetails = ({ data, goToCards, onComplete, is_from_external, setIsCfdPoiCompleted }: TCardDetails) => {

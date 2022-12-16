@@ -208,7 +208,6 @@ export default class TradersHubStore extends BaseStore {
         return this.selected_account_type === 'demo';
     }
     get is_eu_user() {
-        const { client } = this.root_store;
-        return (client.is_logged_in && client.is_eu) || (!client.is_logged_in && client.is_eu_country);
+        return this.root_store.client.isEuropeCountry() || this.selected_region === 'EU';
     }
 }

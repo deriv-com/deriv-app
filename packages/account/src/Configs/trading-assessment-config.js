@@ -165,7 +165,7 @@ export const trading_assessment_questions = [
             },
             {
                 text: localize(
-                    'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.'
+                    'Place a position on the price movement of an asset where the outcome is a fixed return or nothing at all.'
                 ),
                 value: 'Place a bet on the price movement.',
             },

@@ -306,9 +306,18 @@ const DMT5CompareModalContent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getAvailableAccountsContent = (_content: TModalContentProps[]) => {
-        if (!is_logged_in) return _content;
-        return _content.map(row_data => {
+    const getAvailableAccountsContent = (modal_content: TModalContentProps[]) => {
+        if (!is_logged_in) {
+            if (show_eu_related) {
+                return modal_content;
+            }
+            const mt5_data = modal_content.map(item => {
+                const { derivx, ...rest } = item.values; // eslint-disable-line @typescript-eslint/no-unused-vars
+                return { ...item, values: rest };
+            });
+            return mt5_data;
+        }
+        return modal_content.map(row_data => {
             const available_accounts_values = Object.entries(row_data.values).reduce(
                 (acc, [key, value]) => (available_accounts_keys.includes(key) ? { ...acc, [key]: value } : acc),
                 {} as TValues
@@ -344,8 +353,8 @@ const DMT5CompareModalContent = ({
         });
     };
 
-    const getAvailableAccountsFooterButtons = (_footer_button_data: TFooterButtonData[]) => {
-        return _footer_button_data.filter(data => available_accounts_keys.includes(data.action));
+    const getAvailableAccountsFooterButtons = (footer_button_data: TFooterButtonData[]) => {
+        return footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
 
     const onSelectRealAccount = (item: TFooterButtonData) => {

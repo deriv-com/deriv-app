@@ -6,7 +6,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from '../../../types';
-import type { DeepPartial } from '@deriv/stores/types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     ui: { disableApp: jest.fn(), enableApp: jest.fn() },

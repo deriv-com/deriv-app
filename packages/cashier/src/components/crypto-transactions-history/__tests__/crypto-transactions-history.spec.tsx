@@ -3,12 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
 import { StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CryptoTransactionsHistory />', () => {
     let mockRootStore;
 

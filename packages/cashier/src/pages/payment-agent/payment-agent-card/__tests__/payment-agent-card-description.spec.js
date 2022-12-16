@@ -2,12 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PaymentAgentCardDescription from '../payment-agent-card-description';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<PaymentAgentCardDescription />', () => {
     const mocked_payment_agent = {
         further_information: 'further information',

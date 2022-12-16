@@ -12,7 +12,15 @@ describe('<NoBalance />', () => {
 
     beforeEach(() => {
         mockRootStore = {
-            client: { currency: 'USD' },
+            client: {
+                currency: 'USD',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
             modules: {
                 cashier: {
                     deposit: { is_deposit_locked: false },

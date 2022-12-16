@@ -3,12 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
 import { StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CryptoTransactionsStatusModal />', () => {
     let modal_root_el, mockRootStore;
     beforeEach(() => {

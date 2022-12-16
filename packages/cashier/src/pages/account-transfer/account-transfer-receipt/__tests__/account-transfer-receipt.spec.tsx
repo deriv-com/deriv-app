@@ -6,12 +6,6 @@ import { routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import AccountTransferReceipt from '../account-transfer-receipt';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;
     beforeEach(() => {

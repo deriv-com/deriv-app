@@ -1,6 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
+import { StoreProvider } from '@deriv/stores';
+
+const mockRootStore = {
+    ui: {
+        disableApp: jest.fn(),
+        enableApp: jest.fn(),
+    },
+};
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -33,7 +41,9 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should render the component', () => {
-        const { container } = render(<PaymentAgentTransferForm />);
+        const { container } = render(<PaymentAgentTransferForm />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(container.firstChild).toHaveClass('payment-agent-transfer-form__container');
     });
@@ -44,7 +54,10 @@ describe('<PaymentAgentTransferForm />', () => {
                 balance={balance}
                 setErrorMessage={setErrorMessage}
                 transfer_limit={transfer_limit}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         const submit_button = screen.getByRole('button');
@@ -62,7 +75,10 @@ describe('<PaymentAgentTransferForm />', () => {
                 balance={balance}
                 setErrorMessage={setErrorMessage}
                 transfer_limit={transfer_limit}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         const loginid_field = container.querySelector('input[name=loginid]');
@@ -82,7 +98,10 @@ describe('<PaymentAgentTransferForm />', () => {
                 balance={balance}
                 setErrorMessage={setErrorMessage}
                 transfer_limit={transfer_limit}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         const amount_field = container.querySelector('input[name=amount]');
@@ -102,7 +121,10 @@ describe('<PaymentAgentTransferForm />', () => {
                 balance={balance}
                 setErrorMessage={setErrorMessage}
                 transfer_limit={transfer_limit}
-            />
+            />,
+            {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            }
         );
 
         const description_field = container.querySelector('[name=description]');

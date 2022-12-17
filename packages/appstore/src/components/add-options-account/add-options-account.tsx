@@ -8,21 +8,15 @@ import { TRootStore } from 'Types';
 import { isMobile } from '@deriv/shared';
 
 const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
-    const { client } = useStores();
-    const { is_eu } = client;
-    const is_eu_country_text = is_eu
-        ? 'You need to create a Multipliers account to create a CFD account.'
-        : 'You need to create an Options and Multipliers account to create a CFD account.';
+    const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
 
-    const is_eu_country_btn = is_eu
-        ? localize('Get a Multipliers account')
-        : localize('Get an Options and Multipliers account');
+    const add_deriv_account_btn = localize('Get a Deriv account');
 
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
-                    <Localize i18n_default_text={is_eu_country_text} />
+                    <Localize i18n_default_text={add_deriv_account_text} />
                 </Text>
             </div>
             <div className='add-options-account__button'>
@@ -35,7 +29,7 @@ const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
                     }}
                     is_disabled={false}
                     is_loading={false}
-                    text={is_eu_country_btn}
+                    text={add_deriv_account_btn}
                     medium
                     primary
                 />

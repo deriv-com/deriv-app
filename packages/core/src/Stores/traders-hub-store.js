@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, reaction } from 'mobx';
+import { action, makeObservable, observable, reaction, computed } from 'mobx';
 import { getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 
@@ -6,23 +6,34 @@ export default class TradersHubStore extends BaseStore {
     available_platforms = [];
     selected_region;
     selected_account_type = 'demo';
+    is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
+    selected_platform_type = 'options';
+    active_index = 0;
 
     constructor(root_store) {
         super({ root_store });
+
         makeObservable(this, {
             available_platforms: observable,
+            is_regulators_compare_modal_visible: observable,
             selected_account_type: observable,
             account_type_card: observable,
+            selected_platform_type: observable,
             selected_region: observable,
             is_tour_open: observable,
             selectAccountType: action.bound,
             selectAccountTypeCard: action.bound,
             selectRegion: action.bound,
+            setTogglePlatformType: action.bound,
+            setActiveIndex: action.bound,
             toggleIsTourOpen: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
+            handleTabItemClick: action.bound,
+            toggleRegulatorsCompareModal: action.bound,
+            has_any_real_account: computed,
         });
 
         reaction(
@@ -64,5 +75,29 @@ export default class TradersHubStore extends BaseStore {
 
     toggleAccountTypeModalVisibility() {
         this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
+    }
+    toggleRegulatorsCompareModal() {
+        this.is_regulators_compare_modal_visible = !this.is_regulators_compare_modal_visible;
+    }
+
+    get has_any_real_account() {
+        return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
+    }
+
+    setTogglePlatformType(platform_type) {
+        this.selected_platform_type = platform_type;
+    }
+
+    setActiveIndex(active_index) {
+        this.active_index = active_index;
+    }
+
+    handleTabItemClick(idx) {
+        this.setActiveIndex(idx);
+        if (idx === 0) {
+            this.selected_region = 'Non-EU';
+        } else {
+            this.selected_region = 'EU';
+        }
     }
 }

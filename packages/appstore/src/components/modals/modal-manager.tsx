@@ -13,6 +13,7 @@ import {
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
 import AccountTypeModal from './account-type-modal';
+import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 
@@ -55,6 +56,7 @@ const ModalManager = () => {
             <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
             <ResetTradingPasswordModal context={store} />
             <AccountTypeModal />
+            <RegulatorsCompareModal />
         </React.Fragment>
     );
 };

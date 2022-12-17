@@ -18,6 +18,7 @@ type TButtonToggleProps = {
     }) => void;
     has_rounded_button?: boolean;
     value: number | string;
+    is_traders_hub?: boolean;
 };
 
 const ButtonToggle = ({
@@ -25,6 +26,7 @@ const ButtonToggle = ({
     className,
     has_rounded_button = false,
     id,
+    is_traders_hub = false,
     is_animated = false,
     name,
     onChange,
@@ -35,11 +37,14 @@ const ButtonToggle = ({
         onChange({ target: { value: selected_value, name } });
     };
 
+    const pre_appstore_class = is_traders_hub ? '__toggle' : '__button';
+
     const menu = React.useMemo(
         () =>
             buttons_arr.map((val, idx) => {
-                const menuClassNames = classNames('dc-button-menu__button', {
-                    'dc-button-menu__button--active': val.value === value,
+                const menuClassNames = classNames(`dc-button-menu${pre_appstore_class}`, {
+                    'dc-button-menu__button--active': val.value === value && !is_traders_hub,
+                    'dc-button-menu__toggle--active': val.value === value && is_traders_hub,
                 });
                 return (
                     <Button

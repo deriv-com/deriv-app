@@ -2,8 +2,8 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import { IconProps } from '../icon-types';
 
-// TODO: This probably can be moved somehwere else.
-type Currency =
+// TODO: This probably can be moved somewhere else.
+export type Currency =
     | 'AUD'
     | 'BCH'
     | 'BTC'

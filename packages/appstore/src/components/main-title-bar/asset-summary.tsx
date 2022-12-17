@@ -93,6 +93,16 @@ const AssetSummary = () => {
         return total;
     };
 
+    const getTextClassName = () => {
+        if (selected_account_type === 'demo') {
+            return has_active_real_account ? 'asset-summary-demo' : 'asset-summary-amount';
+        }
+        if (selected_account_type === 'real') {
+            return has_active_real_account ? 'asset-summary-real' : 'asset-summary-no-amount';
+        }
+        return '';
+    };
+
     const getTotalRealAssets = (): number => {
         const mt5_total = getTotalBalanceCfd(mt5_login_list, false, exchanged_rate_cfd_real);
         const dxtrade_total = getTotalBalanceCfd(dxtrade_accounts_list, false, exchanged_rate_cfd_real);
@@ -119,15 +129,17 @@ const AssetSummary = () => {
     return (
         <div className='asset-summary'>
             {has_active_real_account || selected_account_type === 'demo' ? (
-                <>
-                    <Text align='right' size='xs' line_height='s'>
-                        {localize('Total assets')}
-                    </Text>
+                <React.Fragment>
+                    {!isMobile() ? (
+                        <Text align='right' size='xs' line_height='s'>
+                            {localize('Total assets')}
+                        </Text>
+                    ) : null}
                     <div className='asset-summary--total'>
                         <Popover alignment='left' message={is_eu_popover_text}>
                             <Text
                                 weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
+                                size='m'
                                 className={classNames({
                                     'asset-summary-amount':
                                         selected_account_type === 'demo' && !has_active_real_account,
@@ -139,24 +151,12 @@ const AssetSummary = () => {
                             >
                                 {formatMoney(currency, total_assets, true)}
                             </Text>
-                            <Text
-                                weight='bold'
-                                size={isMobile() ? 'xsm' : 'm'}
-                                color='prominent'
-                                className={classNames({
-                                    'asset-summary-currency':
-                                        selected_account_type === 'demo' && !has_active_real_account,
-                                    'asset-summary-no-currency':
-                                        selected_account_type === 'real' && !has_active_real_account,
-                                    'asset-summary-real': selected_account_type === 'real' && has_active_real_account,
-                                    'asset-summary-demo': selected_account_type === 'demo' && has_active_real_account,
-                                })}
-                            >
+                            <Text weight='bold' size='m' color='prominent' className={getTextClassName()}>
                                 {currency}
                             </Text>
                         </Popover>
                     </div>
-                </>
+                </React.Fragment>
             ) : null}
         </div>
     );

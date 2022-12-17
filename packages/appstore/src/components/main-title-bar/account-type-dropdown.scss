@@ -9,25 +9,29 @@
     text-transform: capitalize;
     border: 2px solid;
 
-    &:focus {
+    &:focus,
+    &:hover {
         outline: none;
     }
 
     &--real,
-    &--real:focus {
-        border-color: var(--status-info);
+    &--real:focus,
+    &--real:hover {
+        border: 2px solid var(--status-info);
         color: var(--status-info);
     }
 
     &--demo,
-    &--demo:focus {
-        border-color: var(--status-success);
+    &--demo:focus,
+    &--demo:hover {
+        border: 2px solid var(--status-success);
         color: var(--status-success);
     }
 }
 .dc-dropdown {
     &-container {
-        min-width: fit-content;
+        min-width: 8rem;
+        width: 8rem;
     }
     &__display {
         &-text {

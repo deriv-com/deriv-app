@@ -27,7 +27,6 @@ const TradeButton = ({ link_to, onAction }: Pick<Actions, 'link_to' | 'onAction'
     return (
         <a
             className='dc-btn trade-button'
-            // style={{ margin: '0', width: '100%', height: '3.4rem' }}
             type='button'
             href={`${is_demo ? DEMO_DXTRADE_URL : REAL_DXTRADE_URL}${
                 dxtrade_tokens.real ? `?${dxtrade_tokens.real}` : ''

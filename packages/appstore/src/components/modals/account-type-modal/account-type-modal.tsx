@@ -12,13 +12,16 @@ type TModalContent = {
 };
 
 const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalContent) => {
+    const cardSelection = (cardType: string) => {
+        selectAccountTypeCard(account_type_card === cardType ? '' : cardType);
+    };
     return (
         <div className='account-type-card__wrapper'>
             <div
                 className={classNames('account-type-card', {
                     'account-type-card--selected': account_type_card === 'Derived',
                 })}
-                onClick={() => selectAccountTypeCard('Derived')}
+                onClick={() => cardSelection('Derived')}
             >
                 <div className='account-type-card__image'>
                     <TradigPlatformIconProps icon='Derived' size={64} />
@@ -29,14 +32,16 @@ const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalConten
                     </Text>
                 </div>
                 <div className='account-type-card__description'>
-                    {localize(`Trade CFDs on MT5 with Derived indices that simulate real-world market movements.`)}
+                    <Text as='p' size='xxs' align='center'>
+                        {localize(`Trade CFDs on MT5 with Derived indices that simulate real-world market movements.`)}
+                    </Text>
                 </div>
             </div>
             <div
                 className={classNames('account-type-card', {
                     'account-type-card--selected': account_type_card === 'Financial',
                 })}
-                onClick={() => selectAccountTypeCard('Financial')}
+                onClick={() => cardSelection('Financial')}
             >
                 <div className='account-type-card__image'>
                     <TradigPlatformIconProps icon='Financial' size={64} />
@@ -47,7 +52,9 @@ const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalConten
                     </Text>
                 </div>
                 <div className='account-type-card__description'>
-                    {localize(`Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.`)}
+                    <Text as='p' size='xxs' align='center'>
+                        {localize(`Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.`)}
+                    </Text>
                 </div>
             </div>
         </div>
@@ -72,8 +79,7 @@ const AccountTypeModal = () => {
                         disableApp={disableApp}
                         enableApp={enableApp}
                         exit_classname='account-type--custom-exit'
-                        // is_open={is_account_type_modal_visible}
-                        is_open={true}
+                        is_open={is_account_type_modal_visible}
                         title={`Select Deriv MT5's account type`}
                         toggleModal={toggleAccountTypeModalVisibility}
                         type='button'
@@ -86,7 +92,7 @@ const AccountTypeModal = () => {
                         />
                         <Modal.Footer has_separator>
                             <Button
-                                disabled={false}
+                                disabled={!account_type_card}
                                 primary
                                 // onClick={() => {}}
                             >
@@ -108,7 +114,7 @@ const AccountTypeModal = () => {
                         />
                         <Modal.Footer has_separator>
                             <Button
-                                disabled={false}
+                                disabled={!account_type_card}
                                 primary
                                 // onClick={() => {}}
                             >

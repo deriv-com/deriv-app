@@ -8,15 +8,18 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type = 'demo';
     is_tour_open = false;
     is_account_type_modal_visible = false;
+    account_type_card = '';
 
     constructor(root_store) {
         super({ root_store });
         makeObservable(this, {
             available_platforms: observable,
             selected_account_type: observable,
+            account_type_card: observable,
             selected_region: observable,
             is_tour_open: observable,
             selectAccountType: action.bound,
+            selectAccountTypeCard: action.bound,
             selectRegion: action.bound,
             toggleIsTourOpen: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
@@ -34,6 +37,10 @@ export default class TradersHubStore extends BaseStore {
 
     selectAccountType(account_type) {
         this.selected_account_type = account_type;
+    }
+
+    selectAccountTypeCard(account_type_card) {
+        this.account_type_card = account_type_card;
     }
 
     selectRegion(region) {

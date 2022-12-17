@@ -2,6 +2,10 @@
     display: flex;
 }
 
+.account-type--custom-exit {
+    display: none;
+}
+
 .account-type-card {
     border: solid 1px var(--border-normal);
     border-radius: 0.8rem;

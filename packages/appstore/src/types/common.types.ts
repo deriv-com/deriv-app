@@ -78,3 +78,22 @@ export type TStaticAccountProps = {
     platform: TPlatform;
     type: TMarketType;
 };
+
+export type TIconTypes =
+    | 'Derived'
+    | 'Financial'
+    | 'BinaryBot'
+    | 'BinaryBotBlue'
+    | 'DBot'
+    | 'Demo'
+    | 'DerivGo'
+    | 'DerivGoBlack'
+    | 'DerivLogo'
+    | 'DerivTradingLogo'
+    | 'DerivX'
+    | 'DropDown'
+    | 'DTrader'
+    | 'Options'
+    | 'SmartTrader'
+    | 'SmartTraderBlue'
+    | 'CFDs';

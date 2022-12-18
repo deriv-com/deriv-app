@@ -5,11 +5,31 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { TIconTypes } from 'Types';
 
 type TModalContent = {
     account_type_card: string;
     selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
 };
+
+type TAccountType = {
+    title_and_type: string;
+    description: string;
+    icon: string;
+};
+
+const account_types: TAccountType[] = [
+    {
+        title_and_type: 'Derived',
+        icon: 'Derived',
+        description: 'Trade CFDs on MT5 with Derived indices that simulate real-world market movements.',
+    },
+    {
+        title_and_type: 'Financial',
+        icon: 'Financial',
+        description: 'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.',
+    },
+];
 
 const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalContent) => {
     const cardSelection = (cardType: string) => {
@@ -17,46 +37,29 @@ const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalConten
     };
     return (
         <div className='account-type-card__wrapper'>
-            <div
-                className={classNames('account-type-card', {
-                    'account-type-card--selected': account_type_card === 'Derived',
-                })}
-                onClick={() => cardSelection('Derived')}
-            >
-                <div className='account-type-card__image'>
-                    <TradigPlatformIconProps icon='Derived' size={64} />
+            {account_types.map(account => (
+                <div
+                    key={account.title_and_type}
+                    className={classNames('account-type-card', {
+                        'account-type-card--selected': account_type_card === account.title_and_type,
+                    })}
+                    onClick={() => cardSelection(account.title_and_type)}
+                >
+                    <div className='account-type-card__image'>
+                        <TradigPlatformIconProps icon={account.title_and_type as TIconTypes} size={64} />
+                    </div>
+                    <div className='account-type-card__header'>
+                        <Text as='h2' weight='bold'>
+                            {localize(`${account.title_and_type}`)}
+                        </Text>
+                    </div>
+                    <div className='account-type-card__description'>
+                        <Text as='p' size='xxs' align='center'>
+                            {localize(`${account.description}`)}
+                        </Text>
+                    </div>
                 </div>
-                <div className='account-type-card__header'>
-                    <Text as='h2' weight='bold'>
-                        {localize(`Derived`)}
-                    </Text>
-                </div>
-                <div className='account-type-card__description'>
-                    <Text as='p' size='xxs' align='center'>
-                        {localize(`Trade CFDs on MT5 with Derived indices that simulate real-world market movements.`)}
-                    </Text>
-                </div>
-            </div>
-            <div
-                className={classNames('account-type-card', {
-                    'account-type-card--selected': account_type_card === 'Financial',
-                })}
-                onClick={() => cardSelection('Financial')}
-            >
-                <div className='account-type-card__image'>
-                    <TradigPlatformIconProps icon='Financial' size={64} />
-                </div>
-                <div className='account-type-card__header'>
-                    <Text as='h2' weight='bold'>
-                        {localize(`Financial`)}
-                    </Text>
-                </div>
-                <div className='account-type-card__description'>
-                    <Text as='p' size='xxs' align='center'>
-                        {localize(`Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.`)}
-                    </Text>
-                </div>
-            </div>
+            ))}
         </div>
     );
 };
@@ -80,7 +83,7 @@ const AccountTypeModal = () => {
                         enableApp={enableApp}
                         exit_classname='account-type--custom-exit'
                         is_open={is_account_type_modal_visible}
-                        title={`Select Deriv MT5's account type`}
+                        title={localize(`Select Deriv MT5's account type`)}
                         toggleModal={toggleAccountTypeModalVisibility}
                         type='button'
                         height='664px'
@@ -104,7 +107,7 @@ const AccountTypeModal = () => {
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='deriv_app'
-                        title={`Select Deriv MT5's account type`}
+                        title={localize(`Select Deriv MT5's account type`)}
                         visible={is_account_type_modal_visible}
                         onClose={toggleAccountTypeModalVisibility}
                     >

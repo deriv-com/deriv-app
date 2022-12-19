@@ -23,7 +23,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    <RegulatorSwitcher />
+                    {is_real && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>

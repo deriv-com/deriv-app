@@ -27,9 +27,11 @@ const RegulatorSwitcher = () => {
 
     return (
         <div className='regulators-switcher'>
-            <Text>Regulators:</Text>
-            <div onClick={() => toggleRegulatorsCompareModal()}>
-                <Icon icon='IcInfoOutline' />
+            <div className='regulators-switcher--text'>
+                <Text>Regulators:</Text>
+                <div className='regulators-switcher--icon' onClick={() => toggleRegulatorsCompareModal()}>
+                    <Icon icon='IcInfoOutline' />
+                </div>
             </div>
             <div className='regulators-switcher__switch'>
                 {region_availability.map(region => {

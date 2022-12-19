@@ -6,9 +6,11 @@
     &__text {
         &--demo {
             color: var(--text-profit-success);
+            padding-right: 0.5rem;
         }
 
         &--real {
+            padding-right: 0.5rem;
         }
 
         &--amount {

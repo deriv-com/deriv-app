@@ -33,8 +33,8 @@
 
     &__mobile-parent {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        padding: 1rem;
     }
 
     &__menu-right {
@@ -42,6 +42,25 @@
         display: inline-flex;
         flex: 1;
         align-items: center;
+
+        &--items {
+            display: flex;
+            align-items: center;
+
+            &--onboarding {
+                padding: 2.5rem;
+
+                @include mobile {
+                    padding: 1rem;
+                }
+            }
+
+            &--notifications {
+                @include mobile {
+                    padding: 0 2rem 0 1rem;
+                }
+            }
+        }
     }
 
     &__menu-middle {
@@ -52,19 +71,28 @@
     }
 
     &__logo {
-        width: 8rem;
+        width: 8.5rem;
         height: 3rem;
+        margin: 0 0.5rem 0 1.5rem;
 
         @include mobile {
             margin-left: 0.7rem;
         }
     }
 
-    &__tradinghub {
+    &__tradershub {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 6rem;
+        margin: 0 1rem 0 1.5rem;
+
+        &--home-logo {
+            padding-right: 0.8rem;
+        }
+
+        &--text {
+            font-size: 1.6rem;
+        }
 
         > * {
             cursor: pointer;
@@ -136,9 +164,9 @@
     &__setting {
         margin-right: 2.2rem;
 
-        @include mobile {
-            margin-left: 2.2rem;
-        }
+        // @include mobile {
+        //     margin-left: 2.2rem;
+        // }
 
         &--icon {
             cursor: pointer;

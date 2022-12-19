@@ -17,12 +17,17 @@ const Divider = () => {
     return <div className='trading-hub-header__divider' />;
 };
 
-const TradingHubMenuHomepage = () => {
+export const TradersHubHomeButton = () => {
     const history = useHistory();
 
     return (
-        <div className='trading-hub-header__tradinghub' onClick={() => history.push(routes.traders_hub)}>
-            <Icon icon='IcAppstoreMenuHomepage' size={30} />
+        <div className='trading-hub-header__tradershub' onClick={() => history.push(routes.traders_hub)}>
+            <div className='trading-hub-header__tradershub--home-logo'>
+                <Icon icon='IcAppstoreTradersHubHome' size={17} />
+            </div>
+            <Text className='trading-hub-header__tradershub--text'>
+                <Localize i18n_default_text="Trader's hub" />
+            </Text>
         </div>
     );
 };
@@ -162,15 +167,15 @@ const TradingHubHeader = ({
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <DesktopWrapper>
-                    <TradingHubMenuHomepage />
-                </DesktopWrapper>
                 {is_dark_mode ? (
                     <DerivBrandLogoDark className='trading-hub-header__logo' />
                 ) : (
                     <DerivBrandLogo className='trading-hub-header__logo' />
                 )}
-                <Divider />
+                <DesktopWrapper>
+                    <Divider />
+                    <TradersHubHomeButton />
+                </DesktopWrapper>
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>
@@ -178,42 +183,54 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface setIsPreAppStore={setIsPreAppStore} />
                     <Divider />
-                    <TradingHubOnboarding is_dark_mode={is_dark_mode} setIsOnboardingVisited={setIsOnboardingVisited} />
-                    <ShowNotifications
-                        is_notifications_visible={is_notifications_visible}
-                        notifications_count={notifications_count}
-                        toggleNotifications={toggleNotifications}
-                    />
-                    <Popover
-                        classNameBubble='account-settings-toggle__tooltip'
-                        alignment='bottom'
-                        message={<Localize i18n_default_text='Manage account settings' />}
-                        should_disable_pointer_events
-                        zIndex={9999}
-                    >
-                        <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
-                            <Icon icon='IcUserOutline' size={20} />
-                        </BinaryLink>
-                    </Popover>
+                    <div className='trading-hub-header__menu-right--items'>
+                        <div className='trading-hub-header__menu-right--items--onboarding'>
+                            <TradingHubOnboarding
+                                is_dark_mode={is_dark_mode}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
+                            />
+                        </div>
+                        <div className='trading-hub-header__menu-right--items--notifications'>
+                            <ShowNotifications
+                                is_notifications_visible={is_notifications_visible}
+                                notifications_count={notifications_count}
+                                toggleNotifications={toggleNotifications}
+                            />
+                        </div>
+                        <Popover
+                            classNameBubble='account-settings-toggle__tooltip'
+                            alignment='bottom'
+                            message={<Localize i18n_default_text='Manage account settings' />}
+                            should_disable_pointer_events
+                            zIndex={9999}
+                        >
+                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+                                <Icon icon='IcUserOutline' size={20} />
+                            </BinaryLink>
+                        </Popover>
+                    </div>
                 </div>
                 <RealAccountSignup />
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
-                        <TradingHubOnboarding
-                            is_dark_mode={is_dark_mode}
-                            toggleIsTourOpen={toggleIsTourOpen}
-                            is_mf={is_mf}
-                            is_eu={is_eu}
-                            is_eu_country={is_eu_country}
-                        />
-                        <ShowNotifications
-                            is_notifications_visible={is_notifications_visible}
-                            notifications_count={notifications_count}
-                            toggleNotifications={toggleNotifications}
-                        />
-
+                        <div className='trading-hub-header__menu-right--items--onboarding'>
+                            <TradingHubOnboarding
+                                is_dark_mode={is_dark_mode}
+                                toggleIsTourOpen={toggleIsTourOpen}
+                                is_mf={is_mf}
+                                is_eu={is_eu}
+                                is_eu_country={is_eu_country}
+                            />
+                        </div>
+                        <div className='trading-hub-header__menu-right--items--notifications'>
+                            <ShowNotifications
+                                is_notifications_visible={is_notifications_visible}
+                                notifications_count={notifications_count}
+                                toggleNotifications={toggleNotifications}
+                            />
+                        </div>
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -14,20 +14,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
-
-const TradingHubMenuHomepage = () => {
-    const redirect = useHistory();
-    return (
-        <div
-            className='trading-hub-header__tradinghub'
-            onClick={() => {
-                redirect.push(routes.traders_hub);
-            }}
-        >
-            <Icon icon='IcAppstoreMenuHomepage' size={30} />
-        </div>
-    );
-};
+import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
@@ -147,11 +134,6 @@ const DTraderHeader = ({
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
                     <DesktopWrapper>
-                        <TradingHubMenuHomepage />
-                        <Divider />
-                    </DesktopWrapper>
-
-                    <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
@@ -193,6 +175,9 @@ const DTraderHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    <DesktopWrapper>
+                        <TradersHubHomeButton />
+                    </DesktopWrapper>
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>

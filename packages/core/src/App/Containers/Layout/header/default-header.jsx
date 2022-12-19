@@ -312,7 +312,6 @@ DefaultHeader.propTypes = {
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
-    setIsPreAppStore: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,

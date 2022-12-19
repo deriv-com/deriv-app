@@ -27,15 +27,34 @@
         border: 2px solid var(--status-success);
         color: var(--status-success);
     }
+    &__icon {
+        &--real {
+            --fill-color1: var(--status-info) !important;
+        }
+        &--demo {
+            --fill-color1: var(--status-success) !important;
+        }
+    }
 }
 .dc-dropdown {
     &-container {
         min-width: 8rem;
         width: 8rem;
+        --fill-color1: currentColor;
     }
     &__display {
+        height: 2.8em;
         &-text {
             color: currentColor;
+            font-weight: 700;
+            line-height: 20px;
+            letter-spacing: 0em;
+            text-align: left;
+        }
+    }
+    &__select-arrow {
+        &--up {
+            transform: none;
         }
     }
 }

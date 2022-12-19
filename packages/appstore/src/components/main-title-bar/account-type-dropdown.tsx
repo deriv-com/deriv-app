@@ -12,6 +12,7 @@ const AccountTypeDropdown = () => {
     return (
         <div className={classNames('account-type-dropdown--parent')}>
             <Dropdown
+                classNameIcon={`account-type-dropdown__icon--${tradinghub.selected_account_type}`}
                 value={tradinghub.selected_account_type}
                 classNameDisplay={classNames(
                     'account-type-dropdown',

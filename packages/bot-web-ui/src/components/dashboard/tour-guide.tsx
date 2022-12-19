@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import BlocklyLoading from 'Components/blockly-loading/blockly-loading';
 
 type TTourGuide = {
     label: string | boolean;
@@ -39,14 +38,6 @@ const TourGuide = ({
 
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
-    React.useEffect(() => {
-        const tour_image = new Image();
-        tour_image.onload = () => {
-            setImageLoaded(true);
-        };
-        tour_image.src = img;
-    }, [step_index]);
-
     return (
         <React.Fragment>
             <div className='onboard'>
@@ -64,7 +55,9 @@ const TourGuide = ({
                     </Text>
                 </div>
 
-                <div className='onboard__container'>{!has_image_loaded ? <BlocklyLoading /> : <img src={img} />}</div>
+                <div className='onboard__container'>
+                    <img src={img} />
+                </div>
 
                 <div className='onboard__content'>
                     {content.map(content_text => {

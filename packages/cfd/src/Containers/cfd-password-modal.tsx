@@ -610,7 +610,7 @@ const CFDPasswordModal = ({
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const { poi_verified_for_bvi_labuan_maltainvest, poi_verified_for_vanuatu, poa_verified, manual_status } =
+    const { poi_verified_for_bvi_labuan, poi_verified_for_vanuatu_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
@@ -619,11 +619,13 @@ const CFDPasswordModal = ({
         if (jurisdiction_selected_shortcode === 'svg') {
             setIsSelectedMT5Verified(true);
         } else if (jurisdiction_selected_shortcode === 'bvi') {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_maltainvest);
-        } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_maltainvest && poa_verified);
+            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
         } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-            setIsSelectedMT5Verified(poi_verified_for_vanuatu);
+            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+        } else if (jurisdiction_selected_shortcode === 'labuan') {
+            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
+        } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
         }
     };
 

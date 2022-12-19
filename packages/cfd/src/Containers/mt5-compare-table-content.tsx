@@ -277,8 +277,8 @@ const DMT5CompareModalContent = ({
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_vanuatu,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
+        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan,
         poa_acknowledged,
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
@@ -379,7 +379,7 @@ const DMT5CompareModalContent = ({
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('bvi');
                 if (
-                    poi_acknowledged_for_bvi_labuan_maltainvest &&
+                    poi_acknowledged_for_bvi_labuan &&
                     !poi_or_poa_not_submitted &&
                     !should_restrict_bvi_account_creation &&
                     has_submitted_personal_details &&
@@ -394,7 +394,7 @@ const DMT5CompareModalContent = ({
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (
-                    poi_acknowledged_for_vanuatu &&
+                    poi_acknowledged_for_vanuatu_maltainvest &&
                     !poi_or_poa_not_submitted &&
                     has_submitted_personal_details &&
                     poa_acknowledged
@@ -407,7 +407,7 @@ const DMT5CompareModalContent = ({
             case 'financial_labuan':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('labuan');
-                if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged && has_submitted_personal_details) {
+                if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
@@ -416,7 +416,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged && has_submitted_personal_details) {
+                if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();

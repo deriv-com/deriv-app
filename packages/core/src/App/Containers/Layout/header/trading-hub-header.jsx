@@ -146,6 +146,7 @@ const TradingHubHeader = ({
                         is_payment_agent_visible={is_payment_agent_visible}
                         is_account_transfer_visible={is_account_transfer_visible}
                         is_virtual={is_virtual}
+                        is_pre_appstore={is_pre_appstore}
                         toggleTheme={setDarkMode}
                         platform_header={getPlatformInformation(app_routing_history).header}
                         platform_switcher={
@@ -157,6 +158,7 @@ const TradingHubHeader = ({
                             />
                         }
                         is_social_signup={is_social_signup}
+                        setIsPreAppStore={setIsPreAppStore}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -264,6 +266,7 @@ TradingHubHeader.propTypes = {
     notifications_count: PropTypes.number,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
+    setIsPreAppStore: PropTypes.func,
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_allow_authentication: PropTypes.bool,

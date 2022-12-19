@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
@@ -712,7 +711,4 @@ const ToggleMenuDrawer = React.forwardRef(
 
 ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
 
-export default connect(({ client }) => ({
-    is_pre_appstore: client.is_pre_appstore,
-    setIsPreAppStore: client.setIsPreAppStore,
-}))(ToggleMenuDrawer);
+export default ToggleMenuDrawer;

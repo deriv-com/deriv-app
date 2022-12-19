@@ -54,7 +54,9 @@ const RedirectToOldInterface = ({ setIsPreAppStore }) => {
         </div>
     );
 };
+
 const MemoizedMenuLinks = React.memo(MenuLinks);
+
 const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_status,
@@ -82,6 +84,7 @@ const DTraderHeader = ({
     is_notifications_visible,
     is_onramp_tab_visible,
     is_p2p_enabled,
+    is_pre_appstore,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
     is_account_transfer_visible,
@@ -172,6 +175,7 @@ const DTraderHeader = ({
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
+                            is_pre_appstore={is_pre_appstore}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
@@ -183,6 +187,7 @@ const DTraderHeader = ({
                                 />
                             }
                             is_social_signup={is_social_signup}
+                            setIsPreAppStore={setIsPreAppStore}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
@@ -277,6 +282,7 @@ DTraderHeader.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_social_signup: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -326,6 +332,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_pre_appstore: client.is_pre_appstore,
     is_route_modal_on: ui.is_route_modal_on,
     is_social_signup: client.is_social_signup,
     is_virtual: client.is_virtual,

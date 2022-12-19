@@ -47,6 +47,7 @@ const DefaultHeader = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
+    is_pre_appstore,
     is_risky_client,
     is_route_modal_on,
     is_trading_assessment_for_existing_user_enabled,
@@ -179,12 +180,14 @@ const DefaultHeader = ({
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                             is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
+                            is_pre_appstore={is_pre_appstore}
                             is_account_transfer_visible={is_account_transfer_visible}
                             is_virtual={is_virtual}
                             is_risky_client={is_risky_client}
                             toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
                             active_account_landing_company={active_account_landing_company}
+                            setIsPreAppStore={setIsPreAppStore}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -203,9 +206,9 @@ const DefaultHeader = ({
                 {is_logged_in && (
                     <DesktopWrapper>
                         {window.location.pathname.startsWith(routes.appstore) ? (
-                            <RedirectToOldInterface setIsPreAppStore={setIsPreAppStore} />
+                            <RedirectToOldInterface />
                         ) : (
-                            <ExploreTradingHub setIsPreAppStore={setIsPreAppStore} />
+                            <ExploreTradingHub />
                         )}
                         <Divider />
                     </DesktopWrapper>
@@ -295,6 +298,7 @@ DefaultHeader.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_risky_client: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_trading_assessment_for_existing_user_enabled: PropTypes.bool,
@@ -308,7 +312,7 @@ DefaultHeader.propTypes = {
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
-    setIsPreAppStore: PropTypes.bool,
+    setIsPreAppStore: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
@@ -346,6 +350,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
+    is_pre_appstore: client.is_pre_appstore,
     is_risky_client: client.is_risky_client,
     is_route_modal_on: ui.is_route_modal_on,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,

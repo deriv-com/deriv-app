@@ -26,9 +26,9 @@ const QuickStrategyFooter = ({
                 secondary
                 large
                 onClick={() => {
-                    setActiveTab(0);
                     setFieldValue('button', 'edit');
                     submitForm();
+                    setActiveTab(1);
                 }}
             />
             <Button

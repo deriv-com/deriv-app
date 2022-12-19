@@ -1,7 +1,7 @@
-import React from 'react';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TWorkspace } from 'Stores/load-modal-store';

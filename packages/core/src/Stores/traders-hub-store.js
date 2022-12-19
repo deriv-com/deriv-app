@@ -42,6 +42,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
             is_demo: computed,
+            is_eu_selected: computed,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCFDAccounts: action.bound,
             getExistingAccounts: action.bound,
@@ -76,13 +77,17 @@ export default class TradersHubStore extends BaseStore {
 
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
-        if (this.root_store.client.isEuropeCountry() || this.selected_region === 'EU') {
+        if (this.selected_region === 'EU') {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['EU', 'All'].some(region => region === platform.availability)
             );
             return;
         }
         this.available_platforms = appstore_platforms;
+    }
+
+    get is_eu_selected() {
+        return this.selected_region === 'EU';
     }
 
     toggleRegulatorsCompareModal() {

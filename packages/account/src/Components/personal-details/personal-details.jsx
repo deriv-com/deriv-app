@@ -550,6 +550,7 @@ const PersonalDetails = ({
                                                 {warning_items?.tax_identification_number && (
                                                     <div className='details-form__tin-warn-divider' />
                                                 )}
+                                                {/* {    console.log(values)} */}
                                                 {'employment_status' in props.value && (
                                                     <fieldset
                                                         className={classNames('account-form__fieldset', 'emp-status')}
@@ -567,6 +568,7 @@ const PersonalDetails = ({
                                                                     touched.employment_status &&
                                                                     errors.employment_status
                                                                 }
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -584,6 +586,7 @@ const PersonalDetails = ({
                                                                     setFieldTouched('employment_status', true);
                                                                     handleChange(e);
                                                                 }}
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>

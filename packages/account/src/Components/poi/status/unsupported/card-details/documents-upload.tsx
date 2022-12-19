@@ -29,20 +29,14 @@ const icons = [
 ];
 
 type TDocumentsUpload = {
-    initial_values: FormikValues;
-    is_from_external: boolean;
+    initial_values?: FormikValues;
+    is_from_external?: boolean;
     goToCards: () => void;
     onSubmit: () => void;
 };
 
 type TIconsItem = {
-    data: {
-        icon: string;
-        text: string;
-        fields?: FormikValues[];
-        documents_title?: string;
-        documents?: FormikValues[];
-    };
+    data: FormikValues;
 };
 
 const IconsItem = ({ data }: TIconsItem) => (

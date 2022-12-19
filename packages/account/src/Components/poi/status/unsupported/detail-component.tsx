@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
@@ -20,21 +19,33 @@ const STATUS = {
 
 type TDetailComponent = {
     document: {
-        onfido_name: string;
+        onfido_name?: string;
+        card: {
+            title: string;
+            description: string;
+            icon: string;
+        };
         details: {
+            fields: {
+                name: string;
+                label: string;
+                type: string;
+                required: boolean;
+            }[];
+            documents_title: string;
             documents: object[];
         };
     };
     onClickBack: () => void;
     root_class: string;
-    country_code_key: string;
+    country_code_key?: string;
     height?: string | number;
-    handleComplete: () => void;
+    handleComplete?: () => void;
     is_onfido_supported?: boolean;
-    is_from_external: boolean;
-    setIsCfdPoiCompleted: () => void;
+    is_from_external?: boolean;
+    setIsCfdPoiCompleted?: () => void;
     is_mt5?: boolean;
-    handlePOIforMT5Complete: () => void;
+    handlePOIforMT5Complete?: () => void;
 };
 
 const DetailComponent = ({
@@ -106,7 +117,7 @@ const DetailComponent = ({
         uploadFiles(values).then(() => {
             if (!is_any_failed) {
                 if (is_mt5) {
-                    handlePOIforMT5Complete();
+                    handlePOIforMT5Complete?.();
                 } else {
                     setStatus(STATUS.IS_COMPLETED);
                 }

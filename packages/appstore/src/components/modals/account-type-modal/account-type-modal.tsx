@@ -5,74 +5,103 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 
-type TModalContent = {
-    account_type_card: string;
-    selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
+const derived_account: TAccountType = {
+    title_and_type: 'Derived',
+    icon: 'Derived',
+    description: 'Trade CFDs on MT5 with Derived indices that simulate real-world market movements.',
 };
 
-type TAccountType = {
-    title_and_type: string;
-    description: string;
-    icon: string;
+const financial_account: TAccountType = {
+    title_and_type: 'Financial',
+    icon: 'Financial',
+    description: 'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.',
 };
 
-const account_types: TAccountType[] = [
-    {
-        title_and_type: 'Derived',
-        icon: 'Derived',
-        description: 'Trade CFDs on MT5 with Derived indices that simulate real-world market movements.',
-    },
-    {
-        title_and_type: 'Financial',
-        icon: 'Financial',
-        description: 'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.',
-    },
-];
-
-const ModalContent = ({ account_type_card, selectAccountTypeCard }: TModalContent) => {
+const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
         selectAccountTypeCard(account_type_card === cardType ? '' : cardType);
     };
     return (
-        <div className='account-type-card__wrapper'>
-            {account_types.map(account => (
-                <div
-                    key={account.title_and_type}
-                    className={classNames('account-type-card', {
-                        'account-type-card--selected': account_type_card === account.title_and_type,
-                    })}
-                    onClick={() => cardSelection(account.title_and_type)}
-                >
-                    <div className='account-type-card__image'>
-                        <TradigPlatformIconProps icon={account.title_and_type as TIconTypes} size={64} />
-                    </div>
-                    <div className='account-type-card__header'>
-                        <Text as='h2' weight='bold'>
-                            {localize(`${account.title_and_type}`)}
-                        </Text>
-                    </div>
-                    <div className='account-type-card__description'>
-                        <Text as='p' size='xxs' align='center'>
-                            {localize(`${account.description}`)}
-                        </Text>
-                    </div>
-                </div>
-            ))}
+        <div
+            className={classNames('account-type-card', {
+                'account-type-card--selected': account_type_card === title_and_type,
+            })}
+            onClick={() => cardSelection(title_and_type)}
+        >
+            <div className='account-type-card__image'>
+                <TradigPlatformIconProps icon={icon as TIconTypes} size={64} />
+            </div>
+            <div className='account-type-card__header'>
+                <Text as='h2' weight='bold'>
+                    {localize(`${title_and_type}`)}
+                </Text>
+            </div>
+            <div className='account-type-card__description'>
+                <Text as='p' size='xxs' align='center'>
+                    {localize(`${description}`)}
+                </Text>
+            </div>
         </div>
     );
 };
 
-const AccountTypeModal = () => {
-    const { tradinghub, ui } = useStores();
+const ModalContent = ({
+    account_type_card,
+    selectAccountTypeCard,
+    is_financial_available,
+    is_synthetic_available,
+}: TModalContent) => {
+    return (
+        <div className='account-type-card__wrapper'>
+            {is_synthetic_available && (
+                <AccountCard
+                    account_type_card={account_type_card}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${derived_account.title_and_type}`)}
+                    description={derived_account.description}
+                    title_and_type={derived_account.title_and_type}
+                    icon={derived_account.icon}
+                />
+            )}
+            {is_financial_available && (
+                <AccountCard
+                    account_type_card={account_type_card}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${financial_account.title_and_type}`)}
+                    description={financial_account.description}
+                    title_and_type={financial_account.title_and_type}
+                    icon={financial_account.icon}
+                />
+            )}
+        </div>
+    );
+};
+
+const MT5AccountTypeModal = () => {
+    const { traders_hub, ui, client, modules } = useStores();
     const {
         is_account_type_modal_visible,
         toggleAccountTypeModalVisibility,
         account_type_card,
         selectAccountTypeCard,
-    } = tradinghub;
+    } = traders_hub;
+    const { toggleJurisdictionModal, setAccountType, account_type } = modules.cfd;
+    const { trading_platform_available_accounts } = client;
     const { enableApp, disableApp } = ui;
+    const is_financial_available = trading_platform_available_accounts.some(
+        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
+    );
+
+    const is_synthetic_available = trading_platform_available_accounts.some(
+        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
+    );
+
+    const set_account_type = () =>
+        account_type_card === 'Derived'
+            ? setAccountType({ category: 'real', type: 'synthetic' })
+            : setAccountType({ category: 'real', type: 'financial' });
+
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
@@ -92,12 +121,18 @@ const AccountTypeModal = () => {
                         <ModalContent
                             account_type_card={account_type_card}
                             selectAccountTypeCard={selectAccountTypeCard}
+                            is_financial_available={is_financial_available}
+                            is_synthetic_available={is_synthetic_available}
                         />
                         <Modal.Footer has_separator>
                             <Button
                                 disabled={!account_type_card}
                                 primary
-                                // onClick={() => {}}
+                                onClick={() => {
+                                    set_account_type();
+                                    toggleAccountTypeModalVisibility();
+                                    toggleJurisdictionModal();
+                                }}
                             >
                                 {localize(`Next`)}
                             </Button>
@@ -114,12 +149,19 @@ const AccountTypeModal = () => {
                         <ModalContent
                             account_type_card={account_type_card}
                             selectAccountTypeCard={selectAccountTypeCard}
+                            is_financial_available={is_financial_available}
+                            is_synthetic_available={is_synthetic_available}
                         />
                         <Modal.Footer has_separator>
                             <Button
+                                style={{ width: '100%' }}
                                 disabled={!account_type_card}
                                 primary
-                                // onClick={() => {}}
+                                onClick={() => {
+                                    set_account_type();
+                                    toggleAccountTypeModalVisibility();
+                                    toggleJurisdictionModal();
+                                }}
                             >
                                 {localize(`Next`)}
                             </Button>
@@ -130,4 +172,4 @@ const AccountTypeModal = () => {
         </div>
     );
 };
-export default observer(AccountTypeModal);
+export default observer(MT5AccountTypeModal);

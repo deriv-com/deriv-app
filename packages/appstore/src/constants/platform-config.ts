@@ -1,10 +1,15 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
-import { TAccountCategory, TRegionAvailability } from 'Types';
+import { TRegionAvailability } from 'Types';
 
-export const account_types: TAccountCategory[] = ['real', 'demo'];
-export const region_availability: TRegionAvailability[] = ['Non-EU', 'EU'];
+export type AccountType = { text: 'Real' | 'Demo'; value: 'real' | 'demo' };
+export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
+export const account_types: AccountType[] = [
+    { text: 'Demo', value: 'demo' },
+    { text: 'Real', value: 'real' },
+];
+export const region_availability: RegionAvailability[] = ['Non-EU', 'EU'];
 
 export type BrandConfig = {
     name: string;

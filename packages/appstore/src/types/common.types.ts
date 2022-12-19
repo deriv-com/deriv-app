@@ -1,4 +1,6 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { PlatformIcons } from 'Assets/svgs/trading-platform';
+import { RegionAvailability } from 'Constants/platform-config';
 
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
     ? ElementType
@@ -84,3 +86,15 @@ export type TStaticAccountProps = {
     platform: TPlatform;
     type: TMarketType;
 };
+
+export interface AvailableAccount {
+    name: string;
+    sub_title?: string;
+    description?: string;
+    is_visible?: boolean;
+    is_disabled?: boolean;
+    platform?: string;
+    market_type?: 'all' | 'financial' | 'synthetic';
+    icon: keyof typeof PlatformIcons;
+    availability: RegionAvailability;
+}

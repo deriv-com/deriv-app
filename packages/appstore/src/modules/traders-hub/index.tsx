@@ -7,13 +7,16 @@ import './traders-hub.scss';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '@deriv/components';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
+    const { is_eu, selected_platform_type } = client;
+    const { setTogglePlatformType } = traders_hub;
+
     const platform_toggle_options = [
-        { text: `${client.is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-        { text: 'CFD', value: 'cfd' },
+        { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
+        { text: 'CFDs', value: 'cfd' },
     ];
 
     const platformTypeChange = (event: {
@@ -22,12 +25,13 @@ const TradersHub = () => {
             name: string;
         };
     }) => {
-        traders_hub.setTogglePlatformType(event.target.value);
+        setTogglePlatformType(event.target.value);
     };
+
     return (
         <>
-            <div id='traders-hub' className='traders-hub'>
-                <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
+            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
+                <div id='traders-hub' className='traders-hub'>
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>
@@ -40,17 +44,17 @@ const TradersHub = () => {
                             buttons_arr={platform_toggle_options}
                             className='traders-hub__button-toggle'
                             has_rounded_button
-                            is_animated
+                            is_traders_hub={window.location.pathname === routes.traders_hub}
                             name='platforn_type'
                             onChange={platformTypeChange}
-                            value={traders_hub.selected_platform_type}
+                            value={selected_platform_type}
                         />
-                        {traders_hub.selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
-                        {traders_hub.selected_platform_type === 'cfd' && <CFDsListing />}
+                        {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
+                        {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
-                </Div100vhContainer>
-            </div>
+                </div>
+            </Div100vhContainer>
         </>
     );
 };

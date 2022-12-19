@@ -9,9 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
-    const { tradinghub } = useStores();
-    const { toggleRegulatorsCompareModal } = tradinghub;
-    const is_real = tradinghub.selected_account_type === 'real';
+    const { traders_hub } = useStores();
+    const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
+    const is_real = selected_account_type === 'real';
 
     return (
         <React.Fragment>
@@ -42,8 +42,8 @@ const MainTitleBar = () => {
                                 <Icon icon='IcInfoOutline' />
                             </div>
                             <Tabs
-                                active_index={tradinghub.active_index}
-                                onTabItemClick={tradinghub.handleTabItemClick}
+                                active_index={active_index}
+                                onTabItemClick={handleTabItemClick}
                                 top
                                 is_scrollable
                                 is_overflow_hidden

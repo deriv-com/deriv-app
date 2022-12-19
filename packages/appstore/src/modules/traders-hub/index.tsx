@@ -11,12 +11,12 @@ import { isDesktop, routes } from '@deriv/shared';
 
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
-    const { is_eu, selected_platform_type } = client;
-    const { setTogglePlatformType } = traders_hub;
+    const { is_eu } = client;
+    const { selected_platform_type, setTogglePlatformType } = traders_hub;
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-        { text: 'CFDs', value: 'cfd' },
+        { text: 'CFD', value: 'cfd' },
     ];
 
     const platformTypeChange = (event: {

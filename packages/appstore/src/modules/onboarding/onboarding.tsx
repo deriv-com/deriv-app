@@ -29,10 +29,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
     const { toggleIsTourOpen } = traders_hub;
-    const { is_eu, is_eu_country, is_logged_in } = client;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
-    const { setIsPreAppStore } = React.useContext(PlatformContext);
+    const { is_eu, is_eu_country, is_logged_in, setIsPreAppStore } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {

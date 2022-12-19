@@ -71,6 +71,7 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
+    is_pre_appstore = false;
     has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -156,6 +157,7 @@ export default class ClientStore extends BaseStore {
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
+            is_pre_appstore: observable,
             switch_broadcast: observable,
             initialized_broadcast: observable,
             currencies_list: observable,
@@ -285,7 +287,6 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
-            is_pre_appstore: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -393,6 +394,15 @@ export default class ClientStore extends BaseStore {
                 this.setCookieAccount();
             }
         );
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                const { trading_hub } = this.account_settings;
+                this.is_pre_appstore = !!trading_hub;
+            }
+        );
+
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
@@ -925,11 +935,6 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
-    }
-
-    get is_pre_appstore() {
-        const { trading_hub } = this.account_settings;
-        return !!trading_hub;
     }
 
     getIsMarketTypeMatching = (account, market_type) =>
@@ -2028,10 +2033,9 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            const is_pre_appstore = !!this.account_settings.trading_hub;
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
-                is_pre_appstore === 'true' &&
+                this.is_pre_appstore &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {

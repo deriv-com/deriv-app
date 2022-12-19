@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
 
 const TradeButton = ({ link_to, onAction }: Pick<Actions, 'link_to' | 'onAction'>) => {
-    const { tradinghub, modules } = useStores();
+    const { traders_hub, modules } = useStores();
+    const { is_demo } = traders_hub;
+    const { dxtrade_tokens } = modules.cfd;
+    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
     if (link_to) {
         return (
             <Link to={link_to}>
@@ -20,10 +25,7 @@ const TradeButton = ({ link_to, onAction }: Pick<Actions, 'link_to' | 'onAction'
             </Button>
         );
     }
-    const { is_demo } = tradinghub;
-    const { dxtrade_tokens } = modules.cfd;
-    const REAL_DXTRADE_URL = 'https://dx.deriv.com';
-    const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
     return (
         <a
             className='dc-btn trade-button'

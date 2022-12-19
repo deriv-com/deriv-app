@@ -110,6 +110,7 @@ const Account = ({
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
+    is_pre_appstore,
     is_risky_client,
     is_virtual,
     is_visible,
@@ -121,7 +122,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -207,9 +208,10 @@ Account.propTypes = {
     active_account_landing_company: PropTypes.string,
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_from_derivgo: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -225,9 +227,10 @@ Account.propTypes = {
 export default connect(({ client, common, ui }) => ({
     active_account_landing_company: client.landing_company_shortcode,
     currency: client.currency,
+    is_from_derivgo: common.is_from_derivgo,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_from_derivgo: common.is_from_derivgo,
+    is_pre_appstore: client.is_pre_appstore,
     is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,

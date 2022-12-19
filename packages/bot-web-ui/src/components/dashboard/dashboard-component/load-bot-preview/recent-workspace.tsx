@@ -53,14 +53,14 @@ const RecentWorkspace = ({
         if (selected_strategy_id !== workspace.id) {
             previewRecentStrategy(workspace.id);
             setFileLoaded(true);
-            if (type === 'edit') {
-                loadFileFromRecent();
-                setActiveTab(1);
-            } else if (type === 'save') {
-                toggleSaveModal();
-            } else if (type === 'delete') {
-                onToggleDeleteDialog(true);
-            }
+        }
+        if (type === 'edit') {
+            loadFileFromRecent();
+            setActiveTab(1);
+        } else if (type === 'save') {
+            toggleSaveModal();
+        } else if (type === 'delete') {
+            onToggleDeleteDialog(true);
         }
     };
 

@@ -1,23 +1,41 @@
 .account-type-dropdown {
-    padding: 2px 8px 2px 2px;
-    border-radius: 4px;
+    &--parent {
+        padding: 0;
+        border: none;
+    }
     font-size: 1.4rem;
     font-weight: 700;
     line-height: 2rem;
     text-transform: capitalize;
-    border: 1px solid;
+    border: 2px solid;
 
-    &:focus {
+    &:focus,
+    &:hover {
         outline: none;
     }
 
-    &--real {
-        border-color: var(--status-info);
+    &--real,
+    &--real:focus,
+    &--real:hover {
+        border: 2px solid var(--status-info);
         color: var(--status-info);
     }
 
-    &--demo {
-        border-color: var(--status-success);
+    &--demo,
+    &--demo:focus,
+    &--demo:hover {
+        border: 2px solid var(--status-success);
         color: var(--status-success);
+    }
+}
+.dc-dropdown {
+    &-container {
+        min-width: 8rem;
+        width: 8rem;
+    }
+    &__display {
+        &-text {
+            color: currentColor;
+        }
     }
 }

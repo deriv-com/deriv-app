@@ -33,6 +33,7 @@ type TClientStore = {
     is_identity_verification_needed: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_virtual: boolean;

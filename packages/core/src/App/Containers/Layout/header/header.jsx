@@ -7,8 +7,8 @@ import DTraderHeader from './dtrader-header.jsx';
 import { connect } from 'Stores/connect';
 import { useLocation } from 'react-router-dom';
 
-const Header = ({ is_logged_in }) => {
-    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
+const Header = ({ is_logged_in, is_pre_appstore }) => {
+    const { is_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
     const trading_hub_routes =
         pathname === routes.traders_hub || pathname.startsWith(routes.cashier) || pathname.startsWith(routes.account);
@@ -34,4 +34,5 @@ const Header = ({ is_logged_in }) => {
 
 export default connect(({ client }) => ({
     is_logged_in: client.is_logged_in,
+    is_pre_appstore: client.is_pre_appstore,
 }))(Header);

@@ -4,6 +4,15 @@
     margin: 0 auto;
     user-select: none;
 
+    &--text {
+        display: flex;
+        align-items: center;
+    }
+
+    &--icon {
+        padding-left: 0.5rem;
+    }
+
     &__switch {
         display: inline-flex;
         padding: 0.4rem;

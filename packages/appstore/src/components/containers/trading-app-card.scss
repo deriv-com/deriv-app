@@ -1,7 +1,6 @@
 .trading-app-card {
     display: inline-flex;
     align-items: center;
-    width: 100%;
     height: 8.8rem;
 
     &__details {
@@ -10,12 +9,7 @@
         flex-direction: column;
         height: 100%;
         margin-left: 1.6rem;
-
-        .title {
-        }
-
-        .description {
-        }
+        padding: 0 2rem;
     }
 
     &__actions {

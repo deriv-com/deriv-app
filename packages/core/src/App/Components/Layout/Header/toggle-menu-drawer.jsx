@@ -1,5 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -9,7 +10,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
@@ -105,35 +105,36 @@ const MenuLink = ({
 const ToggleMenuDrawer = React.forwardRef(
     (
         {
-            changeCurrentLanguage,
             account_status,
+            active_account_landing_company,
+            changeCurrentLanguage,
             disableApp,
             enableApp,
+            is_account_transfer_visible,
             is_dark_mode,
             is_logged_in,
             is_onramp_tab_visible,
             is_p2p_enabled,
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
-            is_account_transfer_visible,
-            is_virtual,
+            is_pre_appstore,
             is_risky_client,
+            is_virtual,
             logoutClient,
             platform_switcher,
+            setIsPreAppStore,
             should_allow_authentication,
             title,
             toggleTheme,
-            active_account_landing_company,
         },
         ref
     ) => {
         const liveChat = useLiveChat();
+        const { is_appstore } = React.useContext(PlatformContext);
         const [is_open, setIsOpen] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
-
-        const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
             const processRoutes = () => {
@@ -167,7 +168,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, is_pre_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -462,7 +463,9 @@ const ToggleMenuDrawer = React.forwardRef(
                                             <MobileDrawer.Item>
                                                 <MenuLink
                                                     link_to={routes.traders_hub}
-                                                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
+                                                    icon={
+                                                        is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'
+                                                    }
                                                     text={localize("Trader's hub")}
                                                     onClickLink={toggleDrawer}
                                                     changeCurrentLanguage={changeCurrentLanguage}

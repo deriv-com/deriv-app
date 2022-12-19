@@ -4,14 +4,23 @@ import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
 import { TPlatformContext } from 'Types';
+import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
 
 type TBinaryLink = {
     active_class: string;
+    is_pre_appstore: boolean;
     to: string;
 };
 
-const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
-    const { is_appstore, is_pre_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+const BinaryLink = ({
+    active_class,
+    to,
+    children,
+    is_pre_appstore,
+    ...props
+}: React.PropsWithChildren<Partial<TBinaryLink>>) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const path = normalizePath(to as string);
     const route = findRouteByPath(path, getRoutesConfig({ is_appstore, is_pre_appstore }));
 
@@ -28,4 +37,6 @@ const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChi
     );
 };
 
-export default BinaryLink;
+export default connect(({ client }: RootStore) => ({
+    is_pre_appstore: client.is_pre_appstore,
+}))(BinaryLink);

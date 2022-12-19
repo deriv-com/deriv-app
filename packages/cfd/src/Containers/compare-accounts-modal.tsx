@@ -29,6 +29,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_eu: boolean;
     is_eu_country: boolean;
     is_real_enabled: boolean;
+    is_pre_appstore: boolean;
     residence: string;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
@@ -88,30 +89,28 @@ const DxtradeCompareAccountContent = ({
 };
 
 const CompareAccountsModal = ({
+    context,
     disableApp,
     enableApp,
+    has_unmerged_account,
     is_compare_accounts_visible,
-    landing_companies,
+    is_demo_tab,
+    is_eu_country,
+    is_eu,
     is_loading,
     is_logged_in,
-    is_eu,
-    is_uk,
-    is_eu_country,
+    is_pre_appstore,
     is_real_enabled,
-    has_unmerged_account,
-    platform,
-    residence,
-    is_demo_tab,
-    toggleCompareAccounts,
-    openPasswordModal,
+    is_uk,
+    landing_companies,
     openDerivRealAccountNeededModal,
-    context,
+    openPasswordModal,
+    platform,
     real_account_creation_unlock_date,
+    residence,
     setShouldShowCooldownModal,
+    toggleCompareAccounts,
 }: TCompareAccountsModalProps) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
-    const { is_pre_appstore } = React.useContext(PlatformContext);
     const location = window.location.pathname;
     const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/traders-hub');
 
@@ -278,6 +277,7 @@ export default connect(({ modules, ui, client }: RootStore) => ({
     is_uk: client.is_uk,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
+    is_pre_appstore: client.is_pre_appstore,
     landing_companies: client.landing_companies,
     residence: client.residence,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,

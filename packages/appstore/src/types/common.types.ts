@@ -1,4 +1,6 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { PlatformIcons } from 'Assets/svgs/trading-platform';
+import { RegionAvailability } from 'Constants/platform-config';
 
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
     ? ElementType
@@ -8,8 +10,16 @@ export type RequiredAndNotNull<T> = {
     [P in keyof T]-?: Exclude<T[P], null | undefined>;
 };
 
+export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go';
+export type TBrandData = {
+    name: string;
+    icon?: string;
+    availability?: TRegionAvailability;
+};
+
+export type TBrandConfig = Record<TPlatform, TBrandData>;
 export type TMarketType = 'financial' | 'synthetic' | 'all';
 export type TVisibilityChecker = (platform: TPlatform) => boolean;
 
@@ -18,9 +28,7 @@ export type TMissingRealAccount = {
 };
 
 export type TMt5StatusServerType = Record<'all' | 'platform' | 'server_number', number>;
-
-export type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
-
+export type TMt5StatusServer = Record<TAccountCategory, TMt5StatusServerType[]>;
 export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
 
 export type TOpenAccountTransferMeta = {
@@ -37,7 +45,7 @@ export type TStandPoint = {
     svg: boolean;
 };
 
-export type TCategotyTypes = Record<'demo' | 'real', boolean>;
+export type TCategotyTypes = Record<TAccountCategory, boolean>;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
@@ -97,3 +105,14 @@ export type TIconTypes =
     | 'SmartTrader'
     | 'SmartTraderBlue'
     | 'CFDs';
+export interface AvailableAccount {
+    name: string;
+    sub_title?: string;
+    description?: string;
+    is_visible?: boolean;
+    is_disabled?: boolean;
+    platform?: string;
+    market_type?: 'all' | 'financial' | 'synthetic';
+    icon: keyof typeof PlatformIcons;
+    availability: RegionAvailability;
+}

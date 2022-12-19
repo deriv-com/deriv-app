@@ -30,6 +30,6 @@ export default class RootStore {
         this.contract_replay = new ContractReplayStore(this);
         this.contract_trade = new ContractTradeStore(this);
         this.chart_barrier_store = new ChartBarrierStore(this);
-        this.tradinghub = new TradersHubStore(this);
+        this.traders_hub = new TradersHubStore(this);
     }
 }

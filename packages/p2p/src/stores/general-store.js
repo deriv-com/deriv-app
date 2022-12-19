@@ -235,6 +235,7 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(error.message);
             } else {
                 this.setAdvertiserId(id);
+                this.setAdvertiserInfo(p2p_advertiser_create);
                 this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
                 this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
                 this.setIsAdvertiser(!!is_approved);

@@ -60,6 +60,8 @@ type Props = {
 };
 type TDiv = Props & React.HTMLAttributes<HTMLDivElement>;
 
+const ExtendedDiv = ({ collapsible, ...props }: TDiv) => <div {...props}>{props.children}</div>;
+
 const Dashboard = ({
     active_tab,
     is_drawer_open,
@@ -166,8 +168,6 @@ const Dashboard = ({
         }
     }, [active_tab]);
 
-    const ExtendedDiv = ({ collapsible, ...props }: TDiv) => <div {...props}>{props.children}</div>;
-
     return (
         <React.Fragment>
             <div className='dashboard__main'>
@@ -226,7 +226,7 @@ const Dashboard = ({
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
-                            {!(active_tab === 2) && (
+                            {active_tab !== 2 && (
                                 <MobileWrapper>
                                     <div className={'mobile-wrapper'}>
                                         <Collapsible position='top' is_collapsed={false} as='div'>
@@ -234,11 +234,12 @@ const Dashboard = ({
                                                 className='dashboard__run-strategy-wrapper'
                                                 collapsible={'true'}
                                             >
-                                                {!(active_tab === 2) && <RunStrategy />}
+                                                {active_tab !== 2 && <RunStrategy />}
                                             </ExtendedDiv>
                                         </Collapsible>
                                     </div>
-                                    {/* {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && ( // TODO: implement Performance panel as per new design
+                                    {/* // TODO: implement Performance panel as per new design
+                                        {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
                                         <RunPanel />
                                     )} */}
                                 </MobileWrapper>
@@ -254,7 +255,7 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    {!(active_tab === 2) && <RunStrategy />}
+                    {active_tab !== 2 && <RunStrategy />}
 
                     {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
                         <RunPanel />

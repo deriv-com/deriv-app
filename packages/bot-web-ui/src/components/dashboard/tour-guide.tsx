@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Loading } from '@deriv/components';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
@@ -38,6 +38,16 @@ const TourGuide = ({
 
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
+    React.useEffect(() => {
+        if (img) {
+            const tour_image = new Image();
+            tour_image.onload = () => {
+                setImageLoaded(true);
+            };
+            tour_image.src = img;
+        }
+    }, [step_index]);
+
     return (
         <React.Fragment>
             <div className='onboard'>
@@ -55,9 +65,11 @@ const TourGuide = ({
                     </Text>
                 </div>
 
-                <div className='onboard__container'>
-                    <img src={img} />
-                </div>
+                {img && (
+                    <div className='onboard__container'>
+                        {!has_image_loaded ? <Loading /> : <img src={img} loading='eager' />}
+                    </div>
+                )}
 
                 <div className='onboard__content'>
                     {content.map(content_text => {

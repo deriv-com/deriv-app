@@ -166,3 +166,39 @@
         width: 100%;
     }
 }
+
+#react-joyride-step-0,
+#react-joyride-step-5 {
+    .onboard__container {
+        .initial-loader {
+            width: 33rem;
+            height: 18.6rem;
+        }
+    }
+}
+#react-joyride-step-1 {
+    .onboard__container {
+        .initial-loader {
+            width: 33rem;
+            height: 18.4rem;
+        }
+    }
+}
+
+#react-joyride-step-2,
+#react-joyride-step-3 {
+    .onboard__container {
+        .initial-loader {
+            width: 33rem;
+            height: 18.7rem;
+        }
+    }
+}
+#react-joyride-step-6 {
+    .onboard__container {
+        .initial-loader {
+            width: 33rem;
+            height: 4.4rem;
+        }
+    }
+}

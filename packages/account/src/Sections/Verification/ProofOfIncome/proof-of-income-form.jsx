@@ -200,7 +200,7 @@ const ProofOfIncomeForm = ({
                             is_disabled={
                                 isSubmitting ||
                                 !!(!values.document_type || errors.document_type) ||
-                                (document_file.files && document_file.files.length < 1) ||
+                                document_file.files?.length < 1 ||
                                 !!document_file.error_message ||
                                 !!status.msg
                             }

@@ -134,7 +134,6 @@ All packages must contain the following scripts to perform the stated actions:
 |      ✅       | `serve`            | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`) |
 |      ✅       | `build`            | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument.                                                                          |
 |      ✅       | `test`             | Runs the test suite with eslint, stylelint and jest.                                                                                                                   |
-|      ✅       | `test:mocha`       | Runs only the test suite.                                                                                                                                              |
 |      ✅       | `test:jest`        | Runs only the jest test suite.                                                                                                                                         |
 |      ✅       | `test:qa`          | Runs the e2e test suite.                                                                                                                                               |
 |      ✅       | `test:performance` | Runs the performance test suite.                                                                                                                                       |

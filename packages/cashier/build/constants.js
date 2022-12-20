@@ -30,8 +30,8 @@ const ALIASES = {
     Utils: path.resolve(__dirname, '../src/utils'),
 };
 
-const rules = (is_test_env = false) => [
-    ...(is_test_env
+const rules = (is_test_env = false, is_mocha_only = false) => [
+    ...(is_test_env && !is_mocha_only
         ? [
               {
                   test: /\.(js|jsx|ts|tsx)$/,

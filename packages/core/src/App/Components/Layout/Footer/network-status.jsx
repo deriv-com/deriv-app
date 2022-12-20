@@ -20,7 +20,6 @@ const NetworkStatus = ({ is_mobile, status }) => {
             className={classNames('network-status__wrapper', {
                 'network-status__wrapper--is-mobile': is_mobile,
             })}
-            data-testid='dt_network_status_id'
         >
             {is_mobile ? (
                 network_status_element

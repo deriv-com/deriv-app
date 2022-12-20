@@ -9,7 +9,6 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
     contract_types.map((type, idx) => (
         <div
             id={`dt_contract_${type.value}_item`}
-            data-testid='dt_contract_item'
             key={idx}
             className={classNames('contract-type-item', {
                 'contract-type-item--selected': value === type.value,

@@ -46,8 +46,8 @@ const ALIASES = {
     Utils: path.resolve(__dirname, '../src/Utils'),
 };
 
-const rules = (is_test_env = false) => [
-    ...(is_test_env
+const rules = (is_test_env = false, is_mocha_only = false) => [
+    ...(is_test_env && !is_mocha_only
         ? [
               {
                   test: /\.(js|jsx)$/,
@@ -124,7 +124,7 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = (base, is_test_env) => [
+const plugins = (base, is_test_env, is_mocha_only) => [
     new CleanWebpackPlugin(),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
@@ -140,7 +140,7 @@ const plugins = (base, is_test_env) => [
                   filter: file => file.name !== 'CNAME',
               }),
           ]),
-    ...(is_test_env
+    ...(is_test_env && !is_mocha_only
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),

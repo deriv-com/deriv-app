@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { runAndGetResult } from '../../tools';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
@@ -28,21 +29,21 @@ describe('Misc. tools', () => {
     it('Balance', () => {
         const { balance, balanceStr } = result;
 
-        expect(balance).toBeInstanceOf(Number);
-        expect(balanceStr).toBeInstanceOf(String);
-        expect(parseFloat(balanceStr)).toBe(balance);
+        expect(balance).to.be.a('Number');
+        expect(balanceStr).to.be.a('String');
+        expect(parseFloat(balanceStr)).equal(balance);
     });
 
     it('Total Profit', () => {
         const { totalProfit } = result;
 
-        expect(totalProfit).toBeInstanceOf(Number);
+        expect(totalProfit).to.be.a('Number');
     });
 
     it('Total runs', () => {
         const { totalRuns } = result;
 
-        expect(totalRuns).toBe(0);
+        expect(totalRuns).equal(0);
     });
 
     it('Notify', () => {
@@ -50,7 +51,7 @@ describe('Misc. tools', () => {
             notify: { className, message },
         } = observed;
 
-        expect(className).toBe('info');
-        expect(message).toBe('Test');
+        expect(className).equal('info');
+        expect(message).equal('Test');
     });
 });

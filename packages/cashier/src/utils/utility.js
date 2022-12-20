@@ -46,14 +46,6 @@ class PromiseClass {
     }
 }
 
-const copyToClipboard = text => {
-    const textField = document.createElement('textarea');
-    textField.innerText = text;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
-};
 // TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
@@ -104,4 +96,22 @@ const getAccountText = account => {
     return account_text;
 };
 
-export { copyToClipboard, createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };
+const getNormalizedPaymentMethod = (payment_method, constants, is_for_icon = false) => {
+    const method = is_for_icon ? payment_method.replace(/[' ',-]/g, '').toLowerCase() : payment_method;
+
+    const normalized_payment_method = Object.entries(constants).reduce(
+        (pay_method, [key, value]) => (value.some(el => el === method) ? key : pay_method),
+        ''
+    );
+    return is_for_icon ? normalized_payment_method : normalized_payment_method || payment_method;
+};
+
+export {
+    createElement,
+    getAccountText,
+    getNormalizedPaymentMethod,
+    getStaticHash,
+    isEuCountry,
+    PromiseClass,
+    template,
+};

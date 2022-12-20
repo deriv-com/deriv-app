@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from '../field/field.jsx';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Field from '../field/field';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
@@ -56,12 +56,13 @@ const SelectNative = ({
     list_items,
     onItemSelection,
     placeholder,
-    should_hide_disabled_options,
+    should_hide_disabled_options = true,
     should_show_empty_option = true,
     suffix_icon,
     use_text,
     value,
     data_testid,
+    hide_top_placeholder = false,
     ...props
 }) => (
     <div
@@ -91,6 +92,7 @@ const SelectNative = ({
                 <div
                     className={classNames('dc-select-native__placeholder', {
                         'dc-select-native__placeholder--has-value': value,
+                        'dc-select-native__placeholder--hide-top-placeholder': value && hide_top_placeholder,
                         'dc-select-native__placeholder--disabled': disabled,
                     })}
                 >
@@ -199,10 +201,7 @@ SelectNative.propTypes = {
     data_testid: PropTypes.string,
     hide_selected_value: PropTypes.bool,
     onItemSelection: PropTypes.func,
-};
-
-SelectNative.defaultProps = {
-    should_hide_disabled_options: true,
+    hide_top_placeholder: PropTypes.bool,
 };
 
 export default SelectNative;

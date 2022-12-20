@@ -3,8 +3,8 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
-import RootStore from 'Stores/index';
-import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import RootStore from '../Stores/index';
+import { getMtCompanies, getFormattedJurisdictionCode, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -28,9 +28,9 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from 'Components/success-dialog';
+import SuccessDialog from '../Components/success-dialog';
 import 'Sass/cfd.scss';
-import { connect } from 'Stores/connect';
+import { connect } from '../Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 export type TCFDPasswordFormValues = { password: string };
@@ -46,6 +46,7 @@ type TPasswordModalHeaderProps = {
     is_password_reset_error: boolean;
     platform: string;
     has_mt5_account?: boolean;
+    context: RootStore;
 };
 
 type TIconTypeProps = {
@@ -56,18 +57,21 @@ type TIconTypeProps = {
 
 type TCFDPasswordFormReusedProps = {
     platform: string;
+    context: RootStore;
     error_message: string;
     validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
 
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;
+    context: RootStore;
     onSubmit: TOnSubmitPassword;
     is_real_financial_stp: boolean;
 };
 
 type TCFDCreatePasswordFormProps = TCFDPasswordFormReusedProps & {
     has_mt5_account: boolean;
+    context: RootStore;
     submitPassword: TOnSubmitPassword;
     is_real_financial_stp: boolean;
 };
@@ -79,13 +83,19 @@ type TMultiStepRefProps = {
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     account_title: string;
+    account_type: {
+        category?: string;
+        type?: string;
+    };
     closeModal: () => void;
+    context: RootStore;
     error_type?: string;
     form_error?: string;
     has_mt5_account: boolean;
     is_bvi: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
+    jurisdiction_selected_shortcode: string;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
@@ -94,6 +104,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
 
 type TCFDPasswordModalProps = RouteComponentProps & {
     account_title: string;
+    context: RootStore;
     account_type: {
         category?: string;
         type?: string;
@@ -110,6 +121,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
+    jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
     landing_companies: LandingCompany;
@@ -128,6 +140,7 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
+    context,
 }: TPasswordModalHeaderProps) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
@@ -152,12 +165,20 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, type?: string, category?: string) => {
+const getSubmitText = (
+    platform: string,
+    is_eu: boolean,
+    needs_poi: boolean,
+    jurisdiction_selected_shortcode: string,
+    type?: string,
+    category?: string
+) => {
     if (!category && !type) return '';
 
     const category_label = category === 'real' ? localize('real') : localize('demo');
     const type_label =
         getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
+    const jurisdiction_label = getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
 
     if (category === 'real') {
         if (needs_poi) {
@@ -166,36 +187,43 @@ const getSubmitText = (platform: string, is_eu: boolean, needs_poi: boolean, typ
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
-                    type: type_label,
+                    // TODO: remove below condition once deriv x changes are completed
+                    type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
+                    jurisdiction_selected_shortcode: jurisdiction_label,
                 }}
-                components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+                components={[<strong className='cfd-account__platform' key={0} />]}
             />
         );
     }
 
     return (
         <Localize
-            i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+            i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account.'
             values={{
                 type: type_label,
                 platform: getCFDPlatformLabel(platform),
                 category: category_label,
             }}
-            components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+            components={[<strong className='cfd-account__platform' key={0} />]}
         />
     );
 };
 
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        if (type === 'synthetic') {
-            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
-        } else if (type === 'financial') {
-            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+        switch (type) {
+            case 'all':
+                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
+            case 'synthetic':
+                return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
+            case 'financial':
+                return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+            default:
+                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
     }
 
@@ -237,6 +265,7 @@ const CreatePassword = ({
     password,
     platform,
     validatePassword,
+    context,
     onSubmit,
     error_message,
     is_real_financial_stp,
@@ -290,6 +319,7 @@ const CreatePassword = ({
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
+                                context={context}
                                 has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
@@ -326,6 +356,7 @@ const CreatePassword = ({
                                 platform: getCFDPlatformLabel(platform),
                             })}
                             is_center={true}
+                            context={context}
                         />
                     </div>
                 </form>
@@ -338,6 +369,7 @@ const CFDCreatePasswordForm = ({
     has_mt5_account,
     platform,
     error_message,
+    context,
     validatePassword,
     submitPassword,
     is_real_financial_stp,
@@ -359,6 +391,7 @@ const CFDCreatePasswordForm = ({
             component: (
                 <CreatePassword
                     password={password}
+                    context={context}
                     platform={platform}
                     error_message={error_message}
                     validatePassword={validatePassword}
@@ -376,6 +409,7 @@ const CFDCreatePasswordForm = ({
                         submitPassword({ password }, actions)
                     }
                     onCancel={() => multi_step_ref.current?.goPrevStep()}
+                    context={context}
                 />
             ),
         },
@@ -423,6 +457,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
                                     onCancel={handleCancel}
+                                    context={props.context}
                                     is_absolute={isMobile()}
                                     label={button_label}
                                 />
@@ -438,6 +473,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
         return (
             <CFDCreatePasswordForm
                 platform={props.platform}
+                context={props.context}
                 error_message={props.error_message}
                 validatePassword={props.validatePassword}
                 submitPassword={props.submitPassword}
@@ -471,13 +507,27 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                <Localize
-                                    i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
-                                    values={{
-                                        platform: getCFDPlatformLabel(props.platform),
-                                        account: props.account_title,
-                                    }}
-                                />
+                                {props.account_type.category === 'real' && (
+                                    <Localize
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(props.platform),
+                                            account: props.account_title,
+                                            jurisdiction_shortcode: getFormattedJurisdictionCode(
+                                                props.jurisdiction_selected_shortcode
+                                            ),
+                                        }}
+                                    />
+                                )}
+                                {props.account_type.category === 'demo' && (
+                                    <Localize
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(props.platform),
+                                            account: props.account_title,
+                                        }}
+                                    />
+                                )}
                             </Text>
                         )}
                         <div className='input-element'>
@@ -529,6 +579,7 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
                         label={button_label}
+                        context={props.context}
                         is_center={props.should_set_trading_password}
                         form_error={props.form_error}
                     />
@@ -550,10 +601,12 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_eu,
+    context,
     is_fully_authenticated,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
+    jurisdiction_selected_shortcode,
     platform,
     has_cfd_error,
     landing_companies,
@@ -699,12 +752,15 @@ const CFDPasswordModal = ({
     const cfd_password_form = (
         <CFDPasswordForm
             is_bvi={is_bvi}
+            context={context}
             account_title={account_title}
+            account_type={account_type}
             closeModal={closeModal}
             error_type={error_type}
             error_message={error_message}
             has_mt5_account={has_mt5_account}
             form_error={form_error}
+            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             should_set_trading_password={should_set_trading_password}
             is_real_financial_stp={is_real_financial_stp}
             validatePassword={validatePassword}
@@ -728,6 +784,7 @@ const CFDPasswordModal = ({
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    context={context}
                 />
             )}
             onUnmount={() => getAccountStatus(platform)}
@@ -752,6 +809,7 @@ const CFDPasswordModal = ({
                 has_mt5_account={has_mt5_account}
                 is_password_reset_error={is_password_reset}
                 platform={platform}
+                context={context}
             />
 
             {cfd_password_form}
@@ -777,7 +835,14 @@ const CFDPasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 heading={success_heading}
-                message={getSubmitText(platform, is_eu, needs_poi, account_type.type, account_type.category)}
+                message={getSubmitText(
+                    platform,
+                    is_eu,
+                    needs_poi,
+                    jurisdiction_selected_shortcode,
+                    account_type.type,
+                    account_type.category
+                )}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
@@ -813,6 +878,7 @@ export default connect(({ client, modules }: RootStore) => ({
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
     is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
+    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
     setMt5Error: modules.cfd.setError,
     setCFDSuccessDialog: modules.cfd.setCFDSuccessDialog,
     submitMt5Password: modules.cfd.submitMt5Password,

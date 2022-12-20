@@ -15,6 +15,7 @@ const PaymentAgent = ({
     payment_agent_active_tab_index,
     setActiveTab,
     setPaymentAgentActiveTabIndex,
+    setSideNotes,
     verification_code,
 }) => {
     const initial_active_index =
@@ -36,12 +37,12 @@ const PaymentAgent = ({
     if (is_virtual) {
         return <Virtual />;
     }
+
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
-    return (
-        <PaymentAgentList verification_code={verification_code} is_payment_agent_withdraw={is_payment_agent_withdraw} />
-    );
+
+    return <PaymentAgentList setSideNotes={setSideNotes} />;
 };
 
 PaymentAgent.propTypes = {
@@ -53,6 +54,7 @@ PaymentAgent.propTypes = {
     payment_agent_active_tab_index: PropTypes.number,
     setActiveTab: PropTypes.func,
     setPaymentAgentActiveTabIndex: PropTypes.func,
+    setSideNotes: PropTypes.func,
     verification_code: PropTypes.string,
 };
 

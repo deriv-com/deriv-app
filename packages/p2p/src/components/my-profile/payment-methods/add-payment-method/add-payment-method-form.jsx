@@ -2,23 +2,21 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form } from 'formik';
 import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import ModalForm from 'Components/modal-manager/modal-form';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false }) => {
+const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_ads_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getSelectedPaymentMethodDetails();
         my_profile_store.setAddPaymentMethodErrorMessage('');
-        my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
-
-        return () => {
-            my_profile_store.setSelectedPaymentMethod('');
-        };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -29,9 +27,8 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
 
     return (
         <React.Fragment>
-            <Formik
+            <ModalForm
                 enableReinitialize
-                innerRef={formik_ref}
                 initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.createPaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
@@ -102,7 +99,9 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                                     large
                                     onClick={() => {
                                         if (dirty || my_profile_store.selected_payment_method.length > 0) {
-                                            my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                                            showModal({
+                                                key: 'CancelAddPaymentMethodModal',
+                                            });
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();
                                             my_ads_store.setShouldShowAddPaymentMethodModal(false);
@@ -124,7 +123,7 @@ const AddPaymentMethodForm = ({ formik_ref, should_show_separated_footer = false
                         </Form>
                     );
                 }}
-            </Formik>
+            </ModalForm>
             <Modal
                 is_open={my_profile_store.should_show_add_payment_method_error_modal}
                 small

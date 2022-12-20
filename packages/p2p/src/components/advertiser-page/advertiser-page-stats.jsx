@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -10,6 +9,9 @@ import './advertiser-page.scss';
 const AdvertiserPageStats = () => {
     const { advertiser_page_store, general_store } = useStores();
 
+    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
+    const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
     const {
         buy_completion_rate,
         buy_orders_amount,
@@ -20,7 +22,7 @@ const AdvertiserPageStats = () => {
         sell_completion_rate,
         sell_orders_amount,
         sell_orders_count,
-    } = advertiser_page_store.advertiser_info;
+    } = info;
 
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
@@ -291,10 +293,6 @@ const AdvertiserPageStats = () => {
             </Table>
         </React.Fragment>
     );
-};
-
-AdvertiserPageStats.propTypes = {
-    is_visible: PropTypes.bool,
 };
 
 export default observer(AdvertiserPageStats);

@@ -1,25 +1,26 @@
 import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper, Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { connect } from '../Stores/connect';
+import RootStore from '../Stores/index';
 import { TCFDPersonalDetailsModalProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
 
 type TFormValues = { [key: string]: string };
-type TSetSubmiting = (isSubmitting: boolean) => void;
+type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsModal = ({
     account_settings,
     disableApp,
     enableApp,
-    getChangeableFields,
-    is_fully_authenticated,
+    context,
+    is_from_mt5_compare_accounts_table,
     is_open,
     landing_company,
     openPasswordModal,
+    toggleCompareAccounts,
     toggleCFDPersonalDetailsModal,
     toggleJurisdictionModal,
     residence_list,
@@ -35,7 +36,7 @@ const CFDPersonalDetailsModal = ({
         account_opening_reason: '',
     });
 
-    const initiatePersonalDetails = async (setSubmitting?: TSetSubmiting) => {
+    const initiatePersonalDetails = async (setSubmitting?: TSetSubmitting) => {
         // force request to update settings cache since settings have been updated
         let get_settings_response: GetSettings;
         if (!account_settings) {
@@ -77,7 +78,7 @@ const CFDPersonalDetailsModal = ({
     }, [is_open]);
 
     const transform = (value: unknown) => {
-        const [result] = residence_list.filter(item => item.value === value);
+        const [result] = residence_list?.filter(item => item.value === value);
         return getPropertyValue(result, ['text']) || value;
     };
 
@@ -93,10 +94,14 @@ const CFDPersonalDetailsModal = ({
     const prevStep = () => {
         setFormError('');
         toggleCFDPersonalDetailsModal();
-        toggleJurisdictionModal();
+        if (is_from_mt5_compare_accounts_table) {
+            toggleCompareAccounts();
+        } else {
+            toggleJurisdictionModal();
+        }
     };
 
-    const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmiting, is_dirty = true) => {
+    const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmitting, is_dirty = true) => {
         if (is_dirty) {
             // Set account settings
             const data = await WS.setSettings(value);
@@ -127,12 +132,10 @@ const CFDPersonalDetailsModal = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    changeable_fields={getChangeableFields()}
                     form_error={form_error}
                     has_previous_button
                     index={0}
-                    is_fully_authenticated={is_fully_authenticated}
-                    is_in_personal_details_modal
+                    context={context}
                     is_loading={is_loading}
                     landing_company={landing_company}
                     onCancel={prevStep}
@@ -154,6 +157,7 @@ const CFDPersonalDetailsModal = ({
                     enableApp={enableApp}
                     has_close_icon={true}
                     height='688px'
+                    context={context}
                     id='cfd-personal-details-modal'
                     is_open={is_open}
                     title={localize('Add a real MT5 account')}
@@ -170,6 +174,7 @@ const CFDPersonalDetailsModal = ({
                     portal_element_id='modal_root'
                     title={localize('Add a real MT5 account')}
                     visible={is_open}
+                    context={context}
                     wrapper_classname='account-signup-mobile-dialog'
                 >
                     {getPersonalDetailsForm()}
@@ -179,17 +184,17 @@ const CFDPersonalDetailsModal = ({
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    getChangeableFields: client.getChangeableFields,
-    is_fully_authenticated: client.is_fully_authenticated,
-    is_open: modules.cfd.is_cfd_personal_details_modal_visible,
+    is_open: cfd.is_cfd_personal_details_modal_visible,
+    is_from_mt5_compare_accounts_table: cfd.is_from_mt5_compare_accounts_table,
     landing_company: client.landing_company,
-    openPasswordModal: modules.cfd.enableCFDPasswordModal,
-    toggleCFDPersonalDetailsModal: modules.cfd.toggleCFDPersonalDetailsModal,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
+    openPasswordModal: cfd.enableCFDPasswordModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,
+    toggleCompareAccounts: cfd.toggleCompareAccountsModal,
+    toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
+    toggleJurisdictionModal: cfd.toggleJurisdictionModal,
 }))(CFDPersonalDetailsModal);

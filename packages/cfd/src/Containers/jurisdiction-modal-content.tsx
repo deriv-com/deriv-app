@@ -3,18 +3,19 @@ import { Icon, Text, Checkbox, Popover, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
-import { jurisdiction_contents } from 'Constants/jurisdiction-contents';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
-import { TExistingData } from 'Components/props.types';
+import { jurisdiction_contents } from '../Constants/jurisdiction-contents';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
+import { TExistingData } from '../Components/props.types';
+import { poa_status_codes as StatusCodes } from '@deriv/account';
 
 type TAvailableAccountAPI = [
     {
         market_type: string;
         name: string;
         requirements: {
-            signup: Array<string>;
-            withdrawal: Array<string>;
+            signup: string[];
+            withdrawal: string[];
         };
         shortcode: string;
         sub_account_type: string;
@@ -30,6 +31,7 @@ type TJurisdictionModalContent = {
     poa_status: string;
     poi_status: string;
     is_eu: boolean;
+    context: RootStore;
     is_fully_authenticated: boolean;
     poi_poa_pending: boolean;
     checked: boolean;
@@ -58,6 +60,7 @@ type TJurisdictionCard = {
     poi_poa_none: boolean;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: string;
+    context: RootStore;
     disabled: boolean;
     poa_failed: boolean;
     poi_failed: boolean;
@@ -72,14 +75,6 @@ type TJurisdictionCard = {
     need_poi_for_vanuatu: boolean;
     need_poi_for_bvi_labuan: boolean;
     poi_acknowledged_for_vanuatu: boolean;
-};
-const StatusCodes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    expired: 'expired',
-    suspected: 'suspected',
 };
 
 const JurisdictionCard = ({
@@ -96,6 +91,7 @@ const JurisdictionCard = ({
     poi_acknowledged,
     is_fully_authenticated,
     is_virtual,
+    context,
     poi_verified_for_vanuatu,
     poi_verified_for_labuan_bvi,
     poa_verified,
@@ -115,11 +111,7 @@ const JurisdictionCard = ({
     );
 
     const cardSelection = (cardType: string) => {
-        if (jurisdiction_selected_shortcode === cardType) {
-            setJurisdictionSelectedShortcode('');
-        } else {
-            setJurisdictionSelectedShortcode(cardType);
-        }
+        setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
     const Checkmark = () => (
@@ -131,7 +123,7 @@ const JurisdictionCard = ({
     const getAccountTitle = () => {
         switch (account_type) {
             case 'synthetic':
-                return 'Synthetic';
+                return 'Derived';
             case 'financial':
                 return 'Financial';
             default:
@@ -373,6 +365,7 @@ const JurisdictionModalContent = ({
     poa_status,
     poi_status,
     is_eu,
+    context,
     is_fully_authenticated,
     checked,
     setChecked,
@@ -401,10 +394,9 @@ const JurisdictionModalContent = ({
     const poi_poa_verified = poi_status === StatusCodes.verified && poa_status === StatusCodes.verified;
 
     const cardsToBeShown = (type_of_card: string) => {
-        const is_available =
-            account_type === 'synthetic'
-                ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-                : financial_available_accounts?.some(account => account.shortcode === type_of_card);
+        const is_available = (
+            account_type === 'synthetic' ? synthetic_available_accounts : financial_available_accounts
+        )?.some(account => account.shortcode === type_of_card);
         return is_available;
     };
 
@@ -412,26 +404,24 @@ const JurisdictionModalContent = ({
         if (is_virtual && type_of_card !== 'svg') {
             return true;
         }
-        const is_available =
-            account_type === 'synthetic'
-                ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
-                : real_financial_accounts_existing_data?.some(
-                      account => account.landing_company_short === type_of_card
-                  );
+
+        const is_available = (
+            account_type === 'synthetic' ? real_synthetic_accounts_existing_data : real_financial_accounts_existing_data
+        )?.some(account => account.landing_company_short === type_of_card);
 
         return is_available;
     };
 
     const ModalFootNote = () => {
-        const account_type_name = account_type === 'synthetic' ? 'Synthetics' : 'Financial';
+        const account_type_name = account_type === 'synthetic' ? 'Derived' : 'Financial';
 
         return (
-            <>
+            <React.Fragment>
                 {jurisdiction_selected_shortcode === 'svg' && (
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -442,7 +432,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/{{line_break}}L/18/1114).'
                                 values={{ account_type: account_type_name, line_break: '\n' }}
                             />
                         </Text>
@@ -462,7 +452,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                                i18n_default_text='Add your Deriv MT5 {{account_type}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -472,7 +462,7 @@ const JurisdictionModalContent = ({
                     <div className={`${card_classname}__footnote`}>
                         <Text as='p' color='prominent' weight='bold' align='center' size='xs' line_height='xs'>
                             <Localize
-                                i18n_default_text='Add your DMT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
+                                i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
                                 values={{ account_type: account_type_name }}
                             />
                         </Text>
@@ -568,9 +558,7 @@ const JurisdictionModalContent = ({
                 {poa_failed &&
                     !poa_acknowledged &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' ||
-                        jurisdiction_selected_shortcode === 'labuan' ||
-                        jurisdiction_selected_shortcode === 'maltainvest') &&
+                    ['bvi', 'labuan', 'maltainvest'].some(code => code === jurisdiction_selected_shortcode) &&
                     need_poi_for_bvi_labuan && (
                         <Text
                             as='p'
@@ -601,16 +589,14 @@ const JurisdictionModalContent = ({
                     poi_acknowledged_for_bvi_labuan &&
                     !poi_poa_verified &&
                     jurisdiction_selected_shortcode &&
-                    (jurisdiction_selected_shortcode === 'bvi' ||
-                        jurisdiction_selected_shortcode === 'labuan' ||
-                        jurisdiction_selected_shortcode === 'maltainvest') && (
+                    ['bvi', 'labuan', 'maltainvest'].some(code => code === jurisdiction_selected_shortcode) && (
                         <div className={`${card_classname}__footnote--pending`}>
                             <Text as='p' align='center' color='yellow' weight='bold' size='xs' line_height='xs'>
                                 <Localize i18n_default_text='You will be able to open this account once your submitted documents have been verified.' />
                             </Text>
                         </div>
                     )}
-            </>
+            </React.Fragment>
         );
     };
 
@@ -671,7 +657,7 @@ const JurisdictionModalContent = ({
     };
 
     return (
-        <>
+        <React.Fragment>
             <div className={`${card_classname}__wrapper`}>
                 {cardsToBeShown('svg') && (
                     <JurisdictionCard
@@ -682,6 +668,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('svg')}
                         poa_failed={poa_failed}
@@ -709,6 +696,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('bvi')}
                         poa_failed={poa_failed}
@@ -736,6 +724,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('maltainvest')}
                         poa_failed={poa_failed}
@@ -763,6 +752,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('vanuatu')}
                         poa_failed={poa_failed}
@@ -790,6 +780,7 @@ const JurisdictionModalContent = ({
                         account_type={account_type}
                         poa_status={poa_status}
                         poi_status={poi_status}
+                        context={context}
                         setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                         disabled={disableCard('labuan')}
                         poa_failed={poa_failed}
@@ -811,7 +802,7 @@ const JurisdictionModalContent = ({
             </div>
             <ModalFootNote />
             {showCheckBox() && <ModalCheckbox is_checked={checked} onCheck={setChecked} />}
-        </>
+        </React.Fragment>
     );
 };
 

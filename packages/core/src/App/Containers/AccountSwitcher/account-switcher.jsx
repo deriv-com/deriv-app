@@ -25,7 +25,6 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
-import { getExchangeRate } from 'Utils/ExchangeCurrencyRate/exchange_currency_rate';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -33,7 +32,7 @@ import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
+        !props.is_virtual || props.should_show_real_accounts_list || props.is_real_tab_enabled ? 0 : 1
     );
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -41,13 +40,26 @@ const AccountSwitcher = props => {
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
-    const [exchanged_rate, setExchangedRate] = React.useState('');
+    const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
+    const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
+    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
+
+    const account_total_balance_currency = props.obj_total_balance.currency;
+    const cfd_real_currency =
+        props.mt5_login_list.find(account => !isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => !isDemo(account))?.currency;
+
+    const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
+    const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
+    const cfd_demo_currency =
+        props.mt5_login_list.find(account => isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -56,12 +68,20 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
-
-        getExchangeRate(props.accounts[vrtc_loginid].currency, props.obj_total_balance.currency).then(res =>
-            setExchangedRate(res)
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const getCurrentExchangeRate = (currency, setExchangeRate) => {
+            props.getExchangeRate(currency, account_total_balance_currency).then(res => {
+                setExchangeRate(res);
+            });
+        };
+        if (cfd_real_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
+        }
+        if (vrtc_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
+        }
+        if (cfd_demo_currency !== account_total_balance_currency) {
+            getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
+        }
     }, []);
 
     React.useEffect(() => {
@@ -185,7 +205,10 @@ const AccountSwitcher = props => {
     };
 
     const openDXTradeDemoAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.DXTRADE}.${account_type}`);
+        sessionStorage.setItem(
+            'open_cfd_account_type',
+            `demo.${CFD_PLATFORMS.DXTRADE}.${account_type === 'dxtrade' ? 'all' : account_type}`
+        );
         redirectToDXTradeDemo();
     };
 
@@ -209,6 +232,13 @@ const AccountSwitcher = props => {
         props.toggleSetCurrencyModal();
     };
 
+    // TODO: Remove this and all usage after real release (74063)
+    const hasUnmergedAccounts = accounts => {
+        return Object.keys(accounts).some(
+            key => accounts[key].market_type === 'synthetic' || accounts[key].market_type === 'financial'
+        );
+    };
+
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -220,7 +250,17 @@ const AccountSwitcher = props => {
     // * we should map them to landing_company:
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
-    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu, getIsEligibleForMoreAccounts) => {
+    const getRemainingAccounts = (existing_cfd_accounts, platform, is_eu, is_demo, getIsEligibleForMoreAccounts) => {
+        const all_config = getCFDConfig(
+            'all',
+            props.landing_companies?.dxtrade_all_company,
+            existing_cfd_accounts,
+            props.mt5_trading_servers,
+            platform,
+            is_eu,
+            props.trading_platform_available_accounts,
+            getIsEligibleForMoreAccounts
+        );
         const gaming_config = getCFDConfig(
             'gaming',
             platform === CFD_PLATFORMS.MT5
@@ -250,6 +290,18 @@ const AccountSwitcher = props => {
         if (is_eu) {
             return [...financial_config];
         }
+
+        // TODO: change this condition before real release
+        if (is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return [...all_config];
+        }
+
+        if (!is_demo && platform === CFD_PLATFORMS.DXTRADE) {
+            return hasUnmergedAccounts(existing_cfd_accounts)
+                ? [...gaming_config, ...financial_config]
+                : [...all_config];
+        }
+
         return [...gaming_config, ...financial_config];
     };
 
@@ -272,15 +324,23 @@ const AccountSwitcher = props => {
     };
 
     const getDemoDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(isDemo);
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(
+            account => isDemo(account) && account.enabled === 1
+        );
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreDemoMt5Svg);
+        return getRemainingAccounts(
+            getDemoMT5(),
+            CFD_PLATFORMS.MT5,
+            props.is_eu,
+            true,
+            props.isEligibleForMoreDemoMt5Svg
+        );
     };
 
     const getRemainingDemoDXTrade = () => {
-        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu);
+        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu, true);
     };
 
     const getRealMT5 = () => {
@@ -288,7 +348,11 @@ const AccountSwitcher = props => {
     };
 
     const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(account =>
+            hasUnmergedAccounts(props.dxtrade_accounts_list)
+                ? !isDemo(account) && account.enabled === 1 && account.market_type !== 'all'
+                : !isDemo(account) && account.enabled === 1 && account.market_type === 'all'
+        );
     };
 
     const findServerForAccount = acc => {
@@ -299,7 +363,13 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingRealMT5 = () => {
-        return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5, props.is_eu, props.isEligibleForMoreRealMt5);
+        return getRemainingAccounts(
+            getRealMT5(),
+            CFD_PLATFORMS.MT5,
+            props.is_eu,
+            false,
+            props.isEligibleForMoreRealMt5
+        );
     };
 
     const getRemainingRealDXTrade = () => {
@@ -332,17 +402,12 @@ const AccountSwitcher = props => {
         return !!(props.is_virtual && props.can_upgrade_to);
     };
 
-    const getTotalBalance = (accounts, is_demo = true) => {
+    const getTotalBalanceCfd = (accounts, is_demo, exchange_rate) => {
         return accounts
             .filter(account => (is_demo ? isDemo(account) : !isDemo(account)))
             .reduce(
                 (total, account) => {
-                    const real_account_loginid = props.account_list?.find(acc => !acc.is_virtual)?.loginid;
-                    if (!is_demo && props.accounts[real_account_loginid]?.currency !== account.currency) {
-                        total.balance += account.balance * exchanged_rate;
-                    } else {
-                        total.balance += account.balance;
-                    }
+                    total.balance += account.balance * exchange_rate;
                     return total;
                 },
                 { balance: 0 }
@@ -350,20 +415,14 @@ const AccountSwitcher = props => {
     };
 
     const getTotalDemoAssets = () => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
-        const mt5_demo_total = getTotalBalance(props.mt5_login_list);
-        const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
+        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
+        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
 
-        let total = vrtc_currency !== props.obj_total_balance.currency ? vrtc_balance * exchanged_rate : vrtc_balance;
-
-        if (Array.isArray(props.mt5_login_list)) {
-            total += mt5_demo_total.balance;
-        }
-        if (Array.isArray(props.dxtrade_accounts_list)) {
-            total += dxtrade_demo_total.balance;
-        }
+        const total =
+            (vrtc_currency !== account_total_balance_currency ? vrtc_balance * exchanged_rate_demo : vrtc_balance) +
+            mt5_demo_total.balance +
+            dxtrade_demo_total.balance;
 
         return total;
     };
@@ -372,8 +431,8 @@ const AccountSwitcher = props => {
         // props.obj_total_balance.amount_mt5 is returning 0 regarding performance issues so we have to calculate
         // the total MT5 accounts balance from props.mt5_login_list.
         // You can remove this part if WS sends obj_total_balance.amount_mt5 correctly.
-        const mt5_total = getTotalBalance(props.mt5_login_list, false);
-        const dxtrade_total = getTotalBalance(props.dxtrade_accounts_list, false);
+        const mt5_total = getTotalBalanceCfd(props.mt5_login_list, false, exchanged_rate_cfd_real);
+        const dxtrade_total = getTotalBalanceCfd(props.dxtrade_accounts_list, false, exchanged_rate_cfd_real);
 
         let total = props.obj_total_balance.amount_real;
 
@@ -457,7 +516,7 @@ const AccountSwitcher = props => {
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance < account_init_balance;
+        return account.is_virtual && account.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -481,42 +540,44 @@ const AccountSwitcher = props => {
 
     const demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
-            <AccountWrapper
-                header={localize('Deriv Accounts')}
-                is_visible={is_deriv_demo_visible}
-                toggleVisibility={() => {
-                    toggleVisibility('demo_deriv');
-                }}
-            >
-                <div className='acc-switcher__accounts'>
-                    {getSortedAccountList(props.account_list, props.accounts)
-                        .filter(account => account.is_virtual)
-                        .map(account => (
-                            <AccountList
-                                is_dark_mode_on={props.is_dark_mode_on}
-                                key={account.loginid}
-                                balance={props.accounts[account.loginid].balance}
-                                currency={props.accounts[account.loginid].currency}
-                                currency_icon={`IcCurrency-${account.icon}`}
-                                country_standpoint={props.country_standpoint}
-                                display_type={'currency'}
-                                has_balance={'balance' in props.accounts[account.loginid]}
-                                has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
-                                is_disabled={account.is_disabled}
-                                is_virtual={account.is_virtual}
-                                loginid={account.loginid}
-                                redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
-                                onClickResetVirtualBalance={resetBalance}
-                                selected_loginid={props.account_loginid}
-                            />
-                        ))}
-                </div>
-            </AccountWrapper>
+            {vrtc_loginid && (
+                <AccountWrapper
+                    header={localize('Deriv Accounts')}
+                    is_visible={is_deriv_demo_visible}
+                    toggleVisibility={() => {
+                        toggleVisibility('demo_deriv');
+                    }}
+                >
+                    <div className='acc-switcher__accounts'>
+                        {getSortedAccountList(props.account_list, props.accounts)
+                            .filter(account => account.is_virtual)
+                            .map(account => (
+                                <AccountList
+                                    is_dark_mode_on={props.is_dark_mode_on}
+                                    key={account.loginid}
+                                    balance={props.accounts[account.loginid].balance}
+                                    currency={props.accounts[account.loginid].currency}
+                                    currency_icon={`IcCurrency-${account.icon}`}
+                                    country_standpoint={props.country_standpoint}
+                                    display_type={'currency'}
+                                    has_balance={'balance' in props.accounts[account.loginid]}
+                                    has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
+                                    is_disabled={account.is_disabled}
+                                    is_virtual={account.is_virtual}
+                                    loginid={account.loginid}
+                                    redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                    onClickResetVirtualBalance={resetBalance}
+                                    selected_loginid={props.account_loginid}
+                                />
+                            ))}
+                    </div>
+                </AccountWrapper>
+            )}
             {isMT5Allowed('demo') && (
                 <React.Fragment>
-                    <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
+                    {vrtc_loginid && <div className='acc-switcher__separator acc-switcher__separator--no-padding' />}
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_demo_visible}
                         toggleVisibility={() => {
                             toggleVisibility('demo_dmt5');
@@ -697,7 +758,12 @@ const AccountSwitcher = props => {
                             <Button
                                 id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
-                                    props.openRealAccountSignup(account);
+                                    if (props.real_account_creation_unlock_date) {
+                                        closeAccountsDialog();
+                                        props.setShouldShowCooldownModal(true);
+                                    } else {
+                                        props.openRealAccountSignup(account);
+                                    }
                                 }}
                                 className='acc-switcher__new-account-btn'
                                 secondary
@@ -730,7 +796,7 @@ const AccountSwitcher = props => {
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
-                        header={localize('DMT5 Accounts')}
+                        header={localize('Deriv MT5 Accounts')}
                         is_visible={is_dmt5_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dmt5');
@@ -790,7 +856,14 @@ const AccountSwitcher = props => {
                                             {account.title}
                                         </Text>
                                         <Button
-                                            onClick={() => openMt5RealAccount(account.type)}
+                                            onClick={() => {
+                                                if (props.real_account_creation_unlock_date) {
+                                                    closeAccountsDialog();
+                                                    props.setShouldShowCooldownModal(true);
+                                                } else {
+                                                    openMt5RealAccount(account.type);
+                                                }
+                                            }}
                                             className='acc-switcher__new-account-btn'
                                             secondary
                                             small
@@ -858,7 +931,10 @@ const AccountSwitcher = props => {
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {account.title}
+                                            {/* TODO: Remove the below condition once Deriv X update is released */}
+                                            {account.title === localize('Derived')
+                                                ? localize('Synthetic')
+                                                : account.title}
                                         </Text>
                                         <Button
                                             onClick={() => openDXTradeRealAccount(account.type)}
@@ -925,9 +1001,9 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={props.obj_total_balance.currency}
+                        currency={account_total_balance_currency}
                         amount={formatMoney(
-                            props.obj_total_balance.currency,
+                            account_total_balance_currency,
                             isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}
@@ -965,6 +1041,7 @@ AccountSwitcher.propTypes = {
     country_standpoint: PropTypes.object,
     dxtrade_accounts_list: PropTypes.array,
     dxtrade_accounts_list_error: PropTypes.string, // is this correct?
+    getExchangeRate: PropTypes.func,
     has_active_real_account: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     has_fiat: PropTypes.bool,
@@ -1010,6 +1087,8 @@ AccountSwitcher.propTypes = {
     trading_platform_available_accounts: PropTypes.array,
     upgradeable_landing_companies: PropTypes.array,
     updateMt5LoginList: PropTypes.func,
+    real_account_creation_unlock_date: PropTypes.number,
+    setShouldShowCooldownModal: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1024,6 +1103,7 @@ const account_switcher = withRouter(
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
         country_standpoint: client.country_standpoint,
+        getExchangeRate: common.getExchangeRate,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,
@@ -1067,6 +1147,8 @@ const account_switcher = withRouter(
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
         should_show_real_accounts_list: ui.should_show_real_accounts_list,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
     }))(AccountSwitcher)
 );

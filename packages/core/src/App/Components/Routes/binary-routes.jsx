@@ -9,17 +9,18 @@ import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 const BinaryRoutes = props => {
     const location = useLocation();
     const { is_appstore } = React.useContext(PlatformContext);
-    const { is_social_signup } = props;
     React.useEffect(() => {
         props.pushDataLayer({ event: 'page_load' });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
+    const is_eu_country = props.isEuropeCountry;
+
     return (
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig({ is_appstore }, is_social_signup).map((route, idx) => (
+                {getRoutesConfig({ is_appstore, is_eu_country }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
@@ -31,5 +32,5 @@ export default connect(({ ui, gtm, client }) => ({
     prompt_when: ui.prompt_when,
     promptFn: ui.promptFn,
     pushDataLayer: gtm.pushDataLayer,
-    is_social_signup: client.is_social_signup,
+    isEuropeCountry: client.isEuropeCountry,
 }))(BinaryRoutes);

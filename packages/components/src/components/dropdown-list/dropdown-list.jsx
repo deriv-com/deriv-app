@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
 const ListItem = ({
     is_active,
@@ -100,7 +100,7 @@ const ListItems = React.forwardRef((props, ref) => {
                     />
                 ))
             ) : (
-                <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
+                <div className='dc-dropdown-list__item dc-dropdown-list__item--not-found'>{not_found_text}</div>
             )}
         </>
     );
@@ -131,6 +131,7 @@ const DropdownList = React.forwardRef((props, ref) => {
 
     const el_dropdown_list = (
         <CSSTransition
+            appear={is_visible}
             in={is_visible}
             timeout={100}
             classNames={{

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
 import { reset } from '../utils/url/url';
 

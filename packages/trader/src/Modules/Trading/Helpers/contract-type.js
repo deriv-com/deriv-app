@@ -106,7 +106,7 @@ export const getContractsList = list =>
     );
 
 export const findContractCategory = (list, item) =>
-    list.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
+    list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || {};
 
 export const getContractCategoryKey = (list, item) => findContractCategory(list, item).key;
 

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { runAndGetResult, expectResultTypes } from '../tools';
 
 describe('Many getTicks in a row', () => {

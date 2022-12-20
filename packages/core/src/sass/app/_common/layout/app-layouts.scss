@@ -86,10 +86,8 @@
         display: none;
     }
 
-    @include mobile {
-        @media screen and (max-aspect-ratio: 13/9) {
-            display: none;
-        }
+    @media screen and (hover: none) and (pointer: coarse) and (orientation: portrait) {
+        display: none;
     }
 }
 

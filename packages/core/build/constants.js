@@ -148,7 +148,7 @@ const plugins = ({ base, is_test_env, env }) => {
         ...(IS_RELEASE
             ? []
             : [new WebpackManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
-        ...(is_test_env && !env.mocha_only
+        ...(is_test_env
             ? [new StylelintPlugin(stylelintConfig())]
             : [
                   new GenerateSW(generateSWConfig(IS_RELEASE)),

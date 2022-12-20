@@ -235,6 +235,7 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(error.message);
             } else {
                 this.setAdvertiserId(id);
+                this.setAdvertiserInfo(p2p_advertiser_create);
                 this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
                 this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
                 this.setIsAdvertiser(!!is_approved);
@@ -388,7 +389,6 @@ export default class GeneralStore extends BaseStore {
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
         this.setIsP2pBlockedForPa(false);
-        this.props.setIsUserOnP2p(true);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -527,7 +527,6 @@ export default class GeneralStore extends BaseStore {
         this.setActiveIndex(0);
         this.props.refreshNotifications();
         this.props.filterNotificationMessages();
-        this.props.setIsUserOnP2p(false);
     }
 
     onNicknamePopupClose() {

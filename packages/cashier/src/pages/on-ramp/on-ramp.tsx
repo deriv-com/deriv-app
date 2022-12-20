@@ -87,7 +87,12 @@ const OnRamp = ({ menu_options, setSideNotes }: TOnRampProps) => {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
-        return () => onUnmountOnramp();
+        return () => {
+            onUnmountOnramp();
+            if (typeof setSideNotes === 'function') {
+                setSideNotes([]);
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
 

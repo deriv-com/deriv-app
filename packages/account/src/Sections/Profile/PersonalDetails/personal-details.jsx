@@ -922,7 +922,12 @@ export const PersonalDetailsForm = ({
                                                     </fieldset>
                                                 )}
                                                 {'tax_identification_number' in values && (
-                                                    <fieldset className='account-form__fieldset'>
+                                                    <fieldset
+                                                        className={classNames('account-form__fieldset', {
+                                                            'account-form__fieldset--tin':
+                                                                getWarningMessages(values).tax_identification_number,
+                                                        })}
+                                                    >
                                                         <Input
                                                             data-lpignore='true'
                                                             type='text'

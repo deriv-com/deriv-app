@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { buildBarriersConfig } from '../barrier';
 
 describe('buildBarriersConfig', () => {
@@ -22,7 +21,7 @@ describe('buildBarriersConfig', () => {
         const contract = {
             ...contract_obj,
         };
-        expect(buildBarriersConfig(contract)).to.eql(undefined);
+        expect(buildBarriersConfig(contract)).toBeUndefined();
     });
 
     it('Returns barriers with added values when contract has barrier but equals to zero', () => {
@@ -30,7 +29,7 @@ describe('buildBarriersConfig', () => {
             ...contract_obj,
             barriers: 0,
         };
-        expect(buildBarriersConfig(contract)).to.eql(undefined);
+        expect(buildBarriersConfig(contract)).toBeUndefined();
     });
 
     it('Returns barriers with including empty object when contract has barriers but not values', () => {
@@ -38,7 +37,7 @@ describe('buildBarriersConfig', () => {
             ...contract_obj,
             barriers: 1,
         };
-        expect(buildBarriersConfig(contract)).to.eql({
+        expect(buildBarriersConfig(contract)).toEqual({
             count: 1,
             daily: {},
         });
@@ -52,7 +51,7 @@ describe('buildBarriersConfig', () => {
             barrier: '33',
             high_barrier: '44',
         };
-        expect(buildBarriersConfig(contract)).to.eql({
+        expect(buildBarriersConfig(contract)).toEqual({
             count: 1,
             daily: {
                 low_barrier: 22,
@@ -69,7 +68,7 @@ describe('buildBarriersConfig', () => {
             low_barrier: '22',
             barrier: '33',
         };
-        expect(buildBarriersConfig(contract)).to.eql({
+        expect(buildBarriersConfig(contract)).toEqual({
             count: 1,
             daily: {
                 low_barrier: 22,

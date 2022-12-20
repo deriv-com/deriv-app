@@ -127,9 +127,7 @@ const ProofOfIncomeForm = ({
                                                         autoComplete='off'
                                                         type='text'
                                                         list_height='36rem'
-                                                        placeholder={localize(
-                                                            'Please select the document you wish to upload*'
-                                                        )}
+                                                        placeholder={localize('Please select a document to upload*')}
                                                         error={touched.document_type && errors.document_type}
                                                         list_items={poinc_documents_list}
                                                         value={values.document_type}
@@ -144,12 +142,8 @@ const ProofOfIncomeForm = ({
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         name='document_type'
-                                                        placeholder={localize(
-                                                            'Please select the document you wish to upload*'
-                                                        )}
-                                                        label={localize(
-                                                            'Please select the document you wish to upload*'
-                                                        )}
+                                                        placeholder={localize('Please select a document to upload*')}
+                                                        label={localize('Please select a document to upload*')}
                                                         value={values.document_type}
                                                         list_items={poinc_documents_list}
                                                         error={touched.document_type && errors.document_type}

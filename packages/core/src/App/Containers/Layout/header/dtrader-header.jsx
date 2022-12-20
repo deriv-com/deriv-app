@@ -137,6 +137,7 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -166,6 +167,7 @@ const DTraderHeader = ({
                                     is_mobile
                                     platform_config={filterPlatformsForClients(platform_config)}
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                    is_pre_appstore={is_pre_appstore}
                                 />
                             }
                             is_social_signup={is_social_signup}

@@ -162,6 +162,7 @@ const DefaultHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -194,6 +195,7 @@ const DefaultHeader = ({
                                     is_mobile
                                     platform_config={filterPlatformsForClients(platform_config)}
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                    is_pre_appstore={is_pre_appstore}
                                 />
                             }
                         />
@@ -312,6 +314,7 @@ DefaultHeader.propTypes = {
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
+    setIsPreAppStore: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,

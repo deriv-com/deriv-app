@@ -12,7 +12,7 @@ module.exports = function (env) {
         externals: [nodeExternals()],
         mode: IS_RELEASE ? 'development' : 'production',
         module: {
-            rules: rules(true),
+            rules: rules(true, env && env.mocha_only),
         },
         optimization: {
             chunkIds: 'named',
@@ -23,7 +23,7 @@ module.exports = function (env) {
             filename: 'js/[name].[hash].js',
             publicPath: '/',
         },
-        plugins: plugins(base, true),
+        plugins: plugins(base, true, env && env.mocha_only),
         resolve: {
             alias: ALIASES,
             extensions: ['.js', '.jsx', '.ts', '.tsx'],

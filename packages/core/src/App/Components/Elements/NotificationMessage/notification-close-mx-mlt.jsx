@@ -4,7 +4,7 @@ import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 
 const NotificationCloseMxMlt = ({ header, message, secondary_btn, img_src, img_alt, onClose }) => (
-    <div data-testid='dt_notification_close_mx_mlt' className='close-mx-mlt notification-banner'>
+    <div className='close-mx-mlt notification-banner'>
         <div className='notification-banner--left'>
             <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>
                 {header}

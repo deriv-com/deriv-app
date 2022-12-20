@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { createInterpreter } from '../utils/interpreter';
 
 export const init = options => `
@@ -72,12 +73,12 @@ export const expectReturnTrue = (msg, code) =>
             });
         });
         it('return code is true', () => {
-            expect(value).toBe(true);
+            expect(value).to.be.equal(true);
         });
     });
 
 export const expectResultTypes = (result, types) => {
     const resultTypes = Object.keys(result).map(k => typeof result[k]);
 
-    expect(resultTypes).toEqual(types);
+    expect(resultTypes).deep.equal(types);
 };

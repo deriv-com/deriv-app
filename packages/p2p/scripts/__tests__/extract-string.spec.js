@@ -1,4 +1,5 @@
 const fs = require('fs');
+const expect = require('chai').expect;
 const getStringsFromInput = require('../extract-string').getStringsFromInput;
 const getTranslatableFiles = require('../extract-string').getTranslatableFiles;
 
@@ -9,7 +10,7 @@ describe('Regular expression checks', () => {
             localize('You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.', { account_title: account_title[0].toLowerCase() + account_title.substr(1) });
             localize('You have no trading activity yet.');
         `);
-        expect(messages).toEqual([
+        expect(messages).to.deep.equal([
             'Touch/No Touch',
             'You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
             'You have no trading activity yet.',
@@ -42,7 +43,7 @@ describe('Regular expression checks', () => {
                 ]}
             />
         `);
-        expect(messages).toEqual([
+        expect(messages).to.deep.equal([
             'Please accept our updated <0>terms and conditions</0> to continue.',
             'Keep your account secure with a password',
             'Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>',
@@ -61,7 +62,7 @@ describe('Regular expression checks', () => {
                 </React.Fragment>
             );
         `);
-        expect(messages).toEqual([
+        expect(messages).to.deep.equal([
             'This chart display is not ideal for tick contracts',
             'Here is where you can decide if your bot should continue trading.',
             'Tick {{current_tick}} - ',
@@ -75,7 +76,7 @@ describe('Regular expression checks', () => {
             localize('It\\'s time to win.');
             const Component = <Localize i18n_default_text='It\\'s time to {{ status }}, isn\\'t it?' values={{ status: 'win' }} />;
         `);
-        expect(messages).toEqual(["It's time to win.", "It's time to {{ status }}, isn't it?"]);
+        expect(messages).to.deep.equal(["It's time to win.", "It's time to {{ status }}, isn't it?"]);
     });
 });
 
@@ -114,6 +115,6 @@ describe('Integration checks', () => {
 
         const error_message = `Invalid string format passed to localize/<Localize>:\n\n\t${errors.join('\n\t')}\n\n\t`;
         /* eslint-disable-next-line no-unused-expressions */
-        expect(Object.keys(errors)).toHaveLength(0);
+        expect(errors, error_message).to.be.empty;
     });
 });

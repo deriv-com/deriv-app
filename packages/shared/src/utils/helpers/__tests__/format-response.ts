@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { formatPortfolioPosition } from '../format-response';
 
 describe('formatPortfolioPosition', () => {
@@ -14,7 +15,7 @@ describe('formatPortfolioPosition', () => {
     };
 
     it('should return an object with values in object passed as argument', () => {
-        expect(formatPortfolioPosition(portfolio_pos, mock_active_symbols)).toEqual({
+        expect(formatPortfolioPosition(portfolio_pos, mock_active_symbols)).to.eql({
             details: 'test <br /> test <br /> test',
             display_name: 'Volatility 25 Index',
             id: 1234,

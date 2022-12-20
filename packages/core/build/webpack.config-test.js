@@ -12,7 +12,7 @@ module.exports = function (env) {
         externals: [nodeExternals()],
         mode: IS_RELEASE ? 'development' : 'production',
         module: {
-            rules: rules(true),
+            rules: rules(true, env && env.mocha_only),
         },
         optimization: {
             chunkIds: 'named',

@@ -11,10 +11,7 @@ const NotificationOrder = ({ action, header, message, onClose }) => {
     setTimeout(onClose, 60000);
 
     return (
-        <div
-            data-testid='dt_notification_order'
-            className='notification notification-announce notification--order-successful'
-        >
+        <div className='notification notification-announce notification--order-successful'>
             <div className='notification__icon-background'>
                 <NotificationStatusIcons type='announce' class_suffix='is-background' />
             </div>

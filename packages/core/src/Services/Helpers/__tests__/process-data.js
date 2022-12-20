@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { getOauthAppsObject } from '../process-data.js';
 
 describe('getOauthAppsObject', () => {
@@ -18,11 +19,11 @@ describe('getOauthAppsObject', () => {
     };
 
     it('Expects default oauth object when there are no arguments', () => {
-        expect(getOauthAppsObject()).toEqual({ 2: 'Binary.com Autoexpiry' });
+        expect(getOauthAppsObject()).to.eql({ 2: 'Binary.com Autoexpiry' });
     });
 
     it('Expects correct value when arguments passed', () => {
-        expect(getOauthAppsObject(oauth_response)).toEqual({
+        expect(getOauthAppsObject(oauth_response)).to.eql({
             1: 'Binary.com',
             2: 'Binary.com Autoexpiry',
         });

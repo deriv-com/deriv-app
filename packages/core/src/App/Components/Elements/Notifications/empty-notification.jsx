@@ -5,13 +5,7 @@ import { localize } from '@deriv/translations';
 const EmptyNotification = () => (
     <div className='notifications-empty__container'>
         <div className='notifications-empty'>
-            <Icon
-                data_testid='dt_ic_box_icon'
-                icon='IcBox'
-                className='notifications-empty__icon'
-                size={64}
-                color='secondary'
-            />
+            <Icon icon='IcBox' className='notifications-empty__icon' size={64} color='secondary' />
             <div className='notifications-empty__content'>
                 <Text
                     as='h4'

@@ -3,7 +3,7 @@ import { Button, Icon, Text } from '@deriv/components';
 
 const NotificationPromo = ({ cta_btn, img_alt, img_src, message, onClose }) => {
     return (
-        <div data-testid='dt_notification_promo' className='notification-promo'>
+        <div className='notification-promo'>
             <img className='notification-promo__img' src={img_src} alt={img_alt} />
             <div className='notification-promo--container'>
                 <div className='notification-promo--left'>

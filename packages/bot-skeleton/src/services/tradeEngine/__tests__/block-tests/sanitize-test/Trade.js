@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { run } from '../../tools';
 
 describe('Trade Definition Blocks', () => {

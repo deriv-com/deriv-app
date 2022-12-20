@@ -1,47 +1,50 @@
 {
-    "name": "@deriv/translations",
-    "version": "1.0.0",
-    "description": "Deriv translations",
-    "author": "Deriv",
-    "license": "Apache-2.0",
-    "main": "src/index.js",
-    "private": true,
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/binary-com/deriv-app.git"
-    },
-    "engines": {
-        "node": "^16.16.0"
-    },
-    "scripts": {
-        "build": "echo \"No build specified\"",
-        "build:travis": "echo \"No build:travis specified\"",
-        "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-        "start": "rimraf lib && npm run test && npm run serve",
-        "translate": "sh ./scripts/update-translations.sh",
-        "deploy": "echo \"No deploy specified\"",
-        "deploy:clean": "echo \"No deploy:clean specified\"",
-        "deploy:folder": "echo \"No deploy:folder specified\"",
-        "deploy:staging": "echo \"No deploy:staging specified\"",
-        "deploy:production": "echo \"No deploy:production specified\"",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
-    },
-    "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
-    },
-    "dependencies": {
-        "commander": "^3.0.2",
-        "crc-32": "^1.2.0",
-        "glob": "^7.1.5",
-        "i18next": "^20.3.2",
-        "prop-types": "^15.7.2",
-        "react": "^16.14.0",
-        "react-i18next": "^11.11.0"
-    },
-    "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/preset-react": "^7.16.7",
-        "cross-env": "^5.2.0",
-        "xmldom": "^0.5.0"
-    }
+  "name": "@deriv/translations",
+  "version": "1.0.0",
+  "description": "Deriv translations",
+  "author": "Deriv",
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binary-com/deriv-app.git"
+  },
+  "engines": {
+    "node": "^16.16.0"
+  },
+  "scripts": {
+    "test": "mocha ./scripts/**/**.spec.js",
+    "build": "echo \"No build specified\"",
+    "build:travis": "echo \"No build:travis specified\"",
+    "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
+    "start": "rimraf lib && npm run test && npm run serve",
+    "translate": "sh ./scripts/update-translations.sh",
+    "deploy": "echo \"No deploy specified\"",
+    "deploy:clean": "echo \"No deploy:clean specified\"",
+    "deploy:folder": "echo \"No deploy:folder specified\"",
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\"",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
+  },
+  "bugs": {
+    "url": "https://github.com/binary-com/deriv-app/issues"
+  },
+  "dependencies": {
+    "commander": "^3.0.2",
+    "crc-32": "^1.2.0",
+    "glob": "^7.1.5",
+    "i18next": "^20.3.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.14.0",
+    "react-i18next": "^11.11.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mocha": "^7.1.1",
+    "xmldom": "^0.5.0"
+  }
 }

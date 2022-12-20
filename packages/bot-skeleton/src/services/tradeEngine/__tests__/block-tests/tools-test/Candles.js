@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { runAndGetResult } from '../../tools';
 
 describe('Candle Blocks in tools', () => {
@@ -21,7 +22,7 @@ describe('Candle Blocks in tools', () => {
     it('ohlc values', () => {
         const { isCandleBlack } = result;
 
-        expect(isCandleBlack).toBe(false);
+        expect(isCandleBlack).equal(false);
     });
 
     it('is candle black', () => {
@@ -33,6 +34,6 @@ describe('Candle Blocks in tools', () => {
     it('candle field', () => {
         const { candleField } = result;
 
-        expect(candleField).toBe(1);
+        expect(candleField).equal(1);
     });
 });

@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { run } from '../../tools';
 
 describe('Index handling', () => {
@@ -8,7 +9,7 @@ describe('Index handling', () => {
             run(
                 `
         Bot.getOhlcFromEnd({ field: 'close', index: 0 })
-    `
+      `
             ).catch(e => {
                 error = e;
                 done();

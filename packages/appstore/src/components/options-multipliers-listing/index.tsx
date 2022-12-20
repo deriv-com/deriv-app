@@ -51,7 +51,13 @@ const OptionsAndMultipliersListing = () => {
         >
             {!is_demo && !has_any_real_account && (
                 <div className='full-row'>
-                    <TradingAppCard name={localize('Deriv account')} icon='Options' availability='All' type='get' />
+                    <TradingAppCard
+                        name={localize('Deriv account')}
+                        description={localize('Get a real Deriv account, start trading and manage your funds')}
+                        icon='Options'
+                        availability='All'
+                        type='get'
+                    />
                 </div>
             )}
             {available_platforms.map((available_platform: BrandConfig) => (

@@ -107,9 +107,11 @@ const CFDsListing = () => {
                     />
                 );
             })}
-            <div className='cfd-full-row'>
-                <hr className='divider' />
-            </div>
+            {!is_eu_user && (
+                <div className='cfd-full-row'>
+                    <hr className='divider' />
+                </div>
+            )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text size='xs' line_height='m' weight='bold'>

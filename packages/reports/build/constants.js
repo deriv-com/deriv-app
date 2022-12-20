@@ -30,8 +30,8 @@ const ALIASES = {
     Stores: path.resolve(__dirname, '../src/Stores'),
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => [
-    ...(is_test_env && !is_mocha_only
+const rules = (is_test_env = false) => [
+    ...(is_test_env
         ? [
               {
                   test: /\.(js|jsx|ts|tsx)$/,
@@ -108,7 +108,7 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
+const plugins = (base, is_test_env) => [
     new CleanWebpackPlugin(),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
@@ -121,7 +121,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
                   filter: file => file.name !== 'CNAME',
               }),
           ]),
-    ...(is_test_env && !is_mocha_only
+    ...(is_test_env
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),

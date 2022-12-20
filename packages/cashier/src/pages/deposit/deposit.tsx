@@ -28,6 +28,7 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         is_switching,
         is_virtual,
         landing_company_shortcode,
+        is_pre_appstore,
     } = client;
     const { cashier } = modules;
     const { iframe, deposit, transaction_history, general_store } = cashier;
@@ -96,7 +97,7 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         return <Loading is_fullscreen />;
     }
     if (is_virtual) {
-        return <Virtual />;
+        return <Virtual is_pre_appstore={is_pre_appstore} />;
     }
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {

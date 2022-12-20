@@ -1,11 +1,14 @@
 @import '../dashboard/dashboard-component/index.scss';
 @import '../dashboard/tutorial-tab/index.scss';
+$common_tour_width: 33rem;
+$joyride_step: 6;
 
 .dashboard {
     &__main {
         width: 100%;
         height: calc(100vh - 90px);
         padding: 1.6rem;
+
         @include mobile {
             height: calc(100vh - 6rem);
         }
@@ -20,9 +23,11 @@
         height: var(--tab-content-height);
         width: 100%;
         transition: all 0.4s;
+
         @include mobile {
             height: var(--tab-content-height-mobile);
         }
+
         &--expanded {
             width: calc(100vw - 39.8rem);
         }
@@ -36,6 +41,7 @@
         padding: 0.8rem;
         background: var(--general-main-1);
         z-index: 1;
+
         .db-toolbox {
             &__title {
                 height: 2.6rem;
@@ -78,6 +84,7 @@
             }
         }
     }
+
     &__run-strategy-wrapper {
         position: absolute;
         right: 1.6rem;
@@ -115,31 +122,38 @@
     background: var(--general-main-1);
     width: calc(100vw - 4.6rem);
     height: var(--tab-content-height);
+
     &--active {
         z-index: 1;
     }
+
     &--inactive {
         display: none;
     }
+
     @include mobile {
         width: calc(100vw - 3.2rem);
         height: var(--tab-content-height-mobile);
     }
 }
+
 .onboard {
     &__header {
         display: flex;
         justify-content: space-between;
         margin-bottom: 2.4rem;
         margin-top: -2rem;
+
         &--close {
             cursor: pointer;
         }
     }
+
     &__label {
         text-align: left;
         margin-bottom: 2.4rem;
     }
+
     &__container {
         background: #d9d9d9;
         width: 100%;
@@ -147,12 +161,15 @@
         display: flex;
         justify-content: center;
         margin-bottom: 2.4rem;
+
         img {
             width: 100%;
         }
     }
+
     &__content {
         text-align: left;
+
         &__block {
             &:first-child {
                 margin-bottom: 2.4rem;
@@ -167,38 +184,22 @@
     }
 }
 
-#react-joyride-step-0,
-#react-joyride-step-5 {
-    .onboard__container {
-        .initial-loader {
-            width: 33rem;
-            height: 18.6rem;
-        }
-    }
-}
-#react-joyride-step-1 {
-    .onboard__container {
-        .initial-loader {
-            width: 33rem;
-            height: 18.4rem;
-        }
-    }
-}
+@for $i from 0 through $joyride_step {
+    #react-joyride-step-#{$i} {
+        .onboard__container {
+            .initial-loader {
+                width: $common_tour_width;
 
-#react-joyride-step-2,
-#react-joyride-step-3 {
-    .onboard__container {
-        .initial-loader {
-            width: 33rem;
-            height: 18.7rem;
-        }
-    }
-}
-#react-joyride-step-6 {
-    .onboard__container {
-        .initial-loader {
-            width: 33rem;
-            height: 4.4rem;
+                @if ($i ==0 or $i ==5) {
+                    height: 18.6rem;
+                } @else if ($i ==1) {
+                    height: 18.4rem;
+                } @else if ($i ==2 or $i ==3) {
+                    height: 18.7rem;
+                } @else if ($i ==6) {
+                    height: 4.4rem;
+                }
+            }
         }
     }
 }

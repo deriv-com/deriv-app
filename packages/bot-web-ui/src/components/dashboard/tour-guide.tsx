@@ -67,7 +67,7 @@ const TourGuide = ({
 
                 {img && (
                     <div className='onboard__container'>
-                        {!has_image_loaded ? <Loading /> : <img src={img} loading='eager' />}
+                        {has_image_loaded ? <Loading /> : <img src={img} loading='eager' />}
                     </div>
                 )}
 

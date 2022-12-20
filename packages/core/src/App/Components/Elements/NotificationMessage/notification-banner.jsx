@@ -19,6 +19,7 @@ const NotificationBanner = ({
         className={classNames('notification-banner', {
             [`notification-banner__${className}`]: className,
         })}
+        data-testid='dt_notification_banner'
     >
         <div className='notification-banner--left'>
             <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>

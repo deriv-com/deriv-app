@@ -427,7 +427,9 @@ export default class LoadModalStore implements ILoadModalStore {
                     readOnly: true,
                     scrollbars: true,
                 });
-                const { active_tab } = this.root_store.dashboard;
+                const {
+                    dashboard: { active_tab },
+                } = this.root_store;
                 let blocky_workspace = this.local_workspace;
                 if (active_tab === 0) {
                     blocky_workspace = Blockly.mainWorkspace;

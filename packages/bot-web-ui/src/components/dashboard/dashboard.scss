@@ -22,6 +22,9 @@
         transition: all 0.4s;
         @include mobile {
             height: var(--tab-content-height-mobile);
+            .smartcharts {
+                height: calc(100% - 4rem);
+            }
         }
         &--expanded {
             width: calc(100vw - 39.8rem);
@@ -79,7 +82,9 @@
         }
     }
     &__run-strategy-wrapper {
-        position: absolute;
+        @include desktop {
+            position: absolute;
+        }
         right: 1.6rem;
         top: 1.6rem;
         z-index: 2;

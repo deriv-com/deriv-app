@@ -36,7 +36,7 @@ export default class NotificationStore extends BaseStore {
     marked_notifications = [];
     push_notifications = [];
     client_notifications = {};
-    should_show_popups = false;
+    should_show_popups = false; //TODO (yauheni-kryzhyk): this option is not used. leaving this for the upcoming new pop-up notifications implementation
     p2p_order_props = {};
 
     constructor(root_store) {
@@ -1237,6 +1237,7 @@ export default class NotificationStore extends BaseStore {
         this.p2p_order_props = p2p_order_props;
     }
 
+    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

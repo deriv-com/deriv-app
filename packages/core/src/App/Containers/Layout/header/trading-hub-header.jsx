@@ -109,6 +109,7 @@ const TradingHubHeader = ({
     notifications_count,
     setDarkMode,
     should_allow_authentication,
+    should_allow_poinc_authentication,
     toggleNotifications,
     is_social_signup,
     replaceCashierMenuOnclick,
@@ -134,6 +135,7 @@ const TradingHubHeader = ({
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
                         should_allow_authentication={should_allow_authentication}
+                        should_allow_poinc_authentication={should_allow_poinc_authentication}
                         account_status={account_status}
                         enableApp={enableApp}
                         disableApp={disableApp}
@@ -258,6 +260,7 @@ TradingHubHeader.propTypes = {
     notifications_count: PropTypes.number,
     setDarkMode: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
+    should_allow_poinc_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
     location: PropTypes.object,
@@ -293,6 +296,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     notifications_count: notifications.filtered_notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
+    should_allow_poinc_authentication: client.should_allow_poinc_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,

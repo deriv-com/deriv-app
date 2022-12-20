@@ -121,6 +121,7 @@ const ToggleMenuDrawer = React.forwardRef(
             logoutClient,
             platform_switcher,
             should_allow_authentication,
+            should_allow_poinc_authentication,
             title,
             toggleTheme,
             active_account_landing_company,
@@ -215,6 +216,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     return is_virtual || active_account_landing_company !== 'maltainvest';
                 } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                     return !should_allow_authentication;
+                } else if (/proof-of-income/.test(route_path)) {
+                    return !should_allow_poinc_authentication;
                 }
                 return false;
             };

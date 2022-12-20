@@ -147,6 +147,9 @@ const ProofOfIncomeForm = ({
                                                         placeholder={localize(
                                                             'Please select the document you wish to upload*'
                                                         )}
+                                                        label={localize(
+                                                            'Please select the document you wish to upload*'
+                                                        )}
                                                         value={values.document_type}
                                                         list_items={poinc_documents_list}
                                                         error={touched.document_type && errors.document_type}

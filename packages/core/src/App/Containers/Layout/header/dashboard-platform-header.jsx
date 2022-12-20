@@ -119,6 +119,7 @@ const DashboardPlatformHeader = ({
     setDarkMode,
     settings_extension,
     should_allow_authentication,
+    should_allow_poinc_authentication,
     toggleNotifications,
     toggleSettingsModal,
 }) => {
@@ -138,6 +139,7 @@ const DashboardPlatformHeader = ({
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
                         should_allow_authentication={should_allow_authentication}
+                        should_allow_poinc_authentication={should_allow_poinc_authentication}
                         account_status={account_status}
                         enableApp={enableApp}
                         disableApp={disableApp}
@@ -223,6 +225,7 @@ DashboardPlatformHeader.propTypes = {
     notifications_count: PropTypes.number,
     setDarkMode: PropTypes.func,
     should_allow_authentication: PropTypes.bool,
+    should_allow_poinc_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
@@ -252,5 +255,6 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     notifications_count: notifications.filtered_notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
+    should_allow_poinc_authentication: client.should_allow_poinc_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(DashboardPlatformHeader));

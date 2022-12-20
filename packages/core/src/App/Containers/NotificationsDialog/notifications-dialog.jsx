@@ -30,18 +30,8 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         return `IcAlert${toTitleCase(type)}`;
     };
 
-    const getButtonSettings = item => {
-        if (!isEmptyObject(item.action)) {
-            return 'action';
-        } else if (!isEmptyObject(item.secondary_btn)) {
-            return 'secondary_btn';
-        } else if (!isEmptyObject(item.cta_btn)) {
-            return 'cta_btn';
-        } else if (!isEmptyObject(item.primary_btn)) {
-            return 'primary_btn';
-        }
-        return null;
-    };
+    const getButtonSettings = item =>
+        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
 
     return (
         <React.Fragment>

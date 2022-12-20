@@ -26,8 +26,10 @@ export type TIconProps = {
     height?: number | string;
     icon: string;
     onClick?: MouseEventHandler;
+    onMouseDown?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
+    onTouchStart?: () => void;
     size?: number | string;
     width?: number | string;
     id?: string;

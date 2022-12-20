@@ -11,8 +11,8 @@ type TSelfExclusionContext = {
     is_uk?: boolean;
     backToReview?: () => void;
     backFromConfirmLimits?: () => void;
-    currency?: string | number;
-    currency_display?: string | number;
+    currency?: string;
+    currency_display?: string;
     exclusion_texts?: string;
     state?: FormikValues;
 };

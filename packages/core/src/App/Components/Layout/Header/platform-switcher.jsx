@@ -9,7 +9,7 @@ import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
 
-const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }) => {
+const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config, is_pre_appstore }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const is_close_drawer_fired_ref = React.useRef(false);
@@ -70,6 +70,7 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
                     platform_config={platform_config}
                     closeDrawer={closeDrawer}
                     app_routing_history={app_routing_history}
+                    is_pre_appstore={is_pre_appstore}
                 />
             </CSSTransition>
         </React.Fragment>
@@ -80,6 +81,7 @@ PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
     app_routing_history: PropTypes.array,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export { PlatformSwitcher as TestedPlatformSwitcher };

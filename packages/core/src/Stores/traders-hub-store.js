@@ -86,7 +86,7 @@ export default class TradersHubStore extends BaseStore {
 
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
-        if (this.selected_region === 'EU') {
+        if (this.root_store.client.is_eu || this.selected_region === 'EU') {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['EU', 'All'].some(region => region === platform.availability)
             );
@@ -226,7 +226,7 @@ export default class TradersHubStore extends BaseStore {
         return this.selected_account_type === 'demo';
     }
     get is_eu_user() {
-        return this.root_store.client.isEuropeCountry() || this.selected_region === 'EU';
+        return this.selected_region === 'EU';
     }
     setActiveIndex(active_index) {
         this.active_index = active_index;

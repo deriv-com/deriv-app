@@ -8,9 +8,12 @@ import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import './virtual.scss';
 
-const Virtual = () => {
+type TVirtual = {
+    is_pre_appstore: boolean;
+};
+
+const Virtual = ({ is_pre_appstore }: TVirtual) => {
     const {
-        client: { is_pre_appstore },
         ui: { is_dark_mode_on, toggleAccountsDialog },
     } = useStore();
     const history = useHistory();

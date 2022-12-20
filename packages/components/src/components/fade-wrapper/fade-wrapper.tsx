@@ -10,46 +10,40 @@ type TFadeWrapperProps = {
 };
 
 const FadeInFromTopDiv = {
-    onViewportEnter: {
-        y: 0,
-        opacity: 1,
-        delay: 300,
-        transition: {
-            default: { duration: 250 },
-        },
-    },
-    exit: {
+    initial: {
         y: -50,
         opacity: 0,
-        transition: { duration: 250 },
     },
+    animate: {
+        y: 0,
+        opacity: 1,
+    },
+
+    transition: { duration: 250, delay: 0.3 },
 };
 
 const FadeInFromBottomDiv = {
-    onViewportEnter: {
-        y: 0,
-        opacity: 1,
-        delay: 300,
-        transition: {
-            default: { duration: 250 },
-        },
-    },
-    exit: {
+    initial: {
         y: 50,
         opacity: 0,
-        transition: { duration: 250 },
     },
+    animate: {
+        y: 0,
+        opacity: 1,
+    },
+
+    transition: { duration: 0.25, delay: 0.3 },
 };
 
 const FadeInOnlyDiv = {
-    onViewportEnter: {
-        opacity: 1,
-        transition: { duration: 300 },
-    },
-    exit: {
+    initial: {
         opacity: 0,
-        transition: { duration: 300 },
     },
+    animate: {
+        opacity: 1,
+    },
+
+    transition: { duration: 0.3 },
 };
 
 // `flipMove={false}` is necessary to fix react-pose bug: https://github.com/Popmotion/popmotion/issues/805
@@ -59,8 +53,9 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }: TFadeWr
             <>
                 {is_visible && (
                     <motion.div
-                        onViewportEnter={() => FadeInFromTopDiv.onViewportEnter}
-                        exit={FadeInFromTopDiv.exit}
+                        animate={FadeInFromTopDiv.animate}
+                        initial={FadeInFromTopDiv.initial}
+                        transition={FadeInFromTopDiv.transition}
                         className={className}
                         key={keyname}
                     >
@@ -75,8 +70,9 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }: TFadeWr
             <>
                 {is_visible && (
                     <motion.div
-                        onViewportEnter={() => FadeInFromBottomDiv.onViewportEnter}
-                        exit={FadeInFromBottomDiv.exit}
+                        animate={FadeInFromBottomDiv.animate}
+                        initial={FadeInFromBottomDiv.initial}
+                        transition={FadeInFromBottomDiv.transition}
                         className={className}
                         key={keyname}
                     >
@@ -90,8 +86,9 @@ const FadeWrapper = ({ children, className, is_visible, keyname, type }: TFadeWr
         <>
             {is_visible && (
                 <motion.div
-                    onViewportEnter={() => FadeInOnlyDiv.onViewportEnter}
-                    exit={FadeInOnlyDiv.exit}
+                    animate={FadeInOnlyDiv.animate}
+                    initial={FadeInOnlyDiv.initial}
+                    transition={FadeInOnlyDiv.transition}
                     className={className}
                     key={keyname}
                 >

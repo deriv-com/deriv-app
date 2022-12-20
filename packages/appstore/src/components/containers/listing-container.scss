@@ -38,12 +38,21 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 1.6rem 4.8rem;
+        padding-top: 2rem;
 
         @include mobile {
             display: flex;
             flex-direction: column;
         }
     }
+}
+
+.full-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1 / span 3;
+    gap: 1.6rem 4.8rem;
 }
 
 .cfd-full-row {

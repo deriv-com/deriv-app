@@ -9,8 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
+    const { is_eu } = client;
     const is_real = selected_account_type === 'real';
 
     return (
@@ -23,7 +24,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && <RegulatorSwitcher />}
+                    {is_real && !is_eu && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>
@@ -33,7 +34,7 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real ? (
+                    {is_real && !is_eu ? (
                         <div className='main-title-bar-mobile--regulator'>
                             <div
                                 className='main-title-bar-mobile--regulator--compare-modal'

@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import StaticDashboard from 'Components/onboarding/static-dashboard';
+import StaticDashboard from 'Components/onboarding-new/static-dashboard';
 
 type TStep = {
     component: React.ReactNode;

@@ -300,6 +300,5 @@ export default class TradersHubStore extends BaseStore {
     }
     toggleExitTradersHubModal() {
         this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
-        console.log(' this.is_exit_traders_hub_modal_visible ', this.is_exit_traders_hub_modal_visible);
     }
 }

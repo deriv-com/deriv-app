@@ -34,9 +34,7 @@ export const TradersHubHomeButton = () => {
 
 const RedirectToOldInterface = ({ setIsPreAppStore, toggleExitTradersHubModal }) => {
     const disablePreAppstore = () => {
-        // toggleExitTradersHubModal();
-        console.log('inside tradingb hub header');
-        // setIsPreAppStore(false);
+        setIsPreAppStore(false);
         toggleExitTradersHubModal();
     };
     return (

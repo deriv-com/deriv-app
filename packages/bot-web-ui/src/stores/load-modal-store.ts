@@ -311,6 +311,7 @@ export default class LoadModalStore implements ILoadModalStore {
         //throw xml error
         if (active_tab === 1 && !this.is_load_modal_open) {
             this.recent_workspace = null;
+            this.setLoadedLocalFile(null);
         }
         //to load the bot on first load
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {

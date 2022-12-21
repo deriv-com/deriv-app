@@ -42,7 +42,7 @@ const SelfExclusionConfirmLimits = () => {
                     is_disabled={isSubmitting}
                     primary
                     large
-                    onClick={handleSubmit}
+                    onClick={() => handleSubmit()}
                 >
                     <Localize i18n_default_text='Yes, log me out immediately' />
                 </Button>

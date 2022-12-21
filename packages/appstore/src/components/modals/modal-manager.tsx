@@ -14,6 +14,7 @@ import {
 } from '@deriv/cfd';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
+import ExitTradersHubModal from './exit-traders-hub-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 
@@ -57,6 +58,7 @@ const ModalManager = () => {
             <ResetTradingPasswordModal context={store} />
             <MT5AccountTypeModal />
             <RegulatorsCompareModal />
+            <ExitTradersHubModal />
         </React.Fragment>
     );
 };

@@ -15,6 +15,7 @@ export default class TradersHubStore extends BaseStore {
     available_dxtrade_accounts = [];
     selected_region;
     selected_account_type = 'demo';
+    is_exit_traders_hub_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
@@ -31,6 +32,7 @@ export default class TradersHubStore extends BaseStore {
             available_dxtrade_accounts: observable,
             available_mt5_accounts: observable,
             is_regulators_compare_modal_visible: observable,
+            is_exit_traders_hub_modal_visible: observable,
             selected_account_type: observable,
             account_type_card: observable,
             selected_platform_type: observable,
@@ -44,6 +46,7 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             handleTabItemClick: action.bound,
+            toggleExitTradersHubModal: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
             is_demo: computed,
@@ -294,5 +297,9 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
+    }
+    toggleExitTradersHubModal() {
+        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
+        console.log(' this.is_exit_traders_hub_modal_visible ', this.is_exit_traders_hub_modal_visible);
     }
 }

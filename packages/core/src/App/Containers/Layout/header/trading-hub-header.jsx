@@ -32,18 +32,22 @@ export const TradersHubHomeButton = () => {
     );
 };
 
-const RedirectToOldInterface = ({ setIsPreAppStore }) => {
-    const disablePreAppstore = () => setIsPreAppStore(false);
-
+const RedirectToOldInterface = ({ setIsPreAppStore, toggleExitTradersHubModal }) => {
+    const disablePreAppstore = () => {
+        // toggleExitTradersHubModal();
+        console.log('inside tradingb hub header');
+        // setIsPreAppStore(false);
+        toggleExitTradersHubModal();
+    };
     return (
         <div className='trading-hub-header__redirect'>
-            <BinaryLink to={routes.trade} className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
+            <div className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
                 <Text as='p' size='xs' color='general'>
                     <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
                 <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
                 <Icon icon='IcArrowRight' size={18} color='red' />
-            </BinaryLink>
+            </div>
         </div>
     );
 };
@@ -119,6 +123,7 @@ const TradingHubHeader = ({
     should_allow_authentication,
     toggleIsTourOpen,
     toggleNotifications,
+    toggleExitTradersHubModal,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const toggle_menu_drawer_ref = React.useRef(null);
@@ -164,6 +169,7 @@ const TradingHubHeader = ({
                         }
                         is_social_signup={is_social_signup}
                         setIsPreAppStore={setIsPreAppStore}
+                        toggleExitTradersHubModal={toggleExitTradersHubModal}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -181,7 +187,10 @@ const TradingHubHeader = ({
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
-                    <RedirectToOldInterface setIsPreAppStore={setIsPreAppStore} />
+                    <RedirectToOldInterface
+                        setIsPreAppStore={setIsPreAppStore}
+                        toggleExitTradersHubModal={toggleExitTradersHubModal}
+                    />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
@@ -289,6 +298,7 @@ TradingHubHeader.propTypes = {
     should_allow_authentication: PropTypes.bool,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    toggleExitTradersHubModal: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu, traders_hub }) => ({
@@ -322,4 +332,5 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     should_allow_authentication: client.should_allow_authentication,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     toggleNotifications: notifications.toggleNotificationsModal,
+    toggleExitTradersHubModal: traders_hub.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

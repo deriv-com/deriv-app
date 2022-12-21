@@ -41,6 +41,9 @@
         &__bottom {
             width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
         }
+        &--vanilla {
+            width: auto;
+        }
         &:hover {
             transform: none !important;
         }

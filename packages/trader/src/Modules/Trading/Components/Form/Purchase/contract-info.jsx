@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
+import { getCurrencyDisplayCode, getLocalizedBasis, isMobile } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const PayoutHintModal = ({ is_open, onClose, type }) => (
@@ -129,6 +129,44 @@ const ContractInfo = ({
                                     <Text size='xs' weight='bold' color='colored-background'>
                                         <Money amount={stake} currency={currency} show_currency />
                                     </Text>
+                                </div>
+                            </div>
+                        </MobileWrapper>
+                    </React.Fragment>
+                ) : is_vanilla && isMobile() ? (
+                    <React.Fragment>
+                        <MobileWrapper>
+                            <div
+                                className={classNames('trade-container__price-info-basis', {
+                                    'trade-container__price-info-strike': is_vanilla,
+                                })}
+                            >
+                                {basis_text}
+                                <div className='trade-container__price-info-vanilla'>
+                                    <div
+                                        className={classNames('trade-container__price-info-wrapper', {
+                                            'strike--info__wrapper': is_vanilla,
+                                        })}
+                                    >
+                                        <ValueMovement
+                                            has_error_or_not_loaded={has_error_or_not_loaded}
+                                            proposal_info={proposal_info}
+                                            currency={getCurrencyDisplayCode(currency)}
+                                            has_increased={has_increased}
+                                            is_vanilla={is_vanilla}
+                                        />
+                                    </div>
+                                    <Icon
+                                        icon='IcInfoOutline'
+                                        id={`dt_purchase_${type.toLowerCase()}_info`}
+                                        color='disabled'
+                                        onClick={() => setIsOpenHint(true)}
+                                    />
+                                    <PayoutHintModal
+                                        onClose={() => setIsOpenHint(false)}
+                                        type={type}
+                                        is_open={is_open_hint}
+                                    />
                                 </div>
                             </div>
                         </MobileWrapper>

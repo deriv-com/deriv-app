@@ -223,6 +223,9 @@
                     justify-content: flex-end;
                     align-items: center;
                 }
+                &-vanilla {
+                    display: flex;
+                }
             }
             @include desktop {
                 min-height: 2.1rem;
@@ -279,6 +282,8 @@
                     font-size: 1.2rem;
                     display: flex;
                     gap: 8px;
+                    justify-content: space-between;
+                    padding: 1rem 0;
                 }
             }
             &-currency {
@@ -583,8 +588,7 @@
     position: relative;
 
     &__option {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding: 1.6rem 0.8rem;
 
         &:not(:only-child) {
             &:nth-last-child(2) {
@@ -738,10 +742,12 @@
 
 .strike--info {
     color: var(--text-general);
-    justify-content: flex-start;
     &__value {
         font-size: var(--text-size-xxs);
         margin-left: unset;
+    }
+    &__wrapper {
+        padding-right: 1rem;
     }
 }
 

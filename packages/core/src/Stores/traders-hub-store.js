@@ -51,6 +51,7 @@ export default class TradersHubStore extends BaseStore {
             has_any_real_account: computed,
             is_demo: computed,
             is_eu_selected: computed,
+            should_show_exit_traders_modal: computed,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCFDAccounts: action.bound,
             getExistingAccounts: action.bound,
@@ -103,6 +104,10 @@ export default class TradersHubStore extends BaseStore {
     }
     get is_eu_selected() {
         return this.selected_region === 'EU';
+    }
+
+    get should_show_exit_traders_modal() {
+        return this.selected_account_type === 'real';
     }
 
     toggleRegulatorsCompareModal() {
@@ -298,6 +303,7 @@ export default class TradersHubStore extends BaseStore {
             this.openRealAccount(account_type, platform);
         }
     }
+
     toggleExitTradersHubModal() {
         this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }

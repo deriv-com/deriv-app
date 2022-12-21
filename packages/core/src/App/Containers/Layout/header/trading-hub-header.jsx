@@ -32,10 +32,14 @@ export const TradersHubHomeButton = () => {
     );
 };
 
-const RedirectToOldInterface = ({ setIsPreAppStore, toggleExitTradersHubModal }) => {
+const RedirectToOldInterface = ({ setIsPreAppStore, should_show_exit_traders_modal, toggleExitTradersHubModal }) => {
     const disablePreAppstore = () => {
-        setIsPreAppStore(false);
-        toggleExitTradersHubModal();
+        if (should_show_exit_traders_modal) {
+            toggleExitTradersHubModal();
+        } else {
+            setIsPreAppStore(false);
+            history.push(routes.root);
+        }
     };
     return (
         <div className='trading-hub-header__redirect'>
@@ -119,6 +123,7 @@ const TradingHubHeader = ({
     setIsOnboardingVisited,
     setIsPreAppStore,
     should_allow_authentication,
+    should_show_exit_traders_modal,
     toggleIsTourOpen,
     toggleNotifications,
     toggleExitTradersHubModal,
@@ -167,6 +172,7 @@ const TradingHubHeader = ({
                         }
                         is_social_signup={is_social_signup}
                         setIsPreAppStore={setIsPreAppStore}
+                        should_show_exit_traders_modal={should_show_exit_traders_modal}
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
@@ -187,6 +193,7 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface
                         setIsPreAppStore={setIsPreAppStore}
+                        should_show_exit_traders_modal={should_show_exit_traders_modal}
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
                     />
                     <Divider />
@@ -294,6 +301,7 @@ TradingHubHeader.propTypes = {
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_allow_authentication: PropTypes.bool,
+    should_show_exit_traders_modal: PropTypes.bool,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
     toggleExitTradersHubModal: PropTypes.func,
@@ -328,6 +336,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
     should_allow_authentication: client.should_allow_authentication,
+    should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     toggleNotifications: notifications.toggleNotificationsModal,
     toggleExitTradersHubModal: traders_hub.toggleExitTradersHubModal,

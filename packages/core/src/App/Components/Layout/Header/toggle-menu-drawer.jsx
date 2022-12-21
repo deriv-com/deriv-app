@@ -127,6 +127,7 @@ const ToggleMenuDrawer = React.forwardRef(
             platform_switcher,
             setIsPreAppStore,
             should_allow_authentication,
+            should_show_exit_traders_modal,
             title,
             toggleTheme,
             toggleExitTradersHubModal,
@@ -353,11 +354,13 @@ const ToggleMenuDrawer = React.forwardRef(
 
         const tradingHubRedirect = () => {
             if (is_pre_appstore) {
-                setIsPreAppStore(false);
-                toggleDrawer();
-                // history.push(routes.root);
-                if (toggleExitTradersHubModal()) {
+                if (should_show_exit_traders_modal) {
+                    toggleDrawer();
                     toggleExitTradersHubModal();
+                } else {
+                    setIsPreAppStore(false);
+                    toggleDrawer();
+                    history.push(routes.root);
                 }
             } else {
                 setIsPreAppStore(true);

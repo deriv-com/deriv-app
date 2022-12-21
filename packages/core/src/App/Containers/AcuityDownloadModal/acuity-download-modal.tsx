@@ -9,10 +9,16 @@ import 'Sass/app/modules/acuity-download.scss';
 type TAcuityDownloadModal = {
     is_acuity_modal_open: boolean;
     is_eu: boolean;
+    current_language: string;
     setIsAcuityModalOpen: (value: boolean) => void;
 };
 
-const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen }: TAcuityDownloadModal) => {
+const AcuityDownloadModal = ({
+    is_acuity_modal_open,
+    is_eu,
+    current_language,
+    setIsAcuityModalOpen,
+}: TAcuityDownloadModal) => {
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
@@ -25,12 +31,23 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
     };
 
     const openGuide = () => {
-        window.open(
-            is_eu ? 'https://publuu.com/flip-book/63495/184974' : 'https://publuu.com/flip-book/63495/184972',
-            '_blank',
-            'noopener,noreferrer'
-        );
+        window.open(getLink(current_language), '_blank');
         closeModal();
+    };
+
+    const getLink = (language: string): string => {
+        // eu clients
+        if (is_eu) {
+            // different languages
+            if (language === 'PT') {
+                return getUrlBase('/public/pdf/Acuity_tool_user_guide_Portuguese.pdf');
+            } else if (language === 'ES') {
+                return getUrlBase('/public/pdf/Acuity_tool_user_guide_Spanish.pdf');
+            }
+            return getUrlBase('/public/pdf/Acuity_tool_user_guide_EU.pdf');
+        }
+        // non eu
+        return getUrlBase('/public/pdf/Acuity_tool_user_guide_ROW.pdf');
     };
 
     return (
@@ -92,8 +109,9 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
     );
 };
 
-export default connect(({ client, ui }: RootStore) => ({
+export default connect(({ client, ui, common }: RootStore) => ({
     is_acuity_modal_open: ui.is_acuity_modal_open,
     is_eu: client.is_eu,
+    current_language: common.current_language,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
 }))(AcuityDownloadModal);

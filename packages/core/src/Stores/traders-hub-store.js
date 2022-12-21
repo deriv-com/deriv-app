@@ -107,7 +107,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get should_show_exit_traders_modal() {
-        return this.selected_account_type === 'real';
+        return this.selected_account_type === 'real'; //added just for testing , should change this
     }
 
     toggleRegulatorsCompareModal() {

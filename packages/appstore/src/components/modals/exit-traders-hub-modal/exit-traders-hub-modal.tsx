@@ -1,9 +1,9 @@
 import React from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { withRouter, useHistory } from 'react-router-dom';
 import { useStores } from 'Stores';
-import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Text, Button } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import { isMobile, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const ExitTradersHubModal = () => {
@@ -14,7 +14,7 @@ const ExitTradersHubModal = () => {
     const { is_exit_traders_hub_modal_visible, toggleExitTradersHubModal } = traders_hub;
 
     const exit_traders_hub_modal_content = (
-        <Text size='xs'>
+        <Text size={isMobile() ? 'xxs' : 'xs'}>
             {localize(`You won’t be able to see your EU account in the traditional view. The open positions in your EU
         account will remain open. You can switch back to this view at any time.`)}
         </Text>

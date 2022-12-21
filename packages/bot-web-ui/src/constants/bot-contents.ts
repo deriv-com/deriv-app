@@ -14,3 +14,5 @@ export const DASHBOARD_TABS: TTabsTitleProps = Object.freeze({
     CHART: 3,
     TUTORIAL: 4,
 });
+
+export const MAX_STRATEGIES = 10;

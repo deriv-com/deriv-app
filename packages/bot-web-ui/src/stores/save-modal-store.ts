@@ -2,6 +2,7 @@ import { observable, action, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName, getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { button_status } from 'Constants/button-status';
+import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import RootStore from './root-store';
 import LZString from 'lz-string';
 import localForage from 'localforage';
@@ -119,7 +120,7 @@ export default class SaveModalStore implements ISaveModalStore {
                 })
                 .reverse();
 
-            if (workspace.length > 10) {
+            if (workspace.length > MAX_STRATEGIES) {
                 workspace.pop();
             }
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));

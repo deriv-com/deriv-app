@@ -100,7 +100,7 @@ const LocalComponent = ({
                         <button
                             className='load-strategy__button-group--open'
                             onClick={() => {
-                                loadedLocalFileLocation();
+                                loadFileFromRecent();
                                 setActiveTab(1);
                             }}
                         >

@@ -1,7 +1,5 @@
 @import '../dashboard/dashboard-component/index.scss';
 @import '../dashboard/tutorial-tab/index.scss';
-$common_tour_width: 33rem;
-$joyride_step: 6;
 
 .dashboard {
     &__main {
@@ -184,11 +182,11 @@ $joyride_step: 6;
     }
 }
 
-@for $i from 0 through $joyride_step {
+@for $i from 0 through 6 {
     #react-joyride-step-#{$i} {
         .onboard__container {
             .initial-loader {
-                width: $common_tour_width;
+                width: 33rem;
 
                 @if ($i ==0 or $i ==5) {
                     height: 18.6rem;

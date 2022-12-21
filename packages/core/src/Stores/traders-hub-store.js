@@ -17,6 +17,8 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type = 'demo';
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
+    is_account_type_modal_visible = false;
+    account_type_card = '';
     selected_platform_type = 'options';
     active_index = 0;
 
@@ -30,14 +32,17 @@ export default class TradersHubStore extends BaseStore {
             available_mt5_accounts: observable,
             is_regulators_compare_modal_visible: observable,
             selected_account_type: observable,
+            account_type_card: observable,
             selected_platform_type: observable,
             selected_region: observable,
             is_tour_open: observable,
             selectAccountType: action.bound,
+            selectAccountTypeCard: action.bound,
             selectRegion: action.bound,
             setTogglePlatformType: action.bound,
             setActiveIndex: action.bound,
             toggleIsTourOpen: action.bound,
+            toggleAccountTypeModalVisibility: action.bound,
             handleTabItemClick: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
@@ -67,6 +72,10 @@ export default class TradersHubStore extends BaseStore {
         this.selected_account_type = account_type;
     }
 
+    selectAccountTypeCard(account_type_card) {
+        this.account_type_card = account_type_card;
+    }
+
     selectRegion(region) {
         this.selected_region = region;
     }
@@ -86,6 +95,9 @@ export default class TradersHubStore extends BaseStore {
         this.available_platforms = appstore_platforms;
     }
 
+    toggleAccountTypeModalVisibility() {
+        this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
+    }
     get is_eu_selected() {
         return this.selected_region === 'EU';
     }

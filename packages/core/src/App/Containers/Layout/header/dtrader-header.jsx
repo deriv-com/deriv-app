@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -12,35 +12,10 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { BinaryLink } from 'App/Components/Routes';
-import { Localize } from '@deriv/translations';
+
 import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
-
-const RedirectToOldInterface = ({ setIsPreAppStore }) => {
-    const disablePreAppstore = () => setIsPreAppStore(false);
-
-    return (
-        <div className='trading-hub-header__dtrader--redirect'>
-            <BinaryLink
-                to={routes.trade}
-                className='trading-hub-header__dtrader--redirect--link'
-                onClick={disablePreAppstore}
-            >
-                <Text as='p' size='xs'>
-                    <Localize i18n_default_text="Exit Trader's hub" />
-                </Text>
-                <Icon
-                    className='trading-hub-header__dtrader--redirect--beta'
-                    icon='IcAppstoreTradingHubBeta'
-                    size={45}
-                />
-                <Icon icon='IcArrowRight' size={18} color='red' />
-            </BinaryLink>
-        </div>
-    );
-};
 
 const MemoizedMenuLinks = React.memo(MenuLinks);
 
@@ -137,6 +112,7 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -166,6 +142,7 @@ const DTraderHeader = ({
                                     is_mobile
                                     platform_config={filterPlatformsForClients(platform_config)}
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                    is_pre_appstore={is_pre_appstore}
                                 />
                             }
                             is_social_signup={is_social_signup}
@@ -188,7 +165,6 @@ const DTraderHeader = ({
                     })}
                 >
                     <DesktopWrapper>
-                        <RedirectToOldInterface setIsPreAppStore={setIsPreAppStore} />
                         <div className='header__menu--dtrader--separator--account'>
                             <Divider />
                         </div>

@@ -7,16 +7,18 @@ import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
 import { isMobile } from '@deriv/shared';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected } = traders_hub;
     const is_demo = selected_account_type === 'demo';
+    const { is_eu, is_landing_company_loaded } = client;
 
     return (
         <ListingContainer
             title={
-                !isMobile() && !is_eu_selected ? (
+                !isMobile() && !is_eu_selected && !is_eu ? (
                     <Text size='sm' line_height='m' weight='bold'>
                         <Localize i18n_default_text='Options & Multipliers' />
                     </Text>
@@ -27,7 +29,7 @@ const OptionsAndMultipliersListing = () => {
                 )
             }
             description={
-                !is_eu_selected ? (
+                !is_eu_selected && !is_eu ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
@@ -60,13 +62,17 @@ const OptionsAndMultipliersListing = () => {
                     />
                 </div>
             )}
-            {available_platforms.map((available_platform: BrandConfig) => (
-                <TradingAppCard
-                    key={`trading_app_card_${available_platform.name}`}
-                    {...available_platform}
-                    type={is_demo || has_any_real_account ? 'trade' : 'none'}
-                />
-            ))}
+            {is_landing_company_loaded ? (
+                available_platforms.map((available_platform: BrandConfig) => (
+                    <TradingAppCard
+                        key={`trading_app_card_${available_platform.name}`}
+                        {...available_platform}
+                        type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                    />
+                ))
+            ) : (
+                <PlatformLoader />
+            )}
         </ListingContainer>
     );
 };

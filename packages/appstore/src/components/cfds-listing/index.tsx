@@ -9,9 +9,10 @@ import AddOptionsAccount from 'Components/add-options-account';
 import { isMobile, formatMoney } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const CFDsListing = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const {
         available_dxtrade_accounts,
         available_mt5_accounts,
@@ -23,6 +24,7 @@ const CFDsListing = () => {
         getExistingAccounts,
         getAccount,
     } = traders_hub;
+    const { is_eu, is_landing_company_loaded } = client;
     const has_no_real_account = !has_any_real_account;
 
     const accounts_sub_text = is_eu_user ? localize('Account Information') : localize('Compare accounts');
@@ -34,6 +36,7 @@ const CFDsListing = () => {
             ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
             : account.landing_company_short?.toUpperCase();
     };
+
     return (
         <ListingContainer
             title={
@@ -71,43 +74,49 @@ const CFDsListing = () => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {available_mt5_accounts?.map((account: AvailableAccount) => {
-                const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                const has_existing_accounts = existing_accounts.length > 0;
-                return has_existing_accounts ? (
-                    existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+            {is_landing_company_loaded ? (
+                available_mt5_accounts?.map((account: AvailableAccount) => {
+                    const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                    const has_existing_accounts = existing_accounts.length > 0;
+                    return has_existing_accounts ? (
+                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                            <TradingAppCard
+                                icon={account.icon}
+                                sub_title={account.name}
+                                name={`${formatMoney(
+                                    existing_account.currency,
+                                    existing_account.display_balance,
+                                    true
+                                )} ${existing_account.currency}`}
+                                platform={account.platform}
+                                description={existing_account.display_login}
+                                key={`trading_app_card_${account.name}`}
+                                type='transfer_trade'
+                                availability={selected_region}
+                                onAction={() => {
+                                    startTrade(account.platform, existing_account);
+                                }}
+                            />
+                        ))
+                    ) : (
                         <TradingAppCard
                             icon={account.icon}
-                            sub_title={account.name}
-                            name={`${formatMoney(existing_account.currency, existing_account.display_balance, true)} ${
-                                existing_account.currency
-                            }`}
+                            name={account.name}
                             platform={account.platform}
-                            description={existing_account.display_login}
+                            description={account.description}
                             key={`trading_app_card_${account.name}`}
-                            type='transfer_trade'
+                            type='get'
                             availability={selected_region}
                             onAction={() => {
-                                startTrade(account.platform, existing_account);
+                                getAccount(account.market_type, account.platform);
                             }}
                         />
-                    ))
-                ) : (
-                    <TradingAppCard
-                        icon={account.icon}
-                        name={account.name}
-                        platform={account.platform}
-                        description={account.description}
-                        key={`trading_app_card_${account.name}`}
-                        type='get'
-                        availability={selected_region}
-                        onAction={() => {
-                            getAccount(account.market_type, account.platform);
-                        }}
-                    />
-                );
-            })}
-            {!is_eu_user && (
+                    );
+                })
+            ) : (
+                <PlatformLoader />
+            )}
+            {!is_eu_user && !is_eu && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
@@ -119,41 +128,47 @@ const CFDsListing = () => {
                     </Text>
                 </div>
             )}
-            {available_dxtrade_accounts?.map((account: AvailableAccount) => {
-                const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                const has_existing_accounts = existing_accounts.length > 0;
-                return has_existing_accounts ? (
-                    existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+            {is_landing_company_loaded ? (
+                available_dxtrade_accounts?.map((account: AvailableAccount) => {
+                    const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                    const has_existing_accounts = existing_accounts.length > 0;
+                    return has_existing_accounts ? (
+                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                            <TradingAppCard
+                                icon={account.icon}
+                                sub_title={account.name}
+                                name={`${formatMoney(
+                                    existing_account.currency,
+                                    existing_account.display_balance,
+                                    true
+                                )} ${existing_account.currency}`}
+                                description={existing_account.display_login}
+                                platform={account.platform}
+                                key={`trading_app_card_${account.name}`}
+                                type='transfer_trade'
+                                availability={selected_region}
+                                is_disabled={!is_demo ? !has_no_real_account : account.is_disabled}
+                            />
+                        ))
+                    ) : (
                         <TradingAppCard
                             icon={account.icon}
-                            sub_title={account.name}
-                            name={`${formatMoney(existing_account.currency, existing_account.display_balance, true)} ${
-                                existing_account.currency
-                            }`}
-                            description={existing_account.display_login}
+                            name={account.name}
                             platform={account.platform}
+                            description={account.description}
+                            is_disabled={account.is_disabled}
+                            onAction={() => {
+                                getAccount(account.market_type, account.platform);
+                            }}
                             key={`trading_app_card_${account.name}`}
-                            type='transfer_trade'
+                            type='get'
                             availability={selected_region}
-                            is_disabled={!is_demo ? !has_no_real_account : account.is_disabled}
                         />
-                    ))
-                ) : (
-                    <TradingAppCard
-                        icon={account.icon}
-                        name={account.name}
-                        platform={account.platform}
-                        description={account.description}
-                        is_disabled={account.is_disabled}
-                        onAction={() => {
-                            getAccount(account.market_type, account.platform);
-                        }}
-                        key={`trading_app_card_${account.name}`}
-                        type='get'
-                        availability={selected_region}
-                    />
-                );
-            })}
+                    );
+                })
+            ) : (
+                <PlatformLoader />
+            )}
         </ListingContainer>
     );
 };

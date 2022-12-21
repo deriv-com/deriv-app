@@ -428,7 +428,6 @@ export default class LoadModalStore implements ILoadModalStore {
                     scrollbars: true,
                 });
                 load_options.workspace = this.local_workspace;
-                load_options.workspace = blocky_workspace;
             } else {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;

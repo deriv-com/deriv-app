@@ -261,10 +261,6 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { my_ads_store } = this.root_store;
 
-                if (my_ads_store.should_show_add_payment_method_modal) {
-                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                }
-
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);
                 }

@@ -36,7 +36,7 @@ export default class NotificationStore extends BaseStore {
     marked_notifications = [];
     push_notifications = [];
     client_notifications = {};
-    should_show_popups = false; //TODO (yauheni-kryzhyk): this option is not used. leaving this for the upcoming new pop-up notifications implementation
+    should_show_popups = true;
     p2p_order_props = {};
 
     constructor(root_store) {

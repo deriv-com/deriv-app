@@ -164,7 +164,6 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     is_onscreen_keyboard_active: boolean;
     is_mobile: boolean;
     is_stop_button_visible: boolean;
-    is_strategy_modal_open: boolean;
     onChangeDropdownItem: TOnChangeDropdownItem;
     onChangeInputValue: TOnChangeInputValue;
     onHideDropdownList: TOnHideDropdownList;

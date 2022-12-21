@@ -22,7 +22,6 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     active_index: quick_strategy.active_index,
     description: quick_strategy.description,
     createStrategy: quick_strategy.createStrategy,
-    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
     types_strategies_dropdown: quick_strategy.types_strategies_dropdown,
     getSizeDesc: quick_strategy.getSizeDesc,

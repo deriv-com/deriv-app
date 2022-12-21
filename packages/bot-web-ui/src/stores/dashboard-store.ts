@@ -16,11 +16,12 @@ export interface IDashboardStore {
     is_dialog_open: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
-    is_tour_ended: boolean;
+    has_tour_ended: boolean;
     has_builder_token: string | number;
     has_onboarding_token: string | number;
     strategy_save_type: string;
     onCloseDialog: () => void;
+    setHasTourEnded: (has_tour_ended: boolean) => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
@@ -42,7 +43,7 @@ export default class DashboardStore implements IDashboardStore {
             getFileArray: observable,
             has_file_loaded: observable,
             is_info_panel_visible: observable,
-            is_tour_ended: observable,
+            has_tour_ended: observable,
             strategy_save_type: observable,
             has_tour_started: observable,
             is_tour_dialog_visible: observable,
@@ -51,6 +52,7 @@ export default class DashboardStore implements IDashboardStore {
             has_started_bot_builder_tour: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
+            setHasTourEnded: action.bound,
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
             setOnBoardTourRunState: action.bound,
@@ -90,7 +92,7 @@ export default class DashboardStore implements IDashboardStore {
     has_started_onboarding_tour = false;
     is_preview_on_popup = false;
     has_started_bot_builder_tour = false;
-    is_tour_ended = false;
+    has_tour_ended = false;
     has_builder_token = '';
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
@@ -99,8 +101,8 @@ export default class DashboardStore implements IDashboardStore {
         this.strategy_save_type = strategy_save_type;
     };
 
-    setIsTourEnded = (is_tour_ended: boolean): void => {
-        this.is_tour_ended = is_tour_ended;
+    setHasTourEnded = (has_tour_ended: boolean): void => {
+        this.has_tour_ended = has_tour_ended;
     };
 
     setBotBuilderTokenCheck = (has_builder_token: string | number): void => {

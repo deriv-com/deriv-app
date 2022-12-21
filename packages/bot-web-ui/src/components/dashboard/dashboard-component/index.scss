@@ -182,6 +182,9 @@
     &__dashboard {
         display: flex;
         width: 100%;
+        &--tour-active {
+            width: 78%;
+        }
 
         &__content {
             min-width: 70%;

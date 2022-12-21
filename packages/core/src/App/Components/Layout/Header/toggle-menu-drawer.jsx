@@ -19,11 +19,14 @@ const MenuLink = ({
     is_active,
     is_disabled,
     is_language,
+    is_hidden,
     suffix_icon,
     text,
     onClickLink,
 }) => {
     const deriv_static_url = getStaticUrl(link_to);
+
+    if (is_hidden) return null;
 
     if (is_language) {
         return (
@@ -138,7 +141,7 @@ const ToggleMenuDrawer = React.forwardRef(
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore });
+                const routes_config = getRoutesConfig({ is_appstore });
                 let primary_routes = [];
                 let secondary_routes = [];
                 const location = window.location.pathname;
@@ -220,6 +223,13 @@ const ToggleMenuDrawer = React.forwardRef(
                 return false;
             };
 
+            const hiddenRoute = route_path => {
+                if (/languages/.test(route_path)) {
+                    return !is_pre_appstore;
+                }
+                return false;
+            };
+
             return (
                 <MobileDrawer.SubMenu
                     key={idx}
@@ -266,6 +276,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         <MenuLink
                                             key={subindex}
                                             is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
+                                            is_hidden={hiddenRoute(subroute.path)}
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}

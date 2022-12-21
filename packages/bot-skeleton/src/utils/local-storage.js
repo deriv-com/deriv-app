@@ -13,14 +13,9 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
     const {
         load_modal: { updateListStrategies },
         save_modal,
-        dashboard: { active_tab },
     } = DBotStore.instance;
 
-    let current_workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
-    if (active_tab === 0) {
-        current_workspace_id = Blockly.mainWorkspace.id || Blockly.utils.genUid();
-    }
-    const workspace_id = current_workspace_id;
+    const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
     const workspaces = await getSavedWorkspaces();
     const current_xml = Blockly.Xml.domToText(xml);
     const current_timestamp = Date.now();

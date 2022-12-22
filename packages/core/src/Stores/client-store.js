@@ -2035,9 +2035,9 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const is_localStorage_pre_appstore = localStorage.getItem('is_pre_appstore');
+            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (
-                is_localStorage_pre_appstore === 'true' &&
+                local_pre_appstore === 'true' &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {

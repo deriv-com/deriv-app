@@ -58,10 +58,16 @@ export default class TradersHubStore extends BaseStore {
         });
 
         reaction(
-            () => [this.selected_account_type, this.selected_region],
+            () => [
+                this.selected_account_type,
+                this.selected_region,
+                this.root_store.client.is_eu,
+                this.root_store.client.is_switching,
+            ],
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
+                this.getAvailableDxtradeAccounts();
             }
         );
 
@@ -86,12 +92,18 @@ export default class TradersHubStore extends BaseStore {
 
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
-        if (this.root_store.client.is_eu || this.selected_region === 'EU') {
+        if (this.selected_region === 'EU') {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['EU', 'All'].some(region => region === platform.availability)
             );
             return;
+        } else if (this.root_store.client.is_eu) {
+            this.available_platforms = appstore_platforms.filter(platform =>
+                ['All'].some(region => region === platform.availability)
+            );
+            return;
         }
+
         this.available_platforms = appstore_platforms;
     }
 
@@ -149,7 +161,13 @@ export default class TradersHubStore extends BaseStore {
                 ['EU', 'All'].some(region => region === account.availability)
             );
             return;
+        } else if (this.root_store.client.is_eu) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
+                ['All'].some(region => region === account.availability)
+            );
+            return;
         }
+
         this.available_mt5_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.MT5
         );
@@ -160,6 +178,13 @@ export default class TradersHubStore extends BaseStore {
             this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
                 account =>
                     ['EU', 'All'].some(region => region === account.availability) &&
+                    account.platform === CFD_PLATFORMS.DXTRADE
+            );
+            return;
+        } else if (this.root_store.client.is_eu) {
+            this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
+                account =>
+                    ['All'].some(region => region === account.availability) &&
                     account.platform === CFD_PLATFORMS.DXTRADE
             );
             return;

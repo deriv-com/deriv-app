@@ -58,7 +58,9 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    verify_email_sent_count: number;
     email: string;
+    setVerifyEmailSentCount: (verify_email_sent_count: number) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;

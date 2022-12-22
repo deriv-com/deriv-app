@@ -12,7 +12,7 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     const WS = useWS('verify_email');
     const counter = useCountdown({ from: RESEND_COUNTDOWN });
     const { client } = useStore();
-    const [sent_count, setSentCount] = useState(0);
+    const { setVerifyEmailSentCount, verify_email_sent_count } = client;
 
     const send = () => {
         if (!client.email) return;
@@ -20,8 +20,7 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
 
         counter.reset();
         counter.start();
-
-        setSentCount(old => old + 1);
+        setVerifyEmailSentCount(verify_email_sent_count + 1);
 
         WS.send({ verify_email: client.email, type });
     };
@@ -32,8 +31,8 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
         data: WS.data,
         counter: counter.count,
         is_counter_running: counter.is_running,
-        sent_count,
-        has_been_sent: sent_count !== 0,
+        sent_count: verify_email_sent_count,
+        has_been_sent: verify_email_sent_count !== 0,
         send,
     };
 };

@@ -115,6 +115,7 @@ export default class ClientStore extends BaseStore {
         social_email_change: '',
         system_email_change: '',
     };
+    verify_email_sent_count = 0;
 
     new_email = {
         system_email_change: '',
@@ -192,6 +193,7 @@ export default class ClientStore extends BaseStore {
             cfd_score: observable,
             obj_total_balance: observable,
             verification_code: observable,
+            verify_email_sent_count: observable,
             new_email: observable,
             account_limits: observable,
             self_exclusion: observable,
@@ -293,6 +295,7 @@ export default class ClientStore extends BaseStore {
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
+            setVerifyEmailSentCount: action.bound,
             setCFDScore: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
@@ -1104,6 +1107,10 @@ export default class ClientStore extends BaseStore {
         this.preferred_language = lang;
         LocalStore.setObject(LANGUAGE_KEY, lang);
     };
+
+    setVerifyEmailSentCount(verify_email_sent_count) {
+        this.verify_email_sent_count = verify_email_sent_count;
+    }
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';

@@ -50,8 +50,8 @@ const OptionsAndMultipliersListing = () => {
                 ) : (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
-                            components={[<StaticUrl key={1} className='options' href='trade-types/multiplier/' />]}
+                            i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                            components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
                         />
                     </Text>
                 )

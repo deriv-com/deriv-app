@@ -27,7 +27,7 @@ const CFDsListing = () => {
     const { is_eu, is_landing_company_loaded } = client;
     const has_no_real_account = !has_any_real_account;
 
-    const accounts_sub_text = is_eu_user ? localize('Account Information') : localize('Compare accounts');
+    const accounts_sub_text = is_eu ? localize('Account Information') : localize('Compare accounts');
 
     const getShortCode = (account: TDetailsOfEachMT5Loginid) => {
         return account.landing_company_short &&
@@ -63,6 +63,12 @@ const CFDsListing = () => {
                 </Text>
             }
         >
+            {isMobile() && (
+                <Text size='xs' color='red' weight='bold' line_height='s'>
+                    <Localize i18n_default_text={accounts_sub_text} />
+                </Text>
+            )}
+
             {!is_demo && has_no_real_account && (
                 <div className='cfd-full-row'>
                     <AddOptionsAccount />

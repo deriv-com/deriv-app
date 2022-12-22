@@ -30,7 +30,7 @@ const AccumulatorCardBody = ({
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { INDICATIVE_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
+    const { CURRENT_STAKE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
 
     return (
         <React.Fragment>
@@ -38,7 +38,7 @@ const AccumulatorCardBody = ({
                 <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={INDICATIVE_PRICE} className='dc-contract-card__current-stake'>
+                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': +profit > 0,

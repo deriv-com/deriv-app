@@ -1,7 +1,15 @@
 import React from 'react';
 import { RadioGroup, Popover } from '@deriv/components';
 
-const RadioGroupWithInfoMobile = ({ items_list, contract_name, current_value_object, onChange, info, toggleModal }) => {
+const RadioGroupWithInfoMobile = ({
+    items_list,
+    contract_name,
+    current_value_object,
+    onChange,
+    info,
+    popover_alignment = 'right',
+    toggleModal,
+}) => {
     const onValueChange = e => {
         onChange({
             target: {
@@ -16,7 +24,7 @@ const RadioGroupWithInfoMobile = ({ items_list, contract_name, current_value_obj
         <>
             <div className={`trade-params__${contract_name}-ic-info-wrapper`}>
                 <Popover
-                    alignment='right'
+                    alignment={popover_alignment}
                     icon='info'
                     id={`dt_${contract_name}-stake__tooltip`}
                     is_bubble_hover_enabled

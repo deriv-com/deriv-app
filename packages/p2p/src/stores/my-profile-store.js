@@ -259,6 +259,7 @@ export default class MyProfileStore extends BaseStore {
                 const { general_store, my_ads_store } = this.root_store;
 
                 general_store.hideModal();
+                this.setSelectedPaymentMethod('');
 
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);

@@ -21,7 +21,7 @@ const AddPaymentMethodErrorModal = () => {
                     text={localize('Ok')}
                     onClick={() => {
                         my_profile_store.setAddPaymentMethodErrorMessage('');
-                        hideModal();
+                        hideModal(true);
                     }}
                     primary
                     large

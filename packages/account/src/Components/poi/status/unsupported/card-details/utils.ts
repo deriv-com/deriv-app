@@ -1,21 +1,21 @@
 import { localize } from '@deriv/translations';
 
-export const setInitialValues = fields => {
+export const setInitialValues = (fields: []) => {
     const values = {};
-    fields.forEach(field => {
+    fields.forEach((field: { name: string }) => {
         values[field.name] = '';
     });
     return values;
 };
 
-export const checkIsEmpty = value => {
+export const checkIsEmpty = (value: string | unknown) => {
     return typeof value === 'string' ? !value.trim() : !value;
 };
 
-export const validateFields = (values, fields = [], documents = []) => {
-    const errors = {};
+export const validateFields = (values: object, fields = [], documents = []) => {
+    const errors: object = {};
 
-    fields.forEach(field => {
+    fields.forEach((field: { name: string; label: string; type: string; required: boolean }) => {
         const { name, label, type } = field;
         const value = values[name];
 
@@ -30,7 +30,7 @@ export const validateFields = (values, fields = [], documents = []) => {
         }
     });
 
-    documents.forEach(document => {
+    documents.forEach((document: { name: string; label: string }) => {
         const { name, label } = document;
         const value = values[name];
 

@@ -13,8 +13,7 @@ const TitleCardLoader = () => (
             <rect x='20' y='100' rx='3' ry='3' width='2000' height='30' />
         </DesktopWrapper>
         <MobileWrapper>
-            <circle cx='240' cy='65' r='25' />
-            <rect x='355' y='50' rx='0' ry='0' width='38' height='38' />
+            <rect x='40' y='20' rx='3' ry='3' width='2000' height='30' />
         </MobileWrapper>
     </ContentLoader>
 );

@@ -15,19 +15,26 @@ const OptionsAndMultipliersListing = () => {
     const is_demo = selected_account_type === 'demo';
     const { is_eu, is_landing_company_loaded } = client;
 
+    const OptionsTitle = () => {
+        if (!is_eu_selected && !is_eu) {
+            return (
+                <Text size='sm' line_height='m' weight='bold'>
+                    <Localize i18n_default_text='Options & Multipliers' />
+                </Text>
+            );
+        } else if (isMobile()) {
+            return null;
+        }
+        return (
+            <Text size='sm' line_height='m' weight='bold'>
+                <Localize i18n_default_text='Multipliers' />
+            </Text>
+        );
+    };
+
     return (
         <ListingContainer
-            title={
-                !isMobile() && !is_eu_selected && !is_eu ? (
-                    <Text size='sm' line_height='m' weight='bold'>
-                        <Localize i18n_default_text='Options & Multipliers' />
-                    </Text>
-                ) : (
-                    <Text size='sm' line_height='m' weight='bold'>
-                        <Localize i18n_default_text='Multipliers' />
-                    </Text>
-                )
-            }
+            title={<OptionsTitle />}
             description={
                 !is_eu_selected && !is_eu ? (
                     <Text size='xs' line_height='s'>

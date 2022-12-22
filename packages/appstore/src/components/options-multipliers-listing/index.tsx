@@ -75,6 +75,7 @@ const OptionsAndMultipliersListing = () => {
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                        is_deriv_platform
                     />
                 ))
             ) : (

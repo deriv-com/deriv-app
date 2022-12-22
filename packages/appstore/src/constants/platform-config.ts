@@ -15,6 +15,7 @@ export type BrandConfig = {
     name: string;
     icon: keyof typeof PlatformIcons;
     availability: TRegionAvailability;
+    is_deriv_platform?: boolean;
 };
 
 export type PlatformConfig = {

@@ -1192,6 +1192,7 @@ export default class TradeStore extends BaseStore {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
+        this.root_store.notifications.setShouldShowPopups(false);
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -1202,6 +1203,7 @@ export default class TradeStore extends BaseStore {
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
+            this.root_store.notifications.setShouldShowPopups(true);
         });
         // TODO: remove this function when the closure of MX and MLT accounts is completed.
         this.manageMxMltRemovalNotification();

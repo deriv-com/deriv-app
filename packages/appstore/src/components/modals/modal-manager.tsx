@@ -11,6 +11,7 @@ import {
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
+    CompareAccountsModal,
 } from '@deriv/cfd';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -19,8 +20,8 @@ import { TOpenAccountTransferMeta } from 'Types';
 
 const ModalManager = () => {
     const store = useStores();
-    const { common, client, modules } = store;
-    const { is_logged_in, is_eu, is_eu_country } = client;
+    const { common, client, modules, traders_hub } = store;
+    const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
     const { platform } = common;
     const {
         current_list,
@@ -30,6 +31,7 @@ const ModalManager = () => {
         toggleMT5TradeModal,
         togglePasswordManagerModal,
     } = modules.cfd;
+    const { is_demo } = traders_hub;
 
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         setAccountType(account_type);
@@ -57,6 +59,12 @@ const ModalManager = () => {
             <ResetTradingPasswordModal context={store} />
             <MT5AccountTypeModal />
             <RegulatorsCompareModal />
+            <CompareAccountsModal
+                context={store}
+                is_demo_tab={is_demo}
+                openPasswordModal={openRealPasswordModal}
+                is_real_enabled={has_active_real_account || !is_demo}
+            />
         </React.Fragment>
     );
 };

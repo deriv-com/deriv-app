@@ -143,13 +143,18 @@ const CompareAccountsModal = ({
             ? localize('Account Information')
             : localize('Compare accounts');
 
-    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
+    const getCFDModalTitle = () => {
+        if (should_show_derivx) {
+            return localize('Compare CFDs real accounts');
+        }
+        return is_dxtrade ? cfd_account_button_label : localize('Compare available accounts');
+    };
 
     const getModalStyle = () => {
         if (should_show_derivx) {
             return {
-                height: '506px',
-                width: '1200px',
+                height: '574px',
+                width: '1131px',
             };
         } else if (is_dxtrade) {
             return {
@@ -171,7 +176,7 @@ const CompareAccountsModal = ({
     return (
         <>
             <div className='cfd-compare-accounts-modal__wrapper' style={{ marginTop: is_dxtrade ? '5rem' : '2.4rem' }}>
-                {!(is_demo_tab && platform === 'mt5' && !is_pre_appstore_setting) && (
+                {!(is_demo_tab && platform === 'mt5') && !is_pre_appstore_setting && (
                     <Button
                         className='cfd-dashboard__welcome-message--button'
                         has_effect

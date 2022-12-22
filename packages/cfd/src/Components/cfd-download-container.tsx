@@ -151,11 +151,11 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
     );
 };
 
-const QRCodeBox = ({ platform }: { platform: string }) => {
+const QRCodeBox = () => {
     return (
         <DesktopWrapper>
             <div className='cfd-dashboard__download-container-qrcode'>
-                <QRCode value={mobileDownloadLink(platform)} size={160} />
+                <QRCode value='https://static.deriv.com/scripts/storeRedirect?app=derivx' size={160} />
                 <span className='cfd-dashboard__download-container-qrcode__hint'>
                     {localize('Scan the QR code to download the Deriv X Mobile App')}
                 </span>
@@ -208,7 +208,7 @@ const CFDDownloadContainer = ({ platform, is_dark_mode_on, active_index, dxtrade
                     </div>
                 </div>
 
-                {platform === CFD_PLATFORMS.DXTRADE && <QRCodeBox platform={platform} />}
+                {platform === CFD_PLATFORMS.DXTRADE && <QRCodeBox />}
             </div>
         </React.Fragment>
     );

@@ -301,7 +301,6 @@ export default class UIStore extends BaseStore {
             is_warning_scam_message_modal_visible: computed,
             notifyAppInstall: action.bound,
             onChangeUiStore: action.bound,
-            onOrientationChange: action.bound,
             openAccountNeededModal: action.bound,
             openDerivRealAccountNeededModal: action.bound,
             openPositionsDrawer: action.bound,

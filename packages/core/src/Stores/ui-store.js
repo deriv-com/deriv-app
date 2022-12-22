@@ -732,10 +732,6 @@ export default class UIStore extends BaseStore {
         };
     }
 
-    onOrientationChange({ is_landscape_orientation }) {
-        this.is_landscape = is_landscape_orientation;
-    }
-
     toggleOnScreenKeyboard() {
         this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
     }

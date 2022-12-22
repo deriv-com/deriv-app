@@ -51,7 +51,7 @@ const CFDsListing = () => {
                         <Text size='sm' line_height='m' weight='bold'>
                             {localize('CFDs')}
                         </Text>
-                        <div onClick={toggleCompareAccountsModal}>
+                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
                             <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
                                 <Localize i18n_default_text={accounts_sub_text} />
                             </Text>
@@ -71,9 +71,11 @@ const CFDsListing = () => {
             }
         >
             {isMobile() && (
-                <Text size='xs' color='red' weight='bold' line_height='s'>
-                    <Localize i18n_default_text={accounts_sub_text} />
-                </Text>
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        <Localize i18n_default_text={accounts_sub_text} />
+                    </Text>
+                </div>
             )}
 
             {!is_demo && has_no_real_account && (

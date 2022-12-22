@@ -1,7 +1,7 @@
 .strike-widget {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: '. amount unit';
+    grid-template-areas: 'spot amount unit';
     border-radius: 4px;
     padding: 1rem 0.8rem;
     height: 4rem;
@@ -11,6 +11,9 @@
     align-items: center;
 
     .mobile-widget {
+        &__spot {
+            grid-area: spot;
+        }
         &__amount {
             grid-area: amount;
         }

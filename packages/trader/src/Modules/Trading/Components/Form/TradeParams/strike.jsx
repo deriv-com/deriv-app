@@ -121,8 +121,9 @@ const Strike = ({
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget}>
+                        <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
                         <div className='mobile-widget__amount'>{barrier_1}</div>
-                        <div className='mobile-widget__type'>{localize('Strike')}</div>
+                        <div className='mobile-widget__type'>{localize('Strike Price')}</div>
                     </div>
                     <StrikeParamModal
                         is_open={is_open}

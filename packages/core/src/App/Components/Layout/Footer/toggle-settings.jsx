@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 import { Icon, Modal, Popover, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
+import { PlatformContext } from '@deriv/shared';
 
 const ThemeSetting = Loadable({
     loader: () =>
@@ -23,20 +24,25 @@ const LanguageSettingContainer = Loadable({
 });
 
 const ModalContent = ({ settings_extension }) => {
-    const content = [
-        {
-            icon: 'IcTheme',
-            label: localize('Themes'),
-            // eslint-disable-next-line react/display-name
-            value: ThemeSetting,
-        },
-        {
-            icon: 'IcLanguage',
-            label: localize('Language'),
-            value: LanguageSettingContainer,
-        },
-        ...(settings_extension || []),
-    ];
+    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const content = [];
+    if (is_pre_appstore) {
+        content.push(...(settings_extension || []));
+    } else {
+        content.push(
+            {
+                icon: 'IcTheme',
+                label: localize('Themes'),
+                value: ThemeSetting,
+            },
+            {
+                icon: 'IcLanguage',
+                label: localize('Language'),
+                value: LanguageSettingContainer,
+            },
+            ...(settings_extension || [])
+        );
+    }
 
     return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
 };
@@ -47,7 +53,12 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
     });
     return (
         <React.Fragment>
-            <a id='dt_settings_toggle' onClick={toggleSettings} className={`${toggle_settings_class} footer__link`}>
+            <a
+                id='dt_settings_toggle'
+                data-testid='dt_settings_toggle'
+                onClick={toggleSettings}
+                className={`${toggle_settings_class} footer__link`}
+            >
                 <Popover alignment='top' message={localize('Platform settings')} zIndex={9999}>
                     <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
                 </Popover>

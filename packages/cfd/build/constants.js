@@ -1,20 +1,15 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-// const HtmlWebPackPlugin = require('html-webpack-plugin');
-// const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
-    copyConfig,
     cssConfig,
     // htmlOutputConfig,
     stylelintConfig,
@@ -35,13 +30,14 @@ const ALIASES = {
     Constants: path.resolve(__dirname, '../src/Constants'),
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
+    Helpers: path.resolve(__dirname, '../src/Helpers'),
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => [
-    ...(is_test_env && !is_mocha_only
+const rules = (is_test_env = false) => [
+    ...(is_test_env
         ? [
               {
                   test: /\.(js|jsx)$/,
@@ -118,7 +114,7 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
+const plugins = (base, is_test_env) => [
     new CleanWebpackPlugin(),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
@@ -132,7 +128,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
                   filter: file => file.name !== 'CNAME',
               }),
           ]),
-    ...(is_test_env && !is_mocha_only
+    ...(is_test_env
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),

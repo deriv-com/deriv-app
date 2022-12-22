@@ -10,6 +10,7 @@ import {
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
+import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsModalProps = {
     account_settings: GetSettings;
@@ -18,6 +19,7 @@ export type TCFDPersonalDetailsModalProps = {
     getChangeableFields: () => string[];
     is_from_mt5_compare_accounts_table: boolean;
     is_open: boolean;
+    context: RootStore;
     openPasswordModal: () => void;
     toggleCompareAccounts: () => void;
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
@@ -36,6 +38,7 @@ export type TCFDChangePasswordConfirmationProps = {
     className?: string;
     onConfirm: (values: TCFDPasswordFormValues, actions: FormikActions<TCFDPasswordFormValues>) => void;
     onCancel: () => void;
+    context?: RootStore;
 };
 
 export type TCFDDashboardContainer = {
@@ -74,6 +77,7 @@ export type TPasswordResetAndTradingPasswordManager = {
 
 export type TResetPasswordIntent = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
+    context?: RootStore;
     children({ ...props }): React.ReactElement;
     is_eu: boolean;
 };
@@ -86,6 +90,7 @@ export type TError = {
 export type TCFDResetPasswordModal = RouteComponentProps & {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
+    context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
     is_logged_in: boolean;
@@ -127,6 +132,7 @@ export type TCFDPasswordReset = {
     account_type: string;
     account_group: 'real' | 'demo';
     server: string;
+    context: RootStore;
     password_type: string;
 };
 
@@ -139,6 +145,7 @@ export type TCFDPasswordManagerTabContent = {
     toggleModal: () => void;
     selected_login: string;
     email: string;
+    context: RootStore;
     setPasswordType: (value: string) => void;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: CFD_Platform;
@@ -150,6 +157,7 @@ export type TCFDPasswordManagerModal = {
     enableApp: () => void;
     email: string;
     is_eu: boolean;
+    context: RootStore;
     disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;
@@ -164,6 +172,7 @@ export type TCFDPasswordManagerModal = {
 
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
+    context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -175,6 +184,7 @@ export type TJurisdictionCardProps = {
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
     account_type: string;
+    context: RootStore;
     card_classname: string;
     disabled: boolean;
     is_virtual: boolean;
@@ -186,6 +196,7 @@ export type TVerificationStatusBannerProps = {
 
 export type TJurisdictionCheckBoxProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     class_name: string;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
@@ -203,6 +214,7 @@ export type TJurisdictionModalProps = {
         type: string;
         category: string;
     };
+    context: RootStore;
     account_settings: GetSettings;
     account_status: GetAccountStatus;
     disableApp: () => void;
@@ -226,6 +238,7 @@ export type TJurisdictionModalProps = {
 
 export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -241,6 +254,7 @@ export type TJurisdictionModalContentProps = {
 
 export type TJurisdictionModalFootNoteProps = {
     account_status: GetAccountStatus;
+    context: RootStore;
     card_classname: string;
     account_type: string;
     jurisdiction_selected_shortcode: string;

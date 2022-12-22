@@ -230,19 +230,54 @@ const StaticDashboard = ({
                         })}
                     >
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
-                            <StaticTradingAppCard icon={'DTrader'} name={'abcd'} availability={'All'} />
+                            <StaticTradingAppCard
+                                icon={'DTrader'}
+                                name={'DTrader'}
+                                description={'Options and multipliers trading platform.'}
+                                availability={'All'}
+                                has_applauncher_account={has_applauncher_account}
+                                is_item_blurry={is_blurry.platformlauncher}
+                            />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
-                            <StaticTradingAppCard icon={'DBot'} name={'abcd'} availability={'All'} />
+                            <StaticTradingAppCard
+                                icon={'DBot'}
+                                name={'DBot'}
+                                description={`Automate your trading, no coding needed.`}
+                                availability={'Non-EU'}
+                                has_applauncher_account={has_applauncher_account}
+                                is_item_blurry={is_blurry.platformlauncher}
+                            />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
-                            <StaticTradingAppCard icon={'SmartTrader'} name={'abcd'} availability={'All'} />
+                            <StaticTradingAppCard
+                                icon={'SmartTrader'}
+                                name={'SmartTrader'}
+                                description={`Automate your trading, no coding needed.`}
+                                availability={'Non-EU'}
+                                has_applauncher_account={has_applauncher_account}
+                                is_item_blurry={is_blurry.platformlauncher}
+                            />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
-                            <StaticTradingAppCard icon={'BinaryBot'} name={'abcd'} availability={'All'} />
+                            <StaticTradingAppCard
+                                icon={'BinaryBot'}
+                                name={'BinaryBot'}
+                                description={`Our legacy automated trading platform.`}
+                                availability={'Non-EU'}
+                                has_applauncher_account={has_applauncher_account}
+                                is_item_blurry={is_blurry.platformlauncher}
+                            />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
-                            <StaticTradingAppCard icon={'DerivGo'} name={'abcd'} availability={'All'} />
+                            <StaticTradingAppCard
+                                icon={'DerivGo'}
+                                name={'DerivGo'}
+                                description={`Trade on the go with our mobile app.`}
+                                availability={'Non-EU'}
+                                has_applauncher_account={has_applauncher_account}
+                                is_item_blurry={is_blurry.platformlauncher}
+                            />
                         </div>
                         {/* <StaticPlatformLauncher
                             is_grey={is_grey}

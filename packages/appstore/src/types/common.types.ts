@@ -107,6 +107,8 @@ export type TIconTypes =
     | 'CFDs';
 export interface AvailableAccount {
     name: string;
+    is_item_blurry?: boolean;
+    has_applauncher_account?: boolean;
     sub_title?: string;
     description?: string;
     is_visible?: boolean;

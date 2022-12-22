@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import * as formik from 'formik';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionContext from '../self-exclusion-context';
@@ -8,7 +8,7 @@ import SelfExclusionFooter from '../self-exclusion-footer';
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
 
-const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext');
+const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as any;
 
 describe('<SelfExclusionFooter />', () => {
     let mock_context = {};
@@ -26,7 +26,7 @@ describe('<SelfExclusionFooter />', () => {
         });
     });
     it('should not render SelfExclusionFooter component', () => {
-        mock_context.footer_ref = null;
+        (mock_context as FormikValues).footer_ref = null;
 
         render(
             <SelfExclusionContext.Provider value={mock_context}>
@@ -39,7 +39,7 @@ describe('<SelfExclusionFooter />', () => {
 
     it('should render SelfExclusionFooter component', () => {
         render(
-            <Formik>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <SelfExclusionContext.Provider value={mock_context}>
                     <SelfExclusionFooter />
                 </SelfExclusionContext.Provider>
@@ -50,10 +50,10 @@ describe('<SelfExclusionFooter />', () => {
     });
 
     it('Should trigger click on the button', () => {
-        const mockGoToConfirm = mock_context.goToConfirm;
+        const mockGoToConfirm = (mock_context as FormikValues).goToConfirm;
 
         render(
-            <Formik>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <SelfExclusionContext.Provider value={mock_context}>
                     <SelfExclusionFooter />
                 </SelfExclusionContext.Provider>

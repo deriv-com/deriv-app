@@ -27,6 +27,7 @@ const TradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
+
     const icon_size = isMobile() ? 48 : 64;
     return (
         <div className='trading-app-card'>

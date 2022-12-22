@@ -216,12 +216,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
 
-            .emp-status {
-                .dc-select-native__wrapper {
-                    margin-top: 3rem;
-                }
-            }
-
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
@@ -391,6 +385,14 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-gap: 8px;
+            }
+
+            &--tin {
+                display: grid;
+                grid-gap: 0.4rem;
+                grid-template-rows: 1fr 1fr;
+                max-width: 40rem;
+                margin-bottom: 1rem;
             }
 
             .datepicker {

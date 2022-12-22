@@ -20,7 +20,6 @@ export default class MyProfileStore extends BaseStore {
     is_cancel_add_payment_method_modal_open = false;
     is_cancel_edit_payment_method_modal_open = false;
     is_confirm_delete_modal_open = false;
-    is_delete_payment_method_error_modal_open = false;
     is_loading = true;
     is_submit_success = false;
     payment_method_value = undefined;
@@ -61,7 +60,6 @@ export default class MyProfileStore extends BaseStore {
             is_cancel_add_payment_method_modal_open: observable,
             is_cancel_edit_payment_method_modal_open: observable,
             is_confirm_delete_modal_open: observable,
-            is_delete_payment_method_error_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
             payment_method_value: observable,
@@ -120,7 +118,6 @@ export default class MyProfileStore extends BaseStore {
             setIsCancelAddPaymentMethodModalOpen: action.bound,
             setIsCancelEditPaymentMethodModalOpen: action.bound,
             setIsConfirmDeleteModalOpen: action.bound,
-            setIsDeletePaymentMethodErrorModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSubmitSuccess: action.bound,
             setPaymentMethodValue: action.bound,
@@ -462,7 +459,10 @@ export default class MyProfileStore extends BaseStore {
                 this.setDeleteErrorMessage(response.error.message);
                 await when(
                     () => !this.root_store.general_store.is_modal_open,
-                    () => this.setIsDeletePaymentMethodErrorModalOpen(true)
+                    () =>
+                        this.root_store.general_store.showModal({
+                            key: 'DeletePaymentMethodErrorModal',
+                        })
                 );
             }
         });
@@ -649,10 +649,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
         this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
-    }
-
-    setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
-        this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
     }
 
     setIsLoading(is_loading) {

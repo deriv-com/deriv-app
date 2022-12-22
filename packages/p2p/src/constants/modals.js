@@ -14,6 +14,11 @@ export const modals = {
             /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
         )
     ),
+    DeletePaymentMethodErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
+        )
+    ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'

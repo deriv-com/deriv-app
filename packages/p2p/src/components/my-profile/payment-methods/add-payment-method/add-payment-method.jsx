@@ -10,14 +10,8 @@ import SelectPaymentMethod from './select-payment-method.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
-    const { my_ads_store, my_profile_store } = useStores();
-    const { showModal } = useModalManagerContext();
-
-    React.useEffect(() => {
-        my_profile_store.setSelectedPaymentMethod('');
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { my_profile_store } = useStores();
+    const { hideModal, showModal } = useModalManagerContext();
 
     return (
         <React.Fragment>
@@ -31,7 +25,7 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
                                 });
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
-                                my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                hideModal();
                             }
                         }}
                         page_title={localize('Add payment method')}

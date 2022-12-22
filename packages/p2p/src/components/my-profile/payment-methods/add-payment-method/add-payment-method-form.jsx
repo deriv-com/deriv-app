@@ -3,15 +3,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Field, Form } from 'formik';
-import { Button, Icon, Input, Loading, Modal, Text } from '@deriv/components';
-import { Localize, localize } from 'Components/i18next';
+import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import ModalForm from 'Components/modal-manager/modal-form';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
-    const { my_ads_store, my_profile_store } = useStores();
-    const { showModal } = useModalManagerContext();
+    const { my_profile_store } = useStores();
+    const { hideModal, showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -104,7 +104,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                             });
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();
-                                            my_ads_store.setShouldShowAddPaymentMethodModal(false);
+                                            hideModal();
                                         }
                                     }}
                                     type='button'
@@ -124,33 +124,11 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                     );
                 }}
             </ModalForm>
-            <Modal
-                is_open={my_profile_store.should_show_add_payment_method_error_modal}
-                small
-                has_close_icon={false}
-                title={localize("Something's not right")}
-            >
-                <Modal.Body>
-                    <Text color='prominent' size='xs'>
-                        {my_profile_store.add_payment_method_error_message}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodErrorModal(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
         </React.Fragment>
     );
 };
 
 AddPaymentMethodForm.propTypes = {
-    formik_ref: PropTypes.shape({ current: PropTypes.any }),
     should_show_separated_footer: PropTypes.bool,
 };
 

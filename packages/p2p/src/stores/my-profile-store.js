@@ -35,7 +35,6 @@ export default class MyProfileStore extends BaseStore {
     selected_payment_method_fields = [];
     selected_payment_method_type = '';
     should_hide_my_profile_tab = false;
-    should_show_add_payment_method_error_modal = false;
     should_show_add_payment_method_form = false;
     should_show_edit_payment_method_form = false;
 
@@ -76,7 +75,6 @@ export default class MyProfileStore extends BaseStore {
             selected_payment_method_fields: observable,
             selected_payment_method_type: observable,
             should_hide_my_profile_tab: observable,
-            should_show_add_payment_method_error_modal: observable,
             should_show_add_payment_method_form: observable,
             should_show_edit_payment_method_form: observable,
             advertiser_has_payment_methods: computed,
@@ -135,7 +133,6 @@ export default class MyProfileStore extends BaseStore {
             setSelectedPaymentMethodFields: action.bound,
             setSelectedPaymentMethodType: action.bound,
             setShouldHideMyProfileTab: action.bound,
-            setShouldShowAddPaymentMethodErrorModal: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
         });
@@ -259,11 +256,10 @@ export default class MyProfileStore extends BaseStore {
             ],
         }).then(response => {
             if (response) {
-                const { my_ads_store } = this.root_store;
+                const { general_store, my_ads_store } = this.root_store;
 
-                if (my_ads_store.should_show_add_payment_method_modal) {
-                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                }
+                general_store.hideModal();
+                this.setSelectedPaymentMethod('');
 
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);
@@ -271,7 +267,9 @@ export default class MyProfileStore extends BaseStore {
 
                 if (response.error) {
                     this.setAddPaymentMethodErrorMessage(response.error.message);
-                    this.setShouldShowAddPaymentMethodErrorModal(true);
+                    general_store.showModal({
+                        key: 'AddPaymentMethodErrorModal',
+                    });
                 } else {
                     this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
@@ -511,7 +509,9 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (response.error) {
                 this.setAddPaymentMethodErrorMessage(response.error.message);
-                this.setShouldShowAddPaymentMethodErrorModal(true);
+                this.root_store.general_store.showModal({
+                    key: 'AddPaymentMethodErrorModal',
+                });
             } else {
                 this.setShouldShowEditPaymentMethodForm(false);
                 this.getAdvertiserPaymentMethods();
@@ -709,10 +709,6 @@ export default class MyProfileStore extends BaseStore {
 
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
-    }
-
-    setShouldShowAddPaymentMethodErrorModal(should_show_add_payment_method_error_modal) {
-        this.should_show_add_payment_method_error_modal = should_show_add_payment_method_error_modal;
     }
 
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {

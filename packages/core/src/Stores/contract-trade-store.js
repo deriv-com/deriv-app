@@ -130,7 +130,11 @@ export default class ContractTradeStore extends BaseStore {
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
-        if (trade_type === 'accumulator' && this.last_contract.contract_info?.status !== 'open') {
+        if (
+            trade_type === 'accumulator' &&
+            this.last_contract.contract_info?.status !== 'open' &&
+            this.current_symbol_spot_time
+        ) {
             markers.push({
                 type: 'TickContract',
                 contract_info: { is_accumulators_trade_without_contract: true },

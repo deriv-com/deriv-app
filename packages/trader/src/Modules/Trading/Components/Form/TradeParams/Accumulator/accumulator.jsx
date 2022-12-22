@@ -17,6 +17,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
         return acc;
     }, []);
 
+    if (!accumulator_range_list.length) return null;
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}

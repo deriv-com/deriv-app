@@ -1,12 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { routes } from '@deriv/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
-const AccountTransferLocked = () => {
+const AccountTransferLocked = observer(() => {
     const {
         client: { is_financial_account, is_financial_information_incomplete, is_trading_experience_incomplete },
     } = useStore();
@@ -37,6 +36,6 @@ const AccountTransferLocked = () => {
             </React.Fragment>
         </div>
     );
-};
+});
 
-export default observer(AccountTransferLocked);
+export default AccountTransferLocked;

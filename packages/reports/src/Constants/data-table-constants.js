@@ -440,7 +440,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     },
     {
         title: localize('Accumulate'),
-        col_index: 'accumulate',
+        col_index: 'accumulator',
         renderCellContent: ({ row_obj }) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`

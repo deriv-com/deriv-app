@@ -235,7 +235,7 @@ const Dashboard = ({
                     {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
                     {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
-                        (has_started_bot_builder_tour ? null : <RunPanel />)}
+                        !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
             <Dialog

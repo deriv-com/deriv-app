@@ -20,6 +20,7 @@ type TToolbox = {
     onToolboxItemClick: (category: ChildNode) => void;
     onToolboxItemExpand: (index: number) => void;
     onUnmount: () => void;
+    setVisibility: (param: boolean) => void;
     sub_category_index: number[];
     toggleDrawer: () => void;
     toolbox_dom: HTMLElement;
@@ -37,6 +38,7 @@ const Toolbox = ({
     onSearchKeyUp,
     onToolboxItemClick,
     onToolboxItemExpand,
+    setVisibility,
     sub_category_index,
     toolbox_dom,
 }: TToolbox) => {
@@ -56,8 +58,14 @@ const Toolbox = ({
         <div className='dashboard__toolbox'>
             <div id='gtm-toolbox' className='db-toolbox__content'>
                 <div className='db-toolbox__header'>
-                    <div className='db-toolbox__title' onClick={() => setOpen(!is_open)}>
-                        {localize('Blocks menu')}
+                    <div
+                        className='db-toolbox__title'
+                        onClick={() => {
+                            setOpen(!is_open);
+                            setVisibility(false);
+                        }}
+                    >
+                        {localize('Blocks menu d')}
                         <span
                             className={classNames('db-toolbox__title__chevron', {
                                 'db-toolbox__title__chevron--active': is_open,
@@ -142,7 +150,7 @@ const Toolbox = ({
     );
 };
 
-export default connect(({ toolbox, ui }: RootStore) => ({
+export default connect(({ toolbox, ui, flyout }: RootStore) => ({
     hasSubCategory: toolbox.hasSubCategory,
     is_mobile: ui.is_mobile,
     is_search_loading: toolbox.is_search_loading,
@@ -158,4 +166,5 @@ export default connect(({ toolbox, ui }: RootStore) => ({
     sub_category_index: toolbox.sub_category_index,
     toggleDrawer: toolbox.toggleDrawer,
     toolbox_dom: toolbox.toolbox_dom,
+    setVisibility: flyout.setVisibility,
 }))(Toolbox);

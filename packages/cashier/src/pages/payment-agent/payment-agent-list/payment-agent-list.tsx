@@ -26,7 +26,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                 <SideNote has_title={false} key={0}>
                     <PaymentAgentDisclaimer />
                 </SideNote>,
-                <SideNote has_title={false} key={0}>
+                <SideNote has_title={false} key={1}>
                     <MissingPaymentMethodNote />
                 </SideNote>,
             ]);

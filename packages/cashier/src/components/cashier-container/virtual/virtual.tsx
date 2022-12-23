@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { isMobile, routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
 
-const Virtual = () => {
+const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
     } = useStore();
@@ -61,6 +60,6 @@ const Virtual = () => {
             </React.Fragment>
         </div>
     );
-};
+});
 
-export default observer(withRouter(Virtual));
+export default withRouter(Virtual);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
+import RouteWithSubRoutes from '../route-with-sub-routes';
 
 type TMockFunction = {
     path: string;
@@ -29,17 +29,17 @@ const route = {
     path: '/test-path',
 };
 
-const MockRouteWithSubRoutesRender = () => <RouteWithSubRoutesRender {...route} />;
+const MockRouteWithSubRoutes = () => <RouteWithSubRoutes {...route} />;
 
-describe('RouteWithSubRoutesRender component', () => {
-    it('should render the "RouteWithSubRoutesRender" component', () => {
-        render(<MockRouteWithSubRoutesRender />);
+describe('RouteWithSubRoutes component', () => {
+    it('should render the "RouteWithSubRoutes" component', () => {
+        render(<MockRouteWithSubRoutes />);
         const span_element = screen.getByText(/path param: \/test-path/i);
         expect(span_element).toBeInTheDocument();
     });
 
     it('should render properties', () => {
-        render(<MockRouteWithSubRoutesRender />);
+        render(<MockRouteWithSubRoutes />);
         const path_param = screen.getByText(/\/test-path/i);
         const exact_param = screen.getByText(/exact param: true/i);
         expect(path_param).toBeInTheDocument();

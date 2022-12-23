@@ -22,7 +22,6 @@ import {
     tour_status_ended,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
-import { isMobile } from '@deriv/shared';
 import { getImageLocation } from '../../public-path';
 
 type TDialogOptions = {
@@ -58,7 +57,7 @@ type TDashboard = {
 };
 
 type Props = {
-    collapsible: string;
+    collapsible: boolean;
 };
 type TDiv = Props & React.HTMLAttributes<HTMLDivElement>;
 
@@ -253,12 +252,9 @@ const Dashboard = ({
                             <Chart />
                             {active_tab !== 2 && (
                                 <MobileWrapper>
-                                    <div className={'mobile-wrapper'}>
+                                    <div className='mobile-wrapper'>
                                         <Collapsible position='top' is_collapsed={false} as='div'>
-                                            <ExtendedDiv
-                                                className='dashboard__run-strategy-wrapper'
-                                                collapsible={'true'}
-                                            >
+                                            <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
                                                 {active_tab !== 2 && <RunStrategy />}
                                             </ExtendedDiv>
                                         </Collapsible>

@@ -39,8 +39,8 @@
                     display: none;
                 }
                 @include mobile {
-                    min-width: 170px;
-                    max-width: 260px;
+                    min-width: 17rem;
+                    max-width: 26rem;
                     width: auto;
 
                     .cq-menu-btn {

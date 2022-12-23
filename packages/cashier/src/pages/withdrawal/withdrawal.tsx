@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -16,7 +16,6 @@ import RecentTransaction from 'Components/recent-transaction';
 import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
 import { Virtual } from 'Components/cashier-container';
-import { useStore } from '../../hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -48,7 +47,7 @@ const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) =
     return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
-const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
+const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     const {
         client,
         modules: {
@@ -89,7 +88,6 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
         is_withdraw_confirmed,
         is_withdrawal_locked,
         error: { setErrorMessage },
-        verification: { error: verify_error },
         willMountWithdraw,
     } = withdraw;
 
@@ -140,18 +138,23 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             return <CashierLocked />;
         }
     }
+
     if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen={false} />;
     }
+
     if (is_virtual) {
         return <Virtual />;
     }
+
     if (is_cashier_locked) {
         return <CashierLocked />;
     }
+
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked />;
     }
+
     if (!Number(balance)) {
         return (
             <>
@@ -160,15 +163,15 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             </>
         );
     }
+
     if (error.is_show_full_page && error.message) {
         return <Error error={error} />;
     }
-    if (verify_error.message) {
-        return <Error error={verify_error} />;
-    }
+
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
+
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return (
             <>
@@ -177,9 +180,11 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             </>
         );
     }
+
     if (is_withdraw_confirmed && !is_crypto_transactions_visible) {
         return <CryptoWithdrawReceipt />;
     }
+
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
@@ -190,6 +195,6 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );
-};
+});
 
-export default observer(Withdrawal);
+export default Withdrawal;

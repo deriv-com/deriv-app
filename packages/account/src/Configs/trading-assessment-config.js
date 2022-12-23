@@ -165,7 +165,7 @@ export const trading_assessment_questions = [
             },
             {
                 text: localize(
-                    'Place a bet on the price movement of an asset where the outcome is a fixed return or nothing at all.'
+                    'Place a position on the price movement of an asset where the outcome is a fixed return or nothing at all.'
                 ),
                 value: 'Place a bet on the price movement.',
             },
@@ -233,7 +233,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: localize('When do you be required to pay an initial margin?'),
+        question_text: localize('When are you required to pay an initial margin?'),
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',

@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { observer } from 'mobx-react-lite';
 import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
@@ -13,6 +12,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import { TReactChangeEvent, TAccount, TAccountsList, TSideNotesProps } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
@@ -21,7 +21,6 @@ import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
 import './account-transfer-form.scss';
-import { useStore } from '../../../hooks';
 
 type TAccountTransferFormProps = {
     error: object;
@@ -69,7 +68,7 @@ let accounts_to: Array<TAccount> = [];
 let mt_accounts_to: Array<TAccount> = [];
 let dxtrade_accounts_to: Array<TAccount> = [];
 
-const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps) => {
+const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferFormProps) => {
     const {
         client,
         modules: { cashier },
@@ -389,7 +388,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                         {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e: { target: { value: string } }) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
@@ -417,7 +416,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize
@@ -542,6 +541,6 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
             </Formik>
         </div>
     );
-};
+});
 
-export default observer(AccountTransferForm);
+export default AccountTransferForm;

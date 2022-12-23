@@ -1,7 +1,8 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
+import { configure } from 'mobx';
 
-jest.mock('../verification-store');
+configure({ safeDescriptors: false });
 
 describe('PaymentAgentStore', () => {
     let payment_agent_store;
@@ -136,13 +137,6 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.active_tab_index).toBe(1);
     });
 
-    it('should set active_tab_index then send verification email if it is equal to 1', () => {
-        payment_agent_store.verification.sendVerificationEmail = jest.fn();
-
-        payment_agent_store.setActiveTab(1);
-        expect(payment_agent_store.verification.sendVerificationEmail).toHaveBeenCalled();
-    });
-
     it('should get is_payment_agent_visible', async () => {
         expect(payment_agent_store.is_payment_agent_visible).toBe(false);
 
@@ -207,17 +201,17 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.list.length).toBe(0);
     });
 
-    // it('should set payment agent list', async () => {
-    //     const spySortSupportedBanks = jest.spyOn(payment_agent_store, 'sortSupportedBanks');
+    it('should set payment agent list', async () => {
+        const spySortSupportedBanks = jest.spyOn(payment_agent_store, 'sortSupportedBanks');
 
-    //     await payment_agent_store.setPaymentAgentList();
-    //     expect(payment_agent_store.list).toEqual(expect.arrayContaining(mocked_payment_agents));
-    //     expect(spySortSupportedBanks).toHaveBeenCalled();
-    // });
+        await payment_agent_store.setPaymentAgentList();
+        expect(payment_agent_store.list).toEqual(expect.arrayContaining(mocked_payment_agents));
+        expect(spySortSupportedBanks).toHaveBeenCalled();
+    });
 
     it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
-        payment_agent_store.filterPaymentAgentList('mastercard');
+        payment_agent_store.filterPaymentAgentList('card');
         expect(payment_agent_store.filtered_list).toEqual(
             expect.arrayContaining([
                 {
@@ -231,6 +225,20 @@ describe('PaymentAgentStore', () => {
                     paymentagent_loginid: 'CR90000002',
                     phones: [{ phone_number: '+12345678' }],
                     supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                    urls: [{ url: 'http://www.pa.com' }],
+                    withdrawal_commission: 0,
+                },
+                {
+                    currency: 'USD',
+                    deposit_commission: 0,
+                    email: 'pa@example.com',
+                    further_information: 'further information',
+                    max_withdrawal: '2000',
+                    min_withdrawal: '10',
+                    name: 'Payment Agent of CR90000000',
+                    paymentagent_loginid: 'CR90000000',
+                    phones: [{ phone_number: '+12345678' }],
+                    supported_banks: [{ payment_method: 'Visa' }],
                     urls: [{ url: 'http://www.pa.com' }],
                     withdrawal_commission: 0,
                 },
@@ -280,7 +288,7 @@ describe('PaymentAgentStore', () => {
         payment_agent_store.onChangePaymentMethod({ target: { value: '0' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
 
-        payment_agent_store.onChangePaymentMethod({ target: { value: 'visa' } });
+        payment_agent_store.onChangePaymentMethod({ target: { value: 'card' } });
         expect(payment_agent_store.filtered_list.length).toBe(2);
     });
 
@@ -307,13 +315,13 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.search_term).toBe('Search term');
     });
 
-    // it('should set is_try_withdraw_successful', () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
+    it('should set is_try_withdraw_successful', () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
-    //     payment_agent_store.setIsTryWithdrawSuccessful(true);
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith('');
-    //     expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
-    // });
+        payment_agent_store.setIsTryWithdrawSuccessful(true);
+        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
+    });
 
     it('should set is_withdraw_successful', () => {
         payment_agent_store.setIsWithdrawSuccessful(false);
@@ -400,48 +408,46 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
-    // it('should request to try payment agent withdraw', async () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
+    it('should request to try payment agent withdraw', async () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
-    //     await payment_agent_store.onMountPaymentAgentWithdraw();
-    //     await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
-    //     expect(spySetErrorMessage).toHaveBeenCalledWith('');
-    //     expect(payment_agent_store.confirm).toEqual({
-    //         amount: '200',
-    //         currency: 'USD',
-    //         loginid: 'CR90000000',
-    //         payment_agent_name: 'Payment Agent of CR90000000',
-    //     });
-    //     expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
-    // });
+        await payment_agent_store.onMountPaymentAgentWithdraw();
+        await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
+        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(payment_agent_store.confirm).toEqual({
+            amount: '200',
+            currency: 'USD',
+            loginid: 'CR90000000',
+            payment_agent_name: 'Payment Agent of CR90000000',
+        });
+        expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
+    });
 
-    // it('should handle error when requesting to try payment agent withdraw', async () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-    //     const error_message = { message: 'Sorry, an error occurred.' };
+    it('should handle error when requesting to try payment agent withdraw', async () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
+        const error_message = { message: 'Sorry, an error occurred.' };
 
-    //     payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
-    //     await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
-    //     expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
-    //     expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();
-    // });
+        payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
+        await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
+        expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
+        expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();
+    });
 
     // it('should reset payment agent withdrawal form', () => {
     //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-    //     const spyClearVerification = jest.spyOn(payment_agent_store.verification, 'clearVerification');
 
     //     payment_agent_store.resetPaymentAgent();
     //     expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
     //     expect(payment_agent_store.is_withdraw).toBeFalsy();
-    //     expect(spyClearVerification).toHaveBeenCalled();
     //     expect(payment_agent_store.active_tab_index).toBe(0);
     // });
 
-    // it('should mount payment agent list', async () => {
-    //     const spyGetPaymentAgentList = jest.spyOn(payment_agent_store, 'getPaymentAgentList');
+    it('should mount payment agent list', async () => {
+        const spyGetPaymentAgentList = jest.spyOn(payment_agent_store, 'getPaymentAgentList');
 
-    //     await payment_agent_store.onMountPaymentAgentList();
-    //     expect(spyGetPaymentAgentList).toHaveBeenCalled();
-    // });
+        await payment_agent_store.onMountPaymentAgentList();
+        expect(spyGetPaymentAgentList).toHaveBeenCalled();
+    });
 
     it('should get all payment agents', async () => {
         const payment_agents = await payment_agent_store.getAllPaymentAgentList();
@@ -477,13 +483,13 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.confirm).toEqual({});
     });
 
-    // it('should handle error when requesting for payment agent withdraw', async () => {
-    //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
-    //     const error_message = { message: 'Sorry, an error occurred.' };
+    it('should handle error when requesting for payment agent withdraw', async () => {
+        const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
+        const error_message = { message: 'Sorry, an error occurred.' };
 
-    //     payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
-    //     await payment_agent_store.requestPaymentAgentWithdraw(mocked_withdrawal_request);
-    //     expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
-    //     expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
-    // });
+        payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
+        await payment_agent_store.requestPaymentAgentWithdraw(mocked_withdrawal_request);
+        expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
+        expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
+    });
 });

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
+import { StoreProvider } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
-import { StoreProvider } from '../../../hooks';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -40,6 +40,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    deposit: { is_deposit_locked: true },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,

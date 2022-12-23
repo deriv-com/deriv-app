@@ -1,22 +1,21 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { useStore, observer } from '@deriv/stores';
 
-type TCryptoTransactionsCancelModalProps = {
-    cancelCryptoTransaction: (selected_crypto_transaction_id: string) => void;
-    hideCryptoTransactionsCancelModal: () => void;
-    is_cancel_modal_visible: boolean;
-    selected_crypto_transaction_id: string;
-};
+const CryptoTransactionsCancelModal = observer(() => {
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+    } = useStore();
+    const {
+        cancelCryptoTransaction,
+        hideCryptoTransactionsCancelModal,
+        is_crypto_transactions_cancel_modal_visible: is_cancel_modal_visible,
+        selected_crypto_transaction_id,
+    } = transaction_history;
 
-const CryptoTransactionsCancelModal = ({
-    cancelCryptoTransaction,
-    hideCryptoTransactionsCancelModal,
-    is_cancel_modal_visible,
-    selected_crypto_transaction_id,
-}: TCryptoTransactionsCancelModalProps) => {
     return (
         <React.Fragment>
             <Modal
@@ -43,11 +42,6 @@ const CryptoTransactionsCancelModal = ({
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }: TRootStore) => ({
-    cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
-    hideCryptoTransactionsCancelModal: modules.cashier.transaction_history.hideCryptoTransactionsCancelModal,
-    is_cancel_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible,
-    selected_crypto_transaction_id: modules.cashier.transaction_history.selected_crypto_transaction_id,
-}))(CryptoTransactionsCancelModal);
+export default CryptoTransactionsCancelModal;

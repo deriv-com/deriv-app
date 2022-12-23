@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import { TSideNotesProps } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
@@ -12,13 +12,12 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
-import { useStore } from '../../hooks';
 
 type TAccountTransferProps = {
     setSideNotes: (notes: TSideNotesProps) => void;
 };
 
-const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
+const AccountTransfer = observer(({ setSideNotes }: TAccountTransferProps) => {
     const {
         modules: {
             cashier: { account_transfer, general_store, transaction_history },
@@ -107,6 +106,6 @@ const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
     }
 
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(AccountTransfer);
+export default AccountTransfer;

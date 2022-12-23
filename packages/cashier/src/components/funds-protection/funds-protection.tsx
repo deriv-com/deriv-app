@@ -1,15 +1,18 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { useStore, observer } from '@deriv/stores';
 import './funds-protection.scss';
 
-type TFundsProtectionProps = {
-    submitFundsProtection: () => void;
-};
+const FundsProtection = observer(() => {
+    const {
+        modules: {
+            cashier: {
+                deposit: { submitFundsProtection },
+            },
+        },
+    } = useStore();
 
-const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
     return (
         <div className='funds-protection'>
             <Icon icon='IcCashierFundsProtection' className='funds-protection__icon' />
@@ -38,8 +41,6 @@ const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
             </Button>
         </div>
     );
-};
+});
 
-export default connect(({ modules }: TRootStore) => ({
-    submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
-}))(FundsProtection);
+export default FundsProtection;

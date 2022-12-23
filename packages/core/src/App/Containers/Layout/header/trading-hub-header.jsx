@@ -45,7 +45,7 @@ const RedirectToOldInterface = () => {
     );
 };
 
-const TradingHubOnboarding = ({ is_dark_mode }) => {
+const TradingHubOnboarding = ({ is_dark_mode, setIsOnboardingVisited }) => {
     const history = useHistory();
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
@@ -62,6 +62,7 @@ const TradingHubOnboarding = ({ is_dark_mode }) => {
                         size={20}
                         onClick={() => {
                             history.push(routes.onboarding);
+                            setIsOnboardingVisited(false);
                         }}
                     />
                 </Popover>
@@ -82,7 +83,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
         </div>
     );
 };
-
+const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
     account_status,
     app_routing_history,
@@ -91,6 +92,7 @@ const TradingHubHeader = ({
     loginid,
     is_eu,
     is_eu_country,
+    setIsOnboardingVisited,
     header_extension,
     is_dark_mode,
     is_logged_in,
@@ -169,13 +171,13 @@ const TradingHubHeader = ({
                 )}
                 <Divider />
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                <MenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
+                <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
                     <RedirectToOldInterface />
                     <Divider />
-                    <TradingHubOnboarding is_dark_mode={is_dark_mode} />
+                    <TradingHubOnboarding is_dark_mode={is_dark_mode} setIsOnboardingVisited={setIsOnboardingVisited} />
                     <ShowNotifications
                         is_notifications_visible={is_notifications_visible}
                         notifications_count={notifications_count}
@@ -259,6 +261,7 @@ TradingHubHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
     location: PropTypes.object,
+    setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
     menu_items: PropTypes.array,
@@ -287,7 +290,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
@@ -295,5 +298,6 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     menu_items: menu.extensions,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     toggleIsTourOpen: tradinghub.toggleIsTourOpen,
+    setIsOnboardingVisited: tradinghub.setIsOnboardingVisited,
     loginid: client.loginid,
 }))(withRouter(TradingHubHeader));

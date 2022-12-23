@@ -1,15 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import { TReactChangeEvent } from 'Types';
-import { useStore } from '../../../hooks';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -47,7 +46,7 @@ const Header = ({ currency }: THeaderProps) => {
     );
 };
 
-const CryptoWithdrawForm = () => {
+const CryptoWithdrawForm = observer(() => {
     const {
         client,
         modules: {
@@ -152,7 +151,7 @@ const CryptoWithdrawForm = () => {
                                             }}
                                         />
                                     }
-                                    error={touched.address && errors.address}
+                                    error={touched.address ? errors.address : ''}
                                     required
                                     autoComplete='off'
                                 />
@@ -203,6 +202,6 @@ const CryptoWithdrawForm = () => {
             </MobileWrapper>
         </div>
     );
-};
+});
 
-export default observer(CryptoWithdrawForm);
+export default CryptoWithdrawForm;

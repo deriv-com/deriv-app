@@ -14,7 +14,6 @@ import FloatingRate from 'Components/floating-rate';
 import EditAdCancelModal from 'Components/my-ads/edit-ad-cancel-modal.jsx';
 import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
-import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 
 const EditAdFormWrapper = ({ children }) => {
@@ -460,7 +459,6 @@ const EditAdForm = () => {
                     </Formik>
                 </React.Fragment>
             )}
-            <CreateAdAddPaymentMethodModal />
             <EditAdCancelModal onClick={toggleEditAdCancelModal} is_open={is_cancel_edit_modal_open} />
             <Modal
                 className='p2p-my-ads__modal-error'

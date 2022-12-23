@@ -13,6 +13,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import { TReactChangeEvent, TAccount, TAccountsList, TSideNotesProps } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
@@ -21,7 +22,6 @@ import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
 import './account-transfer-form.scss';
-import { useStore } from '../../../hooks';
 
 type TAccountTransferFormProps = {
     error: object;
@@ -389,7 +389,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                         {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e: { target: { value: string } }) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
@@ -417,7 +417,7 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize

@@ -1,12 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './account-transfer-no-account.scss';
 
-const AccountTransferNoAccount = () => {
+const AccountTransferNoAccount = observer(() => {
     const {
         client: { is_dxtrade_allowed },
         ui: { toggleAccountsDialog },
@@ -39,6 +38,6 @@ const AccountTransferNoAccount = () => {
             </Button>
         </div>
     );
-};
+});
 
-export default observer(AccountTransferNoAccount);
+export default AccountTransferNoAccount;

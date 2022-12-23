@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
 import { Button, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
@@ -38,7 +39,21 @@ const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, paymen
     );
 };
 
-const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, resetPaymentAgent }) => {
+const PaymentAgentReceipt = observer(({ history }) => {
+    const {
+        client,
+        common,
+        modules: {
+            cashier: { payment_agent: payment_agent_store },
+        },
+    } = useStore();
+
+    const { currency } = client;
+
+    const { is_from_derivgo } = common;
+
+    const { receipt, resetPaymentAgent } = payment_agent_store;
+
     React.useEffect(() => {
         return () => resetPaymentAgent();
     }, [resetPaymentAgent]);
@@ -128,21 +143,10 @@ const PaymentAgentReceipt = ({ currency, history, is_from_derivgo, receipt, rese
             </div>
         </div>
     );
-};
+});
 
 PaymentAgentReceipt.propTypes = {
-    currency: PropTypes.string,
     history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    receipt: PropTypes.object,
-    resetPaymentAgent: PropTypes.func,
 };
 
-export default withRouter(
-    connect(({ client, common, modules }) => ({
-        currency: client.currency,
-        is_from_derivgo: common.is_from_derivgo,
-        receipt: modules.cashier.payment_agent.receipt,
-        resetPaymentAgent: modules.cashier.payment_agent.resetPaymentAgent,
-    }))(PaymentAgentReceipt)
-);
+export default withRouter(PaymentAgentReceipt);

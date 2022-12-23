@@ -3,6 +3,8 @@ import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import TransferTradeButtonGroup from 'Components/transfer-trade-button-group';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 
 export type Actions = {
     type: 'get' | 'none' | 'trade' | 'dxtrade' | 'transfer_trade' | 'dxtrade_transfer_trade';
@@ -12,10 +14,11 @@ export type Actions = {
 };
 
 const TradingAppCardActions = ({ type, link_to, is_disabled, onAction }: Actions) => {
+    const { ui } = useStores();
     switch (type) {
         case 'get':
             return (
-                <Button primary_light disabled={is_disabled} onClick={() => onAction?.()}>
+                <Button primary_light disabled={is_disabled} onClick={() => ui.openRealAccountSignup()}>
                     {localize('Get')}
                 </Button>
             );
@@ -31,4 +34,4 @@ const TradingAppCardActions = ({ type, link_to, is_disabled, onAction }: Actions
     }
 };
 
-export default TradingAppCardActions;
+export default observer(TradingAppCardActions);

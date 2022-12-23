@@ -16,7 +16,6 @@ export default class OrderStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
-            is_email_link_verified_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
             is_loading_modal_open: observable,
@@ -96,7 +95,6 @@ export default class OrderStore {
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
-    is_email_link_verified_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
     is_loading_modal_open = false;
@@ -146,10 +144,6 @@ export default class OrderStore {
                         clearTimeout(wait);
                         // TODO: remove this once refactoring of EmailLinkVerifiedModal is done
                         this.root_store.general_store.hideModal();
-
-                        if (this.is_email_link_verified_modal_open) {
-                            this.setIsEmailLinkVerifiedModalOpen(false);
-                        }
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
                     } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
@@ -539,9 +533,6 @@ export default class OrderStore {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
     }
 
-    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
-        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
-    }
 
     setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
         this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;

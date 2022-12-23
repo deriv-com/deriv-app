@@ -60,6 +60,7 @@ const Popover = ({
             ref={hover_ref as RefObject<HTMLDivElement>}
             className={classNames({ 'dc-popover__wrapper': relative_render })}
             onClick={onClick}
+            data-testid='dt_popover_wrapper'
         >
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex }}>

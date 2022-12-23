@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets';
 import classNames from 'classnames';
 import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
-import { isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 
 interface TChartProps {
     chart_type: string;
@@ -68,6 +68,7 @@ const Chart = ({
                 )}
                 chartType={chart_type}
                 isMobile={is_mobile}
+                enabledNavigationWidget={isDesktop()}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}

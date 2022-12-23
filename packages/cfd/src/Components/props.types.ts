@@ -113,6 +113,7 @@ export type TCFDAccountCard = {
     setIsAcuityModalOpen: (value: boolean) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppstorePlatform: (value: string) => void;
 };
 
 export type TTradingPlatformAccounts = {

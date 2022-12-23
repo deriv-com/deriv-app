@@ -54,6 +54,7 @@ const ModalManager = () => {
                 onPasswordManager={togglePasswordManagerModal}
                 toggleModal={toggleMT5TradeModal}
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+                is_demo={is_demo}
             />
             <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
             <ResetTradingPasswordModal context={store} />

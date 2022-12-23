@@ -11,6 +11,14 @@
         margin-left: 1.6rem;
         padding: 0 2rem 0 0;
         width: 100%;
+        &__short-code {
+            padding: 0.4rem;
+            height: fit-content;
+            width: fit-content;
+            margin-left: 1rem;
+            background-color: var(--icon-grey-background);
+            border-radius: 4px;
+        }
     }
 
     &__actions {

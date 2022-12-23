@@ -27,11 +27,11 @@ const TradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
-
-    const icon_size = isMobile() ? 48 : 64;
     return (
         <div className='trading-app-card'>
-            <TradigPlatformIconProps icon={icon} size={icon_size} />
+            <div>
+                <TradigPlatformIconProps icon={icon} size={48} />
+            </div>
             <div className='trading-app-card__details'>
                 <Text className='title' size='xs' line_height='s'>
                     {sub_title}

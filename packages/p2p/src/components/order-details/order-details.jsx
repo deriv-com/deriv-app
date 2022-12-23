@@ -22,7 +22,6 @@ import 'Components/order-details/order-details.scss';
 import LoadingModal from '../loading-modal';
 import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
-import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(() => {
@@ -264,11 +263,9 @@ const OrderDetails = observer(() => {
                                                 transparent
                                             >
                                                 <Text size='xss' weight='bold' color='red'>
-                                                    {localize('{{accordion_state}}', {
-                                                        accordion_state: should_expand_all
-                                                            ? 'Collapse all'
-                                                            : 'Expand all',
-                                                    })}
+                                                    {should_expand_all
+                                                        ? localize('Collapse all')
+                                                        : localize('Expand all')}
                                                 </Text>
                                             </Button>
                                         </section>

@@ -133,6 +133,8 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
+            this.root_store.general_store.hideModal();
+
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
@@ -210,7 +212,7 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(setShouldShowCancelModal) {
+    getWebsiteStatus(should_show_cancel_modal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error.message);
@@ -220,9 +222,9 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-            if (typeof setShouldShowCancelModal === 'function') {
-                setShouldShowCancelModal(true);
-            }
+
+            if (should_show_cancel_modal)
+                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -476,7 +478,10 @@ export default class OrderStore {
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
+                        const wait = setTimeout(
+                            () => this.root_store.general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            650
+                        );
                     } else if (
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS

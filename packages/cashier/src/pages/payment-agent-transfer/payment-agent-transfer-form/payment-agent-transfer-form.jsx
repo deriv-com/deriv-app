@@ -137,7 +137,7 @@ const PaymentAgentTransferForm = ({
                                         </span>
                                     }
                                     autoComplete='off'
-                                    maxLength='30'
+                                    maxLength={30}
                                 />
                             )}
                         </Field>

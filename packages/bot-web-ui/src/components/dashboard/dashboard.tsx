@@ -63,6 +63,7 @@ const Dashboard = ({
     has_file_loaded,
     has_tour_started,
     has_started_onboarding_tour,
+    has_started_bot_builder_tour,
     is_dialog_open,
     loadDataStrategy,
     onCancelButtonClick,
@@ -233,9 +234,8 @@ const Dashboard = ({
                 <div className='dashboard__run-strategy-wrapper'>
                     {!(isMobile() && active_tab === 2) && <RunStrategy />}
 
-                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
-                        <RunPanel />
-                    )}
+                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
+                        (has_started_bot_builder_tour ? null : <RunPanel />)}
                 </div>
             </DesktopWrapper>
             <Dialog

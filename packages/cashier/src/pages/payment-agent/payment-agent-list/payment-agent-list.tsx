@@ -1,10 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
-import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import SideNote from 'Components/side-note';
 import { TSideNotesProps } from 'Types';
 import DepositTab from './deposit-tab';
@@ -17,7 +16,7 @@ type TProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const PaymentAgentList = ({ setSideNotes }: TProps) => {
+const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
     const { modules } = useStore();
     const { payment_agent, general_store } = modules.cashier;
 
@@ -60,6 +59,6 @@ const PaymentAgentList = ({ setSideNotes }: TProps) => {
             </div>
         </div>
     );
-};
+});
 
-export default observer(PaymentAgentList);
+export default PaymentAgentList;

@@ -1,12 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './cashier-onboarding.scss';
 
-const CashierOnboardingSideNote = ({ is_crypto }) => {
+const CashierOnboardingSideNote = observer(({ is_crypto }) => {
     const {
         client,
         ui,
@@ -77,6 +76,6 @@ const CashierOnboardingSideNote = ({ is_crypto }) => {
             )}
         </div>
     );
-};
+});
 
-export default observer(CashierOnboardingSideNote);
+export default CashierOnboardingSideNote;

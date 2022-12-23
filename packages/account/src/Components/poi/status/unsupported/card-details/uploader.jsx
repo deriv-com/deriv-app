@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
@@ -151,7 +151,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
 
 Uploader.propTypes = {
     data: PropTypes.object,
-    value: PropTypes.oneOfType([PropTypes.object, PropTypes, string]),
+    value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     is_full: PropTypes.bool,
     has_frame: PropTypes.bool,
     onChange: PropTypes.func,

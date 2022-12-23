@@ -17,8 +17,6 @@ export default class MyProfileStore extends BaseStore {
     form_error = '';
     full_name = '';
     is_button_loading = false;
-    is_cancel_add_payment_method_modal_open = false;
-    is_cancel_edit_payment_method_modal_open = false;
     is_confirm_delete_modal_open = false;
     is_loading = true;
     is_submit_success = false;
@@ -57,8 +55,6 @@ export default class MyProfileStore extends BaseStore {
             form_error: observable,
             full_name: observable,
             is_button_loading: observable,
-            is_cancel_add_payment_method_modal_open: observable,
-            is_cancel_edit_payment_method_modal_open: observable,
             is_confirm_delete_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
@@ -115,8 +111,6 @@ export default class MyProfileStore extends BaseStore {
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
-            setIsCancelAddPaymentMethodModalOpen: action.bound,
-            setIsCancelEditPaymentMethodModalOpen: action.bound,
             setIsConfirmDeleteModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSubmitSuccess: action.bound,
@@ -637,14 +631,6 @@ export default class MyProfileStore extends BaseStore {
 
     setFullName(full_name) {
         this.full_name = full_name;
-    }
-
-    setIsCancelAddPaymentMethodModalOpen(is_cancel_add_payment_method_modal_open) {
-        this.is_cancel_add_payment_method_modal_open = is_cancel_add_payment_method_modal_open;
-    }
-
-    setIsCancelEditPaymentMethodModalOpen(is_cancel_edit_payment_method_modal_open) {
-        this.is_cancel_edit_payment_method_modal_open = is_cancel_edit_payment_method_modal_open;
     }
 
     setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {

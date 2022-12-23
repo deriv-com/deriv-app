@@ -4,13 +4,14 @@ import { Field, Form, Formik } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const EditPaymentMethodForm = ({ formik_ref }) => {
     const { my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         return () => {
@@ -26,7 +27,6 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
 
     return (
         <React.Fragment>
-            <CancelEditPaymentMethodModal />
             <Formik
                 enableReinitialize
                 innerRef={formik_ref}
@@ -41,7 +41,9 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                 <PageReturn
                                     onClick={() => {
                                         if (dirty) {
-                                            my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                            showModal({
+                                                key: 'CancelEditPaymentMethodModal',
+                                            });
                                         } else {
                                             my_profile_store.setShouldShowEditPaymentMethodForm(false);
                                         }
@@ -106,7 +108,9 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                         large
                                         onClick={() => {
                                             if (dirty) {
-                                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                                showModal({
+                                                    key: 'CancelEditPaymentMethodModal',
+                                                });
                                             } else {
                                                 my_profile_store.setPaymentMethodToEdit(null);
                                                 my_profile_store.setShouldShowEditPaymentMethodForm(false);

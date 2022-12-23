@@ -32,11 +32,16 @@ const MyProfileContent = () => {
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => {
                             if (general_store.is_form_modified || my_profile_store.selected_payment_method.length > 0) {
-                                showModal({
-                                    key: 'CancelAddPaymentMethodModal',
-                                });
-
-                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                if (my_profile_store.should_show_add_payment_method_form) {
+                                    showModal({
+                                        key: 'CancelAddPaymentMethodModal',
+                                    });
+                                }
+                                if (my_profile_store.should_show_edit_payment_method_form) {
+                                    showModal({
+                                        key: 'CancelEditPaymentMethodModal',
+                                    });
+                                }
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
                                 my_profile_store.setShouldShowEditPaymentMethodForm(false);

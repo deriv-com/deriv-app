@@ -146,9 +146,6 @@ export default class OrderStore {
                         if (this.is_email_verification_modal_open) {
                             this.setIsEmailVerificationModalOpen(false);
                         }
-                        if (this.is_email_link_verified_modal_open) {
-                            this.setIsEmailLinkVerifiedModalOpen(false);
-                        }
                         this.root_store.general_store.showModal({
                             key: 'InvalidVerificationLinkModal',
                             props: { error_message: response.error.message, order_id: id },

@@ -1,4 +1,4 @@
-import { GetAccountStatus, Authorize } from '@deriv/api-types';
+import { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -42,6 +42,7 @@ export type TClientStore = {
         decimal_places?: number;
     };
     loginid?: string;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
     residence: string;
     standpoint: {
         iom: string;

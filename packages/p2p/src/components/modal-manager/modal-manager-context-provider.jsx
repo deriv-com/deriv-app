@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStores } from 'Stores';
 import { ModalManagerContext } from './modal-manager-context';
 import { useStores } from 'Stores';
 import { isDesktop } from '@deriv/shared';
@@ -31,9 +32,15 @@ const ModalManagerContextProvider = props => {
         }
         setIsModalOpen(true);
     };
-
-    const hideModal = () => {
+    const hideModal = (should_save_form_history = false) => {
         if (isDesktop()) {
+            if (should_save_form_history) {
+                general_store.saveFormState();
+            } else {
+                general_store.setSavedFormState(null);
+                general_store.setFormikRef(null);
+            }
+
             if (previous_modal) {
                 setActiveModal(previous_modal);
                 setPreviousModal(null);
@@ -48,6 +55,9 @@ const ModalManagerContextProvider = props => {
             setIsModalOpen(false);
         }
     };
+
+    general_store.showModal = showModal;
+    general_store.hideModal = hideModal;
 
     const state = {
         hideModal,

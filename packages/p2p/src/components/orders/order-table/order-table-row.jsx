@@ -25,7 +25,7 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
     );
 };
 
-const OrderRow = ({ style, row: order }) => {
+const OrderRow = ({ row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -178,7 +178,6 @@ const OrderRow = ({ style, row: order }) => {
                 </DesktopWrapper>
                 <MobileWrapper>
                     <Table.Row
-                        style={style}
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
                         })}
@@ -260,7 +259,6 @@ const OrderRow = ({ style, row: order }) => {
 
 OrderRow.propTypes = {
     order: PropTypes.object,
-    style: PropTypes.object,
     row: PropTypes.object,
     server_time: PropTypes.object,
 };

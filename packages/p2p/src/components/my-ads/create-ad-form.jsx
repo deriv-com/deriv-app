@@ -22,7 +22,6 @@ import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
-import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -53,9 +52,9 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
-            my_ads_store.setIsAdExceedsDailyLimitModalOpen(true);
-        }
+        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit'))
+            general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
+
         my_ads_store.setShowAdForm(false);
     };
 
@@ -419,7 +418,6 @@ const CreateAdForm = () => {
                 }}
             </Formik>
             <CreateAdErrorModal />
-            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}

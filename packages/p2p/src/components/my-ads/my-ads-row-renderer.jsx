@@ -68,7 +68,12 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
-    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
+    const onClickSwitchAd = () => {
+        if (!general_store.is_barred) {
+            general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });
+            my_ads_store.onToggleSwitchModal(id);
+        }
+    };
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
@@ -300,9 +305,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                             general_store.is_barred || is_activate_ad_disabled,
                                     }
                                 )}
-                                message={localize('{{status}}', {
-                                    status: is_advert_active && !general_store.is_barred ? 'Deactivate' : 'Activate',
-                                })}
+                                message={is_advert_active ? localize('Deactivate') : localize('Activate')}
                             >
                                 <Icon
                                     icon={`${

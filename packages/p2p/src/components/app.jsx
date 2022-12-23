@@ -8,7 +8,7 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
-import ModalManager from 'Components/modal-manager/modal-manager';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 import { ModalManagerContextProvider } from 'Components/modal-manager';
 

@@ -8,10 +8,11 @@ import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
 import BlockUser from './block-user';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const MyProfileContent = () => {
-    const { my_profile_store } = useStores();
-    const formik_ref = React.useRef();
+    const { my_profile_store, general_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -19,7 +20,7 @@ const MyProfileContent = () => {
         return (
             <React.Fragment>
                 <DesktopWrapper>
-                    <PaymentMethods formik_ref={formik_ref} />
+                    <PaymentMethods />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
@@ -30,11 +31,11 @@ const MyProfileContent = () => {
                         page_header_className='buy-sell__modal-header'
                         page_header_text={localize('Payment methods')}
                         pageHeaderReturnFn={() => {
-                            if (
-                                (formik_ref.current && formik_ref.current.dirty) ||
-                                my_profile_store.selected_payment_method.length > 0
-                            ) {
-                                my_profile_store.setIsCancelAddPaymentMethodModalOpen(true);
+                            if (general_store.is_form_modified || my_profile_store.selected_payment_method.length > 0) {
+                                showModal({
+                                    key: 'CancelAddPaymentMethodModal',
+                                });
+
                                 my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
                             } else {
                                 my_profile_store.hideAddPaymentMethodForm();
@@ -42,7 +43,7 @@ const MyProfileContent = () => {
                             }
                         }}
                     >
-                        <PaymentMethods formik_ref={formik_ref} />
+                        <PaymentMethods />
                     </MobileFullPageModal>
                 </MobileWrapper>
             </React.Fragment>

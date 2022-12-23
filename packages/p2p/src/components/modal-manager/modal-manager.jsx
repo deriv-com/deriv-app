@@ -8,7 +8,6 @@ const ModalManager = () => {
     const { key, props } = modal;
     const Modal = modals[key];
     const StackedModal = modals[stacked_modal?.key];
-    
     if (Modal)
         return (
             <React.Suspense fallback={null}>

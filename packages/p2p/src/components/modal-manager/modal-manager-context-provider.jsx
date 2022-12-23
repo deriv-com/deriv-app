@@ -31,7 +31,6 @@ const ModalManagerContextProvider = props => {
                 general_store.setFormikRef(null);
             }
 
-    const hideModal = () => {
             if (previous_modal) {
                 setActiveModal(previous_modal);
                 setPreviousModal(null);

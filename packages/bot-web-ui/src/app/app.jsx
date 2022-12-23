@@ -3,6 +3,7 @@ import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
+    Audio,
     BotFooterExtensions,
     BotNotificationMessages,
     Dashboard,
@@ -79,6 +80,7 @@ const App = ({ passthrough }) => {
         <MobxContentProvider store={root_store_instance.current}>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
+                <Audio />
                 <BotFooterExtensions />
                 <BotNotificationMessages />
                 <Dashboard />

@@ -19,12 +19,12 @@ const VerificationStatusBanner = ({
     real_financial_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
     const {
-        poi_not_submitted_for_vanuatu,
+        poi_not_submitted_for_vanuatu_maltainvest,
         poi_or_poa_not_submitted,
-        poi_resubmit_for_vanuatu,
-        poi_resubmit_for_bvi_labuan_maltainvest,
+        poi_resubmit_for_vanuatu_maltainvest,
+        poi_resubmit_for_bvi_labuan,
         need_poa_resubmission,
-        need_poi_for_bvi_labuan_maltainvest,
+        need_poi_for_bvi_labuan,
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
@@ -42,7 +42,8 @@ const VerificationStatusBanner = ({
     const is_svg = type_of_card === 'svg';
     const is_vanuatu = type_of_card === 'vanuatu';
     const is_bvi = type_of_card === 'bvi';
-    const is_labuan_or_maltainvest = ['labuan', 'maltainvest'].includes(type_of_card);
+    const is_labuan = type_of_card === 'labuan';
+    const is_maltainvest = type_of_card === 'maltainvest';
 
     const getTypeTitle = () => {
         switch (type_of_card) {
@@ -119,7 +120,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_vanuatu && poi_not_submitted_for_vanuatu) {
+    } else if (is_vanuatu && poi_not_submitted_for_vanuatu_maltainvest) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxs' align='center' color='prominent'>
@@ -128,8 +129,8 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan_or_maltainvest) && need_poa_resubmission && need_poi_for_bvi_labuan_maltainvest) ||
-        (is_vanuatu && poi_resubmit_for_vanuatu && need_poa_resubmission)
+        ((is_bvi || is_labuan) && need_poi_for_bvi_labuan && need_poa_resubmission) ||
+        ((is_vanuatu || is_maltainvest) && poi_resubmit_for_vanuatu_maltainvest && need_poa_resubmission)
     ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
@@ -139,8 +140,8 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        (is_vanuatu && poi_resubmit_for_vanuatu) ||
-        ((is_bvi || is_labuan_or_maltainvest) && poi_resubmit_for_bvi_labuan_maltainvest)
+        ((is_bvi || is_labuan) && poi_resubmit_for_bvi_labuan) ||
+        ((is_vanuatu || is_maltainvest) && poi_resubmit_for_vanuatu_maltainvest)
     ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
@@ -149,7 +150,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if ((is_bvi || is_vanuatu || is_labuan_or_maltainvest) && need_poa_resubmission) {
+    } else if (!is_svg && need_poa_resubmission) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
                 <Text size='xxs' color='colored-background'>

@@ -31,12 +31,13 @@ const PoiPoaDocsSubmitted = ({
     };
 
     const getDescription = () => {
-        const { manual_status, poi_verified_for_vanuatu, poi_verified_for_bvi_labuan_maltainvest, poa_pending } =
+        const { manual_status, poi_verified_for_vanuatu_maltainvest, poi_verified_for_bvi_labuan, poa_pending } =
             getAuthenticationStatusInfo(account_status);
-        const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
+        const is_vanuatu_or_maltainvest_selected =
+            jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest';
         if (
-            (is_vanuatu_selected && poi_verified_for_vanuatu && poa_pending) ||
-            (!is_vanuatu_selected && poi_verified_for_bvi_labuan_maltainvest && poa_pending) ||
+            (is_vanuatu_or_maltainvest_selected && poi_verified_for_vanuatu_maltainvest && poa_pending) ||
+            (!is_vanuatu_or_maltainvest_selected && poi_verified_for_bvi_labuan && poa_pending) ||
             manual_status === 'pending'
         ) {
             return localize('We’ll review your documents and notify you of its status within 1 - 3 working days.');

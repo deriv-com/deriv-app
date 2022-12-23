@@ -33,8 +33,8 @@ const JurisdictionModal = ({
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
-        poi_acknowledged_for_vanuatu,
+        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
     } = getAuthenticationStatusInfo(account_status);
 
@@ -105,7 +105,7 @@ const JurisdictionModal = ({
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_vanuatu &&
+                poi_acknowledged_for_vanuatu_maltainvest &&
                 !poi_or_poa_not_submitted &&
                 poa_acknowledged &&
                 has_submitted_cfd_personal_details
@@ -116,7 +116,7 @@ const JurisdictionModal = ({
             }
         } else if (is_bvi_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan_maltainvest &&
+                poi_acknowledged_for_bvi_labuan &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 poa_acknowledged &&
@@ -126,8 +126,14 @@ const JurisdictionModal = ({
             } else {
                 toggleCFDVerificationModal();
             }
-        } else if (is_labuan_selected || (is_eu && is_maltainvest_selected)) {
-            if (poi_acknowledged_for_bvi_labuan_maltainvest && poa_acknowledged && has_submitted_cfd_personal_details) {
+        } else if (is_labuan_selected) {
+            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details) {
+                openPasswordModal(type_of_account);
+            } else {
+                toggleCFDVerificationModal();
+            }
+        } else if (is_maltainvest_selected) {
+            if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

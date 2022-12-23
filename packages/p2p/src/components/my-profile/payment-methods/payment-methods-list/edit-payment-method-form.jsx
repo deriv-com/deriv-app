@@ -1,25 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Field, Form, Formik } from 'formik';
-import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
+import { Field, Form } from 'formik';
+import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import ModalForm from 'Components/modal-manager/modal-form';
 
-const EditPaymentMethodForm = ({ formik_ref }) => {
+const EditPaymentMethodForm = () => {
     const { my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
-
-    React.useEffect(() => {
-        return () => {
-            my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     if (!my_profile_store.payment_method_info) {
         return <Loading is_fullscreen={false} />;
@@ -27,9 +20,8 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
 
     return (
         <React.Fragment>
-            <Formik
+            <ModalForm
                 enableReinitialize
-                innerRef={formik_ref}
                 initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.updatePaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
@@ -133,28 +125,7 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                         </React.Fragment>
                     );
                 }}
-            </Formik>
-            <Modal
-                is_open={my_profile_store.should_show_add_payment_method_error_modal}
-                small
-                has_close_icon={false}
-                title={localize("Something's not right")}
-            >
-                <Modal.Body>
-                    <Text color='prominent' size='xs'>
-                        {my_profile_store.add_payment_method_error_message}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodErrorModal(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
+            </ModalForm>
         </React.Fragment>
     );
 };

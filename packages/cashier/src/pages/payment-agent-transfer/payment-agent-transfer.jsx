@@ -1,7 +1,6 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';

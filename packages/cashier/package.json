@@ -48,7 +48,6 @@
         "loadjs": "^4.2.0",
         "lodash.debounce": "^4.0.8",
         "mobx": "^6.6.1",
-        "mobx-react": "^7.5.1",
         "moment": "^2.29.2",
         "prop-types": "^15.7.2",
         "qrcode.react": "^1.0.0",

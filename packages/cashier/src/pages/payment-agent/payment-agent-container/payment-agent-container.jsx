@@ -1,8 +1,7 @@
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import SideNote from 'Components/side-note';
 import MissingPaymentMethodNote from '../missing-payment-method-note';

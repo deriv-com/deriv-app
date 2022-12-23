@@ -117,7 +117,7 @@ export default class TradeStore extends BaseStore {
 
     // Accumulator trade params
     accumulator_range_list = [];
-    growth_rate;
+    growth_rate = 0.03;
     maximum_payout = 0;
     maximum_ticks = 0;
     ticks_history_stats = {};
@@ -333,6 +333,9 @@ export default class TradeStore extends BaseStore {
                 if (date) {
                     this.expiry_date = date;
                 }
+                if (this.contract_type === 'accumulator' && !this.accumulator_range_list.includes(this.growth_rate)) {
+                    this.growth_rate = this.accumulator_range_list[0];
+                }
             }
         );
         reaction(
@@ -365,13 +368,6 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.stop_loss;
                     delete this.validation_rules.take_profit;
                 }
-            }
-        );
-        when(
-            () => this.accumulator_range_list.length,
-            () => {
-                // accumulator_range_list is configurable from BO, so the 0.03 option might be missing
-                this.growth_rate = this.accumulator_range_list.includes(0.03) ? 0.03 : this.accumulator_range_list[0];
             }
         );
     }

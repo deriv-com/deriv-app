@@ -70,12 +70,13 @@ const OptionsAndMultipliersListing = () => {
                 </div>
             )}
             {is_landing_company_loaded ? (
-                available_platforms.map((available_platform: BrandConfig) => (
+                available_platforms.map((available_platform: BrandConfig, index: number) => (
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
+                        has_divider={index < 3}
                     />
                 ))
             ) : (

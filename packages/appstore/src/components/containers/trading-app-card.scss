@@ -9,7 +9,8 @@
         flex-direction: column;
         height: 100%;
         margin-left: 1.6rem;
-        padding: 0 2rem;
+        padding: 0 2rem 0 0;
+        width: 100%;
     }
 
     &__actions {
@@ -21,5 +22,9 @@
         a {
             text-decoration: none;
         }
+    }
+
+    &--divider {
+        border-bottom: 1px solid var(--general-hover);
     }
 }

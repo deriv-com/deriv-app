@@ -160,13 +160,6 @@ const OrderDetails = observer(() => {
             )}
             {!is_buy_order_for_user && (
                 <React.Fragment>
-                    <EmailLinkVerifiedModal
-                        amount={display_payment_amount}
-                        currency={local_currency}
-                        is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
-                        onClickConfirm={() => order_store.confirmOrder(is_buy_order_for_user)}
-                        setIsEmailLinkVerifiedModalOpen={order_store.setIsEmailLinkVerifiedModalOpen}
-                    />
                     <InvalidVerificationLinkModal
                         invalid_verification_link_error_message={order_store.verification_link_error_message}
                         is_invalid_verification_link_modal_open={order_store.is_invalid_verification_link_modal_open}

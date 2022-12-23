@@ -3,40 +3,28 @@ import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv/components';
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 
-type TOnRampProviderPopupProps = {
-    api_error: string;
-    deposit_address: string;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_deposit_address_loading: boolean;
-    is_requesting_widget_html: boolean;
-    onClickDisclaimerContinue: () => void;
-    onClickGoToDepositPage: () => void;
-    selected_provider: TProviderDetails;
-    setIsOnRampModalOpen: (boolean: boolean) => void;
-    should_show_dialog: boolean;
-    should_show_widget: boolean;
-    widget_error: string;
-    widget_html: string;
-};
+const OnRampProviderPopup = observer(() => {
+    const { ui, modules } = useStore();
+    const { is_dark_mode_on } = ui;
+    const { cashier } = modules;
+    const { onramp } = cashier;
+    const {
+        api_error,
+        deposit_address,
+        is_deposit_address_loading,
+        is_requesting_widget_html,
+        onClickDisclaimerContinue,
+        onClickGoToDepositPage,
+        selected_provider,
+        setIsOnRampModalOpen,
+        should_show_dialog,
+        should_show_widget,
+        widget_error,
+        widget_html,
+    } = onramp;
 
-const OnRampProviderPopup = ({
-    api_error,
-    deposit_address,
-    is_dark_mode_on,
-    is_deposit_address_loading,
-    is_requesting_widget_html,
-    onClickDisclaimerContinue,
-    onClickGoToDepositPage,
-    selected_provider,
-    setIsOnRampModalOpen,
-    should_show_dialog,
-    should_show_widget,
-    widget_error,
-    widget_html,
-}: TOnRampProviderPopupProps) => {
     const el_onramp_widget_container_ref = React.useRef(null);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     let timeout_clipboard: ReturnType<typeof setTimeout>;
@@ -192,20 +180,6 @@ const OnRampProviderPopup = ({
             )}
         </div>
     );
-};
+});
 
-export default connect(({ modules, ui }: TRootStore) => ({
-    api_error: modules.cashier.onramp.api_error,
-    deposit_address: modules.cashier.onramp.deposit_address,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
-    is_requesting_widget_html: modules.cashier.onramp.is_requesting_widget_html,
-    onClickDisclaimerContinue: modules.cashier.onramp.onClickDisclaimerContinue,
-    onClickGoToDepositPage: modules.cashier.onramp.onClickGoToDepositPage,
-    selected_provider: modules.cashier.onramp.selected_provider,
-    setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
-    should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    should_show_widget: modules.cashier.onramp.should_show_widget,
-    widget_error: modules.cashier.onramp.widget_error,
-    widget_html: modules.cashier.onramp.widget_html,
-}))(OnRampProviderPopup);
+export default OnRampProviderPopup;

@@ -23,15 +23,42 @@ const ModalManager = () => {
     const { common, client, modules, traders_hub } = store;
     const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
     const { platform } = common;
-    const {
-        current_list,
-        enableCFDPasswordModal,
-        is_mt5_trade_modal_visible,
-        setAccountType,
-        toggleMT5TradeModal,
-        togglePasswordManagerModal,
-    } = modules.cfd;
+    const { current_list, enableCFDPasswordModal, is_mt5_trade_modal_visible, setAccountType, toggleMT5TradeModal } =
+        modules.cfd;
     const { is_demo } = traders_hub;
+
+    const [password_manager, setPasswordManager] = React.useState<{
+        is_visible: boolean;
+        selected_login: string;
+        selected_account: string;
+        selected_account_type?: string;
+        selected_account_group?: string;
+        selected_server?: string;
+    }>({
+        is_visible: false,
+        selected_login: '',
+        selected_account: '',
+        selected_account_type: '',
+        selected_account_group: '',
+        selected_server: '',
+    });
+
+    const togglePasswordManagerModal = (
+        login?: string,
+        title?: string,
+        group?: string,
+        type?: string,
+        server?: string
+    ) => {
+        setPasswordManager(prev_state => ({
+            is_visible: !prev_state.is_visible,
+            selected_login: typeof login === 'string' ? login : '',
+            selected_account: typeof title === 'string' ? title : '',
+            selected_account_group: group,
+            selected_account_type: type,
+            selected_server: server,
+        }));
+    };
 
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         setAccountType(account_type);
@@ -56,7 +83,17 @@ const ModalManager = () => {
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
                 is_demo={is_demo}
             />
-            <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
+            <CFDPasswordManagerModal
+                is_visible={password_manager.is_visible}
+                selected_login={password_manager.selected_login}
+                selected_account={password_manager.selected_account}
+                selected_account_group={password_manager.selected_account_group}
+                selected_account_type={password_manager.selected_account_type}
+                selected_server={password_manager.selected_server}
+                context={store}
+                platform={platform}
+                toggleModal={togglePasswordManagerModal}
+            />
             <ResetTradingPasswordModal context={store} />
             <MT5AccountTypeModal />
             <RegulatorsCompareModal />

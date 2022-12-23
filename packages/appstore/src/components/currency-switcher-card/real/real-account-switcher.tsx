@@ -1,21 +1,44 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
+import StatusBadge from './switcher-status-badge';
+import { Button, Text } from '@deriv/components';
+import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
+import BalanceText from 'Components/elements/text/balance-text';
+import './real-account-switcher.scss';
 
 const AccountNeedsVerification = () => {
-    return <div>Account Needs Verification</div>;
+    return (
+        <CurrencySwitcherContainer
+            className='demo-account-card'
+            title={
+                <Text size='xs' line_height='s'>
+                    Needs Verification
+                </Text>
+            }
+            icon='VIRTUAL'
+        >
+            <StatusBadge />
+        </CurrencySwitcherContainer>
+    );
 };
 
-const AccountPendingVerification = () => {
-    return <div>Account Pending Verification</div>;
-};
-
-const AccountVerificationFailed = () => {
-    return <div>Account Failed Verification</div>;
-};
-
-const RealAccountCard = () => {
-    return <div>Real Money</div>;
-};
+const RealAccountCard = observer(() => {
+    return (
+        <CurrencySwitcherContainer
+            className='demo-account-card'
+            title={
+                <Text size='xs' line_height='s'>
+                    US Dollar
+                </Text>
+            }
+            icon='USD'
+            actions={<Button secondary>Deposit</Button>}
+        >
+            <BalanceText currency='USD' balance={0.0} size='xs' />
+        </CurrencySwitcherContainer>
+    );
+});
 
 const RealAccountSwitcher = () => {
     const { client } = useStores();
@@ -24,21 +47,7 @@ const RealAccountSwitcher = () => {
         return <AccountNeedsVerification />;
     }
 
-    if (
-        client.account_status?.authentication?.document.status === 'pending' ||
-        client.account_status?.authentication?.identity.status === 'pending'
-    ) {
-        return <AccountPendingVerification />;
-    }
-
-    if (
-        client.account_status?.authentication?.document.status === 'rejected' ||
-        client.account_status?.authentication?.identity.status === 'rejected'
-    ) {
-        return <AccountVerificationFailed />;
-    }
-
     return <RealAccountCard />;
 };
 
-export default RealAccountSwitcher;
+export default observer(RealAccountSwitcher);

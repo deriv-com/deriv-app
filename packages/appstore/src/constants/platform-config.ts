@@ -1,9 +1,9 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
-import { TRegionAvailability } from 'Types';
+import { TAccountCategory, TRegionAvailability } from 'Types';
 
-export type AccountType = { text: 'Real' | 'Demo'; value: 'real' | 'demo' };
+export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
 export const account_types: AccountType[] = [
     { text: 'Demo', value: 'demo' },

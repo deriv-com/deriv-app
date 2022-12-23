@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { getPlatformInformation, routes } from '@deriv/shared';
@@ -19,9 +20,15 @@ const Divider = () => {
 
 export const TradersHubHomeButton = () => {
     const history = useHistory();
+    const { pathname } = history.location;
 
     return (
-        <div className='trading-hub-header__tradershub' onClick={() => history.push(routes.traders_hub)}>
+        <div
+            className={classNames('trading-hub-header__tradershub', {
+                'trading-hub-header__tradershub--active': pathname === '/appstore/traders-hub',
+            })}
+            onClick={() => history.push(routes.traders_hub)}
+        >
             <div className='trading-hub-header__tradershub--home-logo'>
                 <Icon icon='IcAppstoreTradersHubHome' size={17} />
             </div>

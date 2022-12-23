@@ -455,7 +455,6 @@ const EditAdForm = () => {
                     </Formik>
                 </React.Fragment>
             )}
-            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}

@@ -328,6 +328,7 @@ export default class GeneralStore extends BaseStore {
 
     async onMountCommon(should_remount) {
         const { client, common, modules } = this.root_store;
+        const { is_from_derivgo, routeTo } = common;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
 
@@ -356,22 +357,22 @@ export default class GeneralStore extends BaseStore {
             }
 
             if (!account_transfer.accounts_list.length) {
-                account_transfer.sortAccountsTransfer();
+                account_transfer.sortAccountsTransfer(null, is_from_derivgo);
             }
 
             if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-                common.routeTo(routes.cashier_deposit);
+                routeTo(routes.cashier_deposit);
             }
 
             if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
-                common.routeTo(routes.cashier_deposit);
+                routeTo(routes.cashier_deposit);
             }
 
             if (
                 !transaction_history.is_crypto_transactions_visible &&
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)
             ) {
-                common.routeTo(routes.cashier_deposit);
+                routeTo(routes.cashier_deposit);
                 transaction_history.setIsCryptoTransactionsVisible(true);
                 transaction_history.onMount();
             }

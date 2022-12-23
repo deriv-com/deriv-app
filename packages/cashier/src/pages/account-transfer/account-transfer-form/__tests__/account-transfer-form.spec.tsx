@@ -89,6 +89,9 @@ describe('<AccountTransferForm />', () => {
                     },
                 },
             },
+            common: {
+                is_from_derivgo: false,
+            },
         };
     });
     beforeAll(() => {

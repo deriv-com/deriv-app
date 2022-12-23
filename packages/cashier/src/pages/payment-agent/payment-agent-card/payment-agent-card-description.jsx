@@ -22,7 +22,7 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
                     size='xs'
                 >
                     {capitalizeFirstLetter(payment_agent.further_information).replace(
-                        /( ?Skrill,? ?)|( ?Neteller,? ?)/gi,
+                        /( ?Skril?l,? ?)|( ?Net?tel?ler,? ?)/gi,
                         ''
                     )}
                 </Text>

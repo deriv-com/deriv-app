@@ -1,10 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 
 type TItem = {
@@ -13,7 +12,7 @@ type TItem = {
     onClick: () => void;
 };
 
-const WithdrawalLocked = () => {
+const WithdrawalLocked = observer(() => {
     const {
         client,
         modules: {
@@ -90,6 +89,6 @@ const WithdrawalLocked = () => {
             )}
         </React.Fragment>
     );
-};
+});
 
-export default observer(WithdrawalLocked);
+export default WithdrawalLocked;

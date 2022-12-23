@@ -1,11 +1,10 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './funds-protection.scss';
 
-const FundsProtection = () => {
+const FundsProtection = observer(() => {
     const {
         modules: {
             cashier: {
@@ -42,6 +41,6 @@ const FundsProtection = () => {
             </Button>
         </div>
     );
-};
+});
 
-export default observer(FundsProtection);
+export default FundsProtection;

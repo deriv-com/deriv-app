@@ -65,7 +65,7 @@ const Toolbox = ({
                             setVisibility(false);
                         }}
                     >
-                        {localize('Blocks menu d')}
+                        {localize('Blocks menu')}
                         <span
                             className={classNames('db-toolbox__title__chevron', {
                                 'db-toolbox__title__chevron--active': is_open,

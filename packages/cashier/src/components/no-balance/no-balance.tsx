@@ -1,13 +1,12 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { Button, Icon, Text } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
-const NoBalance = ({ history }: RouteComponentProps) => {
+const NoBalance = observer(({ history }: RouteComponentProps) => {
     const is_deposit_locked = useDepositLocked();
     const {
         client: { currency },
@@ -50,6 +49,6 @@ const NoBalance = ({ history }: RouteComponentProps) => {
             )}
         </div>
     );
-};
+});
 
-export default observer(withRouter(NoBalance));
+export default withRouter(NoBalance);

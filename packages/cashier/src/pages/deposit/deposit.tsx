@@ -1,8 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -19,7 +18,7 @@ type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
-const Deposit = ({ setSideNotes }: TDeposit) => {
+const Deposit = observer(({ setSideNotes }: TDeposit) => {
     const is_deposit_locked = useDepositLocked();
     const { client, modules } = useStore();
     const {
@@ -143,6 +142,6 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         );
     }
     return <CashierOnboarding setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(Deposit);
+export default Deposit;

@@ -1,10 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
-const CryptoTransactionsCancelModal = () => {
+const CryptoTransactionsCancelModal = observer(() => {
     const {
         modules: {
             cashier: { transaction_history },
@@ -43,6 +42,6 @@ const CryptoTransactionsCancelModal = () => {
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CryptoTransactionsCancelModal);
+export default CryptoTransactionsCancelModal;

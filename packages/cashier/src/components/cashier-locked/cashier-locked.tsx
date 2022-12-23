@@ -1,11 +1,10 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
+import { useDepositLocked } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
-import { useDepositLocked } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
 
-const CashierLocked = () => {
+const CashierLocked = observer(() => {
     const is_deposit_locked = useDepositLocked();
     const { client, modules } = useStore();
     const {
@@ -32,6 +31,6 @@ const CashierLocked = () => {
     });
 
     return <EmptyState icon={state.icon} title={state.title} description={state.description} />;
-};
+});
 
-export default observer(CashierLocked);
+export default CashierLocked;

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
 import { useWS } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -42,4 +41,4 @@ const FundsProtection = () => {
     );
 };
 
-export default observer(FundsProtection);
+export default FundsProtection;

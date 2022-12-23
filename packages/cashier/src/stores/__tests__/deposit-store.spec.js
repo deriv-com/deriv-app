@@ -1,4 +1,7 @@
 import DepositStore from '../deposit-store';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 describe('DepositStore', () => {
     let deposit_store;
@@ -58,19 +61,19 @@ describe('DepositStore', () => {
         expect(updateAccountStatus).toHaveBeenCalled();
     });
 
-    // it('should handle the error on deposit', async () => {
-    //     const { setSessionTimeout, clearTimeoutCashierUrl } = deposit_store.root_store.modules.cashier.iframe;
-    //     const error_message = 'Sorry, an error occured.';
-    //     const spyHandleCashierError = jest.spyOn(deposit_store.error, 'handleCashierError');
+    it('should handle the error on deposit', async () => {
+        const { setSessionTimeout, clearTimeoutCashierUrl } = deposit_store.root_store.modules.cashier.iframe;
+        const error_message = 'Sorry, an error occured.';
+        const spyHandleCashierError = jest.spyOn(deposit_store.error, 'handleCashierError');
 
-    //     deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-    //     deposit_store.WS.authorized.cashier.mockResolvedValueOnce({ error: { message: error_message } });
+        deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
+        deposit_store.WS.authorized.cashier.mockResolvedValueOnce({ error: { message: error_message } });
 
-    //     await deposit_store.onMountDeposit();
-    //     expect(spyHandleCashierError).toHaveBeenCalledWith({ message: error_message });
-    //     expect(setSessionTimeout).toHaveBeenCalledWith(true);
-    //     expect(clearTimeoutCashierUrl).toHaveBeenCalled();
-    // });
+        await deposit_store.onMountDeposit();
+        expect(spyHandleCashierError).toHaveBeenCalledWith({ message: error_message });
+        expect(setSessionTimeout).toHaveBeenCalledWith(true);
+        expect(clearTimeoutCashierUrl).toHaveBeenCalled();
+    });
 
     it('should not load the iframe if client is on virtual account', async () => {
         const { setLoading } = deposit_store.root_store.modules.cashier.general_store;

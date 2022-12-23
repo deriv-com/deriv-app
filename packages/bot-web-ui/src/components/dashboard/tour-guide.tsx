@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Loading } from '@deriv/components';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
@@ -28,12 +28,26 @@ const TourGuide = ({
         setOnBoardTourRunState(false);
         setTourActive(false);
     };
+
     React.useEffect(() => {
         const tour_guide_timer = setTimeout(() => setActiveTab(dashboard_tab_index), 50);
         return () => {
             clearTimeout(tour_guide_timer);
         };
     }, [dashboard_tab_index]);
+
+    const [has_image_loaded, setImageLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        if (img) {
+            const tour_image = new Image();
+            tour_image.onload = () => {
+                setImageLoaded(true);
+            };
+            tour_image.src = img;
+        }
+    }, [step_index]);
+
     return (
         <React.Fragment>
             <div className='onboard'>
@@ -53,7 +67,7 @@ const TourGuide = ({
 
                 {img && (
                     <div className='onboard__container'>
-                        <img src={img} />
+                        {has_image_loaded ? <img src={img} loading='eager' /> : <Loading />}
                     </div>
                 )}
 

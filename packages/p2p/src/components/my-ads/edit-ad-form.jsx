@@ -13,7 +13,6 @@ import { ad_type } from 'Constants/floating-rate';
 import FloatingRate from 'Components/floating-rate';
 import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
-import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 
 const EditAdFormWrapper = ({ children }) => {

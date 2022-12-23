@@ -1,6 +1,7 @@
 {
     "extends": ["@commitlint/config-conventional", "@commitlint/config-nx-scopes"],
     "rules": {
+        "subject-case": [0, "always"],
         "type-enum": [
             2,
             "always",

@@ -5,7 +5,6 @@ import Loadable from 'react-loadable';
 import { Icon, Modal, Popover, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
-import { PlatformContext } from '@deriv/shared';
 
 const ThemeSetting = Loadable({
     loader: () =>
@@ -23,8 +22,7 @@ const LanguageSettingContainer = Loadable({
     loading: UILoader,
 });
 
-const ModalContent = ({ settings_extension }) => {
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+const ModalContent = ({ settings_extension, is_pre_appstore }) => {
     const content = [];
     if (is_pre_appstore) {
         content.push(...(settings_extension || []));
@@ -47,7 +45,14 @@ const ModalContent = ({ settings_extension }) => {
     return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
 };
 
-const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {
+const ToggleSettings = ({
+    enableApp,
+    is_settings_visible,
+    disableApp,
+    toggleSettings,
+    settings_extension,
+    is_pre_appstore,
+}) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
     });
@@ -74,7 +79,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
                 height='616px'
                 width='736px'
             >
-                <ModalContent settings_extension={settings_extension} />
+                <ModalContent settings_extension={settings_extension} is_pre_appstore={is_pre_appstore} />
             </Modal>
         </React.Fragment>
     );
@@ -86,6 +91,7 @@ ToggleSettings.propTypes = {
     is_settings_visible: PropTypes.bool,
     settings_extension: PropTypes.array,
     toggleSettings: PropTypes.func,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export { ToggleSettings };

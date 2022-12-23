@@ -233,7 +233,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: localize('When do you be required to pay an initial margin?'),
+        question_text: localize('When are you required to pay an initial margin?'),
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',

@@ -117,6 +117,14 @@ const eucontent: TModalContentProps[] = [
 ];
 const content: TModalContentProps[] = [
     {
+        id: 'platform',
+        attribute: localize('Platform'),
+        values: {
+            synthetic_svg: { text: localize('MT5') },
+            derivx: { text: localize('Deriv X') },
+        },
+    },
+    {
         id: 'jurisdiction',
         attribute: localize('Jurisdiction'),
         values: {
@@ -149,13 +157,13 @@ const content: TModalContentProps[] = [
     },
     {
         id: 'regulator',
-        attribute: localize('Regulator'),
+        attribute: localize('Regulator/external dispute resolution'),
         values: {
-            synthetic_svg: { text: localize('-') },
+            synthetic_svg: { text: localize('Financial Commission') },
             synthetic_bvi: {
                 text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
             },
-            financial_svg: { text: localize('-') },
+            financial_svg: { text: localize('Financial Commission') },
             financial_bvi: {
                 text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
             },
@@ -163,7 +171,7 @@ const content: TModalContentProps[] = [
                 text: localize('Vanuatu Financial Services Commission'),
             },
             financial_labuan: { text: localize('Labuan Financial Services Authority (Licence no. MB/18/0024)') },
-            derivx: { text: '-' },
+            derivx: { text: 'Financial Commission' },
         },
     },
 
@@ -537,7 +545,12 @@ const DMT5CompareModalContent = ({
     );
 
     const Row = ({ id, attribute, values }: TModalContentProps) => {
-        const is_leverage = id === 'leverage';
+        const is_leverage_row = id === 'leverage';
+        const is_platform_row = id === 'platform';
+
+        if (is_platform_row && !should_show_derivx) {
+            return null;
+        }
         if (id === 'instruments') {
             return <InstrumentsRow attr={attribute} val={values} />;
         }
@@ -547,14 +560,15 @@ const DMT5CompareModalContent = ({
                     show_eu_related
                         ? 'cfd-real-compare-accounts-row-eu'
                         : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}`, {
-                              [`cfd-real-compare-accounts__table-row--leverage${pre_appstore_class}`]: is_leverage,
+                              [`cfd-real-compare-accounts__table-row--leverage${pre_appstore_class}`]: is_leverage_row,
                               [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
                                   available_accounts_count < 6,
+                              [`cfd-real-compare-accounts__table-row--platform${pre_appstore_class}`]: is_platform_row,
                           })
                 }
             >
                 <Table.Cell fixed>
-                    <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
+                    <Text as='p' weight='bold' color='prominent' size='xxs'>
                         {attribute}
                     </Text>
                 </Table.Cell>

@@ -59,7 +59,6 @@ const OrderDetailsFooter = observer(() => {
                         </Button.Group>
                     </div>
                 </div>
-                />
             </React.Fragment>
         );
     }

@@ -54,5 +54,5 @@ export const modals = {
         import(
             /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'
         )
-    )
+    ),
 };

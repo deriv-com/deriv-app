@@ -15,9 +15,7 @@ const AccumulatorsAmountMobile = ({
     is_single_currency,
     onChange,
     setCurrentFocus,
-    validation_errors,
 }) => {
-    const error_messages = validation_errors.amount;
     return (
         <>
             <MobileWrapper>
@@ -28,7 +26,6 @@ const AccumulatorsAmountMobile = ({
                     classNameInput={classNames('trade-container__input', 'trade-container__input--accumulator')}
                     currency={currency}
                     current_focus={current_focus}
-                    error_messages={error_messages}
                     fractional_digits={getDecimalPlaces(currency)}
                     id='dt_amount_input'
                     inline_prefix={is_single_currency ? currency : null}
@@ -59,7 +56,6 @@ AccumulatorsAmountMobile.propTypes = {
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
     setCurrentFocus: PropTypes.func,
-    validation_errors: PropTypes.object,
 };
 
 export default connect(({ modules, client, ui }) => ({
@@ -69,5 +65,4 @@ export default connect(({ modules, client, ui }) => ({
     is_single_currency: client.is_single_currency,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
-    validation_errors: modules.trade.validation_errors,
 }))(AccumulatorsAmountMobile);

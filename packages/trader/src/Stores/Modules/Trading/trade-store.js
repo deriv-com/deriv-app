@@ -1085,8 +1085,8 @@ export default class TradeStore extends BaseStore {
             this.tick_size_barrier = tick_size_barrier;
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
-            this.barrier_1 = this.root_store.contract_trade.accumulators_high_barrier = high_barrier;
-            this.barrier_2 = this.root_store.contract_trade.accumulators_low_barrier = low_barrier;
+            this.root_store.contract_trade.accumulators_high_barrier = high_barrier;
+            this.root_store.contract_trade.accumulators_low_barrier = low_barrier;
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {

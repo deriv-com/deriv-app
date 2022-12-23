@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { useStore } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
@@ -10,19 +10,27 @@ import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 
-const PaymentAgentTransfer = ({
-    balance,
-    container,
-    error,
-    is_cashier_locked,
-    is_loading,
-    is_transfer_successful,
-    is_try_transfer_successful,
-    is_virtual,
-    onMount,
-    onUnMount,
-    setActiveTab,
-}) => {
+const PaymentAgentTransfer = observer(() => {
+    const {
+        client,
+        modules: {
+            cashier: { general_store, payment_agent_transfer },
+        },
+    } = useStore();
+
+    const { balance, is_virtual } = client;
+
+    const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+
+    const {
+        container,
+        error,
+        is_transfer_successful,
+        is_try_transfer_successful,
+        onMountPaymentAgentTransfer: onMount,
+        resetPaymentAgentTransfer: onUnMount,
+    } = payment_agent_transfer;
+
     React.useEffect(() => {
         setActiveTab(container);
         if (!is_virtual) {
@@ -60,32 +68,6 @@ const PaymentAgentTransfer = ({
         return <PaymentAgentTransferReceipt />;
     }
     return <PaymentAgentTransferForm error={error} />;
-};
+});
 
-PaymentAgentTransfer.propTypes = {
-    balance: PropTypes.string,
-    container: PropTypes.string,
-    error: PropTypes.object,
-    is_cashier_locked: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_transfer_successful: PropTypes.bool,
-    is_try_transfer_successful: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnMount: PropTypes.func,
-    setActiveTab: PropTypes.func,
-};
-
-export default connect(({ client, modules }) => ({
-    balance: client.balance,
-    is_virtual: client.is_virtual,
-    container: modules.cashier.payment_agent_transfer.container,
-    error: modules.cashier.payment_agent_transfer.error,
-    is_cashier_locked: modules.cashier.general_store.is_cashier_locked,
-    is_loading: modules.cashier.general_store.is_loading,
-    is_transfer_successful: modules.cashier.payment_agent_transfer.is_transfer_successful,
-    is_try_transfer_successful: modules.cashier.payment_agent_transfer.is_try_transfer_successful,
-    onMount: modules.cashier.payment_agent_transfer.onMountPaymentAgentTransfer,
-    onUnMount: modules.cashier.payment_agent_transfer.resetPaymentAgentTransfer,
-    setActiveTab: modules.cashier.general_store.setActiveTab,
-}))(PaymentAgentTransfer);
+export default PaymentAgentTransfer;

@@ -11,12 +11,23 @@
             padding: 0.8rem 0rem 1.6rem;
         }
 
+        &--guide {
+            padding: 0.9rem 0.8rem;
+            margin-bottom: 1.6rem;
+            background-color: var(--general-section-1);
+            border-radius: $BORDER_RADIUS;
+            &__link {
+                cursor: pointer;
+            }
+        }
+
         &--info {
             display: flex;
             flex-direction: row;
             padding: 0.8rem;
             gap: 0.8rem;
             background-color: var(--transparent-info);
+            border-radius: $BORDER_RADIUS;
 
             p {
                 width: 35.2rem;

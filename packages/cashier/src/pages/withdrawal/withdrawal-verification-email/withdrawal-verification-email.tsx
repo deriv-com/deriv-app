@@ -1,15 +1,14 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { MobileWrapper, EmptyState } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import RecentTransaction from 'Components/recent-transaction';
 import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
 import Error from 'Components/error';
 
-const WithdrawalVerificationEmail = () => {
+const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
     const { client, modules } = useStore();
     const { transaction_history } = modules.cashier;
@@ -43,6 +42,6 @@ const WithdrawalVerificationEmail = () => {
             <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
         </>
     );
-};
+});
 
-export default observer(WithdrawalVerificationEmail);
+export default WithdrawalVerificationEmail;

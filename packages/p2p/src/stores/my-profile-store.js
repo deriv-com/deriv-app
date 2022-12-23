@@ -4,19 +4,14 @@ import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 import BaseStore from 'Stores/base_store';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyProfileStore extends BaseStore {
     active_tab = my_profile_tabs.MY_STATS;
     add_payment_method_error_message = '';
-    advertiser_info = {};
     advertiser_payment_methods = {};
     advertiser_payment_methods_error = '';
     available_payment_methods = {};
-    balance_available = null;
     blocked_advertisers_list = [];
-    contact_info = '';
-    default_advert_description = '';
     delete_error_message = '';
     error_message = '';
     form_error = '';
@@ -28,7 +23,6 @@ export default class MyProfileStore extends BaseStore {
     is_delete_payment_method_error_modal_open = false;
     is_loading = true;
     is_submit_success = false;
-    payment_info = '';
     payment_method_value = undefined;
     payment_methods_list = [];
     payment_method_to_delete = {};
@@ -41,9 +35,11 @@ export default class MyProfileStore extends BaseStore {
     selected_payment_method_fields = [];
     selected_payment_method_type = '';
     should_hide_my_profile_tab = false;
-    should_show_add_payment_method_error_modal = false;
     should_show_add_payment_method_form = false;
     should_show_edit_payment_method_form = false;
+
+    // TODO: Refactor this out once modal management refactoring is completed
+    MODAL_TRANSITION_DURATION = 280;
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -52,14 +48,10 @@ export default class MyProfileStore extends BaseStore {
         makeObservable(this, {
             active_tab: observable,
             add_payment_method_error_message: observable,
-            advertiser_info: observable,
             advertiser_payment_methods: observable,
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,
-            balance_available: observable,
             blocked_advertisers_list: observable,
-            contact_info: observable,
-            default_advert_description: observable,
             delete_error_message: observable,
             error_message: observable,
             form_error: observable,
@@ -71,7 +63,6 @@ export default class MyProfileStore extends BaseStore {
             is_delete_payment_method_error_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
-            payment_info: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
             payment_method_to_delete: observable,
@@ -84,7 +75,6 @@ export default class MyProfileStore extends BaseStore {
             selected_payment_method_fields: observable,
             selected_payment_method_type: observable,
             should_hide_my_profile_tab: observable,
-            should_show_add_payment_method_error_modal: observable,
             should_show_add_payment_method_form: observable,
             should_show_edit_payment_method_form: observable,
             advertiser_has_payment_methods: computed,
@@ -97,7 +87,6 @@ export default class MyProfileStore extends BaseStore {
             payment_methods_list_values: computed,
             rendered_blocked_advertisers_list: computed,
             createPaymentMethod: action.bound,
-            getAdvertiserInfo: action.bound,
             getBlockedAdvertisersList: action.bound,
             getAdvertiserPaymentMethods: action.bound,
             getPaymentMethodsList: action.bound,
@@ -117,13 +106,10 @@ export default class MyProfileStore extends BaseStore {
             onClickUnblock: action.bound,
             setActiveTab: action.bound,
             setAddPaymentMethodErrorMessage: action.bound,
-            setAdvertiserInfo: action.bound,
             setAdvertiserPaymentMethods: action.bound,
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
-            setBalanceAvailable: action.bound,
             setBlockedAdvertisersList: action.bound,
-            setContactInfo: action.bound,
             setDefaultAdvertDescription: action.bound,
             setDeleteErrorMessage: action.bound,
             setErrorMessage: action.bound,
@@ -147,7 +133,6 @@ export default class MyProfileStore extends BaseStore {
             setSelectedPaymentMethodFields: action.bound,
             setSelectedPaymentMethodType: action.bound,
             setShouldHideMyProfileTab: action.bound,
-            setShouldShowAddPaymentMethodErrorModal: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
         });
@@ -271,11 +256,10 @@ export default class MyProfileStore extends BaseStore {
             ],
         }).then(response => {
             if (response) {
-                const { my_ads_store } = this.root_store;
+                const { general_store, my_ads_store } = this.root_store;
 
-                if (my_ads_store.should_show_add_payment_method_modal) {
-                    my_ads_store.setShouldShowAddPaymentMethodModal(false);
-                }
+                general_store.hideModal();
+                this.setSelectedPaymentMethod('');
 
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);
@@ -283,7 +267,9 @@ export default class MyProfileStore extends BaseStore {
 
                 if (response.error) {
                     this.setAddPaymentMethodErrorMessage(response.error.message);
-                    this.setShouldShowAddPaymentMethodErrorModal(true);
+                    general_store.showModal({
+                        key: 'AddPaymentMethodErrorModal',
+                    });
                 } else {
                     this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
@@ -291,28 +277,6 @@ export default class MyProfileStore extends BaseStore {
 
                 setSubmitting(false);
             }
-        });
-    }
-
-    getAdvertiserInfo() {
-        this.setIsLoading(true);
-        this.setErrorMessage('');
-        requestWS({
-            p2p_advertiser_info: 1,
-        }).then(response => {
-            if (!response.error) {
-                const { p2p_advertiser_info } = response;
-                this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setBalanceAvailable(p2p_advertiser_info.balance_available);
-                this.setContactInfo(p2p_advertiser_info.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                this.root_store.general_store.setShouldShowRealName(!!p2p_advertiser_info.show_name);
-            } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
-                this.root_store.general_store.setIsBlocked(true);
-            } else {
-                this.setErrorMessage(response.error.message);
-            }
-            this.setIsLoading(false);
         });
     }
 
@@ -436,10 +400,6 @@ export default class MyProfileStore extends BaseStore {
             default_advert_description: values.default_advert_description,
         }).then(response => {
             if (!response.error) {
-                const { p2p_advertiser_update } = response;
-                this.setBalanceAvailable(p2p_advertiser_update.balance_available);
-                this.setContactInfo(p2p_advertiser_update.contact_info);
-                this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                 this.setIsSubmitSuccess(true);
             } else {
                 this.setFormError(response.error);
@@ -549,7 +509,9 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (response.error) {
                 this.setAddPaymentMethodErrorMessage(response.error.message);
-                this.setShouldShowAddPaymentMethodErrorModal(true);
+                this.root_store.general_store.showModal({
+                    key: 'AddPaymentMethodErrorModal',
+                });
             } else {
                 this.setShouldShowEditPaymentMethodForm(false);
                 this.getAdvertiserPaymentMethods();
@@ -641,10 +603,6 @@ export default class MyProfileStore extends BaseStore {
         this.add_payment_method_error_message = add_payment_method_error_message;
     }
 
-    setAdvertiserInfo(advertiser_info) {
-        this.advertiser_info = advertiser_info;
-    }
-
     setAdvertiserPaymentMethods(advertiser_payment_methods) {
         this.advertiser_payment_methods = advertiser_payment_methods;
     }
@@ -657,16 +615,8 @@ export default class MyProfileStore extends BaseStore {
         this.available_payment_methods = available_payment_methods;
     }
 
-    setBalanceAvailable(balance_available) {
-        this.balance_available = balance_available;
-    }
-
     setBlockedAdvertisersList(blocked_advertisers_list) {
         this.blocked_advertisers_list = blocked_advertisers_list;
-    }
-
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
     }
 
     setDefaultAdvertDescription(default_advert_description) {
@@ -759,10 +709,6 @@ export default class MyProfileStore extends BaseStore {
 
     setShouldHideMyProfileTab(should_hide_my_profile_tab) {
         this.should_hide_my_profile_tab = should_hide_my_profile_tab;
-    }
-
-    setShouldShowAddPaymentMethodErrorModal(should_show_add_payment_method_error_modal) {
-        this.should_show_add_payment_method_error_modal = should_show_add_payment_method_error_modal;
     }
 
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {

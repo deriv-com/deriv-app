@@ -13,20 +13,26 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
-    advertiser_id = null;
     advertiser_buy_limit = null;
+    advertiser_id = null;
+    advertiser_info = {};
     advertiser_sell_limit = null;
     block_unblock_user_error = '';
     balance;
+    cancels_remaining = null;
+    contact_info = '';
     feature_level = null;
+    formik_ref = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
+    is_high_risk_fully_authed_without_fa = false;
     is_listed = false;
     is_loading = false;
+    is_modal_open = false;
     is_p2p_blocked_for_pa = false;
     is_restricted = false;
     nickname = null;
@@ -35,15 +41,15 @@ export default class GeneralStore extends BaseStore {
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
+    payment_info = '';
     poi_status = null;
     props = {};
     review_period;
+    saved_form_state = null;
     should_show_real_name = false;
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
-    is_high_risk_fully_authed_without_fa = false;
-    is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -68,6 +74,7 @@ export default class GeneralStore extends BaseStore {
             block_unblock_user_error: observable,
             balance: observable,
             feature_level: observable,
+            formik_ref: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -87,6 +94,7 @@ export default class GeneralStore extends BaseStore {
             poi_status: observable,
             props: observable.ref,
             review_period: observable,
+            saved_form_state: observable,
             should_show_real_name: observable,
             should_show_popup: observable,
             user_blocked_count: observable,
@@ -95,10 +103,12 @@ export default class GeneralStore extends BaseStore {
             is_modal_open: observable,
             client: computed,
             current_focus: computed,
+            form_state: computed,
             setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
+            is_form_modified: computed,
             is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
@@ -121,6 +131,9 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
             setFeatureLevel: action.bound,
+            setFormikRef: action.bound,
+            setSavedFormState: action.bound,
+            saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
             setIsBlocked: action.bound,
@@ -162,6 +175,10 @@ export default class GeneralStore extends BaseStore {
         return this.props?.current_focus;
     }
 
+    get form_state() {
+        return this.formik_ref;
+    }
+
     get setCurrentFocus() {
         return this.props?.setCurrentFocus;
     }
@@ -176,6 +193,10 @@ export default class GeneralStore extends BaseStore {
 
     get is_barred() {
         return !!this.user_blocked_until;
+    }
+
+    get is_form_modified() {
+        return this.form_state?.dirty || this.saved_form_state;
     }
 
     get is_my_profile_tab_visible() {
@@ -384,6 +405,7 @@ export default class GeneralStore extends BaseStore {
         this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
         this.setIsP2pBlockedForPa(false);
+        this.props.setIsUserOnP2p(true);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -522,6 +544,7 @@ export default class GeneralStore extends BaseStore {
         this.setActiveIndex(0);
         this.props.refreshNotifications();
         this.props.filterNotificationMessages();
+        this.props.setIsUserOnP2p(false);
     }
 
     onNicknamePopupClose() {
@@ -564,6 +587,10 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    setAdvertiserInfo(advertiser_info) {
+        this.advertiser_info = advertiser_info;
+    }
+
     setAdvertiserBuyLimit(advertiser_buy_limit) {
         this.advertiser_buy_limit = advertiser_buy_limit;
     }
@@ -580,8 +607,28 @@ export default class GeneralStore extends BaseStore {
         this.block_unblock_user_error = block_unblock_user_error;
     }
 
+    setContactInfo(contact_info) {
+        this.contact_info = contact_info;
+    }
+
+    setDefaultAdvertDescription(default_advert_description) {
+        this.default_advert_description = default_advert_description;
+    }
+
     setFeatureLevel(feature_level) {
         this.feature_level = feature_level;
+    }
+
+    setFormikRef(formik_ref) {
+        this.formik_ref = formik_ref;
+    }
+
+    setSavedFormState(saved_form_state) {
+        this.saved_form_state = saved_form_state;
+    }
+
+    saveFormState() {
+        this.setSavedFormState(this.form_state);
     }
 
     setInactiveNotificationCount(inactive_notification_count) {
@@ -708,6 +755,10 @@ export default class GeneralStore extends BaseStore {
         this.parameters = parameters;
     }
 
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
+    }
+
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
     }
@@ -743,21 +794,28 @@ export default class GeneralStore extends BaseStore {
 
     updateAdvertiserInfo(response) {
         const {
+            blocked_by_count,
+            blocked_until,
+            contact_info,
             daily_buy,
             daily_buy_limit,
             daily_sell,
             daily_sell_limit,
-            blocked_until,
-            blocked_by_count,
+            default_advert_description,
             id,
             is_approved,
             is_blocked,
             is_listed,
             name,
+            payment_info,
+            show_name,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserInfo(response.p2p_advertiser_info);
+            this.setContactInfo(contact_info);
+            this.setDefaultAdvertDescription(default_advert_description);
             this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
             this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
@@ -766,8 +824,15 @@ export default class GeneralStore extends BaseStore {
             this.setNickname(name);
             this.setUserBlockedUntil(blocked_until);
             this.setUserBlockedCount(blocked_by_count);
+            this.setPaymentInfo(payment_info);
+            this.setShouldShowRealName(!!show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            this.setContactInfo('');
+            this.setPaymentInfo('');
+            this.setDefaultAdvertDescription('');
+
             if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
             } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {

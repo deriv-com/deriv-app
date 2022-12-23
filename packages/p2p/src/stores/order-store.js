@@ -8,15 +8,14 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class OrderStore {
     constructor(root_store) {
         makeObservable(this, {
+            active_order: observable,
             api_error_message: observable,
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
-            cancels_remaining: observable,
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
-            is_email_link_verified_modal_open: observable,
             is_email_verification_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
@@ -35,7 +34,6 @@ export default class OrderStore {
             nav: computed,
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
-            getAdvertiserInfo: action.bound,
             getP2POrderList: action.bound,
             getSettings: action.bound,
             getWebsiteStatus: action.bound,
@@ -46,16 +44,15 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            setActiveOrder: action.bound,
             setForceRerenderOrders: action.bound,
             setApiErrorMessage: action.bound,
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
             setCancellationLimit: action.bound,
-            setCancelsRemaining: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsEmailVerificationModalOpen: action.bound,
             setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
@@ -89,15 +86,14 @@ export default class OrderStore {
         );
     }
 
+    active_order = null;
     api_error_message = '';
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
-    cancels_remaining = null;
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
-    is_email_link_verified_modal_open = false;
     is_email_verification_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
@@ -121,11 +117,7 @@ export default class OrderStore {
     }
 
     get order_information() {
-        const { general_store } = this.root_store;
-        const order = this.orders.find(o => o.id === this.order_id);
-        return order
-            ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
-            : null;
+        return this.active_order;
     }
 
     get nav() {
@@ -138,6 +130,8 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
+            this.root_store.general_store.hideModal();
+
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
@@ -150,9 +144,6 @@ export default class OrderStore {
                         clearTimeout(wait);
                         if (this.is_email_verification_modal_open) {
                             this.setIsEmailVerificationModalOpen(false);
-                        }
-                        if (this.is_email_link_verified_modal_open) {
-                            this.setIsEmailLinkVerifiedModalOpen(false);
                         }
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
@@ -192,17 +183,6 @@ export default class OrderStore {
         });
     }
 
-    getAdvertiserInfo(setShouldShowCancelModal) {
-        requestWS({ p2p_advertiser_info: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                this.setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
-            }
-        });
-        this.getWebsiteStatus(setShouldShowCancelModal);
-    }
-
     getP2POrderList() {
         requestWS({ p2p_order_list: 1 }).then(response => {
             if (response) {
@@ -227,7 +207,7 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(setShouldShowCancelModal) {
+    getWebsiteStatus(should_show_cancel_modal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error.message);
@@ -237,9 +217,9 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-            if (typeof setShouldShowCancelModal === 'function') {
-                setShouldShowCancelModal(true);
-            }
+
+            if (should_show_cancel_modal)
+                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -252,6 +232,7 @@ export default class OrderStore {
             this.root_store.general_store.redirectTo(this.nav.location);
         }
         this.setOrderId(null);
+        this.setActiveOrder(null);
     }
 
     loadMoreOrders({ startIndex }) {
@@ -367,6 +348,10 @@ export default class OrderStore {
         });
     }
 
+    setActiveOrder(active_order) {
+        this.active_order = active_order;
+    }
+
     setQueryDetails(input_order) {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
@@ -383,6 +368,9 @@ export default class OrderStore {
         if (order_information?.payment_method_details) {
             this.setOrderPaymentMethodDetails(Object.values(order_information?.payment_method_details));
         }
+
+        this.setActiveOrder(order_information);
+
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
 
@@ -485,7 +473,10 @@ export default class OrderStore {
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
+                        const wait = setTimeout(
+                            () => this.root_store.general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            650
+                        );
                     } else if (
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
@@ -523,10 +514,6 @@ export default class OrderStore {
         this.cancellation_limit = cancellation_limit;
     }
 
-    setCancelsRemaining(cancels_remaining) {
-        this.cancels_remaining = cancels_remaining;
-    }
-
     setData(data) {
         this.data = data;
     }
@@ -545,10 +532,6 @@ export default class OrderStore {
 
     setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
-    }
-
-    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
-        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
     }
 
     setIsEmailVerificationModalOpen(is_email_verification_modal_open) {

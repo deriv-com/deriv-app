@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Formik, Field } from 'formik';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Autocomplete, Icon } from '@deriv/components';
 import { useStores } from 'Stores';
@@ -13,6 +14,18 @@ const BuyAdPaymentMethodsList = ({ selected_methods, setSelectedMethods, touched
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
 
     const MAX_PAYMENT_METHOD_SELECTION = 3;
+
+    React.useEffect(() => {
+        const disposeAddPaymentMethodsList = reaction(
+            () => my_profile_store.payment_methods_list,
+            () =>
+                setPaymentMethodsList(
+                    my_profile_store.payment_methods_list.filter(({ value }) => !selected_methods.includes(value))
+                )
+        );
+        return disposeAddPaymentMethodsList;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         setPaymentMethodsList(

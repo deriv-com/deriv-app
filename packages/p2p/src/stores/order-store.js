@@ -16,7 +16,6 @@ export default class OrderStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
-            is_email_link_verified_modal_open: observable,
             is_email_verification_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
@@ -55,7 +54,6 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsEmailVerificationModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
@@ -97,7 +95,6 @@ export default class OrderStore {
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
-    is_email_link_verified_modal_open = false;
     is_email_verification_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
@@ -135,6 +132,8 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
+            this.root_store.general_store.hideModal();
+
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
@@ -211,7 +210,7 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(setShouldShowCancelModal) {
+    getWebsiteStatus(should_show_cancel_modal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error.message);
@@ -221,9 +220,9 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-            if (typeof setShouldShowCancelModal === 'function') {
-                setShouldShowCancelModal(true);
-            }
+
+            if (should_show_cancel_modal)
+                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -479,7 +478,10 @@ export default class OrderStore {
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
+                        const wait = setTimeout(
+                            () => this.root_store.general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            650
+                        );
                     } else if (
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
@@ -533,10 +535,6 @@ export default class OrderStore {
 
     setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
-    }
-
-    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
-        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
     }
 
     setIsEmailVerificationModalOpen(is_email_verification_modal_open) {

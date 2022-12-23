@@ -22,7 +22,6 @@ import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/fo
 import 'Components/order-details/order-details.scss';
 import LoadingModal from '../loading-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
-import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 
 const OrderDetails = observer(() => {
@@ -167,13 +166,6 @@ const OrderDetails = observer(() => {
                         onClickResendEmailButton={() => order_store.confirmOrderRequest(id)}
                         setIsEmailVerificationModalOpen={order_store.setIsEmailVerificationModalOpen}
                     />
-                    <EmailLinkVerifiedModal
-                        amount={display_payment_amount}
-                        currency={local_currency}
-                        is_email_link_verified_modal_open={order_store.is_email_link_verified_modal_open}
-                        onClickConfirm={() => order_store.confirmOrder(is_buy_order_for_user)}
-                        setIsEmailLinkVerifiedModalOpen={order_store.setIsEmailLinkVerifiedModalOpen}
-                    />
                     <EmailLinkBlockedModal
                         email_link_blocked_modal_error_message={order_store.verification_link_error_message}
                         is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
@@ -264,11 +256,9 @@ const OrderDetails = observer(() => {
                                                 transparent
                                             >
                                                 <Text size='xss' weight='bold' color='red'>
-                                                    {localize('{{accordion_state}}', {
-                                                        accordion_state: should_expand_all
-                                                            ? 'Collapse all'
-                                                            : 'Expand all',
-                                                    })}
+                                                    {should_expand_all
+                                                        ? localize('Collapse all')
+                                                        : localize('Expand all')}
                                                 </Text>
                                             </Button>
                                         </section>

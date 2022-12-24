@@ -53,6 +53,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             has_any_real_account: computed,
             is_demo: computed,
+            is_real: computed,
             is_eu_selected: computed,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCFDAccounts: action.bound,
@@ -69,6 +70,8 @@ export default class TradersHubStore extends BaseStore {
                 this.selected_region,
                 this.root_store.client.is_eu,
                 this.root_store.client.is_switching,
+                this.root_store.client.mt5_login_list,
+                this.root_store.client.dxtrade_accounts_list,
             ],
             () => {
                 if (!this.vrtc_loginid) {
@@ -86,7 +89,6 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
-                this.getAvailableDxtradeAccounts();
             }
         );
 
@@ -245,15 +247,16 @@ export default class TradersHubStore extends BaseStore {
     getExistingAccounts(platform, market_type) {
         const { current_list } = this.root_store.modules.cfd;
         const current_list_keys = Object.keys(current_list);
+        const selected_account_type = this.selected_account_type;
         const existing_accounts = current_list_keys
             .filter(key => {
                 if (platform === CFD_PLATFORMS.MT5) {
-                    return key.startsWith(`${platform}.${this.selected_account_type}.${market_type}`);
+                    return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
-                    return key.startsWith(`${platform}.${this.selected_account_type}.${platform}@${market_type}`);
+                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
-                return key.startsWith(`${platform}.${this.selected_account_type}.${market_type}@${market_type}`);
+                return key.startsWith(`${platform}.${selected_account_type}.${market_type}@${market_type}`);
             })
             .reduce((_acc, cur) => {
                 _acc.push(current_list[cur]);
@@ -274,9 +277,12 @@ export default class TradersHubStore extends BaseStore {
     get is_demo() {
         return this.selected_account_type === 'demo';
     }
-
+    get is_real() {
+        return this.selected_account_type === 'real';
+    }
     get is_eu_user() {
-        return this.selected_region === 'EU';
+        const { is_eu } = this.root_store.client;
+        return this.selected_region === 'EU' || is_eu;
     }
 
     setActiveIndex(active_index) {

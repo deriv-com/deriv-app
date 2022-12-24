@@ -180,6 +180,38 @@
             }
         }
     }
+
+    &__maintenance {
+        display: flex;
+        padding-top: 1rem;
+        align-items: center;
+
+        &-icon {
+            padding-right: 0.5rem;
+        }
+
+        &-text {
+            color: var(--text-less-prominent);
+        }
+    }
+
+    &__dxtrade-button {
+        display: flex;
+        background: var(--brand-dark-grey);
+        align-items: center;
+        text-decoration: none;
+        padding: 0.2rem;
+        border-radius: $BORDER_RADIUS;
+
+        &-text {
+            padding: 0.5rem;
+
+            @include mobile {
+                padding-right: 0.5rem;
+                white-space: nowrap;
+            }
+        }
+    }
     &__specs {
         padding: 1.6rem;
         width: 100%;
@@ -324,12 +356,31 @@
                 }
                 &-links {
                     display: flex;
+                    align-items: center;
                     @include mobile {
                         flex-direction: column;
+                        grid-gap: 0.5rem;
+
+                        padding-top: 2rem;
+                    }
+
+                    &--huawei {
+                        padding-left: 0.7rem;
+
+                        @include mobile {
+                            padding: 0;
+                        }
+                    }
+
+                    &--apple {
+                        @include mobile {
+                            padding: 0;
+                            margin: 0;
+                        }
                     }
                 }
                 @include mobile {
-                    margin-left: unset;
+                    margin-left: 0;
                     margin-right: unset;
                 }
             }

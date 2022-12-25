@@ -22,8 +22,8 @@ describe('network-status component', () => {
 
     it('should contain "Popover" with default message when "status.tooltip" is empty', () => {
         render(<MockNetworkStatus is_mobile={false} />);
-        const div_element = screen.getByTestId('dt_popover_wrapper');
-        userEvent.hover(div_element);
+        const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
+        userEvent.hover(popover_wrapper);
         const network_status = screen.getByText(/connecting to server/i);
         expect(network_status).toBeInTheDocument();
     });
@@ -35,8 +35,8 @@ describe('network-status component', () => {
         };
 
         render(<NetworkStatus status={status} />);
-        const div_element = screen.getByTestId('dt_popover_wrapper');
-        userEvent.hover(div_element);
+        const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
+        userEvent.hover(popover_wrapper);
         const network_status = screen.getByText(/online/i);
         expect(network_status).toBeInTheDocument();
     });

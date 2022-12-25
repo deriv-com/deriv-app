@@ -1,12 +1,21 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
+import RouteWithSubRoutes from '../route-with-sub-routes';
 
 type TMockFunction = {
     path: string;
     exact?: boolean;
 };
+
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect:
+        () =>
+        <T,>(Component: T) =>
+            Component,
+}));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -29,10 +38,10 @@ const route = {
     path: '/test-path',
 };
 
-const MockRouteWithSubRoutesRender = () => <RouteWithSubRoutesRender {...route} />;
+const MockRouteWithSubRoutesRender = () => <RouteWithSubRoutes {...route} />;
 
-describe('RouteWithSubRoutesRender component', () => {
-    it('should render the "RouteWithSubRoutesRender" component', () => {
+describe('RouteWithSubRoutes component', () => {
+    it('should render the "RouteWithSubRoutes" component', () => {
         render(<MockRouteWithSubRoutesRender />);
         const span_element = screen.getByText(/path param: \/test-path/i);
         expect(span_element).toBeInTheDocument();

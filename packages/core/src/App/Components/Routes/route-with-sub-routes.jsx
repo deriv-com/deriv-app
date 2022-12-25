@@ -75,8 +75,6 @@ const RouteWithSubRoutes = route => {
     return <Route exact={route.exact} path={route.path} render={renderFactory} />;
 };
 
-export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
-
 export default connect(({ gtm, common }) => ({
     pushDataLayer: gtm.pushDataLayer,
     checkAppId: common.checkAppId,

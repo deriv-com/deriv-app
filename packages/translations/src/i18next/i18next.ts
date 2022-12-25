@@ -20,7 +20,6 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
 });
-
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
@@ -31,11 +30,13 @@ export const getAllowedLanguages = () => {
         FR: 'Français',
     };
     const exclude_languages = ['ACH'];
+    //type ReduceReturnType = Record<string, keyof typeof ALL_LANGUAGES>;
     // TODO Change language_list to const when languages are available in prod.
+    type Key = keyof typeof ALL_LANGUAGES;
     let language_list = Object.keys(getAllLanguages())
         .filter(key => !exclude_languages.includes(key))
-        .reduce((obj, key) => {
-            obj[key] = getAllLanguages()[key];
+        .reduce((obj: { [key: string]: string }, key) => {
+            obj[key] = getAllLanguages()[key as Key];
             return obj;
         }, {});
 
@@ -49,7 +50,7 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
-const isLanguageAvailable = lang => {
+const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
@@ -84,7 +85,7 @@ export const getInitialLanguage = () => {
     return DEFAULT_LANGUAGE;
 };
 
-const loadLanguageJson = async lang => {
+const loadLanguageJson = async (lang: string) => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
         const response = await import(/* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`);
 
@@ -97,7 +98,7 @@ const loadLanguageJson = async lang => {
 const initial_language = getInitialLanguage();
 const i18n_config = {
     react: {
-        hashTransKey(defaultValue) {
+        hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },
     },
@@ -120,7 +121,7 @@ export const initializeTranslations = async () => {
 export const getLanguage = () => i18n.language || initial_language;
 
 // eslint-disable-next-line no-unused-vars
-export const changeLanguage = async (lang, cb) => {
+export const changeLanguage = async (lang: string, cb: (arg0: any) => void) => {
     // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
@@ -134,10 +135,10 @@ export const changeLanguage = async (lang, cb) => {
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = (string, values) => {
+export const localize = (string: string, values?: object) => {
     if (!string) return '';
 
-    return i18n.t(crc32(string), { defaultValue: string, ...values });
+    return i18n.t(string, { defaultValue: string, ...values } as const);
 };
 
 const loadIncontextTranslation = () => {

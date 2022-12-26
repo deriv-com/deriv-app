@@ -15,9 +15,14 @@ describe('network-status component', () => {
     });
 
     it('should has correct class based on class passed in the "status" property', () => {
-        render(<MockNetworkStatus />);
-        const div_element = screen.getByTestId('dt_network_status_element');
-        expect(div_element).toHaveClass('network-status__circle--offline');
+        const { rerender } = render(<NetworkStatus status={{ class: 'offline' }} />);
+        expect(screen.getByTestId('dt_network_status_element')).toHaveClass('network-status__circle--offline');
+
+        rerender(<NetworkStatus status={{ class: 'online' }} />);
+        expect(screen.getByTestId('dt_network_status_element')).toHaveClass('network-status__circle--online');
+
+        rerender(<NetworkStatus status={{ class: 'blinker' }} />);
+        expect(screen.getByTestId('dt_network_status_element')).toHaveClass('network-status__circle--blinker');
     });
 
     it('should contain "Popover" with default message when "status.tooltip" is empty', () => {

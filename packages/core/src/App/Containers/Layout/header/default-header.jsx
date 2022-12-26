@@ -58,6 +58,7 @@ const DefaultHeader = ({
     removeNotificationMessage,
     setDarkMode,
     should_allow_authentication,
+    should_allow_poinc_authentication,
     toggleAccountsDialog,
     toggleNotifications,
     changeCurrentLanguage,
@@ -171,6 +172,7 @@ const DefaultHeader = ({
                             changeCurrentLanguage={changeCurrentLanguage}
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
+                            should_allow_poinc_authentication={should_allow_poinc_authentication}
                             account_status={account_status}
                             enableApp={enableApp}
                             disableApp={disableApp}
@@ -269,6 +271,7 @@ DefaultHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
+    should_allow_poinc_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
@@ -321,6 +324,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     account_status: client.account_status,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
+    should_allow_poinc_authentication: client.should_allow_poinc_authentication,
     addNotificationMessage: notifications.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,

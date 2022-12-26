@@ -264,6 +264,7 @@ export default class TradeStore extends BaseStore {
             prepareTradeStore: action.bound,
             onChangeMultiple: action.bound,
             onChange: action.bound,
+            setDefaultGrowthRate: action.bound,
             setPreviousSymbol: action.bound,
             setAllowEqual: action.bound,
             setIsTradeParamsExpanded: action.bound,
@@ -333,9 +334,7 @@ export default class TradeStore extends BaseStore {
                 if (date) {
                     this.expiry_date = date;
                 }
-                if (this.contract_type === 'accumulator' && !this.accumulator_range_list.includes(this.growth_rate)) {
-                    this.growth_rate = this.accumulator_range_list[0];
-                }
+                this.setDefaultGrowthRate();
             }
         );
         reaction(
@@ -370,12 +369,26 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
+        when(
+            () => this.accumulator_range_list.length,
+            () => this.setDefaultGrowthRate()
+        );
     }
 
     get is_symbol_in_active_symbols() {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
+    }
+
+    setDefaultGrowthRate() {
+        if (
+            this.contract_type === 'accumulator' &&
+            !this.accumulator_range_list.includes(this.growth_rate) &&
+            this.accumulator_range_list.length
+        ) {
+            this.growth_rate = this.accumulator_range_list[0];
+        }
     }
 
     setSkipPrePostLifecycle(should_skip) {

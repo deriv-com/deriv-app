@@ -35,7 +35,7 @@ const RadioGroupWithInfoMobile = ({
             <RadioGroup
                 className={`trade-params__${contract_name}-radio-group`}
                 name={`trade-params__${contract_name}-radio`}
-                selected={!Number.isNaN(current_value_object.value) ? current_value_object.value.toString() : ''}
+                selected={!Number.isNaN(current_value_object.value) ? current_value_object.value?.toString() : ''}
                 onToggle={onValueChange}
             >
                 {items_list.map(({ text, value }) => (

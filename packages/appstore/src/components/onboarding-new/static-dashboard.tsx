@@ -2,7 +2,7 @@ import React from 'react';
 import { useStores } from 'Stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { Text, ButtonToggle, Icon } from '@deriv/components';
+import { Text, ButtonToggle } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
@@ -91,7 +91,7 @@ const StaticDashboard = ({
     }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
-    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Deriv account';
     const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
@@ -207,7 +207,10 @@ const StaticDashboard = ({
                             </StaticCurrencySwitcherContainer>
                         )}
                     </div>
-                    <div className='static-dashboard-wrapper__body'>
+                    <div
+                        className='static-dashboard-wrapper__body'
+                        style={has_applauncher_account ? { height: '4rem' } : {}}
+                    >
                         {!has_applauncher_account && (
                             <StaticCFDAccountManager
                                 type='all'
@@ -237,6 +240,7 @@ const StaticDashboard = ({
                                 availability={'All'}
                                 has_applauncher_account={has_applauncher_account}
                                 is_item_blurry={is_blurry.platformlauncher}
+                                has_divider
                             />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
@@ -247,6 +251,7 @@ const StaticDashboard = ({
                                 availability={'Non-EU'}
                                 has_applauncher_account={has_applauncher_account}
                                 is_item_blurry={is_blurry.platformlauncher}
+                                has_divider
                             />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>
@@ -257,6 +262,7 @@ const StaticDashboard = ({
                                 availability={'Non-EU'}
                                 has_applauncher_account={has_applauncher_account}
                                 is_item_blurry={is_blurry.platformlauncher}
+                                has_divider
                             />
                         </div>
                         <div className={'static-dashboard-wrapper__body--apps-item'}>

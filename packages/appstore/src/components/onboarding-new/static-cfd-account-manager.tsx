@@ -18,6 +18,7 @@ type TStaticCFDAccountManager = {
     has_account?: boolean;
     is_last_step?: boolean;
     derived_amount?: string;
+    is_options_hidden?: boolean;
     is_blurry: {
         icon: boolean;
         item: boolean;
@@ -59,11 +60,16 @@ const StaticCFDAccountManager = ({
     derived_amount,
     is_blurry,
     financial_amount,
+    is_options_hidden,
     is_onboarding_animated,
     is_eu_user,
 }: TStaticCFDAccountManager) => {
     return (
-        <div className='static-cfd-account-manager'>
+        <div
+            className={classNames('static-cfd-account-manager', {
+                'static-cfd-account-manager--hidden': is_options_hidden,
+            })}
+        >
             <div className='static-cfd-account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
                     !is_eu_user &&

@@ -1,7 +1,16 @@
 .trading-app-card {
     display: inline-flex;
     align-items: center;
-    height: 8.8rem;
+    height: 5.5rem;
+
+    @include mobile {
+        border-bottom: 1px solid var(--general-hover);
+        margin-top: 0.5rem;
+    }
+
+    &__button--hidden {
+        visibility: hidden;
+    }
 
     &--blurry {
         opacity: 0.2;
@@ -25,5 +34,8 @@
         a {
             text-decoration: none;
         }
+    }
+    &--divider {
+        border-bottom: 1px solid var(--general-hover);
     }
 }

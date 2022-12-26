@@ -20,7 +20,7 @@
 
         &__bordered {
             border: 1px solid var(--general-hover);
-            padding: 2.4rem;
+            padding: 2rem;
             border-radius: 2.4rem;
 
             @include mobile {

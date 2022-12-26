@@ -2,11 +2,13 @@
     display: flex;
     width: 29.4rem;
     margin-top: 2rem;
+    margin-right: 2rem;
     align-items: center;
     justify-content: space-between;
 
     @include mobile {
         width: auto;
+        margin-right: 0;
     }
 
     &--cfds {

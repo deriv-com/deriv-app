@@ -3,11 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 
-const DepositLocked = () => {
+const DepositLocked = observer(() => {
     const { client, modules } = useStore();
     const {
         account_status,
@@ -107,6 +106,6 @@ const DepositLocked = () => {
             )}
         </>
     );
-};
+});
 
-export default observer(DepositLocked);
+export default DepositLocked;

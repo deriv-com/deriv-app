@@ -59,7 +59,6 @@ const StaticDashboard = ({
     is_blurry,
     is_derivx_last_step,
     is_financial_last_step,
-    is_grey,
     is_first_step,
     is_last_step,
     is_onboarding_animated,
@@ -74,7 +73,9 @@ const StaticDashboard = ({
         { text: `${is_eu_user ? 'Multipliers' : 'Options and...'}`, value: 1 },
     ];
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = React.useState<number | string>(0);
+
+    const Divider = () => <div className='divider' />;
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
@@ -107,7 +108,7 @@ const StaticDashboard = ({
                                             className='static-dashboard-wrapper__header--toggle-account'
                                             has_rounded_button
                                             is_animated
-                                            onChange={(item: { target: { text: string; value: number } }) => {
+                                            onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
                                                 setIndex(item.target.value);
                                             }}
                                             name='Options'
@@ -220,6 +221,7 @@ const StaticDashboard = ({
                                 is_eu_user={is_eu_user}
                             />
                         )}
+                        {isMobile() && <Divider />}
                     </div>
 
                     <div
@@ -292,7 +294,7 @@ const StaticDashboard = ({
                                         className='static-dashboard-wrapper__header--toggle-account'
                                         has_rounded_button
                                         is_animated
-                                        onChange={(item: { target: { text: string; value: number } }) => {
+                                        onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
                                             setIndex(item.target.value);
                                         }}
                                         name='CFDs'
@@ -370,99 +372,78 @@ const StaticDashboard = ({
                             </Text>
                         )}
                     </div>
+
+                    <div className='static-dashboard-wrapper__body--header'>
+                        <Text
+                            as='h2'
+                            weight='bold'
+                            size='xs'
+                            color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                        >
+                            {localize('Deriv MT5')}
+                        </Text>
+                    </div>
+
                     <div className='static-dashboard-wrapper__body'>
                         {!is_eu_user && (
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='synthetic'
-                                    platform='mt5'
-                                    appname={has_account ? 'Derived SVG' : 'Derived'}
-                                    description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    derived_amount={derived_amount}
-                                    financial_amount={financial_amount}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_eu_user={is_eu_user}
-                                />
-                                {has_account && (
-                                    <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon
-                                            icon='icAppstoreAddRounded'
-                                            width='24'
-                                            height='24'
-                                            className='Add-Rounded'
-                                        />
-                                        <Text
-                                            size='xs'
-                                            color='less-prominent'
-                                            className='static-dashboard-wrapper__body--add-button-text'
-                                        >
-                                            {localize('More derived accounts')}
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                            <StaticCFDAccountManager
+                                type='synthetic'
+                                platform='mt5'
+                                appname={has_account ? 'Derived SVG' : 'Derived'}
+                                description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                loginid={loginid}
+                                currency={currency}
+                                has_account={has_account}
+                                derived_amount={derived_amount}
+                                financial_amount={financial_amount}
+                                is_blurry={is_blurry}
+                                is_onboarding_animated={is_onboarding_animated}
+                                is_eu_user={is_eu_user}
+                            />
                         )}
+                        {!is_eu_user && isMobile() && <Divider />}
                         {is_eu_user && (
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname={'CFDs'}
-                                    description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-                                    loginid={loginid}
-                                    currency={is_eu_user ? mf_currency : currency}
-                                    has_account={has_account}
-                                    derived_amount={derived_amount}
-                                    financial_amount={is_eu_user ? '0.00' : financial_amount}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_eu_user={is_eu_user}
-                                />
-                            </div>
+                            <StaticCFDAccountManager
+                                type='financial'
+                                platform='mt5'
+                                appname={'CFDs'}
+                                description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                loginid={loginid}
+                                currency={is_eu_user ? mf_currency : currency}
+                                has_account={has_account}
+                                derived_amount={derived_amount}
+                                financial_amount={is_eu_user ? '0.00' : financial_amount}
+                                is_blurry={is_blurry}
+                                is_onboarding_animated={is_onboarding_animated}
+                                is_eu_user={is_eu_user}
+                            />
                         )}
                         {!is_eu_user && (
-                            <div>
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname={has_account ? 'Financial BVI' : 'Financial'}
-                                    description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
-                                    financial_amount={financial_amount}
-                                    derived_amount={derived_amount}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_financial_last_step={is_financial_last_step}
-                                    is_eu_user={is_eu_user}
-                                />
-                                {has_account && (
-                                    <div className='static-dashboard-wrapper__body--add-button'>
-                                        <Icon
-                                            icon='icAppstoreAddRounded'
-                                            width='24'
-                                            height='24'
-                                            className='Add-Rounded'
-                                        />
-                                        <Text
-                                            size='xs'
-                                            color='less-prominent'
-                                            className='static-dashboard-wrapper__body--add-button-text'
-                                        >
-                                            {localize('More [account name] accounts')}
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                            <StaticCFDAccountManager
+                                type='financial'
+                                platform='mt5'
+                                appname={has_account ? 'Financial BVI' : 'Financial'}
+                                description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                financial_amount={financial_amount}
+                                derived_amount={derived_amount}
+                                loginid={loginid}
+                                currency={currency}
+                                has_account={has_account}
+                                is_last_step={is_last_step}
+                                is_blurry={is_blurry}
+                                is_onboarding_animated={is_onboarding_animated}
+                                is_derivx_last_step={is_derivx_last_step}
+                                is_financial_last_step={is_financial_last_step}
+                                is_eu_user={is_eu_user}
+                            />
                         )}
                     </div>
+                    {isMobile() && <Divider />}
+                    {isMobile() && (
+                        <Text as='h2' size='xs' weight='bold'>
+                            {localize(`Other CFDs`)}
+                        </Text>
+                    )}
                 </div>
             )}
         </div>

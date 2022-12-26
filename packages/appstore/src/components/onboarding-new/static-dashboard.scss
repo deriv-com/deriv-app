@@ -4,8 +4,8 @@
     padding: 3rem;
 
     @include mobile {
-        width: 80%;
-        margin: 0 10%;
+        width: 90%;
+        margin: 0 5%;
         padding: 0;
     }
 
@@ -22,6 +22,11 @@
             border: 1px solid var(--general-hover);
             padding: 2.4rem;
             border-radius: 2.4rem;
+
+            @include mobile {
+                padding: 3rem;
+                border: none;
+            }
         }
 
         &__bordered--with-margin {
@@ -43,11 +48,10 @@
         &__header {
             display: flex;
             flex-direction: column;
-            padding-left: 1rem;
-            padding-top: 1rem;
             width: 70%;
 
             @include mobile {
+                width: 100%;
                 padding-left: 0;
             }
 
@@ -93,6 +97,10 @@
 
         &__body {
             display: flex;
+
+            &--header {
+                margin-top: 1rem;
+            }
 
             &--grey {
                 padding: 0;

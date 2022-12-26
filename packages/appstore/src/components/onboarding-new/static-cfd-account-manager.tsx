@@ -161,7 +161,7 @@ const StaticCFDAccountManager = ({
                                 'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.topup,
                             })}
                         >
-                            <Localize i18n_default_text='Top-up' />
+                            <Localize i18n_default_text='Transfer' />
                         </Button>
                         <Button
                             primary

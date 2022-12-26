@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
 import SideNote from 'Components/side-note';
 import { TReactFormEvent } from 'Types';
@@ -55,7 +54,7 @@ const OnRampInfo = () => (
     </div>
 );
 
-const OnRamp = ({ menu_options, setSideNotes }: TOnRampProps) => {
+const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     const { modules, common, client } = useStore();
     const { onramp, general_store, deposit } = modules.cashier;
     const {
@@ -87,7 +86,12 @@ const OnRamp = ({ menu_options, setSideNotes }: TOnRampProps) => {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
-        return () => onUnmountOnramp();
+        return () => {
+            onUnmountOnramp();
+            if (typeof setSideNotes === 'function') {
+                setSideNotes([]);
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);
 
@@ -153,6 +157,6 @@ const OnRamp = ({ menu_options, setSideNotes }: TOnRampProps) => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default observer(OnRamp);
+export default OnRamp;

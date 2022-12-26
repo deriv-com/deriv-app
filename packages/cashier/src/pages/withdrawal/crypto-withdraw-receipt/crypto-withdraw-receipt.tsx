@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';
 import RecentTransaction from 'Components/recent-transaction';
@@ -97,7 +96,7 @@ const WalletInformation = ({ account, blockchain_address }: TWalletInformationPr
     );
 };
 
-const CryptoWithdrawReceipt = () => {
+const CryptoWithdrawReceipt = observer(() => {
     const {
         client,
         modules: {
@@ -185,6 +184,6 @@ const CryptoWithdrawReceipt = () => {
             {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
-};
+});
 
-export default observer(CryptoWithdrawReceipt);
+export default CryptoWithdrawReceipt;

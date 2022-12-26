@@ -1,21 +1,26 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
+import { isSequentialNumber, isRecurringNumberRegex, getDocumentData, getRegex } from './utils';
+import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
-import { getDocumentData, getRegex } from './utils';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
+    const location = useLocation();
+    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
     const document_data = selected_country.identity.services.idv.documents_supported;
+
     const {
         value: country_code,
         identity: {
@@ -79,6 +84,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
+        const is_sequential_number = isSequentialNumber(document_number);
+        const is_recurring_number = isRecurringNumberRegex(document_number);
+
+        // QA can manually toggle this regex now through this feature flag.
+        // Otherwise it blocks their test suite.
+        const is_allowing_validation = validation_is_enabled;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -89,6 +100,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
+            errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {
@@ -229,6 +242,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
+                                            onPaste={e => e.preventDefault()}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

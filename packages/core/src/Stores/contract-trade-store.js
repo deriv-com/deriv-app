@@ -44,7 +44,6 @@ export default class ContractTradeStore extends BaseStore {
             updateChartType: action.bound,
             updateGranularity: action.bound,
             markers_array: computed,
-            applicable_contracts: computed,
             addContract: action.bound,
             removeContract: action.bound,
             accountSwitchListener: action.bound,
@@ -84,7 +83,7 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
-    get applicable_contracts() {
+    applicable_contracts = () => {
         const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
 
         if (!trade_type || !underlying) {
@@ -119,12 +118,12 @@ export default class ContractTradeStore extends BaseStore {
                 }
                 return trade_type_is_supported;
             });
-    }
+    };
 
     get markers_array() {
         let markers = [];
         const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        markers = this.applicable_contracts
+        markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
@@ -218,7 +217,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     get last_contract() {
-        const applicable_contracts = this.applicable_contracts;
+        const applicable_contracts = this.applicable_contracts();
         const length = applicable_contracts.length;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }

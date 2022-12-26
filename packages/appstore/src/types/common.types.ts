@@ -50,6 +50,7 @@ export type TCategotyTypes = Record<TAccountCategory, boolean>;
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
     landing_company_short?: string;
+    short_code_and_region?: string;
 };
 
 export type TTradingPlatformAvailableAccount = {

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { formatStatementTransaction } from '../format-response';
 import { toTitleCase } from '@deriv/shared';
 
@@ -41,7 +40,7 @@ describe('formatStatementTransaction', () => {
     };
 
     it('should return an object with values of object passed as argument', () => {
-        expect(formatStatementTransaction(transaction, currency)).to.eql(expected_result);
+        expect(formatStatementTransaction(transaction, currency)).toEqual(expected_result);
     });
 
     it('should return payout, amount and balance as -', () => {
@@ -53,6 +52,6 @@ describe('formatStatementTransaction', () => {
         expected_result.amount = '-';
         expected_result.balance = '-';
 
-        expect(formatStatementTransaction(transaction, currency)).to.eql(expected_result);
+        expect(formatStatementTransaction(transaction, currency)).toEqual(expected_result);
     });
 });

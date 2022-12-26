@@ -3,20 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import debounce from 'lodash.debounce';
 import { withTranslation } from 'react-i18next';
 import { DesktopWrapper } from '@deriv/components';
-import {
-    setUrlLanguage,
-    isMobile,
-    isTablet,
-    isTouchDevice,
-    initFormErrorMessages,
-    mobileOSDetect,
-    routes,
-    setSharedCFDText,
-    useOnLoadTranslation,
-} from '@deriv/shared';
+import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
@@ -66,41 +55,9 @@ const AppWithoutTranslation = ({ root_store }) => {
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
-        handleResize();
         root_store.common.setPlatform();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const handleResize = React.useCallback(() => {
-        if (isTouchDevice() && (isMobile() || isTablet())) {
-            const is_android_device = mobileOSDetect() === 'Android';
-            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
-            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
-            const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-            if (
-                view_width <= view_height ||
-                root_store.modules?.cashier?.general_store?.is_user_on_p2p ||
-                window.location.pathname.endsWith(routes.cashier_p2p)
-            ) {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
-                el_landscape_blocker.classList.remove('landscape-blocker--visible');
-            } else {
-                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
-                el_landscape_blocker.classList.add('landscape-blocker--visible');
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [root_store.ui]);
-
-    React.useEffect(() => {
-        const debouncedHandleResize = debounce(handleResize, 400);
-        window.addEventListener('resize', debouncedHandleResize);
-
-        return () => {
-            window.removeEventListener('resize', debouncedHandleResize);
-        };
-    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

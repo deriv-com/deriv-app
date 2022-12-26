@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { parts } from './tools';
 import { createInterpreter } from '../utils/interpreter';
 
@@ -37,6 +36,6 @@ describe('Run Interpreter over bot', () => {
         }, 8000);
     });
     it('Code block is executed correctly', () => {
-        expect(value).to.be.equal(true);
+        expect(value).toBe(true);
     });
 });

@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Field, Formik, Form } from 'formik';
 import { Button, Icon, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import SideNote from 'Components/side-note';
@@ -35,15 +36,18 @@ const validateWithdrawal = (values, { balance, currency }) => {
     return errors;
 };
 
-const PaymentAgentUnlistedWithdrawForm = ({
-    balance,
-    currency,
-    error,
-    onMount,
-    requestTryPaymentAgentWithdraw,
-    verification_code,
-    setIsUnlistedWithdraw,
-}) => {
+const PaymentAgentUnlistedWithdrawForm = observer(({ verification_code, setIsUnlistedWithdraw }) => {
+    const {
+        client,
+        modules: {
+            cashier: { payment_agent },
+        },
+    } = useStore();
+
+    const { balance, currency } = client;
+
+    const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -160,23 +164,11 @@ const PaymentAgentUnlistedWithdrawForm = ({
             <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
         </div>
     );
-};
+});
 
 PaymentAgentUnlistedWithdrawForm.propTypes = {
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    onMount: PropTypes.func,
-    requestTryPaymentAgentWithdraw: PropTypes.func,
     verification_code: PropTypes.string,
     setIsUnlistedWithdraw: PropTypes.func,
 };
 
-export default connect(({ client, modules }) => ({
-    balance: client.balance,
-    currency: client.currency,
-    error: modules.cashier.payment_agent.error,
-    onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
-    requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
-    verification_code: client.verification_code.payment_agent_withdraw,
-}))(PaymentAgentUnlistedWithdrawForm);
+export default PaymentAgentUnlistedWithdrawForm;

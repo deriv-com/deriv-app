@@ -1,0 +1,28 @@
+.balance-text {
+    &__container {
+        display: inline-flex;
+    }
+
+    &__text {
+        &--demo {
+            color: var(--text-profit-success);
+            padding-right: 0.5rem;
+        }
+
+        &--real {
+            padding-right: 0.5rem;
+        }
+
+        &--amount {
+            color: var(--text-profit-success);
+        }
+
+        &--no-amount {
+            color: var(--general-section-6);
+        }
+    }
+
+    &--dotted {
+        border-bottom: 4px dotted var(--checkbox-disabled-grey);
+    }
+}

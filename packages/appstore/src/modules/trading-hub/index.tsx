@@ -46,7 +46,7 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client, tradinghub } = useStores();
+    const { ui, modules, common, client, traders_hub } = useStores();
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
         client;
     const {
@@ -60,7 +60,7 @@ const TradingHub: React.FC = () => {
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
+    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = traders_hub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
     const real_active = !/^VRT/.test(login_id);

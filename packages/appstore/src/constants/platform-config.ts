@@ -1,19 +1,32 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
+import { TAccountCategory, TRegionAvailability } from 'Types';
 
-export type AccountType = 'real' | 'demo';
+export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
-export const account_types: AccountType[] = ['real', 'demo'];
+export const account_types: AccountType[] = [
+    { text: 'Demo', value: 'demo' },
+    { text: 'Real', value: 'real' },
+];
 export const region_availability: RegionAvailability[] = ['Non-EU', 'EU'];
 
 export type BrandConfig = {
     name: string;
     icon: keyof typeof PlatformIcons;
-    availability: RegionAvailability;
+    availability: TRegionAvailability;
+    is_deriv_platform?: boolean;
 };
 
 export type PlatformConfig = {
+    name: string;
+    app_desc: string;
+    link_to?: string;
+};
+
+export type MfPlatformConfig = {
+    app_icon: string;
+    app_title: string;
     name: string;
     app_desc: string;
     link_to?: string;
@@ -48,12 +61,12 @@ export const platform_config: PlatformConfig[] = [
 ];
 
 // TODO: To be removed once refactor is complete. DO NOT USE
-export const mf_platform_config = [
+export const mf_platform_config: MfPlatformConfig[] = [
     {
         app_icon: getPlatformSettingsAppstore('trader').icon,
         app_title: getPlatformSettingsAppstore('trader').name,
         name: getPlatformSettingsAppstore('trader').name,
-        app_desc: localize('Options & multipliers trading platform.'),
+        app_desc: localize('Multipliers trading platform.'),
         link_to: routes.trade,
     },
 ];

@@ -8,14 +8,14 @@ import {
     Icon,
     MobileDialog,
     MobileWrapper,
-    ThemedScrollbars,
     Text,
+    ThemedScrollbars,
     useOnClickOutside,
 } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject, isMobile, PlatformContext } from '@deriv/shared';
+import { isEmptyObject, isMobile, toTitleCase } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -29,6 +29,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
 
         return `IcAlert${toTitleCase(type)}`;
     };
+
+    const getButtonSettings = item =>
+        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
 
     return (
         <React.Fragment>
@@ -54,9 +57,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
-                        {!isEmptyObject(item.action) && (
+                        {!!getButtonSettings(item) && (
                             <React.Fragment>
-                                {item.action.route ? (
+                                {item[getButtonSettings(item)].route ? (
                                     <BinaryLink
                                         onClick={toggleDialog}
                                         active_class='notifications-item'
@@ -65,19 +68,19 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                                             'dc-btn--secondary',
                                             'notifications-item__cta-button'
                                         )}
-                                        to={item.action.route}
+                                        to={item[getButtonSettings(item)].route}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </BinaryLink>
                                 ) : (
                                     <Button
                                         className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={item.action.onClick}
+                                        onClick={item[getButtonSettings(item)].onClick}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </Button>
                                 )}
@@ -89,9 +92,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         </React.Fragment>
     );
 };
-const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog }, ref) => {
-    const is_empty = !notifications.length;
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+const NotificationListWrapper = React.forwardRef(({ is_pre_appstore, notifications, toggleDialog }, ref) => {
+    const is_empty = !notifications?.length;
+
     return (
         <div
             className={classNames('notifications-dialog', {
@@ -129,9 +132,10 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog 
         </div>
     );
 });
+
 NotificationListWrapper.displayName = 'NotificationListWrapper';
 
-const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
+const NotificationsDialog = ({ is_pre_appstore, is_visible, notifications, toggleDialog }) => {
     const wrapper_ref = React.useRef();
 
     const handleClickOutside = event => {
@@ -154,6 +158,7 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
                     onClose={toggleDialog}
                 >
                     <NotificationListWrapper
+                        is_pre_appstore={is_pre_appstore}
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
@@ -172,6 +177,7 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
                     unmountOnExit
                 >
                     <NotificationListWrapper
+                        is_pre_appstore={is_pre_appstore}
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
@@ -183,14 +189,16 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
 };
 
 NotificationsDialog.propTypes = {
+    is_pre_appstore: PropTypes.bool,
     is_visible: PropTypes.bool,
     notifications: PropTypes.array,
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ common, notifications }) => ({
-    notifications: notifications.filtered_notifications,
+export default connect(({ common, client, notifications }) => ({
     app_routing_history: common.app_routing_history,
+    is_pre_appstore: client.is_pre_appstore,
+    notifications: notifications.filtered_notifications,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
 }))(NotificationsDialog);

@@ -643,6 +643,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 onPasswordManager={togglePasswordManagerModal}
                                 toggleModal={toggleMT5TradeModal}
                                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+                                platform={platform}
                             />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon

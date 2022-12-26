@@ -6,19 +6,6 @@ import BaseStore from './base-store';
 import type { TWebSocket, TRootStore, TOnRampProvider } from 'Types';
 
 export default class OnRampStore extends BaseStore {
-    api_error: string | null = null;
-    deposit_address: string | null = null;
-    disposeGetWidgetHtmlReaction: IReactionDisposer | null = null;
-    disposeThirdPartyJsReaction: IReactionDisposer | null = null;
-    is_deposit_address_loading = true;
-    is_onramp_modal_open = false;
-    is_requesting_widget_html = false;
-    onramp_providers: TOnRampProvider[] = [];
-    selected_provider: TOnRampProvider | null = null;
-    should_show_widget = false;
-    widget_error: string | null = null;
-    widget_html: string | null = null;
-
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
 
@@ -65,6 +52,19 @@ export default class OnRampStore extends BaseStore {
             ]);
         });
     }
+
+    api_error: string | null = null;
+    deposit_address: string | null = null;
+    disposeGetWidgetHtmlReaction: IReactionDisposer | null = null;
+    disposeThirdPartyJsReaction: IReactionDisposer | null = null;
+    is_deposit_address_loading = true;
+    is_onramp_modal_open = false;
+    is_requesting_widget_html = false;
+    onramp_providers: TOnRampProvider[] = [];
+    selected_provider: TOnRampProvider | null = null;
+    should_show_widget = false;
+    widget_error: string | null = null;
+    widget_html: string | null = null;
 
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
@@ -255,7 +255,7 @@ export default class OnRampStore extends BaseStore {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
-    setSelectedProvider(provider: TOnRampProvider | null) {
+    setSelectedProvider(provider?: TOnRampProvider | null) {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);

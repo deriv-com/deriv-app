@@ -1,13 +1,14 @@
-import React from 'react';
 import { action, computed, observable, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
+import { CryptoConfig } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import { ReadMore } from '@deriv/components';
+import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class WithdrawStore {
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             blockchain_address: observable,
             container: observable,
@@ -21,7 +22,7 @@ export default class WithdrawStore {
             setWithdrawAmount: action.bound,
             requestWithdraw: action.bound,
             saveWithdraw: action.bound,
-            resetWithrawForm: action.bound,
+            resetWithdrawForm: action.bound,
             setBlockchainAddress: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
@@ -43,13 +44,15 @@ export default class WithdrawStore {
     blockchain_address = '';
     container = Constants.containers.withdraw;
     error = new ErrorStore();
-    is_10k_withdrawal_limit_reached = undefined;
+    is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
     withdraw_amount = '';
     max_withdraw_amount = 0;
-    crypto_config = {};
+    crypto_config: CryptoConfig = {
+        currencies_config: {},
+    };
 
-    setIsWithdrawConfirmed(is_withdraw_confirmed) {
+    setIsWithdrawConfirmed(is_withdraw_confirmed: boolean) {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
@@ -57,6 +60,7 @@ export default class WithdrawStore {
 
         if (!is_withdraw_confirmed) {
             const { client, modules } = this.root_store;
+            // TODO: remove this unused container
             const { active_container } = modules.cashier.general_store;
             const container = Constants.map_action[active_container];
 
@@ -64,11 +68,11 @@ export default class WithdrawStore {
         }
     }
 
-    setWithdrawAmount(amount) {
+    setWithdrawAmount(amount: string) {
         this.withdraw_amount = amount;
     }
 
-    async requestWithdraw(verification_code) {
+    async requestWithdraw(verification_code: string) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter } = modules.cashier;
 
@@ -96,10 +100,10 @@ export default class WithdrawStore {
         });
     }
 
-    async saveWithdraw(verification_code) {
+    async saveWithdraw(verification_code: string) {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +converter_from_amount,
@@ -109,21 +113,23 @@ export default class WithdrawStore {
                 this.error.setErrorMessage(response.error);
                 if (verification_code) {
                     const { client, modules } = this.root_store;
+                    // TODO: remove this unused container
                     const { active_container } = modules.cashier.general_store;
                     const container = Constants.map_action[active_container];
 
                     client.setVerificationCode('', container);
                 }
-                this.resetWithrawForm();
+                this.resetWithdrawForm();
             } else {
                 this.setIsWithdrawConfirmed(true);
             }
         });
     }
 
-    resetWithrawForm() {
+    resetWithdrawForm() {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         const { client, modules } = this.root_store;
+        // TODO: remove this unused container
         const { active_container } = modules.cashier.general_store;
         const container = Constants.map_action[active_container];
 
@@ -133,13 +139,14 @@ export default class WithdrawStore {
         client.setVerificationCode('', container);
     }
 
-    setBlockchainAddress(address) {
+    setBlockchainAddress(address: string) {
         this.blockchain_address = address;
     }
 
-    willMountWithdraw(verification_code) {
+    willMountWithdraw(verification_code: string) {
         if (this && this.root_store && verification_code) {
             const { client, modules } = this.root_store;
+            // TODO: remove this unused container
             const { active_container } = modules.cashier.general_store;
             const container = Constants.map_action[active_container];
 
@@ -147,7 +154,7 @@ export default class WithdrawStore {
         }
     }
 
-    async onMountWithdraw(verification_code) {
+    async onMountWithdraw(verification_code?: string) {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const {
@@ -166,7 +173,7 @@ export default class WithdrawStore {
         setOnRemount(this.onMountWithdraw);
         await onMountCommon();
 
-        this.error.setErrorMessage('');
+        this.error.setErrorMessage({ code: '', message: '' });
         setContainerHeight(0);
         clearIframe();
         setLoading(true);
@@ -185,7 +192,7 @@ export default class WithdrawStore {
             return;
         }
 
-        const response_cashier = await this.WS.authorized.cashier(active_container, {
+        const response_cashier = await this.WS.authorized.cashier(active_container as 'deposit' | 'withdraw', {
             verification_code,
         });
 
@@ -200,6 +207,7 @@ export default class WithdrawStore {
             setSessionTimeout(true);
             clearTimeoutCashierUrl();
             if (verification_code) {
+                // TODO: remove this unused container
                 const container = Constants.map_action[active_container];
 
                 client.setVerificationCode('', container);
@@ -209,13 +217,13 @@ export default class WithdrawStore {
         } else {
             await checkIframeLoaded();
             setLoading(false);
-            setIframeUrl(response_cashier.cashier);
+            setIframeUrl(response_cashier.cashier as string);
             setSessionTimeout(false);
             setTimeoutCashierUrl(true);
         }
     }
 
-    async onMountCryptoWithdraw(verification_code) {
+    async onMountCryptoWithdraw(verification_code: string) {
         const { crypto_fiat_converter, general_store, iframe } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
@@ -240,6 +248,7 @@ export default class WithdrawStore {
             iframe.clearTimeoutCashierUrl();
             if (verification_code) {
                 const { client, modules } = this.root_store;
+                // TODO: remove this unused container
                 const { active_container } = modules.cashier.general_store;
                 const container = Constants.map_action[active_container];
 
@@ -260,13 +269,13 @@ export default class WithdrawStore {
         const { authentication } = client.account_status;
 
         if (!client.account_status?.status) return false;
-        const need_poi = authentication.needs_verification.includes('identity');
+        const need_poi = authentication?.needs_verification.includes('identity');
         const need_authentication = this.error.is_ask_authentication && need_poi;
 
         return client.is_withdrawal_lock || need_authentication || this.error.is_ask_financial_risk_approval;
     }
 
-    setMaxWithdrawAmount(amount) {
+    setMaxWithdrawAmount(amount: number) {
         this.max_withdraw_amount = amount;
     }
 
@@ -274,17 +283,17 @@ export default class WithdrawStore {
         const { client } = this.root_store;
 
         const remainder = (await client.getLimits())?.get_limits?.remainder;
-        this.setMaxWithdrawAmount(remainder);
+        this.setMaxWithdrawAmount(Number(remainder));
         const min_withdrawal = getMinWithdrawal(client.currency);
         const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
     }
 
-    set10kLimitation(is_limit_reached) {
+    set10kLimitation(is_limit_reached: boolean) {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
-    setWithdrawPercentageSelectorResult(amount) {
+    setWithdrawPercentageSelectorResult(amount: number) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
@@ -305,7 +314,7 @@ export default class WithdrawStore {
     }
 
     validateWithdrawFromAmount() {
-        let error_message = '';
+        let error_message: string | JSX.Element = '';
 
         const { client, modules } = this.root_store;
         const { balance, currency } = client;
@@ -313,7 +322,8 @@ export default class WithdrawStore {
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
         const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
-        const max_withdraw_amount = +this.max_withdraw_amount > +balance ? +balance : +this.max_withdraw_amount;
+        const max_withdraw_amount =
+            Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);
 
         const format_balance = formatMoney(currency, balance, true);
         const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
@@ -325,32 +335,28 @@ export default class WithdrawStore {
                 decimals: getDecimalPlaces(currency),
             });
             if (!is_ok) error_message = message;
-            else if (+balance < +converter_from_amount) error_message = localize('Insufficient funds');
-            else if (+balance < +min_withdraw_amount) {
+            else if (Number(balance) < Number(converter_from_amount)) error_message = localize('Insufficient funds');
+            else if (min_withdraw_amount && Number(balance) < Number(min_withdraw_amount)) {
                 error_message = localize(
                     'Your balance ({{format_balance}} {{currency}}) is less than the current minimum withdrawal allowed ({{format_min_withdraw_amount}} {{currency}}). Please top up your account to continue with your withdrawal.',
                     { format_balance, currency, format_min_withdraw_amount }
                 );
-            } else if (+converter_from_amount < +min_withdraw_amount || +converter_from_amount > +max_withdraw_amount) {
+            } else if (
+                (min_withdraw_amount && Number(converter_from_amount) < Number(min_withdraw_amount)) ||
+                Number(converter_from_amount) > Number(max_withdraw_amount)
+            ) {
                 error_message = localize(
                     'The current allowed withdraw amount is {{format_min_withdraw_amount}} to {{format_max_withdraw_amount}} {{currency}}',
                     { format_min_withdraw_amount, format_max_withdraw_amount, currency }
                 );
             }
 
-            if (isMobile() && error_message.length > 35) {
+            if (isMobile() && (error_message as string).length > 35) {
                 const error_content = error_message;
-                error_message = (
-                    <ReadMore
-                        expand_text={localize('more')}
-                        text={error_content}
-                        collapse_length={28}
-                        openDialog={() =>
-                            this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content })
-                        }
-                        show_dialog
-                    />
-                );
+                const openDialog = () => {
+                    this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content as string });
+                };
+                error_message = ReadMoreWrapper({ error_content, openDialog });
             }
         }
         setConverterFromError(error_message);
@@ -375,7 +381,7 @@ export default class WithdrawStore {
 
     get account_platform_icon() {
         const { account_list, loginid } = this.root_store.client;
-        const platform_icon = account_list.find(acc => loginid === acc.loginid).icon;
+        const platform_icon = account_list.find(acc => loginid === acc.loginid)?.icon;
 
         return platform_icon;
     }

@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { CashierInformationRequest, CashierInformationResponse, CryptoConfig } from '@deriv/api-types';
+
 export type TServerError = {
     code: string;
     message: string;
@@ -22,11 +23,18 @@ type TServiceTokenResponse = {
 };
 
 type TWebSocketCall = {
-    cashier: (action: unknown, parameters: unknown) => Promise<any>;
+    cashier: (
+        action: CashierInformationRequest['cashier'],
+        parameters: Omit<CashierInformationRequest, 'cashier'>
+    ) => Promise<CashierInformationResponse & { error: TServerError }>;
 };
 
 export type TWebSocket = {
     authorized: TWebSocketCall;
+    cryptoConfig: () => { crypto_config: CryptoConfig };
+    cryptoWithdraw: (
+        args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
+    ) => Promise<CashierInformationResponse & { error: TServerError }>;
     send: (obj: unknown) => Promise<unknown>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
 };

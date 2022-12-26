@@ -1,7 +1,27 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
+
+type TAccountsList = {
+    account: {
+        balance?: string | number;
+        currency?: string;
+        disabled?: boolean;
+        is_dxtrade?: boolean;
+        is_mt?: boolean;
+        market_type?: string;
+        nativepicker_text?: string;
+        platform_icon?: string;
+        text?: JSX.Element | string;
+        value?: string;
+    };
+    icon?: string;
+    idx: string | number;
+    is_dark_mode_on: boolean;
+    loginid?: string;
+    mt5_login_list: DetailsOfEachMT5Loginid[];
+}[];
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -16,13 +36,14 @@ type TClientStore = {
             };
         };
     };
+    account_list: TAccountsList;
     account_status: GetAccountStatus;
     balance?: string;
     can_change_fiat_currency: boolean;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => void;
+    getLimits: () => { get_limits?: GetLimits };
     is_account_setting_loaded: boolean;
     is_eu: boolean;
     is_deposit_lock: boolean;

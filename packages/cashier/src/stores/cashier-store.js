@@ -26,6 +26,6 @@ export default class CashierStore {
         this.payment_agent = new PaymentAgentStore({ root_store, WS });
         this.payment_agent_transfer = new PaymentAgentTransferStore({ root_store, WS });
         this.transaction_history = new TransactionHistoryStore({ root_store, WS });
-        this.withdraw = new WithdrawStore({ root_store, WS });
+        this.withdraw = new WithdrawStore(WS, root_store);
     }
 }

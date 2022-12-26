@@ -1,11 +1,16 @@
 import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
-import OnrampProviders from '../../config/on-ramp-providers';
+import OnRampProviders from '../../config/on-ramp-providers';
 import { configure } from 'mobx';
+import { TRootStore, TWebSocket, TOnRampProvider } from 'Types';
 
 configure({ safeDescriptors: false });
 
-let changelly_provider, onramp_store, onramp_providers, root_store, WS;
+let changelly_provider: TOnRampProvider,
+    onramp_store: OnRampStore,
+    onramp_providers: TOnRampProvider[],
+    root_store: DeepPartial<TRootStore>,
+    WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = {
@@ -23,11 +28,11 @@ beforeEach(() => {
     };
     onramp_store = new OnRampStore(WS, root_store);
     onramp_providers = [
-        OnrampProviders.createChangellyProvider(onramp_store),
-        OnrampProviders.createXanPoolProvider(onramp_store),
-        OnrampProviders.createBanxaProvider(onramp_store),
+        OnRampProviders.createChangellyProvider(onramp_store),
+        OnRampProviders.createXanPoolProvider(onramp_store),
+        OnRampProviders.createBanxaProvider(onramp_store),
     ];
-    changelly_provider = OnrampProviders.createChangellyProvider(onramp_store);
+    changelly_provider = OnRampProviders.createChangellyProvider(onramp_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -290,9 +295,9 @@ describe('OnRampStore', () => {
 
     it('should set selected provider', () => {
         const spyPollApiForDepositAddress = jest.spyOn(onramp_store, 'pollApiForDepositAddress');
-        onramp_store.setSelectedProvider('provider');
-
-        expect(onramp_store.selected_provider).toBe('provider');
+        const provider = OnRampProviders.createChangellyProvider(onramp_store);
+        onramp_store.setSelectedProvider(provider);
+        expect(onramp_store.selected_provider).toBe(provider);
         expect(onramp_store.is_onramp_modal_open).toBeTruthy();
         expect(spyPollApiForDepositAddress).toHaveBeenCalledWith(true);
     });

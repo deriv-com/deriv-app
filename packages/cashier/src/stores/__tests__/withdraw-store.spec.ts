@@ -1,6 +1,7 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
+import { TWebSocket, TRootStore } from 'Types';
 
 configure({ safeDescriptors: false });
 
@@ -14,10 +15,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('WithdrawStore', () => {
-    let withdraw_store;
+    let withdraw_store: WithdrawStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
 
     beforeEach(() => {
-        const root_store = {
+        root_store = {
             client: {
                 account_list: [
                     {
@@ -29,7 +30,7 @@ describe('WithdrawStore', () => {
                     authentication: { needs_verification: ['identity'] },
                     status: {},
                 },
-                balance: 1000,
+                balance: '1000',
                 currency: 'USD',
                 is_logged_in: true,
                 is_virtual: false,
@@ -55,8 +56,8 @@ describe('WithdrawStore', () => {
                         setOnRemount: jest.fn(),
                     },
                     crypto_fiat_converter: {
-                        converter_from_amount: 100,
-                        converter_to_amount: 100,
+                        converter_from_amount: '100',
+                        converter_to_amount: '100',
                         onChangeConverterFromAmount: jest.fn(),
                         resetConverter: jest.fn(),
                         setConverterFromAmount: jest.fn(),
@@ -82,7 +83,7 @@ describe('WithdrawStore', () => {
                 },
             },
         };
-        const WS = {
+        WS = {
             authorized: {
                 cashier: jest.fn(() => Promise.resolve({ cashier: 'https://deriv.com' })),
             },
@@ -90,19 +91,18 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore({ root_store, WS });
+        withdraw_store = new WithdrawStore(WS, root_store);
     });
 
-    // it('should set is_withdraw_confirmed', () => {
-    //     withdraw_store.setIsWithdrawConfirmed(true);
-    //     expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
-    //     expect(withdraw_store.withdraw_amount).toBe(100);
-
-    // });
+    it('should set is_withdraw_confirmed', () => {
+        withdraw_store.setIsWithdrawConfirmed(true);
+        expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
+        expect(withdraw_store.withdraw_amount).toBe('100');
+    });
 
     it('should set withdraw_amount', () => {
-        withdraw_store.setWithdrawAmount(200);
-        expect(withdraw_store.withdraw_amount).toBe(200);
+        withdraw_store.setWithdrawAmount('200');
+        expect(withdraw_store.withdraw_amount).toBe('200');
     });
 
     it('should request for withdrawal', async () => {
@@ -117,11 +117,11 @@ describe('WithdrawStore', () => {
         expect(spySaveWithdraw).not.toHaveBeenCalledWith(verification_code);
 
         withdraw_store.root_store.client.is_logged_in = true;
-        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 0;
+        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '';
         await withdraw_store.requestWithdraw(verification_code);
         expect(setConverterFromError).toHaveBeenCalledWith('This field is required.');
 
-        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 100;
+        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '100';
         await withdraw_store.requestWithdraw(verification_code);
         expect(spySaveWithdraw).toHaveBeenCalledWith(verification_code);
 
@@ -138,9 +138,9 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         await withdraw_store.saveWithdraw(verification_code);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
-        expect(withdraw_store.withdraw_amount).toBe(100);
+        expect(withdraw_store.withdraw_amount).toBe('100');
 
         withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.saveWithdraw(verification_code);
@@ -154,7 +154,7 @@ describe('WithdrawStore', () => {
         const { setConverterFromAmount, setConverterToAmount } =
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        withdraw_store.resetWithrawForm();
+        withdraw_store.resetWithdrawForm();
         expect(setConverterFromAmount).toHaveBeenCalledWith('');
         expect(setConverterToAmount).toHaveBeenCalledWith('');
         expect(withdraw_store.blockchain_address).toBe('');
@@ -287,7 +287,7 @@ describe('WithdrawStore', () => {
     it('should return an error if balance is less than the provided converter from amount', () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 10000;
+        withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '10000';
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith('Insufficient funds');
     });

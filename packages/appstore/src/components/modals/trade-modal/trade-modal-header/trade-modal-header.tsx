@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { TTradeModalHeader } from '../trade-modal-types';
 
-const TradeModalHeader: React.FC<TTradeModalHeader> = ({ balance, icon, title, toggleTradeModal }) => {
+const TradeModalHeader = ({ balance, icon, title, toggleTradeModal }: TTradeModalHeader) => {
     return (
         <div className='dw-trade-modal__header'>
             <div className='dw-trade-modal__header--left'>

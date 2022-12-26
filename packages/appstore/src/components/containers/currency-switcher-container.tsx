@@ -1,17 +1,13 @@
-import React, { ReactNode } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import './currency-switcher-container.scss';
-import { Icon } from '@deriv/components';
 
-type CurrentSwitcherContainerProps = {
+interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;
-    children: ReactNode;
-    className?: string;
     icon: Currency;
     title: ReactNode;
-    is_interactable?: boolean;
-};
+}
 
 const CurrentSwitcherContainer = ({
     actions,
@@ -19,21 +15,16 @@ const CurrentSwitcherContainer = ({
     className,
     icon,
     title,
-    is_interactable = false,
+    ...props
 }: CurrentSwitcherContainerProps) => {
     return (
-        <div className={classNames(className, 'currency-switcher-container')}>
+        <div className={classNames(className, 'currency-switcher-container')} {...props}>
             <CurrencyIcon icon={icon} size={32} />
             <div className='currency-switcher-container__content'>
                 {title}
                 {children}
             </div>
             {actions}
-            {is_interactable && (
-                <div className=''>
-                    <Icon icon='' />
-                </div>
-            )}
         </div>
     );
 };

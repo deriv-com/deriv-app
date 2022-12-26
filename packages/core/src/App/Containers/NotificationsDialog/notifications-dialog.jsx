@@ -93,7 +93,7 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
     );
 };
 const NotificationListWrapper = React.forwardRef(({ is_pre_appstore, notifications, toggleDialog }, ref) => {
-    const is_empty = !notifications.length;
+    const is_empty = !notifications?.length;
 
     return (
         <div

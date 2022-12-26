@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
@@ -27,4 +28,4 @@ const DemoAccountCard = () => {
     );
 };
 
-export default DemoAccountCard;
+export default observer(DemoAccountCard);

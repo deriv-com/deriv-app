@@ -8,6 +8,12 @@
     margin-left: auto;
     gap: 1.6rem;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 10px 15px -3px var(--shadow-menu), 0 4px 6px -4px var(--shadow-menu);
+    }
 
     @include mobile {
         width: 100%;

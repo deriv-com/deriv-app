@@ -1,11 +1,12 @@
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Input, Loading, Money, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-listed-withdraw-form.scss';
 
@@ -32,19 +33,29 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
     return errors;
 };
 
-const PaymentAgentListedWithdrawForm = ({
-    balance,
-    currency,
-    error,
-    is_crypto,
-    is_loading,
-    onMount,
-    payment_agent,
-    payment_agent_list,
-    requestTryPaymentAgentWithdraw,
-    selected_bank,
-    verification_code,
-}) => {
+const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
+    const {
+        client,
+        modules: {
+            cashier: { general_store, payment_agent: payment_agenr_store },
+        },
+    } = useStore();
+
+    const {
+        balance,
+        currency,
+        verification_code: { payment_agent_withdraw: verification_code },
+    } = client;
+
+    const { is_crypto, is_loading } = general_store;
+    const {
+        error,
+        onMountPaymentAgentWithdraw: onMount,
+        agents: payment_agent_list,
+        requestTryPaymentAgentWithdraw,
+        selected_bank,
+    } = payment_agenr_store;
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -166,31 +177,10 @@ const PaymentAgentListedWithdrawForm = ({
             <ErrorDialog error={error} className='payment-agent-list__error-dialog' />
         </div>
     );
-};
+});
 
 PaymentAgentListedWithdrawForm.propTypes = {
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    is_crypto: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    onMount: PropTypes.func,
     payment_agent: PropTypes.object,
-    payment_agent_list: PropTypes.array,
-    requestTryPaymentAgentWithdraw: PropTypes.func,
-    selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    verification_code: PropTypes.string,
 };
 
-export default connect(({ client, modules }) => ({
-    balance: client.balance,
-    currency: client.currency,
-    error: modules.cashier.payment_agent.error,
-    is_crypto: modules.cashier.general_store.is_crypto,
-    is_loading: modules.cashier.general_store.is_loading,
-    onMount: modules.cashier.payment_agent.onMountPaymentAgentWithdraw,
-    payment_agent_list: modules.cashier.payment_agent.agents,
-    requestTryPaymentAgentWithdraw: modules.cashier.payment_agent.requestTryPaymentAgentWithdraw,
-    selected_bank: modules.cashier.payment_agent.selected_bank,
-    verification_code: client.verification_code.payment_agent_withdraw,
-}))(PaymentAgentListedWithdrawForm);
+export default PaymentAgentListedWithdrawForm;

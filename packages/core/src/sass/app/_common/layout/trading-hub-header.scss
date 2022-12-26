@@ -83,9 +83,19 @@
 
     &__tradershub {
         display: flex;
+        height: 100%;
         justify-content: center;
         align-items: center;
-        margin: 0 1rem 0 1.5rem;
+        padding: 0 1rem 0 1.6rem;
+
+        &:hover:not(&--active) {
+            background-color: var(--general-hover);
+        }
+
+        &--active > &--text {
+            font-weight: bold;
+            color: var(--text-prominent);
+        }
 
         &--home-logo {
             padding-right: 0.8rem;

@@ -1,22 +1,25 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
 import BaseStore from './base-store';
+import type { TWebSocket, TRootStore, TOnRampProvider } from 'Types';
 
 export default class OnRampStore extends BaseStore {
-    api_error = null;
-    deposit_address = null;
+    api_error: string | null = null;
+    deposit_address: string | null = null;
+    disposeGetWidgetHtmlReaction: IReactionDisposer | null = null;
+    disposeThirdPartyJsReaction: IReactionDisposer | null = null;
     is_deposit_address_loading = true;
     is_onramp_modal_open = false;
     is_requesting_widget_html = false;
-    onramp_providers = [];
-    selected_provider = null;
+    onramp_providers: TOnRampProvider[] = [];
+    selected_provider: TOnRampProvider | null = null;
     should_show_widget = false;
-    widget_error = null;
-    widget_html = null;
+    widget_error: string | null = null;
+    widget_html: string | null = null;
 
-    constructor({ WS, root_store }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
 
         makeObservable(this, {
@@ -41,7 +44,6 @@ export default class OnRampStore extends BaseStore {
             pollApiForDepositAddress: action.bound,
             resetPopup: action.bound,
             setApiError: action.bound,
-            setCopyIconRef: action.bound,
             setDepositAddress: action.bound,
             setIsDepositAddressLoading: action.bound,
             setIsOnRampModalOpen: action.bound,
@@ -123,7 +125,6 @@ export default class OnRampStore extends BaseStore {
 
                 const { default: loadjs } = await import(/* webpackChunkName: "loadjs" */ 'loadjs');
                 const script_name = `${getKebabCase(provider.name)}-onramp`;
-
                 if (!loadjs.isDefined(script_name)) {
                     loadjs(dependencies, script_name, {
                         error: () => {
@@ -147,11 +148,11 @@ export default class OnRampStore extends BaseStore {
 
                     this.setIsRequestingWidgetHtml(true);
                     this.selected_provider
-                        .getWidgetHtml()
+                        ?.getWidgetHtml()
                         .then(widget_html => {
                             if (widget_html) {
                                 // Regular providers (iframe/JS embed)
-                                this.setWidgetHtml(widget_html);
+                                this.setWidgetHtml(widget_html as string);
                             } else {
                                 // An empty resolve (widget_html) identifies a redirect.
                                 this.setShouldShowWidget(false);
@@ -184,7 +185,7 @@ export default class OnRampStore extends BaseStore {
         window.open(websiteUrl() + routes.cashier_deposit.substring(1));
     }
 
-    pollApiForDepositAddress(should_allow_empty_address) {
+    pollApiForDepositAddress(should_allow_empty_address: boolean) {
         // should_allow_empty_address: API returns empty deposit address for legacy accounts
         // that have never generated a deposit address. Setting this to "true" will allow
         // the user to be redirected to the Deposit page (where an address will be generated).
@@ -234,31 +235,27 @@ export default class OnRampStore extends BaseStore {
         this.setWidgetHtml(null);
     }
 
-    setApiError(api_error) {
+    setApiError(api_error: string | null) {
         this.api_error = api_error;
     }
 
-    setCopyIconRef(ref) {
-        this.copy_icon_ref = ref;
-    }
-
-    setDepositAddress(deposit_address) {
+    setDepositAddress(deposit_address: string | null) {
         this.deposit_address = deposit_address;
     }
 
-    setIsDepositAddressLoading(is_loading) {
+    setIsDepositAddressLoading(is_loading: boolean) {
         this.is_deposit_address_loading = is_loading;
     }
 
-    setIsOnRampModalOpen(is_open) {
+    setIsOnRampModalOpen(is_open: boolean) {
         this.is_onramp_modal_open = is_open;
     }
 
-    setIsRequestingWidgetHtml(is_requesting_widget_html) {
+    setIsRequestingWidgetHtml(is_requesting_widget_html: boolean) {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
-    setSelectedProvider(provider) {
+    setSelectedProvider(provider: TOnRampProvider | null) {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
@@ -269,19 +266,19 @@ export default class OnRampStore extends BaseStore {
         }
     }
 
-    setShouldShowWidget(should_show) {
+    setShouldShowWidget(should_show: boolean) {
         this.should_show_widget = should_show;
     }
 
-    setOnrampProviders(onramp_providers) {
+    setOnrampProviders(onramp_providers: TOnRampProvider[]): void {
         this.onramp_providers = onramp_providers.slice();
     }
 
-    setWidgetError(widget_error) {
+    setWidgetError(widget_error: string | null) {
         this.widget_error = widget_error;
     }
 
-    setWidgetHtml(widget_html) {
+    setWidgetHtml(widget_html: string | null) {
         this.widget_html = widget_html;
     }
 }

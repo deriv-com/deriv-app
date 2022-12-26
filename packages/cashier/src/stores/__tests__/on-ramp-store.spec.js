@@ -1,5 +1,6 @@
+import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
-import OnrampProviders from 'Config/on-ramp-providers';
+import OnrampProviders from '../../config/on-ramp-providers';
 import { configure } from 'mobx';
 
 configure({ safeDescriptors: false });
@@ -20,7 +21,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore({ WS, root_store });
+    onramp_store = new OnRampStore(WS, root_store);
     onramp_providers = [
         OnrampProviders.createChangellyProvider(onramp_store),
         OnrampProviders.createXanPoolProvider(onramp_store),
@@ -96,7 +97,7 @@ describe('OnRampStore', () => {
     it('should have returned from onMountOnramp method if there is no selected_provider', () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
-        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependecy']);
+        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependency']);
         onramp_store.setSelectedProvider(changelly_provider);
         onramp_store.setSelectedProvider();
 
@@ -122,29 +123,29 @@ describe('OnRampStore', () => {
         expect(await spySetWidgetHtml).toHaveBeenCalledWith('widget');
     });
 
-    // it('should set should_show_widget into false if html widget is not defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
-    //     const spySetShouldShowWidget = jest.spyOn(onramp_store, 'setShouldShowWidget');
-    //     onramp_store.setSelectedProvider(changelly_provider);
-    //     changelly_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('');
-    //     onramp_store.onMountOnramp();
-    //     onramp_store.setShouldShowWidget(true);
+    it('should set should_show_widget into false if html widget is not defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
+        const spySetShouldShowWidget = jest.spyOn(onramp_store, 'setShouldShowWidget');
+        onramp_store.setSelectedProvider(changelly_provider);
+        changelly_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('');
+        onramp_store.onMountOnramp();
+        onramp_store.setShouldShowWidget(true);
 
-    //     await waitFor(() => {
-    //         expect(spySetShouldShowWidget).toHaveBeenCalledWith(false);
-    //     });
-    // });
+        await waitFor(() => {
+            expect(spySetShouldShowWidget).toHaveBeenCalledWith(false);
+        });
+    });
 
-    // it('should set widget error if there is an error when requesting widget when disposeGetWidgetHtmlReaction reaction is running', async () => {
-    //     const spySetWidgetError = jest.spyOn(onramp_store, 'setWidgetError');
-    //     onramp_store.setSelectedProvider(changelly_provider);
-    //     changelly_provider.getWidgetHtml = jest.fn().mockRejectedValueOnce('Request error');
-    //     onramp_store.onMountOnramp();
-    //     onramp_store.setShouldShowWidget(true);
+    it('should set widget error if there is an error when requesting widget when disposeGetWidgetHtmlReaction reaction is running', async () => {
+        const spySetWidgetError = jest.spyOn(onramp_store, 'setWidgetError');
+        onramp_store.setSelectedProvider(changelly_provider);
+        changelly_provider.getWidgetHtml = jest.fn().mockRejectedValueOnce('Request error');
+        onramp_store.onMountOnramp();
+        onramp_store.setShouldShowWidget(true);
 
-    //     await waitFor(() => {
-    //         expect(spySetWidgetError).toHaveBeenCalledWith('Request error');
-    //     });
-    // });
+        await waitFor(() => {
+            expect(spySetWidgetError).toHaveBeenCalledWith('Request error');
+        });
+    });
 
     it('should not call setIsRequestingWidgetHtml method if is_requesting_widget_html already equal to true when disposeGetWidgetHtmlReaction reaction is running', () => {
         const spySetIsRequestingWidgetHtml = jest.spyOn(onramp_store, 'setIsRequestingWidgetHtml');
@@ -261,12 +262,6 @@ describe('OnRampStore', () => {
         onramp_store.setApiError('API error');
 
         expect(onramp_store.api_error).toBe('API error');
-    });
-
-    it('should set copy icon ref', () => {
-        onramp_store.setCopyIconRef('icon ref');
-
-        expect(onramp_store.copy_icon_ref).toBe('icon ref');
     });
 
     it('should set deposit address', () => {

@@ -22,7 +22,7 @@ export default class CashierStore {
         this.error = new ErrorStore();
         this.general_store = new GeneralStore({ root_store, WS });
         this.iframe = new IframeStore(root_store);
-        this.onramp = new OnRampStore({ root_store, WS });
+        this.onramp = new OnRampStore(WS, root_store);
         this.payment_agent = new PaymentAgentStore({ root_store, WS });
         this.payment_agent_transfer = new PaymentAgentTransferStore({ root_store, WS });
         this.transaction_history = new TransactionHistoryStore({ root_store, WS });

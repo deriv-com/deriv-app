@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
+import OnRampStore from '../stores/on-ramp-store';
 
-const createBanxaProvider = store => ({
+const createBanxaProvider = (store: OnRampStore) => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
     getDescription: () =>
@@ -44,16 +45,16 @@ const createBanxaProvider = store => ({
                     }
 
                     // Resolving empty will/should redirect user.
-                    resolve();
+                    resolve('');
                 }
             });
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = store => ({
+const createChangellyProvider = (store: OnRampStore) => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -80,17 +81,17 @@ const createChangellyProvider = store => ({
                 url.searchParams.append('toDefault', to_currency);
             }
 
-            url.searchParams.append('amount', 1);
+            url.searchParams.append('amount', '1');
             url.searchParams.append('merchant_id', 'iiq3jdt2p44yrfbx');
             window.open(url);
-            resolve();
+            resolve('');
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: true,
 });
 
-const createXanPoolProvider = store => ({
+const createXanPoolProvider = (store: OnRampStore) => ({
     icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
     name: 'XanPool',
     getDescription: () =>
@@ -125,10 +126,10 @@ const createXanPoolProvider = store => ({
             url += `&transactionType=buy`;
 
             window.open(url);
-            resolve();
+            resolve('');
         });
     },
-    onMountWidgetContainer: () => {},
+    onMountWidgetContainer: () => undefined,
     should_show_deposit_address: false,
 });
 

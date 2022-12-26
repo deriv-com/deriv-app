@@ -4,7 +4,7 @@ import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } fro
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { TOnRampProvider, TRootStore, TUiStore } from 'Types';
 
 type TOnRampProviderPopupProps = {
     api_error: string;
@@ -14,7 +14,7 @@ type TOnRampProviderPopupProps = {
     is_requesting_widget_html: boolean;
     onClickDisclaimerContinue: () => void;
     onClickGoToDepositPage: () => void;
-    selected_provider: TProviderDetails;
+    selected_provider: TOnRampProvider;
     setIsOnRampModalOpen: (boolean: boolean) => void;
     should_show_dialog: boolean;
     should_show_widget: boolean;
@@ -51,6 +51,7 @@ const OnRampProviderPopup = ({
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // JS executed after "on-ramp__widget-container" has been added to the DOM.

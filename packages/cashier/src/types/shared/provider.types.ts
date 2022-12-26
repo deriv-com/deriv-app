@@ -1,6 +1,6 @@
 import { MutableRefObject } from 'react';
 
-export type TProviderDetails = {
+export type TOnRampProvider = {
     icon: {
         dark: string;
         light: string;
@@ -12,11 +12,11 @@ export type TProviderDetails = {
         dark: string;
         light: string;
     }[];
-    getScriptDependencies: () => any[];
-    getDefaultFromCurrency: () => string;
-    getFromCurrencies: () => string;
-    getToCurrencies: () => string;
-    getWidgetHtml: () => Promise<void>;
-    onMountWidgetContainer: (ref?: MutableRefObject<any>) => void;
+    getScriptDependencies: () => string[];
+    getDefaultFromCurrency?: () => string;
+    getFromCurrencies?: () => string[];
+    getToCurrencies: () => string[];
+    getWidgetHtml: () => Promise<unknown>;
+    onMountWidgetContainer: (ref?: MutableRefObject<unknown>) => void;
     should_show_deposit_address: boolean;
 };

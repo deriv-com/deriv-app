@@ -9,10 +9,16 @@ import 'Sass/app/modules/acuity-download.scss';
 type TAcuityDownloadModal = {
     is_acuity_modal_open: boolean;
     is_eu: boolean;
+    current_language: string;
     setIsAcuityModalOpen: (value: boolean) => void;
 };
 
-const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen }: TAcuityDownloadModal) => {
+const AcuityDownloadModal = ({
+    is_acuity_modal_open,
+    is_eu,
+    current_language,
+    setIsAcuityModalOpen,
+}: TAcuityDownloadModal) => {
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
@@ -22,6 +28,23 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
             'noopener,noreferrer'
         );
         closeModal();
+    };
+
+    const openGuide = () => {
+        window.open(getLink(current_language), '_blank');
+        closeModal();
+    };
+
+    const getLink = (language: string): string => {
+        if (language === 'PT') {
+            return getUrlBase('/public/pdf/Acuity_tool_user_guide_Portuguese.pdf');
+        } else if (language === 'ES') {
+            return getUrlBase('/public/pdf/Acuity_tool_user_guide_Spanish.pdf');
+        }
+        if (is_eu) {
+            return getUrlBase('/public/pdf/Acuity_tool_user_guide_EU.pdf');
+        }
+        return getUrlBase('/public/pdf/Acuity_tool_user_guide_ROW.pdf');
     };
 
     return (
@@ -43,10 +66,29 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
                 <div className='acuity-download-modal__body--description'>
                     <Text as='p' line_height='m' align='center'>
                         <Localize
-                            i18n_default_text="We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
+                            i18n_default_text={`We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
                     Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>
-                    This suite is only available for Windows, and is most recommended for financial assets."
+                    This suite is only available for Windows, and is most recommended for financial assets.`}
                             components={[<br key={0} />, <Text key={1} weight='bold' />]}
+                        />
+                    </Text>
+                </div>
+                <div className='acuity-download-modal__body--guide'>
+                    <Text as='p' line_height='m' align='center'>
+                        <Localize
+                            i18n_default_text='<1>Need help using Acuity?</1><0/>Check out this <2>user guide</2>.'
+                            components={[
+                                <br key={0} />,
+                                <Text key={1} weight='bold' />,
+                                <Text
+                                    key={2}
+                                    className='acuity-download-modal__body--guide__link'
+                                    as='a'
+                                    color='red'
+                                    weight='bold'
+                                    onClick={openGuide}
+                                />,
+                            ]}
                         />
                     </Text>
                 </div>
@@ -64,8 +106,9 @@ const AcuityDownloadModal = ({ is_acuity_modal_open, is_eu, setIsAcuityModalOpen
     );
 };
 
-export default connect(({ client, ui }: RootStore) => ({
+export default connect(({ client, ui, common }: RootStore) => ({
     is_acuity_modal_open: ui.is_acuity_modal_open,
     is_eu: client.is_eu,
+    current_language: common.current_language,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
 }))(AcuityDownloadModal);

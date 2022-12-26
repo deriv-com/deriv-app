@@ -6,8 +6,8 @@ import { Text, ButtonToggle, Icon } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
-import StaticPlatformLauncher from './static-platform-launcher';
-import StaticAppLauncher from './static-applauncher';
+import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
+import BalanceText from 'Components/elements/text/balance-text';
 import StaticTradingAppCard from './static-trading-app-card';
 
 import './static-dashboard.scss';
@@ -46,6 +46,7 @@ type TStaticDashboard = {
     is_derivx_last_step?: boolean;
     is_financial_last_step?: boolean;
     has_applauncher_account?: boolean;
+    is_first_step?: boolean;
 };
 
 const StaticDashboard = ({
@@ -59,6 +60,7 @@ const StaticDashboard = ({
     is_derivx_last_step,
     is_financial_last_step,
     is_grey,
+    is_first_step,
     is_last_step,
     is_onboarding_animated,
     loginid,
@@ -95,86 +97,117 @@ const StaticDashboard = ({
         <div className='static-dashboard'>
             {(isDesktop() || (isMobile() && index === 1)) && (
                 <div className='static-dashboard-wrapper__bordered--with-margin'>
-                    <div className='static-dashboard-wrapper__header'>
-                        {isMobile() ? (
-                            <ButtonToggle
-                                buttons_arr={toggle_options}
-                                className='static-dashboard-wrapper__header--toggle-account'
-                                has_rounded_button
-                                is_animated
-                                onChange={(item: { target: { text: string; value: number } }) => {
-                                    setIndex(item.target.value);
-                                }}
-                                name='Options'
-                                value={index}
-                            />
-                        ) : (
-                            <Text
-                                as='h2'
-                                weight='bold'
-                                color={is_blurry.options_text ? 'less-prominent' : 'prominent'}
-                                className={
-                                    is_onboarding_animated.text
-                                        ? 'static-dashboard-wrapper__header--animated'
-                                        : 'static-dashboard-wrapper__header--normal'
+                    <div className='static-dashboard-wrapper__header-and-description'>
+                        <div className='static-dashboard-wrapper__header'>
+                            {isMobile() ? (
+                                <React.Fragment>
+                                    {is_first_step && (
+                                        <ButtonToggle
+                                            buttons_arr={toggle_options}
+                                            className='static-dashboard-wrapper__header--toggle-account'
+                                            has_rounded_button
+                                            is_animated
+                                            onChange={(item: { target: { text: string; value: number } }) => {
+                                                setIndex(item.target.value);
+                                            }}
+                                            name='Options'
+                                            value={index}
+                                        />
+                                    )}
+                                </React.Fragment>
+                            ) : (
+                                <Text
+                                    as='h2'
+                                    weight='bold'
+                                    color={is_blurry.options_text ? 'less-prominent' : 'prominent'}
+                                    className={
+                                        is_onboarding_animated.text
+                                            ? 'static-dashboard-wrapper__header--animated'
+                                            : 'static-dashboard-wrapper__header--normal'
+                                    }
+                                >
+                                    {is_eu_title}
+                                </Text>
+                            )}
+                            <div className='static-dashboard-wrapper__description'>
+                                {isDesktop() && (
+                                    <Text
+                                        as='p'
+                                        size='xxs'
+                                        color={
+                                            is_blurry.options_text || is_blurry.options_description
+                                                ? 'less-prominent'
+                                                : 'prominent'
+                                        }
+                                    >
+                                        {is_eu_user ? (
+                                            <Localize
+                                                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        ) : (
+                                            <Localize
+                                                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                    <Text
+                                                        key={1}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        )}
+                                    </Text>
+                                )}
+                            </div>
+                        </div>
+                        {has_account && (
+                            <StaticCurrencySwitcherContainer
+                                title={
+                                    <Text size='xs' line_height='s'>
+                                        {is_eu ? localize(`EUR`) : localize(`US Dollar`)}
+                                    </Text>
                                 }
+                                icon={is_eu ? 'EUR' : 'USD'}
                             >
-                                {is_eu_title}
-                            </Text>
+                                <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={100000} size='xs' />
+                            </StaticCurrencySwitcherContainer>
                         )}
                     </div>
-                    <div className='static-dashboard-wrapper__description'>
-                        <Text
-                            as='p'
-                            size='xxs'
-                            color={
-                                is_blurry.options_text || is_blurry.options_description ? 'less-prominent' : 'prominent'
-                            }
-                        >
-                            {is_eu_user ? (
-                                <Localize
-                                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            size='xs'
-                                            color='red'
-                                            className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_blurry.options_description,
-                                            })}
-                                        />,
-                                    ]}
-                                />
-                            ) : (
-                                <Localize
-                                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            size='xs'
-                                            color='red'
-                                            className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_blurry.options_description,
-                                            })}
-                                        />,
-                                        <Text
-                                            key={1}
-                                            size='xs'
-                                            color='red'
-                                            className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                'static-dashboard-wrapper__header--underlined--blurry':
-                                                    is_blurry.options_description,
-                                            })}
-                                        />,
-                                    ]}
-                                />
-                            )}
-                        </Text>
-                    </div>
                     <div className='static-dashboard-wrapper__body'>
-                        {!has_applauncher_account ? (
+                        {!has_applauncher_account && (
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='options'
@@ -186,41 +219,6 @@ const StaticDashboard = ({
                                 is_onboarding_animated={is_onboarding_animated}
                                 is_eu_user={is_eu_user}
                             />
-                        ) : (
-                            <div
-                                className={classNames('static-dashboard-wrapper__body', {
-                                    'static-dashboard-wrapper__body--grey': is_grey,
-                                })}
-                            >
-                                {!isMobile() ? (
-                                    <React.Fragment>
-                                        {is_eu_user ? (
-                                            <StaticAppLauncher icon_type={'EUR'} is_grey is_eu_user={is_eu_user} />
-                                        ) : (
-                                            <>
-                                                <StaticAppLauncher icon_type={'USD'} is_grey is_eu_user={is_eu_user} />
-                                                <StaticAppLauncher icon_type={'Bitcoin'} is_eu_user={is_eu_user} />
-                                                <StaticAppLauncher icon_type={'Ethereum'} is_eu_user={is_eu_user} />
-                                                <StaticAppLauncher icon_type={'Litecoin'} is_eu_user={is_eu_user} />
-                                                <div className='Add-Square'>
-                                                    <Icon icon='icAppstoreAddSquare' width='36' height='36' />
-                                                </div>
-                                            </>
-                                        )}
-                                    </React.Fragment>
-                                ) : (
-                                    <div className={classNames('static-dashboard-wrapper__body--with-add')}>
-                                        {is_eu_user ? (
-                                            <StaticAppLauncher icon_type={'EUR'} is_grey is_eu_user={is_eu_user} />
-                                        ) : (
-                                            <StaticAppLauncher icon_type={'USD'} is_grey is_eu_user={is_eu_user} />
-                                        )}
-                                        <div className='Add-Square'>
-                                            <Icon icon='icAppstoreAddSquare' width='36' height='36' />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
                         )}
                     </div>
 
@@ -279,56 +277,6 @@ const StaticDashboard = ({
                                 is_item_blurry={is_blurry.platformlauncher}
                             />
                         </div>
-                        {/* <StaticPlatformLauncher
-                            is_grey={is_grey}
-                            app_icon={`DTrader`}
-                            app_title={'DTrader'}
-                            app_desc={
-                                is_eu_user ? 'Multipliers trading platform.' : 'Options & multipliers trading platform.'
-                            }
-                            is_item_blurry={is_blurry.platformlauncher}
-                            has_applauncher_account={has_applauncher_account}
-                        />
-                        {!is_eu_user && (
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`DBot`}
-                                app_title={'DBot'}
-                                app_desc={'Automate your trading, no coding needed.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                        )}
-                        {!is_eu_user && (
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`SmartTraderBlue`}
-                                app_title={'SmartTrader'}
-                                app_desc={'Our legacy options trading platform.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                        )}
-                        {!is_eu_user && (
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`BinaryBotBlue`}
-                                app_title={'Binary Bot'}
-                                app_desc={'Our legacy automated trading platform.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                        )}
-                        {!is_eu_user && (
-                            <StaticPlatformLauncher
-                                is_grey={is_grey}
-                                app_icon={`DerivGoBlack`}
-                                app_title={'Deriv Go'}
-                                app_desc={'Trade on the go with our mobile app.'}
-                                is_item_blurry={is_blurry.platformlauncher}
-                                has_applauncher_account={has_applauncher_account}
-                            />
-                        )} */}
                     </div>
                 </div>
             )}
@@ -337,17 +285,21 @@ const StaticDashboard = ({
                 <div className='static-dashboard-wrapper__bordered'>
                     <div className='static-dashboard-wrapper__header'>
                         {isMobile() ? (
-                            <ButtonToggle
-                                buttons_arr={toggle_options}
-                                className='static-dashboard-wrapper__header--toggle-account'
-                                has_rounded_button
-                                is_animated
-                                onChange={(item: { target: { text: string; value: number } }) => {
-                                    setIndex(item.target.value);
-                                }}
-                                name='CFDs'
-                                value={index}
-                            />
+                            <React.Fragment>
+                                {is_first_step && (
+                                    <ButtonToggle
+                                        buttons_arr={toggle_options}
+                                        className='static-dashboard-wrapper__header--toggle-account'
+                                        has_rounded_button
+                                        is_animated
+                                        onChange={(item: { target: { text: string; value: number } }) => {
+                                            setIndex(item.target.value);
+                                        }}
+                                        name='CFDs'
+                                        value={index}
+                                    />
+                                )}
+                            </React.Fragment>
                         ) : (
                             <Text
                                 as='h2'
@@ -378,28 +330,32 @@ const StaticDashboard = ({
                             </Text>
                         )}
                     </div>
+
                     <div className='static-dashboard-wrapper__description'>
-                        <Text
-                            as='p'
-                            size='xxs'
-                            color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
-                        >
-                            <Localize
-                                i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
-                                components={[
-                                    <Text
-                                        key={0}
-                                        color={'red'}
-                                        size='xxs'
-                                        weight='bold'
-                                        className={classNames('static-dashboard-wrapper__header--underlined', {
-                                            'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                is_blurry.cfd_description || is_blurry.cfd_text,
-                                        })}
-                                    />,
-                                ]}
-                            />
-                        </Text>
+                        {isDesktop() && (
+                            <Text
+                                as='p'
+                                size='xxs'
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                            >
+                                <Localize
+                                    i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            color={'red'}
+                                            size='xxs'
+                                            weight='bold'
+                                            className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                                    is_blurry.cfd_description || is_blurry.cfd_text,
+                                            })}
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                        )}
+
                         {isMobile() && (
                             <Text
                                 color={'red'}

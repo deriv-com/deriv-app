@@ -14,6 +14,10 @@
         border: 2rem solid var(--general-section-1);
         padding: 3rem;
 
+        &__header-and-description {
+            display: flex;
+        }
+
         &__bordered {
             border: 1px solid var(--general-hover);
             padding: 2.4rem;
@@ -33,14 +37,15 @@
         }
 
         &__description {
-            margin-left: 1.2rem;
             margin-bottom: 1rem;
         }
 
         &__header {
             display: flex;
+            flex-direction: column;
             padding-left: 1rem;
             padding-top: 1rem;
+            width: 70%;
 
             @include mobile {
                 padding-left: 0;
@@ -127,6 +132,7 @@
                 }
 
                 @include mobile {
+                    display: flex;
                     flex-direction: column;
                     margin-bottom: 0;
                 }

@@ -3,6 +3,10 @@
     align-items: center;
     height: 8.8rem;
 
+    &--blurry {
+        opacity: 0.2;
+    }
+
     &__details {
         display: flex;
         justify-content: center;

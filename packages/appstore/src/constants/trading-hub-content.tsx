@@ -40,6 +40,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     button: false,
                     get: false,
                 }}
+                is_first_step
             />
         ),
         footer_header: localize('Welcome to Trading Hub'),

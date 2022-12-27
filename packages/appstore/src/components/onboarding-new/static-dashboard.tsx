@@ -448,17 +448,25 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        <Divider />
-                        <div className='static-dashboard-wrapper__body--header'>
-                            <Text
-                                as='h2'
-                                weight='bold'
-                                size='xs'
-                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
-                            >
-                                {localize('Other CFDs')}
-                            </Text>
-                        </div>
+                        {!is_eu_user && (
+                            <React.Fragment>
+                                <Divider />
+                                <div className='static-dashboard-wrapper__body--header'>
+                                    <Text
+                                        as='h2'
+                                        weight='bold'
+                                        size='xs'
+                                        color={
+                                            is_blurry.cfd_text || is_blurry.cfd_description
+                                                ? 'less-prominent'
+                                                : 'prominent'
+                                        }
+                                    >
+                                        {localize('Other CFDs')}
+                                    </Text>
+                                </div>
+                            </React.Fragment>
+                        )}
                         {!is_eu_user && (
                             <StaticCFDAccountManager
                                 type='all'

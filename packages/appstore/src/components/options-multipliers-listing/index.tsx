@@ -76,7 +76,7 @@ const OptionsAndMultipliersListing = () => {
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
-                        has_divider={index < 3}
+                        has_divider={!is_eu && index < 3}
                     />
                 ))
             ) : (

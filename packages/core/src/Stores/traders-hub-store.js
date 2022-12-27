@@ -99,10 +99,12 @@ export default class TradersHubStore extends BaseStore {
         this.selected_account_type = 'demo';
 
         reaction(
-            () => [this.selected_account_type, this.selected_region],
+            () => [this.selected_account_type, this.selected_region, this.root_store.client.is_eu],
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
+                this.getAvailableDxtradeAccounts();
+                this.getAvailableMt5Accounts();
             }
         );
 

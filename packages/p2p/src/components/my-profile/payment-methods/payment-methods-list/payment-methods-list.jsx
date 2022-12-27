@@ -58,17 +58,30 @@ const PaymentMethodsList = () => {
                                         <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
                                             {`${payment_methods_list_method.display_name}s`}
                                         </Text>
-
                                         <div className='payment-methods-list__list-body'>
                                             {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        large={true}
-                                                        payment_method={each_payment_method}
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
+                                                (each_payment_method, each_payment_method_key) => {
+                                                    const is_available = Object.values(
+                                                        my_profile_store.available_payment_methods
+                                                    ).some(available_method => {
+                                                        return (
+                                                            available_method.display_name ===
+                                                            each_payment_method.display_name
+                                                        );
+                                                    });
+
+                                                    return (
+                                                        <PaymentMethodCard
+                                                            key={each_payment_method_key}
+                                                            disabled={!is_available}
+                                                            is_vertical_ellipsis_visible={is_available}
+                                                            large={true}
+                                                            payment_method={each_payment_method}
+                                                            show_payment_method_name={false}
+                                                            show_popover={!is_available}
+                                                        />
+                                                    );
+                                                }
                                             )}
                                         </div>
                                     </React.Fragment>
@@ -121,14 +134,28 @@ const PaymentMethodsList = () => {
                                             is_scrollbar_hidden
                                         >
                                             {payment_methods_list.map(
-                                                (each_payment_method, each_payment_method_key) => (
-                                                    <PaymentMethodCard
-                                                        key={each_payment_method_key}
-                                                        payment_method={each_payment_method}
-                                                        small
-                                                        show_payment_method_name={false}
-                                                    />
-                                                )
+                                                (each_payment_method, each_payment_method_key) => {
+                                                    const is_available = Object.values(
+                                                        my_profile_store.available_payment_methods
+                                                    ).some(available_method => {
+                                                        return (
+                                                            available_method.display_name ===
+                                                            each_payment_method.display_name
+                                                        );
+                                                    });
+
+                                                    return (
+                                                        <PaymentMethodCard
+                                                            key={each_payment_method_key}
+                                                            disabled={!is_available}
+                                                            is_vertical_ellipsis_visible={is_available}
+                                                            small
+                                                            payment_method={each_payment_method}
+                                                            show_payment_method_name={false}
+                                                            show_popover={!is_available}
+                                                        />
+                                                    );
+                                                }
                                             )}
                                         </ThemedScrollbars>
                                     </React.Fragment>

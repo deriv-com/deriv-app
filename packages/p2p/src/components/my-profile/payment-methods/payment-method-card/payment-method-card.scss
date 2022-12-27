@@ -106,6 +106,18 @@
         }
     }
 
+    &__container {
+        &--disabled {
+            opacity: 0.32;
+        }
+    }
+
+    &__popover {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .suffix-icon {
         left: auto;
         right: 0;

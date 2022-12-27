@@ -272,12 +272,7 @@ const BuySellForm = props => {
                                             </Text>
                                             <Observer>
                                                 {() => (
-                                                    <div
-                                                        className={classNames('buy-sell__modal--sell-payment-methods', {
-                                                            'buy-sell__modal--sell-payment-methods--disable':
-                                                                should_disable_field,
-                                                        })}
-                                                    >
+                                                    <div className='buy-sell__modal--sell-payment-methods'>
                                                         {payment_method_names
                                                             ?.map((add_payment_method, key) => {
                                                                 const {

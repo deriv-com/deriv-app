@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
@@ -17,6 +17,7 @@ const PaymentMethodCard = ({
     onClickAdd = () => {},
     payment_method,
     show_payment_method_name = true,
+    show_popover = false,
     small,
     style,
 }) => {
@@ -67,38 +68,53 @@ const PaymentMethodCard = ({
             onClick={onClick}
             style={style}
         >
-            <div className='payment-method-card__header'>
-                <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
-                {is_vertical_ellipsis_visible && (
-                    <Dropdown
-                        list={[
-                            {
-                                text: localize('Edit'),
-                                value: 'edit',
-                            },
-                            {
-                                text: localize('Delete'),
-                                value: 'delete',
-                            },
-                        ]}
-                        onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
-                        suffix_icon='IcCashierVerticalEllipsis'
-                        is_align_text_left
-                    />
-                )}
-            </div>
-            <div className='payment-method-card__body'>
-                <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {!['BankTransfer', 'Other'].includes(method)
-                        ? payment_account_name
-                        : show_payment_method_name && payment_method?.display_name}
-                </Text>
-                <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {payment_bank_name || payment_name}
-                </Text>
-                <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {payment_account}
-                </Text>
+            <div
+                className={classNames('payment-method-card__container', {
+                    'payment-method-card__container--disabled': disabled,
+                })}
+            >
+                <div className='payment-method-card__header'>
+                    <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
+                    {is_vertical_ellipsis_visible && (
+                        <Dropdown
+                            list={[
+                                {
+                                    text: localize('Edit'),
+                                    value: 'edit',
+                                },
+                                {
+                                    text: localize('Delete'),
+                                    value: 'delete',
+                                },
+                            ]}
+                            onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
+                            suffix_icon='IcCashierVerticalEllipsis'
+                            is_align_text_left
+                        />
+                    )}
+                    {show_popover && (
+                        <Popover
+                            alignment='top'
+                            className='payment-method-card__popover'
+                            message={`${payment_bank_name || payment_account_name} is not available at the moment.`}
+                        >
+                            <Icon icon='IcInfoOutline' size={18} />
+                        </Popover>
+                    )}
+                </div>
+                <div className='payment-method-card__body'>
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {!['BankTransfer', 'Other'].includes(method)
+                            ? payment_account_name
+                            : show_payment_method_name && payment_method?.display_name}
+                    </Text>
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {payment_bank_name || payment_name}
+                    </Text>
+                    <Text color='prominent' size={large ? 'xs' : 'xxs'}>
+                        {payment_account}
+                    </Text>
+                </div>
             </div>
         </div>
     );
@@ -116,6 +132,7 @@ PaymentMethodCard.propTypes = {
     onClickAdd: PropTypes.func,
     payment_method: PropTypes.object,
     show_payment_method_name: PropTypes.bool,
+    show_popover: PropTypes.bool,
     small: PropTypes.bool,
     style: PropTypes.object,
 };

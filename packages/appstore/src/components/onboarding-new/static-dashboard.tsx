@@ -77,18 +77,18 @@ const StaticDashboard = ({
 
     const Divider = () => <div className='divider' />;
 
-    // React.useEffect(() => {
-    //     const change_index_interval_id = setInterval(() => {
-    //         if (index === 0) {
-    //             setIndex(1);
-    //         } else {
-    //             setIndex(0);
-    //         }
-    //     }, 5000);
+    React.useEffect(() => {
+        const change_index_interval_id = setInterval(() => {
+            if (index === 0) {
+                setIndex(1);
+            } else {
+                setIndex(0);
+            }
+        }, 5000);
 
-    //     return () => clearInterval(change_index_interval_id);
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [index]);
+        return () => clearInterval(change_index_interval_id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
     const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Deriv account';

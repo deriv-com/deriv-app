@@ -96,7 +96,9 @@ const PaymentMethodCard = ({
                         <Popover
                             alignment='top'
                             className='payment-method-card__popover'
-                            message={`${payment_bank_name || payment_account_name} is not available at the moment.`}
+                            message={localize('{{payment_method}} is not available at the moment.', {
+                                payment_method: payment_bank_name || payment_account_name,
+                            })}
                         >
                             <Icon icon='IcInfoOutline' size={18} />
                         </Popover>

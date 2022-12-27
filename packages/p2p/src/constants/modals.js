@@ -55,4 +55,9 @@ export const modals = {
             /* webpackChunkName: "order-details-cancel-modal" */ 'Components/modal-manager/modals/order-details-cancel-modal'
         )
     ),
+    OrderDetailsConfirmModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'
+        )
+    ),
 };

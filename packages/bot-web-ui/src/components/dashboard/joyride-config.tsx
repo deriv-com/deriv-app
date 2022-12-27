@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
@@ -290,7 +290,7 @@ const Step2 = () => (
 
 const Step3 = () => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
+        <div className='joyride-content__left joyride-content__left__step-three'>
             <Localize i18n_default_text='Step 3 :' />
         </div>
         <div className='joyride-content__left'>
@@ -328,11 +328,16 @@ const Step4 = () => (
                     />
                 </li>
             </ul>
-            <div className='joyride-content__left'>
-                <Localize
-                    i18n_default_text='Pro tip: You can also drag out the desired block'
-                    components={[<strong key={0} />]}
-                />
+            <div className='joyride-content__left joyride-content__with-icon'>
+                <div className='joyride-content__with-icon__left'>
+                    <Icon icon='IcCheckmarkCircle' className='db-contract-card__result-icon' color='green' />
+                </div>
+                <div className='joyride-content__with-icon__right'>
+                    <Localize
+                        i18n_default_text='Pro tip: You can also drag out the desired block'
+                        components={[<strong key={0} />]}
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -404,6 +409,7 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
         content: <Step1A />,
+        placement: 'bottom',
         ...joyride_props,
     },
     {

@@ -24,6 +24,7 @@
 
         @include mobile {
             height: var(--tab-content-height-mobile);
+
             .smartcharts {
                 height: calc(100% - 4rem);
             }
@@ -90,6 +91,7 @@
         @include desktop {
             position: absolute;
         }
+
         right: 1.6rem;
         top: 1.6rem;
         z-index: 2;
@@ -203,6 +205,41 @@
                     height: 4.4rem;
                 }
             }
+        }
+    }
+}
+
+.joyride-content {
+    &__left {
+        text-align: left;
+        &__step-three {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &__sub-title {
+        margin-top: 1rem;
+    }
+
+    ul {
+        list-style: disc;
+        margin-left: 4rem;
+        margin-top: 1rem;
+
+        li {
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__with-icon {
+        display: flex;
+
+        &__right {
+            margin-left: 0.8rem;
+        }
+
+        &__left {
+            margin: 0.3rem 0 0 1.2rem;
         }
     }
 }

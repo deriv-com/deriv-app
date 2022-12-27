@@ -16,20 +16,20 @@ const OptionsAndMultipliersListing = () => {
     const { is_eu, is_landing_company_loaded } = client;
 
     const OptionsTitle = () => {
-        if (!is_eu_selected && !is_eu) {
+        if (!is_eu_selected && !is_eu && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if (isMobile()) {
-            return null;
+        } else if ((is_eu_selected || is_eu) && !isMobile()) {
+            return (
+                <Text size='sm' line_height='m' weight='bold'>
+                    <Localize i18n_default_text='Multipliers' />
+                </Text>
+            );
         }
-        return (
-            <Text size='sm' line_height='m' weight='bold'>
-                <Localize i18n_default_text='Multipliers' />
-            </Text>
-        );
+        return null;
     };
 
     return (
@@ -76,7 +76,7 @@ const OptionsAndMultipliersListing = () => {
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
-                        has_divider={!is_eu && index < 3}
+                        has_divider={(!is_eu || !is_eu_selected) && isMobile() ? index < 4 : index < 3}
                     />
                 ))
             ) : (

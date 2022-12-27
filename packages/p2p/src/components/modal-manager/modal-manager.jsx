@@ -5,7 +5,7 @@ import { useModalManagerContext } from './modal-manager-context';
 const ModalManager = () => {
     const { modal, modal_props, stacked_modal } = useModalManagerContext();
 
-    const { key, props } = modal;
+    const { key } = modal;
     const Modal = modals[key];
     const StackedModal = modals[stacked_modal?.key];
     const getModalProps = current_modal => {

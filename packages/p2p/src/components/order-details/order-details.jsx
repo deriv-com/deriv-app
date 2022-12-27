@@ -23,11 +23,11 @@ import LoadingModal from '../loading-modal';
 import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
-    const { hideModal, registerModalProps, showModal } = useModalManagerContext();
+    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
         account_currency,
@@ -87,29 +87,6 @@ const OrderDetails = observer(() => {
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
-        registerModalProps({
-            key: 'RatingModal',
-            props: {
-                is_buy_order_for_user,
-                is_user_recommended_previously: is_recommended_by_user,
-                onClickClearRecommendation: () => order_store.setIsRecommended(null),
-                onClickDone: () => {
-                    order_store.setOrderRating(id);
-                    general_store.props.removeNotificationMessage({
-                        key: `order-${id}`,
-                    });
-                    general_store.props.removeNotificationByKey({
-                        key: `order-${id}`,
-                    });
-                },
-                onClickNotRecommended: () => order_store.setIsRecommended(0),
-                onClickRecommended: () => order_store.setIsRecommended(1),
-                onClickSkip: () => {
-                    order_store.setRatingValue(0);
-                    hideModal();
-                },
-            },
-        });
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -138,6 +115,27 @@ const OrderDetails = observer(() => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [completion_time]);
+
+    useRegisterModalProps({
+        key: 'RatingModal',
+        props: {
+            is_buy_order_for_user,
+            is_user_recommended_previously: is_recommended_by_user,
+            onClickDone: () => {
+                order_store.setOrderRating(id);
+                general_store.props.removeNotificationMessage({
+                    key: `order-${id}`,
+                });
+                general_store.props.removeNotificationByKey({
+                    key: `order-${id}`,
+                });
+            },
+            onClickSkip: () => {
+                order_store.setRatingValue(0);
+                hideModal();
+            },
+        },
+    });
 
     if (sendbird_store.should_show_chat_on_orders) {
         return <Chat />;

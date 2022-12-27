@@ -10,7 +10,7 @@ import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/compone
 import { formatMoney } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -87,7 +87,6 @@ const OrderRow = ({ row: order }) => {
             props: {
                 is_buy_order_for_user,
                 is_user_recommended_previously,
-                onClickClearRecommendation: () => order_store.setIsRecommended(null),
                 onClickDone: () => {
                     order_store.setOrderRating(id);
                     hideModal();
@@ -96,8 +95,6 @@ const OrderRow = ({ row: order }) => {
                     general_store.props.removeNotificationMessage({ key: `order-${id}` });
                     general_store.props.removeNotificationByKey({ key: `order-${id}` });
                 },
-                onClickNotRecommended: () => order_store.setIsRecommended(0),
-                onClickRecommended: () => order_store.setIsRecommended(1),
                 onClickSkip: () => {
                     order_store.setRatingValue(0);
                     hideModal();

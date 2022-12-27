@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const RecommendedBy = ({ recommended_average, recommended_count }) => {
     const { showModal } = useModalManagerContext();

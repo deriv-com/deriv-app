@@ -1,4 +1,4 @@
 import ModalManagerContextProvider from './modal-manager-context-provider';
-import { useModalManagerContext } from './modal-manager-context';
+import ModalManager from './modal-manager';
 
 export { ModalManagerContextProvider, ModalManager };

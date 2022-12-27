@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const RecommendedModal = ({ message }) => {
     const { hideModal, is_modal_open } = useModalManagerContext();

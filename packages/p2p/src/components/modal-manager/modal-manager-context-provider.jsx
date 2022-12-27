@@ -1,7 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
 import { ModalManagerContext } from './modal-manager-context';
-import { useStores } from 'Stores';
 import { isDesktop } from '@deriv/shared';
 
 const ModalManagerContextProvider = props => {
@@ -13,12 +12,16 @@ const ModalManagerContextProvider = props => {
     const [modal_props, setModalProps] = React.useState(new Map());
     const { general_store } = useStores();
 
-    const registerModalProps = modals => {
-        if (Array.isArray(modals)) {
-            modals.forEach(modal => setModalProps(modal_props.set(modal.key, modal.props)));
-        } else {
-            setModalProps(modal_props.set(modals.key, modals.props));
-        }
+    const useRegisterModalProps = modals => {
+        const registerModals = React.useCallback(() => {
+            if (Array.isArray(modals)) {
+                modals.forEach(modal => setModalProps(modal_props.set(modal.key, modal.props)));
+            } else {
+                setModalProps(modal_props.set(modals.key, modals.props));
+            }
+        }, [modals]);
+
+        React.useEffect(registerModals, [modals]);
     };
 
     const showModal = modal => {
@@ -64,7 +67,7 @@ const ModalManagerContextProvider = props => {
         is_modal_open,
         modal: active_modal,
         modal_props,
-        registerModalProps,
+        useRegisterModalProps,
         stacked_modal,
         showModal,
     };

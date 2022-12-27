@@ -7,19 +7,15 @@ import StarRating from 'Components/star-rating';
 import RecommendUser from 'Components/recommend-user';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
-import { useModalManagerContext } from 'Components/modal-manager';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const RatingModal = ({
-    is_buy_order_for_user,
-    is_user_recommended_previously,
-    onClickClearRecommendation,
-    onClickDone,
-    onClickNotRecommended,
-    onClickRecommended,
-    onClickSkip,
-}) => {
+const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, onClickDone, onClickSkip }) => {
     const { order_store } = useStores();
     const { is_modal_open } = useModalManagerContext();
+
+    const onClickClearRecommendation = () => order_store.setIsRecommended(null);
+    const onClickNotRecommended = () => order_store.setIsRecommended(0);
+    const onClickRecommended = () => order_store.setIsRecommended(1);
 
     return (
         <Modal
@@ -72,10 +68,7 @@ const RatingModal = ({
 RatingModal.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
     is_user_recommended_previously: PropTypes.number,
-    onClickClearRecommendation: PropTypes.func,
     onClickDone: PropTypes.func,
-    onClickNotRecommended: PropTypes.func,
-    onClickRecommended: PropTypes.func,
     onClickSkip: PropTypes.func,
     onClickStar: PropTypes.func,
 };

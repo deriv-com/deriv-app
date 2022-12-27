@@ -28,6 +28,7 @@ const ModalManagerContextProvider = props => {
                 general_store.saveFormState();
             } else {
                 general_store.setSavedFormState(null);
+                general_store.setFormikRef(null);
             }
 
             if (previous_modal) {

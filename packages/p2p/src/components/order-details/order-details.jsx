@@ -5,7 +5,6 @@ import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
-import EmailVerificationModal from 'Components/email-verification-modal';
 import RatingModal from 'Components/rating-modal';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -161,12 +160,6 @@ const OrderDetails = observer(() => {
             )}
             {!is_buy_order_for_user && (
                 <React.Fragment>
-                    <EmailVerificationModal
-                        email_address={order_store.user_email_address}
-                        is_email_verification_modal_open={order_store.is_email_verification_modal_open}
-                        onClickResendEmailButton={() => order_store.confirmOrderRequest(id)}
-                        setIsEmailVerificationModalOpen={order_store.setIsEmailVerificationModalOpen}
-                    />
                     <InvalidVerificationLinkModal
                         invalid_verification_link_error_message={order_store.verification_link_error_message}
                         is_invalid_verification_link_modal_open={order_store.is_invalid_verification_link_modal_open}

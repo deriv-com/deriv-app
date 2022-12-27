@@ -36,7 +36,6 @@ export default class MyAdsStore extends BaseStore {
     selected_ad_id = '';
     selected_advert = null;
     should_show_add_payment_method = false;
-    should_show_add_payment_method_modal = false;
     show_edit_ad_form = false;
     update_payment_methods_error_message = '';
     required_ad_type;
@@ -75,7 +74,6 @@ export default class MyAdsStore extends BaseStore {
             selected_ad_id: observable,
             selected_advert: observable,
             should_show_add_payment_method: observable,
-            should_show_add_payment_method_modal: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
             update_payment_methods_error_message: observable,
@@ -125,7 +123,6 @@ export default class MyAdsStore extends BaseStore {
             setSelectedAdId: action.bound,
             setSelectedAdvert: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
-            setShouldShowAddPaymentMethodModal: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
             onToggleSwitchModal: action.bound,
@@ -576,10 +573,6 @@ export default class MyAdsStore extends BaseStore {
 
     setShouldShowAddPaymentMethod(should_show_add_payment_method) {
         this.should_show_add_payment_method = should_show_add_payment_method;
-    }
-
-    setShouldShowAddPaymentMethodModal(should_show_add_payment_method_modal) {
-        this.should_show_add_payment_method_modal = should_show_add_payment_method_modal;
     }
 
     setShowAdForm(show_ad_form) {

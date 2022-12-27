@@ -1,6 +1,6 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 // const HtmlWebPackPlugin = require('html-webpack-plugin');
 // const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
@@ -14,7 +14,7 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const {
-    copyConfig,
+    // copyConfig,
     cssConfig,
     // htmlInjectConfig,
     // htmlOutputConfig,
@@ -46,8 +46,8 @@ const ALIASES = {
     Utils: path.resolve(__dirname, '../src/Utils'),
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => [
-    ...(is_test_env && !is_mocha_only
+const rules = (is_test_env = false) => [
+    ...(is_test_env
         ? [
               {
                   test: /\.(js|jsx)$/,
@@ -124,7 +124,7 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
+const plugins = (base, is_test_env) => [
     new CleanWebpackPlugin(),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
@@ -140,7 +140,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
                   filter: file => file.name !== 'CNAME',
               }),
           ]),
-    ...(is_test_env && !is_mocha_only
+    ...(is_test_env
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),

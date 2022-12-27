@@ -266,7 +266,6 @@ const RealAccountSignup = ({
             ) {
                 return 'auto';
             }
-            return '644px'; // Add or manage account modal
         }
         return '740px'; // Account wizard modal
     };

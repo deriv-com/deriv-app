@@ -49,6 +49,7 @@ const TradingHubFooter = ({
     settings_extension,
     setDarkMode,
     is_dark_mode,
+    is_pre_appstore,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -108,6 +109,7 @@ const TradingHubFooter = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         settings_extension={settings_extension}
+                        is_pre_appstore={is_pre_appstore}
                     />
                 )}
                 <ToggleFullScreen />
@@ -132,6 +134,7 @@ TradingHubFooter.propTypes = {
     footer_extensions: PropTypes.array,
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export default withRouter(
@@ -151,5 +154,6 @@ export default withRouter(
         toggleSettingsModal: ui.toggleSettingsModal,
         is_dark_mode: ui.is_dark_mode_on,
         setDarkMode: ui.setDarkMode,
+        is_pre_appstore: client.is_pre_appstore,
     }))(TradingHubFooter)
 );

@@ -400,6 +400,7 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 this.is_pre_appstore = !!trading_hub;
+                localStorage.setItem('is_pre_appstore', !!trading_hub);
             }
         );
 
@@ -2034,8 +2035,9 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             const redirect_url = sessionStorage.getItem('redirect_url');
+            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (
-                this.is_pre_appstore &&
+                local_pre_appstore === 'true' &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
@@ -2518,6 +2520,7 @@ export default class ClientStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 this.account_settings = { ...this.account_settings, trading_hub };
+                localStorage.setItem('is_pre_appstore', is_pre_appstore);
             }
         });
     }

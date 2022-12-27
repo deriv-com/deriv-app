@@ -1,21 +1,53 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
+import { Button, Text } from '@deriv/components';
+import { formatMoney, getCurrencyName } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
+import BalanceText from 'Components/elements/text/balance-text';
+import StatusBadge from './switcher-status-badge';
+import './real-account-switcher.scss';
 
 const AccountNeedsVerification = () => {
-    return <div>Account Needs Verification</div>;
+    return (
+        <CurrencySwitcherContainer
+            className='demo-account-card'
+            title={
+                <Text size='xs' line_height='s'>
+                    {localize('Needs Verification')}
+                </Text>
+            }
+            icon='VIRTUAL'
+        >
+            <StatusBadge />
+        </CurrencySwitcherContainer>
+    );
 };
 
-const AccountPendingVerification = () => {
-    return <div>Account Pending Verification</div>;
-};
+const RealAccountCard = observer(() => {
+    const { client, traders_hub } = useStores();
+    const { accounts } = client;
+    const { openModal, selected_loginid } = traders_hub;
 
-const AccountVerificationFailed = () => {
-    return <div>Account Failed Verification</div>;
-};
+    const { balance, currency } = accounts[selected_loginid] ?? { balance: 0, currency: 'USD' };
 
-const RealAccountCard = () => {
-    return <div>Real Money</div>;
-};
+    return (
+        <CurrencySwitcherContainer
+            className='demo-account-card'
+            title={
+                <Text size='xs' line_height='s'>
+                    {getCurrencyName(currency)}
+                </Text>
+            }
+            icon={currency}
+            onClick={() => openModal('currency_selection')}
+            actions={<Button secondary>{localize('Deposit')}</Button>}
+        >
+            <BalanceText currency={currency} balance={formatMoney(currency, balance, true)} size='xs' />
+        </CurrencySwitcherContainer>
+    );
+});
 
 const RealAccountSwitcher = () => {
     const { client } = useStores();
@@ -24,21 +56,7 @@ const RealAccountSwitcher = () => {
         return <AccountNeedsVerification />;
     }
 
-    if (
-        client.account_status?.authentication?.document.status === 'pending' ||
-        client.account_status?.authentication?.identity.status === 'pending'
-    ) {
-        return <AccountPendingVerification />;
-    }
-
-    if (
-        client.account_status?.authentication?.document.status === 'rejected' ||
-        client.account_status?.authentication?.identity.status === 'rejected'
-    ) {
-        return <AccountVerificationFailed />;
-    }
-
     return <RealAccountCard />;
 };
 
-export default RealAccountSwitcher;
+export default observer(RealAccountSwitcher);

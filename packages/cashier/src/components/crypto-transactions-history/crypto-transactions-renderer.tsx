@@ -1,18 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import { getStatus } from 'Constants/transaction-status';
 import { TCryptoTransactionDetails } from 'Types';
-import { useStore } from '@deriv/stores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
 };
 
-const CryptoTransactionsRenderer = ({ row: crypto }: TCryptoTransactionsRendererProps) => {
+const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
     const {
         modules: {
             cashier: { transaction_history },
@@ -303,6 +302,6 @@ const CryptoTransactionsRenderer = ({ row: crypto }: TCryptoTransactionsRenderer
             </Table.Row>
         </div>
     );
-};
+});
 
-export default observer(CryptoTransactionsRenderer);
+export default CryptoTransactionsRenderer;

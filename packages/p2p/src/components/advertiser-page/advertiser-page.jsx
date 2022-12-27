@@ -5,9 +5,6 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
-import { buy_sell } from 'Constants/buy-sell';
-import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
-import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -86,7 +83,6 @@ const AdvertiserPage = () => {
                     !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
             })}
         >
-            <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
             <ErrorModal
                 error_message={general_store.block_unblock_user_error}
                 error_modal_title='Unable to block advertiser'
@@ -107,12 +103,6 @@ const AdvertiserPage = () => {
                 }
                 onCancel={advertiser_page_store.onCancel}
                 onSubmit={advertiser_page_store.onSubmit}
-            />
-            <BuySellModal
-                selected_ad={advertiser_page_store.advert}
-                should_show_popup={advertiser_page_store.show_ad_popup}
-                setShouldShowPopup={advertiser_page_store.setShowAdPopup}
-                table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
             />
             <div className='advertiser-page__page-return-header'>
                 <PageReturn

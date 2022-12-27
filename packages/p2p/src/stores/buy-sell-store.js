@@ -37,7 +37,6 @@ export default class BuySellStore extends BaseStore {
     should_use_client_limits = false;
     show_advertiser_page = false;
     show_filter_payment_methods = false;
-    show_rate_change_popup = false;
     sort_by = 'rate';
     submitForm = () => {};
     table_type = buy_sell.BUY;
@@ -81,7 +80,6 @@ export default class BuySellStore extends BaseStore {
             should_use_client_limits: observable,
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
-            show_rate_change_popup: observable,
             sort_by: observable,
             submitForm: observable,
             table_type: observable,
@@ -143,7 +141,6 @@ export default class BuySellStore extends BaseStore {
             validatePopup: action.bound,
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
-            setShowRateChangePopup: action.bound,
         });
     }
 
@@ -294,7 +291,7 @@ export default class BuySellStore extends BaseStore {
             this.setFormErrorCode(order.error.code);
         } else {
             this.form_props.setErrorMessage(null);
-            this.setShowRateChangePopup(false);
+            this.root_store.general_store.hideModal();
             this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
@@ -605,10 +602,6 @@ export default class BuySellStore extends BaseStore {
     showAdvertiserPage(selected_advert) {
         this.setSelectedAdState(selected_advert);
         this.setShowAdvertiserPage(true);
-    }
-
-    setShowRateChangePopup(show_rate_change_popup) {
-        this.show_rate_change_popup = show_rate_change_popup;
     }
 
     showVerification() {

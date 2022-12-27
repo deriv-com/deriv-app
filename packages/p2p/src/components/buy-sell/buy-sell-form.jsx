@@ -14,12 +14,14 @@ import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
+    const { showModal } = useModalManagerContext();
 
     const { setPageFooterParent } = props;
     const {
@@ -80,7 +82,11 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
+            if (rate_type === ad_type.FLOAT && floating_rate_store.is_market_rate_changed) {
+                showModal({
+                    key: 'RateChangeModal',
+                });
+            }
             buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {

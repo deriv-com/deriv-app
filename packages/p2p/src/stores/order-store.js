@@ -53,7 +53,6 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,

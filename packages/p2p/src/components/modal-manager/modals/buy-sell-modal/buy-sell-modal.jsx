@@ -59,7 +59,8 @@ BuySellModalFooter.propTypes = {
 };
 
 const BuySellModal = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } =
+        useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -71,7 +72,12 @@ const BuySellModal = () => {
         />
     );
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const { hideModal, is_modal_open, showModal } = useModalManagerContext();
+    const { hideModal, is_modal_open, modal, showModal } = useModalManagerContext();
+    const advert = buy_sell_store.selected_ad_state;
+
+    const table_type = buy_sell_store.show_advertiser_page
+        ? advertiser_page_store.counterparty_type
+        : buy_sell_store.table_type;
 
     const generateModalTitle = () => {
         if (my_profile_store.should_show_add_payment_method_form) {
@@ -97,10 +103,10 @@ const BuySellModal = () => {
             }
             return localize('Add payment method');
         }
-        if (buy_sell_store.table_type === buy_sell.BUY) {
-            return localize('Buy {{ currency }}', { currency: buy_sell_store.selected_ad_state.account_currency });
+        if (table_type === buy_sell.BUY) {
+            return localize('Buy {{ currency }}', { currency: advert.account_currency });
         }
-        return localize('Sell {{ currency }}', { currency: buy_sell_store.selected_ad_state.account_currency });
+        return localize('Sell {{ currency }}', { currency: advert.account_currency });
     };
 
     const BuySellFormError = () => (
@@ -136,7 +142,9 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
         }
         floating_rate_store.setIsMarketRateChanged(false);
-        buy_sell_store.setShowRateChangePopup(false);
+        if (modal?.key === 'RateChangeModal') {
+            hideModal();
+        }
     };
 
     const onConfirmClick = order_info => {
@@ -190,13 +198,13 @@ const BuySellModal = () => {
                         : 'buy-sell__modal-footer'
                 }
             >
-                {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                 {!!error_message && <BuySellFormError />}
                 {my_profile_store.should_show_add_payment_method_form ? (
                     <AddPaymentMethodForm should_show_separated_footer={true} />
                 ) : (
                     <Form
-                        advert={buy_sell_store.selected_ad_state}
+                        advert={advert}
                         handleClose={onCancel}
                         handleConfirm={onConfirmClick}
                         setIsSubmitDisabled={setIsSubmitDisabled}
@@ -211,7 +219,7 @@ const BuySellModal = () => {
     return (
         <Modal
             className='buy-sell__modal'
-            height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
+            height={table_type === buy_sell.BUY ? 'auto' : '649px'}
             width='456px'
             is_open={is_modal_open}
             title={generateModalTitle()}
@@ -219,17 +227,15 @@ const BuySellModal = () => {
             toggleModal={onCancel}
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
-            <ThemedScrollbars
-                height={buy_sell_store.table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
-            >
+            <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                 <Modal.Body className='buy-sell__modal--layout'>
-                    {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
                         <Form
-                            advert={buy_sell_store.selected_ad_state}
+                            advert={advert}
                             handleClose={onCancel}
                             handleConfirm={onConfirmClick}
                             setIsSubmitDisabled={setIsSubmitDisabled}

@@ -22,6 +22,7 @@ const ModalManagerContextProvider = props => {
         }
         setIsModalOpen(true);
     };
+    // hideModal(options), options: {save_form_history: false, hide_all_modals: false}
     const hideModal = (should_save_form_history = false) => {
         if (isDesktop()) {
             if (should_save_form_history) {

@@ -4,26 +4,28 @@ import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './rate-change-modal.scss';
 
-const RateChangeModal = ({ onMount }) => {
-    const { buy_sell_store, floating_rate_store, general_store } = useStores();
+const RateChangeModal = () => {
+    const { floating_rate_store, general_store } = useStores();
     const local_currency = general_store.client?.local_currency_config?.currency;
-    const is_mobile = isMobile();
+    const { hideModal, is_modal_open, modal } = useModalManagerContext();
 
     const closeModal = () => {
         floating_rate_store.setIsMarketRateChanged(false);
-        buy_sell_store.setShowRateChangePopup(false);
-        onMount(false);
+        if (modal?.key === 'RateChangeModal') {
+            hideModal();
+        }
     };
 
-    if (!is_mobile && floating_rate_store.is_market_rate_changed) {
-        onMount(false);
+    if (!isMobile() && floating_rate_store.is_market_rate_changed && modal?.key === 'RateChangeModal') {
+        hideModal();
     }
 
     return (
         <Modal
-            is_open={buy_sell_store.show_rate_change_popup && floating_rate_store.is_market_rate_changed}
+            is_open={is_modal_open && floating_rate_store.is_market_rate_changed}
             toggleModal={closeModal}
             small
             className='rate-changed-modal'

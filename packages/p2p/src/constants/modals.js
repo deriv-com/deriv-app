@@ -55,4 +55,7 @@ export const modals = {
             /* webpackChunkName: "order-details-cancel-modal" */ 'Components/modal-manager/modals/order-details-cancel-modal'
         )
     ),
+    RateChangeModal: React.lazy(() =>
+        import(/* webpackChunkName: "rate-change-modal" */ 'Components/modal-manager/modals/rate-change-modal')
+    ),
 };

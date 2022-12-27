@@ -24,6 +24,9 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
+    EditAdCancelModal: React.lazy(() =>
+        import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
+    ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'

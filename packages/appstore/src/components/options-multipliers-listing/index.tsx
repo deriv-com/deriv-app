@@ -10,7 +10,7 @@ import { isMobile } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, ui } = useStores();
     const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected } = traders_hub;
     const is_demo = selected_account_type === 'demo';
     const { is_eu, is_landing_company_loaded } = client;
@@ -62,10 +62,13 @@ const OptionsAndMultipliersListing = () => {
                 <div className='full-row'>
                     <TradingAppCard
                         name={localize('Deriv account')}
-                        description={localize('Get a real Deriv account, start trading and manage your funds')}
+                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
                         availability='All'
                         type='get'
+                        onAction={() => {
+                            ui.openRealAccountSignup();
+                        }}
                     />
                 </div>
             )}

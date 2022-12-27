@@ -10,11 +10,11 @@ import {
     default_title,
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { TClientStore, TRouteConfig, TRoute } from 'Types';
+import { TRootStore, TRouteConfig, TRoute } from 'Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
-    is_logged_in: TClientStore['is_logged_in'];
-    is_logging_in: TClientStore['is_logging_in'];
+    is_logged_in: TRootStore['client']['is_logged_in'];
+    is_logging_in: TRootStore['client']['is_logging_in'];
 };
 
 type TDefaultSubroute = TRoute | undefined;

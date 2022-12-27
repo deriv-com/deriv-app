@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { StoreProvider } from '@deriv/stores';
-import { TRootStore } from '../../../types';
-import type { DeepPartial } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 
 describe('<CashierLocked />', () => {
     it('should show the proper message if there is a cryptocashier maintenance', () => {

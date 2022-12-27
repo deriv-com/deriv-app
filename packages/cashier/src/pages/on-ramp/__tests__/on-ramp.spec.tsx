@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import OnRamp from '../on-ramp';
-import { TRootStore } from '../../../types';
+import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
 
 jest.mock('@deriv/components', () => {

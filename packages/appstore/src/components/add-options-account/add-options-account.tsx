@@ -12,7 +12,7 @@ const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
     const { is_eu } = client;
     const is_eu_country_text = is_eu
         ? 'You need to create a Multipliers account to create a CFD account.'
-        : 'You need to create an Options and Multipliers account to create a CFD account.';
+        : 'You need to create an Options and Multipliers account to add a CFD account.';
 
     const is_eu_country_btn = is_eu
         ? localize('Get a Multipliers account')

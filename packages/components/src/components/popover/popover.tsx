@@ -74,15 +74,11 @@ const Popover = ({
                             : is_open ?? (is_hovered && message)) as boolean
                     }
                     positions={[alignment]}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    transitionDuration={0.25}
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                         'react-tiny-popover-cursor-option': should_show_cursor,
                     })}
-                    windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
                               parentElement: popover_ref,

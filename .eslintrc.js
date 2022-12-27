@@ -6,6 +6,7 @@ module.exports = {
         es6: true,
         browser: true,
         amd: true,
+        mocha: true,
         jest: true,
         jquery: true,
         jasmine: true,
@@ -100,6 +101,7 @@ module.exports = {
         ],
         'react/self-closing-comp': 'error',
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
+        // '@typescript-eslint/no-unnecessary-type-assertion': 'error'
     },
     extends: [
         'prettier',
@@ -129,6 +131,8 @@ module.exports = {
         ecmaFeatures: {
             jsx: true,
         },
+        // tsconfigRootDir: __dirname,
+        // project: ['./packages/*/tsconfig.json', './tsconfig.json'],
     },
     settings: {
         react: {
@@ -148,11 +152,13 @@ module.exports = {
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
             extends: [
+                'eslint:recommended',
                 'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
                 'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
                 'plugin:react/recommended',
                 'plugin:@typescript-eslint/recommended',
                 'plugin:prettier/recommended',
+                // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
             ],
             parserOptions: {
                 ecmaversion: 2018,

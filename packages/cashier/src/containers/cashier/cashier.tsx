@@ -64,8 +64,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
     const { routeBackInApp, is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible } = ui;
-    const { toggleCashier } = ui;
+    const { is_cashier_visible: is_visible, toggleCashier } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
 
     React.useEffect(() => {

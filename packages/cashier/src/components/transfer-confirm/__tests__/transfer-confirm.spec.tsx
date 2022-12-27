@@ -12,12 +12,6 @@ const mockRootStore: DeepPartial<TRootStore> = {
     },
 };
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<TransferConfirm />', () => {
     let modal_root_el;
     beforeAll(() => {

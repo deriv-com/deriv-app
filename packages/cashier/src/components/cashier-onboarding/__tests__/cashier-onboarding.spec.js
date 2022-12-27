@@ -6,12 +6,6 @@ import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CashierOnboarding />', () => {
     let mockRootStore;
     beforeEach(() => {

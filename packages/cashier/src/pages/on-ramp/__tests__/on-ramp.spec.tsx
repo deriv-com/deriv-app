@@ -6,11 +6,6 @@ import OnRamp from '../on-ramp';
 import { TRootStore } from '../../../types';
 import type { TOnRampProps } from '../on-ramp';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 jest.mock('@deriv/components', () => {
     return {
         ...(jest.requireActual('@deriv/components') as any),

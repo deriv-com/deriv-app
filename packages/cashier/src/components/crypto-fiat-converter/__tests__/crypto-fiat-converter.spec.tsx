@@ -5,12 +5,6 @@ import { StoreProvider } from '@deriv/stores';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore, mockProps;
 

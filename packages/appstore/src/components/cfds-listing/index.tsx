@@ -16,6 +16,7 @@ const CFDsListing = () => {
         client,
         modules: { cfd },
         traders_hub,
+        ui,
     } = useStores();
     const {
         available_dxtrade_accounts,
@@ -136,7 +137,11 @@ const CFDsListing = () => {
                             type='get'
                             availability={selected_region}
                             onAction={() => {
-                                getAccount(account.market_type, account.platform);
+                                if (has_no_real_account && is_real) {
+                                    ui.openDerivRealAccountNeededModal();
+                                } else {
+                                    getAccount(account.market_type, account.platform);
+                                }
                             }}
                         />
                     );
@@ -187,7 +192,11 @@ const CFDsListing = () => {
                             platform={account.platform}
                             description={account.description}
                             onAction={() => {
-                                getAccount(account.market_type, account.platform);
+                                if (has_no_real_account && is_real) {
+                                    ui.openDerivRealAccountNeededModal();
+                                } else {
+                                    getAccount(account.market_type, account.platform);
+                                }
                             }}
                             key={`trading_app_card_${account.name}`}
                             type='get'

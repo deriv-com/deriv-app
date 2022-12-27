@@ -255,7 +255,7 @@ const Dashboard = ({
                                     <div className='mobile-wrapper'>
                                         <Collapsible position='top' is_collapsed={false} as='div'>
                                             <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
-                                                {active_tab !== 2 && <RunStrategy />}
+                                                <RunStrategy />
                                             </ExtendedDiv>
                                         </Collapsible>
                                     </div>

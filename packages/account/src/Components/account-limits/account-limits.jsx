@@ -97,7 +97,14 @@ const AccountLimits = ({
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
     const forex_ordered = forex?.slice().sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-    const derived_ordered = synthetic_index?.slice().sort((b, a) => (a.level < b.level ? 1 : -1));
+    // sort by level "market/submarket"
+    const derived_ordered = synthetic_index?.slice().sort((a, b) => a.level.localeCompare(b.level));
+    // sort submarkets fields by alphabet
+    if (Array.isArray(derived_ordered)) {
+        derived_ordered.sort((a, b) =>
+            a.level !== 'submarket' || b.level !== 'submarket' ? 0 : a.name.localeCompare(b.name)
+        );
+    }
 
     const context_value = {
         currency,

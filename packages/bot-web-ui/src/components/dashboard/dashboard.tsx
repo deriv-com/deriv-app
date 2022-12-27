@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Collapsible } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
@@ -22,7 +22,6 @@ import {
     tour_status_ended,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
-import { isMobile } from '@deriv/shared';
 import { getImageLocation } from '../../public-path';
 
 type TDialogOptions = {
@@ -56,6 +55,13 @@ type TDashboard = {
     setTourDialogVisibility: (param: boolean) => void;
     setHasTourEnded: (param: boolean) => void;
 };
+
+type Props = {
+    collapsible: boolean;
+};
+type TDiv = Props & React.HTMLAttributes<HTMLDivElement>;
+
+const ExtendedDiv = ({ collapsible, ...props }: TDiv) => <div {...props}>{props.children}</div>;
 
 const Dashboard = ({
     active_tab,
@@ -244,6 +250,21 @@ const Dashboard = ({
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
+                            {active_tab !== 2 && (
+                                <MobileWrapper>
+                                    <div className='mobile-wrapper'>
+                                        <Collapsible position='top' is_collapsed={false} as='div'>
+                                            <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
+                                                <RunStrategy />
+                                            </ExtendedDiv>
+                                        </Collapsible>
+                                    </div>
+                                    {/* // TODO: implement Performance panel as per new design
+                                        {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
+                                        <RunPanel />
+                                    )} */}
+                                </MobileWrapper>
+                            )}
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
@@ -255,7 +276,7 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    {!(isMobile() && active_tab === 2) && <RunStrategy />}
+                    {active_tab !== 2 && <RunStrategy />}
 
                     {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}

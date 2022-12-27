@@ -26,4 +26,167 @@
             position: absolute;
         }
     }
+
+    .ciq-chart {
+        .cq-top-ui-widgets,
+        & .info-box {
+            transition: transform 0.25s ease;
+
+            .cq-symbols-display {
+                z-index: 1;
+
+                &.ciq-disabled {
+                    display: none;
+                }
+                @include mobile {
+                    min-width: 17rem;
+                    max-width: 26rem;
+                    width: auto;
+
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        padding: 0.3rem 0.9rem;
+
+                        .cq-symbol-dropdown {
+                            transform: scale(1);
+                            margin-left: auto;
+                        }
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+
+            @include mobile {
+                background: transparent;
+                border-width: 0;
+                bottom: 8.8rem;
+
+                .sc-chart-mode,
+                .sc-studies {
+                    background: var(--general-section-1);
+                    padding: 0.4rem 0.2rem;
+                    width: 4rem;
+                    height: 4rem;
+                    display: flex;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0.8rem;
+                    opacity: 0.75;
+
+                    &__menu {
+                        &__timeperiod {
+                            top: 0.8rem;
+                            left: 0.8rem;
+                        }
+                        & > .ic-icon {
+                            top: 0.6rem;
+                        }
+                    }
+                }
+            }
+            .app-contents .ciq-menu {
+                margin: 0;
+            }
+        }
+    }
+
+    .smartcharts-mobile {
+        .cq-context {
+            z-index: 99;
+        }
+
+        & .cq-chart-title .cq-menu-dropdown {
+            position: fixed;
+            height: 100% !important;
+            .sc-dialog {
+                height: 100% !important;
+                &__body {
+                    height: inherit !important;
+                    .sc-mcd {
+                        height: inherit !important;
+                        min-width: auto !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /** @define mobile-wrapper; weak */
+    .mobile-wrapper {
+        padding: 0 0.8rem;
+        display: flex;
+        flex-direction: column;
+
+        &__content-loader {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            bottom: -0.8rem;
+
+            svg {
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        /** @define dc-collapsible */
+        @include mobile {
+            .dc-collapsible {
+                position: absolute;
+                width: 100%;
+                margin: 0 auto;
+                left: 0;
+                bottom: 0;
+                z-index: 999;
+
+                .toolbar__section {
+                    justify-content: center;
+
+                    .animation__container {
+                        width: 17.6rem;
+                    }
+                }
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    pointer-events: none;
+                    opacity: 1;
+                    z-index: -1;
+                    border-radius: $BORDER_RADIUS;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    transition: opacity 0.25s;
+                    background: var(--general-section-1);
+                }
+                &--is-expanded {
+                    background: transparent;
+
+                    &:before {
+                        opacity: 0.75;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cq-modal-dropdown.stxMenuActive {
+    left: 0;
+    top: 0;
 }

@@ -127,6 +127,11 @@
             &--apps {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
+                margin-top: 1rem;
+
+                &-item {
+                    margin-left: 1rem;
+                }
 
                 &--eu {
                     display: flex;

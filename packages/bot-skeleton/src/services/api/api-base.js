@@ -7,9 +7,7 @@ class APIBase {
     account_id;
     pip_sizes = {};
     account_info = {};
-    subscriptions = {
-        ticks_history: null,
-    };
+    is_running = false;
 
     init(force_update = false) {
         if (getLoginId()) {
@@ -89,6 +87,10 @@ class APIBase {
         if (!run_button) return;
         run_button.disabled = toggle;
     };
+
+    setIsRunning(toggle = false) {
+        this.is_running = toggle;
+    }
 }
 
 export const api_base = new APIBase();

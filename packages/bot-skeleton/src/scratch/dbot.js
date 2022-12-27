@@ -135,7 +135,7 @@ class DBot {
             }
 
             this.interpreter = Interpreter();
-
+            api_base.setIsRunning(true);
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();
@@ -227,6 +227,7 @@ class DBot {
      * that trade will be completed first to reflect correct contract status in UI.
      */
     stopBot() {
+        api_base.setIsRunning(false);
         if (this.interpreter) {
             this.interpreter.stop();
         }

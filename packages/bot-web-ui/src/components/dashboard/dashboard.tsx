@@ -250,21 +250,6 @@ const Dashboard = ({
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
-                            {active_tab !== 2 && (
-                                <MobileWrapper>
-                                    <div className='mobile-wrapper'>
-                                        <Collapsible position='top' is_collapsed={false} as='div'>
-                                            <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
-                                                <RunStrategy />
-                                            </ExtendedDiv>
-                                        </Collapsible>
-                                    </div>
-                                    {/* // TODO: implement Performance panel as per new design
-                                        {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
-                                        <RunPanel />
-                                    )} */}
-                                </MobileWrapper>
-                            )}
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
@@ -282,6 +267,7 @@ const Dashboard = ({
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
+            <MobileWrapper>{active_tab !== 2 && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}

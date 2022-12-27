@@ -35,7 +35,12 @@
     }
 
     .dc-drawer--open {
-        transform: translateX(calc(0px)) !important;
+        @include desktop {
+            transform: translateX(calc(0px)) !important;
+        }
+        @include mobile {
+            transform: translateY(calc(-100% + 3.6rem));
+        }
     }
 }
 
@@ -99,6 +104,8 @@
                         justify-content: space-between;
                         @include mobile {
                             flex-direction: column;
+                            padding: 0rem 0.8rem;
+                            background-color: var(--general-section-1);
                         }
                     }
                 }

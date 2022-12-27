@@ -9,6 +9,7 @@
 
         @include mobile {
             height: calc(100vh - 6rem);
+            padding: 1.6rem 0;
         }
     }
 
@@ -26,6 +27,7 @@
             height: var(--tab-content-height-mobile);
             .smartcharts {
                 height: calc(100% - 4rem);
+                z-index: 1;
             }
         }
 

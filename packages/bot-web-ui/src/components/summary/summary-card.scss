@@ -28,9 +28,6 @@
         &:hover {
             border: 1px solid var(--border-disabled);
         }
-        &-mobile {
-            border: 1px solid var(--border-normal);
-        }
     }
     .dc-contract-card {
         padding: 1.6rem 1.6rem 0.8rem;
@@ -44,7 +41,7 @@
     }
     &--mobile {
         .dc-contract-card {
-            padding: 1.6rem 0.8rem 0.8rem;
+            padding: 1.5rem 3.4rem;
         }
         .dc-contract-card__grid-underlying-trade--mobile {
             grid-template-columns: 1fr 1.25fr;

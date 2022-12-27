@@ -95,7 +95,7 @@ const StaticDashboard = ({
     const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
-        <ThemedScrollbars height={'61rem'}>
+        <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
             <div className='static-dashboard'>
                 {(isDesktop() || (isMobile() && index === 1)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>

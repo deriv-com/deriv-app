@@ -570,7 +570,8 @@ $side-padding: 1.2em;
         flex: 1;
         padding-top: 0.8rem;
 
-        &-multiplier {
+        &-multiplier,
+        &-accumulator {
             /* postcss-bem-linter: ignore */
             & .data-list__item {
                 background-color: var(--general-section-1);
@@ -832,6 +833,7 @@ $side-padding: 1.2em;
             padding-bottom: 0px;
         }
     }
+    .accumulator,
     .buy_price,
     .payout,
     .indicative,
@@ -875,8 +877,47 @@ $side-padding: 1.2em;
     }
 }
 
-/** @define open-positions-multiplier; weak */
-.open-positions-multiplier {
+/** market-symbol-icon.scss doesn't get applied in reports */
+.market-symbol-icon {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+
+    .color1-fill {
+        fill: var(--brand-red-coral);
+    }
+    .color2-fill {
+        fill: var(--brand-secondary);
+    }
+    &-name,
+    &-category {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        @include typeface(--paragraph-left-bold-active);
+        color: var(--text-prominent);
+
+        svg {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
+    }
+    &-name {
+        width: 3.2rem;
+        margin-right: 0.8rem;
+    }
+    &__multiplier {
+        color: var(--text-less-prominent);
+        font-size: 1rem;
+        display: flex;
+        align-items: flex-end;
+        margin: 0 0 0.4rem 0.4rem;
+    }
+}
+
+/** @define open-positions-multiplier & open-positions-accumulator; weak */
+.open-positions-multiplier,
+.open-positions-accumulator {
     .open-positions {
         &__row {
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
@@ -936,6 +977,31 @@ $side-padding: 1.2em;
             }
             &--positive {
                 color: var(--text-profit-success);
+            }
+        }
+    }
+}
+
+.open-positions-accumulator {
+    .open-positions {
+        &__row {
+            /* icon accumulator currency stake take_profit bid_price total_profit_loss action */
+            /* stylelint-disable-next-line declaration-colon-space-after */
+            grid-template-columns:
+                minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr)
+                minmax(112px, 1fr) minmax(149px, 1fr) minmax(90px, 1fr);
+
+            .limit_order {
+                @include desktop {
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+        & .dc-contract-card-item {
+            &:nth-child(3),
+            &:nth-child(5) {
+                order: unset;
             }
         }
     }

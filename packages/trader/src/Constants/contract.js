@@ -19,6 +19,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),
@@ -201,6 +202,10 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

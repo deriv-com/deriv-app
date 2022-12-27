@@ -46,6 +46,10 @@
         display: none;
         margin-left: auto;
 
+        @include mobile {
+            display: block;
+        }
+
         /* postcss-bem-linter: ignore */
         .dc-icon {
             pointer-events: none;

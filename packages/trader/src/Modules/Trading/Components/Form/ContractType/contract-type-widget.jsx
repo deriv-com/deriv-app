@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
 import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
 
-const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
+const ContractTypeWidget = ({ is_equal, is_virtual, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -81,17 +81,24 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
+        const accumulators_category = is_virtual
+            ? list.filter(contract_category => contract_category.label === localize('Accumulators'))
+            : [];
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
-        const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
+        const options_category = list.filter(
+            contract_category =>
+                contract_category.label !== localize('Multipliers') &&
+                contract_category.label !== localize('Accumulators')
+        );
 
         const categories = [];
 
-        if (multipliers_category.length > 0 && options_category.length > 0) {
+        if (list.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...list],
+                contract_categories: [...multipliers_category, ...options_category, ...accumulators_category],
                 key: 'All',
             });
         }
@@ -100,7 +107,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             categories.push({
                 label: localize('Multipliers'),
                 contract_categories: multipliers_category,
-                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                 key: 'Multipliers',
             });
         }
@@ -110,6 +116,15 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 label: localize('Options'),
                 contract_categories: options_category,
                 key: 'Options',
+            });
+        }
+
+        if (accumulators_category.length > 0) {
+            categories.push({
+                label: localize('Accumulators'),
+                contract_categories: accumulators_category,
+                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                key: 'Accumulators',
             });
         }
 

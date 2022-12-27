@@ -20,7 +20,12 @@ export class ChartBarrierStore {
 
     onChartBarrierChange;
 
-    constructor(high_barrier, low_barrier, onChartBarrierChange = null, { color, line_style, not_draggable } = {}) {
+    constructor(
+        high_barrier,
+        low_barrier,
+        onChartBarrierChange = null,
+        { color, hideBarrierLine, line_style, not_draggable, shade } = {}
+    ) {
         makeObservable(this, {
             color: observable,
             lineStyle: observable,
@@ -43,6 +48,8 @@ export class ChartBarrierStore {
         });
 
         this.color = color;
+        this.hideBarrierLine = hideBarrierLine;
+        this.shade = shade;
         this.lineStyle = line_style || BARRIER_LINE_STYLES.SOLID;
         this.onChange = this.onBarrierChange;
 

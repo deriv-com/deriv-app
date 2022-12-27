@@ -9,7 +9,11 @@ const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button />;
 
-    return <ProofOfIncomeContainer is_switching={is_switching} refreshNotifications={refreshNotifications} />;
+    return (
+        <div className='account-poinc__main-container'>
+            <ProofOfIncomeContainer is_switching={is_switching} refreshNotifications={refreshNotifications} />
+        </div>
+    );
 };
 
 ProofOfIncome.propTypes = {

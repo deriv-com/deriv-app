@@ -1631,33 +1631,48 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define account-poinc; weak */
 .account-poinc {
+    &__main-container {
+        max-width: 69rem;
+
+        &:has(.account-poinc-form) {
+            max-width: none;
+        }
+    }
     &-form {
         width: 100%;
+
         &__timeline-container {
             @include mobile {
                 padding-top: 4rem;
             }
         }
+
         &__fieldset {
             margin: -2.5rem 0.6rem 5rem;
             height: 5rem;
         }
+
         &__upload-field {
             margin-top: -2.2rem;
+
             @include mobile {
                 margin-top: -4.5rem;
             }
         }
+
         &__notes-container {
             margin: 0.8rem;
             padding: 0.4rem 0;
+
             .account__file-uploader-box {
                 align-items: start;
                 margin-bottom: 0;
             }
         }
+
         .dc-file-dropzone {
             height: 18rem;
+
             @include mobile {
                 height: 100%;
             }

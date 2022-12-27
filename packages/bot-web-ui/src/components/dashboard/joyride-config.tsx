@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
@@ -10,7 +10,8 @@ type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon
 
 type TStep = {
     label?: string;
-    content: string[];
+    content: Array<string | React.ReactElement>;
+    type?: 'list' | 'text';
 };
 
 type TTourStatus = {
@@ -41,9 +42,7 @@ export const Step = ({ label, content }: TStep) => {
             <Text line_height='xl' as='p' weight='bold'>
                 {label}
             </Text>
-            {content.map(item => (
-                <Text key={item} line_height='xl' as='p' dangerouslySetInnerHTML={{ __html: item }} />
-            ))}
+            {content.map(item => item)}
         </div>
     );
 };
@@ -196,134 +195,244 @@ export const DBOT_ONBOARDING = [
     },
 ];
 
+const Step1 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 1 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text={`Let's start by setting up the <0>first block.</0>`}
+                components={[<strong key={0} />]}
+            />
+        </div>
+        <div className='joyride-content__left joyride-content__sub-title'>
+            <Localize i18n_default_text='<0>1. Trade parameters:<0>' components={[<strong key={0} />]} />
+        </div>
+        <div className='joyride-content__left'>
+            <ul>
+                <li>
+                    <Localize
+                        i18n_default_text='set <0>Market</0> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='Then, set <0>Trade type</0> to Up/Down > Rise/Fall.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='For <0>Contract type,</0> set it to Both.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='For <0>Default candle interval,</0> set it to 1 minute'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+            </ul>
+        </div>
+    </div>
+);
+
+const Step1A = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='For <0>Trade options</0>, set it as below:'
+                components={[<strong key={0} />]}
+            />
+        </div>
+        <div className='joyride-content__left'>
+            <ul>
+                <li>
+                    <Localize i18n_default_text='<0>Duration</0>: Ticks 1' components={[<strong key={0} />]} />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='<0>Stake: USD</0> 10 (min: 0.35 - max: 50000)'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+            </ul>
+        </div>
+    </div>
+);
+
+const Step2 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 2 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='Then, set the <0>Purchase conditions</0> block.'
+                components={[<strong key={0} />]}
+            />
+        </div>
+        <div className='joyride-content__left joyride-content__sub-title'>
+            <Localize i18n_default_text='<0>2. Purchase conditions</0>:' components={[<strong key={0} />]} />
+        </div>
+        <div className='joyride-content__left'>
+            <ul>
+                <li>
+                    <Localize i18n_default_text='<0>Purchase</0>: Rise' components={[<strong key={0} />]} />
+                </li>
+            </ul>
+        </div>
+    </div>
+);
+
+const Step3 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 3 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='The third block is <0>optional</0>. You may use this block if you want to sell your contract before it expires. For now, leave the block as it is. '
+                components={[<strong key={0} />]}
+            />
+        </div>
+    </div>
+);
+
+const Step4 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 4 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='Next, go to <0>Utility tab</0> under the Blocks menu. Tap the drop-down arrow and hit <0>Loops</0>.'
+                components={[<strong key={0} />]}
+            />
+        </div>
+        <div className='joyride-content__left'>
+            <ul>
+                <li>
+                    <Localize
+                        i18n_default_text='Look for the <0>Repeat While/Until</0>, and click the + icon to add the block to the workspace area.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='Choose <0>until</0> as the repeat option.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+            </ul>
+            <div className='joyride-content__left'>
+                <Localize
+                    i18n_default_text='Pro tip: You can also drag out the desired block'
+                    components={[<strong key={0} />]}
+                />
+            </div>
+        </div>
+    </div>
+);
+
+const Step5 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 5 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='Now, tap the <0>Analysis</0> drop-down arrow and hit <0>Contract</0>.'
+                components={[<strong key={0} />]}
+            />
+        </div>
+        <div className='joyride-content__left'>
+            <ul>
+                <li>
+                    <Localize
+                        i18n_default_text='Go to the <0>Last trade result</0> block and click + icon to add the <0>Result is Win</0> block to the workspace.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='Then, drag the <0>Result is win</0> next to the <0>repeat until</0> block.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='Now, go to the <0>Restart trading conditions</0> block.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+                <li>
+                    <Localize
+                        i18n_default_text='Drag the <0>Trade again</0> block and add it next to the <0>do</0> part of the <0>Repeat until</0> block.'
+                        components={[<strong key={0} />]}
+                    />
+                </li>
+            </ul>
+        </div>
+    </div>
+);
+
+const Step6 = () => (
+    <div className='joyride-content'>
+        <div className='joyride-content__left'>
+            <Localize i18n_default_text='Step 6 :' />
+        </div>
+        <div className='joyride-content__left'>
+            <Localize
+                i18n_default_text='Finally, drag and add the whole <0>Repeat</0> block to the <0>Restart trading conditions</0> block.'
+                components={[<strong key={0} />]}
+            />
+        </div>
+    </div>
+);
+
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
-        content: [
-            <Step
-                key='Step 1'
-                content={[
-                    localize('Step 1 :'),
-                    localize('First, set the <strong>Trade parameters</strong> block.'),
-                    localize('<strong>1. Trade Parameters</strong>:'),
-                    localize(
-                        '- <strong>Market</strong>: Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index'
-                    ),
-                    localize('- <strong>Trade Type</strong>: Up/Down > Rise/Fall'),
-                    localize('- <strong>Contract type</strong>: Both'),
-                    localize('- <strong>Default candle interval</strong>: 1 minute'),
-                ]}
-            />,
-        ],
+        content: <Step1 />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="trade_parameters"]',
-        content: [
-            <Step
-                key='trade_parameters'
-                content={[
-                    localize('For <strong>Trade options</strong>, set it as below:'),
-                    localize('- <strong>Duration</strong>: Ticks 1'),
-                    localize('- <strong>Stake: USD</strong> 10 (min: 0.35 - max: 50000)'),
-                ]}
-            />,
-        ],
+        content: <Step1A />,
         ...joyride_props,
     },
     {
         target: '[data-category="purchase_conditions"]',
-        content: [
-            <Step
-                key='purchase_conditions'
-                content={[
-                    localize('Step 2 :'),
-                    localize('Then, set the <strong>Purchase conditions</strong> block.'),
-                    localize('<strong>2. Purchase conditions</strong>:'),
-                    localize('- <strong>Purchase</strong>: Rise'),
-                ]}
-            />,
-        ],
+        content: <Step2 />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="sell_conditions"]',
-        content: [
-            <Step
-                key='sell_conditions'
-                content={[
-                    localize('Step 3 :'),
-                    localize(
-                        'The third block is <strong>optional</strong>. You may use this block if you want to sell your contract before it expires. For now, lets leave the block as it is.'
-                    ),
-                ]}
-            />,
-        ],
+        content: <Step3 />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
-        content: [
-            <Step
-                key='toolbox'
-                content={[
-                    localize('Step 4 :'),
-                    localize(
-                        'Next, go to <strong>Utility tab</strong> under the Blocks menu. Tap the drop-down arrow and hit <strong>Loops</strong>.'
-                    ),
-                    localize(
-                        '- Look for the <strong>Repeat While/Until</strong>, and click the + icon to add the block to the workspace area.'
-                    ),
-                    localize('- Choose <strong>until</strong> as the repeat option.'),
-                    localize('Pro tip: You can also drag out the desired block'),
-                ]}
-            />,
-        ],
+        content: <Step4 />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
-        content: [
-            <Step
-                key='dashboard__toolbox'
-                content={[
-                    localize('Step 5 :'),
-                    localize(
-                        'Now, tap the <strong>Analysis</strong> drop-down arrow and hit <strong>Contract</strong>.'
-                    ),
-                    localize(
-                        '- Go to the <strong>Last trade result</strong> block and click + icon to add the <strong>Result is Win</strong> block to the workspace.'
-                    ),
-                    localize(
-                        '- Then, drag the <strong>Result is win</strong> next to the <strong>repeat until</strong> block.'
-                    ),
-                    localize('- Now, go to the <strong>Restart trading conditions</strong> block.'),
-                    localize(
-                        '- Drag the <strong>Trade again</strong> block and add it next to the <strong>do</strong> part of the <strong>Repeat until</strong> block.'
-                    ),
-                ]}
-            />,
-        ],
+        content: <Step5 />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="trade_results"]',
-        content: [
-            <Step
-                key='trade_results'
-                content={[
-                    localize('Step 6 :'),
-                    localize(
-                        'Finally, drag and add the whole <strong>Repeat</strong> block to the <strong>Restart trading conditions</strong> block.'
-                    ),
-                ]}
-            />,
-        ],
+        content: <Step6 />,
         locale: { last: localize('Next') },
         ...joyride_props,
     },

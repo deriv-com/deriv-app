@@ -22,6 +22,7 @@ const ToggleCardDialog = ({
     error_message_alignment,
     getCardLabels,
     getContractById,
+    is_accumulator,
     is_valid_to_cancel,
     onMouseLeave,
     removeToast,
@@ -152,6 +153,7 @@ const ToggleCardDialog = ({
                                 error_message_alignment={error_message_alignment}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
+                                is_accumulator={is_accumulator}
                                 onMouseLeave={onMouseLeave}
                                 removeToast={removeToast}
                                 setCurrentFocus={setCurrentFocus}
@@ -179,6 +181,7 @@ const ToggleCardDialog = ({
                             error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
+                            is_accumulator={is_accumulator}
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
@@ -202,6 +205,7 @@ ToggleCardDialog.propTypes = {
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_valid_to_cancel: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,

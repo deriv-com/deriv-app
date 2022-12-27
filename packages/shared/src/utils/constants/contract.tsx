@@ -3,6 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -115,6 +116,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
+    accumulator: {
+        title: localize('Accumulator'),
+        trade_types: ['ACCU'],
+        basis: ['stake'],
+        components: ['take_profit', 'accumulator', 'accu_info_display'],
+        barrier_count: 2,
+        config: { hide_duration: true },
+    },
     multiplier: {
         title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
@@ -139,6 +148,7 @@ export const getContractCategoriesConfig = () => ({
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
+    Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -173,6 +183,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),
@@ -356,6 +367,10 @@ export const getUnsupportedContracts = () => ({
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
+    ACCU: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

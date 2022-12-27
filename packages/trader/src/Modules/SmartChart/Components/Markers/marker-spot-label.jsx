@@ -39,17 +39,19 @@ const MarkerSpotLabel = ({
                     <div
                         className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
                     >
-                        <div className='chart-spot-label__time-container'>
-                            <Icon
-                                icon='IcClockOutline'
-                                height={10}
-                                width={10}
-                                className='chart-spot-label__time-icon'
-                            />
-                            <Text as='p' color='prominent' size='xxxs'>
-                                {toMoment(+spot_epoch).format('HH:mm:ss')}
-                            </Text>
-                        </div>
+                        {spot_epoch && (
+                            <div className='chart-spot-label__time-container'>
+                                <Icon
+                                    icon='IcClockOutline'
+                                    height={10}
+                                    width={10}
+                                    className='chart-spot-label__time-icon'
+                                />
+                                <Text as='p' color='prominent' size='xxxs'>
+                                    {toMoment(+spot_epoch).format('HH:mm:ss')}
+                                </Text>
+                            </div>
+                        )}
                         <div
                             className={classNames('chart-spot-label__value-container', {
                                 'chart-spot-label__value-container--won': status === 'won',

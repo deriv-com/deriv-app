@@ -167,6 +167,10 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        name: localize('Buy'),
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? localize('Higher') : localize('Rise'),
         position: 'top',
@@ -223,7 +227,6 @@ export const getContractConfig = is_high_low => ({
 });
 
 export const getContractTypeDisplay = (type, is_high_low = false) => {
-    // console.log(getContractConfig(is_high_low)[type]);
     return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
 };
 

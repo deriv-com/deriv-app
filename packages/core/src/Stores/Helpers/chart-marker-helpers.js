@@ -1,5 +1,12 @@
 import extend from 'extend';
-import { isUserSold, isMultiplierContract, isDigitContract, getEndTime, isMobile } from '@deriv/shared';
+import {
+    isUserSold,
+    isAccumulatorContract,
+    isMultiplierContract,
+    isDigitContract,
+    getEndTime,
+    isMobile,
+} from '@deriv/shared';
 
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 
@@ -12,8 +19,11 @@ const createMarkerConfig = (marker_type, x, y, content_config) =>
         content_config,
     });
 
-export const getSpotCount = (contract_info, spot_count) =>
-    isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
+export const getSpotCount = (contract_info, spot_count) => {
+    if (isDigitContract(contract_info.contract_type)) return spot_count + 1;
+    if (isAccumulatorContract(contract_info.contract_type)) return null;
+    return spot_count;
+};
 
 // -------------------- Lines --------------------
 export const createMarkerEndTime = contract_info => {
@@ -101,10 +111,11 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     const spot_count = getSpotCount(contract_info, idx);
     const spot = tick.tick_display_value;
+    const spot_epoch = isAccumulatorContract(contract_info.contract_type) ? '' : `${tick.epoch}`;
 
     const marker_config = createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_MIDDLE.type, +tick.epoch, +spot, {
         spot_value: `${spot}`,
-        spot_epoch: `${tick.epoch}`,
+        spot_epoch,
         align_label: tick.align_label,
         spot_count,
     });

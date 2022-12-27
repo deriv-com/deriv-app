@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmptyObject } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -10,6 +12,8 @@ const Purchase = ({
     contract_type,
     currency,
     has_cancellation,
+    is_accumulator,
+    last_contract_status,
     is_multiplier,
     is_mobile,
     is_purchase_enabled,
@@ -33,7 +37,6 @@ const Purchase = ({
         return !has_validation_error && !info.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
-
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
@@ -43,7 +46,10 @@ const Purchase = ({
         };
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
-        const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
+        const is_proposal_error =
+            is_multiplier || (is_accumulator && !is_mobile)
+                ? info.has_error && !info.has_error_details
+                : info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}
@@ -53,6 +59,7 @@ const Purchase = ({
                 key={index}
                 index={getSortedIndex(index, type)}
                 has_cancellation={has_cancellation}
+                is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
@@ -84,6 +91,15 @@ const Purchase = ({
                 break;
         }
     });
+    if (is_accumulator && last_contract_status === 'open') {
+        components.unshift(
+            <PurchaseButtonsOverlay
+                is_to_cover_one_button={components.length === 1}
+                key='overlay'
+                message={localize('You can only purchase one contract at a time')}
+            />
+        );
+    }
     return components;
 };
 
@@ -91,6 +107,8 @@ Purchase.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_cancellation: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
+    last_contract_status: PropTypes.string,
     is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
@@ -107,13 +125,15 @@ Purchase.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ contract_trade, modules, ui }) => ({
     currency: modules.trade.currency,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
+    last_contract_status: contract_trade.last_contract.contract_info?.status,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    is_accumulator: modules.trade.is_accumulator,
     is_multiplier: modules.trade.is_multiplier,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,

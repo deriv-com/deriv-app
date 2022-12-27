@@ -5,6 +5,7 @@ import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/componen
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
+import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
 
 const Barrier = ({
     barrier_1,
@@ -100,67 +101,57 @@ const Barrier = ({
                 </Fieldset>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='barrier__widget'>
-                    <Fieldset className='barrier__fields'>
-                        <InputField
-                            id='dt_barrier_1_input'
-                            type='number'
-                            name='barrier_1'
-                            value={barrier_1}
-                            is_incrementable={!is_absolute_barrier}
-                            is_incrementable_on_long_press={!is_absolute_barrier}
-                            is_negative_disabled={is_absolute_barrier}
-                            className={`barrier__fields-${input_class}`}
-                            classNameInput={classNames(
-                                'barrier__fields-input',
-                                'barrier__fields-barriers-input',
-                                `barrier__fields-barriers-${input_class}-input`,
-                                {
-                                    'barrier__fields-input--is-offset': !is_absolute_barrier,
-                                }
-                            )}
-                            current_focus={current_focus}
-                            format={format}
-                            onChange={onChange}
-                            is_float
-                            is_signed
-                            setCurrentFocus={setCurrentFocus}
-                        />
-                    </Fieldset>
-                    <h2 className='barrier__widget-title'>
-                        {barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
-                    </h2>
-                </div>
+                <LabeledQuantityInputMobile
+                    input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
+                    id='dt_barrier_1_input'
+                    type='number'
+                    name='barrier_1'
+                    value={barrier_1}
+                    is_incrementable={!is_absolute_barrier}
+                    is_incrementable_on_long_press={!is_absolute_barrier}
+                    is_negative_disabled={is_absolute_barrier}
+                    className={`barrier__fields-${input_class}`}
+                    classNameInput={classNames(
+                        'barrier__fields-input',
+                        'barrier__fields-barriers-input',
+                        `barrier__fields-barriers-${input_class}-input`,
+                        {
+                            'barrier__fields-input--is-offset': !is_absolute_barrier,
+                        }
+                    )}
+                    current_focus={current_focus}
+                    format={format}
+                    onChange={onChange}
+                    is_float
+                    is_signed
+                    setCurrentFocus={setCurrentFocus}
+                />
                 {barrier_count === 2 && (
-                    <div className='barrier__widget'>
-                        <Fieldset className='barrier__fields'>
-                            <InputField
-                                id='dt_barrier_2_input'
-                                type='number'
-                                name='barrier_2'
-                                value={barrier_2}
-                                is_incrementable={!is_absolute_barrier}
-                                is_incrementable_on_long_press={!is_absolute_barrier}
-                                is_negative_disabled={is_absolute_barrier}
-                                className={`barrier__fields-${input_class}`}
-                                classNameInput={classNames(
-                                    'barrier__fields-input',
-                                    'barrier__fields-barriers-input',
-                                    `barrier__fields-barriers-${input_class}-input`,
-                                    {
-                                        'barrier__fields-input--is-offset': !is_absolute_barrier,
-                                    }
-                                )}
-                                current_focus={current_focus}
-                                format={format}
-                                onChange={onChange}
-                                is_float
-                                is_signed
-                                setCurrentFocus={setCurrentFocus}
-                            />
-                        </Fieldset>
-                        <h2 className='barrier__widget-title'>{localize('Barrier 2')}</h2>
-                    </div>
+                    <LabeledQuantityInputMobile
+                        input_label={localize('Barrier 2')}
+                        id='dt_barrier_2_input'
+                        type='number'
+                        name='barrier_2'
+                        value={barrier_2}
+                        is_incrementable={!is_absolute_barrier}
+                        is_incrementable_on_long_press={!is_absolute_barrier}
+                        is_negative_disabled={is_absolute_barrier}
+                        className={`barrier__fields-${input_class}`}
+                        classNameInput={classNames(
+                            'barrier__fields-input',
+                            'barrier__fields-barriers-input',
+                            `barrier__fields-barriers-${input_class}-input`,
+                            {
+                                'barrier__fields-input--is-offset': !is_absolute_barrier,
+                            }
+                        )}
+                        current_focus={current_focus}
+                        format={format}
+                        onChange={onChange}
+                        is_float
+                        is_signed
+                        setCurrentFocus={setCurrentFocus}
+                    />
                 )}
             </MobileWrapper>
         </React.Fragment>

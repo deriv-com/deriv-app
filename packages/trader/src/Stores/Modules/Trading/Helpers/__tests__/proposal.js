@@ -47,6 +47,9 @@ describe('Proposal', () => {
             //         text: 'Stake',
             //         value: '',
             //     },
+            //     growth_rate: undefined,
+            //     spot: undefined,
+            //     spot_time: undefined,
             // });
         });
         // it('should return profit and return calculated if proposal has no error', () => {
@@ -83,6 +86,9 @@ describe('Proposal', () => {
         //             text: 'Stake',
         //             value: 200,
         //         },
+        //         growth_rate: undefined,
+        //         spot: undefined,
+        //         spot_time: undefined,
         //     });
         // });
     });

@@ -6,7 +6,14 @@ import { WS } from '@deriv/shared';
 import ContractDetails from './contract-details.jsx';
 import ContractHistory from './contract-history.jsx';
 
-const ContractAudit = ({ contract_update_history, has_result, is_multiplier, toggleHistoryTab, ...props }) => {
+const ContractAudit = ({
+    contract_update_history,
+    has_result,
+    is_accumulator,
+    is_multiplier,
+    toggleHistoryTab,
+    ...props
+}) => {
     const { contract_id, currency } = props.contract_info;
     const [update_history, setUpdateHistory] = React.useState([]);
 
@@ -28,7 +35,7 @@ const ContractAudit = ({ contract_update_history, has_result, is_multiplier, tog
 
     if (!has_result) return null;
 
-    if (!is_multiplier) {
+    if (!is_multiplier && !is_accumulator) {
         return (
             <div className='contract-audit__wrapper'>
                 <ContractDetails {...props} />
@@ -53,6 +60,7 @@ ContractAudit.propTypes = {
     contract_info: PropTypes.object,
     contract_update_history: PropTypes.array,
     has_result: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,
 };

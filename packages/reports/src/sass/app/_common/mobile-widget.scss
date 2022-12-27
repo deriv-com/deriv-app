@@ -127,6 +127,13 @@
             flex: unset;
         }
     }
+    &:is(.take-profit) {
+        height: auto;
+    }
+    .trade-container__fieldset:is(.take-profit *) {
+        width: 100%;
+        margin-bottom: 0;
+    }
 }
 
 /** @define fieldset-minimized */

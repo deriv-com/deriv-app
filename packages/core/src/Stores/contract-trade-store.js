@@ -9,7 +9,6 @@ import {
     getContractTypesConfig,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
-
 import BaseStore from './base-store';
 
 export default class ContractTradeStore extends BaseStore {
@@ -23,10 +22,20 @@ export default class ContractTradeStore extends BaseStore {
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
     chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    // Accumulators data:
+    accumulators_high_barrier = '';
+    accumulators_low_barrier = '';
+    current_symbol_spot = null;
+    current_symbol_spot_time = null;
+
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
+            accumulators_high_barrier: observable,
+            accumulators_low_barrier: observable,
+            current_symbol_spot: observable,
+            current_symbol_spot_time: observable,
             contracts: observable.shallow,
             has_error: observable,
             error_message: observable,
@@ -54,11 +63,15 @@ export default class ContractTradeStore extends BaseStore {
     // -------------------
 
     updateChartType(type) {
+        const { contract_type } = JSON.parse(LocalStore.get('trade_store'));
+        if (contract_type === 'accumulator') return;
         LocalStore.set('contract_trade.chart_type', type);
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
+        const { contract_type } = JSON.parse(LocalStore.get('trade_store'));
+        if (contract_type === 'accumulator') return;
         const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
             this.chart_type = 'mountain';
@@ -108,12 +121,27 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get markers_array() {
-        const markers = this.applicable_contracts()
+        let markers = [];
+        const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
+        }
+        if (
+            trade_type === 'accumulator' &&
+            this.last_contract.contract_info?.status !== 'open' &&
+            this.current_symbol_spot_time
+        ) {
+            markers.push({
+                type: 'TickContract',
+                contract_info: { is_accumulators_trade_without_contract: true },
+                key: 'accumulators_barriers_without_contract',
+                price_array: [this.accumulators_high_barrier, this.accumulators_low_barrier],
+                epoch_array: [this.current_symbol_spot_time],
+            });
         }
         return markers;
     }

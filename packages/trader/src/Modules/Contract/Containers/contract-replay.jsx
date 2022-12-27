@@ -9,8 +9,10 @@ import {
     PageOverlay,
     SwipeableWrapper,
     FadeWrapper,
+    usePrevious,
 } from '@deriv/components';
 import {
+    isAccumulatorContract,
     isDesktop,
     isMobile,
     isMultiplierContract,
@@ -27,7 +29,8 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
-import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 
 const ContractReplay = ({
     contract_id,
@@ -73,6 +76,7 @@ const ContractReplay = ({
 
     if (!contract_info.underlying) return null;
 
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
     const contract_drawer_el = (
@@ -80,6 +84,7 @@ const ContractReplay = ({
             contract_info={contract_info}
             contract_update={contract_update}
             contract_update_history={contract_update_history}
+            is_accumulator={is_accumulator}
             is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
@@ -142,7 +147,7 @@ const ContractReplay = ({
                             </DesktopWrapper>
                             <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                             <DesktopWrapper>
-                                <ReplayChart />
+                                <ReplayChart is_dark_theme={is_dark_theme} is_accumulator_contract={is_accumulator} />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 {is_digit_contract ? (
@@ -154,7 +159,10 @@ const ContractReplay = ({
                                         </SwipeableWrapper>
                                     </React.Fragment>
                                 ) : (
-                                    <ReplayChart />
+                                    <ReplayChart
+                                        is_dark_theme={is_dark_theme}
+                                        is_accumulator_contract={is_accumulator}
+                                    />
                                 )}
                             </MobileWrapper>
                         </div>
@@ -216,6 +224,8 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
+    const AccumulatorsShadedBarriers = allMarkers[props.accumulators_barriers_marker?.type];
+
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
     };
@@ -232,6 +242,13 @@ const Chart = props => {
 
         return margin;
     };
+    const prev_start_epoch = usePrevious(props.start_epoch);
+    const passthrough_contract_info = props.is_accumulator_contract
+        ? {
+              ...props.contract_info,
+              tick_stream: props.all_ticks.length ? props.all_ticks : props.contract_info.tick_stream,
+          }
+        : props.contract_info;
 
     return (
         <SmartChart
@@ -259,12 +276,17 @@ const Chart = props => {
             allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
-            isStaticChart={false}
+            isStaticChart={
+                // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
+                props.is_accumulator_contract &&
+                props.contract_info.status !== 'open' &&
+                props.start_epoch < prev_start_epoch
+            }
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
-            contractInfo={props.contract_info}
+            contractInfo={passthrough_contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -274,11 +296,21 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
+            {props.is_accumulator_contract && (
+                <AccumulatorsShadedBarriers
+                    key={props.accumulators_barriers_marker.key}
+                    is_dark_theme={props.is_dark_theme}
+                    granularity={props.granularity}
+                    is_in_contract_details
+                    {...props.accumulators_barriers_marker}
+                />
+            )}
         </SmartChart>
     );
 };
 
 Chart.propTypes = {
+    accumulators_barriers_marker: PropTypes.object,
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
     chartStateChange: PropTypes.func,
@@ -286,6 +318,8 @@ Chart.propTypes = {
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
+    is_accumulator_contract: PropTypes.bool,
+    is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
@@ -329,13 +363,18 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
+    const { contract_type, status, tick_stream } = contract_store.contract_info;
+    const should_show_10_last_ticks =
+        isAccumulatorContract(contract_type) && status === 'open' && tick_stream.length === 10;
+    const allowed_scroll_to_epoch = should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.scroll_to_epoch;
 
     return {
+        accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
-        start_epoch: contract_config.start_epoch,
+        start_epoch: should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: allow_scroll_to_epoch && allowed_scroll_to_epoch,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

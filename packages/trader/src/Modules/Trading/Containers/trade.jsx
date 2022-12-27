@@ -11,6 +11,7 @@ import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
+import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
@@ -47,6 +48,7 @@ const Trade = ({
     prepareTradeStore,
     setContractTypes,
     setMobileDigitView,
+    is_accumulator,
     show_digits_stats,
     should_show_multipliers_onboarding,
     symbol,
@@ -141,7 +143,12 @@ const Trade = ({
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
 
     return (
-        <div id='trade_container' className='trade-container'>
+        <div
+            id='trade_container'
+            className={classNames('trade-container', {
+                'trade-container--accumulators': is_accumulator,
+            })}
+        >
             <DesktopWrapper>
                 <PositionsDrawer />
             </DesktopWrapper>
@@ -152,7 +159,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset='259px'
+                height_offset={is_accumulator ? '295px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -161,7 +168,11 @@ const Trade = ({
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <ChartTrade topWidgets={topWidgets} charts_ref={charts_ref} />
+                            <ChartTrade
+                                topWidgets={topWidgets}
+                                charts_ref={charts_ref}
+                                is_accumulator={is_accumulator}
+                            />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -187,6 +198,7 @@ const Trade = ({
                                 topWidgets={topWidgets}
                                 charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                is_accumulator={is_accumulator}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -219,6 +231,7 @@ const Trade = ({
 
 export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
+    is_accumulator: modules.trade.is_accumulator,
     is_eu: client.is_eu,
     is_synthetics_available: modules.trade.is_synthetics_available,
     is_synthetics_trading_market_available: modules.trade.is_synthetics_trading_market_available,
@@ -247,6 +260,7 @@ export default connect(({ client, common, modules, ui }) => ({
 
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
+import classNames from 'classnames';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
@@ -276,6 +290,7 @@ const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
 
 const Chart = props => {
     const {
+        all_positions,
         topWidgets,
         charts_ref,
         updateGranularity,
@@ -284,11 +299,16 @@ const Chart = props => {
         chart_layout,
         chart_type,
         chartStateChange,
+        current_symbol_spot,
+        current_symbol_spot_time,
+        last_contract,
+        ticks_history_stats,
         exportLayout,
         extra_barriers = [],
         end_epoch,
         granularity,
         has_alternative_source,
+        is_accumulator,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
@@ -304,8 +324,10 @@ const Chart = props => {
     } = props;
 
     const bottomWidgets = React.useCallback(
-        ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
-        []
+        ({ digits, tick }) => (
+            <ChartBottomWidgets digits={digits} tick={tick} show_accumulators_stats={is_accumulator} is_trade_page />
+        ),
+        [is_accumulator]
     );
 
     const getMarketsOrder = active_symbols => {
@@ -336,13 +358,13 @@ const Chart = props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
-            bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
+            bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
-            chartType={chart_type}
+            chartType={is_accumulator ? 'mountain' : chart_type}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -357,7 +379,7 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={granularity}
+            granularity={!is_accumulator && granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}
@@ -382,39 +404,58 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
+            {is_accumulator && (
+                <AccumulatorsChartElements
+                    all_positions={all_positions}
+                    current_symbol_spot={current_symbol_spot}
+                    current_symbol_spot_time={current_symbol_spot_time}
+                    is_stats_highlighted={ticks_history_stats?.ticks_stayed_in?.[0] === 0}
+                    last_contract_info={last_contract?.contract_info}
+                    symbol={symbol}
+                />
+            )}
         </SmartChartWithRef>
     );
 };
 
 Chart.propTypes = {
+    all_positions: PropTypes.array,
     topWidgets: PropTypes.func,
     charts_ref: PropTypes.object,
     bottomWidgets: PropTypes.func,
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
     chartStateChange: PropTypes.func,
+    current_symbol_spot: PropTypes.number,
+    current_symbol_spot_time: PropTypes.number,
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
+    is_accumulator: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
+    last_contract: PropTypes.object,
     main_barrier: PropTypes.any,
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
     symbol: PropTypes.string,
+    ticks_history_stats: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
+const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) => ({
+    all_positions: portfolio.all_positions,
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
     chartStateChange: modules.trade.chartStateChange,
+    current_symbol_spot: contract_trade.current_symbol_spot,
+    current_symbol_spot_time: contract_trade.current_symbol_spot_time,
     updateChartType: contract_trade.updateChartType,
     updateGranularity: contract_trade.updateGranularity,
     settings: {
@@ -428,6 +469,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
+        contract_info: contract_trade.last_contract.contract_info,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
@@ -437,6 +479,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,
     setChartStatus: modules.trade.setChartStatus,
+    ticks_history_stats: modules.trade.ticks_history_stats,
     chart_layout: modules.trade.chart_layout,
     wsForget: modules.trade.wsForget,
     wsForgetStream: modules.trade.wsForgetStream,

@@ -29,6 +29,11 @@ export const modals = {
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'
         )
     ),
+    EmailVerificationModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "email-verification-modal" */ 'Components/modal-manager/modals/email-verification-modal'
+        )
+    ),
     FilterModal: React.lazy(() =>
         import(/* webpackChunkName: "filter-modal" */ 'Components/modal-manager/modals/filter-modal')
     ),

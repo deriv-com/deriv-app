@@ -21,7 +21,7 @@ const StaticTradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
-    const icon_size = isMobile() ? 32 : 48;
+    const icon_size = isMobile() ? 72 : 48;
     return (
         <div className='trading-app-card'>
             <TradigPlatformIconProps

@@ -6,6 +6,7 @@
     @include mobile {
         border-bottom: 1px solid var(--general-hover);
         margin-top: 0.5rem;
+        height: 8.8rem;
     }
 
     &__button--hidden {

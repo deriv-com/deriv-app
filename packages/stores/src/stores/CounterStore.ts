@@ -1,5 +1,5 @@
 import { action, observable, makeObservable } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
+import { makePersistable, stopPersisting } from 'mobx-persist-store';
 
 export default class CounterStore {
     count = 0;
@@ -9,6 +9,7 @@ export default class CounterStore {
             count: observable,
             increment: action.bound,
             decrement: action.bound,
+            unmount: action.bound,
         });
 
         makePersistable(this, { name: 'CounterStore', properties: ['count'], storage: window.localStorage });
@@ -20,5 +21,9 @@ export default class CounterStore {
 
     decrement() {
         this.count = --this.count;
+    }
+
+    unmount() {
+        stopPersisting(this);
     }
 }

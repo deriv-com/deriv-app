@@ -19,6 +19,9 @@ export const modals = {
             /* webpackChunkName: "cancel-add-payment-method-modal" */ 'Components/modal-manager/modals/cancel-add-payment-method-modal'
         )
     ),
+    CreateAdErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "create-ad-error-modal" */ 'Components/modal-manager/modals/create-ad-error-modal')
+    ),
     CreateAdAddPaymentMethodModal: React.lazy(() =>
         import(
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'

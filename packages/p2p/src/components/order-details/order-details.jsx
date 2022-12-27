@@ -28,6 +28,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const [num, setNum] = React.useState(0);
 
     const {
         account_currency,
@@ -119,6 +120,7 @@ const OrderDetails = observer(() => {
     useRegisterModalProps({
         key: 'RatingModal',
         props: {
+            num,
             is_buy_order_for_user,
             is_user_recommended_previously: is_recommended_by_user,
             onClickDone: () => {
@@ -153,6 +155,7 @@ const OrderDetails = observer(() => {
 
     return (
         <OrderDetailsWrapper page_title={page_title}>
+            <button onClick={() => setNum(num + 1)}>INCREMENT ME</button>
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
                     <HintBox

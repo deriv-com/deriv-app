@@ -2940,13 +2940,20 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__container {
         text-align: center;
-        padding: 2rem auto;
-        width: 100%;
-        > * {
-            text-align: center;
-            display: block;
-            margin: 2rem auto;
-            text-align: center;
+        padding: 2rem auto !important;
+        width: 72%;
+        @include mobile {
+            width: 100%;
+        }
+        &--content {
+            width: 100%;
+            padding-top: 8rem;
+            > * {
+                text-align: center;
+                display: block;
+                margin: 2rem auto;
+                text-align: center;
+            }
         }
     }
     &-link {

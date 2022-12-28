@@ -105,6 +105,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     button: false,
                     get: false,
                 }}
+                is_third_step
             />
         ),
         footer_header: localize('CFDs, Options or Multipliers'),

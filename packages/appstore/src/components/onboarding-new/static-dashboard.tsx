@@ -47,6 +47,7 @@ type TStaticDashboard = {
     is_financial_last_step?: boolean;
     has_applauncher_account?: boolean;
     is_first_step?: boolean;
+    is_third_step?: boolean;
 };
 
 const StaticDashboard = ({
@@ -60,6 +61,7 @@ const StaticDashboard = ({
     is_derivx_last_step,
     is_financial_last_step,
     is_first_step,
+    is_third_step,
     is_last_step,
     is_onboarding_animated,
     loginid,
@@ -70,7 +72,7 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
         { text: 'CFDs', value: 0 },
-        { text: `${is_eu_user ? 'Multipliers' : 'Options and...'}`, value: 1 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options and Multipliers'}`, value: 1 },
     ];
 
     const [index, setIndex] = React.useState<number | string>(0);
@@ -103,7 +105,7 @@ const StaticDashboard = ({
                             <div className='static-dashboard-wrapper__header'>
                                 {isMobile() ? (
                                     <React.Fragment>
-                                        {is_first_step && (
+                                        {(is_first_step || is_third_step) && (
                                             <ButtonToggle
                                                 buttons_arr={toggle_options}
                                                 className='static-dashboard-wrapper__header--toggle-account'
@@ -131,7 +133,7 @@ const StaticDashboard = ({
                                         {is_eu_title}
                                     </Text>
                                 )}
-                                {(isDesktop() || (isMobile() && is_first_step)) && (
+                                {(isDesktop() || (isMobile() && is_first_step) || (isMobile() && is_third_step)) && (
                                     <div className='static-dashboard-wrapper__description'>
                                         <Text
                                             as='p'
@@ -167,6 +169,7 @@ const StaticDashboard = ({
                                                         <Text
                                                             key={0}
                                                             size='xs'
+                                                            line_height='xl'
                                                             color='red'
                                                             className={classNames(
                                                                 'static-dashboard-wrapper__header--underlined',
@@ -295,7 +298,7 @@ const StaticDashboard = ({
                         <div className='static-dashboard-wrapper__header'>
                             {isMobile() ? (
                                 <React.Fragment>
-                                    {is_first_step && (
+                                    {(is_first_step || is_third_step) && (
                                         <ButtonToggle
                                             buttons_arr={toggle_options}
                                             className='static-dashboard-wrapper__header--toggle-account'
@@ -342,7 +345,7 @@ const StaticDashboard = ({
                                 </Text>
                             )}
                         </div>
-                        {(isDesktop() || (isMobile() && is_first_step)) && (
+                        {(isDesktop() || (isMobile() && is_first_step) || (isMobile() && is_third_step)) && (
                             <div className='static-dashboard-wrapper__description'>
                                 <Text
                                     as='p'
@@ -358,6 +361,7 @@ const StaticDashboard = ({
                                                 key={0}
                                                 color={'red'}
                                                 size='xxs'
+                                                line_height='xl'
                                                 weight='bold'
                                                 className={classNames('static-dashboard-wrapper__header--underlined', {
                                                     'static-dashboard-wrapper__header-compare-accounts--blurry':

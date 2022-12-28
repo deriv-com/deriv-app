@@ -15,8 +15,9 @@
     &__body {
         display: flex;
         flex-direction: column;
-        padding: 0.8rem 0.8rem 2.4rem;
-        overflow-x: scroll;
+        height: 31.2rem;
+        padding: 0.8rem 0.8rem 2.8rem;
+        overflow-y: scroll;
 
         .currency-item-card {
             width: 100%;

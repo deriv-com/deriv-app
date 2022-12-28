@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ReactElement, ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Dropzone, { DropzoneOptions } from 'react-dropzone';
-import { truncateFileName } from '@deriv/shared';
+import { TFile, truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
 type TFadeInMessage = {
@@ -21,7 +21,7 @@ type TFileDropzone = {
     className?: string;
     validation_error_message: ReactNode & ((open?: () => void) => ReactNode);
     max_size?: number;
-    value: Array<{ name: string }>;
+    value: Array<TFile>;
     message: ReactNode & ((open?: () => void) => ReactNode);
     filename_limit?: number;
     error_message: string;
@@ -90,7 +90,6 @@ const PreviewSingle = (props: TPreviewSingle) => {
 
 const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const dropzone_ref = React.useRef(null);
-
     return (
         <Dropzone
             // sends back accepted files array

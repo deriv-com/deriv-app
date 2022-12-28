@@ -23,6 +23,7 @@ import {
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
+import TourSlider from './tour-slider';
 
 type TDialogOptions = {
     title: string;
@@ -97,6 +98,7 @@ const Dashboard = ({
     let onboard_tour_token: string | number = '';
     let storage = '';
     let tour_status: { [key: string]: string };
+
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
             const { action } = tour_status;
@@ -197,6 +199,7 @@ const Dashboard = ({
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
                     <TourTriggrerDialog />
+                    <TourSlider />
                     {has_tour_started && (
                         <ReactJoyride
                             steps={DBOT_ONBOARDING}

@@ -443,3 +443,70 @@ export const BOT_BUILDER_TOUR = [
         ...joyride_props,
     },
 ];
+
+export const trading_hub_contents = {
+    step1: {
+        component: null,
+        footer_header: localize('Get started on DBot'),
+        footer_text: localize('Hi [first name]! Hit Start for a quick tour to help you get started.'),
+        has_next_content: false,
+    },
+    step2: {
+        component: null,
+        footer_header: localize('Trading accounts'),
+        footer_text: localize(
+            'These are the trading accounts available to you. You can click on an account to find out more.'
+        ),
+        has_next_content: false,
+    },
+    step3: {
+        component: null,
+        footer_header: localize('CFDs, Options or Multipliers'),
+        eu_footer_header: localize('CFDs or Multipliers'),
+        footer_text: localize('You can choose between CFD trading accounts or Options and Multipliers accounts'),
+        eu_footer_text: localize('You can choose between CFD trading accounts and Multipliers accounts'),
+        has_next_content: false,
+    },
+    step4: {
+        component: null,
+        footer_header: localize('‘Get’ the accounts you want'),
+        footer_text: localize('Click the ‘Get’ button to create an account'),
+        has_next_content: false,
+    },
+    step5: {
+        component: null,
+        footer_header: localize('Top-up your account'),
+        footer_text: localize('Once you have an account click ‘Top-up’ to add funds '),
+        has_next_content: false,
+    },
+    step6: {
+        component: null,
+        footer_header: localize('Start trading'),
+        footer_text: localize('Click ‘Trade’ to start trading with your account'),
+        has_next_content: true,
+        next_content: localize('Start trading'),
+    },
+};
+
+const DBOT_ONBOARDING_MOBILE = {
+    step1: {
+        header: 'Get started on DBot',
+        content: 'Hi [first name]! Hit Start for a quick tour to help you get started.',
+    },
+    step2: {
+        content: 'Build your bot using drag-and-drop blocks according to your ideal trading strategy.',
+    },
+    step3: {
+        content:
+            'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.',
+    },
+    step4: {
+        content: 'View the market price of your favourite assets.',
+    },
+    step5: {
+        content: 'Start with a video guide and the FAQs.',
+    },
+    step6: {
+        content: 'You can also use these shortcuts to import or build your bot.',
+    },
+};

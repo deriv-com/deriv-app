@@ -14,6 +14,17 @@
 
     &__container {
         position: relative;
+
+        &:after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+        }
     }
 
     &__chart-wrapper {
@@ -212,6 +223,7 @@
 .joyride-content {
     &__left {
         text-align: left;
+
         &__step-three {
             margin-bottom: 0.8rem;
         }
@@ -240,6 +252,59 @@
 
         &__left {
             margin: 0.3rem 0 0 1.2rem;
+        }
+    }
+}
+
+.dbot__slider {
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        z-index: 1000;
+        background-color: #ffffff;
+        width: 100%;
+        height: 20vh;
+        border-top: 1px solid #e6e9e9;
+
+        &__header {
+            margin-bottom: 0.8rem;
+        }
+
+        &__content {
+            margin-bottom: 1.6rem;
+        }
+
+        &__progress-bar {
+            margin-bottom: 1.6rem;
+        }
+
+        &__button-group {
+            &__left {
+                height: 4rem;
+                width: 16rem;
+                border: 2px solid #999999;
+                background: #ffffff;
+                margin-right: 0.8rem;
+                border-radius: 0.4rem;
+                outline: none;
+            }
+
+            &__right {
+                height: 4rem;
+                width: 16rem;
+                background: #ff444f;
+                border-radius: 0.4rem;
+                border: none;
+                outline: none;
+
+                span {
+                    color: #fff;
+                }
+            }
         }
     }
 }

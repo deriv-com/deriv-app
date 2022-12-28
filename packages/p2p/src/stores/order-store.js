@@ -16,7 +16,6 @@ export default class OrderStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
-            is_email_verification_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
             is_loading_modal_open: observable,
@@ -54,7 +53,7 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailVerificationModalOpen: action.bound,
+            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
@@ -95,7 +94,6 @@ export default class OrderStore {
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
-    is_email_verification_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
     is_loading_modal_open = false;
@@ -137,15 +135,14 @@ export default class OrderStore {
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                        clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
+                        this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} });
                     } else if (
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        if (this.is_email_verification_modal_open) {
-                            this.setIsEmailVerificationModalOpen(false);
-                        }
+                        // TODO: remove this once refactoring of EmailLinkVerifiedModal is done
+                        this.root_store.general_store.hideModal();
+                        this.setVerificationLinkErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
                             key: 'InvalidVerificationLinkModal',
                             props: { error_message: response.error.message, order_id: id },
@@ -534,9 +531,6 @@ export default class OrderStore {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
     }
 
-    setIsEmailVerificationModalOpen(is_email_verification_modal_open) {
-        this.is_email_verification_modal_open = is_email_verification_modal_open;
-    }
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;

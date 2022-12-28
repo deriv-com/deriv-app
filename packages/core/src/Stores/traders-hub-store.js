@@ -90,13 +90,6 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        reaction(
-            () => [this.selected_account_type],
-            () => {
-                this.switchAccountHandler();
-            }
-        );
-
         const login_id = window.localStorage.getItem('active_loginid') ?? '';
         this.selected_account_type = !/^VRT/.test(login_id) ? 'real' : 'demo';
 

@@ -218,6 +218,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     return !should_allow_authentication;
                 } else if (/proof-of-income/.test(route_path)) {
                     return !should_allow_poinc_authentication;
+                } else if (/proof-of-ownership/.test(route_path)) {
+                    return is_virtual;
                 }
                 return false;
             };

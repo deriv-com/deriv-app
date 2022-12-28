@@ -45,6 +45,7 @@ export const routes = {
     proof_of_address: '/account/proof-of-address',
     proof_of_identity: '/account/proof-of-identity',
     proof_of_income: '/account/proof-of-income',
+    proof_of_ownership: '/account/proof-of-ownership',
     redirect: '/redirect',
     reports: '/reports',
     reset_password: '/',

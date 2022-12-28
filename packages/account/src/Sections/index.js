@@ -13,6 +13,7 @@ import PersonalDetails from 'Sections/Profile/PersonalDetails';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
+import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
 import TradingAssessment from 'Sections/Assessment/TradingAssessment';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
@@ -33,6 +34,7 @@ export {
     ProofOfAddress,
     ProofOfIdentity,
     ProofOfIncome,
+    ProofOfOwnership,
     SelfExclusion,
     TradingAssessment,
     TwoFactorAuthentication,

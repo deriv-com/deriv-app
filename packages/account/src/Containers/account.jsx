@@ -154,6 +154,10 @@ const Account = ({
             if (route.path === shared_routes.proof_of_income) {
                 route.is_disabled = !should_allow_poinc_authentication;
             }
+
+            if (route.path === shared_routes.proof_of_ownership) {
+                route.is_disabled = is_virtual;
+            }
         });
     });
 

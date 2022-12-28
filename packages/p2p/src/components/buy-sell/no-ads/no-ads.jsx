@@ -26,7 +26,7 @@ const NoAds = () => {
                 large
                 onClick={() => {
                     general_store.handleTabClick(2);
-                    setTimeout(my_ads_store.setShowAdForm(true), 5000);
+                    my_ads_store.setShowAdForm(true);
                 }}
             >
                 <Localize i18n_default_text='Create ad' />

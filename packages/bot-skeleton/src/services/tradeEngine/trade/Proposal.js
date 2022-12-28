@@ -95,7 +95,7 @@ export default Engine =>
         }
 
         observeProposals() {
-            api_base.api.onMessage().subscribe(response => {
+            const subscription = api_base.api.onMessage().subscribe(response => {
                 if (response.data.msg_type === 'proposal') {
                     const { passthrough, proposal } = response.data;
                     if (
@@ -109,6 +109,7 @@ export default Engine =>
                     }
                 }
             });
+            api_base.pushSubscription(subscription);
         }
 
         unsubscribeProposals() {

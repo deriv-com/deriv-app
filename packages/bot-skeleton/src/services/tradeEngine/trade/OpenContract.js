@@ -8,7 +8,7 @@ import { api_base } from '../../api/api-base';
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            api_base.api.onMessage().subscribe(({ data }) => {
+            const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'proposal_open_contract') {
                     const contract = data.proposal_open_contract;
 
@@ -42,6 +42,7 @@ export default Engine =>
                     }
                 }
             });
+            api_base.pushSubscription(subscription);
         }
 
         waitForAfter() {

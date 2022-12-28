@@ -8,6 +8,7 @@ class APIBase {
     pip_sizes = {};
     account_info = {};
     is_running = false;
+    subscriptions = [];
 
     init(force_update = false) {
         if (getLoginId()) {
@@ -90,6 +91,15 @@ class APIBase {
 
     setIsRunning(toggle = false) {
         this.is_running = toggle;
+    }
+
+    pushSubscription(subscription) {
+        this.subscriptions.push(subscription);
+    }
+
+    clearSubscriptions() {
+        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions = [];
     }
 }
 

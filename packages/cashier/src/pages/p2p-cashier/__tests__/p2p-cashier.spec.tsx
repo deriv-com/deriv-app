@@ -1,14 +1,14 @@
 import React from 'react';
+import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import P2PCashier from '../p2p-cashier';
-import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
-    connect: () => Component => Component,
+    connect: () => (Component: JSX.Element) => Component,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -16,7 +16,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv/p2p', () => () => <div>P2P</div>);
+jest.mock('@deriv/p2p', () => jest.fn(() => 'P2P'));
 
 describe('<P2PCashier />', () => {
     const history = createBrowserHistory();

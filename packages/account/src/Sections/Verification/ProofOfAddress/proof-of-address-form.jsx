@@ -87,8 +87,7 @@ const ProofOfAddressForm = ({
     }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
-        //use trim() for all of five inputs; arr[0] input name, arr[1] input value
-        Object.entries(values).forEach(arr => (values[arr[0]] = arr[1].trim()));
+        Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
 
         setFormState({ ...form_state, ...{ should_allow_submit: false } });
         const errors = {};

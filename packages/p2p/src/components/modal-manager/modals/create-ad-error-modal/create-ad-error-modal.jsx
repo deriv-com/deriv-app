@@ -4,15 +4,17 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CreateAdErrorModal = () => {
     const { my_ads_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     if (my_ads_store.error_code === api_error_codes.DUPLICATE_ADVERT) {
         return (
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={my_ads_store.is_api_error_modal_visible}
+                is_open={is_modal_open}
                 small
                 has_close_icon={false}
                 title={localize('You already have an ad with this rate')}
@@ -23,13 +25,7 @@ const CreateAdErrorModal = () => {
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Update ad')}
-                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
-                        primary
-                        large
-                    />
+                    <Button has_effect text={localize('Update ad')} onClick={() => hideModal()} primary large />
                 </Modal.Footer>
             </Modal>
         );
@@ -37,7 +33,7 @@ const CreateAdErrorModal = () => {
         return (
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={my_ads_store.is_api_error_modal_visible}
+                is_open={is_modal_open}
                 small
                 has_close_icon={false}
                 title={localize('You already have an ad with this range')}
@@ -48,13 +44,7 @@ const CreateAdErrorModal = () => {
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Update ad')}
-                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
-                        primary
-                        large
-                    />
+                    <Button has_effect text={localize('Update ad')} onClick={() => hideModal()} primary large />
                 </Modal.Footer>
             </Modal>
         );
@@ -62,7 +52,7 @@ const CreateAdErrorModal = () => {
     return (
         <Modal
             className='p2p-my-ads__modal-error'
-            is_open={my_ads_store.is_api_error_modal_visible}
+            is_open={is_modal_open}
             small
             has_close_icon={false}
             title={localize("Something's not right")}
@@ -73,13 +63,7 @@ const CreateAdErrorModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Ok')}
-                    onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
-                    primary
-                    large
-                />
+                <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
             </Modal.Footer>
         </Modal>
     );

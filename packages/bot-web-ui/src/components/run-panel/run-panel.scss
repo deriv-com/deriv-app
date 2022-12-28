@@ -124,10 +124,13 @@
                 height: var(--drawer-content-height-no-stat);
             }
             &--mobile {
+                display: flex;
                 height: var(--drawer-content-height-mobile);
                 position: fixed;
                 bottom: 15.7rem;
                 width: 100vw;
+                background-color: var(--general-section-2);
+                border: 1px solid var(--general-main-1);
             }
         }
     }

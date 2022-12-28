@@ -1,22 +1,17 @@
 .db-summary-card {
     $contract-card: &;
-
-    border: 1px solid var(--border-disabled);
-    border-radius: $BORDER_RADIUS;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     position: relative;
 
     &--inactive {
-        background-color: var(--general-section-2);
-        border: 1px solid var(--general-main-1);
         color: var(--text-general);
         font-size: 14px;
         justify-content: center;
         margin: auto;
         text-align: center;
-        height: 157px;
+        line-height: 2rem;
     }
     &--is-loading {
         background-color: inherit;

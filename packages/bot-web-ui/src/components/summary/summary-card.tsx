@@ -105,7 +105,9 @@ const SummaryCard = ({
             )}
             {!is_contract_loading && !contract_info && (
                 <React.Fragment>
-                    {localize('Build a bot from the start menu then hit the run button to run the bot.')}
+                    {localize(
+                        'When you’re ready to trade, hit Run. You’ll be able to track your bot’s performance here.'
+                    )}
                 </React.Fragment>
             )}
         </div>

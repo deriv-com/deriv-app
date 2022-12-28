@@ -20,9 +20,9 @@ describe('<OnRampProviderCard />', () => {
             },
             getDescription: jest.fn(
                 () =>
-                    'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
+                    'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
             ),
-            getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' }]),
+            getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFlexepinDark', light: 'IcCashierFlexepinLight' }]),
         },
         setSelectedProvider: jest.fn(),
     };
@@ -33,7 +33,7 @@ describe('<OnRampProviderCard />', () => {
         expect(screen.getByText('Banxa')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
+                'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Select' })).toBeInTheDocument();

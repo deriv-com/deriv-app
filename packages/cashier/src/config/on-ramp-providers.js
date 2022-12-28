@@ -53,6 +53,4 @@ const createBanxaProvider = store => ({
     should_show_deposit_address: false,
 });
 
-export default {
-    createBanxaProvider,
-};
+export default { createBanxaProvider };

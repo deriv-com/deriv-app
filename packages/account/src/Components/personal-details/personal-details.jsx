@@ -184,7 +184,7 @@ const PersonalDetails = ({
                                 <ThemedScrollbars
                                     height={height}
                                     onScroll={closeTooltipOnScroll}
-                                    testId='personal-details-container'
+                                    testId='dt_personal_details_container'
                                 >
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>

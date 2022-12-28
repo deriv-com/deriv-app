@@ -720,7 +720,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByTestId('personal-details-container'), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 

@@ -1,0 +1,17 @@
+.no-ads {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__button {
+        margin-top: 2rem;
+    }
+
+    &__icon {
+        margin: 2.4rem 0;
+    }
+
+    &__text {
+        margin-bottom: 0.5rem;
+    }
+}

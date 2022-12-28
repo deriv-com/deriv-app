@@ -375,7 +375,6 @@ export default class ClientStore extends BaseStore {
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            switchAccountHandlerForAppstore: action.bound,
             setIsPreAppStore: action.bound,
         });
 
@@ -2496,21 +2495,6 @@ export default class ClientStore extends BaseStore {
     setPrevRealAccountLoginid = logind => {
         this.prev_real_account_loginid = logind;
     };
-
-    async switchAccountHandlerForAppstore(tab_current_account_type) {
-        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
-            if (this.prev_real_account_loginid) {
-                await this.switchAccount(this.prev_real_account_loginid);
-            } else {
-                await this.switchAccount(
-                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
-                );
-            }
-        } else if (tab_current_account_type === 'real') {
-            this.setPrevRealAccountLoginid(this.loginid);
-            await this.switchAccount(this.virtual_account_loginid);
-        }
-    }
 
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;

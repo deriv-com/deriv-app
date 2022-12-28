@@ -19,7 +19,7 @@ export default class TradersHubStore extends BaseStore {
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
-    selected_loginid = '';
+    prev_selected_loginid = '';
     selected_platform_type = 'options';
     active_index = 0;
     vrtc_loginid;
@@ -45,7 +45,7 @@ export default class TradersHubStore extends BaseStore {
             is_regulators_compare_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
-            selected_loginid: observable,
+            prev_selected_loginid: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
@@ -66,7 +66,6 @@ export default class TradersHubStore extends BaseStore {
             selectAccountTypeCard: action.bound,
             selectRegion: action.bound,
             setActiveIndex: action.bound,
-            selectRealLoginid: action.bound,
             setTogglePlatformType: action.bound,
             startTrade: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
@@ -85,18 +84,21 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
             ],
             () => {
-                if (!this.selected_loginid && this.root_store.client.account_list?.length) {
-                    this.selected_loginid = this.root_store.client.account_list.find(
-                        account => !account.is_virtual
-                    )?.loginid;
-                }
                 this.getDemoLoginId();
                 this.getPlatformDemoBalance();
                 this.getCFDBalance('demo');
             }
         );
 
-        this.selected_account_type = 'demo';
+        reaction(
+            () => [this.selected_account_type],
+            () => {
+                this.switchAccountHandler();
+            }
+        );
+
+        const login_id = window.localStorage.getItem('active_loginid') ?? '';
+        this.selected_account_type = !/^VRT/.test(login_id) ? 'real' : 'demo';
 
         reaction(
             () => [this.selected_account_type, this.selected_region, this.root_store.client.is_eu],
@@ -111,7 +113,18 @@ export default class TradersHubStore extends BaseStore {
         this.selected_region = 'Non-EU';
     }
 
-    selectAccountType(account_type) {
+    async selectAccountType(account_type) {
+        const { account_list, switchAccount, prev_real_account_loginid } = this.root_store.client;
+
+        if (account_type === 'demo') {
+            await switchAccount(account_list.find(acc => acc.is_virtual && !acc.is_disabled)?.loginid);
+        } else if (account_type === 'real') {
+            if (prev_real_account_loginid) {
+                await switchAccount(prev_real_account_loginid);
+            } else {
+                await switchAccount(account_list.find(acc => !acc.is_virtual && !acc.is_disabled)?.loginid);
+            }
+        }
         this.selected_account_type = account_type;
     }
 
@@ -376,13 +389,6 @@ export default class TradersHubStore extends BaseStore {
             active_modal: '',
             data: {},
         };
-    }
-
-    selectRealLoginid(loginid) {
-        const { accounts } = this.root_store.client;
-        if (Object.keys(accounts).includes(loginid)) {
-            this.selected_loginid = loginid;
-        }
     }
 
     getAccount(account_type, platform) {

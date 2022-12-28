@@ -13,9 +13,9 @@ type CurrencySelectionModalProps = {
 };
 
 const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => {
-    const { client, traders_hub } = useStores();
-    const { accounts, account_list } = client;
-    const { closeModal, selected_loginid, selectRealLoginid } = traders_hub;
+    const { client, traders_hub, ui } = useStores();
+    const { accounts, account_list, loginid: current_loginid, switchAccount } = client;
+    const { closeModal } = traders_hub;
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -30,7 +30,7 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                     .filter(acc => !acc.is_virtual)
                     .map(({ icon, loginid }) => {
                         const { balance, currency } = accounts[loginid];
-                        const is_selected = selected_loginid === loginid;
+                        const is_selected = current_loginid === loginid;
 
                         return (
                             <div
@@ -38,8 +38,10 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                                 className={classNames('currency-item-card', {
                                     'currency-item-card--active': is_selected,
                                 })}
-                                onClick={() => {
-                                    selectRealLoginid(loginid);
+                                onClick={async () => {
+                                    if (loginid !== current_loginid) {
+                                        await switchAccount(loginid);
+                                    }
                                     closeModal();
                                 }}
                             >
@@ -60,7 +62,15 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                     })}
             </div>
             <div className='currency-selection-modal__bottom-controls'>
-                <Button className='block-button' onClick={() => closeModal()} secondary large>
+                <Button
+                    className='block-button'
+                    onClick={() => {
+                        setTimeout(() => ui.openRealAccountSignup('manage'), 500);
+                        closeModal();
+                    }}
+                    secondary
+                    large
+                >
                     {localize('Add or manage account')}
                 </Button>
             </div>

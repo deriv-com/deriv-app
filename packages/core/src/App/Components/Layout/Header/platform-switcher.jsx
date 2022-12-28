@@ -30,6 +30,7 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
 
     return app_routing_history.length === 0 ? (
         <div
+            data-testid='dt_platform_switcher_preloader'
             className={classNames('platform-switcher__preloader', {
                 'platform-switcher__preloader--is-mobile': isMobile(),
             })}
@@ -39,6 +40,7 @@ const PlatformSwitcher = ({ toggleDrawer, app_routing_history, platform_config }
     ) : (
         <React.Fragment>
             <div
+                data-testid='dt_platform_switcher'
                 className={classNames(
                     'platform-switcher',
                     { 'platform-switcher--active': is_open },
@@ -81,7 +83,5 @@ PlatformSwitcher.propTypes = {
     toggleDrawer: PropTypes.func,
     app_routing_history: PropTypes.array,
 };
-
-export { PlatformSwitcher as TestedPlatformSwitcher };
 
 export default withRouter(PlatformSwitcher);

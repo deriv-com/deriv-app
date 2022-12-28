@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
@@ -46,15 +45,5 @@ const AccountPromptDialog = observer(() => {
         </Dialog>
     );
 });
-
-AccountPromptDialog.propTypes = {
-    accounts: PropTypes.object,
-    continueRoute: PropTypes.func,
-    is_confirmed: PropTypes.bool,
-    last_location: PropTypes.string,
-    onCancel: PropTypes.func,
-    onConfirm: PropTypes.func,
-    should_show: PropTypes.bool,
-};
 
 export default AccountPromptDialog;

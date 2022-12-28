@@ -100,11 +100,11 @@ const ModalElement = ({
         const local_modal_root_ref = modal_root_ref;
 
         local_el_ref.current.classList.add('dc-modal');
-        local_modal_root_ref.current?.appendChild(local_el_ref.current);
+        local_modal_root_ref?.current?.appendChild?.(local_el_ref.current);
         onMount?.();
 
         return () => {
-            local_modal_root_ref.current?.removeChild(local_el_ref.current);
+            local_modal_root_ref?.current?.removeChild?.(local_el_ref.current);
             onUnmount?.();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

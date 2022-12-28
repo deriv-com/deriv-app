@@ -170,22 +170,24 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
 
     const BuySellFormError = () => {
         if (!!error_message && buy_sell_store.form_error_code !== api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
-            <div className='buy-sell__modal--error-message'>
-                <HintBox
-                    className='buy-sell__modal-danger'
-                    icon='IcAlertDanger'
-                    message={
-                        <Text as='p' size='xxxs' color='prominent' line_height='s'>
-                            {buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_CLIENT_BALANCE ? (
-                                <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
-                            ) : (
-                                error_message
-                            )}
-                        </Text>
-                    }
-                    is_danger
-                />
-            </div>;
+            return (
+                <div className='buy-sell__modal--error-message'>
+                    <HintBox
+                        className='buy-sell__modal-danger'
+                        icon='IcAlertDanger'
+                        message={
+                            <Text as='p' size='xxxs' color='prominent' line_height='s'>
+                                {buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_CLIENT_BALANCE ? (
+                                    <Localize i18n_default_text="Your Deriv P2P balance isn't enough. Please increase your balance before trying again." />
+                                ) : (
+                                    error_message
+                                )}
+                            </Text>
+                        }
+                        is_danger
+                    />
+                </div>
+            );
         }
         return null;
     };

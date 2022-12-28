@@ -81,16 +81,10 @@ const ContractTypeWidget = ({ is_equal, is_virtual, name, value, list, onChange,
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const accumulators_category = is_virtual
-            ? list.filter(contract_category => contract_category.label === localize('Accumulators'))
-            : [];
-        const multipliers_category = list.filter(
-            contract_category => contract_category.label === localize('Multipliers')
-        );
+        const accumulators_category = is_virtual ? list.filter(({ label }) => label === localize('Accumulators')) : [];
+        const multipliers_category = list.filter(({ label }) => label === localize('Multipliers'));
         const options_category = list.filter(
-            contract_category =>
-                contract_category.label !== localize('Multipliers') &&
-                contract_category.label !== localize('Accumulators')
+            ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
         const categories = [];
@@ -220,6 +214,7 @@ const ContractTypeWidget = ({ is_equal, is_virtual, name, value, list, onChange,
 
 ContractTypeWidget.propTypes = {
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    is_virtual: PropTypes.bool,
     languageChanged: PropTypes.bool,
     list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     name: PropTypes.string,

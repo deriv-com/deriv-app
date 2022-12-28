@@ -13,10 +13,10 @@ describe('<OnRampProviderCard />', () => {
         is_dark_mode_on: false,
         is_mobile: false,
         provider: {
-            name: 'Changelly',
+            name: 'Banxa',
             icon: {
-                dark: 'IcCashierChangellyDark',
-                light: 'IcCashierChangellyLight',
+                dark: 'IcCashierBanxaDark',
+                light: 'IcCashierBanxaLight',
             },
             getDescription: jest.fn(
                 () =>
@@ -30,7 +30,7 @@ describe('<OnRampProviderCard />', () => {
     it('should show proper messages and button', () => {
         render(<OnRampProviderCard {...props} />);
 
-        expect(screen.getByText('Changelly')).toBeInTheDocument();
+        expect(screen.getByText('Banxa')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'

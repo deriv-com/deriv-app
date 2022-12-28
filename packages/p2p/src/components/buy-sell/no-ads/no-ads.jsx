@@ -18,7 +18,7 @@ const NoAds = () => {
                     {buy_sell_store.is_buy ? (
                         <Localize i18n_default_text='Looking to sell USD? Create a Sell ad for others to buy USD from you.' />
                     ) : (
-                        <Localize i18n_default_text='Looking to buy USD? Create a Buy ad for others to sell USD from you' />
+                        <Localize i18n_default_text='Looking to buy USD? Create a Buy ad for others to sell USD from you.' />
                     )}
                 </Text>
             </DesktopWrapper>

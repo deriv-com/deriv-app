@@ -46,7 +46,7 @@ const PageOverlay = ({
                             <div
                                 data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
-                                onClick={(onClickClose || window.history.back) as any}
+                                onClick={onClickClose || window.history.back}
                             >
                                 <Icon icon='IcCross' />
                             </div>

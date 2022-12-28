@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { Real } from 'Components/cashier-container';
 
-const Withdraw = () => {
+const Withdraw = observer(() => {
     const {
         client,
         modules: {
@@ -30,6 +29,6 @@ const Withdraw = () => {
     return (
         <Real iframe_height={iframe_height} iframe_url={iframe_url} clearIframe={clearIframe} is_loading={is_loading} />
     );
-};
+});
 
-export default observer(Withdraw);
+export default Withdraw;

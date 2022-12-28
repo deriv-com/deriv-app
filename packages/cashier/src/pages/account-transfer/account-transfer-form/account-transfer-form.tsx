@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { observer } from 'mobx-react-lite';
 import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
@@ -13,7 +12,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { TReactChangeEvent, TAccount, TAccountsList, TSideNotesProps } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
@@ -69,7 +68,7 @@ let accounts_to: Array<TAccount> = [];
 let mt_accounts_to: Array<TAccount> = [];
 let dxtrade_accounts_to: Array<TAccount> = [];
 
-const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps) => {
+const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferFormProps) => {
     const {
         client,
         modules: { cashier },
@@ -542,6 +541,6 @@ const AccountTransferForm = ({ error, setSideNotes }: TAccountTransferFormProps)
             </Formik>
         </div>
     );
-};
+});
 
-export default observer(AccountTransferForm);
+export default AccountTransferForm;

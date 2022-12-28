@@ -291,7 +291,7 @@ export default class BuySellStore extends BaseStore {
             this.setFormErrorCode(order.error.code);
         } else {
             this.form_props.setErrorMessage(null);
-            this.root_store.general_store.hideModal();
+            // this.root_store.general_store.hideModal();
             this.root_store.floating_rate_store.setIsMarketRateChanged(false);
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);

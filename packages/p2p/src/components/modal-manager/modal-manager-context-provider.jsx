@@ -49,6 +49,7 @@ const ModalManagerContextProvider = props => {
 
     general_store.showModal = showModal;
     general_store.hideModal = hideModal;
+    general_store.modal = active_modal;
 
     const state = {
         hideModal,

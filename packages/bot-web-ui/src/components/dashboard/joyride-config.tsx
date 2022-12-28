@@ -213,7 +213,7 @@ const Step1 = () => (
             <ul>
                 <li>
                     <Localize
-                        i18n_default_text='set <0>Market</0> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.'
+                        i18n_default_text='First, set <0>Market</0> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.'
                         components={[<strong key={0} />]}
                     />
                 </li>

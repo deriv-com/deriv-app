@@ -38,6 +38,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_status: GetAccountStatus;
+    available_crypto_currencies: string[];
     balance?: string;
     can_change_fiat_currency: boolean;
     currency: string;
@@ -52,6 +53,7 @@ type TClientStore = {
     is_financial_information_incomplete: boolean;
     is_trading_experience_incomplete: boolean;
     is_identity_verification_needed: boolean;
+    is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_switching: boolean;
@@ -110,14 +112,17 @@ type TCommonStore = {
 
 type TUiStore = {
     current_focus: string | null;
+    disableApp: () => void;
+    enableApp: () => void;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
-    disableApp: () => void;
-    enableApp: () => void;
+    openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
+    shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
+    toggleSetCurrencyModal: () => void;
 };
 
 export type TRootStore = {

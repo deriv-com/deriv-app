@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
@@ -6,11 +5,16 @@ import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import Providers from './cashier-onboarding-providers';
-import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
-import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
+import CashierOnboardingDetails from './cashier-onboarding-details';
+import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
+import type { TCashierOnboardingProvider } from './cashier-onboarding-providers';
 
-const CashierOnboarding = observer(({ setSideNotes }) => {
+type TCashierOnboardingProps = {
+    setSideNotes?: (component: React.ReactElement[]) => void;
+};
+
+const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) => {
     const {
         client,
         ui,
@@ -90,12 +94,12 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts, is_landing_company_loaded]);
 
-    const openRealAccount = target => {
+    const openRealAccount = (target: string) => {
         openRealAccountSignup('choose');
         shouldNavigateAfterChooseCrypto(target);
     };
 
-    const openTarget = target => {
+    const openTarget = (target: string) => {
         setDepositTarget(target);
         if (is_crypto || has_crypto_account) {
             openRealAccount(target);
@@ -104,7 +108,7 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
         }
     };
 
-    const fiatAccountConditions = (next_location, current_location) => {
+    const fiatAccountConditions = (next_location: string, current_location: string) => {
         if (has_fiat_account) {
             shouldNavigateAfterPrompt(next_location, current_location);
         } else {
@@ -148,7 +152,7 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
 
     const getDepositOptions = () => {
         showP2pInCashierOnboarding();
-        const options = [];
+        const options: TCashierOnboardingProvider[] = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
         options.push(Providers.createCryptoProvider(onClickDepositCrypto));
         options.push(Providers.createOnrampProvider(onClickOnramp, is_crypto));
@@ -211,9 +215,5 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
         </div>
     );
 });
-
-CashierOnboarding.propTypes = {
-    setSideNotes: PropTypes.func,
-};
 
 export default CashierOnboarding;

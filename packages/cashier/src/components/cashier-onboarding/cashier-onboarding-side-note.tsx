@@ -5,7 +5,19 @@ import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shar
 import { useStore, observer } from '@deriv/stores';
 import './cashier-onboarding.scss';
 
-const CashierOnboardingSideNote = observer(({ is_crypto }) => {
+declare global {
+    interface Window {
+        LC_API: {
+            open_chat_window: VoidFunction;
+        };
+    }
+}
+
+type TCashierOnboardingSideNoteProps = {
+    is_crypto?: boolean;
+};
+
+const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSideNoteProps) => {
     const {
         client,
         ui,

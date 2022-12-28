@@ -1,19 +1,14 @@
 import React from 'react';
+import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
-import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import type { TRootStore } from 'Types';
 
 describe('<CashierOnboarding />', () => {
-    let mockRootStore;
+    let mockRootStore: DeepPartial<TRootStore>;
     beforeEach(() => {
         mockRootStore = {
             client: {
@@ -112,8 +107,8 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should show the proper message when <CashierOnboarding /> is rendered with crypto account', () => {
-        mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
         renderCashierOnboarding();
 
         expect(screen.getByText('Buy cryptocurrencies')).toBeInTheDocument();
@@ -121,204 +116,216 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his fiat account', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
-        mockRootStore.client.currency = 'USD';
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.client) mockRootStore.client.currency = 'USD';
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.modules.cashier.general_store.setIsDeposit).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setIsDeposit).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, not having the fiat account', () => {
-        mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit via bank wire, credit card, and e-wallet" section from his crypto account, having the fiat account', () => {
-        mockRootStore.client.accounts = {
-            CR90000001: { is_virtual: 0, currency: 'USD' },
-            CR90000002: { is_virtual: 0, currency: 'BTC' },
-        };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) {
+            mockRootStore.client.accounts = {
+                CR90000001: { is_virtual: 0, currency: 'USD' },
+                CR90000002: { is_virtual: 0, currency: 'BTC' },
+            };
+            mockRootStore.client.currency = 'BTC';
+        }
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_bank_card_ewallet_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Deposit via the following payment methods:')
+            node.textContent?.includes('Deposit via the following payment methods:')
         );
-        fireEvent.click(deposit_bank_card_ewallet_detail_div);
+        if (deposit_bank_card_ewallet_detail_div) fireEvent.click(deposit_bank_card_ewallet_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.account_prompt_dialog?.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(
+            1
+        );
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his fiat account, not having the crypto account', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_crypto_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('We accept the following cryptocurrencies:')
+            node.textContent?.includes('We accept the following cryptocurrencies:')
         );
-        fireEvent.click(deposit_crypto_detail_div);
+        if (deposit_crypto_detail_div) fireEvent.click(deposit_crypto_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit cryptocurrencies" section from his crypto account', () => {
-        mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_crypto_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('We accept the following cryptocurrencies:')
+            node.textContent?.includes('We accept the following cryptocurrencies:')
         );
-        fireEvent.click(deposit_crypto_detail_div);
+        if (deposit_crypto_detail_div) fireEvent.click(deposit_crypto_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies via fiat onramp" section from his fiat account, not having the crypto account', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const buy_crypto_onramp_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Choose any of these exchanges to buy cryptocurrencies:')
+            node.textContent?.includes('Choose any of these exchanges to buy cryptocurrencies:')
         );
-        fireEvent.click(buy_crypto_onramp_detail_div);
+        if (buy_crypto_onramp_detail_div) fireEvent.click(buy_crypto_onramp_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Buy cryptocurrencies" section from his crypto account', () => {
-        mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const buy_crypto_onramp_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes('Choose any of these exchanges to buy cryptocurrencies:')
+            node.textContent?.includes('Choose any of these exchanges to buy cryptocurrencies:')
         );
-        fireEvent.click(buy_crypto_onramp_detail_div);
+        if (buy_crypto_onramp_detail_div) fireEvent.click(buy_crypto_onramp_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.shouldNavigateAfterChooseCrypto).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit via payment agents" section', () => {
-        mockRootStore.client.accounts = {
-            CR90000001: { is_virtual: 0, currency: 'USD' },
-            CR90000002: { is_virtual: 0, currency: 'BTC' },
-        };
+        if (mockRootStore.client) {
+            mockRootStore.client.accounts = {
+                CR90000001: { is_virtual: 0, currency: 'USD' },
+                CR90000002: { is_virtual: 0, currency: 'BTC' },
+            };
+        }
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_via_pa_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via an authorised, independent payment agent in your country.'
             )
         );
-        fireEvent.click(deposit_via_pa_detail_div);
+        if (deposit_via_pa_detail_div) fireEvent.click(deposit_via_pa_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setShouldShowAllAvailableCurrencies).toHaveBeenCalledTimes(
-            1
-        );
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(
+            mockRootStore.modules?.cashier?.general_store?.setShouldShowAllAvailableCurrencies
+        ).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his fiat account', () => {
-        mockRootStore.client.accounts = {
-            CR90000001: { is_virtual: 0, currency: 'USD' },
-            CR90000002: { is_virtual: 0, currency: 'BTC' },
-        };
+        if (mockRootStore.client) {
+            mockRootStore.client.accounts = {
+                CR90000001: { is_virtual: 0, currency: 'USD' },
+                CR90000002: { is_virtual: 0, currency: 'BTC' },
+            };
+        }
 
         renderCashierOnboardingWithRouter();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(routes.cashier_p2p);
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, already having the fiat account', () => {
-        mockRootStore.client.accounts = {
-            CR90000001: { is_virtual: 0, currency: 'USD' },
-            CR90000002: { is_virtual: 0, currency: 'BTC' },
-        };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) {
+            mockRootStore.client.accounts = {
+                CR90000001: { is_virtual: 0, currency: 'USD' },
+                CR90000002: { is_virtual: 0, currency: 'BTC' },
+            };
+            mockRootStore.client.currency = 'BTC';
+        }
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.account_prompt_dialog?.shouldNavigateAfterPrompt).toHaveBeenCalledTimes(
+            1
+        );
     });
 
     it('should trigger proper callbacks when the client chooses "Deposit with Deriv P2P" section from his crypto account, not having the fiat account', () => {
-        mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000002: { is_virtual: 0, currency: 'BTC' } };
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
 
         renderCashierOnboarding();
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
-        fireEvent.click(deposit_with_dp2p_detail_div);
+        if (deposit_with_dp2p_detail_div) fireEvent.click(deposit_with_dp2p_detail_div);
 
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
     });
 
     it('should show the "Learn more about payment methods" message in Mobile mode', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
-        mockRootStore.ui.is_mobile = true;
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.ui) mockRootStore.ui.is_mobile = true;
 
         renderCashierOnboarding();
 
@@ -326,8 +333,8 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should trigger onClick callback when the user clicks "Learn more about payment methods" message in Mobile mode', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
-        mockRootStore.ui.is_mobile = true;
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.ui) mockRootStore.ui.is_mobile = true;
         window.open = jest.fn();
 
         renderCashierOnboarding();
@@ -339,8 +346,8 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should not show "Choose a way to fund your account" message if is_switching is true', () => {
-        mockRootStore.client.is_switching = true;
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.client) mockRootStore.client.is_switching = true;
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
 
         renderCashierOnboarding();
 
@@ -348,7 +355,7 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should not show "Choose a way to fund your account" message if accounts_list is an empty array', () => {
-        mockRootStore.client.accounts = [];
+        if (mockRootStore.client?.accounts) mockRootStore.client.accounts = {};
 
         renderCashierOnboarding();
 
@@ -356,8 +363,8 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should not show "Choose a way to fund your account" message if is_landing_company_loaded is false', () => {
-        mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
-        mockRootStore.client.is_landing_company_loaded = false;
+        if (mockRootStore.client) mockRootStore.client.accounts = { CR90000001: { is_virtual: 0, currency: 'USD' } };
+        if (mockRootStore.client) mockRootStore.client.is_landing_company_loaded = false;
 
         renderCashierOnboarding();
 
@@ -365,16 +372,20 @@ describe('<CashierOnboarding />', () => {
     });
 
     it('should redirect to "routes.trade" when the component will unmount', () => {
-        mockRootStore.client.accounts = {
-            CR90000001: { is_virtual: 0, currency: 'USD' },
-            CR90000002: { is_virtual: 0, currency: 'BTC' },
-        };
-        mockRootStore.modules.cashier.general_store.has_set_currency = false;
+        if (mockRootStore.client) {
+            mockRootStore.client.accounts = {
+                CR90000001: { is_virtual: 0, currency: 'USD' },
+                CR90000002: { is_virtual: 0, currency: 'BTC' },
+            };
+        }
+        if (mockRootStore.modules?.cashier?.general_store) {
+            mockRootStore.modules.cashier.general_store.has_set_currency = false;
+        }
 
         const { unmount } = renderCashierOnboardingWithRouter();
         unmount();
 
         expect(history.location.pathname).toBe(routes.trade);
-        expect(mockRootStore.ui.toggleSetCurrencyModal).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.toggleSetCurrencyModal).toHaveBeenCalledTimes(1);
     });
 });

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, NewsTicker, Text } from '@deriv/components';
+import type { TCashierOnboardingProvider } from './cashier-onboarding-providers';
 import './cashier-onboarding.scss';
 
 const CashierOnboardingDetails = ({
@@ -11,7 +11,7 @@ const CashierOnboardingDetails = ({
     detail_header,
     is_dark_mode_on,
     is_mobile,
-}) => {
+}: TCashierOnboardingProvider) => {
     return (
         <div className='cashier-onboarding-detail'>
             <Text size='sm' weight='bold' color='prominent'>
@@ -29,7 +29,11 @@ const CashierOnboardingDetails = ({
                     <Icon icon={is_dark_mode_on ? 'IcChevronRightBoldDark' : 'IcChevronRightBold'} size={16} />
                 </div>
                 {detail_contents?.map((content, id) => (
-                    <div key={id} className='cashier-onboarding-detail__array'>
+                    <div
+                        key={id}
+                        className='cashier-onboarding-detail__array'
+                        data-testid='dt_cashier_onboarding_detail_array'
+                    >
                         <div className='cashier-onboarding-detail__icons'>
                             <NewsTicker speed={10}>
                                 <div className={classNames({ 'cashier-onboarding-detail__icons-array': !is_mobile })}>
@@ -52,15 +56,6 @@ const CashierOnboardingDetails = ({
             </div>
         </div>
     );
-};
-
-CashierOnboardingDetails.propTypes = {
-    detail_click: PropTypes.func,
-    detail_contents: PropTypes.array,
-    detail_description: PropTypes.string,
-    detail_header: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
-    is_mobile: PropTypes.bool,
 };
 
 export default CashierOnboardingDetails;

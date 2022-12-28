@@ -2,15 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
 import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import type { TRootStore } from 'Types';
 
 describe('<CashierOnboardingSideNote />', () => {
-    let mockRootStore;
+    let mockRootStore: DeepPartial<TRootStore>;
     beforeEach(() => {
         mockRootStore = {
             client: {
@@ -29,9 +24,9 @@ describe('<CashierOnboardingSideNote />', () => {
         };
     });
 
-    const props = () => ({
+    const props = {
         is_crypto: false,
-    });
+    };
 
     const renderCashierOnboardingSideNote = () =>
         render(<CashierOnboardingSideNote {...props} />, {
@@ -59,7 +54,7 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should show the proper messages when is_crypto is true', () => {
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
         props.is_crypto = true;
 
         renderCashierOnboardingSideNote();
@@ -72,13 +67,13 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should trigger onClick callbacks when the client clicks on "Manage your accounts" link', () => {
-        mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
         props.is_crypto = true;
 
         renderCashierOnboardingSideNote();
 
         fireEvent.click(screen.getByTestId('dt_cashier_onboarding_side_note_link'));
-        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
-        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui?.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules?.cashier?.general_store?.setDepositTarget).toHaveBeenCalledTimes(1);
     });
 });

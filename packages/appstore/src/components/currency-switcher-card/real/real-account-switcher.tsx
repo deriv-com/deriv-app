@@ -57,6 +57,7 @@ const RealAccountCard = observer(() => {
                     {localize('Deposit')}
                 </Button>
             }
+            has_interaction
         >
             <BalanceText currency={currency} balance={formatMoney(currency, balance, true)} size='xs' />
         </CurrencySwitcherContainer>

@@ -112,6 +112,9 @@
     }
     &-tab {
         &__content {
+            height: 52rem;
+            overflow: hidden;
+
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
             }

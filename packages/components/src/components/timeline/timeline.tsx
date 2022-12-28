@@ -18,7 +18,7 @@ const Oval = ({ children }: TOval) => {
     );
 };
 
-const Timeline = ({ children, disabled_items, line_height, ...props }: React.PropsWithChildren<TTimeline>) => {
+const Timeline = ({ children, disabled_items, line_height = 'xxl', ...props }: React.PropsWithChildren<TTimeline>) => {
     return (
         <div {...props}>
             {Array.isArray(children) &&
@@ -37,7 +37,7 @@ const Timeline = ({ children, disabled_items, line_height, ...props }: React.Pro
                                 color='prominent'
                                 size='xs'
                                 className='dc-timeline__title'
-                                line_height={line_height || 'xxl'}
+                                line_height={line_height}
                             >
                                 {child.props.item_title}
                             </Text>

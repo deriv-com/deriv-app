@@ -341,8 +341,8 @@ const OpenPositions = ({
 }) => {
     const [active_index, setActiveIndex] = React.useState(is_multiplier || is_accumulator ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier or accumulator contract
-    const [has_accumulator_contract, setAccumulatorContract] = React.useState(false);
-    const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
+    const [has_accumulator_contract, setHasAccumulatorContract] = React.useState(false);
+    const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
 
     React.useEffect(() => {
@@ -362,17 +362,16 @@ const OpenPositions = ({
     }, [previous_active_positions]);
 
     const checkForAccuAndMultContracts = (prev_active_positions = []) => {
-        if (active_positions !== prev_active_positions) {
-            if (!has_accumulator_contract) {
-                setAccumulatorContract(
-                    active_positions.some(({ contract_info }) => isAccumulatorContract(contract_info?.contract_type))
-                );
-            }
-            if (!has_multiplier_contract) {
-                setMultiplierContract(
-                    active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
-                );
-            }
+        if (active_positions === prev_active_positions) return;
+        if (!has_accumulator_contract) {
+            setHasAccumulatorContract(
+                active_positions.some(({ contract_info }) => isAccumulatorContract(contract_info?.contract_type))
+            );
+        }
+        if (!has_multiplier_contract) {
+            setHasMultiplierContract(
+                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
+            );
         }
     };
 
@@ -454,7 +453,7 @@ const OpenPositions = ({
     const getTabs = () => {
         const tabs = [];
         tabs.push(
-            <div label={localize('Options')}>
+            <div label={localize('Options')} key='options'>
                 <OpenPositionsTable
                     className='open-positions'
                     columns={columns}
@@ -465,7 +464,7 @@ const OpenPositions = ({
         );
         if (has_multiplier_contract) {
             tabs.push(
-                <div label={localize('Multipliers')}>
+                <div label={localize('Multipliers')} key='mult'>
                     <OpenPositionsTable
                         className='open-positions-multiplier open-positions'
                         is_multiplier_tab
@@ -478,7 +477,7 @@ const OpenPositions = ({
         }
         if (has_accumulator_contract) {
             tabs.push(
-                <div label={localize('Accumulators')}>
+                <div label={localize('Accumulators')} key='accu'>
                     <OpenPositionsTable
                         className='open-positions-accumulator open-positions'
                         columns={columns}

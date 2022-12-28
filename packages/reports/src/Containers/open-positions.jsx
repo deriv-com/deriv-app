@@ -280,12 +280,12 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
         let take_profit = 0;
         let profit = 0;
 
-        active_positions_filtered?.forEach(portfolio_pos => {
-            buy_price += +portfolio_pos.contract_info.buy_price;
-            bid_price += +portfolio_pos.contract_info.bid_price;
-            take_profit += portfolio_pos.contract_info.limit_order?.take_profit?.order_amount;
-            if (portfolio_pos.contract_info) {
-                profit += getTotalProfit(portfolio_pos.contract_info);
+        active_positions_filtered?.forEach(({ contract_info }) => {
+            buy_price += +contract_info.buy_price;
+            bid_price += +contract_info.bid_price;
+            take_profit += contract_info.limit_order?.take_profit?.order_amount;
+            if (contract_info) {
+                profit += getTotalProfit(contract_info);
             }
         });
         totals = {
@@ -352,27 +352,27 @@ const OpenPositions = ({
          */
 
         onMount();
-        checkForAccumulatorContract();
-        checkForMultiplierContract();
-
+        checkForAccuAndMultContracts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        checkForAccumulatorContract(previous_active_positions);
-        checkForMultiplierContract(previous_active_positions);
+        checkForAccuAndMultContracts(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
-    const checkForAccumulatorContract = (prev_active_positions = []) => {
-        if (!has_accumulator_contract && active_positions !== prev_active_positions) {
-            setAccumulatorContract(active_positions.some(p => isAccumulatorContract(p.contract_info?.contract_type)));
-        }
-    };
-
-    const checkForMultiplierContract = (prev_active_positions = []) => {
-        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
-            setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
+    const checkForAccuAndMultContracts = (prev_active_positions = []) => {
+        if (active_positions !== prev_active_positions) {
+            if (!has_accumulator_contract) {
+                setAccumulatorContract(
+                    active_positions.some(({ contract_info }) => isAccumulatorContract(contract_info?.contract_type))
+                );
+            }
+            if (!has_multiplier_contract) {
+                setMultiplierContract(
+                    active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
+                );
+            }
         }
     };
 

@@ -13,10 +13,8 @@ const AccumulatorsChartElements = ({
     symbol,
 }) => {
     const accumulators_positions = all_positions.filter(
-        p =>
-            p.contract_info &&
-            symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, 'accumulator')
+        ({ contract_info }) =>
+            contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
     );
     const should_highlight_tick_without_contract = !!current_symbol_spot_time && is_stats_highlighted;
     const should_highlight_contract_tick =

@@ -40,7 +40,7 @@ const RadioGroupOptionsModal = ({
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile
-                            contract_name={'accumulator'}
+                            contract_name='accumulator'
                             current_value_object={{ name: 'growth_rate', value: growth_rate }}
                             info={localize(
                                 'Your stake will grow by {{growth_rate}}% at every tick starting from the second tick, as long as the price remains within a range of ±{{tick_size_barrier}} from the previous tick price.',

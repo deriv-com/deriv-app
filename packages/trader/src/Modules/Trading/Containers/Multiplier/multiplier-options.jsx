@@ -35,7 +35,7 @@ const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange
     return (
         <React.Fragment>
             <RadioGroupWithInfoMobile
-                contract_name={'multiplier'}
+                contract_name='multiplier'
                 current_value_object={{ name: 'multiplier', value: multiplier }}
                 info={localize(
                     'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'

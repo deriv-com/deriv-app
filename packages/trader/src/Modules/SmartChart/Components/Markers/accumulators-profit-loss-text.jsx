@@ -109,7 +109,6 @@ const AccumulatorsProfitLossText = ({
                 className={classNames(`${className}__profit`, {
                     [`${className}__profit--fading-in`]: is_fading_in,
                 })}
-                as='div'
                 data-testid='dt_accumulator_profit_text'
             >
                 {`${sign}${profit_whole_number}.`}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import classNames from 'classnames';
 import Text from '../text';
 
@@ -13,6 +14,11 @@ const Oval = ({ children }) => {
 };
 
 const Timeline = ({ children, disabled_items, ...props }) => {
+    const { pathname } = useLocation();
+    const is_path_2fa_or_apitoken = !!(
+        pathname === '/account/two-factor-authentication' || pathname === '/account/api-token'
+    );
+
     return (
         <div {...props}>
             {children.map((child, idx) => (
@@ -25,7 +31,12 @@ const Timeline = ({ children, disabled_items, ...props }) => {
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
-                        <Text as='h2' color='prominent' line_height='xxl' className='dc-timeline__title'>
+                        <Text
+                            as='h2'
+                            color='prominent'
+                            line_height={is_path_2fa_or_apitoken ? 'xxxl' : 'xxl'}
+                            className='dc-timeline__title'
+                        >
                             {child.props.item_title}
                         </Text>
                         <div className='dc-timeline__content'>{child}</div>

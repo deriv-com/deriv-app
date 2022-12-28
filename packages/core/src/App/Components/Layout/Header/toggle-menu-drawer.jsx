@@ -215,6 +215,8 @@ const ToggleMenuDrawer = React.forwardRef(
                     return is_virtual || active_account_landing_company !== 'maltainvest';
                 } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                     return !should_allow_authentication;
+                } else if (/proof-of-ownership/.test(route_path)) {
+                    return is_virtual;
                 }
                 return false;
             };

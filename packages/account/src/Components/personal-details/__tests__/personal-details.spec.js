@@ -704,7 +704,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByTestId('personal-details-container'), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 

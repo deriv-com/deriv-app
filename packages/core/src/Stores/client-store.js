@@ -264,6 +264,7 @@ export default class ClientStore extends BaseStore {
             is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
+            has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
@@ -771,6 +772,10 @@ export default class ClientStore extends BaseStore {
 
     get has_restricted_mt5_account() {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
+    }
+
+    get has_mt5_account_with_rejected_poa() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_rejected')).length;
     }
 
     get should_restrict_bvi_account_creation() {

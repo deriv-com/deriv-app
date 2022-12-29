@@ -5,19 +5,19 @@ import { AccumulatorsStatsManualModal } from '../accumulators-stats-manual-modal
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     const Modal = jest.fn(
-        props =>
-            props.is_open && (
+        ({ children, is_open, title, toggleModal }) =>
+            is_open && (
                 <div data-testid='modal'>
-                    <h3>{props.title}</h3>
-                    <div onClick={props.toggleModal}>IcCross</div>
-                    {props.children}
+                    <h3>{title}</h3>
+                    <div onClick={toggleModal}>IcCross</div>
+                    {children}
                 </div>
             )
     );
-    Modal.Body = jest.fn(props => <div> {props.children} </div>);
+    Modal.Body = jest.fn(({ children }) => <div>{children}</div>);
     return {
         ...original_module,
-        Icon: jest.fn(props => <div onClick={props.onClick}>{props.icon}</div>),
+        Icon: jest.fn(({ icon, onClick }) => <div onClick={onClick}>{icon}</div>),
         Modal,
     };
 });

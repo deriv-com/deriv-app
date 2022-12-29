@@ -14,8 +14,7 @@ const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange
     React.useEffect(() => {
         if (!amount) return undefined;
 
-        const onProposalResponse = response => {
-            const { proposal, echo_req, subscription } = response;
+        const onProposalResponse = ({ echo_req, proposal, subscription }) => {
             if (isMounted() && proposal && echo_req.contract_type === 'MULTUP' && Number(echo_req.amount) === amount) {
                 setCommission(proposal.commission);
                 setStopOut(proposal.limit_order?.stop_out?.order_amount);

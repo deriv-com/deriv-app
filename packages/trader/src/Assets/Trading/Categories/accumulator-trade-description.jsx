@@ -41,6 +41,8 @@ export const AccumulatorTradeDescription = () => {
     return (
         <React.Fragment>
             {content.map(({ type, text }, index) =>
+                /* We're using the array’s indexes as keys in this “static” list, which is never re-ordered, for better performance. https://www.developerway.com/posts/react-key-attribute
+            We're not using text itself as keys here because text will update each time platform language is changed. */
                 type === 'heading' ? (
                     <h2 key={index}>
                         <strong>{text}</strong>

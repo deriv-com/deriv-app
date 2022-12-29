@@ -53,7 +53,6 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
@@ -538,7 +537,6 @@ export default class OrderStore {
     setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
     }
-
 
     setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
         this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;

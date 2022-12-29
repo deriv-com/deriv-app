@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
-import { reaction } from 'mobx';
+import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
@@ -24,7 +24,7 @@ const AppContent = ({ order_id }) => {
         return reaction(
             () => general_store.props.setP2POrderProps,
             () => {
-                if (typeof general_store.props.setP2POrderProps === 'function') {
+                if (isAction(general_store.props.setP2POrderProps)) {
                     general_store.props.setP2POrderProps({
                         order_id,
                         redirectToOrderDetails: general_store.redirectToOrderDetails,

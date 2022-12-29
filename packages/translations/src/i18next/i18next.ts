@@ -1,6 +1,6 @@
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
-import { useTranslation, initReactI18next } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 

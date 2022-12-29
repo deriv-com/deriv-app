@@ -9,13 +9,13 @@ const AccumulatorsChartElements = ({
     current_symbol_spot,
     current_symbol_spot_time,
     is_stats_highlighted,
-    last_contract_info,
     symbol,
 }) => {
     const accumulators_positions = all_positions.filter(
         ({ contract_info }) =>
             contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
     );
+    const last_contract_info = accumulators_positions.slice().pop()?.contract_info;
     const should_highlight_tick_without_contract = !!current_symbol_spot_time && is_stats_highlighted;
     const should_highlight_contract_tick =
         last_contract_info?.status === 'lost' && current_symbol_spot_time === last_contract_info?.exit_tick_time;
@@ -43,7 +43,6 @@ AccumulatorsChartElements.propTypes = {
     current_symbol_spot: PropTypes.number,
     current_symbol_spot_time: PropTypes.number,
     is_stats_highlighted: PropTypes.bool,
-    last_contract_info: PropTypes.object,
     symbol: PropTypes.string,
 };
 

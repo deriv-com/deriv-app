@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isEmptyObject } from '@deriv/shared';
+import { isAccumulatorContract, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
@@ -8,12 +8,12 @@ import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
 const Purchase = ({
+    active_positions,
     basis,
     contract_type,
     currency,
     has_cancellation,
     is_accumulator,
-    last_contract_status,
     is_multiplier,
     is_mobile,
     is_purchase_enabled,
@@ -91,7 +91,7 @@ const Purchase = ({
                 break;
         }
     });
-    if (is_accumulator && last_contract_status === 'open') {
+    if (is_accumulator && active_positions.some(position => isAccumulatorContract(position.type))) {
         components.unshift(
             <PurchaseButtonsOverlay
                 is_to_cover_one_button={components.length === 1}
@@ -104,11 +104,11 @@ const Purchase = ({
 };
 
 Purchase.propTypes = {
+    active_positions: PropTypes.array,
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_cancellation: PropTypes.bool,
     is_accumulator: PropTypes.bool,
-    last_contract_status: PropTypes.string,
     is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
@@ -125,12 +125,12 @@ Purchase.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ contract_trade, modules, ui }) => ({
+export default connect(({ modules, portfolio, ui }) => ({
+    active_positions: portfolio.active_positions,
     currency: modules.trade.currency,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,
-    last_contract_status: contract_trade.last_contract.contract_info?.status,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_accumulator: modules.trade.is_accumulator,

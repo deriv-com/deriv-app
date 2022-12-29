@@ -951,6 +951,11 @@ export default class TradeStore extends BaseStore {
             }
             this.debouncedProposal();
         }
+
+        //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account
+        if (!this.root_store.client.is_virtual) {
+            delete this.contract_types_list.Accumulators;
+        }
     }
 
     get is_synthetics_available() {

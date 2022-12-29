@@ -301,7 +301,6 @@ const Chart = props => {
         chartStateChange,
         current_symbol_spot,
         current_symbol_spot_time,
-        last_contract,
         ticks_history_stats,
         exportLayout,
         extra_barriers = [],
@@ -410,7 +409,6 @@ const Chart = props => {
                     current_symbol_spot={current_symbol_spot}
                     current_symbol_spot_time={current_symbol_spot_time}
                     is_stats_highlighted={ticks_history_stats?.ticks_stayed_in?.[0] === 0}
-                    last_contract_info={last_contract?.contract_info}
                     symbol={symbol}
                 />
             )}
@@ -435,7 +433,6 @@ Chart.propTypes = {
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
-    last_contract: PropTypes.object,
     main_barrier: PropTypes.any,
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
@@ -469,7 +466,6 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) 
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
-        contract_info: contract_trade.last_contract.contract_info,
     },
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,

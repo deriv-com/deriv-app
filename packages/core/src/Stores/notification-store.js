@@ -52,6 +52,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             p2p_order_props: observable,
             custom_notifications: computed,
+            filtered_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
@@ -138,6 +139,10 @@ export default class NotificationStore extends BaseStore {
             },
         };
         return notification_content;
+    }
+
+    get filtered_notifications() {
+        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
     addNotificationBar(message) {

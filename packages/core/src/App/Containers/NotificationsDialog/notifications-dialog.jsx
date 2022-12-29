@@ -30,9 +30,6 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         return `IcAlert${toTitleCase(type)}`;
     };
 
-    const getButtonSettings = item =>
-        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
-
     return (
         <React.Fragment>
             {notifications.map(item => (
@@ -57,9 +54,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
-                        {!!getButtonSettings(item) && (
+                        {!isEmptyObject(item.action) && (
                             <React.Fragment>
-                                {item[getButtonSettings(item)].route ? (
+                                {item.action.route ? (
                                     <BinaryLink
                                         onClick={toggleDialog}
                                         active_class='notifications-item'
@@ -68,19 +65,19 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                                             'dc-btn--secondary',
                                             'notifications-item__cta-button'
                                         )}
-                                        to={item[getButtonSettings(item)].route}
+                                        to={item.action.route}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item[getButtonSettings(item)].text}
+                                            {item.action.text}
                                         </Text>
                                     </BinaryLink>
                                 ) : (
                                     <Button
                                         className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={item[getButtonSettings(item)].onClick}
+                                        onClick={item.action.onClick}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item[getButtonSettings(item)].text}
+                                            {item.action.text}
                                         </Text>
                                     </Button>
                                 )}
@@ -192,7 +189,7 @@ NotificationsDialog.propTypes = {
 };
 
 export default connect(({ common, notifications }) => ({
-    notifications: notifications.notifications,
+    notifications: notifications.filtered_notifications,
     app_routing_history: common.app_routing_history,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,

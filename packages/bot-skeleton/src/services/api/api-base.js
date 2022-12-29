@@ -9,6 +9,7 @@ class APIBase {
     account_info = {};
     is_running = false;
     subscriptions = [];
+    time_interval = null;
 
     init(force_update = false) {
         if (getLoginId()) {
@@ -17,6 +18,9 @@ class APIBase {
             this.api = generateDerivApiInstance();
             this.initEventListeners();
             this.authorizeAndSubscribe();
+            if (this.time_interval) clearInterval(this.time_interval);
+            this.time_interval = null;
+            this.getTime();
         }
     }
 
@@ -48,11 +52,11 @@ class APIBase {
         if (token) {
             this.token = token;
             this.account_id = account_id;
+            this.getActiveSymbols();
             this.api
                 .authorize(this.token)
                 .then(({ authorize }) => {
                     this.subscribe();
-                    this.getActiveSymbols();
                     this.account_info = authorize;
                 })
                 .catch(e => {
@@ -71,7 +75,6 @@ class APIBase {
     }
 
     getActiveSymbols = async () => {
-        await this.api.expectResponse('authorize');
         const { active_symbols = [] } = await this.api.send({ active_symbols: 'brief' }).catch(e => {
             globalObserver.emit('Error', e);
         });
@@ -100,6 +103,14 @@ class APIBase {
     clearSubscriptions() {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions = [];
+    }
+
+    getTime() {
+        if (!this.time_interval) {
+            this.time_interval = setInterval(() => {
+                this.api.send({ time: 1 });
+            }, 30000);
+        }
     }
 }
 

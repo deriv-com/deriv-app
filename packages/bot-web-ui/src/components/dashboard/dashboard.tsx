@@ -41,6 +41,7 @@ type TDashboard = {
     has_tour_started: boolean;
     is_dialog_open: boolean;
     is_drawer_open: boolean;
+    is_mobile: boolean;
     is_tour_dialog_visible: boolean;
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
@@ -73,6 +74,7 @@ const Dashboard = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     is_dialog_open,
+    is_mobile,
     loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
@@ -199,33 +201,35 @@ const Dashboard = ({
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
                     <TourTriggrerDialog />
-                    <TourSlider />
-                    {has_tour_started && (
-                        <ReactJoyride
-                            steps={DBOT_ONBOARDING}
-                            continuous
-                            callback={handleJoyrideCallback}
-                            spotlightClicks
-                            hideCloseButton
-                            locale={{ back: 'Previous' }}
-                            styles={{
-                                options: {
-                                    arrowColor: 'var(--general-main-2)',
-                                    backgroundColor: 'var(--general-main-2)',
-                                    primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-general)',
-                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                },
-                                buttonBack: {
-                                    border: '0.2rem solid var(--text-less-prominent)',
-                                    marginRight: '1rem',
-                                    borderRadius: '0.4rem',
-                                    color: 'var(--text-general)',
-                                    padding: '0.6rem',
-                                },
-                            }}
-                        />
-                    )}
+                    {has_tour_started &&
+                        (is_mobile ? (
+                            <TourSlider />
+                        ) : (
+                            <ReactJoyride
+                                steps={DBOT_ONBOARDING}
+                                continuous
+                                callback={handleJoyrideCallback}
+                                spotlightClicks
+                                hideCloseButton
+                                locale={{ back: 'Previous' }}
+                                styles={{
+                                    options: {
+                                        arrowColor: 'var(--general-main-2)',
+                                        backgroundColor: 'var(--general-main-2)',
+                                        primaryColor: 'var(--brand-red-coral)',
+                                        textColor: 'var(--text-general)',
+                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                    },
+                                    buttonBack: {
+                                        border: '0.2rem solid var(--text-less-prominent)',
+                                        marginRight: '1rem',
+                                        borderRadius: '0.4rem',
+                                        color: 'var(--text-general)',
+                                        padding: '0.6rem',
+                                    },
+                                }}
+                            />
+                        ))}
                     <Tabs
                         active_index={active_tab}
                         className='dashboard__tabs'
@@ -319,6 +323,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
+    is_mobile: ui.is_mobile,
     loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,

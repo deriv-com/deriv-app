@@ -14,17 +14,6 @@
 
     &__container {
         position: relative;
-
-        &:after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 200;
-        }
     }
 
     &__chart-wrapper {
@@ -263,6 +252,7 @@
         flex-direction: column;
         align-items: center;
         position: fixed;
+        left: 0;
         bottom: 0;
         z-index: 1000;
         background-color: #ffffff;
@@ -275,35 +265,45 @@
         }
 
         &__content {
-            margin-bottom: 1.6rem;
+            text-align: center;
+            padding: 0 1.6rem;
+            min-height: 7.8rem;
         }
 
         &__progress-bar {
             margin-bottom: 1.6rem;
         }
 
-        &__button-group {
-            &__left {
-                height: 4rem;
-                width: 16rem;
-                border: 2px solid #999999;
-                background: #ffffff;
-                margin-right: 0.8rem;
-                border-radius: 0.4rem;
-                outline: none;
-            }
+        &__status {
+            width: 100%;
+        }
+    }
 
-            &__right {
-                height: 4rem;
-                width: 16rem;
-                background: #ff444f;
-                border-radius: 0.4rem;
-                border: none;
-                outline: none;
+    &__button-group {
+        display: flex;
+        padding: 0 1.6rem;
+        &--default {
+            height: 4rem;
+            width: 100%;
+            border: 2px solid #999999;
+            background: #ffffff;
+            margin-right: 0.8rem;
+            border-radius: 0.4rem;
+            outline: none;
+            cursor: pointer;
+        }
 
-                span {
-                    color: #fff;
-                }
+        &--danger {
+            height: 4rem;
+            width: 100%;
+            background: #ff444f;
+            border-radius: 0.4rem;
+            border: none;
+            outline: none;
+            cursor: pointer;
+
+            span {
+                color: #fff;
             }
         }
     }

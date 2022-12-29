@@ -488,25 +488,26 @@ export const trading_hub_contents = {
     },
 };
 
-const DBOT_ONBOARDING_MOBILE = {
+export const DBOT_ONBOARDING_MOBILE = {
     step1: {
-        header: 'Get started on DBot',
-        content: 'Hi [first name]! Hit Start for a quick tour to help you get started.',
+        content: 'Build your bot using drag-and-drop blocks according to your ideal trading strategy.',
+        key: 1,
     },
     step2: {
-        content: 'Build your bot using drag-and-drop blocks according to your ideal trading strategy.',
-    },
-    step3: {
         content:
             'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.',
+        key: 2,
+    },
+    step3: {
+        content: 'View the market price of your favourite assets.',
+        key: 3,
     },
     step4: {
-        content: 'View the market price of your favourite assets.',
+        content: 'Start with a video guide and the FAQs.',
+        key: 4,
     },
     step5: {
-        content: 'Start with a video guide and the FAQs.',
-    },
-    step6: {
         content: 'You can also use these shortcuts to import or build your bot.',
+        key: 5,
     },
 };

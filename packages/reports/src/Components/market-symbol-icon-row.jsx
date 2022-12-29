@@ -1,16 +1,17 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
-const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true }) => {
+const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true, is_vanilla }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
     if (should_show_category_icon && info_from_shortcode) {
         return (
-            <div className='market-symbol-icon'>
+            <div className={classNames('market-symbol-icon', { 'market-symbol-icon__vanilla': is_vanilla })}>
                 <div className='market-symbol-icon-name'>
                     <Popover
                         classNameTarget='market-symbol-icon__popover'
@@ -89,6 +90,7 @@ MarketSymbolIconRow.propTypes = {
     payload: PropTypes.object,
     show_description: PropTypes.bool,
     should_show_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
 };
 
 export default MarketSymbolIconRow;

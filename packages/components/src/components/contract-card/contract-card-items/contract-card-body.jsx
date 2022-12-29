@@ -87,7 +87,15 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                                 <Money amount={barrier} currency={currency} />
                             </ContractCardItem>
                         </div>
-                        {progress_slider}
+
+                        {is_sold ? (
+                            <ResultStatusIcon
+                                getCardLabels={getCardLabels}
+                                is_contract_won={getDisplayStatus(contract_info) === 'won'}
+                            />
+                        ) : (
+                            progress_slider
+                        )}
                         <ContractCardItem
                             className='dc-contract-card-item__total-profit-loss'
                             header={getCardLabels().TOTAL_PROFIT_LOSS}

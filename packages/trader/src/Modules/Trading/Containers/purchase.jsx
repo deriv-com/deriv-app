@@ -91,7 +91,7 @@ const Purchase = ({
                 break;
         }
     });
-    if (is_accumulator && active_positions.some(position => isAccumulatorContract(position.type))) {
+    if (is_accumulator && active_positions.some(({ type }) => isAccumulatorContract(type))) {
         components.unshift(
             <PurchaseButtonsOverlay
                 is_to_cover_one_button={components.length === 1}

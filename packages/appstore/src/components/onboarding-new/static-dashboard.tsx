@@ -71,26 +71,28 @@ const StaticDashboard = ({
 
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const toggle_options = [
-        { text: 'CFDs', value: 0 },
-        { text: `${is_eu_user ? 'Multipliers' : 'Options and Multipliers'}`, value: 1 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options and Multipliers'}`, value: 0 },
+        { text: 'CFDs', value: 1 },
     ];
 
-    const [index, setIndex] = React.useState<number | string>(0);
+    const [index, setIndex] = React.useState<number | string>(1);
 
     const Divider = () => <div className='divider' />;
 
-    React.useEffect(() => {
-        const change_index_interval_id = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
-            }
-        }, 5000);
+    // React.useEffect(() => {
+    // if (!is_first_step) {
+    //     const change_index_interval_id = setInterval(() => {
+    //         if (index === 0) {
+    //             setIndex(1);
+    //         } else {
+    //             setIndex(0);
+    //         }
+    //     }, 5000);
+    // }
 
-        return () => clearInterval(change_index_interval_id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index]);
+    //     return () => clearInterval(change_index_interval_id);
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
     const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Deriv account';
@@ -99,7 +101,7 @@ const StaticDashboard = ({
     return (
         <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
             <div className='static-dashboard'>
-                {(isDesktop() || (isMobile() && index === 1)) && (
+                {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>
                         <div className='static-dashboard-wrapper__header-and-description'>
                             <div className='static-dashboard-wrapper__header'>
@@ -293,7 +295,7 @@ const StaticDashboard = ({
                     </div>
                 )}
 
-                {(isDesktop() || (isMobile() && index === 0)) && (
+                {(isDesktop() || (isMobile() && index === 1)) && (
                     <div className='static-dashboard-wrapper__bordered'>
                         <div className='static-dashboard-wrapper__header'>
                             {isMobile() ? (
@@ -371,21 +373,21 @@ const StaticDashboard = ({
                                         ]}
                                     />
                                 </Text>
-
-                                {isMobile() && (
-                                    <Text
-                                        color={'red'}
-                                        size='xxs'
-                                        weight='bold'
-                                        className={classNames('static-dashboard-wrapper__header', {
-                                            'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                is_blurry.cfd_description || is_blurry.cfd_text,
-                                        })}
-                                    >
-                                        {compare_accounts_title}
-                                    </Text>
-                                )}
                             </div>
+                        )}
+
+                        {isMobile() && (
+                            <Text
+                                color={'red'}
+                                size='xxs'
+                                weight='bold'
+                                className={classNames('static-dashboard-wrapper__header', {
+                                    'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                        is_blurry.cfd_description || is_blurry.cfd_text,
+                                })}
+                            >
+                                {compare_accounts_title}
+                            </Text>
                         )}
 
                         <div className='static-dashboard-wrapper__body--header'>
@@ -416,6 +418,7 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
+                            {isMobile() && !has_account && <Divider />}
                             {is_eu_user && (
                                 <StaticCFDAccountManager
                                     type='financial'

@@ -7,14 +7,15 @@
     justify-content: space-between;
 
     @include mobile {
-        width: auto;
+        align-items: flex-start;
+        width: 31rem;
         margin-right: 0;
+        margin-bottom: 4.5rem;
     }
 
     &--cfds {
         @include mobile {
             width: auto;
-            margin-bottom: 4.5rem;
         }
     }
 
@@ -37,6 +38,7 @@
 
         @include mobile {
             margin-right: 2rem;
+            margin-top: 1.5rem;
         }
 
         &--animated {

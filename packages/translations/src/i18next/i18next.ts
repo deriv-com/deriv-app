@@ -136,7 +136,6 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 export const Localize = withI18n(i18n);
 
 export const localize = (string: string, values?: object) => {
-    //const { t } = useTranslation();
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

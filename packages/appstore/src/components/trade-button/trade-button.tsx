@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
 
-const TradeButton = ({ link_to, onAction }: Pick<Actions, 'link_to' | 'onAction'>) => {
+const TradeButton = ({ link_to, onAction, is_external }: Pick<Actions, 'link_to' | 'onAction' | 'is_external'>) => {
     const { traders_hub, modules } = useStores();
     const { is_demo } = traders_hub;
     const { dxtrade_tokens } = modules.cfd;
@@ -13,6 +13,13 @@ const TradeButton = ({ link_to, onAction }: Pick<Actions, 'link_to' | 'onAction'
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
     if (link_to) {
+        if (is_external) {
+            return (
+                <a href={link_to}>
+                    <Button primary>{localize('Trade')}</Button>
+                </a>
+            );
+        }
         return (
             <Link to={link_to}>
                 <Button primary>{localize('Trade')}</Button>

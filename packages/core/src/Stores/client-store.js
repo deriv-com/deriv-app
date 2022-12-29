@@ -363,6 +363,7 @@ export default class ClientStore extends BaseStore {
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
             is_high_risk: computed,
+            is_low_risk: computed,
             has_residence: computed,
             setVisibilityRealityCheck: action.bound,
             clearRealityCheckTimeout: action.bound,
@@ -2417,6 +2418,11 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
+    }
+
+    get is_low_risk() {
+        if (isEmptyObject(this.account_status)) return false;
+        return this.account_status.risk_classification === 'low';
     }
 
     get has_residence() {

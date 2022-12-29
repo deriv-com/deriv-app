@@ -11,18 +11,19 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = () => {
     const { traders_hub, client, ui } = useStores();
-    const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected } = traders_hub;
+    const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected, is_eu_user } =
+        traders_hub;
     const is_demo = selected_account_type === 'demo';
-    const { is_eu, is_landing_company_loaded } = client;
+    const { is_landing_company_loaded } = client;
 
     const OptionsTitle = () => {
-        if (!is_eu_selected && !is_eu && !isMobile()) {
+        if (!is_eu_user && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if ((is_eu_selected || is_eu) && !isMobile()) {
+        } else if (is_eu_user && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Multipliers' />
@@ -36,7 +37,7 @@ const OptionsAndMultipliersListing = () => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                !is_eu_selected && !is_eu ? (
+                !is_eu_user ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
@@ -79,7 +80,7 @@ const OptionsAndMultipliersListing = () => {
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
-                        has_divider={!is_eu && !is_eu_selected && (isMobile() ? index < 4 : index < 3)}
+                        has_divider={!is_eu_user && (isMobile() ? index < 4 : index < 3)}
                     />
                 ))
             ) : (

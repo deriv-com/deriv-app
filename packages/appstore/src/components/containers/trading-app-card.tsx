@@ -24,10 +24,11 @@ const TradingAppCard = ({
 
     const platform = traders_hub.is_eu_user ? mf_platform_config : platform_config;
 
-    const { app_desc, link_to } = platform.find(config => config.name === name) || {
+    const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
+
     return (
         <div className='trading-app-card'>
             <div>
@@ -62,7 +63,7 @@ const TradingAppCard = ({
                 </Text>
             </div>
             <div className={classNames('trading-app-card__actions', { 'trading-app-card--divider': has_divider })}>
-                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} />
+                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} is_external={is_external} />
             </div>
         </div>
     );

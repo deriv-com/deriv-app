@@ -231,12 +231,8 @@ export default class MyAdsStore extends BaseStore {
                         setSubmitting(false);
                     } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
                         this.setAdvertDetails(response.p2p_advert_create);
-                        setTimeout(() => {
-                            if (!this.is_api_error_modal_visible) {
-                                this.setIsAdCreatedModalVisible(true);
-                            }
-                        }, 200);
-                    } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                        this.setIsAdCreatedModalVisible(true);
+                    } else if (!this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
                         }

@@ -22,24 +22,43 @@ const ModalManagerContextProvider = props => {
         }
         setIsModalOpen(true);
     };
-    // hideModal(options), options: {save_form_history: false, hide_all_modals: false}
-    const hideModal = (should_save_form_history = false) => {
+
+    /**
+     * Hides the current shown modal.
+     * If a previous modal was present, by default the previous modal will be shown in-place of the current closed modal.
+     * This option can be overriden by setting `hide_all_modals` to `true` in the `options` argument to close all modals instead.
+     *
+     * @param {Object} options - list of supported settings to tweak how modals should be hidden:
+     * - **hide_all_modals**: `false` by default. If set to `true`, previous modal will not be shown and all modals are hidden.
+     * - **save_form_history**: `false` by default. If set to `true`, form values in modals that has a form with `ModalForm` component
+     * will be saved when the modal is hidden and restored when modal is shown again.
+     */
+    const hideModal = (options = {}) => {
+        const { save_form_history = false, hide_all_modals = false } = options;
         if (isDesktop()) {
-            if (should_save_form_history) {
+            if (save_form_history) {
                 general_store.saveFormState();
             } else {
                 general_store.setSavedFormState(null);
                 general_store.setFormikRef(null);
             }
 
-            if (previous_modal) {
+            if (hide_all_modals) {
+                setPreviousModal({});
+                setActiveModal({});
+                setIsModalOpen(false);
+            } else if (previous_modal) {
                 setActiveModal(previous_modal);
-                setPreviousModal(null);
+                setPreviousModal({});
             } else {
                 setActiveModal({});
                 setIsModalOpen(false);
             }
         } else if (Object.keys(stacked_modal).length !== 0) {
+            if (hide_all_modals) {
+                setActiveModal({});
+                setIsModalOpen(false);
+            }
             setStackedModal({});
         } else {
             setActiveModal({});
@@ -55,6 +74,7 @@ const ModalManagerContextProvider = props => {
         hideModal,
         is_modal_open,
         modal: active_modal,
+        previous_modal,
         stacked_modal,
         showModal,
     };

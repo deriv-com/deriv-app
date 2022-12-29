@@ -82,16 +82,22 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            if (rate_type === ad_type.FLOAT && floating_rate_store.is_market_rate_changed) {
-                showModal({
-                    key: 'RateChangeModal',
-                });
-            }
+            const disposeRateChangeModal = reaction(
+                () => floating_rate_store.is_market_rate_changed,
+                is_market_rate_changed => {
+                    if (is_market_rate_changed && rate_type === ad_type.FLOAT) {
+                        showModal({
+                            key: 'RateChangeModal',
+                        });
+                    }
+                }
+            );
             buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
                 disposeReceiveAmountReaction();
+                disposeRateChangeModal();
             };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps

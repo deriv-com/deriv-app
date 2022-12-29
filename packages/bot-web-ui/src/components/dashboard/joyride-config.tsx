@@ -99,7 +99,7 @@ export const DBOT_ONBOARDING = [
                 content={[
                     localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
                     localize(
-                        'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy .'
+                        'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
                 img={getImageLocation('ic-new-user-step-two.png')}
@@ -334,7 +334,7 @@ const Step4 = () => (
                 </div>
                 <div className='joyride-content__with-icon__right'>
                     <Localize
-                        i18n_default_text='Pro tip: You can also drag out the desired block'
+                        i18n_default_text='Pro tip: You can also click and drag out the desired block'
                         components={[<strong key={0} />]}
                     />
                 </div>

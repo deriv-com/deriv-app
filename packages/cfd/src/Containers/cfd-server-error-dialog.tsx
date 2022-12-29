@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
-const CFDServerErrorDialog = () => {
+const CFDServerErrorDialog = observer(() => {
     const { ui, modules } = useStore();
     const { enableApp, disableApp } = ui;
     const { cfd } = modules;
@@ -27,6 +27,6 @@ const CFDServerErrorDialog = () => {
             {error_message || <Localize i18n_default_text='Sorry, an error occured while processing your request.' />}
         </Dialog>
     );
-};
+});
 
 export default CFDServerErrorDialog;

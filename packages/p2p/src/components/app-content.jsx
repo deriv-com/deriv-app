@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
@@ -18,6 +19,27 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
+
+    React.useEffect(() => {
+        return reaction(
+            () => general_store.props.setP2POrderProps,
+            () => {
+                if (typeof general_store.props.setP2POrderProps === 'function') {
+                    general_store.props.setP2POrderProps({
+                        order_id,
+                        redirectToOrderDetails: general_store.redirectToOrderDetails,
+                        setIsRatingModalOpen: is_open => {
+                            if (is_open) {
+                                showModal({ key: 'RatingModal' });
+                            } else {
+                                hideModal();
+                            }
+                        },
+                    });
+                }
+            }
+        );
+    }, []);
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -37,20 +59,6 @@ const AppContent = ({ order_id }) => {
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return <AdvertiserPage />;
-    }
-
-    if (general_store.props.setP2POrderProps) {
-        general_store.props.setP2POrderProps({
-            order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
-            setIsRatingModalOpen: is_open => {
-                if (is_open) {
-                    showModal({ key: 'RatingModal' });
-                } else {
-                    hideModal();
-                }
-            },
-        });
     }
 
     return (

@@ -139,7 +139,7 @@ export const localize = (string: string, values?: object) => {
     //const { t } = useTranslation();
     if (!string) return '';
 
-    return i18n.t(crc32(string).toString(), { defaultValue: string, ...values } as const);
+    return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });
 };
 
 const loadIncontextTranslation = () => {

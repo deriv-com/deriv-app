@@ -122,7 +122,6 @@ export const getLanguage = () => i18n.language || initial_language;
 
 // eslint-disable-next-line no-unused-vars
 export const changeLanguage = async (lang: string, cb: (arg0: string) => void) => {
-    // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
         await i18n.changeLanguage(lang, () => {

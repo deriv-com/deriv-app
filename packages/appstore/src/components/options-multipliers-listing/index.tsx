@@ -11,8 +11,15 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = () => {
     const { traders_hub, client, ui } = useStores();
-    const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected, is_eu_user } =
-        traders_hub;
+    const {
+        available_platforms,
+        selected_account_type,
+        has_any_real_account,
+        is_eu_user,
+        is_real,
+        no_MF_account,
+        no_CR_account,
+    } = traders_hub;
     const is_demo = selected_account_type === 'demo';
     const { is_landing_company_loaded } = client;
 
@@ -59,7 +66,7 @@ const OptionsAndMultipliersListing = () => {
             }
             is_deriv_platform
         >
-            {!is_demo && !has_any_real_account && (
+            {is_real && no_CR_account && (
                 <div className='full-row'>
                     <TradingAppCard
                         name={localize('Deriv account')}
@@ -73,6 +80,21 @@ const OptionsAndMultipliersListing = () => {
                     />
                 </div>
             )}
+            {is_real && no_MF_account && (
+                <div className='full-row'>
+                    <TradingAppCard
+                        name={localize('Deriv account')}
+                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        icon='Options'
+                        availability='All'
+                        type='get'
+                        onAction={() => {
+                            ui.openRealAccountSignup('maltainvest');
+                        }}
+                    />
+                </div>
+            )}
+
             {is_landing_company_loaded ? (
                 available_platforms.map((available_platform: BrandConfig, index: number) => (
                     <TradingAppCard

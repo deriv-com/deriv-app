@@ -3,6 +3,7 @@ import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
+import { CashierStoreProvider } from './stores/useCashierStores';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {
@@ -13,7 +14,9 @@ const App = ({ passthrough: { WS, root_store } }) => {
 
     return (
         <StoreProvider store={root_store}>
-            <Routes />
+            <CashierStoreProvider>
+                <Routes />
+            </CashierStoreProvider>
         </StoreProvider>
     );
 };

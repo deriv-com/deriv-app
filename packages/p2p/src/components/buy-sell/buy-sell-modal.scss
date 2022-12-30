@@ -11,6 +11,12 @@
         position: relative;
         display: block;
         padding-top: 2.4rem;
+
+        @include mobile {
+            & > form {
+                height: fit-content !important;
+            }
+        }
     }
 
     &-danger {
@@ -61,6 +67,10 @@
                 margin-top: 1rem; // Compensate for label.
             }
         }
+    }
+
+    &-form {
+        height: fit-content !important;
     }
 
     &-footer {
@@ -207,7 +217,4 @@
         margin-top: 1rem;
         border-top: 2px solid var(--general-section-5);
     }
-}
-.dc-mobile-full-page-modal form {
-    height: fit-content;
 }

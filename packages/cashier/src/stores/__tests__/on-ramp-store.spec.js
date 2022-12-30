@@ -62,7 +62,7 @@ describe('OnRampStore', () => {
     it('should return three providers for BTC cryptocurrency', () => {
         onramp_store.setOnrampProviders(onramp_providers);
 
-        expect(onramp_store.filtered_onramp_providers.length).toBe(3);
+        expect(onramp_store.filtered_onramp_providers.length).toBe(1);
     });
 
     it('should return proper onramp popup modal title if should_show_widget = true', () => {

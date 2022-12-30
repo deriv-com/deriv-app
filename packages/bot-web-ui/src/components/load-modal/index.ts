@@ -1,4 +1,4 @@
-import LoadModal from './load-modal.jsx';
+import LoadModal from './load-modal';
 import './load-modal.scss';
 
 export default LoadModal;

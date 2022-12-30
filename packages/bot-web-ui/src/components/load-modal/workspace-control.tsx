@@ -1,9 +1,13 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/root-store';
 
-const WorkspaceControl = ({ onZoomInOutClick }) => (
+type TWorkspaceControlProps = {
+    onZoomInOutClick: (zoom_in: boolean) => void;
+};
+
+const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControlProps) => (
     <div className='load-strategy__preview-workspace-controls'>
         <Icon
             icon={'IcAddRounded'}
@@ -18,10 +22,6 @@ const WorkspaceControl = ({ onZoomInOutClick }) => (
     </div>
 );
 
-WorkspaceControl.propTypes = {
-    onZoomInOutClick: PropTypes.func,
-};
-
-export default connect(({ load_modal }) => ({
+export default connect(({ load_modal }: RootStore) => ({
     onZoomInOutClick: load_modal.onZoomInOutClick,
 }))(WorkspaceControl);

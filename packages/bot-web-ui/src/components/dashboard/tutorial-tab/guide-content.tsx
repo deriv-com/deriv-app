@@ -33,7 +33,6 @@ const GuideContent = ({
         const storage = JSON.parse(localStorage?.dbot_settings);
         if (type === 'OnBoard') {
             if (storage.onboard_tour_token) {
-                const onBoardingToken = storage.onboard_tour_token;
                 removeKeyValue('onboard_tour_token');
                 removeKeyValue('onboard_tour_status');
                 removeKeyValue('bot_builder_status');
@@ -43,7 +42,6 @@ const GuideContent = ({
             setActiveTab(0);
         } else {
             if (storage.bot_builder_token) {
-                const builderToken = storage.bot_builder_token;
                 removeKeyValue('bot_builder_token');
                 removeKeyValue('bot_builder_status');
                 removeKeyValue('onboard_tour_status');
@@ -57,9 +55,9 @@ const GuideContent = ({
     return React.useMemo(
         () => (
             <div className='tutorials-wrap'>
-                {guide_list && (
+                {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s'>
-                        User Guides
+                        Step-by-step guides
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -88,9 +86,9 @@ const GuideContent = ({
                             );
                         })}
                 </div>
-                {guide_list && (
+                {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s'>
-                        Guides
+                        Videos on DBot
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

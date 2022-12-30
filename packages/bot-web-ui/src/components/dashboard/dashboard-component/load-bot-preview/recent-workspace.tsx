@@ -1,12 +1,11 @@
-import classnames from 'classnames';
-import React from 'react';
-import { Icon } from '@deriv/components';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { Icon } from '@deriv/components';
+import classnames from 'classnames';
+import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
-import Condition from 'yup/lib/Condition';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -22,8 +21,6 @@ type TRecentWorkspace = {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     loadFileFromRecent: () => void;
     setActiveTab: (active_tab: number) => void;
-    toggleStrategies: (param: boolean) => void;
-    is_delete_modal_open: boolean;
     dashboard_strategies: [];
     setLoaderVisible: (param: boolean) => void;
 };
@@ -48,9 +45,22 @@ const RecentWorkspace = ({
         if (dashboard_strategies && dashboard_strategies.length && index === 0) {
             setTimeout(() => {
                 trigger_div_ref?.current?.click();
-            }, 0);
+            }, 50);
         }
     }, []);
+
+    const viewRecentStrategy = (type: string) => {
+        previewRecentStrategy(workspace.id);
+        setFileLoaded(true);
+        if (type === 'edit') {
+            loadFileFromRecent();
+            setActiveTab(1);
+        } else if (type === 'save') {
+            toggleSaveModal();
+        } else if (type === 'delete') {
+            onToggleDeleteDialog(true);
+        }
+    };
 
     return (
         <>
@@ -62,8 +72,7 @@ const RecentWorkspace = ({
                 key={workspace.id}
                 ref={trigger_div_ref}
                 onClick={() => {
-                    previewRecentStrategy(workspace.id);
-                    setFileLoaded(true);
+                    viewRecentStrategy('preview');
                 }}
             >
                 <div className='load-strategy__recent-item-text'>
@@ -83,8 +92,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={() => {
-                            setActiveTab(1);
-                            loadFileFromRecent();
+                            viewRecentStrategy('edit');
                         }}
                     >
                         <Icon icon='IcEdit' />
@@ -92,7 +100,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={() => {
-                            toggleSaveModal();
+                            viewRecentStrategy('save');
                         }}
                     >
                         <Icon icon='IcSave' />
@@ -100,7 +108,7 @@ const RecentWorkspace = ({
                     <div
                         className='load-strategy__recent-item__button'
                         onClick={e => {
-                            onToggleDeleteDialog(true);
+                            viewRecentStrategy('delete');
                         }}
                     >
                         <Icon icon='IcDelete' />
@@ -119,9 +127,7 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     setFileLoaded: dashboard.setFileLoaded,
     has_file_loaded: dashboard.has_file_loaded,
     toggleSaveModal: save_modal.toggleSaveModal,
-    toggleStrategies: load_modal.toggleStrategies,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
-    is_delete_modal_open: load_modal.is_delete_modal_open,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setActiveTab: dashboard.setActiveTab,
     recent_strategies: load_modal.recent_strategies,

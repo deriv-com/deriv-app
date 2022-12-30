@@ -6,7 +6,7 @@ import RootStore from 'Stores/index';
 import classNames from 'classnames';
 import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 
-type TourTriggrerDialog = {
+type TTourTriggrerDialog = {
     active_tab: number;
     is_tour_dialog_visible: boolean;
     is_tour_ended: boolean;
@@ -26,40 +26,21 @@ const TourTriggrerDialog = ({
     setOnBoardTourRunState,
     setTourActive,
     setIsTourEnded,
-}: TourTriggrerDialog) => {
+}: TTourTriggrerDialog) => {
     const toggleTour = (value: boolean, type: string) => {
-        if (tour_type.key === 'onboard_tour') {
-            if (type === 'onConfirm') {
-                if (active_tab === 0) {
-                    setTourActive(value);
-                    setOnBoardTourRunState(value);
-                    setTourDialogVisibility(false);
-                } else {
-                    setBotBuilderTourState(value);
-                    setTourDialogVisibility(false);
-                }
-                setIsTourEnded(value);
+        if (type === 'onConfirm') {
+            if (active_tab === 0) {
+                setTourActive(value);
+                setOnBoardTourRunState(value);
+                setTourDialogVisibility(false);
             } else {
-                setTourSettings(new Date().getTime(), 'onboard_tour_token');
+                setBotBuilderTourState(value);
                 setTourDialogVisibility(false);
             }
-            tour_type.key = 'onboard_tour';
-        } else if (tour_type.key === 'bot_builder') {
-            if (type === 'onConfirm') {
-                if (active_tab === 0) {
-                    setTourActive(value);
-                    setOnBoardTourRunState(value);
-                    setTourDialogVisibility(false);
-                } else {
-                    setBotBuilderTourState(value);
-                    setTourDialogVisibility(false);
-                }
-                setIsTourEnded(value);
-            } else {
-                setTourSettings(new Date().getTime(), 'bot_builder_token');
-                setTourDialogVisibility(false);
-            }
-            tour_type.key = 'bot_builder';
+            setIsTourEnded(value);
+        } else {
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+            setTourDialogVisibility(false);
         }
     };
 
@@ -139,19 +120,14 @@ const TourTriggrerDialog = ({
             </>
         );
     };
+    const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
     return (
         <div>
             <Dialog
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
-                confirm_button_text={
-                    is_tour_ended
-                        ? active_tab === 0
-                            ? localize('Got it, thanks!')
-                            : localize('OK')
-                        : localize('Start')
-                }
+                confirm_button_text={is_tour_ended ? confirm_button : localize('Start')}
                 onConfirm={() => {
                     const status = tour_status_ended.key === 'finished';
                     toggleTour(status ? false : !is_tour_ended, 'onConfirm');
@@ -159,17 +135,15 @@ const TourTriggrerDialog = ({
                 }}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {
-                    'onboarding-tour-guide': active_tab === 0,
-                    'onboarding-tour-guide--end': active_tab === 0 && is_tour_ended,
-                    'bot-builder-dialog': active_tab === 1,
-                    'bot-builder-dialog--end': active_tab === 1 && is_tour_ended,
+                    'tour-dialog': active_tab === 0 || active_tab === 1,
+                    'tour-dialog--end': (active_tab === 0 || active_tab === 1) && is_tour_ended,
                 })}
                 has_close_icon={false}
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent'>
                         {!is_tour_ended &&
-                            (active_tab === 1 ? localize("Let's build a Bot") : localize('Get started on DBot'))}
+                            (active_tab === 1 ? localize("Let's build a Bot!") : localize('Get started on DBot'))}
                         {is_tour_ended &&
                             (active_tab === 1 ? localize('Congratulations!') : localize('Want to retake the tour?'))}
                     </Text>

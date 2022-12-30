@@ -12,27 +12,27 @@ type Nullable<T> = T | null;
 type TLocalComponent = {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
     loaded_local_file: boolean;
-    setLoadedLocalFile: (data: Nullable<string>) => void;
+    loadFileFromLocal: () => void;
+    loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
-    setActiveTab: (param: number) => void;
-    loadFileFromLocal: () => void;
     previewRecentStrategy: () => void;
-    loadFileFromRecent: () => void;
+    setActiveTab: (param: number) => void;
     setFileLoaded: (param: boolean) => void;
+    setLoadedLocalFile: (data: Nullable<string>) => void;
     setTourDialogVisibility: (param: boolean) => boolean;
 };
 
 const LocalComponent = ({
     handleFileChange,
     loaded_local_file,
-    onConfirmSave,
-    setActiveTab,
     loadFileFromLocal,
     loadFileFromRecent,
+    onConfirmSave,
+    setActiveTab,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
+    const [setIsFileSupported] = React.useState<boolean>(true);
     const loadedLocalFileLocation = () => {
         return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
     };
@@ -65,7 +65,7 @@ const LocalComponent = ({
                                     line_height='s'
                                     className={'tab__dashboard__preview__retrigger__text'}
                                 >
-                                    {localize('UserGuide')}
+                                    {localize('User Guide')}
                                 </Text>
                             </button>
                         </div>
@@ -94,8 +94,8 @@ const LocalComponent = ({
                         <button
                             className='load-strategy__button-group--open'
                             onClick={() => {
-                                setActiveTab(1);
                                 loadedLocalFileLocation();
+                                setActiveTab(1);
                             }}
                         >
                             Open
@@ -123,7 +123,5 @@ const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setFileLoaded: dashboard.setFileLoaded,
 }))(LocalComponent);
-
-Local.Footer = LocalFooter;
 
 export default Local;

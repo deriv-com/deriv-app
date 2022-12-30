@@ -32,10 +32,10 @@
 
     &__container {
         @include desktop {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {
@@ -45,10 +45,10 @@
         }
 
         @include tablet {
-            height: calc(80vh - 24rem);
+            height: calc(80vh - 15rem);
 
             &--has-footer {
-                height: calc(80vh - 24rem);
+                height: calc(80vh - 15rem);
             }
 
             > * {
@@ -66,6 +66,7 @@
         font-size: var(--text-size-s);
         font-weight: 700;
         margin: 1.5rem;
+        color: var(--text-general);
     }
 
     &__button-group {
@@ -109,8 +110,7 @@
         height: calc(100% - 40rem);
         position: relative;
         overflow: hidden;
-        margin-bottom: 1.6rem;
-        margin-right: 1.6rem;
+        margin: 4rem 1.6rem 1.6rem 0;
 
         &-controls {
             padding: 0.7rem 0.5rem;
@@ -228,13 +228,20 @@
             align-items: center;
             text-align: center;
 
+            &.load-dialog {
+                padding: 1.6rem;
+            }
+
             &:hover {
                 cursor: pointer;
             }
 
             &__loaded {
                 text-align: left;
-                padding-left: 1.7rem;
+                padding: 1rem 3rem;
+                .load-strategy__recent-item-text {
+                    height: unset;
+                }
             }
 
             &__loaded--first-child {
@@ -245,11 +252,6 @@
                     background-color: none;
                     cursor: default;
                 }
-            }
-
-            &:not(.load-strategy__recent-item--selected):hover {
-                background-color: var(--state-hover);
-                cursor: pointer;
             }
 
             &:not(:last-child) {
@@ -266,10 +268,16 @@
                 width: 100%;
                 word-break: break-word;
                 margin-right: 1.6rem;
+                height: unset;
+                &.load-dialog {
+                    display: block;
+                    text-align: left;
+                    padding: 1.2rem 0;
+                }
             }
 
             &-title {
-                font-size: var(--text-size-s);
+                font-size: var(--text-size-xs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;
@@ -278,7 +286,7 @@
             }
 
             &-time {
-                font-size: var(--text-size-xxs);
+                font-size: var(--text-size-xs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;
@@ -291,11 +299,14 @@
                 width: 100%;
                 word-break: break-word;
                 color: var(--text-general);
+                &.load-dialog {
+                    justify-content: center;
+                }
             }
 
             &-saved {
                 margin-left: 1rem;
-                font-size: var(--text-size-s);
+                font-size: var(--text-size-xs);
                 line-height: 1.43;
                 word-break: break-word;
             }

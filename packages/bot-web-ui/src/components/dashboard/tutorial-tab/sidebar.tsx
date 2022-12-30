@@ -7,7 +7,6 @@ import GuideContent from './guide-content';
 import FAQContent from './faq-content';
 import debounce from 'lodash.debounce';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
-import './sidebar.scss';
 
 type TSidebarProps = {
     active_tab_tutorials: number;
@@ -60,7 +59,7 @@ const Sidebar = ({
                     onChange={onSearch}
                 />
             </div>
-            <Tabs active_index={active_tab_tutorials} onTabItemClick={setActiveTabTutorial} top>
+            <Tabs className='tutorials' active_index={active_tab_tutorials} onTabItemClick={setActiveTabTutorial} top>
                 <div label={localize('Guide')}>
                     <GuideContent guide_list={search_filtered_list} />
                 </div>

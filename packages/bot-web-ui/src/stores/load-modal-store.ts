@@ -1,26 +1,32 @@
-import { observable, action, computed, reaction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
-import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
-import { tabs_title } from 'Constants/load-modal';
-import RootStore from './root-store';
-import React from 'react';
+import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { tabs_title } from 'Constants/load-modal';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import React from 'react';
+import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
     const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref?.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[1]);
-    }
+    el_ref?.current?.removeChild(el_ref?.current?.children[0]);
 };
+export type TWorkspace = {
+    id: string;
+    xml: string;
+    name: string;
+    timestamp: number;
+    save_type: string;
+};
+
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;
-    load_recent_strategies: boolean;
     is_explanation_expand: boolean;
     is_open_button_loading: boolean;
     is_strategy_loaded: boolean;
     loaded_local_file: boolean | null;
     recent_strategies: string[];
+    dashboard_strategies: Array<TWorkspace>;
     selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
@@ -45,7 +51,7 @@ interface ILoadModalStore {
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
     readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
-    toggleStrategies: (load_recent_strategies: boolean) => void;
+    updateListStrategies: (workspaces: Array<TWorkspace>) => void;
     getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
     getSaveType: (save_type: { [key: string]: string } | string) => string;
 }
@@ -58,7 +64,6 @@ export default class LoadModalStore implements ILoadModalStore {
             active_index: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
-            load_recent_strategies: observable,
             is_open_button_loading: observable,
             is_strategy_loaded: observable,
             is_delete_modal_open: observable,
@@ -88,6 +93,7 @@ export default class LoadModalStore implements ILoadModalStore {
             toggleLoadModal: action.bound,
             readFile: action.bound,
             setDashboardStrategies: action.bound,
+            updateListStrategies: action.bound,
         });
 
         this.root_store = root_store;
@@ -106,14 +112,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 }
             }
         );
-        reaction(
-            () => this.load_recent_strategies,
-            async load_recent_strategies => {
-                if (load_recent_strategies) {
-                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
-                }
-            }
-        );
     }
 
     recent_workspace;
@@ -122,7 +120,6 @@ export default class LoadModalStore implements ILoadModalStore {
 
     active_index = 0;
     is_load_modal_open = false;
-    load_recent_strategies = false;
     is_explanation_expand = false;
     is_open_button_loading = false;
     loaded_local_file = null;
@@ -156,7 +153,7 @@ export default class LoadModalStore implements ILoadModalStore {
         return '';
     }
 
-    setDashboardStrategies(strategies: []) {
+    setDashboardStrategies(strategies: Array<TWorkspace>) {
         this.dashboard_strategies = strategies;
         if (!strategies.length) {
             this.selected_strategy_id = undefined;
@@ -164,9 +161,8 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     async getDashboardStrategies() {
-        const strategies = await getSavedWorkspaces();
         setTimeout(() => {
-            strategies.then(recent_strategies => {
+            getSavedWorkspaces().then(recent_strategies => {
                 this.dashboard_strategies = recent_strategies;
             });
         }, 1000);
@@ -227,9 +223,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            if (this.selected_strategy) {
-                this.previewRecentStrategy(this.selected_strategy_id);
-            }
+            this.previewRecentStrategy(this.selected_strategy_id);
         } else {
             // eslint-disable-next-line no-lonely-if
             if (this.recent_workspace) {
@@ -266,9 +260,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
             this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
-        if (this.selected_strategy) {
-            this.previewRecentStrategy(this.selected_strategy_id);
-        }
     };
 
     onDriveConnect = (): void => {
@@ -289,16 +280,13 @@ export default class LoadModalStore implements ILoadModalStore {
 
     onEntered = (): void => {
         this.previewRecentStrategy(this.selected_strategy_id);
-        this.onActiveIndexChange();
     };
 
     onLoadModalClose = (): void => {
         if (this.recent_workspace) {
-            this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
         if (this.local_workspace) {
-            this.local_workspace.dispose();
             this.local_workspace = null;
         }
 
@@ -314,21 +302,24 @@ export default class LoadModalStore implements ILoadModalStore {
 
     previewRecentStrategy = (workspace_id: string): void => {
         this.setSelectedStrategyId(workspace_id);
-
         if (!this.selected_strategy) {
             return;
         }
-
         const {
             dashboard: { active_tab },
         } = this.root_store;
-
-        if ((active_tab === 1 || this.tab_name !== tabs_title.TAB_LOCAL) && this.recent_workspace) {
+        //removed the dispose here so on switch of tab it does not
+        //throw xml error
+        if (active_tab === 1 && !this.is_load_modal_open) {
+            this.recent_workspace = null;
+        }
+        //to load the bot on first load
+        if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
+            clearInjectionDiv();
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            //TODO: this was the check check used on the older functionality
             const ref = document.getElementById('load-strategy__blockly-container');
 
             if (!ref) {
@@ -347,7 +338,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
         const {
             save_modal: { updateBotName },
@@ -381,11 +371,13 @@ export default class LoadModalStore implements ILoadModalStore {
 
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
-        this.previewRecentStrategy(this.selected_strategy_id);
+        if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
     };
 
-    toggleStrategies = (load_recent_strategies: boolean): void => {
-        this.load_recent_strategies = load_recent_strategies;
+    updateListStrategies = (workspaces: Array<TWorkspace>): void => {
+        if (workspaces) {
+            (this.dashboard_strategies as Array<TWorkspace>) = workspaces;
+        }
     };
 
     getRecentFileIcon = (save_type: { [key: string]: string } | string): string => {

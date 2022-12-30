@@ -1,14 +1,23 @@
 import classnames from 'classnames';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RecentFooter from './recent-footer.jsx';
-import RecentWorkspace from './recent-workspace.jsx';
-import WorkspaceControl from './workspace-control.jsx';
+import RecentWorkspace from './recent-workspace';
+import WorkspaceControl from './workspace-control';
+import RootStore from 'Stores/root-store';
 
-const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExplanationExpand }) => {
+type TRecentComponentProps = {
+    is_explanation_expand: boolean;
+    recent_strategies: any[];
+    toggleExplanationExpand: boolean;
+};
+
+const RecentComponent = ({
+    is_explanation_expand,
+    recent_strategies,
+    toggleExplanationExpand,
+}: TRecentComponentProps) => {
     if (recent_strategies.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -76,19 +85,10 @@ const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExpla
     );
 };
 
-RecentComponent.propTypes = {
-    is_explanation_expand: PropTypes.bool,
-    recent_strategies: PropTypes.array,
-    toggleExplanationExpand: PropTypes.bool,
-};
-
-const Recent = connect(({ load_modal }) => ({
+const Recent = connect(({ load_modal }: RootStore) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
     recent_strategies: load_modal.recent_strategies,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
 }))(RecentComponent);
-
-Recent.Footer = RecentFooter;
-Recent.Workspace = RecentWorkspace;
 
 export default Recent;

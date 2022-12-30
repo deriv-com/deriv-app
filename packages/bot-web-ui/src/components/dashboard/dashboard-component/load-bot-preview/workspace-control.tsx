@@ -12,11 +12,13 @@ const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControl) => (
         <Icon
             icon={'IcAddRounded'}
             className='load-strategy__preview-workspace-icon'
+            custom_color='$color-black-1'
             onClick={() => onZoomInOutClick(true)}
         />
         <Icon
             icon={'IcMinusRounded'}
             className='load-strategy__preview-workspace-icon'
+            custom_color='$color-black-1'
             onClick={() => onZoomInOutClick(false)}
         />
     </div>

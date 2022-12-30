@@ -44,7 +44,7 @@ const TourSlider = ({
         setTourActive(false);
     };
 
-    const onTourClose = () => {
+    const onTourEnd = () => {
         if (step === 7) {
             onCloseTour();
             setHasTourEnded(true);
@@ -121,7 +121,7 @@ const TourSlider = ({
                             type='danger'
                             onClick={() => {
                                 onChange('inc');
-                                onTourClose();
+                                onTourEnd();
                             }}
                         >
                             {localize('Next')}

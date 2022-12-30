@@ -28,6 +28,7 @@ const Purchase = ({
     purchase_info,
     proposal_info,
     setPurchaseState,
+    symbol,
     trade_types,
     validation_errors,
 }) => {
@@ -91,7 +92,14 @@ const Purchase = ({
                 break;
         }
     });
-    if (is_accumulator && active_positions.some(({ type }) => isAccumulatorContract(type))) {
+
+    const should_disable_accu_purchase =
+        is_accumulator &&
+        !!active_positions.find(
+            ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
+        );
+
+    if (should_disable_accu_purchase) {
         components.unshift(
             <PurchaseButtonsOverlay
                 is_to_cover_one_button={components.length === 1}
@@ -120,6 +128,7 @@ Purchase.propTypes = {
     purchase_info: PropTypes.object,
     purchased_states_arr: PropTypes.array,
     setPurchaseState: PropTypes.func,
+    symbol: PropTypes.string,
     // togglePurchaseLock        : PropTypes.func,
     trade_types: PropTypes.object,
     validation_errors: PropTypes.object,
@@ -139,6 +148,7 @@ export default connect(({ modules, portfolio, ui }) => ({
     onHoverPurchase: modules.trade.onHoverPurchase,
     proposal_info: modules.trade.proposal_info,
     purchase_info: modules.trade.purchase_info,
+    symbol: modules.trade.symbol,
     trade_types: modules.trade.trade_types,
     validation_errors: modules.trade.validation_errors,
     is_mobile: ui.is_mobile,

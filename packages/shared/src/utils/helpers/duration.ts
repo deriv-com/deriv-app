@@ -156,9 +156,9 @@ export const convertDurationLimit = (value: number, unit: string) => {
     return value;
 };
 
-export const hasIntradayDurationUnit = (duration_units_list: TUnit[]) =>
-    duration_units_list.some(unit => ['m', 'h'].indexOf(unit.value) !== -1);
-
+export const hasIntradayDurationUnit = (duration_units_list: TUnit[]) => {
+    return duration_units_list.some(unit => ['m', 'h'].indexOf(unit.value) !== -1);
+};
 /**
  * On switching symbols, end_time value of volatility indices should be set to today
  *

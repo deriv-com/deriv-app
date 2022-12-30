@@ -4,17 +4,14 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const NoBalance = observer(({ history }: RouteComponentProps) => {
-    const {
-        client: { currency },
-        modules: {
-            cashier: {
-                deposit: { is_deposit_locked },
-                general_store: { setCashierTabIndex: setTabIndex },
-            },
-        },
-    } = useStore();
+    const { client } = useStore();
+    const { currency } = client;
+    const { deposit, general_store } = useCashierStore();
+    const { is_deposit_locked } = deposit;
+    const { setCashierTabIndex: setTabIndex } = general_store;
 
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0

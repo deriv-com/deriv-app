@@ -9,6 +9,7 @@ import { TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TMenuOption = {
     count?: number;
@@ -55,8 +56,8 @@ const OnRampInfo = () => (
 );
 
 const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
-    const { modules, common, client } = useStore();
-    const { onramp, general_store, deposit } = modules.cashier;
+    const { common, client } = useStore();
+    const { onramp, general_store, deposit } = useCashierStore();
     const {
         filtered_onramp_providers,
         is_onramp_modal_open,

@@ -4,15 +4,11 @@ import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import './cashier-onboarding.scss';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierOnboardingSideNote = observer(({ is_crypto }) => {
-    const {
-        client,
-        ui,
-        modules: {
-            cashier: { general_store },
-        },
-    } = useStore();
+    const { client, ui } = useStore();
+    const { general_store } = useCashierStore();
     const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;

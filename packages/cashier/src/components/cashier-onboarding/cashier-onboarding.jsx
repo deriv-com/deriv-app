@@ -9,16 +9,11 @@ import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierOnboarding = observer(({ setSideNotes }) => {
-    const {
-        client,
-        ui,
-        common,
-        modules: {
-            cashier: { general_store, payment_agent, account_prompt_dialog },
-        },
-    } = useStore();
+    const { client, ui, common } = useStore();
+    const { general_store, payment_agent, account_prompt_dialog } = useCashierStore();
     const {
         accounts,
         available_crypto_currencies,

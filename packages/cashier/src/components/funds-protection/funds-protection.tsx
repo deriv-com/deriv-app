@@ -1,17 +1,13 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import './funds-protection.scss';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const FundsProtection = observer(() => {
-    const {
-        modules: {
-            cashier: {
-                deposit: { submitFundsProtection },
-            },
-        },
-    } = useStore();
+    const { deposit } = useCashierStore();
+    const { submitFundsProtection } = deposit;
 
     return (
         <div className='funds-protection'>

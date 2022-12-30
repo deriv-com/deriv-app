@@ -12,13 +12,14 @@ import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const { client, modules } = useStore();
+    const { client } = useStore();
     const {
         can_change_fiat_currency,
         currency,
@@ -28,8 +29,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_virtual,
         landing_company_shortcode,
     } = client;
-    const { cashier } = modules;
-    const { iframe, deposit, transaction_history, general_store } = cashier;
+    const { iframe, deposit, transaction_history, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url } = iframe;
     const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
     const {

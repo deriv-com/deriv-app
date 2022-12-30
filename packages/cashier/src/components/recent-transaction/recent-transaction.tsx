@@ -6,17 +6,12 @@ import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from 'Constants/transaction-status';
 import './recent-transaction.scss';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const RecentTransaction = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { transaction_history },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { currency } = client;
-
+    const { transaction_history } = useCashierStore();
     const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
 
     React.useEffect(() => {

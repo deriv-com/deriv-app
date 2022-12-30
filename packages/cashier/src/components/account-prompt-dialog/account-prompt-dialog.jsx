@@ -4,16 +4,13 @@ import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const AccountPromptDialog = observer(() => {
-    const {
-        client: { accounts },
-        modules: {
-            cashier: {
-                account_prompt_dialog: { continueRoute, is_confirmed, last_location, onCancel, onConfirm, should_show },
-            },
-        },
-    } = useStore();
+    const { client } = useStore();
+    const { accounts } = client;
+    const { account_prompt_dialog } = useCashierStore();
+    const { continueRoute, is_confirmed, last_location, onCancel, onConfirm, should_show } = account_prompt_dialog;
 
     React.useEffect(continueRoute, [is_confirmed, last_location, continueRoute]);
 

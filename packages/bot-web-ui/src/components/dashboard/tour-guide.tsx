@@ -87,8 +87,6 @@ const TourGuide = ({
     );
 };
 export default connect(({ dashboard }: RootStore) => ({
-    setActiveTab: dashboard.setActiveTab,
-    active_tab: dashboard.active_tab,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourActive: dashboard.setTourActive,
 }))(TourGuide);

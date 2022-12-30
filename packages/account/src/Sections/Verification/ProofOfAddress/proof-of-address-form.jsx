@@ -168,6 +168,7 @@ const ProofOfAddressForm = ({
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                setSubmitting(false);
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
@@ -175,6 +176,7 @@ const ProofOfAddressForm = ({
                     .then(({ error, get_settings }) => {
                         if (error) {
                             setAPIInitialLoadError(error.message);
+                            setSubmitting(false);
                             return;
                         }
                         const { address_line_1, address_line_2, address_city, address_state, address_postcode } =
@@ -203,6 +205,7 @@ const ProofOfAddressForm = ({
                                     WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
                                         if (error) {
                                             setAPIInitialLoadError(error.message);
+                                            setSubmitting(false);
                                             return;
                                         }
                                         setFormState(

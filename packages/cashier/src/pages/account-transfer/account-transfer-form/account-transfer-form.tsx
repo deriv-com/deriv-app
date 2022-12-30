@@ -553,6 +553,7 @@ const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferF
                                             internal: internal_remaining_transfers?.allowed,
                                             mt5: mt5_remaining_transfers?.allowed,
                                             dxtrade: dxtrade_remaining_transfers?.allowed,
+                                            derivez: derivez_remaining_transfers?.allowed,
                                         }}
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
@@ -561,6 +562,8 @@ const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferF
                                         is_dxtrade_allowed={is_dxtrade_allowed}
                                         is_dxtrade_transfer={is_dxtrade_transfer}
                                         is_mt_transfer={is_mt_transfer}
+                                        is_from_derivgo={is_from_derivgo}
+                                        is_derivez_transfer={is_derivez_transfer}
                                     />
                                 </SideNote>
                                 <ErrorDialog error={error} />

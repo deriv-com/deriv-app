@@ -1,48 +1,48 @@
-// TODO refactor old tests in this component
 import React from 'react';
-import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
-import { MemoryRouter, Redirect } from 'react-router-dom';
-import { render } from '@testing-library/react';
+import { Redirect } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import RouteWithSubRoutes from '../route-with-sub-routes';
 
-const mockFunction = jest.fn();
+type TMockFunction = {
+    path: string;
+    exact?: boolean;
+};
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    Route: jest.fn(({ path, exact }: TMockFunction) => (
+        <div>
+            <span>{`path param: ${path}`}</span>
+            <span>{`exact param: ${exact}`}</span>
+        </div>
+    )),
+}));
+
+afterEach(() => jest.clearAllMocks());
+
 const route = {
-    getTitle: mockFunction,
+    getTitle: jest.fn(),
     component: Redirect,
     is_logging_in: true,
     is_logged_in: true,
     exact: true,
-    path: '/',
-    to: '/root',
+    path: '/test-path',
 };
 
-const MockComponent = () => (
-    <MemoryRouter>
-        <RouteWithSubRoutesRender {...route} />
-    </MemoryRouter>
-);
+const MockRouteWithSubRoutes = () => <RouteWithSubRoutes {...route} />;
 
-describe('<RouteWithSubRoutes />', () => {
-    it('should render one <RouteWithSubRoutesRender /> component', () => {
-        render(<MockComponent />);
+describe('RouteWithSubRoutes component', () => {
+    it('should render the "RouteWithSubRoutes" component', () => {
+        render(<MockRouteWithSubRoutes />);
+        const span_element = screen.getByText(/path param: \/test-path/i);
+        expect(span_element).toBeInTheDocument();
+    });
+
+    it('should render properties', () => {
+        render(<MockRouteWithSubRoutes />);
+        const path_param = screen.getByText(/\/test-path/i);
+        const exact_param = screen.getByText(/exact param: true/i);
+        expect(path_param).toBeInTheDocument();
+        expect(exact_param).toBeInTheDocument();
     });
 });
-
-// import React from 'react';
-// import { RouteWithSubRoutesRender } from '../route-with-sub-routes';
-// import { Redirect } from 'react-router-dom';
-
-// configure({ adapter: new Adapter() });
-
-// describe('<RouteWithSubRoutes />', () => {
-//     it('should render one <RouteWithSubRoutesRender /> component', () => {
-//         const wrapper = shallow(<RouteWithSubRoutesRender />);
-//         expect(wrapper).toHaveLength(1);
-//     });
-//     it('should have props as passed as route', () => {
-//         const route = { path: '/', component: Redirect, title: '', exact: true, to: '/root' };
-//         const wrapper = shallow(<RouteWithSubRoutesRender {...route} />);
-//         expect(wrapper.prop('exact')).toBe(true);
-//         expect(wrapper.prop('path')).toBe('/');
-//         expect(wrapper.prop('render')).toBeInstanceOf(Function);
-//     });
-// });

@@ -25,7 +25,7 @@ const NoAds = () => {
                         size='s'
                         weight='bold'
                     >
-                        <Localize i18n_default_text='No ads here at the moment 😔' />
+                        <Localize i18n_default_text='No ads for this currency the moment 😔' />
                     </Text>
                     <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
                         {buy_sell_store.is_buy ? (

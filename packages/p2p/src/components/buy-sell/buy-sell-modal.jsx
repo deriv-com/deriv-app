@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -21,9 +22,9 @@ import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
-import 'Components/buy-sell/buy-sell-modal.scss';
 import AddPaymentMethodForm from '../my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
+import 'Components/buy-sell/buy-sell-modal.scss';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell__modal--error-message'>
@@ -114,7 +115,6 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
-
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [show_market_rate_change_error_modal, setShowMarketRateChangeErrorModal] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
@@ -254,17 +254,15 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
                     ) : (
-                        <Form
-                            advert={selected_ad}
-                            handleClose={onCancel}
-                            handleConfirm={onConfirmClick}
-                            setIsSubmitDisabled={setIsSubmitDisabled}
-                            setErrorMessage={setErrorMessage}
-                            setSubmitForm={setSubmitForm}
-                        />
-                    )}
-                    {!my_profile_store.should_show_add_payment_method_form && (
                         <React.Fragment>
+                            <Form
+                                advert={selected_ad}
+                                handleClose={onCancel}
+                                handleConfirm={onConfirmClick}
+                                setIsSubmitDisabled={setIsSubmitDisabled}
+                                setErrorMessage={setErrorMessage}
+                                setSubmitForm={setSubmitForm}
+                            />
                             <BuySellFormReceiveAmount
                                 is_sell_advert={buy_sell_store.is_sell_advert}
                                 local_currency={buy_sell_store?.advert && buy_sell_store.advert.local_currency}
@@ -281,7 +279,9 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
             </MobileWrapper>
             <DesktopWrapper>
                 <Modal
-                    className='buy-sell__modal'
+                    className={classNames('buy-sell__modal', {
+                        'buy-sell__modal-form': my_profile_store.should_show_add_payment_method_form,
+                    })}
                     height={table_type === buy_sell.BUY ? 'auto' : '649px'}
                     width='456px'
                     is_open={should_show_popup}

@@ -244,7 +244,9 @@ const PersonalDetails = ({
                                                         key={item.value}
                                                         label={item.label}
                                                         value={item.value}
-                                                        disabled={disabled_items.includes('salutation')}
+                                                        disabled={
+                                                            !!values.salutation && disabled_items.includes('salutation')
+                                                        }
                                                     />
                                                 ))}
                                             </RadioGroup>

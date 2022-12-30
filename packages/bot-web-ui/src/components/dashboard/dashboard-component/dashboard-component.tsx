@@ -24,7 +24,11 @@ const DashboardComponent = ({
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     return (
         <React.Fragment>
-            <div className='tab__dashboard'>
+            <div
+                className={classNames('tab__dashboard', {
+                    'tab__dashboard--tour-active': has_started_onboarding_tour,
+                })}
+            >
                 <div className='tab__dashboard__content'>
                     <div className='tab__dashboard__centered'>
                         {!has_dashboard_strategies && (

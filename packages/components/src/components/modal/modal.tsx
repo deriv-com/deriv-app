@@ -6,12 +6,7 @@ import Body from './modal-body';
 import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
-import { useOnClickOutside } from '../../hooks';
-
-type TClickEvent = React.MouseEvent<HTMLElement, MouseEvent> & {
-    path?: HTMLElement[];
-    composedPath?: () => HTMLElement[];
-};
+import { useOnClickOutside, IClickEvent } from '../../hooks';
 
 type TModalElement = {
     className?: string;
@@ -82,7 +77,7 @@ const ModalElement = ({
     const isPortalElementVisible = () =>
         modal_root_ref.current?.querySelectorAll(portal_elements_selector.join(', ')).length;
 
-    const validateClickOutside = (e: TClickEvent): boolean => {
+    const validateClickOutside = (e: IClickEvent): boolean => {
         const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
@@ -90,12 +85,12 @@ const ModalElement = ({
             !isPortalElementVisible() &&
             is_open &&
             !is_absolute_modal_visible &&
-            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))
+            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement)))
         );
     };
 
-    const closeModal = (e: React.MouseEvent<HTMLElement>) => {
-        if (is_open) toggleModal?.(e);
+    const closeModal = () => {
+        if (is_open) toggleModal?.();
     };
 
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);

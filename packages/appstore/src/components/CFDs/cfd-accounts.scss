@@ -35,18 +35,17 @@
                     max-width: 100%;
                 }
                 &__add-derived {
-                    margin-top: 1.4rem;
+                    margin-bottom: 2.4rem;
                 }
                 .existing-accounts,
                 .available-accounts {
                     display: flex;
                     flex-direction: column;
-                    gap: 1.6rem;
                 }
             }
             @include mobile {
                 flex-direction: column;
-                gap: 3.6rem;
+                gap: 0;
             }
         }
     }

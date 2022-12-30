@@ -1,10 +1,13 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { moduleLoader } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
-import { connect } from 'Stores/connect';
-import { moduleLoader } from '@deriv/shared';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -57,11 +60,24 @@ const AppModals = ({
     is_close_uk_account_modal_visible,
     is_eu,
     is_logged_in,
+    should_show_cooldown_modal,
+    should_show_assessment_complete_modal,
+    is_trading_assessment_for_new_user_enabled,
+    fetchFinancialAssessment,
+    setCFDScore,
+    cfd_score,
+    active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
+
+    React.useEffect(() => {
+        if (is_logged_in) {
+            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
+        }
+    }, [is_logged_in]);
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -97,6 +113,7 @@ const AppModals = ({
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
+
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
     }
@@ -115,6 +132,23 @@ const AppModals = ({
 
     if (is_reality_check_visible) {
         ComponentToLoad = <RealityCheckModal />;
+    }
+
+    if (
+        is_logged_in &&
+        active_account_landing_company === 'maltainvest' &&
+        !is_trading_assessment_for_new_user_enabled &&
+        cfd_score === 0
+    ) {
+        ComponentToLoad = <TradingAssessmentExistingUser />;
+    }
+
+    if (should_show_cooldown_modal) {
+        ComponentToLoad = <CooldownWarningModal />;
+    }
+
+    if (should_show_assessment_complete_modal) {
+        ComponentToLoad = <CompletedAssessmentModal />;
     }
 
     if (is_deriv_account_needed_modal_visible) {
@@ -140,6 +174,15 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    has_maltainvest_account: client.has_maltainvest_account,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    setCFDScore: client.setCFDScore,
+    cfd_score: client.cfd_score,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    should_show_cooldown_modal: ui.should_show_cooldown_modal,
+    should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
+    active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
 }))(AppModals);

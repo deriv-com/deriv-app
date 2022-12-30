@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Collapsible } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
@@ -22,7 +22,7 @@ import {
     tour_status_ended,
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
-import { isMobile } from '@deriv/shared';
+import { getImageLocation } from '../../public-path';
 
 type TDialogOptions = {
     title: string;
@@ -53,8 +53,15 @@ type TDashboard = {
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
-    setIsTourEnded: (param: boolean) => void;
+    setHasTourEnded: (param: boolean) => void;
 };
+
+type Props = {
+    collapsible: boolean;
+};
+type TDiv = Props & React.HTMLAttributes<HTMLDivElement>;
+
+const ExtendedDiv = ({ collapsible, ...props }: TDiv) => <div {...props}>{props.children}</div>;
 
 const Dashboard = ({
     active_tab,
@@ -63,6 +70,7 @@ const Dashboard = ({
     has_file_loaded,
     has_tour_started,
     has_started_onboarding_tour,
+    has_started_bot_builder_tour,
     is_dialog_open,
     loadDataStrategy,
     onCancelButtonClick,
@@ -76,7 +84,7 @@ const Dashboard = ({
     setOnBoardTourRunState,
     setTourActive,
     setTourDialogVisibility,
-    setIsTourEnded,
+    setHasTourEnded,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -133,7 +141,7 @@ const Dashboard = ({
             } else {
                 setTourDialogVisibility(true);
             }
-            setIsTourEnded(true);
+            setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
@@ -144,7 +152,7 @@ const Dashboard = ({
         }
     };
     if (!bot_tour_token) {
-        setIsTourEnded(false);
+        setHasTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
 
@@ -161,6 +169,28 @@ const Dashboard = ({
             setTourDialogVisibility(true);
         }
     }, [active_tab]);
+
+    React.useEffect(() => {
+        const images = [
+            getImageLocation('ic-new-user-step-two.png'),
+            getImageLocation('ic-new-user-step-three.png'),
+            getImageLocation('ic-new-user-step-four.png'),
+            getImageLocation('ic-new-user-step-five.png'),
+            getImageLocation('ic-new-user-step-six.png'),
+            getImageLocation('ic-new-user-step-seven.png'),
+        ];
+
+        images.forEach(img => {
+            if (!document.getElementById(img)) {
+                const link = document.createElement('link');
+                link.setAttribute('rel', 'preload');
+                link.setAttribute('as', 'image');
+                link.setAttribute('href', img);
+                link.setAttribute('id', img);
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+        });
+    }, [has_tour_started]);
 
     return (
         <React.Fragment>
@@ -220,6 +250,21 @@ const Dashboard = ({
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
+                            {active_tab !== 2 && (
+                                <MobileWrapper>
+                                    <div className='mobile-wrapper'>
+                                        <Collapsible position='top' is_collapsed={false} as='div'>
+                                            <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
+                                                <RunStrategy />
+                                            </ExtendedDiv>
+                                        </Collapsible>
+                                    </div>
+                                    {/* // TODO: implement Performance panel as per new design
+                                        {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
+                                        <RunPanel />
+                                    )} */}
+                                </MobileWrapper>
+                            )}
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
@@ -231,11 +276,10 @@ const Dashboard = ({
             </div>
             <DesktopWrapper>
                 <div className='dashboard__run-strategy-wrapper'>
-                    {!(isMobile() && active_tab === 2) && <RunStrategy />}
+                    {active_tab !== 2 && <RunStrategy />}
 
-                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
-                        <RunPanel />
-                    )}
+                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
+                        !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
             <Dialog
@@ -267,7 +311,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     onEntered: load_modal.onEntered,
-    setIsTourEnded: dashboard.setIsTourEnded,
+    setHasTourEnded: dashboard.setHasTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,

@@ -45,7 +45,9 @@
         align-items: flex-end;
         width: 35rem;
         background-color: var(--general-section-2);
-        margin: -2.5rem 0;
+        &--tour-active {
+            display: none;
+        }
         &--info {
             display: flex;
             justify-content: center;
@@ -96,6 +98,9 @@
         }
     }
     &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         overflow: hidden !important;
     }
     &__buttons {
@@ -107,7 +112,8 @@
     }
     &-tab {
         &__content {
-            height: var(--drawer-content-height);
+            height: 52rem;
+            overflow: hidden;
 
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
@@ -126,7 +132,7 @@
             top: 0.5rem;
             right: 1.6rem;
             height: 2.6rem !important;
-            width: 8rem;
+            min-width: 8rem;
         }
     }
 }

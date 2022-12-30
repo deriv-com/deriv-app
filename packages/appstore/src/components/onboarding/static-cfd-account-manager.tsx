@@ -44,6 +44,7 @@ type TStaticCFDAccountManager = {
     is_derivx_last_step?: boolean;
     platform: TPlatform | 'options';
     is_financial_last_step?: boolean;
+    is_eu_user: boolean;
 };
 
 const StaticCFDAccountManager = ({
@@ -59,11 +60,13 @@ const StaticCFDAccountManager = ({
     is_blurry,
     financial_amount,
     is_onboarding_animated,
+    is_eu_user,
 }: TStaticCFDAccountManager) => {
     return (
         <div className='static-cfd-account-manager'>
             <div className='static-cfd-account-manager__icon'>
                 {platform === CFD_PLATFORMS.MT5 &&
+                    !is_eu_user &&
                     (type === 'financial' ? (
                         <WalletIcon
                             icon='Financial'
@@ -81,6 +84,27 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ))}
+
+                {platform === CFD_PLATFORMS.MT5 &&
+                    is_eu_user &&
+                    (type === 'financial' ? (
+                        <WalletIcon
+                            icon='CFDs'
+                            size={64}
+                            className={classNames('static-cfd-account-manager--cfds', {
+                                'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
+                            })}
+                        />
+                    ) : (
+                        <WalletIcon
+                            icon='Derived'
+                            size={64}
+                            className={classNames('static-cfd-account-manager--cfds', {
+                                'static-cfd-account-manager__icon--blurry': is_blurry.icon,
+                            })}
+                        />
+                    ))}
+
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <WalletIcon
                         icon='DerivX'
@@ -99,13 +123,18 @@ const StaticCFDAccountManager = ({
                 )}
             </div>
             <div className='static-cfd-account-manager__details'>
-                <Text size='xs' weight='bold' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
+                <Text
+                    size='xs'
+                    weight={has_account ? 'normal' : 'bold'}
+                    color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
+                >
                     {appname}
                 </Text>
                 {has_account ? (
                     <React.Fragment>
                         <Text
                             size='xs'
+                            weight='bold'
                             color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
                         >{`${formatMoney(
                             currency,

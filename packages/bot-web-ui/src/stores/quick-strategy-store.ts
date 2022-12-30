@@ -47,7 +47,6 @@ export default class QuickStrategyStore {
             input_oscar_unit: observable,
             input_loss: observable,
             input_profit: observable,
-            is_strategy_modal_open: observable,
             active_index: observable,
             symbol_dropdown: observable,
             trade_type_dropdown: observable,
@@ -96,8 +95,6 @@ export default class QuickStrategyStore {
     input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
     input_loss: string = this.qs_cache.input_loss || '';
     input_profit: string = this.qs_cache.input_profit || '';
-
-    is_strategy_modal_open = false;
     active_index: number = this.selected_type_strategy.index || 0;
     description: string = this.qs_cache.selected_type_strategy?.description || '';
     types_strategies_dropdown: TTypeStrategiesDropdown = [];
@@ -326,23 +323,21 @@ export default class QuickStrategyStore {
 
         const file_name = (strategies as TStrategies)?.[strategy_name as TKeysStrategies]?.label || localize('Unknown');
 
-        setTimeout(() => {
-            const { derivWorkspace: workspace } = Blockly;
+        const { derivWorkspace: workspace } = Blockly;
 
-            load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
+        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
-            if (button === 'run') {
-                workspace
-                    .waitForBlockEvent({
-                        block_type: 'trade_definition',
-                        event_type: Blockly.Events.BLOCK_CREATE,
-                        timeout: 5000,
-                    })
-                    .then(() => {
-                        this.root_store.run_panel.onRunButtonClick();
-                    });
-            }
-        }, 3000);
+        if (button === 'run') {
+            workspace
+                .waitForBlockEvent({
+                    block_type: 'trade_definition',
+                    event_type: Blockly.Events.BLOCK_CREATE,
+                    timeout: 5000,
+                })
+                .then(() => {
+                    this.root_store.run_panel.onRunButtonClick();
+                });
+        }
     }
 
     async updateSymbolDropdown() {

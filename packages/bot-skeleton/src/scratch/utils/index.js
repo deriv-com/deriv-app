@@ -62,12 +62,12 @@ export const load = ({
     workspace,
     showIncompatibleStrategyDialog,
 }) => {
-    const { startLoading, endLoading } = DBotStore.instance;
-    startLoading();
+    const { setLoading } = DBotStore.instance;
+    setLoading(true);
 
     setTimeout(async () => {
         const showInvalidStrategyError = () => {
-            endLoading();
+            setLoading(false);
             const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
             globalObserver.emit('ui.log.error', error_message);
         };
@@ -153,7 +153,7 @@ export const load = ({
             console.error(e); // eslint-disable-line
             return showInvalidStrategyError();
         } finally {
-            endLoading();
+            setLoading(false);
         }
 
         return true;
@@ -176,7 +176,6 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
 export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
-
     Blockly.Xml.domToWorkspace(xml, workspace);
 };
 

@@ -52,7 +52,6 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             p2p_order_props: observable,
             custom_notifications: computed,
-            filtered_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
@@ -139,10 +138,6 @@ export default class NotificationStore extends BaseStore {
             },
         };
         return notification_content;
-    }
-
-    get filtered_notifications() {
-        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
     addNotificationBar(message) {
@@ -247,6 +242,8 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
+            is_risky_client,
+            is_financial_information_incomplete,
             has_restricted_mt5_account,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
@@ -287,6 +284,12 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
+            }
+
+            if (is_risky_client && is_financial_information_incomplete) {
+                this.addNotificationMessage(this.client_notifications.risk_client);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
             }
 
             if (is_poi_dob_mismatch) {
@@ -1213,7 +1216,20 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
+            risk_client: {
+                key: 'risk_client',
+                header: localize('You can only make deposits.'),
+                message: (
+                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start assessment'),
+                },
+            },
         };
+
         this.client_notifications = notifications;
     }
 
@@ -1221,6 +1237,7 @@ export default class NotificationStore extends BaseStore {
         this.p2p_order_props = p2p_order_props;
     }
 
+    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

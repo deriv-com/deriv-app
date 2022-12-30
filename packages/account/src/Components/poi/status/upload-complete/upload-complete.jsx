@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa/poa-button';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button.jsx';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {

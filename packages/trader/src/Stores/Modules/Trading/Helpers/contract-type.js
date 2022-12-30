@@ -102,9 +102,9 @@ export const ContractType = (() => {
                     const sub_cats =
                         available_categories[
                             Object.keys(available_categories).find(
-                                key => available_categories[key].indexOf(type) !== -1
+                                key => available_categories[key].categories.indexOf(type) !== -1
                             )
-                        ];
+                        ].categories;
 
                     if (!sub_cats) return;
 
@@ -128,7 +128,7 @@ export const ContractType = (() => {
             });
 
             // cleanup categories
-            Object.keys(available_categories).forEach(key => {
+            Object.keys(available_categories).categories?.forEach(key => {
                 available_categories[key] = available_categories[key].filter(item => typeof item === 'object');
                 if (available_categories[key].length === 0) {
                     delete available_categories[key];
@@ -194,7 +194,7 @@ export const ContractType = (() => {
 
     const getContractType = (list, contract_type) => {
         const arr_list = Object.keys(list || {})
-            .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
+            .reduce((k, l) => [...k, ...list[l].categories.map(ct => ct.value)], [])
             .filter(type => unsupported_contract_types_list.indexOf(type) === -1)
             .sort((a, b) => (a === 'multiplier' || b === 'multiplier' ? -1 : 0));
 
@@ -218,16 +218,18 @@ export const ContractType = (() => {
         );
     };
 
-    const getDurationUnitsList = (contract_type, contract_start_type) => ({
-        duration_units_list:
-            getPropertyValue(available_contract_types, [
-                contract_type,
-                'config',
-                'durations',
-                'units_display',
-                contract_start_type,
-            ]) || [],
-    });
+    const getDurationUnitsList = (contract_type, contract_start_type) => {
+        return {
+            duration_units_list:
+                getPropertyValue(available_contract_types, [
+                    contract_type,
+                    'config',
+                    'durations',
+                    'units_display',
+                    contract_start_type,
+                ]) || [],
+        };
+    };
 
     const getDurationUnit = (duration_unit, contract_type, contract_start_type) => {
         const duration_units =

@@ -9,7 +9,6 @@ import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
 import {
     tour_step_config,
-    eu_tour_step_config,
     tour_styles,
     tour_step_locale,
     eu_tour_step_locale,
@@ -23,6 +22,7 @@ import {
     CFDDbviOnBoarding,
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
+    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
@@ -44,26 +44,40 @@ const TradingHub: React.FC = () => {
         is_eu_country,
         is_populating_mt5_account_list,
         is_populating_dxtrade_account_list,
-        loginid,
+        switchAccountHandlerForAppstore,
     } = client;
     const {
         setAccountType,
         enableCFDPasswordModal,
         current_list,
         is_mt5_trade_modal_visible,
-        togglePasswordManagerModal,
         toggleMT5TradeModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
     const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen } = tradinghub;
+    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
     const real_active = !/^VRT/.test(login_id);
     const [tab_account_type, setTabAccountType] = React.useState<TAccountCategory>(real_active ? 'real' : 'demo');
     const [platform_type, setPlatformType] = React.useState<string>('cfd');
+    const [password_manager, setPasswordManager] = React.useState<{
+        is_visible: boolean;
+        selected_login: string;
+        selected_account: string;
+        selected_account_type?: string;
+        selected_account_group?: string;
+        selected_server?: string;
+    }>({
+        is_visible: false,
+        selected_login: '',
+        selected_account: '',
+        selected_account_type: '',
+        selected_account_group: '',
+        selected_server: '',
+    });
 
     const history = useHistory();
 
@@ -106,6 +120,7 @@ const TradingHub: React.FC = () => {
             name: string;
         };
     }) => {
+        switchAccountHandlerForAppstore(tab_account_type);
         setTabAccountType(event.target.value as TAccountCategory);
     };
     const platformTypeChange = (event: {
@@ -124,17 +139,27 @@ const TradingHub: React.FC = () => {
 
     const platform_toggle_options = [
         { text: 'CFD', value: 'cfd' },
-        { text: 'Options', value: 'options' },
+        { text: `${is_eu ? 'Multipliers' : 'Options and...'}`, value: 'options' },
     ];
 
     tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
 
     eu_tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
@@ -151,6 +176,23 @@ const TradingHub: React.FC = () => {
             }}
         />
     );
+
+    const togglePasswordManagerModal = (
+        login?: string,
+        title?: string,
+        group?: string,
+        type?: string,
+        server?: string
+    ) => {
+        setPasswordManager(prev_state => ({
+            is_visible: !prev_state.is_visible,
+            selected_login: typeof login === 'string' ? login : '',
+            selected_account: typeof title === 'string' ? title : '',
+            selected_account_group: group,
+            selected_account_type: type,
+            selected_server: server,
+        }));
+    };
 
     const is_loading = is_populating_mt5_account_list || is_populating_dxtrade_account_list;
 
@@ -224,14 +266,14 @@ const TradingHub: React.FC = () => {
                 </MobileWrapper>
             </div>
             <Joyride
-                run={is_tour_open}
+                run={!is_onboarding_visited && is_tour_open}
                 continuous
                 disableScrolling
                 hideCloseButton
                 disableCloseOnEsc
-                steps={is_eu ? eu_tour_step_config : tour_step_config}
+                steps={tour_step_config}
                 styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-                locale={is_eu ? eu_tour_step_locale : tour_step_locale}
+                locale={tour_step_locale}
                 floaterProps={{
                     disableAnimation: true,
                 }}
@@ -241,6 +283,7 @@ const TradingHub: React.FC = () => {
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
+            <CFDServerErrorDialog context={store} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}
@@ -250,7 +293,17 @@ const TradingHub: React.FC = () => {
                 toggleModal={toggleMT5TradeModal}
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
             />
-            <CFDPasswordManagerModal context={store} platform={platform} toggleModal={togglePasswordManagerModal} />
+            <CFDPasswordManagerModal
+                is_visible={password_manager.is_visible}
+                context={store}
+                selected_login={password_manager.selected_login}
+                selected_account={password_manager.selected_account}
+                selected_account_group={password_manager.selected_account_group}
+                selected_account_type={password_manager.selected_account_type}
+                selected_server={password_manager.selected_server}
+                platform={platform}
+                toggleModal={togglePasswordManagerModal}
+            />
             <ResetTradingPasswordModal context={store} />
         </div>
     );

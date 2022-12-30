@@ -1,9 +1,9 @@
 import React from 'react';
 import { setWebsocket } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
 import { MobxContentProvider } from 'Stores/connect';
-import { StoreProvider } from './hooks';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {

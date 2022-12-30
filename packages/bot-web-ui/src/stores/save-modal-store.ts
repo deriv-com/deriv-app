@@ -131,10 +131,9 @@ export default class SaveModalStore implements ISaveModalStore {
             } = this.root_store;
             setStrategySaveType(save_type);
         } else {
-            this.updateBotName(bot_name);
+            saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
-        saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
-
+        this.updateBotName(bot_name);
         this.toggleSaveModal();
     }
 

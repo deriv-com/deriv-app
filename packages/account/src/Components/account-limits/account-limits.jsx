@@ -8,12 +8,12 @@ import LoadErrorMessage from 'Components/load-error-message';
 import DemoMessage from 'Components/demo-message';
 import AccountLimitsArticle from './account-limits-article.jsx';
 import AccountLimitsContext from './account-limits-context';
-import AccountLimitsExtraInfo from './account-limits-extra-info.jsx';
-import AccountLimitsFooter from './account-limits-footer.jsx';
+import AccountLimitsExtraInfo from './account-limits-extra-info';
+import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay.jsx';
-import AccountLimitsTableCell from './account-limits-table-cell.jsx';
-import AccountLimitsTableHeader from './account-limits-table-header.jsx';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row.jsx';
+import AccountLimitsTableCell from './account-limits-table-cell';
+import AccountLimitsTableHeader from './account-limits-table-header';
+import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
 
 const AccountLimits = ({
     account_limits,
@@ -248,13 +248,11 @@ const AccountLimits = ({
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
-                                                            <Localize
-                                                                i18n_default_text={
-                                                                    is_appstore
-                                                                        ? 'Total withdrawal limit'
-                                                                        : 'Total withdrawal allowed'
-                                                                }
-                                                            />
+                                                            {is_appstore ? (
+                                                                <Localize i18n_default_text='Total withdrawal limit' />
+                                                            ) : (
+                                                                <Localize i18n_default_text='Total withdrawal allowed' />
+                                                            )}
                                                             {is_appstore && !is_fully_authenticated && (
                                                                 <React.Fragment>
                                                                     <Text

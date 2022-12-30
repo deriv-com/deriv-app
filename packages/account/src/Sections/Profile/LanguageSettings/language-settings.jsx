@@ -57,7 +57,7 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                             key={key}
                             onClick={async () => {
                                 await changeLanguage(key, changeCurrentLanguage);
-                                await i18n.changeLanguage(key);
+                                await i18n.changeLanguage?.(key);
                                 toggleSettingsModal();
                             }}
                             className={classNames('settings-language__language-link', {

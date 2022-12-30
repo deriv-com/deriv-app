@@ -17,6 +17,7 @@ class DBotStore extends DBotStoreInterface {
         this.is_mobile = store.is_mobile || false;
         this.is_dark_mode_on = store.is_dark_mode_on || false;
         this.client = store.client;
+        this.dashboard = store.dashboard;
         this.flyout = store.flyout;
         this.populateConfig = store.populateConfig;
         this.toolbar = store.toolbar;
@@ -26,8 +27,7 @@ class DBotStore extends DBotStoreInterface {
         this.setContractUpdateConfig = store.setContractUpdateConfig;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
-        this.startLoading = store.startLoading;
-        this.endLoading = store.endLoading;
+        this.setLoading = store.setLoading;
     }
 
     static setInstance(store) {

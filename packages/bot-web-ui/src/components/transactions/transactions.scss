@@ -1,6 +1,6 @@
 .transactions {
     $transaction: &;
-    $grid-template-columns: 0.9fr 1fr 1fr;
+    $grid-template-columns: 0.8fr 1fr 1.1fr;
 
     &-empty {
         height: 100%;
@@ -64,7 +64,7 @@
         }
     }
     &__content {
-        height: calc(100% - 12.2rem);
+        height: calc(100% - 9rem);
 
         &--mobile {
             height: calc(100% - 4.2rem);

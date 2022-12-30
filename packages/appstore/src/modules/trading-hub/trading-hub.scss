@@ -57,12 +57,17 @@
         border-radius: $BORDER_RADIUS * 4;
         margin: 2.4rem 0;
         padding: 2.4rem;
+        overflow-y: auto;
 
         &--platform_type_toggle {
             margin-bottom: 1.6rem;
             border-radius: $BORDER_RADIUS;
             padding: 0.4rem;
             background-color: var(--general-section-1);
+
+            @include mobile {
+                z-index: 0;
+            }
         }
 
         &--divider {

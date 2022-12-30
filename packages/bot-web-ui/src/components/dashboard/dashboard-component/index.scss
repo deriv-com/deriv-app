@@ -97,6 +97,9 @@
                     &__tabs {
                         display: flex;
                         justify-content: space-between;
+                        @include mobile {
+                            flex-direction: column;
+                        }
                     }
                 }
             }
@@ -182,6 +185,9 @@
     &__dashboard {
         display: flex;
         width: 100%;
+        &--tour-active {
+            width: 78%;
+        }
 
         &__content {
             min-width: 70%;
@@ -209,7 +215,7 @@
 
         &__preview {
             width: 50%;
-            height: 100%;
+            height: calc(100% + 2rem);
 
             &__retrigger {
                 button {

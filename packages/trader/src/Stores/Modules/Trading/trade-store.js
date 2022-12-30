@@ -923,6 +923,12 @@ export default class TradeStore extends BaseStore {
         return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
     }
 
+    get is_synthetics_trading_market_available() {
+        return !!this.active_symbols?.find(
+            item => item.market === 'synthetic_index' && !isMarketClosed(this.active_symbols, item.symbol)
+        );
+    }
+
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
     }

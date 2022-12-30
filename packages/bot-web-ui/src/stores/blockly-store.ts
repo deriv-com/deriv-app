@@ -11,9 +11,8 @@ export interface IBlocklyStore {
     setContainerSize: () => void;
     onMount: () => void;
     onUnmount: () => void;
-    startLoading: () => void;
+    setLoading: () => void;
     getCachedActiveTab: () => void;
-    endLoading: () => void;
 }
 
 export default class BlocklyStore implements IBlocklyStore {
@@ -28,8 +27,7 @@ export default class BlocklyStore implements IBlocklyStore {
             onMount: action.bound,
             getCachedActiveTab: action.bound,
             onUnmount: action.bound,
-            startLoading: action.bound,
-            endLoading: action.bound,
+            setLoading: action.bound,
         });
         this.root_store = root_store;
     }
@@ -63,12 +61,7 @@ export default class BlocklyStore implements IBlocklyStore {
         window.removeEventListener('resize', this.setContainerSize);
     }
 
-    // TODO: add setLoading method and pass such as setLoading(true/false), remove startLoading & endLoading
-    startLoading(): void {
-        this.is_loading = true;
-    }
-
-    endLoading(): void {
-        this.is_loading = false;
+    setLoading(is_loading: boolean): void {
+        this.is_loading = is_loading;
     }
 }

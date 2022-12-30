@@ -71,6 +71,9 @@ const BotBuilder = ({
                                     color: 'var(--text-general)',
                                     padding: '0.6rem',
                                 },
+                                tooltipContent: {
+                                    padding: '0 1rem',
+                                },
                             }}
                         />
                     )}

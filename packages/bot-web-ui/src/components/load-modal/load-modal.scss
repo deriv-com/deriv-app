@@ -2,19 +2,24 @@
     .load-strategy {
         &__recent {
             &-item {
+                height: 10rem;
                 padding: 1.6rem;
                 grid-template-columns: 1fr 1fr;
+
                 &-location {
                     justify-content: center;
                 }
+
                 &-text {
-                    height: 10rem;
+                    height: unset;
                     flex-direction: column;
                     text-align: left;
                 }
+
                 &-title {
                     font-size: var(--text-size-s);
                 }
+
                 &-saved {
                     font-size: var(--text-size-s);
                 }
@@ -22,25 +27,40 @@
 
             &-files {
                 width: 35%;
-                height: 50rem;
                 overflow: auto;
+                height: 51vh;
             }
 
             &-preview {
                 width: 65%;
+
                 .load-strategy__preview-workspace {
-                    height: 45rem;
+                    height: 80%;
                     min-height: unset;
+                }
+
+                &-title {
+                    margin: 1.5rem 0;
+                    margin-left: 0;
                 }
             }
         }
 
         &__container {
             &--has-footer {
-                overflow: auto;
                 height: calc(80vh - 21rem);
+                margin-top: -1rem;
             }
         }
+
+        &__title {
+            margin: 1.5rem;
+        }
+    }
+
+    .load-strategy__preview-workspace {
+        min-height: unset;
+        height: unset;
     }
 }
 

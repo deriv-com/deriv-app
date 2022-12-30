@@ -11,7 +11,7 @@ import { useStores } from 'Stores/index';
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
     const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
-    const { is_high_risk } = client;
+    const { is_high_risk, is_low_risk } = client;
     const is_real = selected_account_type === 'real';
 
     return (
@@ -24,7 +24,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && !is_high_risk && <RegulatorSwitcher />}
+                    {is_real && !is_high_risk && is_low_risk && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>

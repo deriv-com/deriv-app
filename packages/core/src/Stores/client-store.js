@@ -2421,8 +2421,7 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_low_risk() {
-        if (isEmptyObject(this.account_status)) return false;
-        return this.account_status.risk_classification === 'low';
+        return this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
     }
 
     get has_residence() {

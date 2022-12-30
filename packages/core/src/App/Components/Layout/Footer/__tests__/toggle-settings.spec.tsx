@@ -1,40 +1,34 @@
-// TODO refactor old tests in this component
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Modal, Icon } from '@deriv/components';
 import { ToggleSettings } from '../toggle-settings.jsx';
 
-const mockFunction = jest.fn();
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect:
+        () =>
+        <T,>(Component: T) =>
+            Component,
+}));
 
 describe('ToggleSettings Component', () => {
     it('should has "ic-settings--active" class when "is_settings_visible" is true', () => {
         render(<ToggleSettings is_settings_visible />);
-        const aElement = screen.getByTestId('dt_settings_toggle');
-        expect(aElement).toHaveClass('ic-settings--active');
+        const link = screen.getByTestId('dt_toggle_settings');
+        expect(link).toHaveClass('ic-settings--active');
     });
 
-    // it('should open the modal when the user clicked on the link', () => {
-    //     render(<ToggleSettings toggleSettings={mockFunction} />);
-    //     const aElement = screen.getByTestId('dt_settings_toggle');
-    //     fireEvent.click(aElement);
-    //     const modal = screen.getByTestId('');
-    //     // expect(modal).
-    // });
+    it('should contain "IcGear" icon', () => {
+        render(<ToggleSettings />);
+        const icon = screen.getByTestId('dt_icon');
+        expect(icon).toBeInTheDocument();
+    });
 
-    // it('should contain "IcGear" icon', () => {
-    //     render(<ToggleSettings />);
-    //     const icon = screen.getByText('IcGear');
-    //     // expect(icon).toBeInTheDocument();
-    // });
-
-    // it('should render one <ToggleSettings /> component with active class if is_settings_visible is true', () => {
-    //     const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
-    //     expect(wrapper).toHaveLength(1);
-    //     expect(wrapper.find('.ic-settings--active').exists()).toBe(true);
-    // });
-
-    // it("property 'is_open' should depend on 'is_settings_visible'", () => {
-    //     const wrapper = shallow(<ToggleSettings is_settings_visible={true} />);
-    //     expect(wrapper.find(Modal).prop('is_open')).toBe(true);
-    // });
+    it('should call "toggleSettings" function when the user clicked on the link', () => {
+        const toggleSettings = jest.fn();
+        render(<ToggleSettings toggleSettings={toggleSettings} />);
+        const link = screen.getByTestId('dt_toggle_settings');
+        fireEvent.click(link);
+        expect(toggleSettings).toHaveBeenCalledTimes(1);
+    });
 });

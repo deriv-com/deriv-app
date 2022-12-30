@@ -56,6 +56,4 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
     return <Route exact={route.exact} path={route.path} render={renderFactory} />;
 };
 
-export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
-
 export default RouteWithSubRoutes;

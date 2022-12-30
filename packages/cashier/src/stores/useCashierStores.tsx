@@ -2,17 +2,20 @@ import { useStore } from '@deriv/stores';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import CashierStore from './cashier-store';
 
-const CashierStoreContext = createContext<CashierStore | null>(null);
+const CashierStoreContext = createContext<typeof CashierStore | null>(null);
 
 export const CashierStoreProvider = ({ children }: PropsWithChildren) => {
-    // TODO: Once we removed instantiating the CashierStore in the core package, We should instantiate it here instead.
-    const stores = useStore();
+    const {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        modules: { cashier },
+    } = useStore();
     // const memoizedValue = useMemo(() => new CashierStore(), []);
 
     return (
         <CashierStoreContext.Provider
             // value={memoizedValue}
-            value={stores.modules.cashier}
+            value={cashier}
         >
             {children}
         </CashierStoreContext.Provider>

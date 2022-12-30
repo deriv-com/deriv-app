@@ -21,8 +21,9 @@ const TradingAppCard = ({
     short_code_and_region,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { traders_hub } = useStores();
+    const { is_eu_user, is_demo_low_risk } = traders_hub;
 
-    const platform = traders_hub.is_eu_user ? mf_platform_config : platform_config;
+    const platform = !is_eu_user || is_demo_low_risk ? platform_config : mf_platform_config;
 
     const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
         app_desc: description,

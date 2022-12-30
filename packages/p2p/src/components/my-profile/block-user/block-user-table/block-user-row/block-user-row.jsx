@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
@@ -8,6 +9,7 @@ import { localize } from 'Components/i18next';
 
 const BlockUserRow = ({ row: advertiser }) => {
     const { buy_sell_store, my_profile_store } = useStores();
+
     return (
         <Table.Row className='block-user-row'>
             <Table.Cell>
@@ -28,10 +30,16 @@ const BlockUserRow = ({ row: advertiser }) => {
                     </div>
                 </div>
             </Table.Cell>
-            <Table.Cell className='block-user-row__button'>
-                <Button secondary medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
-                    {localize('Unblock')}
-                </Button>
+            <Table.Cell className='block-user-row__button-group'>
+                {advertiser.is_blocked ? (
+                    <Button secondary medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+                        {localize('Unblock')}
+                    </Button>
+                ) : (
+                    <Button alternate medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+                        {localize('Block')}
+                    </Button>
+                )}
             </Table.Cell>
         </Table.Row>
     );

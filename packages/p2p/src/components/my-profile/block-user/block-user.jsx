@@ -15,7 +15,7 @@ const BlockUser = () => {
         <React.Fragment>
             <BlockUserModal
                 advertiser_name={my_profile_store.selected_blocked_user.name}
-                is_advertiser_blocked
+                is_advertiser_blocked={!!my_profile_store.selected_blocked_user.is_blocked}
                 is_block_user_modal_open={general_store.is_block_user_modal_open}
                 onCancel={() => general_store.setIsBlockUserModalOpen(false)}
                 onSubmit={my_profile_store.onSubmit}

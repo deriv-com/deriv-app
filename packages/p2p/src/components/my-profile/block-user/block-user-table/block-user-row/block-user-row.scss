@@ -11,10 +11,14 @@
         }
     }
 
-    &__button {
+    &__button-group {
         display: flex;
         justify-content: flex-end;
         align-items: center;
+
+        & button {
+            width: 8rem;
+        }
     }
 
     &__cell {

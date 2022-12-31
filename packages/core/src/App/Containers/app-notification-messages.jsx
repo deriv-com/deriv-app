@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
@@ -128,7 +129,11 @@ const AppNotificationMessages = ({
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    const notifications_sublist = notifications.slice(0, notifications_limit);
+    //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
+    const filtered_excluded_notifications = notifications.filter(message =>
+        excluded_notifications.includes(message.key)
+    );
+    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

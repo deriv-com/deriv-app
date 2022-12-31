@@ -32,8 +32,8 @@ const ALIASES = {
     Types: path.resolve(__dirname, '../src/Types'),
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => [
-    ...(is_test_env && !is_mocha_only
+const rules = (is_test_env = false) => [
+    ...(is_test_env
         ? [
               {
                   test: /\.(js|jsx|ts|tsx)$/,

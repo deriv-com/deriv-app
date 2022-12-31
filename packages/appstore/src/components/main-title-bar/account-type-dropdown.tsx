@@ -20,7 +20,9 @@ const AccountTypeDropdown = () => {
                     `account-type-dropdown--${selected_account_type}`
                 )}
                 list={account_types}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectAccountType(e.target.value)}
+                onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    await selectAccountType(e.target.value);
+                }}
             />
         </div>
     );

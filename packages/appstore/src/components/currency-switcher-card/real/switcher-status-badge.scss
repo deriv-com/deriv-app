@@ -1,0 +1,16 @@
+.switcher-status-badge {
+    &__container {
+        display: inline-flex;
+        padding: 4px 8px;
+        color: var(--text-info-blue);
+        border-radius: 4px;
+        border: 1px solid var(--text-info-blue);
+
+        &--pending {
+            border-color: var(--text-warning);
+        }
+        &--failed {
+            border-color: var(--status-danger);
+        }
+    }
+}

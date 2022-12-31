@@ -2,12 +2,7 @@ import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -28,57 +23,74 @@ jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>Payme
 jest.mock('Pages/payment-agent/payment-agent-search-box', () => () => <div>PaymentAgentSearchBox</div>);
 
 describe('<PaymentAgentContainer />', () => {
-    const props = {
-        app_contents_scroll_ref: {
-            current: {},
-        },
-        is_deposit: true,
-        is_try_withdraw_successful: false,
-        is_withdraw_successful: false,
-        onChangePaymentMethod: jest.fn(),
-        payment_agent_list: [
-            {
-                currencies: 'USD',
-                deposit_commission: 0,
-                email: 'pa@example.com',
-                further_information: 'further information CR90000000',
-                max_withdrawal: '2000',
-                min_withdrawal: '10',
-                name: 'Payment Agent of CR90000000',
-                paymentagent_loginid: 'CR90000000',
-                phones: '+12345678',
-                supported_banks: [{ payment_method: 'Visa' }],
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
-                withdrawal_commission: 0,
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            ui: {
+                app_contents_scroll_ref: {
+                    current: {},
+                },
             },
-            {
-                currencies: 'USD',
-                deposit_commission: 0,
-                email: 'pa@example.com',
-                further_information: 'further information CR90000002',
-                max_withdrawal: '2000',
-                min_withdrawal: '10',
-                name: 'Payment Agent of CR90000002',
-                paymentagent_loginid: 'CR90000002',
-                phones: '+12345678',
-                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                telephone: '+12345678',
-                url: 'http://www.pa.com',
-                withdrawal_commission: 0,
+            modules: {
+                cashier: {
+                    payment_agent: {
+                        is_try_withdraw_successful: false,
+                        is_withdraw_successful: false,
+                        onChangePaymentMethod: jest.fn(),
+                        filtered_list: [
+                            {
+                                currencies: 'USD',
+                                deposit_commission: 0,
+                                email: 'pa@example.com',
+                                further_information: 'further information CR90000000',
+                                max_withdrawal: '2000',
+                                min_withdrawal: '10',
+                                name: 'Payment Agent of CR90000000',
+                                paymentagent_loginid: 'CR90000000',
+                                phones: '+12345678',
+                                supported_banks: [{ payment_method: 'Visa' }],
+                                telephone: '+12345678',
+                                url: 'http://www.pa.com',
+                                withdrawal_commission: 0,
+                            },
+                            {
+                                currencies: 'USD',
+                                deposit_commission: 0,
+                                email: 'pa@example.com',
+                                further_information: 'further information CR90000002',
+                                max_withdrawal: '2000',
+                                min_withdrawal: '10',
+                                name: 'Payment Agent of CR90000002',
+                                paymentagent_loginid: 'CR90000002',
+                                phones: '+12345678',
+                                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                                telephone: '+12345678',
+                                url: 'http://www.pa.com',
+                                withdrawal_commission: 0,
+                            },
+                        ],
+                        resetPaymentAgent: jest.fn(),
+                        selected_bank: '',
+                        supported_banks: [
+                            { text: 'MasterCard', value: 'mastercard' },
+                            { text: 'Visa', value: 'visa' },
+                        ],
+                    },
+                },
             },
-        ],
-        resetPaymentAgent: jest.fn(),
-        selected_bank: '',
-        supported_banks: [
-            { text: 'MasterCard', value: 'mastercard' },
-            { text: 'Visa', value: 'visa' },
-        ],
-        verification_code: 'ABCdef',
+        };
+    });
+
+    const renderPaymentAgentContainer = (is_deposit = true) => {
+        return render(
+            <StoreProvider store={mockRootStore}>
+                <PaymentAgentContainer is_deposit={is_deposit} verification_code='ABCdef' />
+            </StoreProvider>
+        );
     };
 
     it('should show proper messages and icons', () => {
-        render(<PaymentAgentContainer {...props} />);
+        renderPaymentAgentContainer();
 
         expect(
             screen.getByText('Contact your preferred payment agent for payment instructions and make your deposit.')
@@ -93,7 +105,7 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show proper header when is_deposit is equal to false', () => {
-        render(<PaymentAgentContainer {...props} is_deposit={false} />);
+        renderPaymentAgentContainer(false);
 
         expect(
             screen.getByText(
@@ -104,7 +116,7 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show PaymentAgentUnlistedWithdrawForm when the user clicks on "search for them using their account number" link', () => {
-        render(<PaymentAgentContainer {...props} is_deposit={false} />);
+        renderPaymentAgentContainer(false);
 
         const el_withdrawal_link = screen.getByTestId('dt_withdrawal_link');
         fireEvent.click(el_withdrawal_link);
@@ -113,32 +125,36 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show PaymentAgentWithdrawConfirm component when is_try_withdraw_successful is equal to true', () => {
-        render(<PaymentAgentContainer {...props} is_try_withdraw_successful />);
+        mockRootStore.modules.cashier.payment_agent.is_try_withdraw_successful = true;
+        renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentWithdrawConfirm')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentReceipt component when is_withdraw_successful is equal to true', () => {
-        render(<PaymentAgentContainer {...props} is_withdraw_successful />);
+        mockRootStore.modules.cashier.payment_agent.is_withdraw_successful = true;
+        renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentReceipt')).toBeInTheDocument();
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(<PaymentAgentContainer {...props} />);
+        renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });
 
     it('should show search loader when is_search_loading equal to true', () => {
-        render(<PaymentAgentContainer {...props} is_search_loading />);
+        mockRootStore.modules.cashier.payment_agent.is_search_loading = true;
+        renderPaymentAgentContainer();
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should show proper warning messages if there are no matches in search results', () => {
-        render(<PaymentAgentContainer {...props} has_payment_agent_search_warning />);
+        mockRootStore.modules.cashier.payment_agent.has_payment_agent_search_warning = true;
+        renderPaymentAgentContainer();
 
         expect(screen.getByText('No payment agents found for your search')).toBeInTheDocument();
         expect(screen.getByText('Try changing your search criteria.')).toBeInTheDocument();

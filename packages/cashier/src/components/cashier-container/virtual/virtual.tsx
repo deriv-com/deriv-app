@@ -1,20 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
 
-type TVirtual = {
-    is_pre_appstore: boolean;
-};
-
-const Virtual = ({ is_pre_appstore }: TVirtual) => {
+const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
+        client: { is_pre_appstore },
     } = useStore();
     const history = useHistory();
 
@@ -64,6 +60,6 @@ const Virtual = ({ is_pre_appstore }: TVirtual) => {
             </React.Fragment>
         </div>
     );
-};
+});
 
-export default observer(withRouter(Virtual));
+export default withRouter(Virtual);

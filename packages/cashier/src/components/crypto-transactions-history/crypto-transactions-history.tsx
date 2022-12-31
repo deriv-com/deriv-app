@@ -1,13 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import { TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
-import { useStore } from '@deriv/stores';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -19,7 +18,7 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
-const CryptoTransactionsHistory = () => {
+const CryptoTransactionsHistory = observer(() => {
     const {
         modules: {
             cashier: { transaction_history, general_store },
@@ -97,6 +96,6 @@ const CryptoTransactionsHistory = () => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CryptoTransactionsHistory);
+export default CryptoTransactionsHistory;

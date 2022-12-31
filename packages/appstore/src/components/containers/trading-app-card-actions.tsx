@@ -3,24 +3,26 @@ import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import TransferTradeButtonGroup from 'Components/transfer-trade-button-group';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 export type Actions = {
     type: 'get' | 'none' | 'trade' | 'dxtrade' | 'transfer_trade' | 'dxtrade_transfer_trade';
     link_to?: string;
-    is_disabled?: boolean;
+    has_divider?: boolean;
     onAction?: () => void;
+    is_external?: boolean;
 };
 
-const TradingAppCardActions = ({ type, link_to, is_disabled, onAction }: Actions) => {
+const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions) => {
     switch (type) {
         case 'get':
             return (
-                <Button primary_light disabled={is_disabled} onClick={() => onAction?.()}>
+                <Button primary_light onClick={() => onAction?.()}>
                     {localize('Get')}
                 </Button>
             );
         case 'trade':
-            return <TradeButton link_to={link_to} onAction={onAction} />;
+            return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} />;
         case 'dxtrade':
             return <TradeButton link_to={link_to} />;
         case 'transfer_trade':
@@ -31,4 +33,4 @@ const TradingAppCardActions = ({ type, link_to, is_disabled, onAction }: Actions
     }
 };
 
-export default TradingAppCardActions;
+export default observer(TradingAppCardActions);

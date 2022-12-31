@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { getPlatformInformation, routes } from '@deriv/shared';
@@ -19,9 +20,15 @@ const Divider = () => {
 
 export const TradersHubHomeButton = () => {
     const history = useHistory();
+    const { pathname } = history.location;
 
     return (
-        <div className='trading-hub-header__tradershub' onClick={() => history.push(routes.traders_hub)}>
+        <div
+            className={classNames('trading-hub-header__tradershub', {
+                'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
+            })}
+            onClick={() => history.push(routes.traders_hub)}
+        >
             <div className='trading-hub-header__tradershub--home-logo'>
                 <Icon icon='IcAppstoreTradersHubHome' size={17} />
             </div>
@@ -309,17 +316,17 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
     is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
     is_pre_appstore: client.is_pre_appstore,
-    is_social_signup: client.is_social_signup,
     is_virtual: client.is_virtual,
-    loginid: client.loginid,
     logoutClient: client.logout,
-    menu_items: menu.extensions,
-    notifications_count: notifications.filtered_notifications.length,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
+    notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
+    should_allow_authentication: client.should_allow_authentication,
+    toggleNotifications: notifications.toggleNotificationsModal,
+    is_social_signup: client.is_social_signup,
+    loginid: client.loginid,
+    menu_items: menu.extensions,
+    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
-    should_allow_authentication: client.should_allow_authentication,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(TradingHubHeader));

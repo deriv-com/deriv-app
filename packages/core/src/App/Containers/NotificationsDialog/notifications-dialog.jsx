@@ -30,6 +30,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         return `IcAlert${toTitleCase(type)}`;
     };
 
+    const getButtonSettings = item =>
+        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
+
     return (
         <React.Fragment>
             {notifications.map(item => (
@@ -54,9 +57,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
-                        {!isEmptyObject(item.action) && (
+                        {!!getButtonSettings(item) && (
                             <React.Fragment>
-                                {item.action.route ? (
+                                {item[getButtonSettings(item)].route ? (
                                     <BinaryLink
                                         onClick={toggleDialog}
                                         active_class='notifications-item'
@@ -65,19 +68,19 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                                             'dc-btn--secondary',
                                             'notifications-item__cta-button'
                                         )}
-                                        to={item.action.route}
+                                        to={item[getButtonSettings(item)].route}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </BinaryLink>
                                 ) : (
                                     <Button
                                         className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={item.action.onClick}
+                                        onClick={item[getButtonSettings(item)].onClick}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </Button>
                                 )}
@@ -90,7 +93,7 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
     );
 };
 const NotificationListWrapper = React.forwardRef(({ is_pre_appstore, notifications, toggleDialog }, ref) => {
-    const is_empty = !notifications.length;
+    const is_empty = !notifications?.length;
 
     return (
         <div

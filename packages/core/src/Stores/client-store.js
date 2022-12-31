@@ -363,6 +363,7 @@ export default class ClientStore extends BaseStore {
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
             is_high_risk: computed,
+            is_low_risk: computed,
             has_residence: computed,
             setVisibilityRealityCheck: action.bound,
             clearRealityCheckTimeout: action.bound,
@@ -375,7 +376,6 @@ export default class ClientStore extends BaseStore {
             getTwoFAStatus: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            switchAccountHandlerForAppstore: action.bound,
             setIsPreAppStore: action.bound,
         });
 
@@ -400,6 +400,7 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 this.is_pre_appstore = !!trading_hub;
+                localStorage.setItem('is_pre_appstore', !!trading_hub);
             }
         );
 
@@ -2034,8 +2035,9 @@ export default class ClientStore extends BaseStore {
 
         if (is_client_logging_in) {
             const redirect_url = sessionStorage.getItem('redirect_url');
+            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (
-                this.is_pre_appstore &&
+                local_pre_appstore === 'true' &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
@@ -2418,6 +2420,10 @@ export default class ClientStore extends BaseStore {
         return this.account_status.risk_classification === 'high';
     }
 
+    get is_low_risk() {
+        return this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+    }
+
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
     }
@@ -2495,21 +2501,6 @@ export default class ClientStore extends BaseStore {
         this.prev_real_account_loginid = logind;
     };
 
-    async switchAccountHandlerForAppstore(tab_current_account_type) {
-        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
-            if (this.prev_real_account_loginid) {
-                await this.switchAccount(this.prev_real_account_loginid);
-            } else {
-                await this.switchAccount(
-                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
-                );
-            }
-        } else if (tab_current_account_type === 'real') {
-            this.setPrevRealAccountLoginid(this.loginid);
-            await this.switchAccount(this.virtual_account_loginid);
-        }
-    }
-
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
         WS.setSettings({
@@ -2518,6 +2509,7 @@ export default class ClientStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 this.account_settings = { ...this.account_settings, trading_hub };
+                localStorage.setItem('is_pre_appstore', is_pre_appstore);
             }
         });
     }

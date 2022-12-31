@@ -8,15 +8,16 @@ import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { isDesktop, routes } from '@deriv/shared';
+import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
-    const { is_eu } = client;
+    const { is_eu, is_landing_company_loaded } = client;
     const { selected_platform_type, setTogglePlatformType } = traders_hub;
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-        { text: 'CFD', value: 'cfd' },
+        { text: 'CFDs', value: 'cfd' },
     ];
 
     const platformTypeChange = (event: {
@@ -40,15 +41,19 @@ const TradersHub = () => {
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ButtonToggle
-                            buttons_arr={platform_toggle_options}
-                            className='traders-hub__button-toggle'
-                            has_rounded_button
-                            is_traders_hub={window.location.pathname === routes.traders_hub}
-                            name='platforn_type'
-                            onChange={platformTypeChange}
-                            value={selected_platform_type}
-                        />
+                        {is_landing_company_loaded ? (
+                            <ButtonToggle
+                                buttons_arr={platform_toggle_options}
+                                className='traders-hub__button-toggle'
+                                has_rounded_button
+                                is_traders_hub={window.location.pathname === routes.traders_hub}
+                                name='platforn_type'
+                                onChange={platformTypeChange}
+                                value={selected_platform_type}
+                            />
+                        ) : (
+                            <ButtonToggleLoader />
+                        )}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>

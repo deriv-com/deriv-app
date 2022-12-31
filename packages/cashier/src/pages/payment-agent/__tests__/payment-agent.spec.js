@@ -5,19 +5,6 @@ import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import { StoreProvider } from '@deriv/stores';
 
-const mockRootStore = {
-    ui: {
-        is_dark_mode_on: false,
-        toggleAccountsDialog: jest.fn(),
-    },
-};
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
 
@@ -31,43 +18,65 @@ jest.mock('Pages/payment-agent/payment-agent-list', () => jest.fn(() => 'mockedP
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 
 describe('<PaymentAgent />', () => {
-    const props = {
-        container: 'payment_agent',
-        is_payment_agent_withdraw: false,
-        payment_agent_active_tab_index: 0,
-        setActiveTab: jest.fn(),
-        setPaymentAgentActiveTabIndex: jest.fn(),
-        verification_code: '',
+    let mockRootStore;
+
+    beforeEach(() => {
+        mockRootStore = {
+            ui: {
+                is_dark_mode_on: false,
+                toggleAccountsDialog: jest.fn(),
+            },
+            client: {
+                is_switching: false,
+                is_virtual: false,
+                verification_code: {
+                    payment_agent_withdraw: '',
+                },
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_cashier_locked: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        };
+    });
+
+    const renderPaymentAgent = () => {
+        return render(
+            <Router history={createBrowserHistory()}>
+                <StoreProvider store={mockRootStore}>
+                    <PaymentAgent setSideNotes={jest.fn()} />
+                </StoreProvider>
+            </Router>
+        );
     };
 
     it('should render the payment agent list', () => {
-        render(<PaymentAgent {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        renderPaymentAgent();
 
-        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
         expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
     });
 
     it('should render the loading component if in loading state', () => {
-        render(<PaymentAgent is_switching {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        mockRootStore.client.is_switching = true;
+        renderPaymentAgent();
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the virtual component if the client is using demo account', () => {
-        const history = createBrowserHistory();
-
-        render(
-            <Router history={history}>
-                <PaymentAgent is_virtual {...props} />
-            </Router>,
-            {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-            }
-        );
+        mockRootStore.client.is_virtual = true;
+        renderPaymentAgent();
 
         expect(
             screen.getByText(/You need to switch to a real money account to use this feature./i)
@@ -75,25 +84,23 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        render(<PaymentAgent is_cashier_locked {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+        renderPaymentAgent();
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should reset the index on unmount of component', () => {
-        const { unmount } = render(<PaymentAgent {...props} />);
+        const { unmount } = renderPaymentAgent();
 
         unmount();
-        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
     });
 
     it('should set the active tab index accordingly', () => {
-        render(<PaymentAgent {...props} verification_code='7GbuuVaX' />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        mockRootStore.client.verification_code.payment_agent_withdraw = 'ABCdef';
+        renderPaymentAgent();
 
-        expect(props.setPaymentAgentActiveTabIndex).toHaveBeenCalledWith(1);
+        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(1);
     });
 });

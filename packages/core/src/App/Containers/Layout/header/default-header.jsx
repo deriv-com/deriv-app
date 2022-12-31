@@ -256,9 +256,9 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
-            {/* 
-                Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by 
-                removing the parent element from DOM 
+            {/*
+                Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by
+                removing the parent element from DOM
             */}
             {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
             <SetAccountCurrencyModal />
@@ -359,7 +359,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     menu_items: menu.extensions,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,

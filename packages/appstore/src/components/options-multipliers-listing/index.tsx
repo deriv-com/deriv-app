@@ -11,18 +11,18 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = () => {
     const { traders_hub, client, ui } = useStores();
-    const { available_platforms, selected_account_type, has_any_real_account, is_eu_selected } = traders_hub;
-    const is_demo = selected_account_type === 'demo';
-    const { is_eu, is_landing_company_loaded } = client;
+    const { available_platforms, has_any_real_account, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } =
+        traders_hub;
+    const { is_landing_company_loaded, is_eu } = client;
 
     const OptionsTitle = () => {
-        if (!is_eu_selected && !is_eu && !isMobile()) {
+        if ((!is_eu_user || is_demo) && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if ((is_eu_selected || is_eu) && !isMobile()) {
+        } else if ((is_eu_user || is_eu) && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Multipliers' />
@@ -36,7 +36,7 @@ const OptionsAndMultipliersListing = () => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                !is_eu_selected && !is_eu ? (
+                !is_eu_user || is_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
@@ -58,7 +58,7 @@ const OptionsAndMultipliersListing = () => {
             }
             is_deriv_platform
         >
-            {!is_demo && !has_any_real_account && (
+            {is_real && no_CR_account && (
                 <div className='full-row'>
                     <TradingAppCard
                         name={localize('Deriv account')}
@@ -72,6 +72,21 @@ const OptionsAndMultipliersListing = () => {
                     />
                 </div>
             )}
+            {is_real && no_MF_account && (
+                <div className='full-row'>
+                    <TradingAppCard
+                        name={localize('Deriv account')}
+                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        icon='Options'
+                        availability='All'
+                        type='get'
+                        onAction={() => {
+                            ui.openRealAccountSignup('maltainvest');
+                        }}
+                    />
+                </div>
+            )}
+
             {is_landing_company_loaded ? (
                 available_platforms.map((available_platform: BrandConfig, index: number) => (
                     <TradingAppCard
@@ -79,7 +94,7 @@ const OptionsAndMultipliersListing = () => {
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
-                        has_divider={!is_eu && !is_eu_selected && (isMobile() ? index < 4 : index < 3)}
+                        has_divider={(!is_eu_user || is_demo) && (isMobile() ? index < 4 : index < 3)}
                     />
                 ))
             ) : (

@@ -24,17 +24,19 @@ const CFDsListing = () => {
         selected_region,
         has_any_real_account,
         startTrade,
-        is_eu_user,
         is_real,
         getExistingAccounts,
         getAccount,
+        is_eu_user,
+        is_demo_low_risk,
     } = traders_hub;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_eu, is_landing_company_loaded } = client;
+    const { is_landing_company_loaded } = client;
     const has_no_real_account = !has_any_real_account;
 
-    const accounts_sub_text = is_eu ? localize('Account Information') : localize('Compare accounts');
+    const accounts_sub_text =
+        !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
     const getShortCodeAndRegion = (account: TDetailsOfEachMT5Loginid) => {
         let short_code_and_region;
@@ -149,7 +151,7 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && !is_eu && (
+            {!is_eu_user && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>

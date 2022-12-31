@@ -10,9 +10,10 @@ export type Actions = {
     link_to?: string;
     has_divider?: boolean;
     onAction?: () => void;
+    is_external?: boolean;
 };
 
-const TradingAppCardActions = ({ type, link_to, onAction }: Actions) => {
+const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions) => {
     switch (type) {
         case 'get':
             return (
@@ -21,7 +22,7 @@ const TradingAppCardActions = ({ type, link_to, onAction }: Actions) => {
                 </Button>
             );
         case 'trade':
-            return <TradeButton link_to={link_to} onAction={onAction} />;
+            return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} />;
         case 'dxtrade':
             return <TradeButton link_to={link_to} />;
         case 'transfer_trade':

@@ -100,11 +100,7 @@ const StaticDashboard = ({
         <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
             <div
                 className='static-dashboard'
-                style={
-                    (isMobile() && !is_first_step && index === 1) || (isMobile() && !is_third_step && index === 1)
-                        ? { height: '100%' }
-                        : {}
-                }
+                style={isMobile() && index === 1 && !(is_first_step || is_third_step) ? { height: '100%' } : {}}
             >
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>

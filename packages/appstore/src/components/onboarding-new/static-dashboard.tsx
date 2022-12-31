@@ -75,24 +75,22 @@ const StaticDashboard = ({
         { text: 'CFDs', value: 1 },
     ];
 
-    const [index, setIndex] = React.useState<number | string>(1);
+    const [index, setIndex] = React.useState<number | string>(0);
 
     const Divider = () => <div className='divider' />;
 
-    // React.useEffect(() => {
-    // if (!is_first_step) {
-    //     const change_index_interval_id = setInterval(() => {
-    //         if (index === 0) {
-    //             setIndex(1);
-    //         } else {
-    //             setIndex(0);
-    //         }
-    //     }, 5000);
-    // }
+    React.useEffect(() => {
+        const change_index_interval_id = setInterval(() => {
+            if (index === 0) {
+                setIndex(1);
+            } else {
+                setIndex(0);
+            }
+        }, 5000);
 
-    //     return () => clearInterval(change_index_interval_id);
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [index]);
+        return () => clearInterval(change_index_interval_id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
     const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Deriv account';
@@ -100,7 +98,14 @@ const StaticDashboard = ({
 
     return (
         <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
-            <div className='static-dashboard'>
+            <div
+                className='static-dashboard'
+                style={
+                    (isMobile() && !is_first_step && index === 1) || (isMobile() && !is_third_step && index === 1)
+                        ? { height: '100%' }
+                        : {}
+                }
+            >
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>
                         <div className='static-dashboard-wrapper__header-and-description'>

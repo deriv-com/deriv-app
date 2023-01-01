@@ -1,3 +1,3 @@
-import AccountPromptDialog from './account-prompt-dialog.jsx';
+import AccountPromptDialog from './account-prompt-dialog';
 
 export default AccountPromptDialog;

@@ -8,6 +8,8 @@ type TAccountsList = {
         balance?: string | number;
         currency?: string;
         disabled?: boolean;
+        error?: JSX.Element | string;
+        is_crypto?: boolean;
         is_dxtrade?: boolean;
         is_mt?: boolean;
         market_type?: string;
@@ -23,10 +25,16 @@ type TAccountsList = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
 }[];
 
+// balance is missing in @deriv/api-types
+type TActiveAccount = TAccount & {
+    balance?: number;
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TClientStore = {
     accounts: { [k: string]: TAccount };
+    active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: {
         daily_transfers?: {
@@ -45,6 +53,7 @@ type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => { get_limits?: GetLimits };
+    has_maltainvest_account: boolean;
     is_account_setting_loaded: boolean;
     is_eu: boolean;
     is_deposit_lock: boolean;
@@ -67,9 +76,21 @@ type TClientStore = {
     };
     loginid?: string;
     residence: string;
+    responseMt5LoginList: ({
+        mt5_login_list,
+    }: {
+        mt5_login_list: DetailsOfEachMT5Loginid[];
+    }) => DetailsOfEachMT5Loginid[];
+    responseTradingPlatformAccountsList: ({
+        trading_platform_accounts,
+    }: {
+        trading_platform_accounts: DetailsOfEachMT5Loginid[];
+    }) => DetailsOfEachMT5Loginid[];
     standpoint: {
         iom: string;
     };
+    setAccountStatus: (status?: GetAccountStatus) => void;
+    setBalanceOtherAccounts: (balance: number) => void;
     switchAccount: (value?: string) => void;
     verification_code: {
         payment_agent_withdraw: string;

@@ -7,6 +7,8 @@ export type TAccount = {
     balance?: string | number;
     currency?: string;
     disabled?: boolean;
+    error?: JSX.Element | string;
+    is_crypto?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
     market_type?: string;
@@ -16,7 +18,18 @@ export type TAccount = {
     value?: string;
 };
 
-export type TMt5LoginList = Array<DetailsOfEachMT5Loginid>;
+export type TTransferAccount = {
+    account_type?: 'trading' | 'mt5' | 'wallet' | 'dxtrade' | 'binary';
+    balance?: string;
+    currency?: string;
+    demo_account?: 0 | 1;
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
+    loginid?: string;
+    market_type?: 'financial' | 'synthetic';
+    mt5_group?: string;
+    status?: string;
+    sub_account_type?: string;
+};
 
 export type TAccountsList = {
     account: TAccount;

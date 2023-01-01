@@ -1,12 +1,17 @@
 import AccountTransferStore from '../account-transfer-store';
+import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
+import type { TTransferAccount, TRootStore, TWebSocket } from 'Types';
 
 configure({ safeDescriptors: false });
 
-let accounts, account_transfer_store, root_store, WS;
+let accounts: TTransferAccount[],
+    account_transfer_store: AccountTransferStore,
+    root_store: DeepPartial<TRootStore>,
+    WS: DeepPartial<TWebSocket>;
 
-const CR_eUSDT_account = {
+const CR_eUSDT_account: TTransferAccount = {
     account_type: 'trading',
     balance: '1.00000000',
     currency: 'eUSDT',
@@ -14,14 +19,14 @@ const CR_eUSDT_account = {
     loginid: 'CR90000113',
 };
 
-const CR_USD_account = {
+const CR_USD_account: TTransferAccount = {
     account_type: 'trading',
     balance: '10.00',
     currency: 'USD',
     demo_account: 0,
     loginid: 'CR90000103',
 };
-const MT_USD_account = {
+const MT_USD_account: TTransferAccount = {
     account_type: 'mt5',
     balance: '10.00',
     currency: 'USD',
@@ -29,7 +34,7 @@ const MT_USD_account = {
     loginid: 'MT0000000',
 };
 
-const MX_USD_account = {
+const MX_USD_account: TTransferAccount = {
     account_type: 'trading',
     balance: '10.00',
     currency: 'USD',
@@ -37,7 +42,7 @@ const MX_USD_account = {
     loginid: 'MX0000000',
 };
 
-const DXR_USD_account = {
+const DXR_USD_account: TTransferAccount = {
     account_type: 'dxtrade',
     balance: '10.00',
     currency: 'USD',
@@ -88,7 +93,7 @@ beforeEach(() => {
             }),
         },
         balanceAll: jest.fn().mockResolvedValue({ balance_response: { balance: '20' } }),
-        mt5LoginList: jest.fn().mockResolvedValue(),
+        mt5LoginList: jest.fn().mockResolvedValue({}),
         tradingPlatformAccountsList: jest.fn().mockResolvedValue({
             trading_platform_accounts: [
                 {
@@ -118,7 +123,7 @@ beforeEach(() => {
             account_status: {
                 status: ['status'],
             },
-            active_accounts: [{ is_virtual: false, balance: 10 }],
+            active_accounts: [{ is_virtual: 0, balance: 10 }],
             has_maltainvest_account: true,
             is_financial_account: true,
             is_financial_information_incomplete: true,
@@ -141,8 +146,8 @@ beforeEach(() => {
                     onMountCommon: jest.fn(),
                 },
                 crypto_fiat_converter: {
-                    converter_from_amount: 10,
-                    converter_to_amount: 10,
+                    converter_from_amount: '10',
+                    converter_to_amount: '10',
                     onChangeConverterFromAmount: jest.fn(),
                     resetConverter: jest.fn(),
                     setConverterFromAmount: jest.fn(),
@@ -153,7 +158,7 @@ beforeEach(() => {
             },
         },
     };
-    account_transfer_store = new AccountTransferStore({ WS, root_store });
+    account_transfer_store = new AccountTransferStore(WS, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -182,15 +187,15 @@ describe('AccountTransferStore', () => {
     });
 
     it('should not lock the transfer if there is no any account statuses', () => {
-        account_transfer_store.root_store.client.account_status.status = undefined;
+        account_transfer_store.root_store.client.account_status.status = [];
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy();
     });
 
     it('should not lock the transfer if it is not a financial account', () => {
         account_transfer_store.root_store.client.is_financial_account = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy();
     });
 
     it('should not lock the transfer if is_financial_information_incomplete and is_trading_experience_incomplete is equal to false', () => {
@@ -198,13 +203,13 @@ describe('AccountTransferStore', () => {
         account_transfer_store.root_store.client.is_financial_information_incomplete = false;
         account_transfer_store.root_store.client.is_trading_experience_incomplete = false;
 
-        expect(account_transfer_store.is_transfer_locked).toBeFalsy;
+        expect(account_transfer_store.is_transfer_locked).toBeFalsy();
     });
 
     it('should lock the transfer if the financial assessment is needed and error.is_ask_financial_risk_approval is equal to true', () => {
         account_transfer_store.error.is_ask_financial_risk_approval = true;
 
-        expect(account_transfer_store.is_transfer_locked).toBeTruthy;
+        expect(account_transfer_store.is_transfer_locked).toBeTruthy();
     });
 
     it('should set the balance by loginid', () => {
@@ -229,10 +234,9 @@ describe('AccountTransferStore', () => {
     it('should show loader during fetching the data when calling onMountAccountTransfer method', async () => {
         await account_transfer_store.onMountAccountTransfer();
 
-        expect(account_transfer_store.root_store.modules.cashier.general_store.setLoading.mock.calls).toEqual([
-            [true],
-            [false],
-        ]);
+        expect(
+            (account_transfer_store.root_store.modules.cashier.general_store.setLoading as jest.Mock).mock.calls
+        ).toEqual([[true], [false]]);
     });
 
     it('should set has_no_accounts_balance to false, if some balance update has come in since the last mount when calling onMountAccountTransfer method', async () => {
@@ -246,7 +250,9 @@ describe('AccountTransferStore', () => {
     it('should set an error message if there is an error field in transfer_between_accounts response when calling onMountAccountTransfer method', async () => {
         const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
         const spySetErrorMessage = jest.spyOn(account_transfer_store.error, 'setErrorMessage');
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
+            error: 'Transfer error',
+        });
         await account_transfer_store.onMountAccountTransfer();
 
         expect(spySetErrorMessage).toHaveBeenCalledWith(
@@ -259,7 +265,7 @@ describe('AccountTransferStore', () => {
 
     it('should not call sortAccountsTransfer method if the client can not do account transfer when calling onMountAccountTransfer method', async () => {
         const spySortAccountsTransfer = jest.spyOn(account_transfer_store, 'sortAccountsTransfer');
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             accounts: [CR_USD_account],
         });
         await account_transfer_store.onMountAccountTransfer();
@@ -277,7 +283,7 @@ describe('AccountTransferStore', () => {
 
     it('should set an error if selected_to loginid in cfd_transfer_to_login_id property in session storage is not allowed for transfer when calling onMountAccountTransfer method', async () => {
         window.sessionStorage.setItem('cfd_transfer_to_login_id', 'MX0000000');
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             accounts: [CR_USD_account, MX_USD_account],
         });
         await account_transfer_store.onMountAccountTransfer();
@@ -297,6 +303,7 @@ describe('AccountTransferStore', () => {
             account_transfer_store.onMountAccountTransfer
         );
         expect(account_transfer_store.root_store.modules.cashier.general_store.onMountCommon).toHaveBeenCalledTimes(1);
+        // eslint-disable-next-line testing-library/await-async-utils
         expect(account_transfer_store.WS.wait).toHaveBeenCalledWith('website_status');
         expect(spySortAccountsTransfer).toHaveBeenCalledTimes(1);
         expect(spySetTransferFee).toHaveBeenCalledTimes(1);
@@ -419,7 +426,9 @@ describe('AccountTransferStore', () => {
 
     it('should not sort and set accounts if there is an error in transfer_between_accounts response when calling sortAccountsTransfer method', async () => {
         const spySetAccounts = spyOn(account_transfer_store, 'setAccounts');
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({ error: 'Transfer error' });
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
+            error: 'Transfer error',
+        });
         await account_transfer_store.sortAccountsTransfer();
 
         expect(spySetAccounts).not.toHaveBeenCalled();
@@ -490,9 +499,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set account transfer amount', () => {
-        account_transfer_store.setAccountTransferAmount(100);
+        account_transfer_store.setAccountTransferAmount('100');
 
-        expect(account_transfer_store.account_transfer_amount).toBe(100);
+        expect(account_transfer_store.account_transfer_amount).toBe('100');
     });
 
     it('should change value of the variable is_transfer_successful', () => {
@@ -507,7 +516,7 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.is_mt5_transfer_in_progress).toBeTruthy();
     });
 
-    it('should set transfered amount in receipt', () => {
+    it('should set transferred amount in receipt', () => {
         account_transfer_store.setReceiptTransfer({ amount: 1000 });
 
         expect(account_transfer_store.receipt.amount_transferred).toBe(1000);
@@ -613,7 +622,7 @@ describe('AccountTransferStore', () => {
 
     it('should call setIsMT5TransferInProgress if there is mt5 transfer when calling requestTransferBetweenAccounts method', async () => {
         const spySetIsMT5TransferInProgress = jest.spyOn(account_transfer_store, 'setIsMT5TransferInProgress');
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             accounts: [CR_USD_account, { ...MT_USD_account, loginid: 'MTR111176' }],
         });
         await account_transfer_store.sortAccountsTransfer({ accounts });
@@ -624,7 +633,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set error message if there is an error in transferBetweenAccounts response when calling requestTransferBetweenAccounts method', async () => {
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             error: { message: 'Transfer error' },
         });
         await account_transfer_store.sortAccountsTransfer({ accounts });
@@ -634,7 +643,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set account status if there is an error code "Fiat2CryptoTransferOverLimit" in transferBetweenAccounts response when calling requestTransferBetweenAccounts method', async () => {
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             error: { code: 'Fiat2CryptoTransferOverLimit', message: 'Transfer error' },
         });
         await account_transfer_store.sortAccountsTransfer({ accounts });
@@ -677,7 +686,7 @@ describe('AccountTransferStore', () => {
 
     it('should call WS.mt5LoginList and WS.balanceAll methods to update the balance for mt account when calling requestTransferBetweenAccounts', async () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             accounts: [CR_USD_account, { ...MT_USD_account, loginid: 'MTR111176' }],
         });
         account_transfer_store.setSelectedTo({ value: 'DXR1003', is_mt: true });
@@ -689,7 +698,7 @@ describe('AccountTransferStore', () => {
 
     it('should call WS.tradingPlatformAccountsList and WS.balanceAll methods to update the balance for dxtrade account when calling requestTransferBetweenAccounts', async () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValue({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValue({
             accounts: [CR_USD_account, { ...DXR_USD_account, loginid: 'DXR1003' }],
         });
         account_transfer_store.setSelectedTo({ value: 'DXR1003', is_dxtrade: true });
@@ -752,7 +761,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set "This field is required." error, if there is no converter_from_amount when calling validateTransferFromAmount method', () => {
-        account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = null;
+        account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '';
         account_transfer_store.validateTransferFromAmount();
 
         expect(

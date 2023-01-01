@@ -1,19 +1,36 @@
 import React from 'react';
+import Joyride, { LIFECYCLE } from 'react-joyride';
+import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router-dom';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
-import './traders-hub.scss';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '@deriv/components';
-import { useStores } from 'Stores/index';
-import { observer } from 'mobx-react-lite';
-import { isDesktop, routes } from '@deriv/shared';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import {
+    tour_step_config,
+    tour_styles,
+    tour_step_locale,
+    tour_styles_dark_mode,
+    eu_tour_step_locale,
+} from 'Constants/tour-steps-config-new';
+import { useStores } from 'Stores/index';
+import { isDesktop, routes } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Button } from '@deriv/components';
+
+import './traders-hub.scss';
 
 const TradersHub = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, ui } = useStores();
     const { is_eu, is_landing_company_loaded } = client;
-    const { selected_platform_type, setTogglePlatformType } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, toggleIsTourOpen, setIsOnboardingVisited } =
+        traders_hub;
+    const { is_dark_mode_on } = ui;
+
+    const history = useHistory();
+
+    const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
@@ -28,6 +45,43 @@ const TradersHub = () => {
     }) => {
         setTogglePlatformType(event.target.value);
     };
+
+    tour_step_locale.last = (
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
+            <Localize i18n_default_text='OK' />
+        </div>
+    );
+
+    eu_tour_step_locale.last = (
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
+            <Localize i18n_default_text='OK' />
+        </div>
+    );
+
+    if (tour_step_config.length === joyride_index + 1) {
+        tour_step_locale.back = (
+            <Button
+                has_effect
+                text={localize('Repeat tour')}
+                secondary
+                medium
+                onClick={() => {
+                    history.push(routes.onboarding);
+                    toggleIsTourOpen(true);
+                }}
+            />
+        );
+    }
 
     return (
         <>
@@ -58,6 +112,20 @@ const TradersHub = () => {
                         {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
+                    <Joyride
+                        run={is_tour_open}
+                        continuous
+                        disableScrolling
+                        hideCloseButton
+                        disableCloseOnEsc
+                        steps={tour_step_config}
+                        styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+                        locale={tour_step_locale}
+                        floaterProps={{
+                            disableAnimation: true,
+                        }}
+                        callback={data => setJoyrideIndex(data.index)}
+                    />
                 </div>
             </Div100vhContainer>
         </>

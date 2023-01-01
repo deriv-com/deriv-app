@@ -22,11 +22,11 @@ import {
     CFDDbviOnBoarding,
     CFDPersonalDetailsModal,
     CFDResetPasswordModal,
-    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
+import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import CFDAccounts from 'Components/CFDs';
 import OptionsAccounts from 'Components/options';
 import TotalAssets from 'Components/total-assets';
@@ -283,7 +283,7 @@ const TradingHub: React.FC = () => {
             <CFDDbviOnBoarding context={store} />
             <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog context={store} />
+            <CFDServerErrorDialog />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

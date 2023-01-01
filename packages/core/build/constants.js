@@ -86,7 +86,7 @@ const rules = (is_test_env = false) => [
         use: html_loaders,
     },
     {
-        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf|pdf)$/,
         exclude: /node_modules/,
         use: file_loaders,
     },

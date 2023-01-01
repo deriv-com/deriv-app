@@ -65,7 +65,6 @@ const StaticCFDAccountManager = ({
     is_eu_user,
 }: TStaticCFDAccountManager) => {
     const icon_size = 48;
-    const icon_size_derivx = 48;
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -116,7 +115,7 @@ const StaticCFDAccountManager = ({
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <TradigPlatformIconProps
                         icon='DerivX'
-                        size={icon_size_derivx}
+                        size={icon_size}
                         className={classNames('static-cfd-account-manager--cfds', {
                             'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
                         })}
@@ -125,7 +124,7 @@ const StaticCFDAccountManager = ({
                 {platform === 'options' && (
                     <TradigPlatformIconProps
                         icon='Options'
-                        size={icon_size_derivx}
+                        size={icon_size}
                         className={is_blurry.icon || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}
                     />
                 )}

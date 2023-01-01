@@ -16,9 +16,7 @@ export interface AvailableAccount {
 export const available_traders_hub_cfd_accounts: AvailableAccount[] = [
     {
         name: 'Derived',
-        description: localize(
-            'Trade CFDs on Deriv MT5 with Derived indices that simulate real-world market movements.'
-        ),
+        description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX'),
         platform: CFD_PLATFORMS.MT5,
         market_type: 'synthetic',
         icon: 'Derived',

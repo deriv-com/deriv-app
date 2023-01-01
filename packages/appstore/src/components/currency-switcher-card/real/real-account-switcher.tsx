@@ -1,18 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores/index';
-import { Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
-import BalanceText from 'Components/elements/text/balance-text';
+import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
+import { useStores } from 'Stores/index';
 import StatusBadge from './switcher-status-badge';
+import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 
 const AccountNeedsVerification = () => {
     return (
         <CurrencySwitcherContainer
-            className='demo-account-card'
+            className='real-account-switcher__container'
             title={
                 <Text size='xs' line_height='s'>
                     {localize('Needs Verification')}
@@ -25,38 +25,27 @@ const AccountNeedsVerification = () => {
     );
 };
 
-const RealAccountCard = observer(() => {
-    const { client, traders_hub } = useStores();
-    const { accounts } = client;
-    const { openModal, selected_loginid } = traders_hub;
-
-    const { balance, currency } = accounts[selected_loginid] ?? { balance: 0, currency: 'USD' };
-
-    return (
-        <CurrencySwitcherContainer
-            className='demo-account-card'
-            title={
-                <Text size='xs' line_height='s'>
-                    {getCurrencyName(currency)}
-                </Text>
-            }
-            icon={currency}
-            onClick={() => openModal('currency_selection')}
-            actions={<Button secondary>{localize('Deposit')}</Button>}
-        >
-            <BalanceText currency={currency} balance={formatMoney(currency, balance, true)} size='xs' />
-        </CurrencySwitcherContainer>
-    );
-});
-
 const RealAccountSwitcher = () => {
     const { client } = useStores();
+    const { is_authentication_needed, is_switching, has_any_real_account } = client;
 
-    if (client.is_authentication_needed) {
+    if (is_switching) {
+        return (
+            <div className='real-account-switcher__container loader'>
+                <CurrencySwitcherLoader />
+            </div>
+        );
+    }
+
+    if (is_authentication_needed) {
         return <AccountNeedsVerification />;
     }
 
-    return <RealAccountCard />;
+    if (has_any_real_account) {
+        return <RealAccountCard />;
+    }
+
+    return null;
 };
 
 export default observer(RealAccountSwitcher);

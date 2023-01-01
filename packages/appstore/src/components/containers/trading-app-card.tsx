@@ -20,14 +20,16 @@ const TradingAppCard = ({
     has_divider,
     short_code_and_region,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { client } = useStores();
+    const { traders_hub } = useStores();
+    const { is_eu_user, is_demo_low_risk } = traders_hub;
 
-    const platform = client.is_eu ? mf_platform_config : platform_config;
+    const platform = !is_eu_user || is_demo_low_risk ? platform_config : mf_platform_config;
 
-    const { app_desc, link_to } = platform.find(config => config.name === name) || {
+    const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
+
     return (
         <div className='trading-app-card'>
             <div>
@@ -62,7 +64,7 @@ const TradingAppCard = ({
                 </Text>
             </div>
             <div className={classNames('trading-app-card__actions', { 'trading-app-card--divider': has_divider })}>
-                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} />
+                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} is_external={is_external} />
             </div>
         </div>
     );

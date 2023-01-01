@@ -25,7 +25,7 @@ export const TradersHubHomeButton = () => {
     return (
         <div
             className={classNames('trading-hub-header__tradershub', {
-                'trading-hub-header__tradershub--active': pathname === '/appstore/traders-hub',
+                'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
             })}
             onClick={() => history.push(routes.traders_hub)}
         >

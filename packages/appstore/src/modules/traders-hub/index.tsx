@@ -8,7 +8,7 @@ import OptionsAndMultipliersListing from 'Components/options-multipliers-listing
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
 import { isDesktop, routes } from '@deriv/shared';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Button } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '@deriv/components';
 
 import './traders-hub.scss';
 

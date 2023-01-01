@@ -15,8 +15,7 @@ import './traders-hub.scss';
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
     const { is_eu, is_landing_company_loaded } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, toggleIsTourOpen, setIsOnboardingVisited } =
-        traders_hub;
+    const { selected_platform_type, setTogglePlatformType } = traders_hub;
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },

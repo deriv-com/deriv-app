@@ -1,7 +1,7 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
 import { Text, Button, Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
@@ -25,11 +25,14 @@ export const tour_step_config: Step[] = [
         ),
         content: (
             <Text as='p'>
-                {localize(
-                    `You can create real accounts with non-EU and EU regulators. Click the ${(
-                        <Icon icon='IcAppstoreInformation' />
-                    )} icon to learn more about these accounts.`
-                )}
+                <Localize
+                    i18n_default_text='You can create real accounts with non-EU and EU regulators. Click the <0><0/> icon to learn more about these accounts.'
+                    components={[
+                        <Text key={0}>
+                            <Icon icon='IcInfoOutline' />
+                        </Text>,
+                    ]}
+                />
             </Text>
         ),
 

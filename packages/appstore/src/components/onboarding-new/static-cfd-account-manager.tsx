@@ -64,8 +64,8 @@ const StaticCFDAccountManager = ({
     is_onboarding_animated,
     is_eu_user,
 }: TStaticCFDAccountManager) => {
-    const icon_size = isMobile() ? 48 : 48;
-    const icon_size_derivx = isMobile() ? 48 : 48;
+    const icon_size = 48;
+    const icon_size_derivx = 48;
     return (
         <div
             className={classNames('static-cfd-account-manager', {

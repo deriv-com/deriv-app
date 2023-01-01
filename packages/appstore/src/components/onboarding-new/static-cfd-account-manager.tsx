@@ -64,8 +64,8 @@ const StaticCFDAccountManager = ({
     is_onboarding_animated,
     is_eu_user,
 }: TStaticCFDAccountManager) => {
-    const icon_size = isMobile() ? 48 : 64;
-    const icon_size_derivx = isMobile() ? 48 : 58;
+    const icon_size = isMobile() ? 48 : 48;
+    const icon_size_derivx = isMobile() ? 48 : 48;
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -154,7 +154,7 @@ const StaticCFDAccountManager = ({
                         </Text>
                     </React.Fragment>
                 ) : (
-                    <Text size='xxxs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
+                    <Text size='xxs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
                         {description}
                     </Text>
                 )}

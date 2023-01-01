@@ -75,7 +75,7 @@ const StaticDashboard = ({
         { text: 'CFDs', value: 1 },
     ];
 
-    const [index, setIndex] = React.useState<number | string>(0);
+    const [index, setIndex] = React.useState<number>(0);
 
     const Divider = () => <div className='divider' />;
 
@@ -115,7 +115,7 @@ const StaticDashboard = ({
                                                 has_rounded_button
                                                 is_animated
                                                 onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
-                                                    setIndex(item.target.value);
+                                                    setIndex(Number(item.target.value));
                                                 }}
                                                 name='Options'
                                                 value={index}
@@ -308,7 +308,7 @@ const StaticDashboard = ({
                                             has_rounded_button
                                             is_animated
                                             onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
-                                                setIndex(item.target.value);
+                                                setIndex(Number(item.target.value));
                                             }}
                                             name='CFDs'
                                             value={index}

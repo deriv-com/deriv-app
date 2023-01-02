@@ -80,10 +80,30 @@
     &__message {
         padding: 1.6rem 11rem;
         line-height: 1.4;
+
+        &--landscape {
+            @media screen and (orientation: portrait) {
+                display: none;
+            }
+        }
+
+        &--portrait {
+            text-align: center;
+            margin-top: 2rem;
+            @media screen and (orientation: landscape) {
+                display: none;
+            }
+        }
     }
 
     @include desktop {
         display: none;
+    }
+
+    @include tablet {
+        @media screen and (orientation: portrait) {
+            display: none;
+        }
     }
 
     @include mobile {

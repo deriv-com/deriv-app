@@ -1,14 +1,13 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import { getStatus } from 'Constants/transaction-status';
-import { useStore } from '@deriv/stores';
 import './recent-transaction.scss';
 
-const RecentTransaction = () => {
+const RecentTransaction = observer(() => {
     const {
         client,
         modules: {
@@ -121,6 +120,6 @@ const RecentTransaction = () => {
             </div>
         </div>
     );
-};
+});
 
-export default observer(RecentTransaction);
+export default RecentTransaction;

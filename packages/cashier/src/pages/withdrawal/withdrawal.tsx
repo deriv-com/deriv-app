@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -48,7 +47,7 @@ const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) =
     return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
-const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
+const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     const {
         client,
         modules: {
@@ -196,6 +195,6 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );
-};
+});
 
-export default observer(Withdrawal);
+export default Withdrawal;

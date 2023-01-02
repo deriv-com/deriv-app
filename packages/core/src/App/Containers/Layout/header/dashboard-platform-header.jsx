@@ -249,7 +249,7 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,

@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
+import { useStore, observer } from '@deriv/stores';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 import SideNote from 'Components/side-note';
-import { useStore } from '@deriv/stores';
 
-const CashierOnboarding = ({ setSideNotes }) => {
+const CashierOnboarding = observer(({ setSideNotes }) => {
     const {
         client,
         ui,
@@ -211,10 +210,10 @@ const CashierOnboarding = ({ setSideNotes }) => {
             </div>
         </div>
     );
-};
+});
 
 CashierOnboarding.propTypes = {
     setSideNotes: PropTypes.func,
 };
 
-export default observer(CashierOnboarding);
+export default CashierOnboarding;

@@ -59,6 +59,8 @@ const CFDsListing = () => {
         return short_code_and_region;
     };
 
+    const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
+
     return (
         <ListingContainer
             title={
@@ -141,7 +143,7 @@ const CFDsListing = () => {
                             type='get'
                             availability={selected_region}
                             onAction={() => {
-                                if (has_no_real_account && is_real) {
+                                if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
                                     ui.openDerivRealAccountNeededModal();
                                 } else {
                                     getAccount(account.market_type, account.platform);

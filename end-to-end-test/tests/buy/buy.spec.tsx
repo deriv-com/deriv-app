@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import LoginFlow from '../login/login.spec';
+import OnboardingFlow from '../onboarding/onboarding';
 
-test.describe('User settings screen', () => {
-    test('should let a user change their bio', async ({ page }) => {
+test.describe('Change endpoint, Signup and login', () => {
+    test('Should change the endpoint and sign up', async ({ page }) => {
+        const onboarding = new OnboardingFlow(page);
+        await onboarding.signUp();
         // create a new user account and logged in
         // session before running each test
-        const onboarding = new LoginFlow(page);
-        await onboarding.signUp();
     });
 });

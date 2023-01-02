@@ -1,13 +1,17 @@
 import { Page, expect } from '@playwright/test';
 
 const randomString = new Date().getTime();
+const suspend = (value: number) => new Promise(resolve => setTimeout(resolve, value));
+
 export default class OnboardingFlow {
     readonly page: Page;
     readonly email: string;
+    private signupPage: Page | null;
 
     constructor(page: Page) {
         this.page = page;
-        this.email = `${randomString}@deriv.com`;
+        this.email = `deriv-fe-e2e-${randomString}@deriv.com`;
+        this.signupPage = null;
     }
 
     async changeEndpoint() {
@@ -76,16 +80,17 @@ export default class OnboardingFlow {
         const server = process.env.ENDPOINT;
         const app_id = process.env.APPID;
         const SET_SCRIPT = `
-            localStorage.setItem('config.server_url', "${server}");
-            localStorage.setItem('config.app_id', "${app_id}");
+            localStorage.setItem('config.server_url', '${server}');
+            localStorage.setItem('config.app_id', '${app_id}');
+            window.location.reload();
         `;
-        await this.page.evaluate(SET_SCRIPT);
-        const server_url = await this.page.evaluate(() => {
+        await this?.signupPage?.evaluate(SET_SCRIPT);
+        const server_url = await this?.signupPage?.evaluate(() => {
             const result = localStorage.getItem('config.server_url');
             return Promise.resolve(result);
         });
         expect(server_url).toBe(process.env.ENDPOINT);
-        await this.page.waitForLoadState('domcontentloaded');
+        await suspend(5000);
     }
     async signUp() {
         await this.changeEndpoint();
@@ -95,8 +100,8 @@ export default class OnboardingFlow {
             this.page.context().waitForEvent('page'), // get `context` by destructuring with `page` in the test params; 'page' is a built-in event, and **you must wait for this like this,**, or `newPage` will just be the response object, rather than an actual Playwright page object.
             await this.page.click('#dt_signup_button'),
         ]);
+        this.signupPage = newPage;
         // await this.page.waitForNavigation({ url: '**/signup' });
-        const suspend = (value: number) => new Promise(resolve => setTimeout(resolve, value));
         await suspend(10000);
         await this.connectToQALocalStorage();
         // await expect(this.page.getByText(/Sign up/)).toBeVisible();
@@ -111,6 +116,7 @@ export default class OnboardingFlow {
         );
         await newPage.waitForSelector('#dm-new-signup');
         await newPage.click('#dm-new-signup');
+        await suspend(50000);
     }
     // async logIn() {
     //     const { page } = this;

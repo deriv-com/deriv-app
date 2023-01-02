@@ -391,8 +391,8 @@ describe('<PersonalDetails/>', () => {
                 />
             </PlatformContext.Provider>
         );
-        expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
+        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
+        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();

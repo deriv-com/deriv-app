@@ -1,23 +1,35 @@
-import React from 'react';
+import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
 import CashierNotifications from 'Components/cashier-notifications';
-import { configure } from 'mobx';
+import type { TWebSocket, TRootStore } from 'Types';
+
+type TMenuItem = {
+    icon: JSX.Element;
+    id: string;
+    link_to: string | boolean;
+    login_only: boolean;
+    onClick: boolean | (() => void);
+    text: () => string;
+};
 
 configure({ safeDescriptors: false });
 
-let cashier_menu, general_store, root_store, WS;
+let cashier_menu: TMenuItem,
+    general_store: GeneralStore,
+    root_store: DeepPartial<TRootStore>,
+    WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = {
         client: {
-            account_list: [{ is_virtual: 0, title: 'USD' }],
+            account_list: [{ is_virtual: false, title: 'USD' }],
             account_status: {
                 status: [],
                 cashier_validation: [],
             },
-            balance: null,
+            balance: undefined,
             currency: 'USD',
             has_active_real_account: false,
             is_logged_in: true,
@@ -69,7 +81,7 @@ beforeEach(() => {
                     setIsCryptoTransactionsVisible: jest.fn(),
                 },
                 withdraw: {
-                    check10kLimit: jest.fn().mockResolvedValueOnce(),
+                    check10kLimit: jest.fn(),
                     setIsWithdrawConfirmed: jest.fn(),
                 },
             },
@@ -84,11 +96,11 @@ beforeEach(() => {
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore({ root_store, WS });
+    general_store = new GeneralStore(WS, root_store);
 
     cashier_menu = {
         id: 'dt_cashier_tab',
-        icon: <CashierNotifications p2p_notification_count={general_store.p2p_notification_count} />,
+        icon: CashierNotifications({ p2p_notification_count: general_store.p2p_notification_count }),
         text: expect.any(Function),
         link_to: routes.cashier,
         onClick: false,
@@ -103,6 +115,8 @@ describe('GeneralStore', () => {
     });
 
     it('should set function on remount', () => {
+        // TODO: Check this
+        // const remountFunc = () => 'function';
         general_store.setOnRemount('function');
 
         expect(general_store.onRemount).toBe('function');
@@ -254,7 +268,7 @@ describe('GeneralStore', () => {
     });
 
     it('should calculate proper percentage for other containers', () => {
-        general_store.root_store.client.balance = 9000;
+        general_store.root_store.client.balance = '9000';
         general_store.setActiveTab('deposit');
         general_store.calculatePercentage(1000);
 
@@ -262,7 +276,7 @@ describe('GeneralStore', () => {
     });
 
     it('should set percentage equal to zero if calculated percentage is not finite number', () => {
-        general_store.root_store.client.balance = 9000;
+        general_store.root_store.client.balance = '9000';
         general_store.setActiveTab('deposit');
         general_store.calculatePercentage('abc');
 
@@ -318,7 +332,6 @@ describe('GeneralStore', () => {
     });
 
     it('should perform proper init invocation when is_logged_in is equal to true', async () => {
-        const { cashier } = general_store.root_store.modules;
         const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
         const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
         general_store.root_store.client.is_logged_in = true;
@@ -328,6 +341,7 @@ describe('GeneralStore', () => {
             expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+        // eslint-disable-next-line testing-library/await-async-utils
         expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
@@ -400,6 +414,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa,
@@ -414,6 +430,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_onramp,
@@ -427,6 +445,8 @@ describe('GeneralStore', () => {
     });
 
     it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_crypto_transactions,
@@ -462,6 +482,8 @@ describe('GeneralStore', () => {
     });
 
     it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_p2p,
@@ -474,7 +496,12 @@ describe('GeneralStore', () => {
     });
 
     it('should return is_cashier_locked equal to false if account_status is undefined', () => {
-        general_store.root_store.client.account_status = undefined;
+        general_store.root_store.client.account_status = {
+            currency_config: {},
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [],
+        };
         expect(general_store.is_cashier_locked).toBeFalsy();
     });
 
@@ -488,7 +515,12 @@ describe('GeneralStore', () => {
     });
 
     it('should return is_system_maintenance equal to false if account_status is undefined', () => {
-        general_store.root_store.client.account_status = undefined;
+        general_store.root_store.client.account_status = {
+            currency_config: {},
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [],
+        };
         expect(general_store.is_system_maintenance).toBeFalsy();
     });
 
@@ -497,7 +529,7 @@ describe('GeneralStore', () => {
     });
 
     it('should return is_system_maintenance equal to true if there is system_maintenance status', () => {
-        general_store.root_store.client.account_status.cashier_validation.push('system_maintenance');
+        general_store.root_store.client.account_status.cashier_validation?.push('system_maintenance');
         expect(general_store.is_system_maintenance).toBeTruthy();
     });
 

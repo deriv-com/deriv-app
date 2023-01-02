@@ -1,8 +1,9 @@
 import { observable, action, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
+import type { TRootStore } from 'Types';
 
 export default class AccountPromptDialogStore {
-    constructor(root_store) {
+    constructor(public root_store: TRootStore) {
         makeObservable(this, {
             should_show: observable,
             is_confirmed: observable,
@@ -15,16 +16,14 @@ export default class AccountPromptDialogStore {
             onCancel: action.bound,
             continueRoute: action.bound,
         });
-
-        this.root_store = root_store;
     }
 
     should_show = false;
     is_confirmed = false;
-    last_location = null;
-    current_location = null;
+    last_location: string | null = null;
+    current_location: string | null = null;
 
-    shouldNavigateAfterPrompt(next_location, current_location) {
+    shouldNavigateAfterPrompt(next_location: string, current_location: string) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
             this.should_show = true;

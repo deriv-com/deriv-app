@@ -1,6 +1,6 @@
 import ErrorDialogStore from '../error-dialog-store';
 
-let error_dialog_store;
+let error_dialog_store: ErrorDialogStore;
 
 beforeEach(() => {
     error_dialog_store = new ErrorDialogStore();

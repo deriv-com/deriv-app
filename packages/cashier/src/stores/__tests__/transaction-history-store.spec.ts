@@ -4,7 +4,7 @@ import { configure } from 'mobx';
 configure({ safeDescriptors: false });
 
 describe('TransactionHistoryStore', () => {
-    let transaction_history_store;
+    let transaction_history_store: TransactionHistoryStore;
     const crypto_transactions = [
         {
             address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
@@ -32,15 +32,15 @@ describe('TransactionHistoryStore', () => {
                     cashier_payments: { crypto: crypto_transactions },
                 }),
         },
-        subscribeCashierPayments: cb =>
-            cb({
+        subscribeCashierPayments: () =>
+            Promise.resolve({
                 cashier_payments: { crypto: crypto_transactions },
             }),
         cancelCryptoTransaction: jest.fn(() => Promise.resolve({})),
     };
 
     beforeEach(() => {
-        transaction_history_store = new TransactionHistoryStore({ WS, root_store });
+        transaction_history_store = new TransactionHistoryStore(WS, root_store);
     });
 
     it('should load crypto transactions properly', async () => {
@@ -106,7 +106,9 @@ describe('TransactionHistoryStore', () => {
         );
 
         try {
-            transaction_history_store.WS.cancelCryptoTransaction.mockResolvedValue(Promise.resolve({ error: 'error' }));
+            (transaction_history_store.WS.cancelCryptoTransaction as jest.Mock).mockResolvedValue(
+                Promise.resolve({ error: 'error' })
+            );
             await transaction_history_store.cancelCryptoTransaction('175');
         } catch (e) {
             expect(spySetIsCryptoTransactionsCancelModalVisible).not.toHaveBeenCalled();

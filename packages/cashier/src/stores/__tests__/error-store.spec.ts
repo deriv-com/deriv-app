@@ -3,7 +3,7 @@ import { configure } from 'mobx';
 
 configure({ safeDescriptors: false });
 
-let error_store;
+let error_store: ErrorStore;
 
 beforeEach(() => {
     error_store = new ErrorStore();
@@ -59,37 +59,37 @@ describe('ErrorStore', () => {
     it('should proper handle different error codes', () => {
         const spySetErrorMessage = jest.spyOn(error_store, 'setErrorMessage');
 
-        error_store.handleCashierError({ code: 'ASK_TNC_APPROVAL' });
+        error_store.handleCashierError({ code: 'ASK_TNC_APPROVAL', message: '' });
 
-        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'ASK_TNC_APPROVAL' }, null, true);
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'ASK_TNC_APPROVAL', message: '' }, null, true);
 
-        error_store.handleCashierError({ code: 'ASK_FIX_DETAILS' });
+        error_store.handleCashierError({ code: 'ASK_FIX_DETAILS', message: '' });
 
-        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'ASK_FIX_DETAILS' }, null, true);
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'ASK_FIX_DETAILS', message: '' }, null, true);
 
-        error_store.handleCashierError({ code: 'ASK_UK_FUNDS_PROTECTION' });
+        error_store.handleCashierError({ code: 'ASK_UK_FUNDS_PROTECTION', message: '' });
 
         expect(error_store.is_ask_uk_funds_protection).toBeTruthy();
 
-        error_store.handleCashierError({ code: 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET' });
+        error_store.handleCashierError({ code: 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET', message: '' });
 
         expect(error_store.is_self_exclusion_max_turnover_set).toBeTruthy();
 
-        error_store.handleCashierError({ code: 'ASK_AUTHENTICATE' });
+        error_store.handleCashierError({ code: 'ASK_AUTHENTICATE', message: '' });
 
         expect(error_store.is_ask_authentication).toBeTruthy();
 
-        error_store.handleCashierError({ code: 'ASK_AGE_VERIFICATION' });
+        error_store.handleCashierError({ code: 'ASK_AGE_VERIFICATION', message: '' });
 
         expect(error_store.is_ask_authentication).toBeTruthy();
 
-        error_store.handleCashierError({ code: 'ASK_FINANCIAL_RISK_APPROVAL' });
+        error_store.handleCashierError({ code: 'ASK_FINANCIAL_RISK_APPROVAL', message: '' });
 
         expect(error_store.is_ask_financial_risk_approval).toBeTruthy();
 
-        error_store.handleCashierError({ code: 'DEFAULT_ERROR_CODE' });
+        error_store.handleCashierError({ code: 'DEFAULT_ERROR_CODE', message: '' });
 
-        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'DEFAULT_ERROR_CODE' });
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'DEFAULT_ERROR_CODE', message: '' });
         expect(error_store.is_ask_uk_funds_protection).toBeFalsy();
         expect(error_store.is_self_exclusion_max_turnover_set).toBeFalsy();
         expect(error_store.is_ask_authentication).toBeFalsy();

@@ -5,3 +5,4 @@ export * from './props.types';
 export * from './provider.types';
 export * from './routes.types';
 export * from './websocket.types';
+export * from './transactions.types';

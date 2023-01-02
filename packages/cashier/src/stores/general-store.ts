@@ -1,68 +1,68 @@
-import React from 'react';
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
 import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
+import type { P2PAdvertInfo } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import CashierNotifications from 'Components/cashier-notifications';
 import BaseStore from './base-store';
+import PaymentAgentStore from './payment-agent-store';
+import type { TRootStore, TWebSocket } from 'Types';
 
 export default class GeneralStore extends BaseStore {
-    constructor({ root_store, WS }) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
 
         makeObservable(this, {
-            is_loading: observable,
-            is_p2p_visible: observable,
-            p2p_notification_count: observable,
-            cashier_route_tab_index: observable,
-            is_deposit: observable,
-            should_show_all_available_currencies: observable,
-            is_cashier_onboarding: observable,
-            deposit_target: observable,
-            should_set_currency_modal_title_change: observable,
-            p2p_advertiser_error: observable,
-            has_set_currency: observable,
-            should_percentage_reset: observable,
-            percentage: observable,
-            show_p2p_in_cashier_onboarding: observable,
-            onRemount: observable,
-            p2p_completed_orders: observable,
-            setOnRemount: action.bound,
-            is_crypto: computed,
-            is_p2p_enabled: computed,
-            p2p_unseen_notifications: computed,
-            showP2pInCashierOnboarding: action.bound,
             attachCashierToMenu: action.bound,
-            replaceCashierMenuOnclick: action.bound,
-            setHasSetCurrency: action.bound,
-            changeSetCurrencyModalTitle: action.bound,
-            onMountCashierOnboarding: action.bound,
             calculatePercentage: action.bound,
-            percentageSelectorSelectionStatus: action.bound,
-            setIsDeposit: action.bound,
-            setShouldShowAllAvailableCurrencies: action.bound,
-            setIsCashierOnboarding: action.bound,
-            setDepositTarget: action.bound,
-            continueRoute: action.bound,
-            setAccountSwitchListener: action.bound,
-            init: action.bound,
-            getAdvertizerError: action.bound,
-            setP2pAdvertiserError: action.bound,
+            cashier_route_tab_index: observable,
+            changeSetCurrencyModalTitle: action.bound,
             checkP2pStatus: action.bound,
-            setP2pCompletedOrders: action.bound,
+            continueRoute: action.bound,
+            deposit_target: observable,
+            getAdvertizerError: action.bound,
             getP2pCompletedOrders: action.bound,
-            onMountCommon: action.bound,
-            setCashierTabIndex: action.bound,
-            setNotificationCount: action.bound,
-            setIsP2pVisible: action.bound,
+            has_set_currency: observable,
+            init: action.bound,
             is_cashier_locked: computed,
+            is_cashier_onboarding: observable,
+            is_crypto: computed,
+            is_deposit: observable,
+            is_loading: observable,
+            is_p2p_enabled: computed,
+            is_p2p_visible: observable,
             is_system_maintenance: computed,
-            setLoading: action.bound,
+            onMountCashierOnboarding: action.bound,
+            onMountCommon: action.bound,
+            onRemount: observable,
+            p2p_advertiser_error: observable,
+            p2p_completed_orders: observable,
+            p2p_notification_count: observable,
+            p2p_unseen_notifications: computed,
+            percentage: observable,
+            percentageSelectorSelectionStatus: action.bound,
+            payment_agent: observable,
+            replaceCashierMenuOnclick: action.bound,
+            setAccountSwitchListener: action.bound,
             setActiveTab: action.bound,
+            setCashierTabIndex: action.bound,
+            setDepositTarget: action.bound,
+            setHasSetCurrency: action.bound,
+            setIsCashierOnboarding: action.bound,
+            setIsDeposit: action.bound,
+            setIsP2pVisible: action.bound,
+            setLoading: action.bound,
+            setNotificationCount: action.bound,
+            setOnRemount: action.bound,
+            setP2pAdvertiserError: action.bound,
+            setP2pCompletedOrders: action.bound,
+            setShouldShowAllAvailableCurrencies: action.bound,
+            should_percentage_reset: observable,
+            should_set_currency_modal_title_change: observable,
+            should_show_all_available_currencies: observable,
+            show_p2p_in_cashier_onboarding: observable,
+            showP2pInCashierOnboarding: action.bound,
         });
-
-        this.WS = WS;
-        this.root_store = root_store;
 
         when(
             () => this.root_store.client.is_logged_in,
@@ -88,36 +88,36 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
+    active_container = Constants.containers.deposit;
+    cashier_route_tab_index = 0;
+    deposit_target = '';
+    has_set_currency = false;
+    is_cashier_onboarding = true;
+    is_deposit = false;
     is_loading = false;
     is_p2p_visible = false;
-    p2p_notification_count = 0;
-    cashier_route_tab_index = 0;
-    is_deposit = false;
-    should_show_all_available_currencies = false;
-    is_cashier_onboarding = true;
-    deposit_target = '';
-    should_set_currency_modal_title_change = false;
-    p2p_advertiser_error = undefined;
-    has_set_currency = false;
-    should_percentage_reset = false;
-    percentage = 0;
-    show_p2p_in_cashier_onboarding = false;
-    onRemount = () => {};
-    p2p_completed_orders = null;
-
-    active_container = Constants.containers.deposit;
     is_populating_values = false;
+    onRemount: () => void = () => this;
+    p2p_advertiser_error?: string = undefined;
+    p2p_completed_orders: P2PAdvertInfo[] | null = null;
+    p2p_notification_count = 0;
+    percentage = 0;
+    payment_agent: PaymentAgentStore | null = null;
+    should_percentage_reset = false;
+    should_set_currency_modal_title_change = false;
+    should_show_all_available_currencies = false;
+    show_p2p_in_cashier_onboarding = false;
 
-    setOnRemount(func) {
+    setOnRemount(func: () => void): void {
         this.onRemount = func;
     }
 
-    get is_crypto() {
+    get is_crypto(): boolean {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
     }
 
-    get is_p2p_enabled() {
+    get is_p2p_enabled(): boolean {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
 
@@ -127,20 +127,22 @@ export default class GeneralStore extends BaseStore {
      *
      * @returns {number} Notifications that have not been seen by the user.
      */
-    get p2p_unseen_notifications() {
+    get p2p_unseen_notifications(): number {
         const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-        const local_storage_settings = p2p_settings[this.root_store.client.loginid];
+        const local_storage_settings = p2p_settings[this.root_store.client.loginid || ''];
 
         if (isEmptyObject(local_storage_settings)) {
             return 0;
         }
 
-        const unseen_notifications = local_storage_settings.notifications.filter(notification => !notification.is_seen);
+        const unseen_notifications = local_storage_settings.notifications.filter(
+            (notification: { is_seen: boolean }) => !notification.is_seen
+        );
 
         return unseen_notifications.length;
     }
 
-    showP2pInCashierOnboarding() {
+    showP2pInCashierOnboarding(): void {
         const { account_list, is_virtual } = this.root_store.client;
 
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
@@ -156,7 +158,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    attachCashierToMenu() {
+    attachCashierToMenu(): void {
         const { menu, ui } = this.root_store;
 
         if (!this.has_set_currency) {
@@ -165,7 +167,7 @@ export default class GeneralStore extends BaseStore {
 
         menu.attach({
             id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
             text: () => localize('Cashier'),
             link_to: this.has_set_currency && routes.cashier,
             onClick: !this.has_set_currency && ui.toggleSetCurrencyModal,
@@ -173,7 +175,7 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
-    replaceCashierMenuOnclick() {
+    replaceCashierMenuOnclick(): void {
         const { menu, ui } = this.root_store;
 
         this.setHasSetCurrency();
@@ -181,7 +183,7 @@ export default class GeneralStore extends BaseStore {
         menu.update(
             {
                 id: 'dt_cashier_tab',
-                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                icon: CashierNotifications({ p2p_notification_count: this.p2p_notification_count }),
                 text: () => localize('Cashier'),
                 link_to: this.has_set_currency && routes.cashier,
                 onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
@@ -191,7 +193,7 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    setHasSetCurrency() {
+    setHasSetCurrency(): void {
         const { account_list, has_active_real_account } = this.root_store.client;
 
         this.has_set_currency =
@@ -199,7 +201,7 @@ export default class GeneralStore extends BaseStore {
             !has_active_real_account;
     }
 
-    changeSetCurrencyModalTitle() {
+    changeSetCurrencyModalTitle(): void {
         this.should_set_currency_modal_title_change = true;
     }
 
@@ -220,21 +222,21 @@ export default class GeneralStore extends BaseStore {
         this.setLoading(false);
     }
 
-    calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount) {
+    calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = +((amount / +account_transfer.selected_from.balance) * 100).toFixed(0);
+            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
         } else {
-            this.percentage = +((amount / +client.balance) * 100).toFixed(0);
+            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;
         }
     }
 
-    percentageSelectorSelectionStatus(should_percentage_reset) {
+    percentageSelectorSelectionStatus(should_percentage_reset: boolean): void {
         this.should_percentage_reset = should_percentage_reset;
 
         if (should_percentage_reset) {
@@ -242,27 +244,27 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    setIsDeposit(is_deposit) {
+    setIsDeposit(is_deposit: boolean): void {
         this.is_deposit = is_deposit;
     }
 
-    setShouldShowAllAvailableCurrencies(value) {
+    setShouldShowAllAvailableCurrencies(value: boolean): void {
         this.should_show_all_available_currencies = value;
     }
 
-    setIsCashierOnboarding(is_cashier_onboarding) {
+    setIsCashierOnboarding(is_cashier_onboarding: boolean): void {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
-    setDepositTarget(target) {
+    setDepositTarget(target: string): void {
         this.deposit_target = target;
     }
 
-    continueRoute() {
+    continueRoute(): void {
         this.root_store.common.routeTo(this.deposit_target);
     }
 
-    setAccountSwitchListener() {
+    setAccountSwitchListener(): void {
         // cashier inits once and tries to stay active until switching account
         // since cashier calls take a long time to respond or display in iframe
         // so we don't have any unmount function here and everything gets reset on switch instead
@@ -270,7 +272,7 @@ export default class GeneralStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    // Initialise P2P attributes on app load without mounting the entire cashier
+    // Initialize P2P attributes on app load without mounting the entire cashier
     async init() {
         if (this.root_store.modules.cashier) {
             const {
@@ -299,34 +301,34 @@ export default class GeneralStore extends BaseStore {
     }
 
     async getAdvertizerError() {
-        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
+        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo?.();
         this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
     }
 
-    setP2pAdvertiserError(value) {
+    setP2pAdvertiserError(value: string): void {
         this.p2p_advertiser_error = value;
     }
 
-    checkP2pStatus() {
+    checkP2pStatus(): void {
         const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
 
-    setP2pCompletedOrders(p2p_completed_orders) {
+    setP2pCompletedOrders(p2p_completed_orders: P2PAdvertInfo[]): void {
         this.p2p_completed_orders = p2p_completed_orders;
     }
 
     async getP2pCompletedOrders() {
-        await this.WS.authorized.send({ p2p_order_list: 1, active: 0 }).then(response => {
+        await this.WS.authorized.send?.({ p2p_order_list: 1, active: 0 }).then(response => {
             if (!response?.error) {
                 const { p2p_order_list } = response;
-                this.setP2pCompletedOrders(p2p_order_list.list);
+                this.setP2pCompletedOrders(p2p_order_list?.list || []);
             }
         });
     }
 
-    async onMountCommon(should_remount) {
+    async onMountCommon(should_remount?: boolean) {
         const { client, common, modules } = this.root_store;
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
@@ -378,15 +380,15 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    setCashierTabIndex(index) {
+    setCashierTabIndex(index: number): void {
         this.cashier_route_tab_index = index;
     }
 
-    setNotificationCount(notification_count) {
+    setNotificationCount(notification_count: number): void {
         this.p2p_notification_count = notification_count;
     }
 
-    setIsP2pVisible(is_p2p_visible) {
+    setIsP2pVisible(is_p2p_visible: boolean): void {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(
@@ -395,25 +397,25 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    get is_cashier_locked() {
+    get is_cashier_locked(): boolean {
         const { account_status } = this.root_store.client;
 
         if (!account_status?.status) return false;
         return account_status.status.some(status_name => status_name === 'cashier_locked');
     }
 
-    get is_system_maintenance() {
+    get is_system_maintenance(): boolean {
         const { account_status } = this.root_store.client;
 
         if (!account_status?.cashier_validation) return false;
         return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
     }
 
-    setLoading(is_loading) {
+    setLoading(is_loading: boolean): void {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container) {
+    setActiveTab(container: string): void {
         this.active_container = container;
     }
 

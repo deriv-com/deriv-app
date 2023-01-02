@@ -1,6 +1,12 @@
 @import '../dashboard/dashboard-component/index.scss';
 @import '../dashboard/tutorial-tab/index.scss';
 
+@mixin position-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dashboard {
     &__main {
         width: 100%;
@@ -212,6 +218,7 @@
 .joyride-content {
     &__left {
         text-align: left;
+
         &__step-three {
             margin-bottom: 0.8rem;
         }
@@ -240,6 +247,121 @@
 
         &__left {
             margin: 0.3rem 0 0 1.2rem;
+        }
+    }
+}
+
+.dbot-slider {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    background-color: $color-white;
+    width: 100%;
+    border-top: 0.1rem solid $color-grey-4;
+    height: 100vh;
+
+    &__navbar {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1.6rem;
+        width: 100%;
+    }
+
+    &__content {
+        text-align: center;
+        padding: 0 1.6rem;
+        min-height: 7.8rem;
+    }
+
+    &__image {
+        background: $color-grey-2;
+        text-align: center;
+        padding: 0.8rem;
+        width: 100%;
+    }
+
+    &__progress-bar {
+        margin-bottom: 1.6rem;
+    }
+
+    &__status {
+        width: 100%;
+    }
+
+    &__button-group {
+        display: flex;
+        padding: 0 1.6rem;
+
+        button {
+            height: 4rem;
+            width: 100%;
+            border: 0.2rem solid $color-grey-1;
+            background: $color-white;
+            border-radius: 0.4rem;
+            outline: none;
+            cursor: pointer;
+            margin-right: 0.8rem;
+
+            &.danger {
+                background: $color-red;
+                border: none;
+                margin-right: 0;
+
+                span {
+                    color: $color-white;
+                }
+            }
+        }
+    }
+
+    &__bot-builder-tour {
+        height: unset;
+        background: $color-black-3;
+        .dbot-slider {
+            width: 100%;
+            &__accordion {
+                width: 100%;
+                .dc-accordion {
+                    &__item {
+                        border: none;
+                        border-bottom: 0.1rem solid $color-black-5;
+                        &-header {
+                            color: $color-white;
+                            text-align: center;
+                            font-weight: 700;
+                            font-size: 1.4rem;
+                            &-icon {
+                                filter: invert(1);
+                            }
+                        }
+                        &-content {
+                            color: $color-white;
+                        }
+                    }
+                }
+            }
+            &__content {
+                color: $color-white;
+            }
+            &__status {
+                height: 5rem;
+                display: flex;
+                @include position-center();
+            }
+            &__progress-bar {
+                width: 50%;
+                margin-bottom: unset;
+                @include position-center();
+            }
+            &__button-group {
+                width: 50%;
+                @include position-center();
+            }
         }
     }
 }

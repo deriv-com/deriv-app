@@ -443,3 +443,36 @@ export const BOT_BUILDER_TOUR = [
         ...joyride_props,
     },
 ];
+
+export const BOT_BUILDER_MOBILE = [
+    {
+        header: 'Step 1',
+        content: <Step1 />,
+        key: 1,
+    },
+    {
+        header: 'Step 2',
+        content: <Step2 />,
+        key: 2,
+    },
+    {
+        header: 'Step 3',
+        content: <Step3 />,
+        key: 3,
+    },
+    {
+        header: 'Step 4',
+        content: <Step4 />,
+        key: 4,
+    },
+    {
+        header: 'Step 5',
+        content: <Step5 />,
+        key: 5,
+    },
+    {
+        header: 'Step 6',
+        content: <Step6 />,
+        key: 6,
+    },
+];

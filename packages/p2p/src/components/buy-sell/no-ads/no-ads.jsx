@@ -36,12 +36,15 @@ const NoAds = () => {
                     </Text>
                     <Button
                         className='no-ads__button'
+                        disabled={general_store.is_barred}
                         primary
                         large
                         onClick={() => {
-                            general_store.handleTabClick(2);
-                            if (buy_sell_store.is_buy) buy_sell_store.setCreateSellAdFromNoAds(true);
-                            my_ads_store.setShowAdForm(true);
+                            if (!general_store.is_barred) {
+                                general_store.handleTabClick(2);
+                                if (buy_sell_store.is_buy) buy_sell_store.setCreateSellAdFromNoAds(true);
+                                my_ads_store.setShowAdForm(true);
+                            }
                         }}
                     >
                         <Localize i18n_default_text='Create ad' />

@@ -20,9 +20,6 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
         return (
             <div key={key} className='contract-type-list' data-testid='contract_list'>
                 <div className='contract-type-item__container'>
-                    {/* <div className='contract-type-list__label'>
-                        <span>{contract_category.label}</span>
-                    </div> */}
                     <Text size='xs' className='contract-type-list__label'>
                         {contract_category.label}
                     </Text>

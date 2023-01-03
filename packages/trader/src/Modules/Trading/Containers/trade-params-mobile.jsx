@@ -239,7 +239,7 @@ const TradeParamsMobile = ({
                 return (
                     <div className='trade-params__header'>
                         <div className='trade-params__header-label'>
-                            {localize('{{tab_title}}', { tab_title: is_vanilla ? 'Strike' : 'Amount' })}
+                            {is_vanilla ? localize('Strike') : localize('Amount')}
                         </div>
                         <div
                             className={classNames('trade-params__header-value', {

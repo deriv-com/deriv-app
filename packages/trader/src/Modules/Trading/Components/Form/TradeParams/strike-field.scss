@@ -1,15 +1,15 @@
 .strike-field {
-    width: 24rem;
-    border-radius: 4px;
     background-color: var(--general-section-1);
+    border-radius: 4px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    z-index: 3;
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
     height: 100%;
     overflow: auto;
+    position: absolute;
+    top: 0;
+    width: 24rem;
+    z-index: 3;
 
     &--header {
         padding: 1.6rem;

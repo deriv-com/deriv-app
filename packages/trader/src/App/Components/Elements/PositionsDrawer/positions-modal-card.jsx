@@ -312,7 +312,6 @@ const PositionsModalCard = ({
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
                 is_multiplier={is_multiplier}
-                // is_vanilla={is_vanilla}
                 is_sell_requested={is_sell_requested}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}

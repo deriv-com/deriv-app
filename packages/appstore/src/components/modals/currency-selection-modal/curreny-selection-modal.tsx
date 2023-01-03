@@ -15,7 +15,7 @@ type CurrencySelectionModalProps = {
 const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => {
     const { client, traders_hub, ui } = useStores();
     const { accounts, account_list, loginid: current_loginid, switchAccount } = client;
-    const { closeModal } = traders_hub;
+    const { closeModal, selected_region } = traders_hub;
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -27,11 +27,14 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
             </div>
             <div className='currency-selection-modal__body'>
                 {(account_list as AccountListDetail[])
-                    .filter(acc => !acc.is_virtual)
+                    .filter(
+                        acc =>
+                            (!acc.is_virtual && selected_region === 'Non-EU' && acc.loginid.startsWith('CR')) ||
+                            (selected_region === 'EU' && acc.loginid.startsWith('MF'))
+                    )
                     .map(({ icon, loginid }) => {
                         const { balance, currency } = accounts[loginid];
                         const is_selected = current_loginid === loginid;
-
                         return (
                             <div
                                 key={loginid}

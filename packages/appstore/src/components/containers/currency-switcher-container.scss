@@ -17,6 +17,13 @@
         }
     }
 
+    &--eu-user {
+        cursor: not-allowed;
+        &:hover {
+            box-shadow: none;
+        }
+    }
+
     @include mobile {
         width: 100%;
     }

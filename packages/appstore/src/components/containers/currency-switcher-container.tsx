@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import './currency-switcher-container.scss';
+import { useStores } from 'Stores/index';
+import { observer } from 'mobx-react-lite';
 
 interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;
@@ -20,10 +22,13 @@ const CurrentSwitcherContainer = ({
     title,
     ...props
 }: CurrentSwitcherContainerProps) => {
+    const { traders_hub } = useStores();
+    const { is_eu_user } = traders_hub;
     return (
         <div
             className={classNames(className, 'currency-switcher-container', {
                 'currency-switcher-container--has-interaction': has_interaction,
+                'currency-switcher-container--eu-user': is_eu_user,
             })}
             {...props}
         >
@@ -33,7 +38,7 @@ const CurrentSwitcherContainer = ({
                 {children}
             </div>
             {actions}
-            {has_interaction && (
+            {has_interaction && !is_eu_user && (
                 <div className='currency-switcher-container__arrow'>
                     <Icon icon='IcChevronDownBold' />
                 </div>
@@ -42,4 +47,4 @@ const CurrentSwitcherContainer = ({
     );
 };
 
-export default CurrentSwitcherContainer;
+export default observer(CurrentSwitcherContainer);

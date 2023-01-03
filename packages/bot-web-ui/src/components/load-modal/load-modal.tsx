@@ -1,19 +1,19 @@
-import React from 'react';
-import { Modal, Tabs, MobileFullPageModal } from '@deriv/components';
+import { MobileFullPageModal, Modal, Tabs } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { tabs_title } from 'Constants/load-modal';
+import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
+import React from 'react';
 import GoogleDrive from './google-drive';
 import Local from './local';
+import LocalFooter from './local-footer';
 import Recent from './recent';
 import RecentFooter from './recent-footer';
-import LocalFooter from './local-footer';
 
 type TLoadModalProps = {
     active_index: number;
     is_load_modal_open: boolean;
-    is_mobile: boolean;
     loaded_local_file: string;
     onEntered: () => void;
     recent_strategies: any[];
@@ -26,7 +26,6 @@ type TLoadModalProps = {
 const LoadModal = ({
     active_index,
     is_load_modal_open,
-    is_mobile,
     loaded_local_file,
     onEntered,
     recent_strategies,
@@ -37,7 +36,7 @@ const LoadModal = ({
 }: TLoadModalProps) => {
     const header_text = localize('Load strategy');
 
-    if (is_mobile) {
+    if (isMobile()) {
         return (
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}
@@ -103,10 +102,9 @@ const LoadModal = ({
     );
 };
 
-export default connect(({ load_modal, ui, dashboard }: RootStore) => ({
+export default connect(({ load_modal, dashboard }: RootStore) => ({
     active_index: load_modal.active_index,
     is_load_modal_open: load_modal.is_load_modal_open,
-    is_mobile: ui.is_mobile,
     loaded_local_file: load_modal.loaded_local_file,
     onEntered: load_modal.onEntered,
     recent_strategies: load_modal.recent_strategies,

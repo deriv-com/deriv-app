@@ -110,15 +110,6 @@ const AdvertiserPage = () => {
                 }}
                 width={isMobile() ? '90rem' : '40rem'}
             />
-            {/* <BlockUserModal
-                advertiser_name={name}
-                is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
-                is_block_user_modal_open={
-                    general_store.is_block_user_modal_open && !general_store.block_unblock_user_error
-                }
-                onCancel={advertiser_page_store.onCancel}
-                onSubmit={advertiser_page_store.onSubmit}
-            /> */}
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

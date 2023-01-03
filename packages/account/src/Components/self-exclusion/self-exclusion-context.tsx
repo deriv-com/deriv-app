@@ -3,7 +3,7 @@ import * as React from 'react';
 
 type TSelfExclusionContext = {
     footer_ref?: React.RefObject<HTMLElement>;
-    goToConfirm?: () => void;
+    goToConfirm?: (values: unknown) => void;
     toggleArticle?: () => void;
     is_app_settings?: boolean;
     is_wrapper_bypassed?: boolean;

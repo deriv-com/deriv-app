@@ -1,10 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -12,7 +11,7 @@ type TSwitch = {
     currency?: string;
 };
 
-const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
+const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
     const {
         ui,
         common,
@@ -163,6 +162,6 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
             </Modal>
         </div>
     );
-};
+});
 
-export default withRouter(observer(AccountTransferReceipt));
+export default withRouter(AccountTransferReceipt);

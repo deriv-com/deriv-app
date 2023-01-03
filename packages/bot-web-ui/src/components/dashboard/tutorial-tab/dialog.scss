@@ -9,6 +9,11 @@
             border-radius: 0;
             position: relative;
             z-index: 1;
+            @include mobile {
+                width: 94%;
+                height: auto;
+                max-height: 80%;
+            }
         }
 
         &__header-wrapper {

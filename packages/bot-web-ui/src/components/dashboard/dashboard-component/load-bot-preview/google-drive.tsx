@@ -4,13 +4,13 @@ import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { isMobile } from '@deriv/shared';
 
 type TGoogleDrive = {
     is_authorised: boolean;
     is_open_button_loading: boolean;
     onDriveConnect: () => void;
     onDriveOpen: () => void;
-    is_mobile: boolean;
 };
 
 const google_content = [
@@ -18,13 +18,7 @@ const google_content = [
     localize('To know how Google Drive handles your data, please review Deriv’s Privacy policy.'),
 ];
 
-const GoogleDrive = ({
-    is_authorised,
-    is_open_button_loading,
-    onDriveConnect,
-    onDriveOpen,
-    is_mobile,
-}: TGoogleDrive) => {
+const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }: TGoogleDrive) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -33,7 +27,7 @@ const GoogleDrive = ({
                     className={classnames('load-strategy__google-drive-icon', {
                         'load-strategy__google-drive-icon--disabled': !is_authorised,
                     })}
-                    size={is_mobile ? 96 : 128}
+                    size={isMobile() ? 96 : 128}
                 />
 
                 <div className='load-strategy__google-drive-text'>
@@ -72,9 +66,8 @@ const GoogleDrive = ({
     );
 };
 
-export default connect(({ load_modal, ui, google_drive }: RootStore) => ({
+export default connect(({ load_modal, google_drive }: RootStore) => ({
     is_authorised: google_drive.is_authorised,
-    is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,

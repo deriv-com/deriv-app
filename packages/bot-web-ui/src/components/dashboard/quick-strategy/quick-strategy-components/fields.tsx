@@ -6,7 +6,6 @@ import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './compone
 
 const QuickStrategyFields = React.memo(
     ({
-        is_mobile,
         types_strategies_dropdown,
         symbol_dropdown,
         trade_type_dropdown,
@@ -86,7 +85,6 @@ const QuickStrategyFields = React.memo(
                         <React.Fragment key={idx}>
                             <DurationFields
                                 id={id}
-                                is_mobile={is_mobile}
                                 field_name={field_name}
                                 idx={idx}
                                 dropdown_list={dropdown_list}
@@ -109,7 +107,6 @@ const QuickStrategyFields = React.memo(
                             />
                             <Inputs
                                 idx={idx}
-                                is_mobile={is_mobile}
                                 handleChange={handleChange}
                                 onChangeInputValue={onChangeInputValue}
                                 setCurrentFocus={setCurrentFocus}
@@ -129,7 +126,6 @@ const QuickStrategyFields = React.memo(
                             <Selects
                                 field_name={field_name}
                                 id={id}
-                                is_mobile={is_mobile}
                                 dropdown_list={dropdown_list}
                                 selected_value={selected_value}
                                 label={label}

@@ -16,11 +16,19 @@ const BinaryLink = ({ active_class, to, children, ...props }) => {
     }
 
     return to ? (
-        <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+        <NavLink
+            data-testid='dt_nav_link'
+            to={path}
+            activeClassName={active_class || 'active'}
+            exact={route.exact}
+            {...props}
+        >
             {children}
         </NavLink>
     ) : (
-        <a {...props}>{children}</a>
+        <a data-testid='dt_link' {...props}>
+            {children}
+        </a>
     );
 };
 

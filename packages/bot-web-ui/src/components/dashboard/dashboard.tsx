@@ -23,6 +23,8 @@ import {
 } from './joyride-config';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
+import TourSlider from './tour-slider';
+import { isMobile } from '@deriv/shared';
 
 type TDialogOptions = {
     title: string;
@@ -97,6 +99,8 @@ const Dashboard = ({
     let onboard_tour_token: string | number = '';
     let storage = '';
     let tour_status: { [key: string]: string };
+    const is_mobile = isMobile();
+
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
             const { action } = tour_status;
@@ -134,7 +138,7 @@ const Dashboard = ({
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
-        if (tour_status_ended.key === 'finished') {
+        if (tour_status_ended.key === 'finished' && !is_mobile) {
             if (tour_type.key === 'onboard_tour') {
                 setActiveTab(0);
                 setTourDialogVisibility(true);
@@ -151,7 +155,7 @@ const Dashboard = ({
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     };
-    if (!bot_tour_token) {
+    if (!bot_tour_token && !is_mobile) {
         setHasTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
@@ -197,32 +201,35 @@ const Dashboard = ({
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
                     <TourTriggrerDialog />
-                    {has_tour_started && (
-                        <ReactJoyride
-                            steps={DBOT_ONBOARDING}
-                            continuous
-                            callback={handleJoyrideCallback}
-                            spotlightClicks
-                            hideCloseButton
-                            locale={{ back: 'Previous' }}
-                            styles={{
-                                options: {
-                                    arrowColor: 'var(--general-main-2)',
-                                    backgroundColor: 'var(--general-main-2)',
-                                    primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-general)',
-                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                },
-                                buttonBack: {
-                                    border: '0.2rem solid var(--text-less-prominent)',
-                                    marginRight: '1rem',
-                                    borderRadius: '0.4rem',
-                                    color: 'var(--text-general)',
-                                    padding: '0.6rem',
-                                },
-                            }}
-                        />
-                    )}
+                    {has_tour_started &&
+                        (is_mobile ? (
+                            <TourSlider />
+                        ) : (
+                            <ReactJoyride
+                                steps={DBOT_ONBOARDING}
+                                continuous
+                                callback={handleJoyrideCallback}
+                                spotlightClicks
+                                hideCloseButton
+                                locale={{ back: 'Previous' }}
+                                styles={{
+                                    options: {
+                                        arrowColor: 'var(--general-main-2)',
+                                        backgroundColor: 'var(--general-main-2)',
+                                        primaryColor: 'var(--brand-red-coral)',
+                                        textColor: 'var(--text-general)',
+                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                    },
+                                    buttonBack: {
+                                        border: '0.2rem solid var(--text-less-prominent)',
+                                        marginRight: '1rem',
+                                        borderRadius: '0.4rem',
+                                        color: 'var(--text-general)',
+                                        padding: '0.6rem',
+                                    },
+                                }}
+                            />
+                        ))}
                     <Tabs
                         active_index={active_tab}
                         className='dashboard__tabs'
@@ -301,16 +308,16 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
     setTourActive: dashboard.setTourActive,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     onEntered: load_modal.onEntered,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setHasTourEnded: dashboard.setHasTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,

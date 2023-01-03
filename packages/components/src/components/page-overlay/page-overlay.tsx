@@ -10,7 +10,7 @@ type TPageOverlay = {
     id?: string;
     is_from_app?: boolean;
     is_open?: boolean;
-    onClickClose: Parameters<typeof useOnClickOutside>[1];
+    onClickClose: (event: MouseEvent) => void;
     portal_id?: string;
 };
 
@@ -24,11 +24,7 @@ const PageOverlay = ({
     portal_id,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
-    useOnClickOutside(page_overlay_ref, onClickClose, () => {
-        if (is_open) if (portal_id) return true;
-
-        return false;
-    });
+    useOnClickOutside(page_overlay_ref, onClickClose, () => !!(is_open && portal_id));
 
     const el_page_overlay = (
         <div
@@ -46,7 +42,10 @@ const PageOverlay = ({
                             <div
                                 data-testid='page_overlay_header_close'
                                 className='dc-page-overlay__header-close'
-                                onClick={onClickClose || window.history.back}
+                                onClick={
+                                    (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) ||
+                                    window.history.back
+                                }
                             >
                                 <Icon icon='IcCross' />
                             </div>

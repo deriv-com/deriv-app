@@ -14,7 +14,7 @@ type TMobileFullPageModal = {
     height_offset?: string;
     is_flex?: boolean;
     is_modal_open: boolean;
-    onClickClose: React.MouseEventHandler;
+    onClickClose: (event: MouseEvent) => void;
     pageHeaderReturnFn: () => void;
     renderPageFooterChildren: () => React.ReactNode;
     page_footer_className?: string;

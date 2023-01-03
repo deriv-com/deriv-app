@@ -18,14 +18,26 @@ import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import CurrencySelectionModal from './currency-selection-modal';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
+type TCurrentList = DetailsOfEachMT5Loginid & {
+    enabled: number;
+};
 
 const ModalManager = () => {
     const store = useStores();
     const { common, client, modules, traders_hub } = store;
     const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
     const { platform } = common;
-    const { current_list, enableCFDPasswordModal, is_mt5_trade_modal_visible, setAccountType, toggleMT5TradeModal } =
-        modules.cfd;
+    const {
+        current_list,
+        enableCFDPasswordModal,
+        is_mt5_trade_modal_visible,
+        setAccountType,
+        toggleMT5TradeModal,
+        getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData,
+    } = modules.cfd;
     const { is_demo, modal_data } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
@@ -66,6 +78,25 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+        const current_list_keys = Object.keys(current_list);
+        const should_be_enabled = (list_item: TCurrentList) =>
+            platform === 'dxtrade' ? list_item.enabled === 1 : true;
+        const acc = current_list_keys.some(
+            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+        )
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
+            : undefined;
+        return acc;
+    };
+
+    getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
+    getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
     return (
         <React.Fragment>
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />

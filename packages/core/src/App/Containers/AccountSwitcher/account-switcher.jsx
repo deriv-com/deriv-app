@@ -32,7 +32,7 @@ import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list || props.is_real_tab_enabled ? 0 : 1
+        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
     );
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -430,7 +430,7 @@ const AccountSwitcher = props => {
             mt5_demo_total.balance +
             dxtrade_demo_total.balance;
 
-        return total;
+        return props.is_pre_appstore ? vrtc_balance : total;
     };
 
     const getTotalRealAssets = () => {
@@ -442,11 +442,13 @@ const AccountSwitcher = props => {
 
         let total = props.obj_total_balance.amount_real;
 
+        const traders_hub_total = props.obj_total_balance.amount_real;
+
         total += props.obj_total_balance.amount_mt5 > 0 ? props.obj_total_balance.amount_mt5 : mt5_total.balance;
         total +=
             props.obj_total_balance.amount_dxtrade > 0 ? props.obj_total_balance.amount_dxtrade : dxtrade_total.balance;
 
-        return total;
+        return props.is_pre_appstore ? traders_hub_total : total;
     };
 
     const isRealMT5AddDisabled = sub_account_type => {

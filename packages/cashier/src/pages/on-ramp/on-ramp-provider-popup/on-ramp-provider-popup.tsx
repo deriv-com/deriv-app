@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv/components';
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { connect } from '../../../stores/connect';
+import { TProviderDetails, TRootStore, TUiStore } from '../../../types';
 
 type TOnRampProviderPopupProps = {
     api_error: string;

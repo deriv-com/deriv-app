@@ -4,7 +4,7 @@ import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { getStatus } from 'Constants/transaction-status';
+import { getStatus } from '../../constants/transaction-status';
 import './recent-transaction.scss';
 
 const RecentTransaction = observer(() => {

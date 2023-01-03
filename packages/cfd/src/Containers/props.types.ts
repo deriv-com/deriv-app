@@ -260,3 +260,65 @@ export type TJurisdictionModalFootNoteProps = {
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
 };
+
+export type TCompareAccountRowItem = {
+    text: string;
+    tooltip_msg?: string;
+    options?: Record<string, string | boolean | Record<string, string>>;
+};
+
+export type TCompareAccountContentValues = Record<
+    string,
+    TCompareAccountRowItem | TCompareAccountRowItem[] | undefined
+>;
+
+export type TCompareAccountRowProps = TCompareAccountContentProps & {
+    pre_appstore_class: string;
+    available_accounts_count: number;
+    classname_for_demo_and_eu: string | null;
+    is_pre_appstore_setting: boolean;
+    account_flag: string;
+};
+
+export type TCompareAccountContentProps = {
+    id: string;
+    attribute: string;
+    values: TCompareAccountContentValues;
+};
+
+export type TCompareAccountFooterButtonData = { label: string; action: string };
+
+export type TDMT5CompareModalContentProps = {
+    account_flag: string;
+    account_settings: GetSettings;
+    account_status: GetAccountStatus;
+    account_type: TOpenAccountTransferMeta;
+    clearCFDError: () => void;
+    context: RootStore;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    has_real_account: boolean;
+    is_demo_tab: boolean;
+    is_logged_in: boolean;
+    is_pre_appstore_setting: boolean;
+    is_preappstore_cr_demo_account: boolean;
+    is_real_enabled: boolean;
+    is_virtual: boolean;
+    openDerivRealAccountNeededModal: () => void;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    openSwitchToRealAccountModal: () => void;
+    real_account_creation_unlock_date: string;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
+    setAppstorePlatform: (platform: string) => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
+    should_restrict_bvi_account_creation: boolean;
+    should_show_derivx: boolean;
+    show_eu_related: boolean;
+    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
+    toggleCFDVerificationModal: () => void;
+    toggleCompareAccounts: () => void;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    updateAccountStatus: () => void;
+    upgradeable_landing_companies: unknown[];
+};

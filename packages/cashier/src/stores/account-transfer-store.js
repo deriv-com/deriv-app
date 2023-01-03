@@ -14,7 +14,7 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import Constants from 'Constants/constants';
+import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
@@ -53,6 +53,7 @@ export default class AccountTransferStore {
             selected_from: observable,
             selected_to: observable,
             account_transfer_amount: observable,
+            should_switch_account: observable,
             transfer_fee: observable,
             transfer_limit: observable,
             is_account_transfer_visible: computed,
@@ -79,6 +80,7 @@ export default class AccountTransferStore {
             onChangeTransferTo: action.bound,
             resetAccountTransfer: action.bound,
             setTransferPercentageSelectorResult: action.bound,
+            setShouldSwitchAccout: action.bound,
             validateTransferFromAmount: action.bound,
             validateTransferToAmount: action.bound,
         });
@@ -100,6 +102,7 @@ export default class AccountTransferStore {
     selected_from = {};
     selected_to = {};
     account_transfer_amount = '';
+    should_switch_account = false;
     transfer_fee = null;
     transfer_limit = {};
 
@@ -124,6 +127,10 @@ export default class AccountTransferStore {
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 
         return need_financial_assessment && this.error.is_ask_financial_risk_approval;
+    }
+
+    setShouldSwitchAccout() {
+        this.should_switch_account = true;
     }
 
     setBalanceByLoginId(loginid, balance) {

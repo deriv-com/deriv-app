@@ -10,9 +10,8 @@ import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
-    const { is_high_risk, is_low_risk } = client;
-    const is_real = selected_account_type === 'real';
+    const { active_index, handleTabItemClick, toggleRegulatorsCompareModal, is_real } = traders_hub;
+    const { is_low_risk } = client;
 
     return (
         <React.Fragment>
@@ -24,7 +23,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && !is_high_risk && is_low_risk && <RegulatorSwitcher />}
+                    {is_real && is_low_risk ? <RegulatorSwitcher /> : null}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>
@@ -34,7 +33,7 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && !is_high_risk ? (
+                    {is_real && is_low_risk ? (
                         <div className='main-title-bar-mobile--regulator'>
                             <div
                                 className='main-title-bar-mobile--regulator--compare-modal'

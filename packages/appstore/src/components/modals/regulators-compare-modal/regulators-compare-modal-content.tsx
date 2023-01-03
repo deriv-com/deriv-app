@@ -15,9 +15,9 @@ const Row = ({ attribute, content }: TRegulatorsContentProps) => {
             {Object.keys(content).map(rowKey => (
                 <Table.Cell key={rowKey} className='regulators-compare-table__table-row-item'>
                     {Array.isArray(content[rowKey]) ? (
-                        (content[rowKey] as TRowItem[])?.map((item, index) => (
+                        (content[rowKey] as TRowItem[])?.map(item => (
                             <Text
-                                key={index}
+                                key={rowKey}
                                 as='p'
                                 color={item?.options?.color ?? 'prominent'}
                                 weight={item?.options?.weight ?? 'normal'}

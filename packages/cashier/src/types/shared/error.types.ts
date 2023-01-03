@@ -1,4 +1,4 @@
-import { TServerError } from 'Types';
+import { TServerError } from './websocket.types';
 
 // Type of the instance of the ErrorStore
 export type TError = {

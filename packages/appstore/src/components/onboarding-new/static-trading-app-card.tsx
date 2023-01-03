@@ -61,7 +61,13 @@ const StaticTradingAppCard = ({
                 </Text>
             </div>
             <div className={classNames('trading-app-card__actions')}>
-                <Button primary className={has_applauncher_account ? '' : 'trading-app-card__button--hidden'}>
+                <Button
+                    primary
+                    className={classNames('', {
+                        'trading-app-card__actions--blurry': is_item_blurry,
+                        'trading-app-card__button--hidden': !has_applauncher_account,
+                    })}
+                >
                     {localize(`Trade`)}
                 </Button>
             </div>

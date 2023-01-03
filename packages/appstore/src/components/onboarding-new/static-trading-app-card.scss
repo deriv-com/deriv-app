@@ -36,6 +36,11 @@
         a {
             text-decoration: none;
         }
+
+        &--blurry {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
     }
     &--divider {
         border-bottom: 1px solid var(--general-hover);

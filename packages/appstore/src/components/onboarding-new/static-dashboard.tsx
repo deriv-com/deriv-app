@@ -2,7 +2,7 @@ import React from 'react';
 import { useStores } from 'Stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { Text, ButtonToggle, ThemedScrollbars } from '@deriv/components';
+import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
@@ -93,13 +93,15 @@ const StaticDashboard = ({
     }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
-    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Deriv account';
+    const is_eu_account_title = is_eu_user || is_eu ? 'Multipliers account' : 'Deriv account';
     const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
         <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
             <div
-                className='static-dashboard'
+                className={classNames('static-dashboard', {
+                    'static-dashboard--eu': is_eu,
+                })}
                 style={
                     (isMobile() && index === 1 && !(is_first_step || is_third_step)) || (isMobile() && is_eu)
                         ? { height: '100%' }
@@ -213,6 +215,18 @@ const StaticDashboard = ({
                                         </Text>
                                     }
                                     icon={is_eu ? 'EUR' : 'USD'}
+                                    actions={
+                                        <Button
+                                            secondary
+                                            className={classNames('', {
+                                                'static-dashboard--deposit-button-animated':
+                                                    is_onboarding_animated.topup,
+                                                'static-dashboard--deposit-button-blurry': is_blurry.topup,
+                                            })}
+                                        >
+                                            {localize('Deposit')}
+                                        </Button>
+                                    }
                                 >
                                     <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={10000} size='xs' />
                                 </StaticCurrencySwitcherContainer>
@@ -243,17 +257,31 @@ const StaticDashboard = ({
                                 'static-dashboard-wrapper__body--apps--eu': is_eu_user,
                             })}
                         >
-                            <div className={'static-dashboard-wrapper__body--apps-item'}>
-                                <StaticTradingAppCard
-                                    icon={'DTrader'}
-                                    name={'DTrader'}
-                                    description={'Options and multipliers trading platform.'}
-                                    availability={'All'}
-                                    has_applauncher_account={has_applauncher_account}
-                                    is_item_blurry={is_blurry.platformlauncher}
-                                    has_divider
-                                />
-                            </div>
+                            {is_eu ? (
+                                <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <StaticTradingAppCard
+                                        icon={'DTrader'}
+                                        name={'DTrader'}
+                                        description={'Multipliers trading platform.'}
+                                        availability={'All'}
+                                        has_applauncher_account={has_applauncher_account}
+                                        is_item_blurry={is_blurry.platformlauncher}
+                                    />
+                                </div>
+                            ) : (
+                                <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <StaticTradingAppCard
+                                        icon={'DTrader'}
+                                        name={'DTrader'}
+                                        description={'Options and multipliers trading platform.'}
+                                        availability={'All'}
+                                        has_applauncher_account={has_applauncher_account}
+                                        is_item_blurry={is_blurry.platformlauncher}
+                                        has_divider
+                                    />
+                                </div>
+                            )}
+
                             {!is_eu && (
                                 <React.Fragment>
                                     <div className={'static-dashboard-wrapper__body--apps-item'}>

@@ -161,7 +161,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     options_text: true,
                     cfd_description: false,
                     options_description: false,
-                    platformlauncher: false,
+                    platformlauncher: true,
                 }}
                 is_onboarding_animated={{
                     text: false,

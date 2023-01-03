@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
-import { formatMoney, CFD_PLATFORMS, isMobile } from '@deriv/shared';
+import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';

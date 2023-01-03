@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Loading } from '@deriv/components';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 
 type TTourGuide = {
     label: string | boolean;
@@ -56,7 +57,7 @@ const TourGuide = ({
                         {step_index}/7
                     </Text>
                     <Text className='onboard__header--close' line_height='l' onClick={onCloseTour}>
-                        Exit tour
+                        {localize('Exit tour')}
                     </Text>
                 </div>
                 <div className='onboard__label'>

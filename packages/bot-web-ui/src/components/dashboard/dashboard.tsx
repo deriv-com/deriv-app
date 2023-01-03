@@ -24,6 +24,7 @@ import {
 import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
+import { isMobile } from '@deriv/shared';
 
 type TDialogOptions = {
     title: string;
@@ -41,7 +42,6 @@ type TDashboard = {
     has_tour_started: boolean;
     is_dialog_open: boolean;
     is_drawer_open: boolean;
-    is_mobile: boolean;
     is_tour_dialog_visible: boolean;
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
@@ -74,7 +74,6 @@ const Dashboard = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     is_dialog_open,
-    is_mobile,
     loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
@@ -100,6 +99,7 @@ const Dashboard = ({
     let onboard_tour_token: string | number = '';
     let storage = '';
     let tour_status: { [key: string]: string };
+    const is_mobile = isMobile();
 
     const setTourStatus = (param: { [key: string]: string }) => {
         if (tour_status) {
@@ -308,7 +308,7 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
@@ -323,7 +323,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    is_mobile: ui.is_mobile,
     loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,

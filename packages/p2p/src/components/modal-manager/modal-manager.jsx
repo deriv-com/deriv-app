@@ -11,7 +11,8 @@ const ModalManager = () => {
 
     const getModalProps = current_modal => {
         if (current_modal?.props && Object.keys(current_modal.props).length > 0) {
-            // for cases where not all props are provided, but only those that are changed
+            // if props was provided to the argument and it was also already initialised using useRegisterModalProps, 
+            // merge the 2 props together and update latest prop values with the passed prop argument
             if (modal_props.has(current_modal.key)) {
                 return {
                     ...modal_props.get(current_modal.key),

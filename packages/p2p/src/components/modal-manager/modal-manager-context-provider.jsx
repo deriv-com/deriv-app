@@ -43,6 +43,7 @@ const ModalManagerContextProvider = props => {
                 registered_modals.forEach(registered_modal => {
                     modal_props.delete(registered_modal.key);
                 });
+                registered_modals.current = []
             };
         }, [modals]);
     };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Dialog, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
@@ -51,12 +52,13 @@ const GuideContent = ({
             setActiveTab(1);
         }
     };
+    const is_mobile = isMobile();
 
     return React.useMemo(
         () => (
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
-                    <Text align='center' weight='bold' color='prominent' line_height='s'>
+                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
                         Step-by-step guides
                     </Text>
                 )}
@@ -78,7 +80,12 @@ const GuideContent = ({
                                                 backgroundImage: `url(${src})`,
                                             }}
                                         />
-                                        <Text align='center' color='prominent' line_height='s'>
+                                        <Text
+                                            align='center'
+                                            color='prominent'
+                                            line_height='s'
+                                            size={is_mobile ? 'xxs' : 's'}
+                                        >
                                             {content}
                                         </Text>
                                     </div>
@@ -87,7 +94,7 @@ const GuideContent = ({
                         })}
                 </div>
                 {guide_list?.length > 0 && (
-                    <Text align='center' weight='bold' color='prominent' line_height='s'>
+                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
                         Videos on DBot
                     </Text>
                 )}
@@ -120,7 +127,12 @@ const GuideContent = ({
                                                 />
                                             </div>
                                         </div>
-                                        <Text align='center' color='prominent' line_height='s'>
+                                        <Text
+                                            align='center'
+                                            color='prominent'
+                                            line_height='s'
+                                            size={is_mobile ? 'xxs' : 's'}
+                                        >
                                             {content}
                                         </Text>
                                     </div>

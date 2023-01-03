@@ -1,6 +1,7 @@
 import React from 'react';
 import RootStore from 'Stores/index';
 import { Text, Accordion } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { TDescription } from './tutorial-content';
@@ -8,6 +9,7 @@ import { TDescription } from './tutorial-content';
 type TFAQContent = {
     faq_list: TFAQList[];
     faq_search_value: string;
+    hide_header?: boolean;
 };
 
 type TFAQList = {
@@ -21,7 +23,8 @@ const FAQ = ({ type, content, src }: TDescription) => {
     return (
         <Text
             as='p'
-            line_height='xxl'
+            size={isMobile() ? 'xs' : 's'}
+            line_height={isMobile() ? 'xl' : 'xxl'}
             className='faq__description'
             weight='normal'
             key={content}
@@ -30,11 +33,18 @@ const FAQ = ({ type, content, src }: TDescription) => {
     );
 };
 
-const FAQContent = ({ faq_list, faq_search_value }: TFAQContent) => {
+const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQContent) => {
     const getList = () => {
         return faq_list.map(({ title, description }: TFAQList) => ({
             header: (
-                <Text as='p' line_height='xl' className='faq__title' weight='bold' key={title}>
+                <Text
+                    as='p'
+                    line_height='xl'
+                    className='faq__title'
+                    weight='bold'
+                    key={title}
+                    size={isMobile() ? 'xs' : 's'}
+                >
                     {title}
                 </Text>
             ),
@@ -45,9 +55,11 @@ const FAQContent = ({ faq_list, faq_search_value }: TFAQContent) => {
     return (
         <div>
             <div className='faq__wrapper'>
-                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                    {localize('FAQ')}
-                </Text>
+                {!hide_header && (
+                    <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                        {localize('FAQ')}
+                    </Text>
+                )}
                 {faq_list?.length ? (
                     <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                 ) : (

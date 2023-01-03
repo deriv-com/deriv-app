@@ -683,6 +683,20 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
+            trader_and_cashier_blocked: {
+                key: 'trades_and_cashier_blocked',
+                header: localize('Your trades and deposits are blocked'),
+                message: localize(
+                    'We detected another account with similar details to yours. Contact us via live chat for assistance.'
+                ),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Open live chat'),
+                },
+                type: 'danger',
+            },
             ask_uk_funds_protection: {
                 key: 'ask_uk_funds_protection',
                 header: localize('Your cashier is locked'),

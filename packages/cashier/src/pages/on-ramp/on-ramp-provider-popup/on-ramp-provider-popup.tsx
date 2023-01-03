@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, HintBox, Icon, Loading, Popover, Text } from '@deriv/components';
+import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv/components';
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -11,13 +11,10 @@ type TOnRampProviderPopupProps = {
     deposit_address: string;
     is_dark_mode_on: TUiStore['is_dark_mode_on'];
     is_deposit_address_loading: boolean;
-    is_deposit_address_popover_open: boolean;
     is_requesting_widget_html: boolean;
-    onClickCopyDepositAddress: () => void;
     onClickDisclaimerContinue: () => void;
     onClickGoToDepositPage: () => void;
     selected_provider: TProviderDetails;
-    setDepositAddressRef: (ref: HTMLDivElement | null) => void;
     setIsOnRampModalOpen: (boolean: boolean) => void;
     should_show_dialog: boolean;
     should_show_widget: boolean;
@@ -30,13 +27,10 @@ const OnRampProviderPopup = ({
     deposit_address,
     is_dark_mode_on,
     is_deposit_address_loading,
-    is_deposit_address_popover_open,
     is_requesting_widget_html,
-    onClickCopyDepositAddress,
     onClickDisclaimerContinue,
     onClickGoToDepositPage,
     selected_provider,
-    setDepositAddressRef,
     setIsOnRampModalOpen,
     should_show_dialog,
     should_show_widget,
@@ -44,6 +38,20 @@ const OnRampProviderPopup = ({
     widget_html,
 }: TOnRampProviderPopupProps) => {
     const el_onramp_widget_container_ref = React.useRef(null);
+    const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
+    let timeout_clipboard: ReturnType<typeof setTimeout>;
+
+    const onClickCopyDepositAddress = () => {
+        copyToClipboard(deposit_address);
+
+        timeout_clipboard = setTimeout(() => {
+            setIsCopied(false);
+        }, 500);
+    };
+
+    React.useEffect(() => {
+        return () => clearTimeout(timeout_clipboard);
+    }, []);
 
     // JS executed after "on-ramp__widget-container" has been added to the DOM.
     // Used for providers that require JS to be executed for inclusion of their widget.
@@ -111,17 +119,11 @@ const OnRampProviderPopup = ({
                             <Localize i18n_default_text="Please copy the crypto address you see below. You'll need it to deposit your cryptocurrency." />
                         </Text>
                         <div className='on-ramp__popup-deposit-address'>
-                            <Popover
-                                zIndex={9998}
-                                alignment='right'
-                                message={localize('Copied!')}
-                                is_open={is_deposit_address_popover_open}
-                            >
+                            <Popover zIndex={9998} alignment='right' message={localize('Copied!')} is_open={is_copied}>
                                 <input
                                     className={classNames('on-ramp__popup-deposit-address-text', {
                                         'on-ramp__popup-deposit-address-text--dark': is_dark_mode_on,
                                     })}
-                                    ref={setDepositAddressRef}
                                     defaultValue={deposit_address}
                                     disabled
                                     onFocus={e => e.preventDefault()}
@@ -197,13 +199,10 @@ export default connect(({ modules, ui }: TRootStore) => ({
     deposit_address: modules.cashier.onramp.deposit_address,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
-    is_deposit_address_popover_open: modules.cashier.onramp.is_deposit_address_popover_open,
     is_requesting_widget_html: modules.cashier.onramp.is_requesting_widget_html,
-    onClickCopyDepositAddress: modules.cashier.onramp.onClickCopyDepositAddress,
     onClickDisclaimerContinue: modules.cashier.onramp.onClickDisclaimerContinue,
     onClickGoToDepositPage: modules.cashier.onramp.onClickGoToDepositPage,
     selected_provider: modules.cashier.onramp.selected_provider,
-    setDepositAddressRef: modules.cashier.onramp.setDepositAddressRef,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
     should_show_widget: modules.cashier.onramp.should_show_widget,

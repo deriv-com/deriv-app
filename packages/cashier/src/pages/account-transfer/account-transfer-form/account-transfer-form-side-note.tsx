@@ -78,7 +78,7 @@ const AccountTransferNote = ({
         } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
             return is_dxtrade_allowed ? (
                 <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -87,7 +87,7 @@ const AccountTransferNote = ({
                 />
             ) : (
                 <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and DMT5 accounts.'
+                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),

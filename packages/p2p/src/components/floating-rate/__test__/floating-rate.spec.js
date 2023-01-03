@@ -11,7 +11,7 @@ jest.mock('Stores', () => ({
             setCurrentFocus: jest.fn(),
         },
         floating_rate_store: {
-            exchange_rate: '100',
+            market_rate: '100',
         },
     }),
 }));
@@ -39,6 +39,6 @@ describe('<FloatingRate/>', () => {
     it('should render the exchange rate in hint', () => {
         render(<FloatingRate fiat_currency='AED' local_currency='INR' />);
 
-        expect(screen.getByText('1 AED = 100.00 INR')).toBeInTheDocument();
+        expect(screen.getByText('1 AED = 100.00')).toBeInTheDocument();
     });
 });

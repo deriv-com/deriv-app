@@ -12,7 +12,6 @@ const MyProfile = () => {
 
     React.useEffect(() => {
         my_profile_store.getSettings();
-        my_profile_store.getAdvertiserInfo();
 
         return () => {
             // leave this in the return otherwise the default isn't set to my stats

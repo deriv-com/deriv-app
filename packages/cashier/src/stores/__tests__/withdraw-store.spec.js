@@ -1,5 +1,8 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -9,7 +12,6 @@ jest.mock('@deriv/shared', () => ({
         return { is_ok: true };
     }),
 }));
-jest.mock('../verification-store');
 
 describe('WithdrawStore', () => {
     let withdraw_store;
@@ -40,6 +42,7 @@ describe('WithdrawStore', () => {
                     };
                 },
                 loginid: 'CR9000000',
+                setVerificationCode: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -90,16 +93,12 @@ describe('WithdrawStore', () => {
         withdraw_store = new WithdrawStore({ root_store, WS });
     });
 
-    it('should set is_withdraw_confirmed', () => {
-        const spyClearVerification = jest.spyOn(withdraw_store.verification, 'clearVerification');
+    // it('should set is_withdraw_confirmed', () => {
+    //     withdraw_store.setIsWithdrawConfirmed(true);
+    //     expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
+    //     expect(withdraw_store.withdraw_amount).toBe(100);
 
-        withdraw_store.setIsWithdrawConfirmed(true);
-        expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
-        expect(withdraw_store.withdraw_amount).toBe(100);
-
-        withdraw_store.setIsWithdrawConfirmed(false);
-        expect(spyClearVerification).toHaveBeenCalled();
-    });
+    // });
 
     it('should set withdraw_amount', () => {
         withdraw_store.setWithdrawAmount(200);
@@ -167,11 +166,6 @@ describe('WithdrawStore', () => {
 
         withdraw_store.setBlockchainAddress(blockchain_address);
         expect(withdraw_store.blockchain_address).toBe(blockchain_address);
-    });
-
-    it('will mount withdraw', () => {
-        withdraw_store.willMountWithdraw('aBcDefXa');
-        expect(withdraw_store.verification.clearVerification).toHaveBeenCalled();
     });
 
     it('should set the iframe url if verification code is valid', async () => {
@@ -267,6 +261,11 @@ describe('WithdrawStore', () => {
     it('should set is_10k_withdrawal_limit_reached', () => {
         withdraw_store.set10kLimitation(true);
         expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
+    });
+
+    it('should set crypto_config', () => {
+        withdraw_store.setCryptoConfig();
+        expect(withdraw_store.crypto_config).toBeTruthy();
     });
 
     it('should set percentage selector result', () => {

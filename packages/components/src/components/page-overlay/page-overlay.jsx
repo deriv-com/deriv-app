@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
 
 const PageOverlay = ({ children, header, id, is_from_app = false, is_open, onClickClose, portal_id }) => {

@@ -10,6 +10,7 @@ const JurisdictionCheckBox = ({
     is_checked,
     jurisdiction_selected_shortcode,
     onCheck,
+    context,
     should_restrict_bvi_account_creation,
 }: TJurisdictionCheckBoxProps) => {
     const {
@@ -75,7 +76,7 @@ const JurisdictionCheckBox = ({
         <React.Fragment>
             {shouldShowCheckBox() && (
                 <div className={class_name}>
-                    <Checkbox onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
+                    <Checkbox context={context} onChange={onCheck} value={is_checked} label={getCheckboxLabel()} />
                 </div>
             )}
         </React.Fragment>

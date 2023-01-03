@@ -12,8 +12,6 @@ const MyAdsDeleteModal = () => {
     const { my_ads_store } = useStores();
     const isMounted = useIsMounted();
 
-    const [is_delete_error_modal_open, setIsDeleteErrorModalOpen] = React.useState(false);
-
     const onClickCancel = () => {
         my_ads_store.setDeleteErrorMessage('');
         my_ads_store.setSelectedAdId('');
@@ -26,7 +24,7 @@ const MyAdsDeleteModal = () => {
             if (isMounted()) {
                 if (response.error) {
                     my_ads_store.setDeleteErrorMessage(response.error.message);
-                    setIsDeleteErrorModalOpen(true);
+                    my_ads_store.setIsDeleteErrorModalOpen(true);
                 } else {
                     // remove the deleted ad from the list of items
                     const updated_items = my_ads_store.adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
@@ -68,7 +66,7 @@ const MyAdsDeleteModal = () => {
             <Modal
                 className='delete-modal'
                 has_close_icon={false}
-                is_open={is_delete_error_modal_open}
+                is_open={my_ads_store.is_delete_error_modal_open}
                 renderTitle={() => (
                     <Text color='prominent' line-height='m' size={isDesktop() ? 's' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Do you want to delete this ad?' />
@@ -79,7 +77,7 @@ const MyAdsDeleteModal = () => {
                 <Modal.Body>{my_ads_store.delete_error_message}</Modal.Body>
                 <Modal.Footer>
                     <Button.Group>
-                        <Button primary large onClick={() => setIsDeleteErrorModalOpen(false)}>
+                        <Button primary large onClick={() => my_ads_store.setIsDeleteErrorModalOpen(false)}>
                             <Localize i18n_default_text='Ok' />
                         </Button>
                     </Button.Group>

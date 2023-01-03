@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
@@ -42,10 +43,10 @@ const NotificationsContent = ({
     return (
         <div className='notification-messages' style={style}>
             <TransitionGroup component='div'>
-                {notifications.map((notification, idx) => (
+                {notifications.map(notification => (
                     <CSSTransition
                         appear={!is_notification_loaded}
-                        key={idx}
+                        key={notification.key}
                         in={!!notification.header}
                         timeout={150}
                         classNames={{
@@ -103,6 +104,7 @@ const AppNotificationMessages = ({
                   'dp2p',
                   'install_pwa',
                   'tnc',
+                  'risk_client',
                   'deriv_go',
                   'close_mx_mlt_account',
                   'trustpilot',
@@ -120,11 +122,18 @@ const AppNotificationMessages = ({
                   'resticted_mt5_with_failed_poa',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
-        return is_not_marked_notification && is_non_hidden_notification;
+
+        const is_only_for_p2p_notification =
+            window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
+        return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    const notifications_sublist = notifications.slice(0, notifications_limit);
+    //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
+    const filtered_excluded_notifications = notifications.filter(message =>
+        excluded_notifications.includes(message.key)
+    );
+    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

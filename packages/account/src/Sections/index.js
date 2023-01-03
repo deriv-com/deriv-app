@@ -1,9 +1,11 @@
 import Passwords from 'Sections/Security/Passwords';
 import AccountLimits from 'Sections/Security/AccountLimits';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
-import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
+import TradingAssessment from 'Sections/Assessment/TradingAssessment';
+import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
+import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
@@ -13,14 +15,17 @@ import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
 import AccountClosed from 'Sections/Security/AccountClosed';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
+import LanguageSettings from 'Sections/Profile/LanguageSettings';
 
 export {
     AccountLimits,
     Passwords,
     PersonalDetails,
+    TradingAssessment,
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfOwnership,
     TwoFactorAuthentication,
     ApiToken,
     SelfExclusion,
@@ -30,4 +35,5 @@ export {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
+    LanguageSettings,
 };

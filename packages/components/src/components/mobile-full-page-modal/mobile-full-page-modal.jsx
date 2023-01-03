@@ -4,15 +4,15 @@ import classNames from 'classnames';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay.jsx';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const MobileFullPageModal = ({
     body_className,
     className,
     should_header_stick_body,
     header,
-    header_backgound_color,
+    header_background_color,
     height_offset = '0px',
     is_flex,
     is_popup,
@@ -52,7 +52,7 @@ const MobileFullPageModal = ({
                             [page_header_className]: !!page_header_className,
                         })}
                         style={{
-                            background: header_backgound_color,
+                            background: header_background_color,
                         }}
                     >
                         {pageHeaderReturnFn && (
@@ -105,7 +105,7 @@ MobileFullPageModal.propTypes = {
     className: PropTypes.string,
     container_children: PropTypes.any,
     header: PropTypes.string,
-    header_backgound_color: PropTypes.string,
+    header_background_color: PropTypes.string,
     height_offset: PropTypes.string,
     is_flex: PropTypes.bool,
     is_modal_open: PropTypes.bool,

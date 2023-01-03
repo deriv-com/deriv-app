@@ -49,7 +49,7 @@ const FilterModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const FilterModalResult = () => {
+    const FilterModalResult = observer(() => {
         if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
         else if (my_profile_store.search_term) {
             if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
@@ -77,7 +77,7 @@ const FilterModal = () => {
                 />
             );
         });
-    };
+    });
 
     return (
         <Modal

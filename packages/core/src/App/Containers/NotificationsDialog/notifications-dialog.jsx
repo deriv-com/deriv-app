@@ -15,7 +15,7 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
+import { toTitleCase, isEmptyObject, isMobile, PlatformContext } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -29,6 +29,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
 
         return `IcAlert${toTitleCase(type)}`;
     };
+
+    const getButtonSettings = item =>
+        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
 
     return (
         <React.Fragment>
@@ -54,9 +57,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
-                        {!isEmptyObject(item.action) && (
+                        {!!getButtonSettings(item) && (
                             <React.Fragment>
-                                {item.action.route ? (
+                                {item[getButtonSettings(item)].route ? (
                                     <BinaryLink
                                         onClick={toggleDialog}
                                         active_class='notifications-item'
@@ -65,19 +68,19 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                                             'dc-btn--secondary',
                                             'notifications-item__cta-button'
                                         )}
-                                        to={item.action.route}
+                                        to={item[getButtonSettings(item)].route}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </BinaryLink>
                                 ) : (
                                     <Button
                                         className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={item.action.onClick}
+                                        onClick={item[getButtonSettings(item)].onClick}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </Button>
                                 )}
@@ -91,8 +94,14 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
 };
 const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog }, ref) => {
     const is_empty = !notifications.length;
+    const { is_pre_appstore } = React.useContext(PlatformContext);
     return (
-        <div className='notifications-dialog' ref={ref}>
+        <div
+            className={classNames('notifications-dialog', {
+                'notifications-dialog--pre-appstore': is_pre_appstore,
+            })}
+            ref={ref}
+        >
             <div className='notifications-dialog__header'>
                 <Text
                     as='h2'
@@ -183,7 +192,7 @@ NotificationsDialog.propTypes = {
 };
 
 export default connect(({ common, notifications }) => ({
-    notifications: notifications.filtered_notifications,
+    notifications: notifications.notifications,
     app_routing_history: common.app_routing_history,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,

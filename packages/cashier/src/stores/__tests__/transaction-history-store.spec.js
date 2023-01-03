@@ -1,4 +1,7 @@
 import TransactionHistoryStore from '../transaction-history-store';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 describe('TransactionHistoryStore', () => {
     let transaction_history_store;

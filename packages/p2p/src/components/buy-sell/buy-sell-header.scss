@@ -67,9 +67,10 @@
 
         @include mobile {
             display: grid;
-            grid-template-columns: 1fr 50px 50px;
+            grid-template-columns: auto 40px 40px;
             column-gap: 1rem;
             border-top: 1px solid var(--general-section-1);
+            padding: 1.6rem;
         }
 
         &--filter {
@@ -81,9 +82,14 @@
             padding: 1.3rem;
 
             @include mobile {
-                grid-column: 3;
                 justify-self: center;
-                margin-right: 2rem;
+                margin-left: 0;
+            }
+        }
+
+        &--selector {
+            @include mobile {
+                grid-template-columns: auto 1fr 40px 40px;
             }
         }
     }

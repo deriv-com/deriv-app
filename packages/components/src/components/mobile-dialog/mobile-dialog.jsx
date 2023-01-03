@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
@@ -17,6 +17,7 @@ const MobileDialog = props => {
         renderTitle,
         wrapper_classname,
         footer,
+        has_close_icon = true,
         header_classname,
     } = props;
 
@@ -93,9 +94,11 @@ const MobileDialog = props => {
                         >
                             {renderTitle ? renderTitle() : title}
                         </Text>
-                        <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                            <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                        </div>
+                        {has_close_icon && (
+                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                            </div>
+                        )}
                     </div>
                     <div
                         className={classNames('dc-mobile-dialog__content', {
@@ -128,6 +131,7 @@ MobileDialog.propTypes = {
     children: PropTypes.any,
     onClose: PropTypes.func,
     has_content_scroll: PropTypes.bool,
+    has_close_icon: PropTypes.bool,
     portal_element_id: PropTypes.string.isRequired,
     renderTitle: PropTypes.func,
     title: PropTypes.string,

@@ -17,10 +17,10 @@ import StarRating from 'Components/star-rating';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
-import BlockUserModal from 'Components/block-user/block-user-modal';
 import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
@@ -50,6 +50,7 @@ const AdvertiserPage = () => {
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
     const [is_error_modal_open, setIsErrorModalOpen] = React.useState(false);
+    const { showModal, useRegisterModalProps } = useModalManagerContext();
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
@@ -70,6 +71,16 @@ const AdvertiserPage = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useRegisterModalProps({
+        key: 'BlockUserModal',
+        props: {
+            advertiser_name: name,
+            is_advertiser_blocked: !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
+            onCancel: advertiser_page_store.onCancel,
+            onSubmit: advertiser_page_store.onSubmit,
+        },
+    });
 
     if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
@@ -99,7 +110,7 @@ const AdvertiserPage = () => {
                 }}
                 width={isMobile() ? '90rem' : '40rem'}
             />
-            <BlockUserModal
+            {/* <BlockUserModal
                 advertiser_name={name}
                 is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
                 is_block_user_modal_open={
@@ -107,7 +118,7 @@ const AdvertiserPage = () => {
                 }
                 onCancel={advertiser_page_store.onCancel}
                 onSubmit={advertiser_page_store.onSubmit}
-            />
+            /> */}
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}
@@ -128,7 +139,11 @@ const AdvertiserPage = () => {
             </div>
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
-                onClickUnblock={() => general_store.setIsBlockUserModalOpen(true)}
+                onClickUnblock={() =>
+                    showModal({
+                        key: 'BlockUserModal',
+                    })
+                }
             >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>

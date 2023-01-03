@@ -8,9 +8,16 @@ const ModalManager = () => {
     const { key } = modal;
     const Modal = modals[key];
     const StackedModal = modals[stacked_modal?.key];
-    
+
     const getModalProps = current_modal => {
         if (current_modal?.props && Object.keys(current_modal.props).length > 0) {
+            // for cases where not all props are provided, but only those that are changed
+            if (modal_props.has(current_modal.key)) {
+                return {
+                    ...modal_props.get(current_modal.key),
+                    ...current_modal.props,
+                };
+            }
             return current_modal.props;
         }
         if (modal_props.has(current_modal.key)) {

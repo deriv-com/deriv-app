@@ -3,13 +3,18 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, is_block_user_modal_open, onCancel, onSubmit }) => {
+const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, onCancel, onSubmit }) => {
+    const { general_store } = useStores();
+    const { is_modal_open } = useModalManagerContext();
+
     return (
         <Modal
             className='block-user-modal'
             has_close_icon={false}
-            is_open={is_block_user_modal_open}
+            is_open={is_modal_open && !general_store.block_unblock_user_error}
             small
             title={
                 <Text color='prominent' size='s' weight='bold'>
@@ -65,7 +70,6 @@ const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, is_block_user_
 BlockUserModal.propTypes = {
     advertiser_name: PropTypes.string.isRequired,
     is_advertiser_blocked: PropTypes.bool.isRequired,
-    is_block_user_modal_open: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
 };

@@ -41,7 +41,7 @@ const LanguageSettings = ({
                     <form onSubmit={handleSubmit} className='account-form account-form--language-settings'>
                         <div className='settings-language'>
                             <DesktopWrapper>
-                                <FormSubHeader title={localize('Languages')} />
+                                <FormSubHeader title={localize('Select Language')} />
                             </DesktopWrapper>
                             <div className='settings-language__language-container'>
                                 {allowed_language_keys.map(language_key => {

@@ -5,12 +5,6 @@ import P2PCashier from '../p2p-cashier';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => (Component: JSX.Element) => Component,
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,

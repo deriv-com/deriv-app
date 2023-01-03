@@ -41,6 +41,7 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
+    is_mobile: boolean;
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
     onEntered: () => void;
@@ -72,6 +73,7 @@ const Dashboard = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     is_dialog_open,
+    is_mobile,
     loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
@@ -135,7 +137,7 @@ const Dashboard = ({
         tour_status = getTourSettings('bot_builder_status');
         setTourStatus(tour_status);
         if (tour_status_ended.key === 'finished') {
-            if (tour_type.key === 'onboard_tour') {
+            if (tour_type.key === 'onboard_tour' && !is_mobile) {
                 setActiveTab(0);
                 setTourDialogVisibility(true);
             } else {
@@ -151,7 +153,7 @@ const Dashboard = ({
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     };
-    if (!bot_tour_token) {
+    if (!bot_tour_token && !is_mobile) {
         setHasTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
@@ -314,6 +316,7 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal, ui }
     setHasTourEnded: dashboard.setHasTourEnded,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_mobile: ui.is_mobile,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     loadDataStrategy: quick_strategy.loadDataStrategy,

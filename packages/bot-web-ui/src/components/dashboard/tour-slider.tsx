@@ -1,55 +1,130 @@
 import React from 'react';
-import { ProgressBarOnboarding, Text, Accordion } from '@deriv/components';
+import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE } from './joyride-config';
+import { BOT_BUILDER_MOBILE, tour_status_ended } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
 
 type TTourButton = {
-    children?: React.ReactNode;
     type?: string;
     onClick: () => void;
+    button_text: string;
 };
 
 type TTourSlider = {
     setOnBoardTourRunState: (param: boolean) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
+    setBotBuilderTourState: (param: boolean) => void;
     setHasTourEnded: (param: boolean) => void;
+    setTourActiveStep: (param: number) => void;
     has_started_onboarding_tour: boolean;
 };
 
-const TourButton = ({ children, type = '', ...props }: TTourButton) => {
+type TAccordion = {
+    content_data: string[];
+    show_expanded: boolean;
+    icon: string;
+};
+
+const TourButton = ({ button_text, type = '', ...props }: TTourButton) => {
     return (
         <button className={type} {...props}>
             <Text align='center' weight='bold' as='span' line_height='s' size='xs'>
-                {children}
+                {localize(button_text)}
             </Text>
         </button>
     );
 };
 
+const makeCenter = (type: string) => {
+    const blocks: { [k: string]: any } = {};
+    Blockly?.derivWorkspace?.getTopBlocks().forEach(b => {
+        blocks[b.type] = b.id;
+    });
+    Blockly.derivWorkspace.centerOnBlock(blocks[type]);
+};
+
+const Accordion = ({ content_data, show_expanded, icon, ...props }: TAccordion) => {
+    const [show_accordion, setShowAccordion] = React.useState(show_expanded);
+
+    const toggleTab = () => {
+        setShowAccordion(!show_accordion);
+    };
+
+    return (
+        <div className='dbot-accordion' {...props}>
+            {content_data.map(data => {
+                const { content, header, key } = data;
+                return (
+                    <div key={key}>
+                        <div className='dbot-accordion__navbar' onClick={() => toggleTab()}>
+                            <div className='dbot-accordion__header'>
+                                <Text as='span' size='xs' weight='bold'>
+                                    {header}
+                                </Text>
+                            </div>
+                            <div className='dbot-accordion__icon'>
+                                <Icon icon={show_accordion ? 'IcChevronDownBold' : 'IcChevronUpBold'} />
+                            </div>
+                        </div>
+                        <div
+                            className={classNames('dbot-accordion__content', {
+                                'dbot-accordion__content--open': show_accordion,
+                            })}
+                        >
+                            {content}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
 const TourSlider = ({
     setOnBoardTourRunState,
+    setBotBuilderTourState,
     setTourActive,
     setTourDialogVisibility,
     setHasTourEnded,
     has_started_onboarding_tour,
+    setTourActiveStep,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string>('');
     const [slider_header, setheader] = React.useState<string>('');
     const [slider_image, setimg] = React.useState<string>('');
 
-    const onCloseTour = () => {
-        setOnBoardTourRunState(false);
+    const onCloseTour = (param: string) => {
+        if (param === 'onboard') {
+            setOnBoardTourRunState(false);
+        } else {
+            setBotBuilderTourState(false);
+        }
         setTourActive(false);
     };
 
+    React.useEffect(() => {
+        setTourActiveStep(step);
+        if (step === 1) {
+            makeCenter('trade_definition');
+        } else if (step === 2) {
+            makeCenter('before_purchase');
+        } else if (step === 5) {
+            makeCenter('after_purchase');
+        }
+    }, [step]);
+
     const onTourEnd = () => {
         if (step === 7) {
-            onCloseTour();
+            onCloseTour('onboard');
+            setHasTourEnded(true);
+            setTourDialogVisibility(true);
+        }
+        if (!has_started_onboarding_tour && step === 6) {
+            onCloseTour('bot_builder');
             setHasTourEnded(true);
             setTourDialogVisibility(true);
         }
@@ -100,12 +175,10 @@ const TourSlider = ({
                 )}
                 {!has_started_onboarding_tour && (
                     <Accordion
-                        className='dbot-slider__accordion'
-                        list={BOT_BUILDER_MOBILE.filter(({ key }) => {
+                        content={BOT_BUILDER_MOBILE.filter(({ key }) => {
                             return key === step;
                         })}
-                        icon_close='IcChevronDownBold'
-                        icon_open='IcChevronUpBold'
+                        show_expanded
                     />
                 )}
                 <div className='dbot-slider__status'>
@@ -123,9 +196,8 @@ const TourSlider = ({
                                 onClick={() => {
                                     onChange('dec');
                                 }}
-                            >
-                                {localize('Previous')}
-                            </TourButton>
+                                button_text='Previous'
+                            />
                         )}
                         <TourButton
                             type='danger'
@@ -133,9 +205,8 @@ const TourSlider = ({
                                 onChange('inc');
                                 onTourEnd();
                             }}
-                        >
-                            {localize('Next')}
-                        </TourButton>
+                            button_text='Next'
+                        />
                     </div>
                 </div>
             </div>
@@ -149,5 +220,7 @@ export default connect(({ dashboard }: RootStore) => ({
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourActive: dashboard.setTourActive,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setHasTourEnded: dashboard.setHasTourEnded,
+    setTourActiveStep: dashboard.setTourActiveStep,
 }))(TourSlider);

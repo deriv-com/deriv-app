@@ -24,9 +24,11 @@ type TToolbox = {
     sub_category_index: number[];
     toggleDrawer: () => void;
     toolbox_dom: HTMLElement;
+    active_tour_step_number: number;
 };
 
 const Toolbox = ({
+    active_tour_step_number,
     onMount,
     onUnmount,
     hasSubCategory,
@@ -44,35 +46,44 @@ const Toolbox = ({
 }: TToolbox) => {
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
+    const [is_toolbox_open, setToolBoxOpen] = React.useState(true);
+
+    React.useEffect(() => {
+        if (active_tour_step_number === 4 || active_tour_step_number === 5) {
+            setToolBoxOpen(true);
+        }
+    }, [active_tour_step_number, is_toolbox_open]);
 
     React.useEffect(() => {
         onMount(toolbox_ref);
         return () => onUnmount();
     }, []);
 
-    if (is_mobile) {
-        return null;
-    }
-
     return (
-        <div className='dashboard__toolbox'>
+        <div
+            className={classNames('dashboard__toolbox', {
+                'dashboard__toolbox--active': is_toolbox_open,
+            })}
+        >
             <div id='gtm-toolbox' className='db-toolbox__content'>
                 <div className='db-toolbox__header'>
                     <div
                         className='db-toolbox__title'
                         onClick={() => {
-                            setOpen(!is_open);
+                            setOpen(!is_mobile && !is_open);
                             setVisibility(false);
                         }}
                     >
                         {localize('Blocks menu')}
-                        <span
-                            className={classNames('db-toolbox__title__chevron', {
-                                'db-toolbox__title__chevron--active': is_open,
-                            })}
-                        >
-                            <Icon icon='IcChevronDownBold' />
-                        </span>
+                        {!is_mobile && (
+                            <span
+                                className={classNames('db-toolbox__title__chevron', {
+                                    'db-toolbox__title__chevron--active': is_open,
+                                })}
+                            >
+                                <Icon icon='IcChevronDownBold' />
+                            </span>
+                        )}
                     </div>
                 </div>
                 <div className={classNames('db-toolbox__content-wrapper', { active: is_open })}>
@@ -146,11 +157,21 @@ const Toolbox = ({
                     </div>
                 </div>
             </div>
+            {is_mobile && (
+                <div
+                    className='db-toolbox__toggle__menu'
+                    onClick={() => {
+                        setToolBoxOpen(!is_toolbox_open);
+                    }}
+                >
+                    <Icon icon={is_toolbox_open ? 'IcChevronLeftBold' : 'IcChevronRightBold'} />
+                </div>
+            )}
         </div>
     );
 };
 
-export default connect(({ toolbox, ui, flyout }: RootStore) => ({
+export default connect(({ toolbox, ui, flyout, dashboard }: RootStore) => ({
     hasSubCategory: toolbox.hasSubCategory,
     is_mobile: ui.is_mobile,
     is_search_loading: toolbox.is_search_loading,
@@ -167,4 +188,5 @@ export default connect(({ toolbox, ui, flyout }: RootStore) => ({
     toggleDrawer: toolbox.toggleDrawer,
     toolbox_dom: toolbox.toolbox_dom,
     setVisibility: flyout.setVisibility,
+    active_tour_step_number: dashboard.active_tour_step_number,
 }))(Toolbox);

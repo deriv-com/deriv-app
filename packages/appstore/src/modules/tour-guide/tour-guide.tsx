@@ -8,7 +8,6 @@ import {
     tour_styles,
     tour_step_locale,
     tour_styles_dark_mode,
-    eu_tour_step_locale,
 } from 'Constants/tour-steps-config-new';
 import { useStores } from 'Stores/index';
 import { routes } from '@deriv/shared';
@@ -22,17 +21,6 @@ const TourGuide = () => {
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
     tour_step_locale.last = (
-        <div
-            onClick={() => {
-                setIsOnboardingVisited(true);
-                toggleIsTourOpen(false);
-            }}
-        >
-            <Localize i18n_default_text='OK' />
-        </div>
-    );
-
-    eu_tour_step_locale.last = (
         <div
             onClick={() => {
                 setIsOnboardingVisited(true);

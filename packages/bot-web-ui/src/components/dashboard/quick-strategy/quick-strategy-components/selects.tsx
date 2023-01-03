@@ -2,11 +2,11 @@ import React from 'react';
 import { SelectField } from '.';
 import { TSelectsFieldNames, TDropdownItems } from '../quick-strategy.types';
 import { TSelects } from './components.types';
+import { isMobile } from '@deriv/shared';
 
 const Selects = ({
     field_name,
     id,
-    is_mobile,
     dropdown_list,
     selected_value,
     label,
@@ -27,7 +27,7 @@ const Selects = ({
             <SelectField
                 field_name={field_name as TSelectsFieldNames}
                 id={id}
-                is_mobile={is_mobile}
+                is_mobile={isMobile()}
                 dropdown_list={dropdown_list}
                 selected_value={selected_value}
                 label={label}

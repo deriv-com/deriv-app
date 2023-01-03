@@ -16,17 +16,18 @@ import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
 import IconRadio from './icon-radio';
+import { isMobile } from '@deriv/shared';
 
 type TSaveModalForm = {
     bot_name: string;
     button_status: number;
-    google_drive_connected: boolean;
+    google_drive_connected?: boolean;
     is_authorised: boolean;
-    is_mobile: boolean;
-    is_onscreen_keyboard_active: boolean;
-    is_save_modal_open: boolean;
-    icon: string;
-    text: string;
+    is_mobile?: boolean;
+    is_onscreen_keyboard_active?: boolean;
+    is_save_modal_open?: boolean;
+    icon?: string;
+    text?: string;
     onConfirmSave: () => void;
     onDriveConnect: () => void;
     toggleSaveModal: () => void;
@@ -174,11 +175,11 @@ const SaveModal = ({
     onDriveConnect,
     toggleSaveModal,
     validateBotName,
-    is_mobile,
     setCurrentFocus,
     is_onscreen_keyboard_active,
-}: TSaveModalForm) =>
-    is_mobile ? (
+}: TSaveModalForm) => {
+    const is_mobile = isMobile();
+    return is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}
             className='save-modal__wrapper'
@@ -221,11 +222,11 @@ const SaveModal = ({
             />
         </Modal>
     );
+};
 
 export default connect(({ save_modal, google_drive, ui }) => ({
     button_status: save_modal.button_status,
     is_authorised: google_drive.is_authorised,
-    is_mobile: ui.is_mobile,
     is_save_modal_open: save_modal.is_save_modal_open,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
     onConfirmSave: save_modal.onConfirmSave,

@@ -6,11 +6,11 @@ import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { isMobile } from '@deriv/shared';
 
 type Nullable<T> = T | null;
 type TLocalComponent = {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
-    is_mobile: boolean;
     loaded_local_file: boolean;
     loadFileFromLocal: () => void;
     loadFileFromRecent: () => void;
@@ -25,7 +25,6 @@ type TLocalComponent = {
 
 const LocalComponent = ({
     handleFileChange,
-    is_mobile,
     loaded_local_file,
     loadFileFromLocal,
     loadFileFromRecent,
@@ -109,7 +108,7 @@ const LocalComponent = ({
                     </div>
                 </div>
             </div>
-            {is_mobile && (
+            {isMobile() && (
                 <div className='load-strategy__local-footer'>
                     <LocalFooter />
                 </div>
@@ -118,9 +117,8 @@ const LocalComponent = ({
     );
 };
 
-const Local = connect(({ load_modal, ui, save_modal, dashboard }: RootStore) => ({
+const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     handleFileChange: load_modal.handleFileChange,
-    is_mobile: ui.is_mobile,
     is_open_button_loading: load_modal.is_open_button_loading,
     loaded_local_file: load_modal.loaded_local_file,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,

@@ -16,6 +16,7 @@ import { Formik, Form, Field } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
 const SaveModalForm = ({
     bot_name,
@@ -160,11 +161,11 @@ const SaveModal = ({
     onDriveConnect,
     toggleSaveModal,
     validateBotName,
-    is_mobile,
     setCurrentFocus,
     is_onscreen_keyboard_active,
-}) =>
-    is_mobile ? (
+}) => {
+    const is_mobile = isMobile();
+    return is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}
             className='save-modal__wrapper'
@@ -207,6 +208,7 @@ const SaveModal = ({
             />
         </Modal>
     );
+};
 
 const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
     const is_drive_radio = text === 'Google Drive';
@@ -256,7 +258,6 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
 SaveModal.propTypes = {
     button_status: PropTypes.number,
     is_authorised: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_save_modal_open: PropTypes.bool,
     onConfirmSave: PropTypes.func,
     onDriveConnect: PropTypes.func,
@@ -268,7 +269,6 @@ SaveModal.propTypes = {
 export default connect(({ save_modal, google_drive, ui }) => ({
     button_status: save_modal.button_status,
     is_authorised: google_drive.is_authorised,
-    is_mobile: ui.is_mobile,
     is_save_modal_open: save_modal.is_save_modal_open,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
     onConfirmSave: save_modal.onConfirmSave,

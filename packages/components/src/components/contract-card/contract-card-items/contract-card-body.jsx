@@ -12,6 +12,7 @@ import {
     isValidToCancel,
     isValidToSell,
     shouldShowCancellation,
+    isMobile,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
@@ -158,7 +159,6 @@ const ContractCardBody = ({
     getCardLabels,
     getContractById,
     has_progress_slider,
-    is_mobile,
     is_multiplier,
     is_sold,
     onMouseLeave,
@@ -172,6 +172,7 @@ const ContractCardBody = ({
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
+    const is_mobile = isMobile();
 
     const progress_slider_mobile_el = (
         <ProgressSliderMobile
@@ -289,7 +290,6 @@ ContractCardBody.propTypes = {
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
-    is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sold: PropTypes.bool,
     onMouseLeave: PropTypes.func,

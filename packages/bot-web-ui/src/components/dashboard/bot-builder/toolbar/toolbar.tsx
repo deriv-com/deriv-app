@@ -24,7 +24,6 @@ type TToolbar = {
     onUndoClick: () => void;
     onZoomInOutClick: () => void;
     toggleSaveLoadModal: () => void;
-    is_mobile: boolean;
     loadDataStrategy: () => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
@@ -76,7 +75,6 @@ export default connect(
         has_undo_stack: toolbar.has_undo_stack,
         is_dialog_open: toolbar.is_dialog_open,
         is_drawer_open: run_panel.is_drawer_open,
-        is_mobile: ui.is_mobile,
         is_running: run_panel.is_running,
         is_stop_button_disabled: run_panel.is_stop_button_disabled,
         is_stop_button_visible: run_panel.is_stop_button_visible,

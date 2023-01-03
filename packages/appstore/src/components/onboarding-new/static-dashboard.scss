@@ -34,6 +34,10 @@
             padding: 2.4rem;
             border-radius: 2.4rem;
             margin-bottom: 2rem;
+
+            @include mobile {
+                border: none;
+            }
         }
 
         @include mobile {
@@ -142,9 +146,8 @@
                 }
 
                 &--eu {
-                    display: flex;
-                    width: 95.6rem;
-                    margin-bottom: 1rem;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
 
                     @include mobile {
                         display: block;

@@ -6,9 +6,9 @@ import { Text, ButtonToggle, ThemedScrollbars } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import StaticCFDAccountManager from './static-cfd-account-manager';
+import StaticTradingAppCard from './static-trading-app-card';
 import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
-import StaticTradingAppCard from './static-trading-app-card';
 
 import './static-dashboard.scss';
 
@@ -100,7 +100,11 @@ const StaticDashboard = ({
         <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
             <div
                 className='static-dashboard'
-                style={isMobile() && index === 1 && !(is_first_step || is_third_step) ? { height: '100%' } : {}}
+                style={
+                    (isMobile() && index === 1 && !(is_first_step || is_third_step)) || (isMobile() && is_eu)
+                        ? { height: '100%' }
+                        : {}
+                }
             >
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>
@@ -210,7 +214,7 @@ const StaticDashboard = ({
                                     }
                                     icon={is_eu ? 'EUR' : 'USD'}
                                 >
-                                    <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={100000} size='xs' />
+                                    <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={10000} size='xs' />
                                 </StaticCurrencySwitcherContainer>
                             )}
                         </div>
@@ -250,48 +254,52 @@ const StaticDashboard = ({
                                     has_divider
                                 />
                             </div>
-                            <div className={'static-dashboard-wrapper__body--apps-item'}>
-                                <StaticTradingAppCard
-                                    icon={'DBot'}
-                                    name={'DBot'}
-                                    description={`Automate your trading, no coding needed.`}
-                                    availability={'Non-EU'}
-                                    has_applauncher_account={has_applauncher_account}
-                                    is_item_blurry={is_blurry.platformlauncher}
-                                    has_divider
-                                />
-                            </div>
-                            <div className={'static-dashboard-wrapper__body--apps-item'}>
-                                <StaticTradingAppCard
-                                    icon={'SmartTrader'}
-                                    name={'SmartTrader'}
-                                    description={`Automate your trading, no coding needed.`}
-                                    availability={'Non-EU'}
-                                    has_applauncher_account={has_applauncher_account}
-                                    is_item_blurry={is_blurry.platformlauncher}
-                                    has_divider
-                                />
-                            </div>
-                            <div className={'static-dashboard-wrapper__body--apps-item'}>
-                                <StaticTradingAppCard
-                                    icon={'BinaryBot'}
-                                    name={'BinaryBot'}
-                                    description={`Our legacy automated trading platform.`}
-                                    availability={'Non-EU'}
-                                    has_applauncher_account={has_applauncher_account}
-                                    is_item_blurry={is_blurry.platformlauncher}
-                                />
-                            </div>
-                            <div className={'static-dashboard-wrapper__body--apps-item'}>
-                                <StaticTradingAppCard
-                                    icon={'DerivGo'}
-                                    name={'DerivGo'}
-                                    description={`Trade on the go with our mobile app.`}
-                                    availability={'Non-EU'}
-                                    has_applauncher_account={has_applauncher_account}
-                                    is_item_blurry={is_blurry.platformlauncher}
-                                />
-                            </div>
+                            {!is_eu && (
+                                <React.Fragment>
+                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                        <StaticTradingAppCard
+                                            icon={'DBot'}
+                                            name={'DBot'}
+                                            description={`Automate your trading, no coding needed.`}
+                                            availability={'Non-EU'}
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                            has_divider
+                                        />
+                                    </div>
+                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                        <StaticTradingAppCard
+                                            icon={'SmartTrader'}
+                                            name={'SmartTrader'}
+                                            description={`Automate your trading, no coding needed.`}
+                                            availability={'Non-EU'}
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                            has_divider
+                                        />
+                                    </div>
+                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                        <StaticTradingAppCard
+                                            icon={'BinaryBot'}
+                                            name={'BinaryBot'}
+                                            description={`Our legacy automated trading platform.`}
+                                            availability={'Non-EU'}
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                        />
+                                    </div>
+                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                        <StaticTradingAppCard
+                                            icon={'DerivGo'}
+                                            name={'DerivGo'}
+                                            description={`Trade on the go with our mobile app.`}
+                                            availability={'Non-EU'}
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            )}
                         </div>
                     </div>
                 )}

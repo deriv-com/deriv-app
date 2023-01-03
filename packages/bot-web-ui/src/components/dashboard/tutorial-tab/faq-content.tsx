@@ -19,12 +19,13 @@ type TFAQList = {
 
 const FAQ = ({ type, content, src }: TDescription) => {
     if (type === 'image') return <img src={src} />;
+    const is_mobile = isMobile();
 
     return (
         <Text
             as='p'
-            size={isMobile() ? 'xs' : 's'}
-            line_height={isMobile() ? 'xl' : 'xxl'}
+            size={is_mobile ? 'xs' : 's'}
+            line_height={is_mobile ? 'xl' : 'xxl'}
             className='faq__description'
             weight='normal'
             key={content}

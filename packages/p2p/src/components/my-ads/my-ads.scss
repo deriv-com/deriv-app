@@ -67,10 +67,6 @@
 
     &__form {
         @include mobile {
-            &-element {
-                padding: 0 0 10rem;
-            }
-
             .dc-input__footer {
                 justify-content: space-between;
                 width: 86vw;
@@ -137,11 +133,17 @@
                 max-width: 67.2rem;
             }
 
+            &-container {
+                @include mobile {
+                    width: 90vw;
+                    margin: 0 1.6rem;
+                }
+            }
+
             @include mobile {
                 height: fit-content;
-                margin: 0 1.6rem;
                 position: unset;
-                width: 90vw;
+                width: 100%;
             }
         }
         &-container {
@@ -204,13 +206,9 @@
 
             @include mobile {
                 border-top: 2px solid var(--general-section-1);
-                bottom: 0;
                 flex-direction: row;
                 padding: 1.6rem;
-                position: fixed;
-                right: 0;
                 width: 100vw;
-                z-index: 4;
             }
         }
     }

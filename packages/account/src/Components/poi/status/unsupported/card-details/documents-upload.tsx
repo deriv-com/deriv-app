@@ -4,7 +4,7 @@ import { Formik, Form, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
-import InputField from './input-field.jsx';
+import InputField from './input-field';
 import Uploader from './uploader.jsx';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS } from '../constants';
@@ -29,20 +29,14 @@ const icons = [
 ];
 
 type TDocumentsUpload = {
-    initial_values: FormikValues;
-    is_from_external: boolean;
+    initial_values?: FormikValues;
+    is_from_external?: boolean;
     goToCards: () => void;
     onSubmit: () => void;
 };
 
 type TIconsItem = {
-    data: {
-        icon: string;
-        text: string;
-        fields?: FormikValues[];
-        documents_title?: string;
-        documents?: FormikValues[];
-    };
+    data: FormikValues;
 };
 
 const IconsItem = ({ data }: TIconsItem) => (

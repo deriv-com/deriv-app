@@ -508,7 +508,7 @@ export const AccountTurnover = ({
 );
 
 type TForexTradingExperience = {
-    forex_trading_experience_enum: object[];
+    forex_trading_experience_enum?: object[];
 };
 
 export const ForexTradingExperience = ({
@@ -564,7 +564,7 @@ export const ForexTradingExperience = ({
 );
 
 type TForexTradingFrequency = {
-    forex_trading_frequency_enum: object[];
+    forex_trading_frequency_enum?: object[];
 };
 
 export const ForexTradingFrequency = ({
@@ -620,7 +620,7 @@ export const ForexTradingFrequency = ({
 );
 
 type TBinaryOptionsTradingExperience = {
-    binary_options_trading_experience_enum: object[];
+    binary_options_trading_experience_enum?: object[];
 };
 
 export const BinaryOptionsTradingExperience = ({
@@ -676,7 +676,7 @@ export const BinaryOptionsTradingExperience = ({
 );
 
 type TBinaryOptionsTradingFrequency = {
-    binary_options_trading_frequency_enum: object[];
+    binary_options_trading_frequency_enum?: object[];
 };
 
 export const BinaryOptionsTradingFrequency = ({
@@ -732,7 +732,7 @@ export const BinaryOptionsTradingFrequency = ({
 );
 
 type TCFDTradingExperience = {
-    cfd_trading_experience_enum: object[];
+    cfd_trading_experience_enum?: object[];
 };
 
 export const CFDTradingExperience = ({
@@ -788,7 +788,7 @@ export const CFDTradingExperience = ({
 );
 
 type TCFDTradingFrequency = {
-    cfd_trading_frequency_enum: object[];
+    cfd_trading_frequency_enum?: object[];
 };
 
 export const CFDTradingFrequency = ({
@@ -844,7 +844,7 @@ export const CFDTradingFrequency = ({
 );
 
 type TOtherInstrumentsTradingExperience = {
-    other_instruments_trading_experience_enum: object[];
+    other_instruments_trading_experience_enum?: object[];
 };
 
 export const OtherInstrumentsTradingExperience = ({
@@ -906,7 +906,7 @@ export const OtherInstrumentsTradingExperience = ({
 );
 
 type TOtherInstrumentsTradingFrequency = {
-    other_instruments_trading_frequency_enum: object[];
+    other_instruments_trading_frequency_enum?: object[];
 };
 
 export const OtherInstrumentsTradingFrequency = ({

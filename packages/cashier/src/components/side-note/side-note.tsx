@@ -17,15 +17,14 @@ type TSideNoteBullet = {
     id: number;
 };
 
-type TSideNoteProps = {
-    children?: TReactChildren[];
+type TSideNoteProps = React.PropsWithChildren<{
     className?: string;
     has_bullets?: boolean;
     has_title?: boolean;
     is_mobile?: boolean;
     side_notes?: TSideNotesProps;
     title?: string | JSX.Element;
-};
+}>;
 
 const SideNoteTitle = ({ children_length, side_notes_length, title }: TSideNoteTitle) => {
     const length_of_notes = children_length || side_notes_length || 0;
@@ -64,7 +63,7 @@ const SideNote = ({
                         {has_title && (
                             <SideNoteTitle
                                 title={title}
-                                children_length={children?.length}
+                                children_length={Array.isArray(children) ? children?.length : 1}
                                 side_notes_length={side_notes?.length}
                             />
                         )}

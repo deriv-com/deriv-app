@@ -23,7 +23,7 @@ export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatu
                     message={message}
                     text={localize('To continue trading, you must also submit a proof of identity.')}
                     icon={<Icon icon='IcPoaVerified' size={128} />}
-                    className={is_appstore && 'account-management-dashboard'}
+                    className={is_appstore ? 'account-management-dashboard' : ''}
                 >
                     <PoiButton />
                 </IconMessageContent>
@@ -39,7 +39,7 @@ export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatu
             <IconMessageContent
                 message={message}
                 icon={<Icon icon='IcPoaVerified' size={128} />}
-                className={is_appstore && 'account-management-dashboard'}
+                className={is_appstore ? 'account-management-dashboard' : ''}
             >
                 {!is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>

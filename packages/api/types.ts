@@ -31,6 +31,8 @@ import type {
     TransferBetweenAccountsResponse,
     VerifyEmailRequest,
     VerifyEmailResponse,
+    AccountStatusRequest,
+    AccountStatusResponse,
 } from '@deriv/api-types';
 
 export type TSocketEndpoints = {
@@ -98,6 +100,10 @@ export type TSocketEndpoints = {
         request: NewVirtualMoneyAccountRequest;
         response: NewVirtualMoneyAccountResponse;
     };
+    get_account_status: {
+        request: AccountStatusRequest;
+        response: AccountStatusResponse;
+    };
 };
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
@@ -120,7 +126,3 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
 export type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
     ? never
     : TSocketRequestCleaned<T>;
-
-export type KeysMatching<T, V> = {
-    [K in keyof T]-?: T[K] extends V ? K : never;
-}[keyof T];

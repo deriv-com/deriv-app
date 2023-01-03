@@ -40,6 +40,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    deposit: { is_deposit_locked: true },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,

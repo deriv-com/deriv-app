@@ -17,6 +17,7 @@ import {
     TTradingPlatformAccounts,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { FormikValues } from 'formik';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -122,7 +123,7 @@ const CFDAccountCardAction = ({
                     i18n_default_text='<0>Switch to your real account</0><1> to create a {{platform}} {{account_title}} account.</1>'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        account_title: title,
+                        account_title: title === 'Deriv X' ? '' : title,
                     }}
                     components={[
                         <a
@@ -199,7 +200,6 @@ const CFDAccountCardComponent = ({
     setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
-    const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
 
     const should_show_extra_add_account_button =
         is_logged_in &&
@@ -209,7 +209,7 @@ const CFDAccountCardComponent = ({
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu ? 'cfd' : type.type;
+    const platform_icon = is_eu && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
@@ -240,6 +240,7 @@ const CFDAccountCardComponent = ({
     };
 
     const checkMultipleSvgAcc = () => {
+        const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
         existing_accounts_data?.map(acc => {
             if (acc.landing_company_short === 'svg') {
                 if (all_svg_acc.length) {
@@ -392,7 +393,7 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'demo' &&
                             existing_accounts_data?.length &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {acc?.display_balance && is_logged_in && acc.landing_company_short === 'labuan' && (
                                         <div className='cfd-account-card__item--banner'>
@@ -497,7 +498,7 @@ const CFDAccountCardComponent = ({
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && !is_eu && (
                                         <div className='cfd-account-card__item--banner'>
@@ -547,7 +548,7 @@ const CFDAccountCardComponent = ({
                                             <Button
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
+                                                        (data: FormikValues) =>
                                                             data.landing_company_short === acc.landing_company_short &&
                                                             data.login === acc.login
                                                     );
@@ -566,7 +567,7 @@ const CFDAccountCardComponent = ({
                                                 type='button'
                                                 onClick={() => {
                                                     const selected_account_data = existing_accounts_data?.find(
-                                                        data =>
+                                                        (data: FormikValues) =>
                                                             data.landing_company_short === acc.landing_company_short &&
                                                             data.login === acc.login
                                                     );

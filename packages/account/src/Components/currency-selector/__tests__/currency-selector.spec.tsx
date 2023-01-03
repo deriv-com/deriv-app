@@ -9,7 +9,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn().mockReturnValue(false),
 }));
 
-jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
         warnings: {},
         errors: {},

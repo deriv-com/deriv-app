@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { buildForwardStartingConfig } from '../start-date';
 
 describe('start_date', () => {
@@ -23,7 +22,7 @@ describe('start_date', () => {
                 forward_starting_options: [],
             };
             /* eslint-disable no-unused-expressions */
-            expect(buildForwardStartingConfig(contract, [])).to.be.empty;
+            expect(buildForwardStartingConfig(contract, [])).toHaveLength(0);
         });
     });
 });

@@ -96,4 +96,22 @@ const getAccountText = account => {
     return account_text;
 };
 
-export { createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };
+const getNormalizedPaymentMethod = (payment_method, constants, is_for_icon = false) => {
+    const method = is_for_icon ? payment_method.replace(/[' ',-]/g, '').toLowerCase() : payment_method;
+
+    const normalized_payment_method = Object.entries(constants).reduce(
+        (pay_method, [key, value]) => (value.some(el => el === method) ? key : pay_method),
+        ''
+    );
+    return is_for_icon ? normalized_payment_method : normalized_payment_method || payment_method;
+};
+
+export {
+    createElement,
+    getAccountText,
+    getNormalizedPaymentMethod,
+    getStaticHash,
+    isEuCountry,
+    PromiseClass,
+    template,
+};

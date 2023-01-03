@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { connect } from '../../../stores/connect';
+import { TProviderDetails, TRootStore, TUiStore } from '../../../types';
 
 type TOnRampProviderCardProps = {
     is_dark_mode_on: TUiStore['is_dark_mode_on'];

@@ -3,9 +3,9 @@ import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components'
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import SideNote from 'Components/side-note';
-import { TReactFormEvent } from 'Types';
+import CashierLocked from '../../components/cashier-locked';
+import SideNote from '../../components/side-note';
+import { TReactFormEvent } from '../../types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import './on-ramp.scss';

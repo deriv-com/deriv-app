@@ -193,7 +193,7 @@
         #dt_purchase_vanillalongcall_price,
         #dt_purchase_vanillalongput_price {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 0.6rem;
         }
     }
 
@@ -279,7 +279,7 @@
             &-strike {
                 @include mobile {
                     color: var(--text-less-prominent);
-                    font-size: 1.2rem;
+                    font-size: var(--text-size-xxs);
                     display: flex;
                     gap: 8px;
                     justify-content: space-between;
@@ -740,14 +740,19 @@
     }
 }
 
-.strike--info {
-    color: var(--text-general);
-    &__value {
-        font-size: var(--text-size-xxs);
-        margin-left: unset;
+.strike {
+    &--info {
+        color: var(--text-general);
+        &__value {
+            font-size: var(--text-size-xxs);
+            margin-left: unset;
+        }
+        &__wrapper {
+            padding-right: 1rem;
+        }
     }
-    &__wrapper {
-        padding-right: 1rem;
+    &--value-container {
+        display: flex;
     }
 }
 

@@ -1,7 +1,7 @@
 .strike-widget {
     align-items: center;
     background-color: var(--general-main-1);
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
     display: grid;
     flex: 1;
     grid-template-areas: 'spot amount unit';

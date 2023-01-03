@@ -104,7 +104,7 @@ const PurchaseButton = ({
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className={classNames('btn-purchase__top', is_vanilla && 'btn-purchase--vanilla')}>
+                <div className={classNames('btn-purchase__top', { 'btn-purchase--vanilla': is_vanilla })}>
                     <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
                         should_fade={should_fade}

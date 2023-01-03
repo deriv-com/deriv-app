@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared';
 import { isSessionAvailable } from '../Helpers/start-date';
 
-const tradeSpecificBarrierCheck = (is_vanilla, input) => (is_vanilla ? true : input !== 0);
+const tradeSpecificBarrierCheck = (is_vanilla, input) => is_vanilla || input !== 0;
 
 export const getValidationRules = () => ({
     amount: {

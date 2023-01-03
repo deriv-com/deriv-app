@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import PropTypes, { bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -33,7 +33,7 @@ const InfoBoxLongcode = ({ contract_info }) => {
 InfoBoxLongcode.propTypes = {
     contract_info: PropTypes.object,
     longcode: PropTypes.string,
-    is_vanilla: bool,
+    is_vanilla: PropTypes.bool,
 };
 
 export default observer(InfoBoxLongcode);

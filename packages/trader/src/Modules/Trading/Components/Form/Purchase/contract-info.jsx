@@ -22,7 +22,7 @@ const PayoutHintModal = ({ is_open, onClose, type }) => (
 );
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
-    <div style={{ display: 'flex' }}>
+    <div className='strike--value-container'>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money

@@ -53,7 +53,6 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
             setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
@@ -126,7 +125,7 @@ export default class OrderStore {
     }
 
     confirmOrderRequest(id, is_buy_order_for_user) {
-        const { order_details_store } = this.root_store;
+        const { general_store, order_details_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id,
@@ -157,7 +156,9 @@ export default class OrderStore {
                         order_details_store.setErrorMessage(response.error.message);
                     }
                 } else if (!is_buy_order_for_user) {
-                    this.setIsRatingModalOpen(true);
+                    general_store.showModal({
+                        key: 'RatingModal',
+                    });
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');
@@ -166,6 +167,7 @@ export default class OrderStore {
     }
 
     confirmOrder(is_buy_order_for_user) {
+        const { general_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id: this.order_id,
@@ -175,7 +177,9 @@ export default class OrderStore {
                 if (!is_buy_order_for_user) {
                     clearTimeout(wait);
                     const wait = setTimeout(() => {
-                        this.setIsRatingModalOpen(true);
+                        general_store.showModal({
+                            key: 'RatingModal',
+                        });
                     }, 230);
                 }
             }
@@ -328,6 +332,7 @@ export default class OrderStore {
     }
 
     setOrderRating(id) {
+        const { general_store } = this.root_store;
         const rating = this.rating_value / 20;
 
         requestWS({
@@ -341,7 +346,7 @@ export default class OrderStore {
                     this.setErrorMessage(response.error.message);
                 }
                 this.getP2POrderList();
-                this.setIsRatingModalOpen(false);
+                general_store.hideModal();
                 this.setRatingValue(0);
             }
         });

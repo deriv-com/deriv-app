@@ -19,10 +19,26 @@ export const modals = {
             /* webpackChunkName: "cancel-add-payment-method-modal" */ 'Components/modal-manager/modals/cancel-add-payment-method-modal'
         )
     ),
+    CancelEditPaymentMethodModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "cancel-edit-payment-method-modal" */ 'Components/modal-manager/modals/cancel-edit-payment-method-modal'
+        )
+    ),
+    CreateAdErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "create-ad-error-modal" */ 'Components/modal-manager/modals/create-ad-error-modal')
+    ),
     CreateAdAddPaymentMethodModal: React.lazy(() =>
         import(
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
+    ),
+    DeletePaymentMethodErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
+        )
+    ),
+    EditAdCancelModal: React.lazy(() =>
+        import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
     ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(
@@ -54,5 +70,16 @@ export const modals = {
         import(
             /* webpackChunkName: "order-details-cancel-modal" */ 'Components/modal-manager/modals/order-details-cancel-modal'
         )
+    ),
+    OrderDetailsConfirmModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'
+        )
+    ),
+    RatingModal: React.lazy(() =>
+        import(/* webpackChunkName: "rating-modal" */ 'Components/modal-manager/modals/rating-modal')
+    ),
+    RecommendedModal: React.lazy(() =>
+        import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
 };

@@ -8,6 +8,7 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import { ACCOUNT_FLAG } from '@deriv/shared';
 
 const TradingAppCard = ({
     name,
@@ -21,9 +22,11 @@ const TradingAppCard = ({
     short_code_and_region,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { traders_hub } = useStores();
-    const { is_eu_user, is_demo_low_risk } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, account_flag } = traders_hub;
 
-    const platform = !is_eu_user || is_demo_low_risk ? platform_config : mf_platform_config;
+    const low_risk_cr_non_eu = account_flag === ACCOUNT_FLAG.LOW_RISK_CR_NON_EU_CONTENT;
+
+    const platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
 
     const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
         app_desc: description,

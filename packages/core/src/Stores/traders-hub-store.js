@@ -153,8 +153,10 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get is_demo_low_risk() {
-        const { is_low_risk } = this.root_store.client;
-        return this.is_demo && is_low_risk;
+        const { upgradeable_landing_companies } = this.root_store.client;
+        const low_risk =
+            upgradeable_landing_companies.includes('svg') && upgradeable_landing_companies.includes('maltainvest');
+        return this.is_demo && low_risk;
     }
 
     get account_flag() {

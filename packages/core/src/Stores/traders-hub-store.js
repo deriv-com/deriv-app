@@ -111,7 +111,24 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
+        reaction(
+            () => [this.selected_region],
+            () => {
+                this.setSwitchEU();
+            }
+        );
+
         this.selected_region = 'Non-EU';
+    }
+
+    async setSwitchEU() {
+        const { account_list, switchAccount, has_maltainvest_account } = this.root_store.client;
+
+        if (this.selected_region === 'EU' && has_maltainvest_account) {
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid);
+        } else if (this.selected_region === 'Non-EU') {
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
+        }
     }
 
     get no_MF_account() {

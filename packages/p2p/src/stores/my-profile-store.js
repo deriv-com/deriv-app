@@ -249,7 +249,10 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { general_store, my_ads_store } = this.root_store;
 
-                general_store.hideModal();
+                // after adding payment method in buy-sell-modal, flow is to go back to the buy sell form not close the modal
+                if (general_store.modal.key !== 'BuySellModal') {
+                    general_store.hideModal();
+                }
                 this.setSelectedPaymentMethod('');
 
                 if (my_ads_store.should_show_add_payment_method) {

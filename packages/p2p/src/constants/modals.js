@@ -71,6 +71,11 @@ export const modals = {
             /* webpackChunkName: "order-details-cancel-modal" */ 'Components/modal-manager/modals/order-details-cancel-modal'
         )
     ),
+    OrderDetailsComplainModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "order-details-complain-modal" */ 'Components/modal-manager/modals/order-details-complain-modal'
+        )
+    ),
     OrderDetailsConfirmModal: React.lazy(() =>
         import(
             /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'

@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import FormError from 'Components/form/error.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context.js';
 import OrderDetailsComplainModalRadioGroup from './order-details-complain-modal-radio-group.jsx';
-import 'Components/order-details/order-details-complain-modal.scss';
 
 const ComplainExplanation = () => (
     <div className='order-details-complain-modal__explanation'>
@@ -30,15 +30,15 @@ const ComplainFooter = ({ dispute_reason, disputeOrderRequest, error_message, hi
     </React.Fragment>
 );
 
-const OrderDetailsComplainModal = ({
-    id,
-    is_buy_order_for_user,
-    hideComplainOrderModal,
-    should_show_complain_modal,
-}) => {
+const OrderDetailsComplainModal = () => {
     const isMounted = useIsMounted();
     const [dispute_reason, setDisputeReason] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
+    const { order_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
+
+    const id = order_store.order_information.id;
+    const { is_buy_order_for_user } = order_store.order_information;
 
     const disputeOrderRequest = () => {
         requestWS({
@@ -50,7 +50,7 @@ const OrderDetailsComplainModal = ({
                 if (response.error) {
                     setErrorMessage(response.error.message);
                 }
-                hideComplainOrderModal();
+                hideModal();
             }
         });
     };
@@ -64,16 +64,16 @@ const OrderDetailsComplainModal = ({
                 className='order-details-complain-modal'
                 height_offset='80px'
                 is_flex
-                is_modal_open={should_show_complain_modal}
+                is_modal_open={is_modal_open}
                 page_header_className='order-details-complain-modal__header'
                 page_header_text={localize('Complaint')}
-                pageHeaderReturnFn={hideComplainOrderModal}
+                pageHeaderReturnFn={hideModal}
                 renderPageFooterChildren={() => (
                     <ComplainFooter
                         dispute_reason={dispute_reason}
                         disputeOrderRequest={disputeOrderRequest}
                         error_message={error_message}
-                        hideComplainOrderModal={hideComplainOrderModal}
+                        hideComplainOrderModal={hideModal}
                     />
                 )}
                 page_footer_className='order-details-complain-modal__footer'
@@ -91,8 +91,8 @@ const OrderDetailsComplainModal = ({
     return (
         <Modal
             className='order-details-complain-modal'
-            is_open={should_show_complain_modal}
-            toggleModal={hideComplainOrderModal}
+            is_open={is_modal_open}
+            toggleModal={hideModal}
             has_close_icon
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
@@ -116,21 +116,12 @@ const OrderDetailsComplainModal = ({
                         dispute_reason={dispute_reason}
                         disputeOrderRequest={disputeOrderRequest}
                         error_message={error_message}
-                        hideComplainOrderModal={hideComplainOrderModal}
+                        hideComplainOrderModal={hideModal}
                     />
                 </div>
             </Modal.Footer>
         </Modal>
     );
-};
-
-OrderDetailsComplainModal.propTypes = {
-    dispute_reason: PropTypes.string,
-    hideComplainOrderModal: PropTypes.func,
-    id: PropTypes.string,
-    is_buy_order_for_user: PropTypes.bool,
-    onCheckboxChange: PropTypes.func,
-    should_show_complain_modal: PropTypes.bool,
 };
 
 export default OrderDetailsComplainModal;

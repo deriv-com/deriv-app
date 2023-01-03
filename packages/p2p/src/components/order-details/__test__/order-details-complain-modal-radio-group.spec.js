@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import OrderDetailsComplainModalRadioGroup from '../order-details-complain-modal-radio-group.jsx';
+import OrderDetailsComplainModalRadioGroup from 'Components/modal-manager/modals/order-details-complain-modal/order-details-complain-modal-radio-group.jsx';
 
 describe('<OrderDetailsComplainModalRadioGroup/>', () => {
     it('should render component with 3 radio buttons', () => {

@@ -4,7 +4,7 @@ import { Button } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const OrderDetailsFooter = observer(() => {
     const { general_store, order_store } = useStores();
@@ -16,8 +16,7 @@ const OrderDetailsFooter = observer(() => {
         should_show_only_received_button,
         should_show_only_complain_button,
     } = order_store.order_information;
-
-    const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         const website_status = setInterval(() => {
@@ -33,8 +32,10 @@ const OrderDetailsFooter = observer(() => {
         order_store.getWebsiteStatus(true);
     };
 
-    const hideComplainOrderModal = () => setShouldShowComplainModal(false);
-    const showComplainOrderModal = () => setShouldShowComplainModal(true);
+    const showComplainOrderModal = () =>
+        showModal({
+            key: 'OrderDetailsComplainModal',
+        });
 
     const showConfirmOrderModal = () => {
         if (is_buy_order_for_user) {
@@ -78,12 +79,6 @@ const OrderDetailsFooter = observer(() => {
                         </Button.Group>
                     </div>
                 </div>
-                <OrderDetailsComplainModal
-                    id={order_store.order_information.id}
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    hideComplainOrderModal={hideComplainOrderModal}
-                    should_show_complain_modal={should_show_complain_modal}
-                />
             </React.Fragment>
         );
     }
@@ -98,12 +93,6 @@ const OrderDetailsFooter = observer(() => {
                         </Button>
                     </div>
                 </div>
-                <OrderDetailsComplainModal
-                    id={order_store.order_information.id}
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    hideComplainOrderModal={hideComplainOrderModal}
-                    should_show_complain_modal={should_show_complain_modal}
-                />
             </React.Fragment>
         );
     }

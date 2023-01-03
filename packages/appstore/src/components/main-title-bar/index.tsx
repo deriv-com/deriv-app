@@ -10,9 +10,8 @@ import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
+    const { active_index, handleTabItemClick, toggleRegulatorsCompareModal, is_real } = traders_hub;
     const { is_low_risk } = client;
-    const is_real = selected_account_type === 'real';
 
     return (
         <React.Fragment>

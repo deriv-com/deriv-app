@@ -19,7 +19,7 @@ const ListingContainer = ({
     children,
 }: ListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
     const { client } = useStores();
-    const { is_eu, is_landing_company_loaded } = client;
+    const { is_landing_company_loaded } = client;
 
     const Options = () => {
         if (is_landing_company_loaded) {

@@ -3,13 +3,15 @@ import { Button, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const DeletePaymentMethodErrorModal = () => {
     const { general_store, my_profile_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
         <Modal
-            is_open={my_profile_store.is_delete_payment_method_error_modal_open}
+            is_open={is_modal_open}
             small
             has_close_icon={false}
             title={localize("Something's not right")}
@@ -22,13 +24,7 @@ const DeletePaymentMethodErrorModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Ok')}
-                    onClick={() => my_profile_store.setIsDeletePaymentMethodErrorModalOpen(false)}
-                    primary
-                    large
-                />
+                <Button has_effect text={localize('Ok')} onClick={hideModal} primary large />
             </Modal.Footer>
         </Modal>
     );

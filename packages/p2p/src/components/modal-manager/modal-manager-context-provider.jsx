@@ -9,7 +9,30 @@ const ModalManagerContextProvider = props => {
     // for mobile, modals are stacked and not shown alternatingly one by one
     const [stacked_modal, setStackedModal] = React.useState({});
     const [is_modal_open, setIsModalOpen] = React.useState(false);
+    const [modal_props, setModalProps] = React.useState(new Map());
     const { general_store } = useStores();
+
+    /**
+     * Sets the specified modals' props on mount or when the props passed to the hook has changed.
+     *
+     * Use this hook to declare the modals' props beforehand for cases when the props can't be passed/declared in stores.
+     *
+     * For instance, calling `showModal({key: ..., props: ... })` in a store action where the props can't be passed to the action, use this hook to pass the props beforehand
+     * and simply call `showModal({key: ...})` without the need to specify the props, since its already passed using this hook to the modal manager.
+     *
+     * @param {Object|Object[]} modals - list of object modals to set props, each modal object must contain a 'key' attribute and 'props' attribute
+     */
+    const useRegisterModalProps = modals => {
+        const registerModals = React.useCallback(() => {
+            if (Array.isArray(modals)) {
+                modals.forEach(modal => setModalProps(modal_props.set(modal.key, modal.props)));
+            } else {
+                setModalProps(modal_props.set(modals.key, modals.props));
+            }
+        }, [modals]);
+
+        React.useEffect(registerModals, [modals]);
+    };
 
     const showModal = modal => {
         if (isDesktop()) {
@@ -23,6 +46,7 @@ const ModalManagerContextProvider = props => {
         setIsModalOpen(true);
     };
     const hideModal = (should_save_form_history = false) => {
+        modal_props.delete(active_modal.key);
         if (isDesktop()) {
             if (should_save_form_history) {
                 general_store.saveFormState();
@@ -53,6 +77,8 @@ const ModalManagerContextProvider = props => {
         hideModal,
         is_modal_open,
         modal: active_modal,
+        modal_props,
+        useRegisterModalProps,
         stacked_modal,
         showModal,
     };

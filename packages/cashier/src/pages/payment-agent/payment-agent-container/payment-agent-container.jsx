@@ -11,8 +11,8 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import './payment-agent-container.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-container.scss';
 
 const PaymentAgentSearchWarning = () => {
     return (

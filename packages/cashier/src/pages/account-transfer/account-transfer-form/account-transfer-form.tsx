@@ -20,8 +20,8 @@ import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
-import './account-transfer-form.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
     error: object;

@@ -16,9 +16,9 @@ import { localize } from '@deriv/translations';
 import AccountPromptDialog from 'Components/account-prompt-dialog';
 import ErrorDialog from 'Components/error-dialog';
 import { TRoute } from 'Types';
-import './cashier.scss';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
     routes: TRoute[];

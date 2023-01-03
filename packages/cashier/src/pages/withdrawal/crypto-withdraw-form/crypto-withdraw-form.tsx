@@ -9,8 +9,8 @@ import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import { TReactChangeEvent } from 'Types';
-import './crypto-withdraw-form.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
     currency: string;

@@ -10,8 +10,8 @@ import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import './payment-agent-list.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-list.scss';
 
 type TProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;

@@ -6,8 +6,8 @@ import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/sh
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
-import './payment-agent-transfer-form.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const errors = {};

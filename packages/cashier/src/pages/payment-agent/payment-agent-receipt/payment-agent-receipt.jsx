@@ -9,8 +9,8 @@ import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
-import './payment-agent-receipt.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
     history.push(routes.statement);

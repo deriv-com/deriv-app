@@ -5,8 +5,8 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { TReactChangeEvent, TReactChildren } from 'Types';
-import './crypto-fiat-converter.scss';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
     onComplete: () => void;

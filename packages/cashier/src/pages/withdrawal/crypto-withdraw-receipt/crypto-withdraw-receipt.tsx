@@ -6,8 +6,8 @@ import { useStore, observer } from '@deriv/stores';
 import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';
 import RecentTransaction from 'Components/recent-transaction';
-import './crypto-withdraw-receipt.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {
     account: TAccount;

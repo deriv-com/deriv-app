@@ -5,8 +5,8 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
 import RecentTransaction from 'Components/recent-transaction';
-import './crypto-deposit.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './crypto-deposit.scss';
 
 const CryptoDeposit = observer(() => {
     const { client } = useStore();

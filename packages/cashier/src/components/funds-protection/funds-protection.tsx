@@ -2,8 +2,8 @@ import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import './funds-protection.scss';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './funds-protection.scss';
 
 const FundsProtection = observer(() => {
     const { deposit } = useCashierStore();

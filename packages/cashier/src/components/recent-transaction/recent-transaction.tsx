@@ -5,8 +5,8 @@ import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from 'Constants/transaction-status';
-import './recent-transaction.scss';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './recent-transaction.scss';
 
 const RecentTransaction = observer(() => {
     const { client } = useStore();

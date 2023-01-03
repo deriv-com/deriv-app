@@ -7,8 +7,8 @@ import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/sh
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
-import './payment-agent-listed-withdraw-form.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-listed-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
     const errors = {};

@@ -9,8 +9,8 @@ import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import SideNote from 'Components/side-note';
-import './payment-agent-unlisted-withdraw-form.scss';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import './payment-agent-unlisted-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency }) => {
     const errors = {};

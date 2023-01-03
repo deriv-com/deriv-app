@@ -3,8 +3,8 @@ import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import './cashier-onboarding.scss';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './cashier-onboarding.scss';
 
 const CashierOnboardingSideNote = observer(({ is_crypto }) => {
     const { client, ui } = useStore();

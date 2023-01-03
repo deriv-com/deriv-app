@@ -8,8 +8,8 @@ import SideNote from 'Components/side-note';
 import { TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
-import './on-ramp.scss';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './on-ramp.scss';
 
 type TMenuOption = {
     count?: number;

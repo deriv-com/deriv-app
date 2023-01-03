@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
@@ -46,9 +46,10 @@ const Toolbox = ({
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
     const [is_toolbox_open, setToolBoxOpen] = React.useState(true);
+    const is_mobile = isMobile();
 
     React.useEffect(() => {
-        if (active_tour_step_number === 4 || active_tour_step_number === 5) {
+        if (active_tour_step_number === (4 || 5)) {
             setToolBoxOpen(true);
         }
     }, [active_tour_step_number, is_toolbox_open]);
@@ -74,6 +75,7 @@ const Toolbox = ({
                         }}
                     >
                         {localize('Blocks menu')}
+
                         {!is_mobile && (
                             <span
                                 className={classNames('db-toolbox__title__chevron', {
@@ -156,7 +158,7 @@ const Toolbox = ({
                     </div>
                 </div>
             </div>
-            {is_mobile && (
+            <MobileWrapper>
                 <div
                     className='db-toolbox__toggle__menu'
                     onClick={() => {
@@ -165,7 +167,7 @@ const Toolbox = ({
                 >
                     <Icon icon={is_toolbox_open ? 'IcChevronLeftBold' : 'IcChevronRightBold'} />
                 </div>
-            )}
+            </MobileWrapper>
         </div>
     );
 };

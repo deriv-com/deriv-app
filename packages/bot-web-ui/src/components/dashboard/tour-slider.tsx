@@ -1,12 +1,13 @@
 import React from 'react';
 import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE, tour_status_ended } from './joyride-config';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
 
 type TTourButton = {
+    children?: React.ReactNode;
     type?: string;
     onClick: () => void;
     button_text: string;
@@ -131,9 +132,23 @@ const TourSlider = ({
     };
 
     const onChange = (param: string) => {
-        if (param === 'inc' && step < Object.keys(BOT_BUILDER_MOBILE).length) setStep(step + 1);
+        if (
+            param === 'inc' &&
+            step < Object.keys(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).length
+        )
+            setStep(step + 1);
         else if (param === 'dec' && step > 1) setStep(step - 1);
     };
+
+    React.useEffect(() => {
+        Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
+            if (data.key === step) {
+                setContent(data?.content);
+                setheader(data?.header);
+                setimg(data?.img);
+            }
+        });
+    }, [step]);
 
     return (
         <>
@@ -142,7 +157,7 @@ const TourSlider = ({
                     'dbot-slider__bot-builder-tour': !has_started_onboarding_tour,
                 })}
             >
-                {has_started_onboarding_tour && (
+                {has_started_onboarding_tour && slider_header && (
                     <div className='dbot-slider__navbar'>
                         <Text weight='less-prominent' line_height='s' size='xxs'>{`${step}/7`}</Text>
                         <Text weight='less-prominent' line_height='s' size='xxs' onClick={onCloseTour}>
@@ -175,7 +190,7 @@ const TourSlider = ({
                 )}
                 {!has_started_onboarding_tour && (
                     <Accordion
-                        content={BOT_BUILDER_MOBILE.filter(({ key }) => {
+                        content_data={BOT_BUILDER_MOBILE.filter(({ key }) => {
                             return key === step;
                         })}
                         show_expanded
@@ -185,7 +200,9 @@ const TourSlider = ({
                     <div className='dbot-slider__progress-bar'>
                         <ProgressBarOnboarding
                             step={step}
-                            amount_of_steps={Object.keys(!has_started_onboarding_tour && BOT_BUILDER_MOBILE)}
+                            amount_of_steps={Object.keys(
+                                !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
+                            )}
                             setStep={setStep}
                         />
                     </div>
@@ -223,4 +240,5 @@ export default connect(({ dashboard }: RootStore) => ({
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setHasTourEnded: dashboard.setHasTourEnded,
     setTourActiveStep: dashboard.setTourActiveStep,
+    active_tab: dashboard.active_tab,
 }))(TourSlider);

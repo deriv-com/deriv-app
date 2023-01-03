@@ -13,10 +13,10 @@ import {
 } from '@deriv/components';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import AccountPromptDialog from 'Components/account-prompt-dialog';
-import ErrorDialog from 'Components/error-dialog';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from 'Types';
+import AccountPromptDialog from '../../components/account-prompt-dialog';
+import ErrorDialog from '../../components/error-dialog';
+import { connect } from '../../stores/connect';
+import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from '../../types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -90,6 +90,7 @@ const Cashier = ({
             toggleCashier();
             resetLastLocation();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleCashier]);
 
     React.useEffect(() => {

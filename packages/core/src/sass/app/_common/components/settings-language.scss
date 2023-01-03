@@ -27,7 +27,6 @@
             padding: 16px;
             @include mobile {
                 padding: 8px;
-                border: 1px solid transparent;
             }
             text-decoration: none;
             background-color: var(--state-normal);

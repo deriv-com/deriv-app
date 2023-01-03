@@ -49,7 +49,7 @@ const NoAds = () => {
                 </React.Fragment>
             ) : (
                 <Text align='center' className='no-ads__title' color='general' line_height='m' size='s' weight='bold'>
-                    <Localize i18n_default_text='No ads for this currency the moment 😔' />
+                    <Localize i18n_default_text='No ads for this currency at the moment 😔' />
                 </Text>
             )}
         </div>

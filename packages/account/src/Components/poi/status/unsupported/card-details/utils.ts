@@ -1,8 +1,9 @@
 import { localize } from '@deriv/translations';
+import { FormikErrors, FormikValues } from 'formik';
 
-export const setInitialValues = (fields: []) => {
-    const values = {};
-    fields.forEach((field: { name: string }) => {
+export const setInitialValues = (fields: FormikValues) => {
+    const values: FormikValues = {};
+    fields.forEach((field: FormikValues) => {
         values[field.name] = '';
     });
     return values;
@@ -12,8 +13,8 @@ export const checkIsEmpty = (value: string | unknown) => {
     return typeof value === 'string' ? !value.trim() : !value;
 };
 
-export const validateFields = (values: object, fields = [], documents = []) => {
-    const errors: object = {};
+export const validateFields = (values: FormikValues, fields = [], documents = []) => {
+    const errors: FormikErrors<FormikValues> = {};
 
     fields.forEach((field: { name: string; label: string; type: string; required: boolean }) => {
         const { name, label, type } = field;

@@ -2,7 +2,7 @@ import { useStore } from '@deriv/stores';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import CashierStore from './cashier-store';
 
-const CashierStoreContext = createContext<typeof CashierStore | null>(null);
+const CashierStoreContext = createContext<CashierStore | null>(null);
 
 export const CashierStoreProvider = ({ children }: PropsWithChildren) => {
     const {

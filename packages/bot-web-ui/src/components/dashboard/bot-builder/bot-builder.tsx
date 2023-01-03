@@ -8,13 +8,13 @@ import LoadModal from 'Components/load-modal';
 import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import TourSlider from '../tour-slider';
+import { isMobile } from '@deriv/shared';
 
 type TBotBuilder = {
     app: AppStore;
     active_tab: number;
     has_started_onboarding_tour: boolean;
     is_preview_on_popup: boolean;
-    is_mobile: boolean;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => boolean;
     has_started_bot_builder_tour: boolean;
 };
@@ -24,11 +24,12 @@ const BotBuilder = ({
     active_tab,
     has_started_onboarding_tour,
     is_preview_on_popup,
-    is_mobile,
     has_started_bot_builder_tour,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
+
+    const is_mobile = isMobile();
 
     React.useEffect(() => {
         onMount();
@@ -95,9 +96,8 @@ const BotBuilder = ({
     );
 };
 
-export default connect(({ app, dashboard, ui }: RootStore) => ({
+export default connect(({ app, dashboard }: RootStore) => ({
     app,
-    is_mobile: ui.is_mobile,
     active_tab: dashboard.active_tab,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,

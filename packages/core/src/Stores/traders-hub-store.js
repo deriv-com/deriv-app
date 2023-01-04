@@ -191,7 +191,11 @@ export default class TradersHubStore extends BaseStore {
         if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
             if (this.is_demo) return ContentFlag.EU_DEMO;
             return ContentFlag.EU_REAL;
-        } else if (financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg') {
+        } else if (
+            financial_company?.shortcode === 'maltainvest' &&
+            gaming_company?.shortcode === 'svg' &&
+            this.is_real
+        ) {
             if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
             return ContentFlag.LOW_RISK_CR_NON_EU;
         } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') {

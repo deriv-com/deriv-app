@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -59,4 +60,4 @@ const NoAds = () => {
     );
 };
 
-export default NoAds;
+export default observer(NoAds);

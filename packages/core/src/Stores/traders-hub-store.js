@@ -67,8 +67,6 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_demo_low_risk: computed,
             is_eu_selected: computed,
-            should_show_exit_traders_modal: computed,
-            startTrade: action.bound,
             is_real: computed,
             can_get_more_cfd_mt5_accounts: computed,
             no_CR_account: computed,
@@ -82,6 +80,8 @@ export default class TradersHubStore extends BaseStore {
             selectRegion: action.bound,
             setActiveIndex: action.bound,
             setTogglePlatformType: action.bound,
+            should_show_exit_traders_modal: computed,
+            startTrade: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             toggleExitTradersHubModal: action.bound,
             toggleIsTourOpen: action.bound,
@@ -240,7 +240,12 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get should_show_exit_traders_modal() {
-        return this.selected_account_type === 'real'; //added just for testing , should change this
+        //  should display the modal user have atleast one mf account and cr account
+        const { active_accounts } = this.root_store.client;
+        return (
+            active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&
+            active_accounts.some(acc => acc.landing_company_shortcode === 'svg')
+        );
     }
 
     toggleRegulatorsCompareModal() {

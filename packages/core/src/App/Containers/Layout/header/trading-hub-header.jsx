@@ -40,6 +40,7 @@ export const TradersHubHomeButton = () => {
 };
 
 const RedirectToOldInterface = ({ setIsPreAppStore, should_show_exit_traders_modal, toggleExitTradersHubModal }) => {
+    const history = useHistory();
     const disablePreAppstore = () => {
         if (should_show_exit_traders_modal) {
             toggleExitTradersHubModal();

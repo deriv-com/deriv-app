@@ -260,7 +260,8 @@ export default class AccountTransferStore {
         };
     }
 
-    async sortAccountsTransfer(response_accounts?: TransferBetweenAccountsResponse) {
+    // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
+    async sortAccountsTransfer(response_accounts?: Partial<TransferBetweenAccountsResponse>) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
@@ -424,7 +425,7 @@ export default class AccountTransferStore {
         this.selected_to = obj_values;
     }
 
-    setAccounts(arr_accounts: TAccount[]) {
+    setAccounts(arr_accounts: TTransferAccount[]) {
         this.accounts_list = arr_accounts;
     }
 

@@ -158,7 +158,7 @@ beforeEach(() => {
             },
         },
     };
-    account_transfer_store = new AccountTransferStore(WS, root_store);
+    account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store as TRootStore);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -436,7 +436,7 @@ describe('AccountTransferStore', () => {
 
     it('should sort and set accounts when calling sortAccountsTransfer method', async () => {
         await account_transfer_store.sortAccountsTransfer({
-            accounts: [...accounts, MT_USD_account, DXR_USD_account],
+            accounts: accounts?.concat([MT_USD_account, DXR_USD_account]),
         });
 
         expect(account_transfer_store.accounts_list[0].text).toMatch(/^Deriv X(.)*$/);
@@ -656,7 +656,7 @@ describe('AccountTransferStore', () => {
         const spySetBalanceSelectedFrom = jest.spyOn(account_transfer_store, 'setBalanceSelectedFrom');
         const spySetBalanceSelectedTo = jest.spyOn(account_transfer_store, 'setBalanceSelectedTo');
 
-        account_transfer_store.WS.authorized.transferBetweenAccounts.mockResolvedValueOnce({
+        (account_transfer_store.WS.authorized.transferBetweenAccounts as jest.Mock).mockResolvedValueOnce({
             accounts: [
                 {
                     ...CR_USD_account,

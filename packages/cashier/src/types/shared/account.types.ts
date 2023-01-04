@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /* ACCOUNT TYPES                                                              */
 /* -------------------------------------------------------------------------- */
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
 
 export type TAccount = {
     balance?: string | number;
@@ -18,16 +18,7 @@ export type TAccount = {
     value?: string;
 };
 
-export type TTransferAccount = {
-    account_type?: 'trading' | 'mt5' | 'wallet' | 'dxtrade' | 'binary';
-    balance?: string;
-    currency?: string;
-    demo_account?: 0 | 1;
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
-    loginid?: string;
-    market_type?: 'financial' | 'synthetic';
-    mt5_group?: string;
-    status?: string;
+export type TTransferAccount = TransferBetweenAccountsResponse['accounts'][number] & {
     sub_account_type?: string;
 };
 

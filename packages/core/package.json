@@ -32,8 +32,8 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
         "@babel/plugin-proposal-unicode-property-regex": "^7.16.7",
+        "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",

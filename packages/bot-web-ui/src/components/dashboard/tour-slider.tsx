@@ -1,16 +1,15 @@
 import React from 'react';
 import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE } from './joyride-config';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
 
 type TTourButton = {
-    children?: React.ReactNode;
     type?: string;
     onClick: () => void;
-    button_text: string;
+    label: string;
 };
 
 type TTourSlider = {
@@ -25,16 +24,15 @@ type TTourSlider = {
 };
 
 type TAccordion = {
-    content_data: string[];
-    show_expanded: boolean;
-    icon: string;
+    content_data: TStepMobile;
+    expanded: boolean;
 };
 
-const TourButton = ({ button_text, type = '', ...props }: TTourButton) => {
+const TourButton = ({ label, type = '', ...props }: TTourButton) => {
     return (
         <button className={type} {...props}>
             <Text align='center' weight='bold' as='span' line_height='s' size='xs'>
-                {localize(button_text)}
+                {label}
             </Text>
         </button>
     );
@@ -48,39 +46,31 @@ const makeCenter = (type: string) => {
     Blockly.derivWorkspace.centerOnBlock(blocks[type]);
 };
 
-const Accordion = ({ content_data, show_expanded, icon, ...props }: TAccordion) => {
-    const [show_accordion, setShowAccordion] = React.useState(show_expanded);
-
-    const toggleTab = () => {
-        setShowAccordion(!show_accordion);
-    };
+const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => {
+    const [is_open, setOpen] = React.useState(expanded);
+    const { content, header } = content_data;
 
     return (
         <div className='dbot-accordion' {...props}>
-            {content_data.map(data => {
-                const { content, header, key } = data;
-                return (
-                    <div key={key}>
-                        <div className='dbot-accordion__navbar' onClick={() => toggleTab()}>
-                            <div className='dbot-accordion__header'>
-                                <Text as='span' size='xs' weight='bold'>
-                                    {localize(header)}
-                                </Text>
-                            </div>
-                            <div className='dbot-accordion__icon'>
-                                <Icon icon={show_accordion ? 'IcChevronDownBold' : 'IcChevronUpBold'} />
-                            </div>
-                        </div>
-                        <div
-                            className={classNames('dbot-accordion__content', {
-                                'dbot-accordion__content--open': show_accordion,
-                            })}
-                        >
-                            {localize(content)}
-                        </div>
+            <div>
+                <div className='dbot-accordion__navbar' onClick={() => setOpen(!is_open)}>
+                    <div className='dbot-accordion__header'>
+                        <Text as='span' size='xs' weight='bold'>
+                            {localize(header)}
+                        </Text>
                     </div>
-                );
-            })}
+                    <div className='dbot-accordion__icon'>
+                        <Icon icon={is_open ? 'IcChevronDownBold' : 'IcChevronUpBold'} />
+                    </div>
+                </div>
+                <div
+                    className={classNames('dbot-accordion__content', {
+                        'dbot-accordion__content--open': is_open,
+                    })}
+                >
+                    {content}
+                </div>
+            </div>
         </div>
     );
 };
@@ -127,6 +117,23 @@ const TourSlider = ({
         setTourActive(false);
     };
 
+    React.useEffect(() => {
+        setTourActiveStep(step);
+        switch (step) {
+            case 1:
+                makeCenter('trade_definition');
+                break;
+            case 2:
+                makeCenter('before_purchase');
+                break;
+            case 5:
+                makeCenter('after_purchase');
+                break;
+            default:
+                break;
+        }
+    }, [step]);
+
     const onTourEnd = () => {
         if (step === 7) {
             onCloseTour('onboard');
@@ -149,6 +156,16 @@ const TourSlider = ({
         else if (param === 'dec' && step > 1) setStep(step - 1);
     };
 
+    React.useEffect(() => {
+        Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
+            if (data.key === step) {
+                setContent(data?.content);
+                setheader(data?.header);
+                setimg(data?.img);
+            }
+        });
+    }, [step]);
+    const content_data = BOT_BUILDER_MOBILE.find(({ key }) => key === step);
     return (
         <>
             <div
@@ -188,14 +205,7 @@ const TourSlider = ({
                         {localize(slider_content)}
                     </Text>
                 )}
-                {!has_started_onboarding_tour && (
-                    <Accordion
-                        content_data={BOT_BUILDER_MOBILE.filter(({ key }) => {
-                            return key === step;
-                        })}
-                        show_expanded
-                    />
-                )}
+                {!has_started_onboarding_tour && content_data && <Accordion content_data={content_data} expanded />}
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
                         <ProgressBarOnboarding
@@ -209,11 +219,10 @@ const TourSlider = ({
                     <div className='dbot-slider__button-group'>
                         {step !== 1 && (
                             <TourButton
-                                type='default'
                                 onClick={() => {
                                     onChange('dec');
                                 }}
-                                button_text='Previous'
+                                label={localize('Previous')}
                             />
                         )}
                         <TourButton
@@ -222,7 +231,7 @@ const TourSlider = ({
                                 onChange('inc');
                                 onTourEnd();
                             }}
-                            button_text='Next'
+                            label={localize('Next')}
                         />
                     </div>
                 </div>

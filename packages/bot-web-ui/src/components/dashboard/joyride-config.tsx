@@ -195,7 +195,7 @@ export const DBOT_ONBOARDING = [
     },
 ];
 
-const Step1 = ({ show_label }) => (
+const Step1 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left'>
@@ -266,7 +266,7 @@ const Step1A = () => (
     </div>
 );
 
-const Step2 = ({ show_label }) => (
+const Step2 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left'>
@@ -293,7 +293,7 @@ const Step2 = ({ show_label }) => (
     </div>
 );
 
-const Step3 = ({ show_label }) => (
+const Step3 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left joyride-content__left__step-three'>
@@ -310,7 +310,7 @@ const Step3 = ({ show_label }) => (
     </div>
 );
 
-const Step4 = ({ show_label }) => (
+const Step4 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left'>
@@ -354,7 +354,7 @@ const Step4 = ({ show_label }) => (
     </div>
 );
 
-const Step5 = ({ show_label }) => (
+const Step5 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left'>
@@ -399,7 +399,7 @@ const Step5 = ({ show_label }) => (
     </div>
 );
 
-const Step6 = ({ show_label }) => (
+const Step6 = ({ show_label = false }) => (
     <div className='joyride-content'>
         {show_label && (
             <div className='joyride-content__left'>
@@ -419,7 +419,7 @@ const Step6 = ({ show_label }) => (
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
-        content: <Step1 show_label={true} />,
+        content: <Step1 show_label />,
         placement: 'right',
         ...joyride_props,
     },
@@ -431,70 +431,76 @@ export const BOT_BUILDER_TOUR = [
     },
     {
         target: '[data-category="purchase_conditions"]',
-        content: <Step2 show_label={true} />,
+        content: <Step2 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="sell_conditions"]',
-        content: <Step3 show_label={true} />,
+        content: <Step3 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
-        content: <Step4 show_label={true} />,
+        content: <Step4 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
-        content: <Step5 show_label={true} />,
+        content: <Step5 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="trade_results"]',
-        content: <Step6 show_label={true} />,
+        content: <Step6 show_label />,
         locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];
 
-export const BOT_BUILDER_MOBILE = [
+export type TStepMobile = {
+    header: string;
+    content: React.ReactElement;
+    key: number;
+};
+
+export const BOT_BUILDER_MOBILE: TStepMobile[] = [
     {
-        header: 'Step 1',
+        header: localize('Step 1'),
         content: (
             <>
-                <Step1 show_label={false} key={0} />
+                <Step1 key={0} />
                 <Step1A key={1} />
             </>
         ),
         key: 1,
     },
     {
-        header: 'Step 2',
-        content: <Step2 show_label={false} />,
+        header: localize('Step 2'),
+        content: <Step2 />,
         key: 2,
     },
     {
-        header: 'Step 3',
-        content: <Step3 show_label={false} />,
+        header: localize('Step 3'),
+        content: <Step3 />,
         key: 3,
     },
     {
-        header: 'Step 4',
-        content: <Step4 show_label={false} />,
+        header: localize('Step 4'),
+        content: <Step4 />,
         key: 4,
     },
     {
-        header: 'Step 5',
-        content: <Step5 show_label={false} />,
+        header: localize('Step 5'),
+        content: <Step5 />,
         key: 5,
     },
     {
-        header: 'Step 6',
-        content: <Step6 show_label={false} />,
+        header: localize('Step 6'),
+        content: <Step6 />,
         key: 6,
     },
 ];

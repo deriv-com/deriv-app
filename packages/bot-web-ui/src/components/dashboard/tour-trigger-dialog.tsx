@@ -57,6 +57,7 @@ const TourTriggrerDialog = ({
         }
         setTourDialogVisibility(false);
     };
+
     const getTourContent = (type: string) => {
         return (
             <>

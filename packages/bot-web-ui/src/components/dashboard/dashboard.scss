@@ -5,19 +5,115 @@
     justify-content: center;
 }
 
+.position-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dashboard {
     &__main {
         width: 100%;
-        height: calc(100vh - 90px);
+        height: calc(100vh - 9rem);
         padding: 1.6rem;
+        display: flex;
+        overflow: hidden;
 
         @include mobile {
             height: calc(100vh - 6rem);
+            padding: 0;
         }
     }
 
     &__container {
         position: relative;
+        border: none;
+        max-width: 100%;
+        width: 100%;
+        .dc-tabs {
+            &__active-line {
+                background-color: var(--general-main-1);
+                transition: none;
+            }
+
+            &__active {
+                background: var(--general-main-1);
+            }
+
+            &__list {
+                background: var(--general-section-1);
+                justify-content: start;
+
+                @include mobile {
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                &--header {
+                    &--dashboard {
+                        &__tabs {
+                            @include mobile {
+                                width: 100%;
+                                overflow-x: auto;
+                                padding: 0.8rem 1.6rem 0;
+                            }
+                        }
+                    }
+                }
+                &--border-bottom {
+                    @include mobile {
+                        border-bottom: 0;
+                    }
+                }
+            }
+
+            &__content {
+                @include mobile {
+                    width: 100%;
+                    overflow-x: auto;
+                }
+
+                &--dashboard {
+                    &__tabs {
+                        display: flex;
+                        justify-content: space-between;
+
+                        @include mobile {
+                            flex-direction: column;
+                        }
+                    }
+                }
+            }
+
+            &__item {
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                height: 4.8rem;
+                width: 14.4rem;
+                min-width: 14.4rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &__loaded {
+                    text-align: left;
+                    padding-left: 1.5rem;
+                }
+
+                svg {
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    padding-right: 0;
+                    margin-right: 0.8rem;
+                }
+            }
+        }
     }
 
     &__chart-wrapper {
@@ -28,9 +124,11 @@
 
         @include mobile {
             height: var(--tab-content-height-mobile);
-
+            background: var(--general-main-1);
+            padding: 1.6rem;
             .smartcharts {
                 height: calc(100% - 4rem);
+                width: calc(100vw - 3.2rem);
             }
         }
 
@@ -42,11 +140,17 @@
     &__toolbox {
         position: absolute;
         top: -4rem;
-        left: 0;
-        width: 23.6rem;
-        padding: 0.8rem;
-        background: var(--general-main-1);
+        @include mobile {
+            top: 2rem;
+        }
+        left: -21.8rem;
+        padding: 0 1.6rem 0 0;
         z-index: 1;
+        transition: all 0.4s ease-in-out;
+        &--active {
+            left: 0;
+        }
+        background: $color-grey-2;
 
         .db-toolbox {
             &__title {
@@ -68,8 +172,26 @@
                 }
             }
 
+            &__toggle__menu {
+                position: absolute;
+                top: 50%;
+                right: -10px;
+                width: 2rem;
+                height: 2rem;
+                background: $color-grey-2;
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.25);
+                svg {
+                    margin: 0.4rem 0.2rem;
+                    height: 1rem;
+                }
+            }
+
             &__content {
+                position: relative;
                 border: solid 1px var(--general-section-1);
+                background: $color-white;
             }
 
             &__category-menu {
@@ -141,7 +263,9 @@
     }
 
     @include mobile {
-        width: calc(100vw - 3.2rem);
+        top: 5.6rem;
+        left: 0;
+        width: 100vw;
         height: var(--tab-content-height-mobile);
     }
 }
@@ -321,6 +445,122 @@
                     color: $color-white;
                 }
             }
+        }
+    }
+
+    &__bot-builder-tour {
+        height: unset;
+        background: $color-black-3;
+        border-top: 0.1rem solid $color-black-5;
+
+        .dbot-slider {
+            width: 100%;
+
+            &__accordion {
+                width: 100%;
+
+                .dc-accordion {
+                    &__item {
+                        border: none;
+                        border-bottom: 0.1rem solid $color-black-5;
+
+                        &-header {
+                            color: $color-white;
+                            text-align: center;
+                            font-weight: 700;
+                            font-size: 1.4rem;
+
+                            &-icon {
+                                filter: invert(1);
+                            }
+                        }
+
+                        &-content {
+                            color: $color-white;
+                        }
+                    }
+                }
+            }
+
+            &__content {
+                color: $color-white;
+            }
+
+            &__status {
+                height: 5rem;
+                display: flex;
+                @extend .position-center;
+            }
+
+            &__progress-bar {
+                width: 50%;
+                margin-bottom: unset;
+                @extend .position-center;
+            }
+
+            &__button-group {
+                width: 50%;
+                @extend .position-center;
+
+                .default {
+                    background: transparent;
+
+                    span {
+                        color: $color-white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dbot-accordion {
+    width: 100%;
+
+    &__navbar {
+        display: flex;
+        width: 100%;
+        padding: 0.6rem 1.6rem;
+        border-bottom: solid 0.1rem $color-black-5;
+        cursor: pointer;
+    }
+
+    &__header {
+        width: 90%;
+        text-align: center;
+
+        span {
+            color: $color-white;
+        }
+    }
+
+    &__icon {
+        width: 10%;
+        color: $color-white;
+        text-align: end;
+
+        svg {
+            filter: invert(1);
+        }
+    }
+
+    &__content {
+        background-color: $color-black-3;
+        overflow: hidden;
+        transition: all 0.4s ease-in-out;
+        max-height: 0;
+        opacity: 0;
+        color: $color-white;
+        padding: 1rem 1.6rem;
+        font-size: 1.2rem;
+
+        &--open {
+            opacity: 1;
+            max-height: 50rem;
+        }
+
+        .joyride-content {
+            line-height: 1.8rem;
         }
     }
 }

@@ -7,23 +7,19 @@ import LZString from 'lz-string';
 import localForage from 'localforage';
 
 type TDeleteDialog = {
-    is_running: boolean;
     is_delete_modal_open: boolean;
     onToggleDeleteDialog: (param: boolean) => void;
     removeBotStrategy: (param: string) => void;
     selected_strategy_id: string;
     setStrategies: (param: string[]) => void;
     setDashboardStrategies: (param: string[]) => void;
-    dashboard_strategies: [];
 };
 
 const DeleteDialog = ({
     is_delete_modal_open,
-    is_running,
     selected_strategy_id,
     onToggleDeleteDialog,
     setDashboardStrategies,
-    dashboard_strategies,
 }: TDeleteDialog) => {
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
@@ -51,11 +47,11 @@ const DeleteDialog = ({
             <Dialog
                 title={localize('Delete bot')}
                 is_visible={is_delete_modal_open}
-                confirm_button_text={is_running ? localize('Yes') : localize('Yes, delete')}
+                confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
                     onHandleChange('confirm', false);
                 }}
-                cancel_button_text={is_running ? localize('No') : localize('Cancel')}
+                cancel_button_text={localize('No')}
                 onCancel={() => {
                     onHandleChange('cancel', false);
                 }}
@@ -70,7 +66,7 @@ const DeleteDialog = ({
                     </Text>
                 </div>
                 <div>
-                    <Text color='prominent' line_height='s' size='xs'>
+                    <Text color='prominent' line_height='xxl' size='xs'>
                         {localize('Are you sure you want to delete it?')}
                     </Text>
                 </div>
@@ -85,5 +81,4 @@ export default connect(({ toolbar, load_modal }) => ({
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    dashboard_strategies: load_modal.dashboard_strategies,
 }))(DeleteDialog);

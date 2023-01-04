@@ -1,0 +1,21 @@
+.dc-dialog__delete-strategy--delete {
+    .dc-dialog {
+        &__footer {
+            @include mobile {
+                flex-wrap: unset;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-start;
+                width: 100%;
+
+                button {
+                    flex-basis: unset;
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
+                    margin-bottom: unset;
+                }
+            }
+        }
+    }
+}

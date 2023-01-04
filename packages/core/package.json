@@ -32,8 +32,8 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
-        "@babel/plugin-proposal-unicode-property-regex": "^7.16.7",
         "@babel/eslint-parser": "^7.17.0",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.16.7",
         "@babel/preset-react": "^7.16.7",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
@@ -133,6 +133,6 @@
         "react-tiny-popover": "^5.1.0",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "web-push-notifications": "3.33"
+        "web-push-notifications": "^3.33.0"
     }
 }

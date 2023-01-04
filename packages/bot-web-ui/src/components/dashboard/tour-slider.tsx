@@ -63,7 +63,7 @@ const Accordion = ({ content_data, show_expanded, icon, ...props }: TAccordion) 
                         <div className='dbot-accordion__navbar' onClick={() => toggleTab()}>
                             <div className='dbot-accordion__header'>
                                 <Text as='span' size='xs' weight='bold'>
-                                    {header}
+                                    {localize(header)}
                                 </Text>
                             </div>
                             <div className='dbot-accordion__icon'>
@@ -75,7 +75,7 @@ const Accordion = ({ content_data, show_expanded, icon, ...props }: TAccordion) 
                                 'dbot-accordion__content--open': show_accordion,
                             })}
                         >
-                            {content}
+                            {localize(content)}
                         </div>
                     </div>
                 );
@@ -161,7 +161,7 @@ const TourSlider = ({
                     <div className='dbot-slider__navbar'>
                         <Text weight='less-prominent' line_height='s' size='xxs'>{`${step}/7`}</Text>
                         <Text weight='less-prominent' line_height='s' size='xxs' onClick={onCloseTour}>
-                            Exit Tour
+                            {localize('Exit Tour')}
                         </Text>
                     </div>
                 )}
@@ -175,7 +175,7 @@ const TourSlider = ({
                         line_height='s'
                         size='xs'
                     >
-                        {slider_header}
+                        {localize(slider_header)}
                     </Text>
                 )}
                 {has_started_onboarding_tour && slider_image && (
@@ -185,7 +185,7 @@ const TourSlider = ({
                 )}
                 {has_started_onboarding_tour && slider_content && (
                     <Text align='center' className='dbot-slider__content' as='span' line_height='s' size='xxs'>
-                        {slider_content}
+                        {localize(slider_content)}
                     </Text>
                 )}
                 {!has_started_onboarding_tour && (

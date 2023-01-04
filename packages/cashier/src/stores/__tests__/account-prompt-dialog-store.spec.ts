@@ -33,7 +33,7 @@ describe('AccountPromptDialogStore', () => {
 
     beforeEach(() => {
         // TODO: Check this
-        account_prompt_dialog_store = new AccountPromptDialogStore(root_store);
+        account_prompt_dialog_store = new AccountPromptDialogStore(root_store as TRootStore);
     });
 
     it('should show the dialog', () => {

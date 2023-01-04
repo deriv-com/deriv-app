@@ -533,6 +533,9 @@ export default class NotificationStore extends BaseStore {
                 if (poo_rejected) {
                     this.addNotificationMessage(this.client_notifications.poo_rejected);
                 }
+                if (unwelcome_status) {
+                    this.addNotificationMessage(this.client_notifications.trader_and_cashier_blocked);
+                }
                 //add notification message for SVG clients
                 if (svg_needs_poi_poa) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poi_poa);

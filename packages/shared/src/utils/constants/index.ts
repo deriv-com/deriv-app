@@ -1,3 +1,3 @@
 export * from './barriers';
 export * from './contract';
-export * from './account_flags';
+export * from './content_flags';

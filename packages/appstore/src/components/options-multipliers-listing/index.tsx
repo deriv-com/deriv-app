@@ -6,7 +6,7 @@ import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
-import { isMobile, ACCOUNT_FLAG } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 
@@ -20,13 +20,13 @@ const OptionsAndMultipliersListing = () => {
         no_MF_account,
         no_CR_account,
         is_demo,
-        account_flag,
+        content_flag,
     } = traders_hub;
     const { is_landing_company_loaded, is_eu } = client;
 
-    const low_risk_cr_non_eu = account_flag === ACCOUNT_FLAG.LOW_RISK_CR_NON_EU_CONTENT;
+    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const low_risk_cr_eu = account_flag === ACCOUNT_FLAG.LOW_RISK_CR_EU_CONTENT;
+    const low_risk_cr_eu = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const OptionsTitle = () => {
         if ((low_risk_cr_non_eu || is_demo) && !isMobile()) {

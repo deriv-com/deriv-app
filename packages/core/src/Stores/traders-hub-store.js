@@ -1,7 +1,14 @@
 import { action, makeObservable, observable, reaction, computed } from 'mobx';
-import { getAppstorePlatforms, CFD_PLATFORMS, available_traders_hub_cfd_accounts, formatMoney } from '@deriv/shared';
+import {
+    available_traders_hub_cfd_accounts,
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    getAppstorePlatforms,
+} from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
+import { isEuCountry } from '_common/utility';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
@@ -61,7 +68,7 @@ export default class TradersHubStore extends BaseStore {
             can_get_more_cfd_mt5_accounts: computed,
             no_CR_account: computed,
             no_MF_account: computed,
-            account_flag: computed,
+            content_flag: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -112,7 +119,7 @@ export default class TradersHubStore extends BaseStore {
         );
 
         reaction(
-            () => [this.selected_region],
+            () => [this.selected_region, this.root_store.client.is_landing_company_loaded],
             () => {
                 this.setSwitchEU();
             }
@@ -176,35 +183,28 @@ export default class TradersHubStore extends BaseStore {
         return this.is_demo && low_risk;
     }
 
-    get account_flag() {
-        const { is_logged_in, upgradeable_landing_companies } = this.root_store.client;
+    get content_flag() {
+        const { is_logged_in, landing_companies, residence } = this.root_store.client;
+        const { financial_company, gaming_company } = landing_companies;
 
-        if (is_logged_in) {
-            if (this.is_demo && upgradeable_landing_companies?.includes('svg')) {
-                return 'cr_demo_content';
-            } else if (
-                upgradeable_landing_companies.includes('svg') &&
-                upgradeable_landing_companies.includes('maltainvest') &&
-                !this.is_demo
-            ) {
-                if (this.is_eu_user) return 'low_risk_cr_eu_content';
-                return 'low_risk_cr_non_eu_content';
-            } else if (
-                upgradeable_landing_companies.length === 1 &&
-                upgradeable_landing_companies.includes('maltainvest')
-            ) {
-                if (this.is_demo) return 'eu_demo_content';
-                return 'eu_real_content';
-            } else if (
-                upgradeable_landing_companies.length === 1 &&
-                upgradeable_landing_companies.includes('svg') &&
-                !this.is_eu_user
-            ) {
-                return 'high_risk_cr_content';
-            }
-            return null;
+        if (!is_logged_in) return '';
+        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+            if (this.is_demo) return ContentFlag.EU_DEMO;
+            return ContentFlag.EU_REAL;
+        } else if (financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg') {
+            if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
+            return ContentFlag.LOW_RISK_CR_NON_EU;
+        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') {
+            return ContentFlag.HIGH_RISK_CR;
         }
-        return null;
+
+        // Default Check
+        if (isEuCountry(residence)) {
+            if (this.is_demo) return ContentFlag.EU_DEMO;
+            return ContentFlag.EU_REAL;
+        }
+        if (this.is_demo) return ContentFlag.CR_DEMO;
+        return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
     getAvailablePlatforms() {

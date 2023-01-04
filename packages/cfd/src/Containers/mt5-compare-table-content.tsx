@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ACCOUNT_FLAG } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import {
@@ -32,7 +32,7 @@ const Row = ({
     available_accounts_count,
     classname_for_demo_and_eu,
     is_pre_appstore_setting,
-    account_flag,
+    content_flag,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -46,7 +46,7 @@ const Row = ({
     if (is_platform_row && !is_pre_appstore_setting) {
         return null;
     }
-    if (is_platform_row && account_flag === ACCOUNT_FLAG.HIGH_RISK_CR_CONTENT) {
+    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR) {
         // needed to adjust the design for high risk
         values.financial_svg = { text: 'MT5' };
     }
@@ -132,7 +132,7 @@ const Row = ({
 };
 
 const DMT5CompareModalContent = ({
-    account_flag,
+    content_flag,
     account_settings,
     account_status,
     clearCFDError,
@@ -352,7 +352,7 @@ const DMT5CompareModalContent = ({
             );
         });
 
-    const isDxtradeAccountAdded = (item: TCompareAccountFooterButtonData) =>
+    const isDxtradeAccountAdded = () =>
         Object.entries(current_list).some(([key, value]) => {
             const current_account_type = is_demo_tab ? 'demo' : 'real';
             return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
@@ -382,7 +382,7 @@ const DMT5CompareModalContent = ({
         if (is_preappstore_cr_demo_account) {
             return preappstore_cr_demo_content;
         } else if (show_eu_related) {
-            if (is_pre_appstore_setting && account_flag === ACCOUNT_FLAG.EU_DEMO_CONTENT) {
+            if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
                 return preppstore_eu_demo_content;
             }
             return eu_real_content;
@@ -467,7 +467,7 @@ const DMT5CompareModalContent = ({
                                     available_accounts_count={available_accounts_count}
                                     classname_for_demo_and_eu={classname_for_demo_and_eu}
                                     is_pre_appstore_setting={is_pre_appstore_setting}
-                                    account_flag={account_flag}
+                                    content_flag={content_flag}
                                 />
                             ))}
                         </Table.Body>

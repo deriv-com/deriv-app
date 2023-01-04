@@ -270,7 +270,7 @@ const Autocomplete = React.memo(props => {
     };
 
     return (
-        <div className={classNames('dc-autocomplete', className)}>
+        <div data-testid='dt_auto_complete' className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
                 <Input
                     {...other_props}

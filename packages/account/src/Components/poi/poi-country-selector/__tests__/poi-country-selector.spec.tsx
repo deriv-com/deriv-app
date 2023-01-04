@@ -35,15 +35,13 @@ describe('<CountrySelector/>', () => {
     it('should render CountrySelector component external', () => {
         mock_props.is_from_external = true;
 
-        const { container } = render(<CountrySelector {...mock_props} />);
+        render(<CountrySelector {...mock_props} />);
 
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
         expect(screen.getByText('Country')).toBeInTheDocument();
 
-        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-        const div_with_external_class = container.querySelector('.external-dropdown');
-        expect(div_with_external_class).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_auto_complete')).toBeInTheDocument();
     });
 
     it('should show error message after clicking the input without choosing the country', async () => {

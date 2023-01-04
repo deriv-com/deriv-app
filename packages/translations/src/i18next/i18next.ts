@@ -134,7 +134,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = (string: string, values?: object) => {
+export const localize = <T extends object>(string: string, values?: T) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

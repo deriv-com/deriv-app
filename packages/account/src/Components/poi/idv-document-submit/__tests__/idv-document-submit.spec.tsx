@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
 import { isSequentialNumber, isRecurringNumberRegex } from '../utils';
+import { FormikValues } from 'formik';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
@@ -10,8 +11,8 @@ jest.mock('../../../hooks/useToggleValidation', () => ({
     useToggleValidation: jest.fn(() => '#toggle_id_validation'),
 }));
 jest.mock('../utils.js', () => ({
-    getDocumentData: function (country_code, key) {
-        const data = {
+    getDocumentData(country_code: keyof FormikValues, key: number) {
+        const data: FormikValues = {
             tc: {
                 document_1: {
                     new_display_name: '',
@@ -56,7 +57,7 @@ describe('<IdvDocumentSubmit/>', () => {
                             document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
-                        has_visual_sample: 1,
+                        has_visual_sample: true,
                         is_country_supported: 0,
                     },
                 },
@@ -74,7 +75,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('New ID type name')).not.toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
-        const inputs = screen.getAllByRole('textbox');
+        const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
         expect(inputs.length).toBe(2);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
@@ -108,10 +109,10 @@ describe('<IdvDocumentSubmit/>', () => {
 
     it('should not allow users to fill in repetitive document numbers', async () => {
         //invalid document number- error should be shown
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
-        isSequentialNumber.mockReturnValue(true);
-        isRecurringNumberRegex.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isSequentialNumber as jest.Mock).mockReturnValue(true);
+        (isRecurringNumberRegex as jest.Mock).mockReturnValue(true);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
@@ -121,15 +122,15 @@ describe('<IdvDocumentSubmit/>', () => {
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();
 
-        const document_type_input = screen.getByRole('combobox');
+        const document_type_input = screen.getByRole<HTMLInputElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText<HTMLInputElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).not.toBeDisabled();
+        expect(document_number_input).toBeEnabled();
         expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
 
         fireEvent.blur(document_number_input);
@@ -150,10 +151,10 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
-        isSequentialNumber.mockReturnValue(false);
-        isRecurringNumberRegex.mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isSequentialNumber as jest.Mock).mockReturnValue(false);
+        (isRecurringNumberRegex as jest.Mock).mockReturnValue(false);
 
         const selected_doc_msg =
             'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
@@ -163,15 +164,15 @@ describe('<IdvDocumentSubmit/>', () => {
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();
 
-        const document_type_input = screen.getByRole('combobox');
+        const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).not.toBeDisabled();
+        expect(document_number_input).toBeEnabled();
         expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
 
@@ -186,7 +187,7 @@ describe('<IdvDocumentSubmit/>', () => {
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-            expect(verifyBtn).not.toBeDisabled();
+            expect(verifyBtn).toBeEnabled();
         });
 
         fireEvent.click(verifyBtn);

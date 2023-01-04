@@ -15,10 +15,6 @@ type TCountrySelector = {
     setSelectedCountry: (value: TCountry) => void;
 };
 
-type TFormValues = {
-    country_input: string;
-};
-
 const CountrySelector = ({
     handleSelectionNext,
     is_from_external,
@@ -28,7 +24,7 @@ const CountrySelector = ({
 }: TCountrySelector) => {
     const [country_list, setCountryList] = React.useState<TCountry[]>([]);
 
-    const initial_form_values = {
+    const initial_form_values: FormikValues = {
         country_input: '',
     };
 
@@ -52,7 +48,7 @@ const CountrySelector = ({
         }
     };
 
-    const submitHandler = (values: TFormValues, { setSubmitting }: FormikHelpers<TFormValues>) => {
+    const submitHandler = (values: FormikValues, { setSubmitting }: FormikHelpers<FormikValues>) => {
         updateSelectedCountry(values.country_input);
         setSubmitting(false);
         handleSelectionNext?.();

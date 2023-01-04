@@ -12,8 +12,6 @@ type TAccountTransferModal = {
 };
 
 const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferModal) => {
-    const [is_open, setIsOpen] = React.useState<boolean>(is_modal_open);
-
     const {
         modules: {
             cashier: {
@@ -27,12 +25,12 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
     const modal_title = !is_transfer_confirm && <Localize i18n_default_text={'Transfer funds to your account'} />;
 
     const onClickDeposit = () => {
-        setIsOpen(false);
+        toggleModal();
         history.push(routes.cashier_deposit);
     };
 
     const onClickNotes = () => {
-        setIsOpen(false);
+        toggleModal();
         history.push(routes.cashier_acc_transfer);
     };
 
@@ -40,7 +38,7 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
         <Modal
             className={should_switch_account ? 'account-transfer-modal' : ''}
             has_close_icon={!is_transfer_confirm}
-            is_open={is_open && is_modal_open}
+            is_open={is_modal_open}
             is_title_centered={is_transfer_confirm}
             small
             title={modal_title}
@@ -48,11 +46,7 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
             should_header_stick_body={false}
         >
             <Modal.Body>
-                <AccountTransfer
-                    onClickDeposit={onClickDeposit}
-                    onClickNotes={onClickNotes}
-                    onClose={() => setIsOpen(false)}
-                />
+                <AccountTransfer onClickDeposit={onClickDeposit} onClickNotes={onClickNotes} onClose={toggleModal} />
             </Modal.Body>
         </Modal>
     );

@@ -478,6 +478,9 @@ export default class NotificationStore extends BaseStore {
                 if (poo_rejected) {
                     this.addNotificationMessage(this.client_notifications.poo_rejected);
                 }
+                if (unwelcome_status) {
+                    this.addNotificationMessage(this.client_notifications.trader_and_cashier_blocked);
+                }
             }
         }
 

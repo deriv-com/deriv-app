@@ -155,7 +155,7 @@ const DMT5CompareModalContent = ({
     setShouldShowCooldownModal,
     should_restrict_bvi_account_creation,
     should_show_derivx,
-    show_eu_related,
+    show_eu_related_content,
     toggleCFDPersonalDetailsModal,
     toggleCFDVerificationModal,
     toggleCompareAccounts,
@@ -172,16 +172,16 @@ const DMT5CompareModalContent = ({
     const has_synthetic = trading_platform_available_accounts.some(account => account.market_type === 'gaming');
     const available_accounts_keys = [...mt5_platforms, ...(should_show_derivx && has_synthetic ? ['derivx'] : [])];
 
-    const logged_out_available_accounts_count = show_eu_related ? 1 : 6;
+    const logged_out_available_accounts_count = show_eu_related_content ? 1 : 6;
     const available_accounts_count = is_logged_in
         ? available_accounts_keys.length
         : logged_out_available_accounts_count;
     const synthetic_accounts_count =
-        !is_logged_in && !show_eu_related
+        !is_logged_in && !show_eu_related_content
             ? 2
             : available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
     const financial_accounts_count =
-        !is_logged_in && !show_eu_related
+        !is_logged_in && !show_eu_related_content
             ? 4
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
@@ -220,7 +220,7 @@ const DMT5CompareModalContent = ({
 
     const getAvailableAccountsContent = (modal_content: TCompareAccountContentProps[]) => {
         if (!is_logged_in) {
-            if (show_eu_related) {
+            if (show_eu_related_content) {
                 return modal_content;
             }
             const mt5_data = modal_content.map(item => {
@@ -236,7 +236,7 @@ const DMT5CompareModalContent = ({
             );
             const content_data = { ...row_data, values: {} as TCompareAccountContentValues };
             const col_num = should_show_derivx ? 7 : 6;
-            if (available_accounts_keys.length < col_num && !show_eu_related) {
+            if (available_accounts_keys.length < col_num && !show_eu_related_content) {
                 // order of the values matters for data to be correctly displayed in the table
                 const sorted_values = [
                     'synthetic_svg',
@@ -381,7 +381,7 @@ const DMT5CompareModalContent = ({
     const getModalContent = () => {
         if (is_preappstore_cr_demo_account) {
             return preappstore_cr_demo_content;
-        } else if (show_eu_related) {
+        } else if (show_eu_related_content) {
             if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
                 return preppstore_eu_demo_content;
             }
@@ -392,7 +392,7 @@ const DMT5CompareModalContent = ({
 
     const modal_footer = () => {
         if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
-        return show_eu_related ? eu_real_footer_button : cr_real_footer_buttons;
+        return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
     };
 
     const shouldShowPendingStatus = (item: TCompareAccountFooterButtonData) => {
@@ -418,7 +418,7 @@ const DMT5CompareModalContent = ({
 
     const getClassNamesForDemoAndEu = () => {
         if (is_preappstore_cr_demo_account) return 'cfd-accounts-compare-modal-row-demo';
-        else if (show_eu_related) return 'cfd-accounts-compare-modal-row-eu';
+        else if (show_eu_related_content) return 'cfd-accounts-compare-modal-row-eu';
         return null;
     };
 
@@ -439,14 +439,14 @@ const DMT5CompareModalContent = ({
                             }
                         >
                             <Table.Head fixed className='cfd-accounts-compare-modal__table-empty-cell' />
-                            {!show_eu_related && synthetic_accounts_count > 0 && (
+                            {!show_eu_related_content && synthetic_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
                                     {localize('Derived')}
                                 </Table.Head>
                             )}
                             {financial_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
-                                    {show_eu_related ? localize('CFDs') : localize('Financial')}
+                                    {show_eu_related_content ? localize('CFDs') : localize('Financial')}
                                 </Table.Head>
                             )}
                             {should_show_derivx && synthetic_accounts_count > 0 && (
@@ -494,7 +494,7 @@ const DMT5CompareModalContent = ({
                                         key={index}
                                         className={classNames('cfd-accounts-compare-modal__table-footer__item', {
                                             [`cfd-accounts-compare-modal__table-footer__item--eu-pre_appstore}`]:
-                                                is_pre_appstore_setting && show_eu_related,
+                                                is_pre_appstore_setting && show_eu_related_content,
                                         })}
                                     >
                                         {!is_demo_tab && shouldShowPendingStatus(item) ? (

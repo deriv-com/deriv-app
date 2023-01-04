@@ -76,10 +76,7 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/react-import-loader.ts',
-                        },
-                        {
-                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.ts',
+                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
                         },
                         {
                             loader: '@deriv/shared/src/loaders/deriv-account-loader.ts',

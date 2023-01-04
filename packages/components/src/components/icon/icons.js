@@ -413,6 +413,7 @@ import './common/ic-less-than-eight.svg';
 import './common/ic-linux-logo.svg';
 import './common/ic-linux.svg';
 import './common/ic-live-chat.svg';
+import './common/ic-local.svg';
 import './common/ic-lock.svg';
 import './common/ic-logout.svg';
 import './common/ic-lookbacks.svg';

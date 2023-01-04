@@ -43,7 +43,7 @@
     &__new {
         padding: 0.3rem 0.4rem;
         margin-bottom: 0.8rem;
-        border-radius: 16px;
+        border-radius: $BORDER_RADIUS * 4;
     }
 
     &__title {

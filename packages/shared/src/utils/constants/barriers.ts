@@ -1,4 +1,4 @@
-//Configues which trade types have barrier rendered when selected
+//Configures which trade types have barrier rendered when selected
 export const CONTRACT_SHADES = {
     CALL: 'ABOVE',
     PUT: 'BELOW',

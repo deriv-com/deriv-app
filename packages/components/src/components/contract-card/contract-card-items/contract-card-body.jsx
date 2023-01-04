@@ -66,55 +66,53 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                 </ContractCardItem>
             </DesktopWrapper>
             <MobileWrapper>
-                <>
-                    <div className='dc-contract-card-items-wrapper--mobile'>
-                        <div className='dc-contract-card-items-wrapper-group'>
-                            <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
-                                <Money amount={buy_price} currency={currency} />
-                            </ContractCardItem>
+                <div className='dc-contract-card-items-wrapper--mobile'>
+                    <div className='dc-contract-card-items-wrapper-group'>
+                        <ContractCardItem header={getCardLabels().PURCHASE_PRICE}>
+                            <Money amount={buy_price} currency={currency} />
+                        </ContractCardItem>
 
-                            <ContractCardItem header={getCardLabels().ENTRY_SPOT}>
-                                <Money amount={entry_spot_display_value} currency={currency} />
-                            </ContractCardItem>
-                        </div>
-
-                        <div className='dc-contract-card-items-wrapper-group'>
-                            <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
-                                <Money amount={bid_price} currency={currency} />
-                            </ContractCardItem>
-
-                            <ContractCardItem header={getCardLabels().STRIKE}>
-                                <Money amount={barrier} currency={currency} />
-                            </ContractCardItem>
-                        </div>
-
-                        {is_sold ? (
-                            <ResultStatusIcon
-                                getCardLabels={getCardLabels}
-                                is_contract_won={getDisplayStatus(contract_info) === 'won'}
-                            />
-                        ) : (
-                            progress_slider
-                        )}
-                        <ContractCardItem
-                            className='dc-contract-card-item__total-profit-loss'
-                            header={getCardLabels().TOTAL_PROFIT_LOSS}
-                            is_crypto={isCryptocurrency(currency)}
-                            is_loss={+total_profit < 0}
-                            is_won={+total_profit > 0}
-                        >
-                            <Money amount={total_profit} currency={currency} />
-                            <div
-                                className={classNames('dc-contract-card__indicative--movement', {
-                                    'dc-contract-card__indicative--movement-complete': is_sold,
-                                })}
-                            >
-                                {status === 'profit' && <Icon icon='IcProfit' />}
-                                {status === 'loss' && <Icon icon='IcLoss' />}
-                            </div>
+                        <ContractCardItem header={getCardLabels().ENTRY_SPOT}>
+                            <Money amount={entry_spot_display_value} currency={currency} />
                         </ContractCardItem>
                     </div>
-                </>
+
+                    <div className='dc-contract-card-items-wrapper-group'>
+                        <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
+                            <Money amount={bid_price} currency={currency} />
+                        </ContractCardItem>
+
+                        <ContractCardItem header={getCardLabels().STRIKE}>
+                            <Money amount={barrier} currency={currency} />
+                        </ContractCardItem>
+                    </div>
+
+                    {is_sold ? (
+                        <ResultStatusIcon
+                            getCardLabels={getCardLabels}
+                            is_contract_won={getDisplayStatus(contract_info) === 'won'}
+                        />
+                    ) : (
+                        progress_slider
+                    )}
+                    <ContractCardItem
+                        className='dc-contract-card-item__total-profit-loss'
+                        header={getCardLabels().TOTAL_PROFIT_LOSS}
+                        is_crypto={isCryptocurrency(currency)}
+                        is_loss={+total_profit < 0}
+                        is_won={+total_profit > 0}
+                    >
+                        <Money amount={total_profit} currency={currency} />
+                        <div
+                            className={classNames('dc-contract-card__indicative--movement', {
+                                'dc-contract-card__indicative--movement-complete': is_sold,
+                            })}
+                        >
+                            {status === 'profit' && <Icon icon='IcProfit' />}
+                            {status === 'loss' && <Icon icon='IcLoss' />}
+                        </div>
+                    </ContractCardItem>
+                </div>
             </MobileWrapper>
         </React.Fragment>
     );

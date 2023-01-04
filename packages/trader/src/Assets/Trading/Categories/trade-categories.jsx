@@ -38,12 +38,12 @@ const TradeCategories = ({ category }) => {
                                 'If you select "Rise", you win the payout if the exit spot is strictly higher than the entry spot.'
                             )}
                         </Text>
-                        <Text>
+                        <Text as='p'>
                             {localize(
                                 'If you select "Fall", you win the payout if the exit spot is strictly lower than the entry spot.'
                             )}
                         </Text>
-                        <Text>
+                        <Text as='p'>
                             {localize(
                                 'If you select "Allow equals", you win the payout if exit spot is higher than or equal to entry spot for "Rise". Similarly, you win the payout if exit spot is lower than or equal to entry spot for "Fall".'
                             )}

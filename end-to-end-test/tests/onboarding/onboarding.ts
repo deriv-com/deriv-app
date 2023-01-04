@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, chromium } from '@playwright/test';
 
 const randomString = new Date().getTime();
 const suspend = (value: number) => new Promise(resolve => setTimeout(resolve, value));
@@ -90,7 +90,7 @@ export default class OnboardingFlow {
             return Promise.resolve(result);
         });
         expect(server_url).toBe(process.env.ENDPOINT);
-        await suspend(5000);
+        await suspend(10000);
     }
     async signUp() {
         await this.changeEndpoint();
@@ -102,20 +102,44 @@ export default class OnboardingFlow {
         ]);
         this.signupPage = newPage;
         // await this.page.waitForNavigation({ url: '**/signup' });
-        await suspend(10000);
+        await suspend(15000);
         await this.connectToQALocalStorage();
         // await expect(this.page.getByText(/Sign up/)).toBeVisible();
-        await newPage.waitForLoadState();
-        await newPage.locator('input[name=email]#dm-email-input').isVisible();
-        await newPage.locator('input[name=email]#dm-email-input').type(this.email);
-        await newPage.waitForSelector(
+        await this.signupPage.waitForLoadState();
+        await this.signupPage.locator('input[name=email]#dm-email-input').isVisible();
+        await this.signupPage.locator('input[name=email]#dm-email-input').type(this.email);
+        await this.signupPage.waitForSelector(
             '.signup__Form-sc-1bdbun8-1 > ._signup-new__SignupContent-sc-1f1r3le-0 > label > .checkbox__CheckboxContainer-sc-r1zf4m-0 > .checkbox__StyledCheckbox-sc-r1zf4m-3'
         );
-        await newPage.click(
+        await this.signupPage.click(
             '.signup__Form-sc-1bdbun8-1 > ._signup-new__SignupContent-sc-1f1r3le-0 > label > .checkbox__CheckboxContainer-sc-r1zf4m-0 > .checkbox__StyledCheckbox-sc-r1zf4m-3'
         );
-        await newPage.waitForSelector('#dm-new-signup');
-        await newPage.click('#dm-new-signup');
+        await this.signupPage.waitForSelector('#dm-new-signup');
+        await this.signupPage.click('#dm-new-signup');
+        const browser = await chromium.launch();
+        const mailPage = await browser.newPage({
+            ignoreHTTPSErrors: true,
+            httpCredentials: {
+                username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
+                password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
+            },
+        });
+        await mailPage.goto(`https://${process.env.ENDPOINT!}/events`);
+        let hrefs = await mailPage.evaluate(() => {
+            return Array.from(document.links).map(item => item.href);
+        });
+        hrefs = hrefs.slice().reverse();
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const item of hrefs) {
+            await mailPage.goto(item);
+            if (await mailPage.getByText(this.email).isVisible()) {
+                const val = (await mailPage.locator('a', { hasText: 'signup' }).innerText()).valueOf();
+                if (val) await this.page.goto(val);
+                await mailPage.close();
+                await this.signupPage.close();
+                break;
+            }
+        }
         await suspend(50000);
     }
     // async logIn() {

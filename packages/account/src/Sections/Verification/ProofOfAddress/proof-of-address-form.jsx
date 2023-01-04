@@ -87,6 +87,8 @@ const ProofOfAddressForm = ({
     }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
+        Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
+
         setFormState({ ...form_state, ...{ should_allow_submit: false } });
         const errors = {};
         const validateValues = validate(errors, values);

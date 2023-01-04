@@ -125,7 +125,7 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        this.selected_region = 'Non-EU';
+        this.selected_region = /^CR/.test(login_id) ? 'Non-EU' : 'EU';
     }
 
     async setSwitchEU() {

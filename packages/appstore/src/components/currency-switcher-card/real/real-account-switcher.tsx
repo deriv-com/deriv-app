@@ -1,7 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
 import { useStores } from 'Stores/index';
@@ -9,21 +7,27 @@ import StatusBadge from './switcher-status-badge';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 
-const AccountNeedsVerification = () => {
+const AccountNeedsVerification = observer(() => {
+    const { client, traders_hub } = useStores();
+    const { account_list, loginid } = client;
+    const { openModal } = traders_hub;
+
+    const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
+    const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
+
     return (
         <CurrencySwitcherContainer
             className='real-account-switcher__container'
-            title={
-                <Text size='xs' line_height='s'>
-                    {localize('Needs Verification')}
-                </Text>
-            }
-            icon='VIRTUAL'
+            title={title}
+            icon={icon}
+            onClick={() => {
+                openModal('currency_selection');
+            }}
         >
             <StatusBadge />
         </CurrencySwitcherContainer>
     );
-};
+});
 
 const RealAccountSwitcher = () => {
     const { client } = useStores();

@@ -7,6 +7,7 @@ import CurrencyIcon from 'Assets/svgs/currency';
 import { useStores } from 'Stores/index';
 import { AccountListDetail } from 'Types';
 import classNames from 'classnames';
+import StatusBadge from 'Components/currency-switcher-card/real/switcher-status-badge';
 
 type CurrencySelectionModalProps = {
     is_visible: boolean;
@@ -14,7 +15,7 @@ type CurrencySelectionModalProps = {
 
 const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => {
     const { client, traders_hub, ui } = useStores();
-    const { accounts, account_list, loginid: current_loginid, switchAccount } = client;
+    const { accounts, account_list, loginid: current_loginid, switchAccount, is_authentication_needed } = client;
     const { closeModal, selected_region } = traders_hub;
 
     return (
@@ -56,9 +57,13 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    <Text size='xs' color='prominent'>
-                                        <Money amount={balance} currency={currency} show_currency />
-                                    </Text>
+                                    {is_selected && selected_region === 'EU' && is_authentication_needed ? (
+                                        <StatusBadge />
+                                    ) : (
+                                        <Text size='xs' color='prominent'>
+                                            <Money amount={balance} currency={currency} show_currency />
+                                        </Text>
+                                    )}
                                 </div>
                             </div>
                         );

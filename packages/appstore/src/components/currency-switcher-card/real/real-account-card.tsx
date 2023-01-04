@@ -14,7 +14,7 @@ const RealAccountCard = () => {
     const history = useHistory();
     const { client, traders_hub } = useStores();
     const { accounts, loginid } = client;
-    const { openModal, is_eu_user } = traders_hub;
+    const { openModal } = traders_hub;
     const { balance, currency } = accounts[loginid] || default_balance;
 
     return (
@@ -27,9 +27,7 @@ const RealAccountCard = () => {
             }
             icon={currency}
             onClick={() => {
-                if (!is_eu_user) {
-                    openModal('currency_selection');
-                }
+                openModal('currency_selection');
             }}
             actions={
                 <Button

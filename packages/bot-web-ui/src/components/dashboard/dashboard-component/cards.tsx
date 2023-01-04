@@ -8,20 +8,20 @@ import LoadModalStore from 'Stores/load-modal-store';
 import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
 import GoogleDrive from './load-bot-preview/google-drive';
-import { isMobile } from '@deriv/shared';
+import classNames from 'classnames';
 
 type TCardProps = {
     active_tab: number;
     closeResetDialog: () => void;
     dialog_options: { [key: string]: string };
     handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
-    has_file_loaded: boolean;
     is_dialog_open: boolean;
+    has_dashboard_strategies: boolean;
     is_running: boolean;
     load_modal: LoadModalStore;
+    is_mobile: boolean;
     loadFileFromLocal: () => void;
     openFileLoader: () => void;
-    onConfirmSave: () => void;
     onOkButtonClick: () => void;
     setActiveTab: (active_tab: number) => void;
     save_modal: SaveModalStore;
@@ -33,10 +33,10 @@ const Card = ({
     closeResetDialog,
     dialog_options,
     handleFileChange,
-    has_file_loaded,
     is_dialog_open,
+    has_dashboard_strategies,
+    is_mobile,
     loadFileFromLocal,
-    onConfirmSave,
     setActiveTab,
     setFileLoaded,
     showVideoDialog,
@@ -57,12 +57,11 @@ const Card = ({
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
-    const is_mobile = isMobile();
 
     const actions: TCardArray[] = [
         {
-            icon: 'IcMyComputer',
-            content: localize('My computer'),
+            icon: is_mobile ? 'IcLocal' : 'IcMyComputer',
+            content: is_mobile ? localize('Local') : localize('My computer'),
             method: openFileLoader,
             disable: '',
         },
@@ -88,21 +87,37 @@ const Card = ({
 
     return React.useMemo(
         () => (
-            <div className='tab__dashboard__table'>
-                <div className='tab__dashboard__table__tiles' id='tab__dashboard__table__tiles'>
+            <div
+                className={classNames('tab__dashboard__table', {
+                    'tab__dashboard__table--minimized': has_dashboard_strategies && is_mobile,
+                })}
+            >
+                <div
+                    className={classNames('tab__dashboard__table__tiles', {
+                        'tab__dashboard__table__tiles--minimized': has_dashboard_strategies && is_mobile,
+                    })}
+                    id='tab__dashboard__table__tiles'
+                >
                     {actions.map(icons => {
                         const { icon, content, method, disable } = icons;
                         return (
-                            <div key={content} className={`${disable} tab__dashboard__table__block`}>
+                            <div
+                                key={content}
+                                className={classNames(`${disable} tab__dashboard__table__block`, {
+                                    'tab__dashboard__table__block--minimized': has_dashboard_strategies && is_mobile,
+                                })}
+                            >
                                 <Icon
-                                    className={'tab__dashboard__table__images'}
+                                    className={classNames('tab__dashboard__table__images', {
+                                        'tab__dashboard__table__images--minimized': has_dashboard_strategies,
+                                    })}
                                     width='8rem'
                                     height='8rem'
                                     icon={icon}
                                     id={icon}
                                     onClick={method}
                                 />
-                                <Text color='prominent' size={is_mobile ? 'xss' : 'xs'}>
+                                <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}
                                 </Text>
                             </div>
@@ -133,20 +148,18 @@ const Card = ({
                 <Recent />
             </div>
         ),
-        [is_dialog_open]
+        [is_dialog_open, has_dashboard_strategies]
     );
 };
 
-export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
+export default connect(({ load_modal, dashboard }: RootStore) => ({
     active_tab: dashboard.active_tab,
     closeResetDialog: dashboard.onCloseDialog,
     dialog_options: dashboard.dialog_options,
     handleFileChange: load_modal.handleFileChange,
-    has_file_loaded: dashboard.has_file_loaded,
     is_dialog_open: dashboard.is_dialog_open,
     load_modal,
     loadFileFromLocal: load_modal.loadFileFromLocal,
-    onConfirmSave: save_modal.onConfirmSave,
     onDriveConnect: load_modal.onDriveConnect,
     onOkButtonClick: dashboard.onCloseDialog,
     setFileLoaded: dashboard.setFileLoaded,

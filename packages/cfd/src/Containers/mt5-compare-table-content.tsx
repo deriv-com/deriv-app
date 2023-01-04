@@ -508,7 +508,7 @@ const DMT5CompareModalContent = ({
                                                 className='cfd-accounts-compare-modal__table-footer__button'
                                                 disabled={
                                                     item.action === 'derivx'
-                                                        ? isDxtradeAccountAdded(item)
+                                                        ? isDxtradeAccountAdded()
                                                         : isMt5AccountAdded(item)
                                                 }
                                                 type='button'

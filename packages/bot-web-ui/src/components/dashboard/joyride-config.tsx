@@ -195,9 +195,9 @@ export const DBOT_ONBOARDING = [
     },
 ];
 
-const Step1 = ({ is_mobile }) => (
+const Step1 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left'>
                 <Localize i18n_default_text='Step 1 :' />
             </div>
@@ -266,9 +266,9 @@ const Step1A = () => (
     </div>
 );
 
-const Step2 = ({ is_mobile }) => (
+const Step2 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left'>
                 <Localize i18n_default_text='Step 2 :' />
             </div>
@@ -293,9 +293,9 @@ const Step2 = ({ is_mobile }) => (
     </div>
 );
 
-const Step3 = ({ is_mobile }) => (
+const Step3 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left joyride-content__left__step-three'>
                 <Localize i18n_default_text='Step 3 :' />
             </div>
@@ -310,9 +310,9 @@ const Step3 = ({ is_mobile }) => (
     </div>
 );
 
-const Step4 = ({ is_mobile }) => (
+const Step4 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left'>
                 <Localize i18n_default_text='Step 4 :' />
             </div>
@@ -354,9 +354,9 @@ const Step4 = ({ is_mobile }) => (
     </div>
 );
 
-const Step5 = ({ is_mobile }) => (
+const Step5 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left'>
                 <Localize i18n_default_text='Step 5 :' />
             </div>
@@ -399,9 +399,9 @@ const Step5 = ({ is_mobile }) => (
     </div>
 );
 
-const Step6 = ({ is_mobile }) => (
+const Step6 = ({ show_label }) => (
     <div className='joyride-content'>
-        {is_mobile && (
+        {show_label && (
             <div className='joyride-content__left'>
                 <Localize i18n_default_text='Step 6 :' />
             </div>
@@ -419,7 +419,7 @@ const Step6 = ({ is_mobile }) => (
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
-        content: <Step1 is_mobile={true} />,
+        content: <Step1 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
@@ -431,31 +431,31 @@ export const BOT_BUILDER_TOUR = [
     },
     {
         target: '[data-category="purchase_conditions"]',
-        content: <Step2 is_mobile={true} />,
+        content: <Step2 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="sell_conditions"]',
-        content: <Step3 is_mobile={true} />,
+        content: <Step3 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
-        content: <Step4 is_mobile={true} />,
+        content: <Step4 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
-        content: <Step5 is_mobile={true} />,
+        content: <Step5 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="trade_results"]',
-        content: <Step6 is_mobile={true} />,
+        content: <Step6 show_label={true} />,
         locale: { last: localize('Next') },
         ...joyride_props,
     },
@@ -464,32 +464,32 @@ export const BOT_BUILDER_TOUR = [
 export const BOT_BUILDER_MOBILE = [
     {
         header: 'Step 1',
-        content: [<Step1 is_mobile={false} key={0} />, <Step1A key={1} />],
+        content: [<Step1 show_label={false} key={0} />, <Step1A key={1} />],
         key: 1,
     },
     {
         header: 'Step 2',
-        content: <Step2 is_mobile={false} />,
+        content: <Step2 show_label={false} />,
         key: 2,
     },
     {
         header: 'Step 3',
-        content: <Step3 is_mobile={false} />,
+        content: <Step3 show_label={false} />,
         key: 3,
     },
     {
         header: 'Step 4',
-        content: <Step4 is_mobile={false} />,
+        content: <Step4 show_label={false} />,
         key: 4,
     },
     {
         header: 'Step 5',
-        content: <Step5 is_mobile={false} />,
+        content: <Step5 show_label={false} />,
         key: 5,
     },
     {
         header: 'Step 6',
-        content: <Step6 is_mobile={false} />,
+        content: <Step6 show_label={false} />,
         key: 6,
     },
 ];

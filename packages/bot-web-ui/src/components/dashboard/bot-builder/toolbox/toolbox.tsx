@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Text, MobileWrapper } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
@@ -24,67 +24,54 @@ type TToolbox = {
     sub_category_index: number[];
     toggleDrawer: () => void;
     toolbox_dom: HTMLElement;
-    active_tour_step_number: number;
 };
 
 const Toolbox = ({
-    active_tour_step_number,
-    onMount,
-    onUnmount,
     hasSubCategory,
     is_search_loading,
+    onMount,
     onSearch,
     onSearchBlur,
     onSearchClear,
     onSearchKeyUp,
     onToolboxItemClick,
     onToolboxItemExpand,
+    onUnmount,
     setVisibility,
     sub_category_index,
     toolbox_dom,
 }: TToolbox) => {
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
-    const [is_toolbox_open, setToolBoxOpen] = React.useState(true);
-    const is_mobile = isMobile();
-
-    React.useEffect(() => {
-        if (active_tour_step_number === (4 || 5)) {
-            setToolBoxOpen(true);
-        }
-    }, [active_tour_step_number, is_toolbox_open]);
 
     React.useEffect(() => {
         onMount(toolbox_ref);
         return () => onUnmount();
     }, []);
 
+    if (isMobile()) {
+        return null;
+    }
+
     return (
-        <div
-            className={classNames('dashboard__toolbox', {
-                'dashboard__toolbox--active': is_toolbox_open,
-            })}
-        >
+        <div className='dashboard__toolbox'>
             <div id='gtm-toolbox' className='db-toolbox__content'>
                 <div className='db-toolbox__header'>
                     <div
                         className='db-toolbox__title'
                         onClick={() => {
-                            setOpen(!is_mobile && !is_open);
+                            setOpen(!is_open);
                             setVisibility(false);
                         }}
                     >
                         {localize('Blocks menu')}
-
-                        {!is_mobile && (
-                            <span
-                                className={classNames('db-toolbox__title__chevron', {
-                                    'db-toolbox__title__chevron--active': is_open,
-                                })}
-                            >
-                                <Icon icon='IcChevronDownBold' />
-                            </span>
-                        )}
+                        <span
+                            className={classNames('db-toolbox__title__chevron', {
+                                'db-toolbox__title__chevron--active': is_open,
+                            })}
+                        >
+                            <Icon icon='IcChevronDownBold' />
+                        </span>
                     </div>
                 </div>
                 <div className={classNames('db-toolbox__content-wrapper', { active: is_open })}>
@@ -158,21 +145,11 @@ const Toolbox = ({
                     </div>
                 </div>
             </div>
-            <MobileWrapper>
-                <div
-                    className='db-toolbox__toggle__menu'
-                    onClick={() => {
-                        setToolBoxOpen(!is_toolbox_open);
-                    }}
-                >
-                    <Icon icon={is_toolbox_open ? 'IcChevronLeftBold' : 'IcChevronRightBold'} />
-                </div>
-            </MobileWrapper>
         </div>
     );
 };
 
-export default connect(({ toolbox, ui, flyout, dashboard }: RootStore) => ({
+export default connect(({ toolbox, flyout }: RootStore) => ({
     hasSubCategory: toolbox.hasSubCategory,
     is_search_loading: toolbox.is_search_loading,
     is_toolbox_open: toolbox.is_toolbox_open,
@@ -184,9 +161,8 @@ export default connect(({ toolbox, ui, flyout, dashboard }: RootStore) => ({
     onToolboxItemClick: toolbox.onToolboxItemClick,
     onToolboxItemExpand: toolbox.onToolboxItemExpand,
     onUnmount: toolbox.onUnmount,
+    setVisibility: flyout.setVisibility,
     sub_category_index: toolbox.sub_category_index,
     toggleDrawer: toolbox.toggleDrawer,
     toolbox_dom: toolbox.toolbox_dom,
-    setVisibility: flyout.setVisibility,
-    active_tour_step_number: dashboard.active_tour_step_number,
 }))(Toolbox);

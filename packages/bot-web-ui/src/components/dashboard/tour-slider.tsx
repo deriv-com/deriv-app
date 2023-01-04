@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile, tour_type, setTourSettings } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
@@ -89,6 +89,18 @@ const TourSlider = ({
     const [slider_content, setContent] = React.useState<string>('');
     const [slider_header, setheader] = React.useState<string>('');
     const [slider_image, setimg] = React.useState<string>('');
+    const [step_key, setStepKey] = React.useState<number>(0);
+
+    const onCloseTour = (param: string) => {
+        if (param === 'onboard') {
+            setOnBoardTourRunState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        } else {
+            setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        }
+        setTourActive(false);
+    };
 
     React.useEffect(() => {
         setTourActiveStep(step);
@@ -99,51 +111,35 @@ const TourSlider = ({
                 setimg(data?.img);
             }
         });
-        if (step === 1 && has_started_bot_builder_tour) {
-            makeCenter('trade_definition');
-        } else if (step === 2 && has_started_bot_builder_tour) {
-            makeCenter('before_purchase');
-        } else if (step === 5 && has_started_bot_builder_tour) {
-            makeCenter('after_purchase');
-        }
-    }, [step]);
-
-    const onCloseTour = (param: string) => {
-        if (param === 'onboard') {
-            setOnBoardTourRunState(false);
-        } else {
-            setBotBuilderTourState(false);
-        }
-        setTourActive(false);
-    };
-
-    React.useEffect(() => {
-        setTourActiveStep(step);
-        switch (step) {
-            case 1:
-                makeCenter('trade_definition');
-                break;
-            case 2:
-                makeCenter('before_purchase');
-                break;
-            case 5:
-                makeCenter('after_purchase');
-                break;
-            default:
-                break;
+        if (has_started_bot_builder_tour) {
+            switch (step) {
+                case 1:
+                    makeCenter('trade_definition');
+                    break;
+                case 2:
+                    makeCenter('before_purchase');
+                    break;
+                case 5:
+                    makeCenter('after_purchase');
+                    break;
+                default:
+                    break;
+            }
         }
     }, [step]);
 
     const onTourEnd = () => {
-        if (step === 7) {
+        if (step === 8) {
             onCloseTour('onboard');
             setHasTourEnded(true);
             setTourDialogVisibility(true);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
         if (!has_started_onboarding_tour && step === 6) {
             onCloseTour('bot_builder');
             setHasTourEnded(true);
             setTourDialogVisibility(true);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     };
 
@@ -154,6 +150,7 @@ const TourSlider = ({
         )
             setStep(step + 1);
         else if (param === 'dec' && step > 1) setStep(step - 1);
+        else if (param === 'skip') onCloseTour('onboard');
     };
 
     React.useEffect(() => {
@@ -162,6 +159,7 @@ const TourSlider = ({
                 setContent(data?.content);
                 setheader(data?.header);
                 setimg(data?.img);
+                setStepKey(data?.step_key);
             }
         });
     }, [step]);
@@ -174,9 +172,9 @@ const TourSlider = ({
                     'dbot-slider--active': has_started_onboarding_tour && step === 1,
                 })}
             >
-                {has_started_onboarding_tour && slider_header && (
+                {has_started_onboarding_tour && slider_header && step_key !== 0 && (
                     <div className='dbot-slider__navbar'>
-                        <Text weight='less-prominent' line_height='s' size='xxs'>{`${step}/7`}</Text>
+                        <Text weight='less-prominent' line_height='s' size='xxs'>{`${step_key}/7`}</Text>
                         <Text weight='less-prominent' line_height='s' size='xxs' onClick={onCloseTour}>
                             {localize('Exit Tour')}
                         </Text>
@@ -217,7 +215,15 @@ const TourSlider = ({
                         />
                     </div>
                     <div className='dbot-slider__button-group'>
-                        {step !== 1 && (
+                        {has_started_onboarding_tour && step === 1 && (
+                            <TourButton
+                                onClick={() => {
+                                    onChange('skip');
+                                }}
+                                label={localize('Skip')}
+                            />
+                        )}
+                        {has_started_bot_builder_tour && step !== 1 && (
                             <TourButton
                                 onClick={() => {
                                     onChange('dec');

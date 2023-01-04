@@ -6,6 +6,7 @@ import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { removeKeyValue } from '../../../utils/settings';
+import { tour_type } from '../joyride-config';
 
 type TGuideContent = {
     dialog_options: { [key: string]: string };
@@ -42,6 +43,7 @@ const GuideContent = ({
                 removeKeyValue('onboard_tour_status');
                 removeKeyValue('bot_builder_status');
             }
+            tour_type.key = 'onboard_tour';
             setHasTourEnded(false);
             if (is_mobile) {
                 setTourActive(true);
@@ -56,6 +58,7 @@ const GuideContent = ({
                 removeKeyValue('bot_builder_status');
                 removeKeyValue('onboard_tour_status');
             }
+            tour_type.key = 'bot_builder';
             setHasTourEnded(false);
             setTourDialogVisibility(true);
             setActiveTab(1);

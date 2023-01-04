@@ -29,7 +29,7 @@ const DashboardComponent = ({
         <React.Fragment>
             <div
                 className={classNames('tab__dashboard', {
-                    'tab__dashboard--tour-active': has_started_onboarding_tour,
+                    'tab__dashboard--tour-active': has_started_onboarding_tour && !is_mobile,
                 })}
             >
                 <div className='tab__dashboard__content'>

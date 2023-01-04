@@ -38,6 +38,16 @@
 }
 
 .tour-dialog {
+    .dc-dialog__dialog {
+        @include mobile {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+        @include tablet {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+    }
     &--end {
         .dc-btn--secondary {
             display: none;

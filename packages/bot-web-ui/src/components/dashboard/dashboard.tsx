@@ -165,10 +165,10 @@ const Dashboard = ({
 
     React.useEffect(() => {
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
-        const has_bot_builder_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_status;
-        const has_onboard_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
-        if (has_bot_builder_token_set || (has_onboard_token_set && !has_started_onboarding_tour)) {
-            if (is_mobile) {
+        const has_onboard_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_token;
+        const has_bot_builder_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
+        if (has_bot_builder_token_set || (has_onboard_token_set && !has_started_bot_builder_tour)) {
+            if (is_mobile && has_started_onboarding_tour) {
                 setTourActive(true);
                 setOnBoardTourRunState(true);
             } else {
@@ -216,9 +216,14 @@ const Dashboard = ({
     return (
         <React.Fragment>
             <div className='dashboard__main'>
-                <div className='dashboard__container'>
+                <div
+                    className={classNames('dashboard__container', {
+                        'dashboard__container--active': has_tour_started && active_tab === 0 && is_mobile,
+                    })}
+                >
                     <TourTriggrerDialog />
                     {has_tour_started &&
+                        active_tab === 0 &&
                         (is_mobile ? (
                             <TourSlider />
                         ) : (

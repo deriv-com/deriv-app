@@ -140,7 +140,21 @@ export default class OnboardingFlow {
                 break;
             }
         }
-        await suspend(50000);
+        await this.page.locator('#dt_core_set-residence-form_signup-residence-select');
+        await this.page.click('#dt_core_set-residence-form_signup-residence-select');
+        await expect(this.page.getByText(/Germany/)).toBeVisible();
+        await this.page.getByText(/Germany/).click();
+        await this.page.getByRole('dialog').getByRole('button', { name: 'Next' }).click();
+        await expect(this.page.getByText(/Citizenship/)).toBeVisible();
+        await expect(this.page.getByText(/Are you a citizen of/)).toBeVisible();
+        await this.page.getByText(/Yes/).click();
+        await expect(this.page.getByText(/Keep your account secure/)).toBeVisible();
+        await this.page.locator('#dt_core_account-signup-modal_account-signup-password-field');
+        await expect(this.page.getByText(/Start trading/)).toBeDisabled();
+        await this.page.locator('#dt_core_account-signup-modal_account-signup-password-field').type('Abcd2134');
+        await expect(this.page.getByText(/Start trading/)).toBeEnabled();
+        await this.page.getByText(/Start trading/).click();
+        // await suspend(50000);
     }
     // async logIn() {
     //     const { page } = this;

@@ -20,6 +20,18 @@ const ExitTradersHubModal = () => {
         </Text>
     );
 
+    const ModalContent = () => {
+        return (
+            <React.Fragment>
+                <Modal.Body>{exit_traders_hub_modal_content}</Modal.Body>
+                <Modal.Footer has_separator>
+                    <Button onClick={closeModal} has_effect text={localize('Not now')} secondary large />
+                    <Button has_effect onClick={onClickExitButton} text={localize('Yes, exit')} primary large />
+                </Modal.Footer>
+            </React.Fragment>
+        );
+    };
+
     const closeModal = () => {
         toggleExitTradersHubModal();
     };
@@ -43,11 +55,7 @@ const ExitTradersHubModal = () => {
                     width='440px'
                     className='exit-traders-hub-modal'
                 >
-                    <Modal.Body>{exit_traders_hub_modal_content}</Modal.Body>
-                    <Modal.Footer has_separator>
-                        <Button onClick={closeModal} has_effect text={localize('Not now')} secondary large />
-                        <Button has_effect onClick={onClickExitButton} text={localize('Yes, exit')} primary large />
-                    </Modal.Footer>
+                    <ModalContent />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -59,11 +67,7 @@ const ExitTradersHubModal = () => {
                     has_full_height
                     wrapper_classname='exit-traders-hub-modal_mobile_content'
                 >
-                    <Modal.Body>{exit_traders_hub_modal_content}</Modal.Body>
-                    <Modal.Footer has_separator>
-                        <Button onClick={closeModal} has_effect text={localize('Not now')} secondary large />
-                        <Button has_effect onClick={onClickExitButton} text={localize('Yes, exit')} primary large />
-                    </Modal.Footer>
+                    <ModalContent />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

@@ -240,7 +240,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get should_show_exit_traders_modal() {
-        //  should display the modal user have atleast one mf account and cr account
+        //  should display the modal when user have atleast one mf account and cr account
         const { active_accounts } = this.root_store.client;
         return (
             active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&

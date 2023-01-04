@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import { DBOT_ONBOARDING_MOBILE } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import classNames from 'classnames';
 
 type TTourButton = {
     children?: React.ReactNode;
@@ -12,6 +13,7 @@ type TTourButton = {
 };
 
 type TTourSlider = {
+    has_started_onboarding_tour: boolean;
     setOnBoardTourRunState: (param: boolean) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
@@ -33,6 +35,7 @@ const TourSlider = ({
     setTourActive,
     setTourDialogVisibility,
     setHasTourEnded,
+    has_started_onboarding_tour,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string>('');
@@ -69,7 +72,11 @@ const TourSlider = ({
 
     return (
         <>
-            <div className='dbot-slider'>
+            <div
+                className={classNames('dbot-slider', {
+                    'dbot-slider--active': step === 1 && has_started_onboarding_tour,
+                })}
+            >
                 <div className='dbot-slider__navbar'>
                     <Text weight='less-prominent' line_height='s' size='xxs'>{`${step}/7`}</Text>
                     <Text weight='less-prominent' line_height='s' size='xxs' onClick={onCloseTour}>
@@ -141,4 +148,5 @@ export default connect(({ dashboard }: RootStore) => ({
     setTourActive: dashboard.setTourActive,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setHasTourEnded: dashboard.setHasTourEnded,
+    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
 }))(TourSlider);

@@ -101,22 +101,6 @@ const Dashboard = ({
     let tour_status: { [key: string]: string };
     const is_mobile = isMobile();
 
-    const setTourStatus = (param: { [key: string]: string }) => {
-        if (tour_status) {
-            const { action } = tour_status;
-            const actions = ['skip', 'close'];
-
-            if (actions.includes(action)) {
-                if (tour_type.key === 'bot_builder') {
-                    setBotBuilderTourState(false);
-                } else {
-                    setOnBoardTourRunState(false);
-                }
-                setTourActive(false);
-            }
-        }
-    };
-
     React.useEffect(() => {
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
@@ -134,6 +118,60 @@ const Dashboard = ({
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
     }, [active_tab, handleJoyrideCallback, has_started_onboarding_tour, tour_status_ended]);
+
+    React.useEffect(() => {
+        const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
+        const is_onboarding_tour_visited = active_tab === 0 && !dbot_settings?.onboard_tour_token;
+        const is_bot_builder_tour_visited = active_tab === 1 && !dbot_settings?.bot_builder_token;
+
+        if (is_onboarding_tour_visited || (is_bot_builder_tour_visited && !has_started_onboarding_tour)) {
+            if (is_mobile) {
+                // if mobile then instead of opening the tour trigger dialog open the tour directly
+                setTourActive(true);
+                setOnBoardTourRunState(true);
+            } else {
+                setTourDialogVisibility(true);
+            }
+        }
+    }, [active_tab]);
+
+    React.useEffect(() => {
+        const images = [
+            getImageLocation('ic-new-user-step-two.png'),
+            getImageLocation('ic-new-user-step-three.png'),
+            getImageLocation('ic-new-user-step-four.png'),
+            getImageLocation('ic-new-user-step-five.png'),
+            getImageLocation('ic-new-user-step-six.png'),
+            getImageLocation('ic-new-user-step-seven.png'),
+        ];
+
+        images.forEach(img => {
+            if (!document.getElementById(img)) {
+                const link = document.createElement('link');
+                link.setAttribute('rel', 'preload');
+                link.setAttribute('as', 'image');
+                link.setAttribute('href', img);
+                link.setAttribute('id', img);
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+        });
+    }, [has_tour_started]);
+
+    const setTourStatus = () => {
+        if (tour_status) {
+            const { action } = tour_status;
+            const actions = ['skip', 'close'];
+
+            if (actions.includes(action)) {
+                if (tour_type.key === 'bot_builder') {
+                    setBotBuilderTourState(false);
+                } else {
+                    setOnBoardTourRunState(false);
+                }
+                setTourActive(false);
+            }
+        }
+    };
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
@@ -164,72 +202,44 @@ const Dashboard = ({
         storage = JSON.parse(localStorage?.dbot_settings);
     }
 
-    React.useEffect(() => {
-        const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
-        if (
-            (active_tab === 0 && !dbot_settings?.onboard_tour_token) ||
-            (active_tab === 1 && !dbot_settings?.bot_builder_token && !has_started_onboarding_tour)
-        ) {
-            setTourDialogVisibility(true);
-        }
-    }, [active_tab]);
-
-    React.useEffect(() => {
-        const images = [
-            getImageLocation('ic-new-user-step-two.png'),
-            getImageLocation('ic-new-user-step-three.png'),
-            getImageLocation('ic-new-user-step-four.png'),
-            getImageLocation('ic-new-user-step-five.png'),
-            getImageLocation('ic-new-user-step-six.png'),
-            getImageLocation('ic-new-user-step-seven.png'),
-        ];
-
-        images.forEach(img => {
-            if (!document.getElementById(img)) {
-                const link = document.createElement('link');
-                link.setAttribute('rel', 'preload');
-                link.setAttribute('as', 'image');
-                link.setAttribute('href', img);
-                link.setAttribute('id', img);
-                document.getElementsByTagName('head')[0].appendChild(link);
-            }
-        });
-    }, [has_tour_started]);
-
     return (
         <React.Fragment>
             <div className='dashboard__main'>
                 <div className='dashboard__container'>
                     <TourTriggrerDialog />
-                    {has_tour_started &&
-                        (is_mobile ? (
-                            <TourSlider />
-                        ) : (
-                            <ReactJoyride
-                                steps={DBOT_ONBOARDING}
-                                continuous
-                                callback={handleJoyrideCallback}
-                                spotlightClicks
-                                hideCloseButton
-                                locale={{ back: 'Previous' }}
-                                styles={{
-                                    options: {
-                                        arrowColor: 'var(--general-main-2)',
-                                        backgroundColor: 'var(--general-main-2)',
-                                        primaryColor: 'var(--brand-red-coral)',
-                                        textColor: 'var(--text-general)',
-                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                    },
-                                    buttonBack: {
-                                        border: '0.2rem solid var(--text-less-prominent)',
-                                        marginRight: '1rem',
-                                        borderRadius: '0.4rem',
-                                        color: 'var(--text-general)',
-                                        padding: '0.6rem',
-                                    },
-                                }}
-                            />
-                        ))}
+                    {has_tour_started && (
+                        <>
+                            <MobileWrapper>
+                                <TourSlider />
+                            </MobileWrapper>
+                            <DesktopWrapper>
+                                <ReactJoyride
+                                    steps={DBOT_ONBOARDING}
+                                    continuous
+                                    callback={handleJoyrideCallback}
+                                    spotlightClicks
+                                    hideCloseButton
+                                    locale={{ back: 'Previous' }}
+                                    styles={{
+                                        options: {
+                                            arrowColor: 'var(--general-main-2)',
+                                            backgroundColor: 'var(--general-main-2)',
+                                            primaryColor: 'var(--brand-red-coral)',
+                                            textColor: 'var(--text-general)',
+                                            spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
+                                        },
+                                        buttonBack: {
+                                            border: '0.2rem solid var(--text-less-prominent)',
+                                            marginRight: '1rem',
+                                            borderRadius: '0.4rem',
+                                            color: 'var(--text-general)',
+                                            padding: '0.6rem',
+                                        },
+                                    }}
+                                />
+                            </DesktopWrapper>
+                        </>
+                    )}
                     <Tabs
                         active_index={active_tab}
                         className='dashboard__tabs'
@@ -331,4 +341,5 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setActiveTab: dashboard.setActiveTab,
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
+    has_tour_ended: dashboard.has_tour_ended,
 }))(Dashboard);

@@ -38,7 +38,7 @@ const TourTriggrerDialog = ({
                 }
                 setHasTourEnded(value);
             } else {
-                setBotBuilderTourState(value);
+                setTourSettings(new Date().getTime(), 'onboard_token');
             }
             tour_type.key = 'onboard_tour';
         } else if (tour_type.key === 'bot_builder') {
@@ -57,7 +57,6 @@ const TourTriggrerDialog = ({
         }
         setTourDialogVisibility(false);
     };
-
     const getTourContent = (type: string) => {
         return (
             <>
@@ -152,13 +151,7 @@ const TourTriggrerDialog = ({
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
-                confirm_button_text={
-                    has_tour_ended
-                        ? active_tab === 0
-                            ? localize('Got it, thanks!')
-                            : localize('OK')
-                        : localize('Start')
-                }
+                confirm_button_text={has_tour_ended ? confirm_button : localize('Start')}
                 onConfirm={() => {
                     const status = tour_status_ended.key === 'finished';
                     toggleTour(status ? false : !has_tour_ended, 'onConfirm');

@@ -446,6 +446,11 @@ export const BOT_BUILDER_TOUR = [
 
 export const DBOT_ONBOARDING_MOBILE = [
     {
+        header: localize('Get started on DBot'),
+        content: localize('Hi! Hit Start for a quick tour to help you get started.'),
+        key: 0,
+    },
+    {
         header: localize('Build from scratch'),
         img: getImageLocation('ic_onb_step_1.png'),
         content: localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),

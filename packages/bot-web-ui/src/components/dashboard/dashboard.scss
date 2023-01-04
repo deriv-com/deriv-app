@@ -263,6 +263,13 @@
     border-top: 1px solid $color-grey-4;
     height: 100vh;
 
+    &--active {
+        &:after {
+            background: rgba(0, 0, 0, 0.72);
+        }
+        height: auto;
+    }
+
     &__navbar {
         display: flex;
         justify-content: space-between;

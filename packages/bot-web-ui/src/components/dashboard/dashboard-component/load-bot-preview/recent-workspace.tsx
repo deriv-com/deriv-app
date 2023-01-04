@@ -1,6 +1,6 @@
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { Icon } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Text, useOnClickOutside } from '@deriv/components';
 import classnames from 'classnames';
 import React from 'react';
 import { connect } from 'Stores/connect';
@@ -48,6 +48,16 @@ const RecentWorkspace = ({
             }, 50);
         }
     }, []);
+    const [is_dropdown_visible, setDropdownVisibility] = React.useState(false);
+    const toggle_ref = React.useRef<HTMLDivElement>(null);
+    const validateClickOutside = (event: React.ChangeEvent<HTMLInputElement>) =>
+        is_dropdown_visible && !toggle_ref.current?.contains(event.target);
+
+    const onToggleDropdown = () => {
+        setDropdownVisibility(!is_dropdown_visible);
+    };
+
+    useOnClickOutside(toggle_ref, onToggleDropdown, validateClickOutside);
 
     const viewRecentStrategy = (type: string) => {
         if (selected_strategy_id !== workspace.id) {
@@ -90,32 +100,98 @@ const RecentWorkspace = ({
                     />
                     <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
                 </div>
-                <div className='load-strategy__recent-item__button'>
-                    <div
-                        className='load-strategy__recent-item__button'
-                        onClick={() => {
-                            viewRecentStrategy('edit');
-                        }}
-                    >
-                        <Icon icon='IcEdit' />
+                <DesktopWrapper>
+                    <div className='load-strategy__recent-item__button'>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={() => {
+                                viewRecentStrategy('edit');
+                            }}
+                        >
+                            <Icon icon='IcEdit' />
+                        </div>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={() => {
+                                viewRecentStrategy('save');
+                            }}
+                        >
+                            <Icon icon='IcSave' />
+                        </div>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={e => {
+                                viewRecentStrategy('delete');
+                            }}
+                        >
+                            <Icon icon='IcDelete' />
+                        </div>
+                    </div>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div ref={toggle_ref} onClick={() => onToggleDropdown()}>
+                        <Icon icon='IcMenuDots' />
                     </div>
                     <div
-                        className='load-strategy__recent-item__button'
-                        onClick={() => {
-                            viewRecentStrategy('save');
-                        }}
+                        className={classnames('load-strategy__recent-item__mobile', {
+                            'load-strategy__recent-item__mobile--active':
+                                selected_strategy_id === workspace.id && is_dropdown_visible,
+                        })}
                     >
-                        <Icon icon='IcSave' />
+                        <div className='load-strategy__recent-item__group'>
+                            <div className='load-strategy__recent-item__group__icon'>
+                                <Icon icon='IcPreview' />
+                            </div>
+                            <Text
+                                color='general'
+                                className='load-strategy__recent-item__group__label'
+                                as='p'
+                                size='xxs'
+                            >
+                                Preview
+                            </Text>
+                        </div>
+                        <div className='load-strategy__recent-item__group'>
+                            <div>
+                                <Icon icon='IcEdit' />
+                            </div>
+                            <Text
+                                color='general'
+                                className='load-strategy__recent-item__group__label'
+                                as='p'
+                                size='xxs'
+                            >
+                                Edit
+                            </Text>
+                        </div>
+                        <div className='load-strategy__recent-item__group'>
+                            <div>
+                                <Icon icon='IcSave' />
+                            </div>
+                            <Text
+                                color='general'
+                                className='load-strategy__recent-item__group__label'
+                                as='p'
+                                size='xxs'
+                            >
+                                Save
+                            </Text>
+                        </div>
+                        <div className='load-strategy__recent-item__group'>
+                            <div>
+                                <Icon icon='IcDelete' />
+                            </div>
+                            <Text
+                                color='general'
+                                className='load-strategy__recent-item__group__label'
+                                as='p'
+                                size='xxs'
+                            >
+                                Delete
+                            </Text>
+                        </div>
                     </div>
-                    <div
-                        className='load-strategy__recent-item__button'
-                        onClick={e => {
-                            viewRecentStrategy('delete');
-                        }}
-                    >
-                        <Icon icon='IcDelete' />
-                    </div>
-                </div>
+                </MobileWrapper>
             </div>
         </>
     );

@@ -146,6 +146,10 @@
             flex-basis: 100%;
             height: calc(100% - 3.8rem);
 
+            @include mobile {
+                height: unset;
+            }
+
             &__list {
                 overflow: auto;
                 /* TODO: ThemedScrollbars! */
@@ -221,12 +225,57 @@
         }
 
         &-item {
+            position: relative;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
+            &:nth-last-child(-n + 5) {
+                .load-strategy__recent-item__mobile {
+                    top: -15rem;
+                }
+            }
+
+            @include tablet {
+                grid-template-columns: 4fr 4fr 4fr 1fr;
+            }
+
+            @include mobile {
+                grid-template-columns: 4fr 4fr 4fr 1fr;
+            }
+
             grid-template-areas: ('text location');
             padding: 0.8rem;
             align-items: center;
             text-align: center;
+
+            &__mobile {
+                background: $color-white;
+                width: 15rem;
+                box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
+                position: absolute;
+                right: 3rem;
+                top: 4rem;
+                z-index: 100;
+                display: none;
+
+                &--active {
+                    display: block;
+                }
+            }
+
+            &__group {
+                display: flex;
+                align-items: center;
+                height: 4rem;
+                padding: 0.8rem 1.1rem;
+
+                &:last-child {
+                    box-shadow: inset 0 0.1rem 0 #f2f3f4;
+                }
+
+                &__label {
+                    margin-left: 0.8rem;
+                }
+            }
 
             &.load-dialog {
                 padding: 1.6rem;
@@ -239,6 +288,15 @@
             &__loaded {
                 text-align: left;
                 padding: 1rem 3rem;
+
+                @include tablet {
+                    padding: 1rem 0.6rem;
+                }
+
+                @include mobile {
+                    padding: 1rem 0.6rem;
+                }
+
                 .load-strategy__recent-item-text {
                     height: unset;
                 }
@@ -269,6 +327,7 @@
                 word-break: break-word;
                 margin-right: 1.6rem;
                 height: unset;
+
                 &.load-dialog {
                     display: flex;
                     text-align: left;
@@ -299,6 +358,7 @@
                 width: 100%;
                 word-break: break-word;
                 color: var(--text-general);
+
                 &.load-dialog {
                     justify-content: center;
                 }
@@ -315,9 +375,11 @@
                 display: flex;
                 margin-right: 2rem;
                 padding: 0.2rem;
+
                 &:last-child {
                     margin-right: 0;
                 }
+
                 align-items: center;
                 justify-content: flex-end;
             }

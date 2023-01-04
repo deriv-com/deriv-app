@@ -10,51 +10,50 @@ import { isMobile, formatMoney } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import GetMoreAccounts from 'Components/get-more-accounts';
+import { Actions } from 'Components/containers/trading-app-card-actions';
+import { getHasDivider } from 'Constants/utils';
+
+type TDetailedExistingAccount = AvailableAccount &
+    TDetailsOfEachMT5Loginid &
+    Actions & {
+        key: string;
+    };
 
 const CFDsListing = () => {
     const {
         client,
         modules: { cfd },
         traders_hub,
+        common,
+        ui,
     } = useStores();
     const {
         available_dxtrade_accounts,
-        available_mt5_accounts,
+        combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
         startTrade,
-        is_eu_user,
         is_real,
         getExistingAccounts,
         getAccount,
+        toggleAccountTypeModalVisibility,
+        can_get_more_cfd_mt5_accounts,
+        selected_account_type,
+        is_eu_user,
+        is_demo_low_risk,
+        no_MF_account,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal } = cfd;
-    const { is_eu, is_landing_company_loaded } = client;
+    const { toggleCompareAccountsModal, setAccountType } = cfd;
+    const { is_landing_company_loaded } = client;
+    const { setAppstorePlatform } = common;
+    const { openDerivRealAccountNeededModal } = ui;
     const has_no_real_account = !has_any_real_account;
+    const accounts_sub_text =
+        !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const accounts_sub_text = is_eu ? localize('Account Information') : localize('Compare accounts');
-
-    const getShortCodeAndRegion = (account: TDetailsOfEachMT5Loginid) => {
-        let short_code_and_region;
-        if (is_real && !is_eu_user) {
-            const short_code =
-                account.landing_company_short &&
-                account.landing_company_short !== 'svg' &&
-                account.landing_company_short !== 'bvi'
-                    ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
-                    : account.landing_company_short?.toUpperCase();
-
-            const region =
-                account.market_type !== 'financial' && account.landing_company_short !== 'bvi'
-                    ? ` - ${account?.server_info?.geolocation?.region}`
-                    : '';
-
-            short_code_and_region = `${short_code}${region}`;
-        }
-        return short_code_and_region;
-    };
-
+    const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
     return (
         <ListingContainer
             title={
@@ -90,11 +89,12 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {is_real && has_no_real_account && (
-                <div className='cfd-full-row'>
-                    <AddOptionsAccount />
-                </div>
-            )}
+            {(is_real && has_no_real_account) ||
+                (is_eu_user && no_MF_account && is_real && (
+                    <div className='cfd-full-row'>
+                        <AddOptionsAccount />
+                    </div>
+                ))}
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text size='xs' line_height='m' weight='bold'>
@@ -102,49 +102,53 @@ const CFDsListing = () => {
                 </Text>
             </div>
             {is_landing_company_loaded ? (
-                available_mt5_accounts?.map((account: AvailableAccount) => {
-                    const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                    const has_existing_accounts = existing_accounts.length > 0;
-                    return has_existing_accounts ? (
-                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                <>
+                    {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
+                        const list_size = combined_cfd_mt5_accounts.length;
+                        return (
                             <TradingAppCard
-                                icon={account.icon}
-                                sub_title={account.name}
-                                name={`${formatMoney(
-                                    existing_account.currency,
-                                    existing_account.display_balance,
-                                    true
-                                )} ${existing_account.currency}`}
-                                short_code_and_region={getShortCodeAndRegion(existing_account)}
-                                platform={account.platform}
-                                description={existing_account.display_login}
-                                key={`trading_app_card_${existing_account.display_login}`}
-                                type='transfer_trade'
+                                icon={existing_account.icon}
+                                sub_title={existing_account?.sub_title}
+                                name={existing_account?.name}
+                                short_code_and_region={existing_account?.short_code_and_region}
+                                platform={existing_account.platform}
+                                description={existing_account.description}
+                                key={existing_account.key}
+                                type={existing_account.type}
                                 availability={selected_region}
+                                has_divider={!is_eu_user && getHasDivider(index, list_size, 1, 3)}
                                 onAction={() => {
-                                    startTrade(account.platform, existing_account);
+                                    if (existing_account.type === 'get') {
+                                        if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
+                                            openDerivRealAccountNeededModal();
+                                        } else {
+                                            setAccountType({
+                                                category: selected_account_type,
+                                                type: existing_account.market_type,
+                                            });
+                                            setAppstorePlatform(existing_account.platform);
+                                            getAccount();
+                                        }
+                                    } else if (existing_account.type === 'transfer_trade') {
+                                        startTrade(existing_account.platform, existing_account);
+                                    }
                                 }}
                             />
-                        ))
-                    ) : (
-                        <TradingAppCard
-                            icon={account.icon}
-                            name={account.name}
-                            platform={account.platform}
-                            description={account.description}
-                            key={`trading_app_card_${account.name}`}
-                            type='get'
-                            availability={selected_region}
-                            onAction={() => {
-                                getAccount(account.market_type, account.platform);
-                            }}
+                        );
+                    })}
+                    {can_get_more_cfd_mt5_accounts && (
+                        <GetMoreAccounts
+                            onClick={toggleAccountTypeModalVisibility}
+                            icon='IcAppstoreGetMoreAccounts'
+                            title={localize('Get more')}
+                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
                         />
-                    );
-                })
+                    )}
+                </>
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && !is_eu && (
+            {!is_eu_user && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
@@ -187,7 +191,16 @@ const CFDsListing = () => {
                             platform={account.platform}
                             description={account.description}
                             onAction={() => {
-                                getAccount(account.market_type, account.platform);
+                                if (has_no_real_account && is_real) {
+                                    ui.openDerivRealAccountNeededModal();
+                                } else {
+                                    setAccountType({
+                                        category: selected_account_type,
+                                        type: account.market_type,
+                                    });
+                                    setAppstorePlatform(account.platform);
+                                    getAccount();
+                                }
                             }}
                             key={`trading_app_card_${account.name}`}
                             type='get'

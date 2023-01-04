@@ -37,7 +37,7 @@ const AssetSummary = () => {
         mt5_login_list?.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency ||
         dxtrade_accounts_list.find((mt5_account: DetailsOfEachMT5Loginid) => isDemo(mt5_account))?.currency;
 
-    const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual).loginid;
+    const vrtc_loginid = account_list.find((account: { is_virtual: boolean }) => account.is_virtual)?.loginid;
     const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
     const account_total_balance_currency =
         selected_account_type === 'demo' ? vrtc_currency : obj_total_balance.currency;

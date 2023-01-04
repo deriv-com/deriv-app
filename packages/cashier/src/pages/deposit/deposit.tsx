@@ -1,17 +1,17 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
-import { Real, Virtual } from 'Components/cashier-container';
-import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
-import CashierLocked from 'Components/cashier-locked';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import Error from 'Components/error';
-import FundsProtection from 'Components/funds-protection';
-import USDTSideNote from 'Components/usdt-side-note';
-import RecentTransaction from 'Components/recent-transaction';
+import { Real, Virtual } from '../../components/cashier-container';
+import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
+import CashierLocked from '../../components/cashier-locked';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import Error from '../../components/error';
+import FundsProtection from '../../components/funds-protection';
+import USDTSideNote from '../../components/usdt-side-note';
+import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
-import SideNote from 'Components/side-note';
+import SideNote from '../../components/side-note';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
@@ -96,7 +96,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return <Loading is_fullscreen />;
     }
     if (is_virtual) {
-        return <Virtual is_pre_appstore={is_pre_appstore} />;
+        return <Virtual />;
     }
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {

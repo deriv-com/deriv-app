@@ -320,14 +320,3 @@ export type TAccount = {
     balance: number;
     currency: string;
 };
-
-export const getTotalBalance = (accounts: TAccount[]) => {
-    const total_balance = accounts.reduce(
-        (total, account) => {
-            total.balance += account?.balance || 0;
-            return total;
-        },
-        { balance: 0 }
-    );
-    return total_balance;
-};

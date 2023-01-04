@@ -8,6 +8,7 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import { ContentFlag } from '@deriv/shared';
 
 const TradingAppCard = ({
     name,
@@ -20,14 +21,18 @@ const TradingAppCard = ({
     has_divider,
     short_code_and_region,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { client } = useStores();
+    const { traders_hub } = useStores();
+    const { is_eu_user, is_demo_low_risk, content_flag } = traders_hub;
 
-    const platform = client.is_eu ? mf_platform_config : platform_config;
+    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const { app_desc, link_to } = platform.find(config => config.name === name) || {
+    const platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
+
+    const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
+
     return (
         <div className='trading-app-card'>
             <div>
@@ -62,7 +67,7 @@ const TradingAppCard = ({
                 </Text>
             </div>
             <div className={classNames('trading-app-card__actions', { 'trading-app-card--divider': has_divider })}>
-                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} />
+                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} is_external={is_external} />
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
-import { CFD_PLATFORMS, isLandingCompanyEnabled, ACCOUNT_FLAG } from '@deriv/shared';
+import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
@@ -42,7 +42,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_cr_demo_account: boolean;
     upgradeable_landing_companies: unknown[];
     landing_company_shortcode: string;
-    account_flag: string;
+    content_flag: string;
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -112,7 +112,7 @@ const CompareAccountsModal = ({
     residence,
     setShouldShowCooldownModal,
     toggleCompareAccounts,
-    account_flag,
+    content_flag,
 }: TCompareAccountsModalProps) => {
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
@@ -136,13 +136,13 @@ const CompareAccountsModal = ({
         });
 
     const show_eu_related =
-        account_flag === ACCOUNT_FLAG.EU_DEMO_CONTENT ||
-        account_flag === ACCOUNT_FLAG.EU_REAL_CONTENT ||
-        account_flag === ACCOUNT_FLAG.LOW_RISK_CR_EU_CONTENT;
+        content_flag === ContentFlag.EU_DEMO ||
+        content_flag === ContentFlag.EU_REAL ||
+        content_flag === ContentFlag.LOW_RISK_CR_EU;
     const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related;
 
     const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related && is_demo_tab;
-    const is_preappstore_cr_demo_account = is_pre_appstore_setting && account_flag === ACCOUNT_FLAG.CR_DEMO_CONTENT;
+    const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
 
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
@@ -179,7 +179,7 @@ const CompareAccountsModal = ({
             };
         } else if (show_eu_related) {
             if (is_pre_appstore_setting) {
-                if (account_flag === ACCOUNT_FLAG.EU_DEMO_CONTENT) {
+                if (content_flag === ContentFlag.EU_DEMO) {
                     return {
                         height: '350px',
                         width: '483px',
@@ -221,7 +221,7 @@ const CompareAccountsModal = ({
             />
         ) : (
             <DMT5CompareModalContent
-                account_flag={account_flag}
+                content_flag={content_flag}
                 context={context}
                 is_demo_tab={is_demo_tab}
                 is_logged_in={is_logged_in}
@@ -305,5 +305,5 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
     selected_region: traders_hub.selected_region,
     is_eu_user: traders_hub.is_eu_user,
-    account_flag: traders_hub.account_flag,
+    content_flag: traders_hub.content_flag,
 }))(CompareAccountsModal);

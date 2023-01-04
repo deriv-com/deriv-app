@@ -273,11 +273,11 @@ export type TCompareAccountContentValues = Record<
 >;
 
 export type TCompareAccountRowProps = TCompareAccountContentProps & {
-    pre_appstore_class: string;
     available_accounts_count: number;
     classname_for_demo_and_eu: string | null;
+    content_flag: string;
     is_pre_appstore_setting: boolean;
-    account_flag: string;
+    pre_appstore_class: string;
 };
 
 export type TCompareAccountContentProps = {
@@ -289,11 +289,11 @@ export type TCompareAccountContentProps = {
 export type TCompareAccountFooterButtonData = { label: string; action: string };
 
 export type TDMT5CompareModalContentProps = {
-    account_flag: string;
     account_settings: GetSettings;
     account_status: GetAccountStatus;
     account_type: TOpenAccountTransferMeta;
     clearCFDError: () => void;
+    content_flag: string;
     context: RootStore;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     has_real_account: boolean;

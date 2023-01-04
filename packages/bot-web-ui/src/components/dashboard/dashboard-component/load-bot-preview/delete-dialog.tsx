@@ -66,7 +66,7 @@ const DeleteDialog = ({
                     </Text>
                 </div>
                 <div>
-                    <Text color='prominent' line_height='xxl' size='xs'>
+                    <Text color='prominent' line_height='xl' size='xs'>
                         {localize('Are you sure you want to delete it?')}
                     </Text>
                 </div>

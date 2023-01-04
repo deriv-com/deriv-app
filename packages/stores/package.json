@@ -7,7 +7,8 @@
         "react": "^16.14.0",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
-        "mobx-persist-store": "1.1.2"
+        "mobx-persist-store": "1.1.2",
+        "@deriv/api-types": "1.0.74"
     },
     "devDependencies": {
         "@deriv/api-types": "^1.0.54",

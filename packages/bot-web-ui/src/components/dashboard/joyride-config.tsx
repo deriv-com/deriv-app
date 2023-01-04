@@ -195,11 +195,13 @@ export const DBOT_ONBOARDING = [
     },
 ];
 
-const Step1 = () => (
+const Step1 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
-            <Localize i18n_default_text='Step 1 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left'>
+                <Localize i18n_default_text='Step 1 :' />
+            </div>
+        )}
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text={`Let's start by setting up the <0>first block.</0>`}
@@ -264,11 +266,14 @@ const Step1A = () => (
     </div>
 );
 
-const Step2 = () => (
+const Step2 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
-            <Localize i18n_default_text='Step 2 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left'>
+                <Localize i18n_default_text='Step 2 :' />
+            </div>
+        )}
+
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text='Then, set the <0>Purchase conditions</0> block.'
@@ -288,11 +293,14 @@ const Step2 = () => (
     </div>
 );
 
-const Step3 = () => (
+const Step3 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left joyride-content__left__step-three'>
-            <Localize i18n_default_text='Step 3 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left joyride-content__left__step-three'>
+                <Localize i18n_default_text='Step 3 :' />
+            </div>
+        )}
+
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text='The third block is <0>optional</0>. You may use this block if you want to sell your contract before it expires. For now, leave the block as it is. '
@@ -302,11 +310,14 @@ const Step3 = () => (
     </div>
 );
 
-const Step4 = () => (
+const Step4 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
-            <Localize i18n_default_text='Step 4 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left'>
+                <Localize i18n_default_text='Step 4 :' />
+            </div>
+        )}
+
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text='Next, go to <0>Utility tab</0> under the Blocks menu. Tap the drop-down arrow and hit <0>Loops</0>.'
@@ -343,11 +354,14 @@ const Step4 = () => (
     </div>
 );
 
-const Step5 = () => (
+const Step5 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
-            <Localize i18n_default_text='Step 5 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left'>
+                <Localize i18n_default_text='Step 5 :' />
+            </div>
+        )}
+
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text='Now, tap the <0>Analysis</0> drop-down arrow and hit <0>Contract</0>.'
@@ -385,11 +399,14 @@ const Step5 = () => (
     </div>
 );
 
-const Step6 = () => (
+const Step6 = ({ show_label }) => (
     <div className='joyride-content'>
-        <div className='joyride-content__left'>
-            <Localize i18n_default_text='Step 6 :' />
-        </div>
+        {show_label && (
+            <div className='joyride-content__left'>
+                <Localize i18n_default_text='Step 6 :' />
+            </div>
+        )}
+
         <div className='joyride-content__left'>
             <Localize
                 i18n_default_text='Finally, drag and add the whole <0>Repeat</0> block to the <0>Restart trading conditions</0> block.'
@@ -402,7 +419,7 @@ const Step6 = () => (
 export const BOT_BUILDER_TOUR = [
     {
         target: '[data-category="trade_parameters"]',
-        content: <Step1 />,
+        content: <Step1 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
@@ -414,33 +431,66 @@ export const BOT_BUILDER_TOUR = [
     },
     {
         target: '[data-category="purchase_conditions"]',
-        content: <Step2 />,
+        content: <Step2 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="sell_conditions"]',
-        content: <Step3 />,
+        content: <Step3 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(6)',
-        content: <Step4 />,
+        content: <Step4 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.db-toolbox__row:nth-child(5)',
-        content: <Step5 />,
+        content: <Step5 show_label={true} />,
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '[data-category="trade_results"]',
-        content: <Step6 />,
+        content: <Step6 show_label={true} />,
         locale: { last: localize('Next') },
         ...joyride_props,
+    },
+];
+
+export const BOT_BUILDER_MOBILE = [
+    {
+        header: 'Step 1',
+        content: [<Step1 show_label={false} key={0} />, <Step1A key={1} />],
+        key: 1,
+    },
+    {
+        header: 'Step 2',
+        content: <Step2 show_label={false} />,
+        key: 2,
+    },
+    {
+        header: 'Step 3',
+        content: <Step3 show_label={false} />,
+        key: 3,
+    },
+    {
+        header: 'Step 4',
+        content: <Step4 show_label={false} />,
+        key: 4,
+    },
+    {
+        header: 'Step 5',
+        content: <Step5 show_label={false} />,
+        key: 5,
+    },
+    {
+        header: 'Step 6',
+        content: <Step6 show_label={false} />,
+        key: 6,
     },
 ];
 

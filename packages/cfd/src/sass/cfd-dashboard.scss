@@ -671,6 +671,7 @@
             border-radius: 1rem;
             background-color: #2a3052;
             padding: 0.2rem 0.8rem;
+            margin-left: 0.8rem;
         }
         &--value {
             @include typeface(--title-left-bold-black);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -9,8 +10,36 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('<CashierOnboardingSideNote />', () => {
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                currency: 'USD',
+            },
+            ui: {
+                openRealAccountSignup: jest.fn(),
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setDepositTarget: jest.fn(),
+                    },
+                },
+            },
+        };
+    });
+
+    const props = () => ({
+        is_crypto: false,
+    });
+
+    const renderCashierOnboardingSideNote = () =>
+        render(<CashierOnboardingSideNote {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
+
     it('should show the proper messages, with fiat currency and can_change_fiat_currency={false} property', () => {
-        render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
+        renderCashierOnboardingSideNote();
 
         expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
         expect(screen.getByTestId('dt_side_note_text')).toHaveTextContent(
@@ -22,7 +51,7 @@ describe('<CashierOnboardingSideNote />', () => {
         window.LC_API = {
             open_chat_window: jest.fn(),
         };
-        render(<CashierOnboardingSideNote currency={'USD'} can_change_fiat_currency={false} is_crypto={false} />);
+        renderCashierOnboardingSideNote();
 
         const live_chat_link = screen.getByText('live chat');
         fireEvent.click(live_chat_link);
@@ -30,7 +59,10 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should show the proper messages when is_crypto is true', () => {
-        render(<CashierOnboardingSideNote currency={'BTC'} is_crypto />);
+        mockRootStore.client.currency = 'BTC';
+        props.is_crypto = true;
+
+        renderCashierOnboardingSideNote();
 
         expect(screen.getByText('This is your BTC account.')).toBeInTheDocument();
         expect(
@@ -40,20 +72,13 @@ describe('<CashierOnboardingSideNote />', () => {
     });
 
     it('should trigger onClick callbacks when the client clicks on "Manage your accounts" link', () => {
-        const openRealAccountSignup = jest.fn();
-        const setDepositTarget = jest.fn();
-        const { container } = render(
-            <CashierOnboardingSideNote
-                currency={'BTC'}
-                is_crypto
-                openRealAccountSignup={openRealAccountSignup}
-                setDepositTarget={setDepositTarget}
-            />
-        );
+        mockRootStore.client.currency = 'BTC';
+        props.is_crypto = true;
 
-        const link = container.querySelector('.cashier-onboarding-side-note__link');
-        fireEvent.click(link);
-        expect(openRealAccountSignup).toHaveBeenCalledTimes(1);
-        expect(setDepositTarget).toHaveBeenCalledTimes(1);
+        renderCashierOnboardingSideNote();
+
+        fireEvent.click(screen.getByTestId('dt_cashier_onboarding_side_note_link'));
+        expect(mockRootStore.ui.openRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.general_store.setDepositTarget).toHaveBeenCalledTimes(1);
     });
 });

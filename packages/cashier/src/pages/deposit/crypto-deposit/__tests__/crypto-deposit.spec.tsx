@@ -32,7 +32,7 @@ describe('<CryptoDeposit />', () => {
     const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
     };
 

@@ -22,7 +22,7 @@ const SelfExclusionFooter = () => {
                     primary
                     className='da-self-exclusion__button'
                     large
-                    onClick={() => goToConfirm(values)}
+                    onClick={() => goToConfirm?.(values)}
                     type='button'
                 >
                     <Localize i18n_default_text='Next' />

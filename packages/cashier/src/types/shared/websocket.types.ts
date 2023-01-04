@@ -75,7 +75,7 @@ export type TWebSocket = {
     mt5LoginList: () => {
         mt5_login_list: DetailsOfEachMT5Loginid[];
     };
-    send: (obj: unknown) => Promise<{ exchange_rates: { rates: { [k: string]: string } } }>;
+    send: (obj: unknown) => Promise<{ error: TServerError; exchange_rates: { rates: { [k: string]: string } } }>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
     subscribeCashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
     verifyEmail?: (email: string, withdrawal_type: string) => Promise<unknown>;

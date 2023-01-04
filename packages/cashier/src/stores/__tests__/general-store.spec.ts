@@ -96,7 +96,7 @@ beforeEach(() => {
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore(WS, root_store);
+    general_store = new GeneralStore(WS as TWebSocket, root_store as TRootStore);
 
     cashier_menu = {
         id: 'dt_cashier_tab',

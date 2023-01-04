@@ -12,9 +12,6 @@ export default class DepositStore {
             is_deposit_locked: computed,
             submitFundsProtection: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
 
     container = Constants.containers.deposit;

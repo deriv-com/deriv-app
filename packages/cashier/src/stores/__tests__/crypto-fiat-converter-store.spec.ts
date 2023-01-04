@@ -38,7 +38,7 @@ beforeEach(() => {
             },
         },
     };
-    crypto_fiat_converter_store = new CryptoFiatConverterStore(WS, root_store);
+    crypto_fiat_converter_store = new CryptoFiatConverterStore(WS as TWebSocket, root_store as TRootStore);
 });
 
 describe('CryptoFiatConverterStore', () => {

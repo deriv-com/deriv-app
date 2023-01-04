@@ -17,7 +17,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from 'Types';
+import type { TRootStore, TWebSocket, TServerError, TAccount, TTransferAccount } from 'Types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 

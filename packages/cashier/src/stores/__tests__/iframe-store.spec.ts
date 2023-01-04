@@ -1,12 +1,12 @@
 import IframeStore from '../iframe-store';
 import { configure } from 'mobx';
+import { TRootStore, TWebSocket } from 'Types';
 
 configure({ safeDescriptors: false });
 
-let iframe_store, root_store, WS;
+let iframe_store: IframeStore, root_store: DeepPartial<TRootStore>;
 
 beforeEach(() => {
-    WS = {};
     root_store = {
         client: {
             setVerificationCode: jest.fn(),
@@ -24,7 +24,7 @@ beforeEach(() => {
             is_mobile: false,
         },
     };
-    iframe_store = new IframeStore(root_store);
+    iframe_store = new IframeStore(root_store as TRootStore);
 });
 
 describe('IframeStore', () => {

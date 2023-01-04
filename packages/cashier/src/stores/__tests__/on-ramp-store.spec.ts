@@ -26,7 +26,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore(WS, root_store);
+    onramp_store = new OnRampStore(WS as TWebSocket, root_store as TRootStore);
     onramp_providers = [
         OnRampProviders.createChangellyProvider(onramp_store),
         OnRampProviders.createXanPoolProvider(onramp_store),

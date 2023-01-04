@@ -28,7 +28,7 @@ describe('WithdrawStore', () => {
                 ],
                 account_status: {
                     authentication: { needs_verification: ['identity'] },
-                    status: {},
+                    status: [],
                 },
                 balance: '1000',
                 currency: 'USD',
@@ -91,7 +91,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore(WS, root_store);
+        withdraw_store = new WithdrawStore(WS as TWebSocket, root_store as TRootStore);
     });
 
     it('should set is_withdraw_confirmed', () => {
@@ -125,7 +125,7 @@ describe('WithdrawStore', () => {
         await withdraw_store.requestWithdraw(verification_code);
         expect(spySaveWithdraw).toHaveBeenCalledWith(verification_code);
 
-        withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
+        (withdraw_store.WS.cryptoWithdraw as jest.Mock).mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.requestWithdraw(verification_code);
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: 'CryptoWithdrawalError', message: error_message });
     });
@@ -142,7 +142,7 @@ describe('WithdrawStore', () => {
         expect(withdraw_store.is_withdraw_confirmed).toBeTruthy();
         expect(withdraw_store.withdraw_amount).toBe('100');
 
-        withdraw_store.WS.cryptoWithdraw.mockResolvedValueOnce({ error: { message: error_message } });
+        (withdraw_store.WS.cryptoWithdraw as jest.Mock).mockResolvedValueOnce({ error: { message: error_message } });
         await withdraw_store.saveWithdraw(verification_code);
         expect(spySetErrorMessage).toHaveBeenCalled();
         expect(setConverterFromAmount).toHaveBeenCalledWith('');
@@ -186,7 +186,7 @@ describe('WithdrawStore', () => {
         const error = { code: 'InvalidToken', message: 'Your token has expired or is invalid.' };
 
         withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        withdraw_store.WS.authorized.cashier.mockResolvedValueOnce({ error });
+        (withdraw_store.WS.authorized.cashier as jest.Mock).mockResolvedValueOnce({ error });
         await withdraw_store.onMountWithdraw('aBcDefXa');
         expect(spyHandleCashierError).toHaveBeenCalledWith(error);
         expect(setSessionTimeout).toHaveBeenCalledWith(true);
@@ -232,7 +232,12 @@ describe('WithdrawStore', () => {
     });
 
     it('should return is_withdrawal_locked equal to false if there is no account status', () => {
-        withdraw_store.root_store.client.account_status = {};
+        withdraw_store.root_store.client.account_status = {
+            currency_config: {},
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [],
+        };
         expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
     });
 

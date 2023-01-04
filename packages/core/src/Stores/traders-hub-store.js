@@ -18,7 +18,6 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
-    selected_account_type = 'demo';
     is_exit_traders_hub_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;

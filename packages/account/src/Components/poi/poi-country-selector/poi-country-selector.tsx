@@ -132,7 +132,7 @@ const CountrySelector = ({
                                                     placeholder={localize('Please select')}
                                                     list_items={country_list}
                                                     value={values.country_input}
-                                                    onChange={(e: FormikValues) => {
+                                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                         handleChange(e);
                                                         updateSelectedCountry(e.target.value);
                                                     }}

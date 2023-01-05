@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { Text, Loading } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import BlockUserDropdown from '../block-user-dropdown';
 import BlockUserTable from '../block-user-table';
 import BlockUserTableError from '../block-user-table/block-user-table-error';
@@ -12,35 +14,45 @@ import './block-user-list.scss';
 const BlockUserList = observer(() => {
     const { general_store, my_profile_store } = useStores();
 
-    const loadBlockedAdvertisers = debounce(search => {
+    const debouncedGetSearchedTradePartners = debounce(search => {
         my_profile_store.setSearchTerm(search.trim());
-        my_profile_store.loadMoreBlockedAdvertisers();
+        my_profile_store.getSearchedTradePartners();
     }, 200);
 
     const onSearch = search => {
-        // Ensures that blocked advertisers list is not reloaded if search term entered is the same
+        // Ensures that trade partners list is not reloaded if search term entered is the same
         if (my_profile_store.search_term !== search.trim()) {
-            my_profile_store.setIsLoading(true);
-            loadBlockedAdvertisers(search);
+            my_profile_store.setIsBlockUserTableLoading(true);
+            debouncedGetSearchedTradePartners(search);
         }
-    };
-
-    const onClear = () => {
-        my_profile_store.setSearchTerm('');
-        my_profile_store.setSearchResults([]);
     };
 
     if (general_store.is_barred && general_store.block_unblock_user_error) {
         return <BlockUserTableError error_message={general_store.block_unblock_user_error} />;
     }
 
+    if (my_profile_store.is_loading) {
+        return <Loading is_fullscreen={isMobile()} />;
+    }
+
     return (
         <div className='block-user-list'>
-            {my_profile_store.blocked_advertisers_list.length > 0 && (
-                <div className='block-user-list__header'>
-                    <SearchBox onClear={onClear} onSearch={onSearch} placeholder={localize('Search by nickname')} />
-                    <BlockUserDropdown />
-                </div>
+            {my_profile_store.trade_partners_list.length > 0 && (
+                <React.Fragment>
+                    <Text className='block-user-list__text' size='xs'>
+                        {localize(
+                            "When you block someone, you won't see their ads, and they can't see yours. Your ads will be hidden from their search results, too."
+                        )}
+                    </Text>
+                    <div className='block-user-list__header'>
+                        <SearchBox
+                            onClear={my_profile_store.onClear}
+                            onSearch={onSearch}
+                            placeholder={localize('Search by nickname')}
+                        />
+                        <BlockUserDropdown />
+                    </div>
+                </React.Fragment>
             )}
             <BlockUserTable />
         </div>

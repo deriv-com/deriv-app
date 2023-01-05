@@ -6,6 +6,7 @@ import BlockUserModal from 'Components/block-user/block-user-modal';
 import BlockUserList from './block-user-list';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { localize } from 'Components/i18next';
+import BlockUserFilterModal from './block-user-filter-modal';
 import './block-user.scss';
 
 const BlockUser = () => {
@@ -14,8 +15,8 @@ const BlockUser = () => {
     return (
         <React.Fragment>
             <BlockUserModal
-                advertiser_name={my_profile_store.selected_blocked_user.name}
-                is_advertiser_blocked={!!my_profile_store.selected_blocked_user.is_blocked}
+                advertiser_name={my_profile_store.selected_trade_partner.name}
+                is_advertiser_blocked={!!my_profile_store.selected_trade_partner.is_blocked}
                 is_block_user_modal_open={general_store.is_block_user_modal_open}
                 onCancel={() => general_store.setIsBlockUserModalOpen(false)}
                 onSubmit={my_profile_store.onSubmit}
@@ -24,6 +25,7 @@ const BlockUser = () => {
                 <BlockUserList />
             </DesktopWrapper>
             <MobileWrapper>
+                <BlockUserFilterModal />
                 <MobileFullPageModal
                     body_className='block-user__modal'
                     height_offset='80px'

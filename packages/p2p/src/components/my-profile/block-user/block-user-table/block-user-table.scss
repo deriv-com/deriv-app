@@ -15,23 +15,6 @@
 
     &__data-list {
         flex: 1;
-
-        &__data-list-body {
-            flex: 1;
-        }
-
-        .data-list__body-wrapper {
-            flex: 1;
-        }
-    }
-
-    &__header {
-        display: grid;
-        grid-template-columns: 1fr;
-
-        > .dc-table__head:first-child {
-            margin-left: 1.6rem;
-        }
     }
 
     &__text {

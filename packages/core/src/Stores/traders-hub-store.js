@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
+    is_exit_traders_hub_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
@@ -47,6 +48,7 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             available_platforms: observable,
             is_regulators_compare_modal_visible: observable,
+            is_exit_traders_hub_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
             prev_selected_loginid: observable,
@@ -77,8 +79,10 @@ export default class TradersHubStore extends BaseStore {
             selectRegion: action.bound,
             setActiveIndex: action.bound,
             setTogglePlatformType: action.bound,
+            should_show_exit_traders_modal: computed,
             startTrade: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
+            toggleExitTradersHubModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
@@ -232,6 +236,15 @@ export default class TradersHubStore extends BaseStore {
     }
     get is_eu_selected() {
         return this.selected_region === 'EU';
+    }
+
+    get should_show_exit_traders_modal() {
+        //  should display the modal when user have atleast one mf account and cr account
+        const { active_accounts } = this.root_store.client;
+        return (
+            active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&
+            active_accounts.some(acc => acc.landing_company_shortcode === 'svg')
+        );
     }
 
     toggleRegulatorsCompareModal() {
@@ -417,6 +430,10 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
+    }
+
+    toggleExitTradersHubModal() {
+        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
     async getDemoLoginId() {

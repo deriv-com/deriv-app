@@ -9,6 +9,7 @@ import { localize } from 'Components/i18next';
 
 const BlockUserRow = ({ row: advertiser }) => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const { id, is_blocked, name } = advertiser;
 
     return (
         <Table.Row className='block-user-row'>
@@ -16,22 +17,22 @@ const BlockUserRow = ({ row: advertiser }) => {
                 <div
                     className='block-user-row__cell'
                     onClick={() => {
-                        my_profile_store.getCounterpartyAdvertiserInfo(advertiser.id);
+                        my_profile_store.getCounterpartyAdvertiserInfo(id);
                         buy_sell_store.setSelectedAdState({
-                            advertiser_details: { id: advertiser.id, name: advertiser.name },
+                            advertiser_details: { id, name },
                         });
                     }}
                 >
-                    <UserAvatar nickname={advertiser.name} size={32} text_size='s' />
+                    <UserAvatar nickname={name} size={32} text_size='s' />
                     <div className='block-user-row__cell-container'>
                         <Text size='xs' line_height='m' color='general'>
-                            {advertiser.name}
+                            {name}
                         </Text>
                     </div>
                 </div>
             </Table.Cell>
             <Table.Cell className='block-user-row__button-group'>
-                {advertiser.is_blocked ? (
+                {is_blocked ? (
                     <Button secondary medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
                         {localize('Unblock')}
                     </Button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
 
@@ -135,7 +135,7 @@ const StaticCFDAccountManager = ({
                     weight={has_account ? 'normal' : 'bold'}
                     color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
                 >
-                    {appname}
+                    {localize(`${appname}`)}
                 </Text>
                 {has_account ? (
                     <React.Fragment>
@@ -149,12 +149,12 @@ const StaticCFDAccountManager = ({
                             true
                         )} ${currency}`}</Text>
                         <Text size='xs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
-                            {loginid}
+                            {localize(`${loginid}`)}
                         </Text>
                     </React.Fragment>
                 ) : (
                     <Text size='xxs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
-                        {description}
+                        {`${description}`}
                     </Text>
                 )}
             </div>

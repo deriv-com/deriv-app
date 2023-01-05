@@ -130,12 +130,15 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 });
 
 export const getContractCategoriesConfig = () => ({
-    [localize('Multipliers')]: ['multiplier'],
-    [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
-    [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
-    [localize('Ins & Outs')]: ['end', 'stay'],
-    [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
-    [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
+    Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
+    'Ups & Downs': {
+        name: localize('Ups & Downs'),
+        categories: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
+    },
+    'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', 'tick_high_low'] },
+    'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
+    'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
+    Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -411,7 +414,7 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
 });
 
-export const getContractConfig = (is_high_low: boolean) => ({
+export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });

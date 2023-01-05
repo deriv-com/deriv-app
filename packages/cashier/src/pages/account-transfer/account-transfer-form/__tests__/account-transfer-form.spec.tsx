@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import AccountTransferForm from '../account-transfer-form';
-import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

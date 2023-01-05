@@ -13,7 +13,6 @@ export default class GeneralStore extends BaseStore {
         makeObservable(this, {
             is_loading: observable,
             is_p2p_visible: observable,
-            is_user_on_p2p: observable,
             p2p_notification_count: observable,
             cashier_route_tab_index: observable,
             is_deposit: observable,
@@ -55,7 +54,6 @@ export default class GeneralStore extends BaseStore {
             onMountCommon: action.bound,
             setCashierTabIndex: action.bound,
             setNotificationCount: action.bound,
-            setIsUserOnP2p: action.bound,
             setIsP2pVisible: action.bound,
             is_cashier_locked: computed,
             is_system_maintenance: computed,
@@ -92,7 +90,6 @@ export default class GeneralStore extends BaseStore {
 
     is_loading = false;
     is_p2p_visible = false;
-    is_user_on_p2p = false;
     p2p_notification_count = 0;
     cashier_route_tab_index = 0;
     is_deposit = false;
@@ -389,10 +386,6 @@ export default class GeneralStore extends BaseStore {
         this.p2p_notification_count = notification_count;
     }
 
-    setIsUserOnP2p(is_user_on_p2p) {
-        this.is_user_on_p2p = is_user_on_p2p;
-    }
-
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
@@ -425,12 +418,12 @@ export default class GeneralStore extends BaseStore {
     }
 
     accountSwitcherListener() {
-        const { iframe, payment_agent, withdraw } = this.root_store.modules.cashier;
+        const { client, modules } = this.root_store;
+        const { iframe, payment_agent, general_store } = modules.cashier;
+        const { active_container } = general_store;
+        const container = Constants.map_action[active_container];
 
-        clearInterval(withdraw.verification.resend_interval);
-        clearInterval(payment_agent.verification.resend_interval);
-        withdraw.verification.clearVerification();
-        payment_agent.verification.clearVerification();
+        client.setVerificationCode('', container);
         iframe.clearIframe();
 
         this.payment_agent = payment_agent;

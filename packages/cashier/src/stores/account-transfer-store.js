@@ -380,6 +380,7 @@ export default class AccountTransferStore {
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
+                          is_transfer_form: true,
                       })}`
                 : getCurrencyDisplayCode(
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency

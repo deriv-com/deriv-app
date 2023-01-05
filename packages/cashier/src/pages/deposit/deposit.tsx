@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -12,13 +12,12 @@ import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from 'Components/side-note';
-import { useStore } from '../../hooks';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
-const Deposit = ({ setSideNotes }: TDeposit) => {
+const Deposit = observer(({ setSideNotes }: TDeposit) => {
     const { client, modules } = useStore();
     const {
         can_change_fiat_currency,
@@ -141,6 +140,6 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         );
     }
     return <CashierOnboarding setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(Deposit);
+export default Deposit;

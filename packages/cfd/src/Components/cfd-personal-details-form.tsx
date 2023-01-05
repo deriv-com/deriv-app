@@ -119,7 +119,7 @@ export const InputField = ({ maxLength, name, optional = false, ...props }: TCFD
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength={maxLength || '30'}
+                maxLength={maxLength || 30}
                 error={touched[field.name as keyof TFormValues] && errors[field.name as keyof TFormValues]}
                 {...props}
             />

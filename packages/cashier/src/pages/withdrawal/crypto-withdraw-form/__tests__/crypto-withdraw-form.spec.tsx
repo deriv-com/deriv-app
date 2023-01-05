@@ -1,8 +1,8 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
-import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,

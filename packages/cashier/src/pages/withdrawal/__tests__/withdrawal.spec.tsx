@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Withdrawal from '../withdrawal';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { StoreProvider } from '../../../hooks';
+import { StoreProvider } from '@deriv/stores';
+import Withdrawal from '../withdrawal';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));

@@ -922,7 +922,12 @@ export const PersonalDetailsForm = ({
                                                     </fieldset>
                                                 )}
                                                 {'tax_identification_number' in values && (
-                                                    <fieldset className='account-form__fieldset'>
+                                                    <fieldset
+                                                        className={classNames('account-form__fieldset', {
+                                                            'account-form__fieldset--tin':
+                                                                getWarningMessages(values).tax_identification_number,
+                                                        })}
+                                                    >
                                                         <Input
                                                             data-lpignore='true'
                                                             type='text'
@@ -1125,10 +1130,7 @@ export const PersonalDetailsForm = ({
                                     <>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
-                                            <FormSubHeader
-                                                className='account-form__red-header'
-                                                title={localize('Professional Client')}
-                                            />
+                                            <FormSubHeader title={localize('Professional Client')} />
                                             <FormBodySection>
                                                 <fieldset className='account-form__fieldset'>
                                                     <div>

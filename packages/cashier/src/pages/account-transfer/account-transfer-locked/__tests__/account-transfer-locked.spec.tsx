@@ -4,8 +4,8 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import AccountTransferLocked from '../account-transfer-locked';
-import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

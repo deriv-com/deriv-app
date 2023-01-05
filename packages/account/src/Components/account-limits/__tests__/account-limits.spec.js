@@ -28,7 +28,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('Components/demo-message', () => jest.fn(() => 'mockedDemoMessage'));
 jest.mock('Components/load-error-message', () => jest.fn(() => 'mockedLoadErrorMessage'));
-jest.mock('../account-limits-footer.jsx', () => jest.fn(() => 'mockedAccountLimitsFooter'));
+jest.mock('../account-limits-footer', () => jest.fn(() => 'mockedAccountLimitsFooter'));
 
 describe('<AccountLimits/>', () => {
     const props = {

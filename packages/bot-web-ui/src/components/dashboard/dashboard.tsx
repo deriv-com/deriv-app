@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Collapsible } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';

@@ -155,7 +155,6 @@ const Dashboard = ({
         }
     };
     if (!bot_tour_token && !is_mobile && !has_started_onboarding_tour) {
-        //setHasTourEnded(false);
         window.addEventListener('storage', botStorageSetting);
     }
 

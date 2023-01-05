@@ -507,7 +507,7 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
 export const DBOT_ONBOARDING_MOBILE = [
     {
         header: localize('Get started on DBot'),
-        content: localize('Hi [first name]! Hit Start for a quick tour to help you get started.'),
+        content: localize('Hi Hit Start for a quick tour to help you get started.'),
         key: 1,
         step_key: 0,
     },

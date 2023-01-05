@@ -1,8 +1,11 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const PositionsCardLoader = ({ speed }) => (
+type TPositionCardLoaderProps = {
+    speed?: number;
+};
+
+const PositionsCardLoader = ({ speed }: TPositionCardLoaderProps) => (
     <ContentLoader
         height={173}
         width={218}
@@ -27,9 +30,5 @@ const PositionsCardLoader = ({ speed }) => (
         <rect x='116' y='153' rx='0' ry='0' width='88' height='8' />
     </ContentLoader>
 );
-
-PositionsCardLoader.propTypes = {
-    speed: PropTypes.number,
-};
 
 export { PositionsCardLoader };

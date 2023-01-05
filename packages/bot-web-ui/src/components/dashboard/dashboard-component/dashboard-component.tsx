@@ -11,18 +11,12 @@ import Local from './load-bot-preview/local';
 import UserGuide from './user-guide';
 
 type TDashboard = {
-    is_info_panel_visible: boolean;
     dashboard_strategies: [];
     has_started_onboarding_tour: boolean;
     setActiveTab: (param: number) => void;
 };
 
-const DashboardComponent = ({
-    is_info_panel_visible,
-    dashboard_strategies,
-    has_started_onboarding_tour,
-    setActiveTab,
-}: TDashboard) => {
+const DashboardComponent = ({ dashboard_strategies, has_started_onboarding_tour, setActiveTab }: TDashboard) => {
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
     return (
@@ -63,24 +57,13 @@ const DashboardComponent = ({
                     )}
                 </div>
             </div>
-            <DesktopWrapper>
-                {!has_started_onboarding_tour && (
-                    <div
-                        className={classNames('tab__dashboard__info-panel', {
-                            'tab__dashboard__info-panel--active': is_info_panel_visible,
-                        })}
-                    >
-                        <InfoPanel />
-                    </div>
-                )}
-            </DesktopWrapper>
+            <InfoPanel />
         </React.Fragment>
     );
 };
 
 export default connect(({ dashboard, load_modal }: RootStore) => ({
-    is_info_panel_visible: dashboard.is_info_panel_visible,
     dashboard_strategies: load_modal.dashboard_strategies,
-    setActiveTab: dashboard.setActiveTab,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
+    setActiveTab: dashboard.setActiveTab,
 }))(DashboardComponent);

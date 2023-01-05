@@ -28,6 +28,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    initInfoPanel: () => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -67,6 +68,7 @@ export default class DashboardStore implements IDashboardStore {
             setInfoPanelVisibility: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setOnBoardingTokenCheck: action.bound,
+            initInfoPanel: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -77,6 +79,7 @@ export default class DashboardStore implements IDashboardStore {
                 }
             }
         );
+        this.initInfoPanel();
     }
 
     active_tab = 0;
@@ -86,7 +89,7 @@ export default class DashboardStore implements IDashboardStore {
     is_dialog_open = false;
     getFileArray = [];
     has_file_loaded = false;
-    is_info_panel_visible = true;
+    is_info_panel_visible = false;
     has_tour_started = false;
     is_tour_dialog_visible = false;
     has_started_onboarding_tour = false;
@@ -97,6 +100,10 @@ export default class DashboardStore implements IDashboardStore {
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
     active_tour_step_number = 0;
+
+    initInfoPanel() {
+        if (!localStorage.getItem('dbot_should_show_info')) this.is_info_panel_visible = true;
+    }
 
     setTourActiveStep = (active_tour_step_number: number) => {
         this.active_tour_step_number = active_tour_step_number;

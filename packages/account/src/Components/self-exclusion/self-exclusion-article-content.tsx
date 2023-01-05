@@ -6,7 +6,23 @@ import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
-export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_app_settings }) => {
+type TSelfExclusionArticleItems = {
+    is_eu: boolean;
+    is_uk: boolean;
+    is_deriv_crypto: boolean;
+    is_app_settings: boolean;
+};
+
+type TSelfExclusionArticleContent = {
+    is_in_overlay: boolean;
+};
+
+export const selfExclusionArticleItems = ({
+    is_eu,
+    is_uk,
+    is_deriv_crypto,
+    is_app_settings,
+}: TSelfExclusionArticleItems) => {
     const platform_name_trader = getPlatformSettings('trader').name;
     const platform_name_dbot = getPlatformSettings('dbot').name;
     const platform_name_bbot = getPlatformSettings('bbot').name;
@@ -144,7 +160,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
     }));
 };
 
-const SelfExclusionArticleContent = ({ is_in_overlay }) => {
+const SelfExclusionArticleContent = ({ is_in_overlay }: Partial<TSelfExclusionArticleContent>) => {
     const { is_app_settings, toggleArticle, overlay_ref, is_eu, is_uk } = React.useContext(SelfExclusionContext);
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 

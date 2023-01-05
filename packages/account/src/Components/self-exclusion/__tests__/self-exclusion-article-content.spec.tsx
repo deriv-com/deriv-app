@@ -7,7 +7,13 @@ import SelfExclusionContext from '../self-exclusion-context';
 Popup.Overlay = jest.fn(() => <div>Trading limits</div>);
 
 describe('<SelfExclusionArticleContent />', () => {
-    let mock_context = {};
+    let mock_context = {
+        is_app_settings: false,
+        is_eu: false,
+        is_uk: false,
+        overlay_ref: {},
+        toggleArticle: jest.fn(),
+    };
     const descr_text = 'About trading limits and self-exclusion';
     const eu_item =
         'When you set your limits or self-exclusion, they will be aggregated across all your account types in DTrader and DBot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.';

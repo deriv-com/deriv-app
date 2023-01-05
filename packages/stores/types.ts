@@ -100,9 +100,15 @@ type TUiStore = {
     toggleCashier: () => void;
 };
 
+type TTradersHubStore = {
+    closeModal: () => void;
+    openModal: (modal_id: string, props?: any) => void;
+};
+
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
     ui: TUiStore;
     modules: Record<string, any>;
+    traders_hub: TTradersHubStore;
 };

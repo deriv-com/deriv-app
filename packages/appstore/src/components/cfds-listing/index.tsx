@@ -43,6 +43,7 @@ const CFDsListing = () => {
         is_eu_user,
         is_demo_low_risk,
         no_MF_account,
+        toggleAccountTransferModal,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -117,7 +118,7 @@ const CFDsListing = () => {
                                 type={existing_account.type}
                                 availability={selected_region}
                                 has_divider={!is_eu_user && getHasDivider(index, list_size, 1, 3)}
-                                onAction={() => {
+                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.type === 'get') {
                                         if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
@@ -130,7 +131,11 @@ const CFDsListing = () => {
                                             getAccount();
                                         }
                                     } else if (existing_account.type === 'transfer_trade') {
-                                        startTrade(existing_account.platform, existing_account);
+                                        if (e?.currentTarget?.name === 'transfer-btn') {
+                                            toggleAccountTransferModal();
+                                        } else {
+                                            startTrade(existing_account.platform, existing_account);
+                                        }
                                     }
                                 }}
                             />

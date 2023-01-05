@@ -219,7 +219,6 @@ export type TJurisdictionModalProps = {
     account_status: GetAccountStatus;
     disableApp: () => void;
     enableApp: () => void;
-    is_eu: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
@@ -227,6 +226,7 @@ export type TJurisdictionModalProps = {
     setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
+    show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleJurisdictionModal: () => void;
@@ -273,11 +273,11 @@ export type TCompareAccountContentValues = Record<
 >;
 
 export type TCompareAccountRowProps = TCompareAccountContentProps & {
-    pre_appstore_class: string;
     available_accounts_count: number;
     classname_for_demo_and_eu: string | null;
+    content_flag: string;
     is_pre_appstore_setting: boolean;
-    account_flag: string;
+    pre_appstore_class: string;
 };
 
 export type TCompareAccountContentProps = {
@@ -289,11 +289,11 @@ export type TCompareAccountContentProps = {
 export type TCompareAccountFooterButtonData = { label: string; action: string };
 
 export type TDMT5CompareModalContentProps = {
-    account_flag: string;
     account_settings: GetSettings;
     account_status: GetAccountStatus;
     account_type: TOpenAccountTransferMeta;
     clearCFDError: () => void;
+    content_flag: string;
     context: RootStore;
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     has_real_account: boolean;
@@ -314,7 +314,7 @@ export type TDMT5CompareModalContentProps = {
     setShouldShowCooldownModal: (value: boolean) => void;
     should_restrict_bvi_account_creation: boolean;
     should_show_derivx: boolean;
-    show_eu_related: boolean;
+    show_eu_related_content: boolean;
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleCFDVerificationModal: () => void;
     toggleCompareAccounts: () => void;

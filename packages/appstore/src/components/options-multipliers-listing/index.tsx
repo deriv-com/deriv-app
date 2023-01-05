@@ -6,7 +6,7 @@ import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
-import { isMobile, ACCOUNT_FLAG } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 
@@ -20,16 +20,18 @@ const OptionsAndMultipliersListing = () => {
         no_MF_account,
         no_CR_account,
         is_demo,
-        account_flag,
+        content_flag,
     } = traders_hub;
     const { is_landing_company_loaded, is_eu } = client;
 
-    const low_risk_cr_non_eu = account_flag === ACCOUNT_FLAG.LOW_RISK_CR_NON_EU_CONTENT;
+    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const low_risk_cr_eu = account_flag === ACCOUNT_FLAG.LOW_RISK_CR_EU_CONTENT;
+    const low_risk_cr_eu = content_flag === ContentFlag.LOW_RISK_CR_EU;
+
+    const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
 
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || is_demo) && !isMobile()) {
+        if ((low_risk_cr_non_eu || high_risk_cr || is_demo) && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
@@ -49,7 +51,7 @@ const OptionsAndMultipliersListing = () => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                low_risk_cr_non_eu || is_demo ? (
+                low_risk_cr_non_eu || high_risk_cr || is_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the

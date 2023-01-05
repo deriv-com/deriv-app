@@ -22,23 +22,38 @@ const CurrentSwitcherContainer = ({
     title,
     ...props
 }: CurrentSwitcherContainerProps) => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
+    const { document_status } = client.authentication_status;
     const { is_eu_user } = traders_hub;
+
     return (
         <div
             className={classNames(className, 'currency-switcher-container', {
                 'currency-switcher-container--has-interaction': has_interaction,
-                'currency-switcher-container--eu-user': is_eu_user,
             })}
             {...props}
         >
             <CurrencyIcon icon={icon} size={32} />
-            <div className='currency-switcher-container__content'>
-                {title}
+            <div
+                className={classNames(
+                    'currency-switcher-container__content',
+                    `currency-switcher-container--${document_status || 'failed' || 'pending' || 'default'}`
+                )}
+            >
+                <div
+                    className={classNames(
+                        'currency-switcher-container__content--text',
+                        `currency-switcher-container__content--text--${
+                            document_status || 'failed' || 'pending' || 'default'
+                        }`
+                    )}
+                >
+                    {title}
+                </div>
                 {children}
             </div>
             {actions}
-            {has_interaction && !is_eu_user && (
+            {(has_interaction || is_eu_user) && (
                 <div className='currency-switcher-container__arrow'>
                     <Icon icon='IcChevronDownBold' />
                 </div>

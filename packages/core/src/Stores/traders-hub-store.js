@@ -1,7 +1,14 @@
 import { action, makeObservable, observable, reaction, computed } from 'mobx';
-import { getAppstorePlatforms, CFD_PLATFORMS, available_traders_hub_cfd_accounts, formatMoney } from '@deriv/shared';
+import {
+    available_traders_hub_cfd_accounts,
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    getAppstorePlatforms,
+} from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
+import { isEuCountry } from '_common/utility';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
@@ -28,6 +35,7 @@ export default class TradersHubStore extends BaseStore {
         active_modal: '',
         data: {},
     };
+    is_account_transfer_modal_open = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -47,6 +55,7 @@ export default class TradersHubStore extends BaseStore {
             selected_platform_type: observable,
             selected_region: observable,
             is_account_type_modal_visible: observable,
+            is_account_transfer_modal_open: observable,
             closeModal: action.bound,
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
@@ -61,7 +70,7 @@ export default class TradersHubStore extends BaseStore {
             can_get_more_cfd_mt5_accounts: computed,
             no_CR_account: computed,
             no_MF_account: computed,
-            account_flag: computed,
+            content_flag: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -75,6 +84,7 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
+            toggleAccountTransferModal: action.bound,
         });
 
         reaction(
@@ -84,7 +94,6 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.is_eu,
                 this.root_store.client.is_switching,
                 this.root_store.client.account_list,
-                this.root_store.client.upgradeable_landing_companies,
             ],
             () => {
                 this.getDemoLoginId();
@@ -93,14 +102,10 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        const login_id = window.localStorage.getItem('active_loginid') ?? '';
-        this.selected_account_type = !/^VRT/.test(login_id) ? 'real' : 'demo';
-
         reaction(
             () => [
                 this.selected_account_type,
                 this.selected_region,
-                this.root_store.client.is_eu,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
@@ -111,7 +116,30 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        this.selected_region = 'Non-EU';
+        reaction(
+            () => [this.selected_region, this.root_store.client.is_landing_company_loaded],
+            () => {
+                this.setSwitchEU();
+            }
+        );
+
+        reaction(
+            () => [this.root_store.client.loginid],
+            () => {
+                this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
+                this.selected_region = /^CR/.test(this.root_store.client.loginid) ? 'Non-EU' : 'EU';
+            }
+        );
+    }
+
+    async setSwitchEU() {
+        const { account_list, switchAccount, has_maltainvest_account } = this.root_store.client;
+
+        if (this.selected_region === 'EU' && has_maltainvest_account) {
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid);
+        } else if (this.selected_region === 'Non-EU') {
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
+        }
     }
 
     get no_MF_account() {
@@ -159,35 +187,32 @@ export default class TradersHubStore extends BaseStore {
         return this.is_demo && low_risk;
     }
 
-    get account_flag() {
-        const { is_logged_in, upgradeable_landing_companies } = this.root_store.client;
+    get content_flag() {
+        const { is_logged_in, landing_companies, residence } = this.root_store.client;
+        const { financial_company, gaming_company } = landing_companies;
 
-        if (is_logged_in) {
-            if (this.is_demo && upgradeable_landing_companies?.includes('svg')) {
-                return 'cr_demo_content';
-            } else if (
-                upgradeable_landing_companies.includes('svg') &&
-                upgradeable_landing_companies.includes('maltainvest') &&
-                !this.is_demo
-            ) {
-                if (this.is_eu_user) return 'low_risk_cr_eu_content';
-                return 'low_risk_cr_non_eu_content';
-            } else if (
-                upgradeable_landing_companies.length === 1 &&
-                upgradeable_landing_companies.includes('maltainvest')
-            ) {
-                if (this.is_demo) return 'eu_demo_content';
-                return 'eu_real_content';
-            } else if (
-                upgradeable_landing_companies.length === 1 &&
-                upgradeable_landing_companies.includes('svg') &&
-                !this.is_eu_user
-            ) {
-                return 'high_risk_cr_content';
-            }
-            return null;
+        if (!is_logged_in) return '';
+        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+            if (this.is_demo) return ContentFlag.EU_DEMO;
+            return ContentFlag.EU_REAL;
+        } else if (
+            financial_company?.shortcode === 'maltainvest' &&
+            gaming_company?.shortcode === 'svg' &&
+            this.is_real
+        ) {
+            if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
+            return ContentFlag.LOW_RISK_CR_NON_EU;
+        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') {
+            return ContentFlag.HIGH_RISK_CR;
         }
-        return null;
+
+        // Default Check
+        if (isEuCountry(residence)) {
+            if (this.is_demo) return ContentFlag.EU_DEMO;
+            return ContentFlag.EU_REAL;
+        }
+        if (this.is_demo) return ContentFlag.CR_DEMO;
+        return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
     getAvailablePlatforms() {
@@ -529,5 +554,8 @@ export default class TradersHubStore extends BaseStore {
                 ];
             }
         });
+    }
+    toggleAccountTransferModal() {
+        this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 }

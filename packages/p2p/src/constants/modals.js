@@ -53,6 +53,11 @@ export const modals = {
     FilterModal: React.lazy(() =>
         import(/* webpackChunkName: "filter-modal" */ 'Components/modal-manager/modals/filter-modal')
     ),
+    InvalidVerificationLinkModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
+        )
+    ),
     MyAdsDeleteModal: React.lazy(() =>
         import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')
     ),

@@ -8,6 +8,7 @@ import { TWorkspace } from 'Stores/load-modal-store';
 import DeleteDialog from './delete-dialog';
 import './index.scss';
 import RecentWorkspace from './recent-workspace';
+import { isMobile } from '@deriv/shared';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;
@@ -39,7 +40,9 @@ const RecentComponent = ({
             <div className='load-strategy__recent'>
                 <div className='load-strategy__recent__files'>
                     <div className='load-strategy__title'>
-                        <Localize i18n_default_text='Your Bots' />
+                        <Text size={isMobile() ? 'xs' : 's'} weight='bold'>
+                            <Localize i18n_default_text='Your Bots' />
+                        </Text>
                     </div>
                     <div className='load-strategy__recent__files__list'>
                         <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>

@@ -6,6 +6,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { isDesktop } from '@deriv/shared';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -63,6 +64,7 @@ const RecentWorkspace = ({
             onToggleDeleteDialog(true);
         }
     };
+    const is_desktop = isDesktop();
 
     return (
         <>
@@ -70,6 +72,7 @@ const RecentWorkspace = ({
                 className={classnames('load-strategy__recent-item', {
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                     'load-strategy__recent-item__loaded': dashboard_strategies,
+                    'load-strategy__recent-item--minimized': !!dashboard_strategies?.length && !is_desktop,
                 })}
                 key={workspace.id}
                 ref={trigger_div_ref}
@@ -90,32 +93,39 @@ const RecentWorkspace = ({
                     />
                     <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
                 </div>
-                <div className='load-strategy__recent-item__button'>
-                    <div
-                        className='load-strategy__recent-item__button'
-                        onClick={() => {
-                            viewRecentStrategy('edit');
-                        }}
-                    >
-                        <Icon icon='IcEdit' />
+                {is_desktop && (
+                    <div className='load-strategy__recent-item__button'>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={() => {
+                                viewRecentStrategy('edit');
+                            }}
+                        >
+                            <Icon icon='IcEdit' />
+                        </div>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={() => {
+                                viewRecentStrategy('save');
+                            }}
+                        >
+                            <Icon icon='IcSave' />
+                        </div>
+                        <div
+                            className='load-strategy__recent-item__button'
+                            onClick={e => {
+                                viewRecentStrategy('delete');
+                            }}
+                        >
+                            <Icon icon='IcDelete' />
+                        </div>
                     </div>
-                    <div
-                        className='load-strategy__recent-item__button'
-                        onClick={() => {
-                            viewRecentStrategy('save');
-                        }}
-                    >
-                        <Icon icon='IcSave' />
+                )}
+                {!is_desktop && (
+                    <div className='load-strategy__recent-item__button'>
+                        <Icon icon='IcContextMenu' />
                     </div>
-                    <div
-                        className='load-strategy__recent-item__button'
-                        onClick={e => {
-                            viewRecentStrategy('delete');
-                        }}
-                    >
-                        <Icon icon='IcDelete' />
-                    </div>
-                </div>
+                )}
             </div>
         </>
     );

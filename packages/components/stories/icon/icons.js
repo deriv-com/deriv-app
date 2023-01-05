@@ -434,6 +434,7 @@ export const icons =
         'IcLinuxLogo',
         'IcLinux',
         'IcLiveChat',
+        'IcLocal',
         'IcLock',
         'IcLogout',
         'IcLookbacks',

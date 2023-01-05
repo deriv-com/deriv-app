@@ -492,6 +492,7 @@ export const icons =
         'IcPoiVerifiedDashboard',
         'IcPoiVerified',
         'IcPortfolio',
+        'IcPreviewIcon',
         'IcProfile',
         'IcProfitTable',
         'IcProfit',

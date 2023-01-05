@@ -147,11 +147,11 @@
             height: calc(100% - 3.8rem);
 
             @include mobile {
-                height: unset;
+                // height: unset;
             }
 
             &__list {
-                overflow: auto;
+                // overflow: auto;
                 /* TODO: ThemedScrollbars! */
                 height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Text, Icon } from '@deriv/components';
+import { Text, Icon, DesktopWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
-import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
 import './index.scss';
 import { isMobile } from '@deriv/shared';
+import BotPreview from './bot-preview';
 
 type Nullable<T> = T | null;
 type TLocalComponent = {
@@ -75,15 +75,11 @@ const LocalComponent = ({
                             </button>
                         </div>
                     </div>
-                    <div className='load-strategy__preview-workspace'>
-                        <div
-                            className='load-strategy__preview-workspace-container'
-                            id='load-strategy__blockly-container'
-                            ref={el_ref}
-                        >
-                            <WorkspaceControl />
+                    <DesktopWrapper>
+                        <div className='load-strategy__preview-workspace'>
+                            <BotPreview id_ref={el_ref} />
                         </div>
-                    </div>
+                    </DesktopWrapper>
                     <div className='load-strategy__button-group'>
                         <input
                             type='file'

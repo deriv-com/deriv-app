@@ -1,11 +1,13 @@
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { DesktopWrapper, Icon, MobileWrapper, Text, useOnClickOutside } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Text, useOnClickOutside, Dialog } from '@deriv/components';
 import classnames from 'classnames';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { localize } from '@deriv/translations';
+import BotPreview from './bot-preview';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -23,6 +25,8 @@ type TRecentWorkspace = {
     setActiveTab: (active_tab: number) => void;
     dashboard_strategies: [];
     setLoaderVisible: (param: boolean) => void;
+    has_mobile_preview_loaded: boolean;
+    setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
 };
 
 const RecentWorkspace = ({
@@ -38,6 +42,8 @@ const RecentWorkspace = ({
     onToggleDeleteDialog,
     setActiveTab,
     dashboard_strategies,
+    has_mobile_preview_loaded,
+    setPreviewOnDialog,
 }: TRecentWorkspace) => {
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
 
@@ -57,7 +63,11 @@ const RecentWorkspace = ({
         setDropdownVisibility(!is_dropdown_visible);
     };
 
-    useOnClickOutside(toggle_ref, onToggleDropdown, validateClickOutside);
+    //useOnClickOutside(toggle_ref, onToggleDropdown, validateClickOutside);
+
+    const getPreview = () => {
+        setPreviewOnDialog(!has_mobile_preview_loaded);
+    };
 
     const viewRecentStrategy = (type: string) => {
         if (selected_strategy_id !== workspace.id) {
@@ -138,7 +148,12 @@ const RecentWorkspace = ({
                                 selected_strategy_id === workspace.id && is_dropdown_visible,
                         })}
                     >
-                        <div className='load-strategy__recent-item__group'>
+                        <div
+                            className='load-strategy__recent-item__group'
+                            onClick={() => {
+                                getPreview();
+                            }}
+                        >
                             <div className='load-strategy__recent-item__group__icon'>
                                 <Icon icon='IcPreview' />
                             </div>
@@ -191,6 +206,19 @@ const RecentWorkspace = ({
                             </Text>
                         </div>
                     </div>
+                    <Dialog
+                        is_visible={has_mobile_preview_loaded}
+                        cancel_button_text={localize('Cancel')}
+                        className={'dc-dialog__wrapper--preview'}
+                        confirm_button_text={localize('OK')}
+                        has_close_icon
+                        is_mobile_full_width
+                        onCancel={() => setPreviewOnDialog(false)}
+                        onClose={() => setPreviewOnDialog(false)}
+                        onConfirm={() => setPreviewOnDialog(false)}
+                    >
+                        <BotPreview id_ref />
+                    </Dialog>
                 </MobileWrapper>
             </div>
         </>
@@ -204,6 +232,8 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     selected_strategy_id: load_modal.selected_strategy_id,
     setFileLoaded: dashboard.setFileLoaded,
     has_file_loaded: dashboard.has_file_loaded,
+    has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
+    setPreviewOnDialog: dashboard.setPreviewOnDialog,
     toggleSaveModal: save_modal.toggleSaveModal,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     loadFileFromRecent: load_modal.loadFileFromRecent,

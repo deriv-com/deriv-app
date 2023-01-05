@@ -16,6 +16,7 @@ export interface IDashboardStore {
     is_dialog_open: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
+    has_mobile_preview_loaded: boolean;
     has_tour_ended: boolean;
     has_builder_token: string | number;
     has_onboarding_token: string | number;
@@ -28,6 +29,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -52,6 +54,8 @@ export default class DashboardStore implements IDashboardStore {
             has_started_bot_builder_tour: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
+            has_mobile_preview_loaded: observable,
+            setPreviewOnDialog: action.bound,
             setHasTourEnded: action.bound,
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
@@ -91,11 +95,16 @@ export default class DashboardStore implements IDashboardStore {
     is_tour_dialog_visible = false;
     has_started_onboarding_tour = false;
     is_preview_on_popup = false;
+    has_mobile_preview_loaded = false;
     has_started_bot_builder_tour = false;
     has_tour_ended = false;
     has_builder_token = '';
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
+
+    setPreviewOnDialog = (has_mobile_preview_loaded: boolean) => {
+        this.has_mobile_preview_loaded = has_mobile_preview_loaded;
+    };
 
     setStrategySaveType = (strategy_save_type: string) => {
         this.strategy_save_type = strategy_save_type;

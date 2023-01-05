@@ -96,6 +96,11 @@ export default class DashboardStore implements IDashboardStore {
     has_builder_token = '';
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
+    active_tour_step_number = 0;
+
+    setTourActiveStep = (active_tour_step_number: number) => {
+        this.active_tour_step_number = active_tour_step_number;
+    };
 
     setStrategySaveType = (strategy_save_type: string) => {
         this.strategy_save_type = strategy_save_type;

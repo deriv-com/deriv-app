@@ -33,6 +33,22 @@
             text-align: center;
             flex-direction: column;
             margin-right: 2.4rem;
+            @include mobile {
+                flex-direction: row;
+                span {
+                    text-align: left;
+                    padding-left: 0.8rem;
+                    width: calc(100% - 14.8rem);
+                }
+            }
+        }
+        @include mobile {
+            flex-direction: column;
+            margin-top: 1.4rem;
+            margin-bottom: 2.2rem;
+        }
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 
@@ -44,12 +60,21 @@
         height: 16rem;
         width: 28rem;
         background-size: 100% 100%;
+        @include mobile {
+            height: 8.7rem;
+            width: 14.8rem;
+            margin: 0;
+        }
         &__tours {
             height: 13.5rem;
             width: 21.5rem;
             background-position: center center;
             margin-bottom: 0.8rem;
             cursor: pointer;
+            @include mobile {
+                height: 8.7rem;
+                width: 14.8rem;
+            }
         }
 
         &__button-group {
@@ -61,6 +86,10 @@
             background-color: rgba(0, 0, 0, 0.5);
             &--play {
                 filter: invert(1);
+            }
+            @include mobile {
+                height: 6rem;
+                width: 8rem;
             }
         }
         &--disabled {
@@ -81,15 +110,27 @@
         }
         &__content {
             width: 85%;
+            @include mobile {
+                width: 100%;
+            }
         }
         .dc-accordion {
-            &__item-header {
-                @include position-center;
-                justify-content: space-between;
-            }
             &__item {
                 border: unset;
                 border-bottom: 0.1rem solid var(--general-section-1);
+                &-header {
+                    @include position-center;
+                    justify-content: space-between;
+                }
+                &-content {
+                    @include mobile {
+                        width: 100%;
+
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
             }
         }
         &__header {

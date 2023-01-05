@@ -9,7 +9,7 @@
     left: 23.2rem;
     background-color: var(--general-main-1);
     @include mobile {
-        left: 0;
+        left: 1.4rem;
     }
     z-index: 1;
     &__btn {

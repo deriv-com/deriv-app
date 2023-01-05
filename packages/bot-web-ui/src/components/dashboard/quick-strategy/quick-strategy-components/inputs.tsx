@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { InputField } from '.';
 import { TInputsFieldNames } from '../quick-strategy.types';
 import { TInputs } from './components.types';
+import { isMobile } from '@deriv/shared';
 
 const Inputs = ({
     idx,
-    is_mobile,
     field_name,
     id,
     className,
@@ -22,8 +22,9 @@ const Inputs = ({
     handleChange,
     onChangeInputValue,
     setCurrentFocus,
-}: TInputs) =>
-    is_input_field ? (
+}: TInputs) => {
+    const is_mobile = isMobile();
+    return is_input_field ? (
         <div
             className={classNames('quick-strategy__form-row', {
                 'quick-strategy__form-row--multiple': !is_mobile,
@@ -59,6 +60,7 @@ const Inputs = ({
     ) : (
         <></>
     );
+};
 
 Inputs.displayName = 'Inputs';
 

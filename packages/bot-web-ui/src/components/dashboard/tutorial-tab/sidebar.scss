@@ -87,3 +87,17 @@
         }
     }
 }
+
+.tutorials-mobile {
+    padding: 1.6rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    &__select {
+        height: 4rem;
+        margin-bottom: 1.5rem;
+    }
+    &__guide {
+        height: calc(100vh - 21.1rem);
+        overflow: auto;
+    }
+}

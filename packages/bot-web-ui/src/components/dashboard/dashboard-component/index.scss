@@ -200,15 +200,19 @@
             min-width: 70%;
             display: flex;
             justify-content: center;
-            align-items: center;
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
             overflow: hidden;
             position: relative;
 
+            @include desktop {
+                align-items: center;
+            }
             @include mobile {
                 height: var(--tab-content-height-mobile);
+                align-items: flex-start;
+                padding: 2.2rem 0;
             }
         }
 
@@ -217,7 +221,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 50%;
+            @include desktop {
+                width: 50%;
+            }
         }
 
         &__preview {
@@ -274,8 +280,14 @@
 
         &__description {
             text-align: center;
-            margin-bottom: 4rem;
-            padding: 0 3.6rem;
+            @include desktop {
+                margin-bottom: 4rem;
+                padding: 0 3.6rem;
+            }
+            @include mobile {
+                margin-bottom: 1.4rem;
+                padding: 0 0.6rem;
+            }
 
             &__loaded {
                 text-align: left;
@@ -303,6 +315,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                @include mobile {
+                    flex-wrap: wrap;
+                }
             }
 
             &__disabled-card {

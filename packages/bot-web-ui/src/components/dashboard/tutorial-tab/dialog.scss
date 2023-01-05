@@ -9,6 +9,11 @@
             border-radius: 0;
             position: relative;
             z-index: 1;
+            @include mobile {
+                width: 94%;
+                height: auto;
+                max-height: 80%;
+            }
         }
 
         &__header-wrapper {
@@ -33,9 +38,25 @@
 }
 
 .tour-dialog {
+    .dc-dialog__dialog {
+        @include mobile {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+        @include tablet {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+    }
     &--end {
         .dc-btn--secondary {
             display: none;
+        }
+
+        @include mobile {
+            .dc-btn--primary {
+                padding: 1rem;
+            }
         }
     }
 
@@ -44,10 +65,28 @@
             text-align: left;
             margin-bottom: 2.4rem;
         }
+
         &__description {
             text-align: left;
+
             &__text {
                 margin-bottom: 1.6rem;
+            }
+        }
+    }
+
+    .dc-dialog__footer {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            height: unset;
+            align-content: flex-end;
+
+            button {
+                &:first-child {
+                    margin-bottom: unset;
+                    margin-right: 0.8rem;
+                }
             }
         }
     }

@@ -19,10 +19,7 @@ export const SIDEBAR_INTRO: TSidebarItem[] = [
     },
     {
         label: localize('Guide'),
-        content: [
-            localize('DBot - your automated trading partner'),
-            localize('How to build your bot from scratch using a simple strategy.'),
-        ],
+        content: [localize('DBot - your automated trading partner')],
         link: true,
     },
     {

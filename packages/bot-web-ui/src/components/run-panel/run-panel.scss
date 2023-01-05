@@ -120,6 +120,9 @@
     }
     &-tab {
         &__content {
+            height: calc(100vh - 42rem);
+            overflow: hidden;
+
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
             }

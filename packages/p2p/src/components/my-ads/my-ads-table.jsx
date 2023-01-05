@@ -11,7 +11,6 @@ import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { generateErrorDialogTitle } from 'Utils/adverts';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
-import QuickAddModal from './quick-add-modal.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -49,7 +48,6 @@ const AdSwitchHintBox = () => {
 
 const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
-    const [selected_advert, setSelectedAdvert] = React.useState(undefined);
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
@@ -74,7 +72,6 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
-                {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {floating_rate_store.change_ad_alert && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
@@ -122,7 +119,7 @@ const MyAdsTable = () => {
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} setAdvert={setSelectedAdvert} />}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
                         />
                     </Table.Body>
                 </Table>

@@ -5,8 +5,8 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const CancelAddPaymentMethodModal = () => {
-    const { my_profile_store } = useStores();
+const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cancel }) => {
+    const { my_ads_store, my_profile_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -30,9 +30,13 @@ const CancelAddPaymentMethodModal = () => {
                     large
                     onClick={() => {
                         my_profile_store.hideAddPaymentMethodForm();
-                        my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
-                        hideModal();
+                        my_ads_store.setShouldShowAddPaymentMethod(false);
+                        onCancel?.();
+                        hideModal({
+                            save_form_history: false,
+                            hide_all_modals: should_hide_all_modals_on_cancel ?? false,
+                        });
                     }}
                     secondary
                 >
@@ -41,7 +45,9 @@ const CancelAddPaymentMethodModal = () => {
                 <Button
                     large
                     onClick={() => {
-                        hideModal(true);
+                        hideModal({
+                            save_form_history: true,
+                        });
                     }}
                     primary
                 >

@@ -16,6 +16,9 @@ const CreateAdAddPaymentMethodModal = () => {
         if (my_profile_store.selected_payment_method.length > 0 || general_store.is_form_modified) {
             showModal({
                 key: 'CancelAddPaymentMethodModal',
+                props: {
+                    should_hide_all_modals_on_cancel: true,
+                },
             });
         } else {
             hideModal();

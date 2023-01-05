@@ -249,8 +249,12 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { general_store, my_ads_store } = this.root_store;
 
-                general_store.hideModal();
+                if (general_store.modal.key === 'BlockUserModal') {
+                    general_store.hideModal();
+                }
                 this.setSelectedPaymentMethod('');
+                general_store.setSavedFormState(null);
+                general_store.setFormikRef(null);
 
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);

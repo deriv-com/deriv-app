@@ -59,7 +59,7 @@ const TradingAppCard = ({
                 </Text>
                 <Text
                     className='description'
-                    color={is_deriv_platform ? 'less-prominent' : ''}
+                    color={is_deriv_platform ? 'less-prominent' : 'general'}
                     size='xxs'
                     line_height='m'
                 >

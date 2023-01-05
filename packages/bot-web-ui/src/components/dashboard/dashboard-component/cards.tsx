@@ -12,7 +12,7 @@ import classNames from 'classnames';
 
 type TCardProps = {
     active_tab: number;
-    closeResetDialog: () => void;
+    closeResetDialog: VoidFunction;
     dialog_options: { [key: string]: string };
     handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
     is_dialog_open: boolean;
@@ -20,9 +20,9 @@ type TCardProps = {
     is_running: boolean;
     load_modal: LoadModalStore;
     is_mobile: boolean;
-    loadFileFromLocal: () => void;
-    openFileLoader: () => void;
-    onOkButtonClick: () => void;
+    loadFileFromLocal: VoidFunction;
+    openFileLoader: VoidFunction;
+    onOkButtonClick: VoidFunction;
     setActiveTab: (active_tab: number) => void;
     save_modal: SaveModalStore;
     setFileLoaded: (param: boolean) => void;
@@ -44,7 +44,7 @@ const Card = ({
     type TCardArray = {
         icon: string;
         content: string;
-        method: () => void;
+        method: VoidFunction;
         disable: string | '';
     };
     const openGoogleDriveDialog = () => {

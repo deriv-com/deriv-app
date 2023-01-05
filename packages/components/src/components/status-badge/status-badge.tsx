@@ -2,10 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores/index';
-import { Icon, Text } from '@deriv/components';
+import Icon from '../icon';
+import Text from '../text';
 import { Localize } from '@deriv/translations';
-import './switcher-status-badge.scss';
+import './status-badge.scss';
+
+type TStatusBadge = {
+    document_status: any;
+};
 
 const status_text = {
     pending: {
@@ -43,9 +47,7 @@ const status_text = {
     },
 };
 
-const StatusBadge = () => {
-    const { client } = useStores();
-    const { document_status } = client.authentication_status;
+const StatusBadge = ({ document_status }: TStatusBadge) => {
     const { text, icon } = status_text[document_status as keyof typeof status_text] ?? status_text.default;
 
     return (

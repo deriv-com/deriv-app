@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Modal, Money, Text } from '@deriv/components';
+import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -12,8 +12,11 @@ type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
     account_list: object[];
     //TODO: Replace the type with a proper one when ts migration cards merged
+    authentication_status: any;
+    //TODO: Replace the type with a proper one when ts migration cards merged
     accounts: any;
     closeModal: () => void;
+    is_authentication_needed: boolean;
     is_visible: boolean;
     loginid: string;
     openRealAccountSignup: (account_type: string) => void;
@@ -23,8 +26,10 @@ type CurrencySelectionModalProps = {
 
 const CurrencySelectionModal = ({
     account_list,
+    authentication_status,
     accounts,
     closeModal,
+    is_authentication_needed,
     is_visible,
     loginid: current_loginid,
     openRealAccountSignup,
@@ -70,9 +75,13 @@ const CurrencySelectionModal = ({
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    <Text size='xs' color='prominent'>
-                                        <Money amount={balance} currency={currency} show_currency />
-                                    </Text>
+                                    {is_selected && selected_region === 'EU' && is_authentication_needed ? (
+                                        <StatusBadge document_status={authentication_status.document_status} />
+                                    ) : (
+                                        <Text size='xs' color='prominent'>
+                                            <Money amount={balance} currency={currency} show_currency />
+                                        </Text>
+                                    )}
                                 </div>
                             </div>
                         );
@@ -98,7 +107,9 @@ const CurrencySelectionModal = ({
 export default connect(({ client, traders_hub, ui }: RootStore) => ({
     account_list: client.account_list,
     accounts: client.accounts,
+    authentication_status: client.authentication_status,
     closeModal: traders_hub.closeModal,
+    is_authentication_needed: client.is_authentication_needed,
     loginid: client.loginid,
     openRealAccountSignup: ui.openRealAccountSignup,
     selected_region: traders_hub.selected_region,

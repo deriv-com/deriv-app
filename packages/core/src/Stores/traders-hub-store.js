@@ -71,6 +71,7 @@ export default class TradersHubStore extends BaseStore {
             no_CR_account: computed,
             no_MF_account: computed,
             content_flag: computed,
+            show_eu_related_content: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -213,6 +214,11 @@ export default class TradersHubStore extends BaseStore {
         }
         if (this.is_demo) return ContentFlag.CR_DEMO;
         return ContentFlag.LOW_RISK_CR_NON_EU;
+    }
+
+    get show_eu_related_content() {
+        const eu_related = [ContentFlag.EU_DEMO, ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU];
+        return eu_related.includes(this.content_flag);
     }
 
     getAvailablePlatforms() {

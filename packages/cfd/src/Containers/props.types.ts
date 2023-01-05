@@ -219,7 +219,6 @@ export type TJurisdictionModalProps = {
     account_status: GetAccountStatus;
     disableApp: () => void;
     enableApp: () => void;
-    is_eu: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
@@ -227,6 +226,7 @@ export type TJurisdictionModalProps = {
     setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
+    show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleJurisdictionModal: () => void;
@@ -314,7 +314,7 @@ export type TDMT5CompareModalContentProps = {
     setShouldShowCooldownModal: (value: boolean) => void;
     should_restrict_bvi_account_creation: boolean;
     should_show_derivx: boolean;
-    show_eu_related: boolean;
+    show_eu_related_content: boolean;
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
     toggleCFDVerificationModal: () => void;
     toggleCompareAccounts: () => void;

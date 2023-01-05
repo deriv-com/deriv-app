@@ -37,6 +37,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     openDerivRealAccountNeededModal: () => void;
     context: RootStore;
     real_account_creation_unlock_date: string;
+    show_eu_related_content: boolean;
     setShouldShowCooldownModal: (value: boolean) => void;
     is_eu_user: string;
     is_cr_demo_account: boolean;
@@ -113,6 +114,7 @@ const CompareAccountsModal = ({
     setShouldShowCooldownModal,
     toggleCompareAccounts,
     content_flag,
+    show_eu_related_content,
 }: TCompareAccountsModalProps) => {
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
@@ -135,13 +137,9 @@ const CompareAccountsModal = ({
             type: 'all',
         });
 
-    const show_eu_related =
-        content_flag === ContentFlag.EU_DEMO ||
-        content_flag === ContentFlag.EU_REAL ||
-        content_flag === ContentFlag.LOW_RISK_CR_EU;
-    const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related;
+    const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related_content;
 
-    const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related && is_demo_tab;
+    const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related_content && is_demo_tab;
     const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
 
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
@@ -159,7 +157,7 @@ const CompareAccountsModal = ({
             : localize('Compare accounts');
 
     const getCFDModalTitle = () => {
-        if (is_pre_appstore_setting && show_eu_related) {
+        if (is_pre_appstore_setting && show_eu_related_content) {
             return is_demo_tab ? localize('Deriv MT5 CFDs demo account') : localize('Deriv MT5 CFDs real account');
         } else if (should_show_derivx) {
             return is_demo_tab ? localize('Compare CFDs demo accounts') : localize('Compare CFDs real accounts');
@@ -177,7 +175,7 @@ const CompareAccountsModal = ({
                 height: '404px',
                 width: '610px',
             };
-        } else if (show_eu_related) {
+        } else if (show_eu_related_content) {
             if (is_pre_appstore_setting) {
                 if (content_flag === ContentFlag.EU_DEMO) {
                     return {
@@ -213,7 +211,7 @@ const CompareAccountsModal = ({
                 is_logged_in={is_logged_in}
                 landing_companies={landing_companies}
                 platform={platform}
-                is_eu_client={!!show_eu_related}
+                is_eu_client={!!show_eu_related_content}
                 residence={residence}
                 has_unmerged_account={has_unmerged_account}
                 is_eu={is_eu}
@@ -233,7 +231,7 @@ const CompareAccountsModal = ({
                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                 setShouldShowCooldownModal={setShouldShowCooldownModal}
                 should_show_derivx={should_show_derivx}
-                show_eu_related={show_eu_related}
+                show_eu_related_content={show_eu_related_content}
                 show_preappstore_eu_demo={show_preappstore_eu_demo}
                 toggleCompareAccounts={toggleCompareAccounts}
             />
@@ -306,4 +304,5 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     selected_region: traders_hub.selected_region,
     is_eu_user: traders_hub.is_eu_user,
     content_flag: traders_hub.content_flag,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(CompareAccountsModal);

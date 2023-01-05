@@ -172,8 +172,8 @@ export const trading_hub_contents: TTradingHubContents = {
                 has_account
                 currency={'USD'}
                 mf_currency={'EUR'}
-                derived_amount={'369'}
-                financial_amount={'512'}
+                derived_amount={'0'}
+                financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
                 is_last_step
@@ -214,8 +214,8 @@ export const trading_hub_contents: TTradingHubContents = {
                 has_account
                 currency={'USD'}
                 mf_currency={'EUR'}
-                derived_amount={'369'}
-                financial_amount={'512'}
+                derived_amount={'0'}
+                financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
                 is_last_step

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import StaticGetMoreAccounts from './static-get-more-accounts';
 import StaticCFDAccountManager from './static-cfd-account-manager';
 import StaticTradingAppCard from './static-trading-app-card';
 import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
@@ -216,11 +217,7 @@ const StaticDashboard = ({
                                         </Button>
                                     }
                                 >
-                                    <BalanceText
-                                        currency={is_eu ? 'EUR' : 'USD'}
-                                        balance={is_eu ? 0 : 10000}
-                                        size='xs'
-                                    />
+                                    <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={0} size='xs' />
                                 </StaticCurrencySwitcherContainer>
                             )}
                         </div>
@@ -475,6 +472,15 @@ const StaticDashboard = ({
                                     is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
+                                />
+                            )}
+                            {isDesktop() && has_account && (
+                                <StaticGetMoreAccounts
+                                    icon='IcAppstoreGetMoreAccounts'
+                                    title={localize('Get more')}
+                                    description={localize(
+                                        'Get more Deriv MT5 account with different type and jurisdiction.'
+                                    )}
                                 />
                             )}
                         </div>

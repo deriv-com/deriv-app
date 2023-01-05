@@ -40,11 +40,10 @@ export const trading_hub_contents: TTradingHubContents = {
                     button: false,
                     get: false,
                 }}
-                is_first_step
             />
         ),
-        footer_header: localize('Welcome to Trading Hub'),
-        footer_text: localize('This is your new dashboard'),
+        footer_header: localize(`Welcome to Trader's Hub`),
+        footer_text: localize('This is your personal start page for Deriv'),
         has_next_content: false,
     },
     step2: {
@@ -76,7 +75,7 @@ export const trading_hub_contents: TTradingHubContents = {
         ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(
-            'These are the trading accounts available to you. You can click on an account to find out more.'
+            `These are the trading accounts available to you. You can click on an account’s icon or description to find out more`
         ),
         has_next_content: false,
     },
@@ -105,7 +104,6 @@ export const trading_hub_contents: TTradingHubContents = {
                     button: false,
                     get: false,
                 }}
-                is_third_step
             />
         ),
         footer_header: localize('CFDs, Options or Multipliers'),

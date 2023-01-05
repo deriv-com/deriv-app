@@ -46,8 +46,6 @@ type TStaticDashboard = {
     is_derivx_last_step?: boolean;
     is_financial_last_step?: boolean;
     has_applauncher_account?: boolean;
-    is_first_step?: boolean;
-    is_third_step?: boolean;
 };
 
 const StaticDashboard = ({
@@ -60,8 +58,6 @@ const StaticDashboard = ({
     is_blurry,
     is_derivx_last_step,
     is_financial_last_step,
-    is_first_step,
-    is_third_step,
     is_last_step,
     is_onboarding_animated,
     loginid,
@@ -102,11 +98,7 @@ const StaticDashboard = ({
                 className={classNames('static-dashboard', {
                     'static-dashboard--eu': is_eu,
                 })}
-                style={
-                    (isMobile() && index === 1 && !(is_first_step || is_third_step)) || (isMobile() && is_eu)
-                        ? { height: '100%' }
-                        : {}
-                }
+                style={isMobile() && is_eu ? { height: '100%' } : {}}
             >
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>
@@ -114,19 +106,17 @@ const StaticDashboard = ({
                             <div className='static-dashboard-wrapper__header'>
                                 {isMobile() ? (
                                     <React.Fragment>
-                                        {(is_first_step || is_third_step) && (
-                                            <ButtonToggle
-                                                buttons_arr={toggle_options}
-                                                className='static-dashboard-wrapper__header--toggle-account'
-                                                has_rounded_button
-                                                is_animated
-                                                onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
-                                                    setIndex(Number(item.target.value));
-                                                }}
-                                                name='Options'
-                                                value={index}
-                                            />
-                                        )}
+                                        <ButtonToggle
+                                            buttons_arr={toggle_options}
+                                            className='static-dashboard-wrapper__header--toggle-account'
+                                            has_rounded_button
+                                            is_animated
+                                            onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
+                                                setIndex(Number(item.target.value));
+                                            }}
+                                            name='Options'
+                                            value={index}
+                                        />
                                     </React.Fragment>
                                 ) : (
                                     <Text
@@ -142,70 +132,68 @@ const StaticDashboard = ({
                                         {is_eu_title}
                                     </Text>
                                 )}
-                                {(isDesktop() || (isMobile() && is_first_step) || (isMobile() && is_third_step)) && (
-                                    <div className='static-dashboard-wrapper__description'>
-                                        <Text
-                                            as='p'
-                                            size='xxs'
-                                            color={
-                                                is_blurry.options_text || is_blurry.options_description
-                                                    ? 'less-prominent'
-                                                    : 'prominent'
-                                            }
-                                        >
-                                            {is_eu_user ? (
-                                                <Localize
-                                                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
-                                                    components={[
-                                                        <Text
-                                                            key={0}
-                                                            size='xs'
-                                                            color='red'
-                                                            className={classNames(
-                                                                'static-dashboard-wrapper__header--underlined',
-                                                                {
-                                                                    'static-dashboard-wrapper__header--underlined--blurry':
-                                                                        is_blurry.options_description,
-                                                                }
-                                                            )}
-                                                        />,
-                                                    ]}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
-                                                    components={[
-                                                        <Text
-                                                            key={0}
-                                                            size='xs'
-                                                            line_height='xl'
-                                                            color='red'
-                                                            className={classNames(
-                                                                'static-dashboard-wrapper__header--underlined',
-                                                                {
-                                                                    'static-dashboard-wrapper__header--underlined--blurry':
-                                                                        is_blurry.options_description,
-                                                                }
-                                                            )}
-                                                        />,
-                                                        <Text
-                                                            key={1}
-                                                            size='xs'
-                                                            color='red'
-                                                            className={classNames(
-                                                                'static-dashboard-wrapper__header--underlined',
-                                                                {
-                                                                    'static-dashboard-wrapper__header--underlined--blurry':
-                                                                        is_blurry.options_description,
-                                                                }
-                                                            )}
-                                                        />,
-                                                    ]}
-                                                />
-                                            )}
-                                        </Text>
-                                    </div>
-                                )}
+                                <div className='static-dashboard-wrapper__description'>
+                                    <Text
+                                        as='p'
+                                        size='xxs'
+                                        color={
+                                            is_blurry.options_text || is_blurry.options_description
+                                                ? 'less-prominent'
+                                                : 'prominent'
+                                        }
+                                    >
+                                        {is_eu_user ? (
+                                            <Localize
+                                                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        ) : (
+                                            <Localize
+                                                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        line_height='xl'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                    <Text
+                                                        key={1}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        )}
+                                    </Text>
+                                </div>
                             </div>
                             {has_account && (
                                 <StaticCurrencySwitcherContainer
@@ -228,7 +216,11 @@ const StaticDashboard = ({
                                         </Button>
                                     }
                                 >
-                                    <BalanceText currency={is_eu ? 'EUR' : 'USD'} balance={10000} size='xs' />
+                                    <BalanceText
+                                        currency={is_eu ? 'EUR' : 'USD'}
+                                        balance={is_eu ? 0 : 10000}
+                                        size='xs'
+                                    />
                                 </StaticCurrencySwitcherContainer>
                             )}
                         </div>
@@ -337,19 +329,17 @@ const StaticDashboard = ({
                         <div className='static-dashboard-wrapper__header'>
                             {isMobile() ? (
                                 <React.Fragment>
-                                    {(is_first_step || is_third_step) && (
-                                        <ButtonToggle
-                                            buttons_arr={toggle_options}
-                                            className='static-dashboard-wrapper__header--toggle-account'
-                                            has_rounded_button
-                                            is_animated
-                                            onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
-                                                setIndex(Number(item.target.value));
-                                            }}
-                                            name='CFDs'
-                                            value={index}
-                                        />
-                                    )}
+                                    <ButtonToggle
+                                        buttons_arr={toggle_options}
+                                        className='static-dashboard-wrapper__header--toggle-account'
+                                        has_rounded_button
+                                        is_animated
+                                        onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
+                                            setIndex(Number(item.target.value));
+                                        }}
+                                        name='CFDs'
+                                        value={index}
+                                    />
                                 </React.Fragment>
                             ) : (
                                 <Text
@@ -384,34 +374,30 @@ const StaticDashboard = ({
                                 </Text>
                             )}
                         </div>
-                        {(isDesktop() || (isMobile() && is_first_step) || (isMobile() && is_third_step)) && (
-                            <div className='static-dashboard-wrapper__description'>
-                                <Text
-                                    as='p'
-                                    size='xxs'
-                                    color={
-                                        is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'
-                                    }
-                                >
-                                    <Localize
-                                        i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
-                                        components={[
-                                            <Text
-                                                key={0}
-                                                color={'red'}
-                                                size='xxs'
-                                                line_height='xl'
-                                                weight='bold'
-                                                className={classNames('static-dashboard-wrapper__header--underlined', {
-                                                    'static-dashboard-wrapper__header-compare-accounts--blurry':
-                                                        is_blurry.cfd_description || is_blurry.cfd_text,
-                                                })}
-                                            />,
-                                        ]}
-                                    />
-                                </Text>
-                            </div>
-                        )}
+                        <div className='static-dashboard-wrapper__description'>
+                            <Text
+                                as='p'
+                                size='xxs'
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                            >
+                                <Localize
+                                    i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                                    components={[
+                                        <Text
+                                            key={0}
+                                            color={'red'}
+                                            size='xxs'
+                                            line_height='xl'
+                                            weight='bold'
+                                            className={classNames('static-dashboard-wrapper__header--underlined', {
+                                                'static-dashboard-wrapper__header-compare-accounts--blurry':
+                                                    is_blurry.cfd_description || is_blurry.cfd_text,
+                                            })}
+                                        />,
+                                    ]}
+                                />
+                            </Text>
+                        </div>
 
                         {isMobile() && (
                             <Text

@@ -117,9 +117,7 @@
                 height: 4.8rem;
                 width: 14.4rem;
                 min-width: 14.4rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @include align-center;
 
                 &__loaded {
                     text-align: left;

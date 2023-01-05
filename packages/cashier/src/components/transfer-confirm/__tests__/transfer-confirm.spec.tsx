@@ -2,8 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
 import { StoreProvider } from '@deriv/stores';
-import { TRootStore } from '../../../types';
-import type { DeepPartial } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     ui: {
@@ -11,12 +10,6 @@ const mockRootStore: DeepPartial<TRootStore> = {
         enableApp: jest.fn(),
     },
 };
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 describe('<TransferConfirm />', () => {
     let modal_root_el;

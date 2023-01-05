@@ -18,7 +18,6 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
-    is_exit_traders_hub_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
@@ -49,7 +48,6 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             available_platforms: observable,
             is_regulators_compare_modal_visible: observable,
-            is_exit_traders_hub_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
             prev_selected_loginid: observable,
@@ -73,7 +71,6 @@ export default class TradersHubStore extends BaseStore {
             no_CR_account: computed,
             no_MF_account: computed,
             content_flag: computed,
-            show_eu_related_content: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -82,10 +79,8 @@ export default class TradersHubStore extends BaseStore {
             selectRegion: action.bound,
             setActiveIndex: action.bound,
             setTogglePlatformType: action.bound,
-            should_show_exit_traders_modal: computed,
             startTrade: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
-            toggleExitTradersHubModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
@@ -99,7 +94,6 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.is_eu,
                 this.root_store.client.is_switching,
                 this.root_store.client.account_list,
-                this.root_store.client.upgradeable_landing_companies,
             ],
             () => {
                 this.getDemoLoginId();
@@ -108,14 +102,10 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        const login_id = window.localStorage.getItem('active_loginid') ?? '';
-        this.selected_account_type = !/^VRT/.test(login_id) ? 'real' : 'demo';
-
         reaction(
             () => [
                 this.selected_account_type,
                 this.selected_region,
-                this.root_store.client.is_eu,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
@@ -133,7 +123,13 @@ export default class TradersHubStore extends BaseStore {
             }
         );
 
-        this.selected_region = /^CR/.test(login_id) ? 'Non-EU' : 'EU';
+        reaction(
+            () => [this.root_store.client.loginid],
+            () => {
+                this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
+                this.selected_region = /^CR/.test(this.root_store.client.loginid) ? 'Non-EU' : 'EU';
+            }
+        );
     }
 
     async setSwitchEU() {
@@ -219,11 +215,6 @@ export default class TradersHubStore extends BaseStore {
         return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
-    get show_eu_related_content() {
-        const eu_related = [ContentFlag.EU_DEMO, ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU];
-        return eu_related.includes(this.content_flag);
-    }
-
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
         if (this.is_eu_user && !this.is_demo_low_risk) {
@@ -245,15 +236,6 @@ export default class TradersHubStore extends BaseStore {
     }
     get is_eu_selected() {
         return this.selected_region === 'EU';
-    }
-
-    get should_show_exit_traders_modal() {
-        //  should display the modal when user have atleast one mf account and cr account
-        const { active_accounts } = this.root_store.client;
-        return (
-            active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&
-            active_accounts.some(acc => acc.landing_company_shortcode === 'svg')
-        );
     }
 
     toggleRegulatorsCompareModal() {
@@ -439,10 +421,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
-    }
-
-    toggleExitTradersHubModal() {
-        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
     async getDemoLoginId() {

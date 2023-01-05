@@ -36,6 +36,7 @@ export default class TradersHubStore extends BaseStore {
         active_modal: '',
         data: {},
     };
+    is_account_transfer_modal_open = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -56,6 +57,7 @@ export default class TradersHubStore extends BaseStore {
             selected_platform_type: observable,
             selected_region: observable,
             is_account_type_modal_visible: observable,
+            is_account_transfer_modal_open: observable,
             closeModal: action.bound,
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
@@ -87,6 +89,7 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
+            toggleAccountTransferModal: action.bound,
         });
 
         reaction(
@@ -573,5 +576,8 @@ export default class TradersHubStore extends BaseStore {
                 ];
             }
         });
+    }
+    toggleAccountTransferModal() {
+        this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 }

@@ -20,6 +20,7 @@ import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import CurrencySelectionModal from './currency-selection-modal';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import AccountTransferModal from 'Components/account-transfer-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -39,7 +40,7 @@ const ModalManager = () => {
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
-    const { is_demo, modal_data } = traders_hub;
+    const { is_demo, modal_data, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -138,6 +139,10 @@ const ModalManager = () => {
                 is_real_enabled={has_active_real_account || !is_demo}
             />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
+            <AccountTransferModal
+                is_modal_open={is_account_transfer_modal_open}
+                toggleModal={toggleAccountTransferModal}
+            />
         </React.Fragment>
     );
 };

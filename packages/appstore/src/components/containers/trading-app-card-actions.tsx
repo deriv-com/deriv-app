@@ -9,7 +9,7 @@ export type Actions = {
     type: 'get' | 'none' | 'trade' | 'dxtrade' | 'transfer_trade' | 'dxtrade_transfer_trade';
     link_to?: string;
     has_divider?: boolean;
-    onAction?: () => void;
+    onAction?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     is_external?: boolean;
 };
 

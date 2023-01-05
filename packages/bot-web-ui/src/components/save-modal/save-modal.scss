@@ -76,27 +76,12 @@ div.radio-group {
 }
 
 .save-type {
-    &__checkbox-text {
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 1.43;
-        letter-spacing: normal;
-        color: var(--text-prominent);
-    }
-    &__checkbox-description {
-        font-size: 14px;
-        font-weight: normal;
-        line-height: 1.43;
-        letter-spacing: normal;
-        color: var(--text-prominent);
-        margin: 8px 0 0 32px;
-    }
     &__container {
         text-align: center;
     }
     &__input {
         // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-        margin: 12px 0 0 !important;
+        margin: 2rem 0 0 !important;
     }
     &__radio {
         text-align: center;
@@ -130,6 +115,7 @@ div.radio-group {
         }
         & .dc-input {
             width: 100% !important;
+            margin: 3rem 0 0 !important;
         }
         & .dc-radio-group__item {
             width: calc(50vw - 24px) !important;
@@ -139,7 +125,7 @@ div.radio-group {
             position: relative;
         }
         & .modal__content {
-            padding: 0px 1.6rem;
+            padding: 3rem 1.6rem;
             height: calc(100% - #{$MOBILE_WRAPPER_FOOTER_HEIGHT});
         }
         & .modal__footer {

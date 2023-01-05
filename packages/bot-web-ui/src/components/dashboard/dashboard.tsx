@@ -296,7 +296,11 @@ const Dashboard = ({
                 </div>
             </div>
             <DesktopWrapper>
-                <div className='dashboard__run-strategy-wrapper'>
+                <div
+                    className={classNames('dashboard__run-strategy-wrapper', {
+                        'dashboard__run-strategy-wrapper--padded': active_tab === 2,
+                    })}
+                >
                     {active_tab !== 2 && <RunStrategy />}
 
                     {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&

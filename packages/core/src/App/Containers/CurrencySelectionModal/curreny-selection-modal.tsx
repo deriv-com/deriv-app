@@ -1,23 +1,36 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Icon, Modal, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
-import CurrencyIcon from 'Assets/svgs/currency';
-import { useStores } from 'Stores/index';
-import { AccountListDetail } from 'Types';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import CurrencyIcon from './currency';
+import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import StatusBadge from 'Components/currency-switcher-card/real/switcher-status-badge';
 
 type CurrencySelectionModalProps = {
+    //TODO: Replace the type with a proper one when ts migration cards merged
+    account_list: object[];
+    //TODO: Replace the type with a proper one when ts migration cards merged
+    accounts: any;
+    closeModal: () => void;
     is_visible: boolean;
+    loginid: string;
+    openRealAccountSignup: (account_type: string) => void;
+    selected_region: string;
+    switchAccount: (loginid: string) => void;
 };
 
-const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => {
-    const { client, traders_hub, ui } = useStores();
-    const { accounts, account_list, loginid: current_loginid, switchAccount, is_authentication_needed } = client;
-    const { closeModal, selected_region } = traders_hub;
-
+const CurrencySelectionModal = ({
+    account_list,
+    accounts,
+    closeModal,
+    is_visible,
+    loginid: current_loginid,
+    openRealAccountSignup,
+    selected_region,
+    switchAccount,
+}: CurrencySelectionModalProps) => {
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
             <div className='currency-selection-modal__header'>
@@ -57,13 +70,9 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    {is_selected && selected_region === 'EU' && is_authentication_needed ? (
-                                        <StatusBadge />
-                                    ) : (
-                                        <Text size='xs' color='prominent'>
-                                            <Money amount={balance} currency={currency} show_currency />
-                                        </Text>
-                                    )}
+                                    <Text size='xs' color='prominent'>
+                                        <Money amount={balance} currency={currency} show_currency />
+                                    </Text>
                                 </div>
                             </div>
                         );
@@ -73,7 +82,7 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
                 <Button
                     className='block-button'
                     onClick={() => {
-                        setTimeout(() => ui.openRealAccountSignup('manage'), 500);
+                        setTimeout(() => openRealAccountSignup('manage'), 500);
                         closeModal();
                     }}
                     secondary
@@ -86,4 +95,12 @@ const CurrencySelectionModal = ({ is_visible }: CurrencySelectionModalProps) => 
     );
 };
 
-export default observer(CurrencySelectionModal);
+export default connect(({ client, traders_hub, ui }: RootStore) => ({
+    account_list: client.account_list,
+    accounts: client.accounts,
+    closeModal: traders_hub.closeModal,
+    loginid: client.loginid,
+    openRealAccountSignup: ui.openRealAccountSignup,
+    selected_region: traders_hub.selected_region,
+    switchAccount: client.switchAccount,
+}))(CurrencySelectionModal);

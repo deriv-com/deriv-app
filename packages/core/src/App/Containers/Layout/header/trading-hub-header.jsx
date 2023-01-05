@@ -13,6 +13,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import CurrencySelectionModal from '../../CurrencySelectionModal';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -125,6 +126,7 @@ const TradingHubHeader = ({
     loginid,
     logoutClient,
     menu_items,
+    modal_data,
     notifications_count,
     replaceCashierMenuOnclick,
     setDarkMode,
@@ -273,6 +275,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );
 };
@@ -302,6 +305,7 @@ TradingHubHeader.propTypes = {
     loginid: PropTypes.string,
     logoutClient: PropTypes.func,
     menu_items: PropTypes.array,
+    modal_data: PropTypes.object,
     notifications_count: PropTypes.number,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
@@ -335,6 +339,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_pre_appstore: client.is_pre_appstore,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
+    modal_data: traders_hub.modal_data,
     notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,

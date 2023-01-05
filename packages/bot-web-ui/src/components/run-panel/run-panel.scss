@@ -112,7 +112,7 @@
     }
     &-tab {
         &__content {
-            height: 52rem;
+            height: calc(100vh - 42rem);
             overflow: hidden;
 
             &--no-stat {

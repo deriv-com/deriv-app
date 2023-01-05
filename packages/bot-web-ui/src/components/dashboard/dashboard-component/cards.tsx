@@ -8,6 +8,7 @@ import LoadModalStore from 'Stores/load-modal-store';
 import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
 import GoogleDrive from './load-bot-preview/google-drive';
+import { isMobile } from '@deriv/shared';
 
 type TCardProps = {
     active_tab: number;
@@ -56,6 +57,7 @@ const Card = ({
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
+    const is_mobile = isMobile();
 
     const actions: TCardArray[] = [
         {
@@ -100,7 +102,7 @@ const Card = ({
                                     id={icon}
                                     onClick={method}
                                 />
-                                <Text color='prominent' size='xs'>
+                                <Text color='prominent' size={is_mobile ? 'xss' : 'xs'}>
                                     {content}
                                 </Text>
                             </div>

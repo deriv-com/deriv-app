@@ -101,6 +101,11 @@ export default class DashboardStore implements IDashboardStore {
     has_builder_token = '';
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
+    active_tour_step_number = 0;
+
+    setTourActiveStep = (active_tour_step_number: number) => {
+        this.active_tour_step_number = active_tour_step_number;
+    };
 
     setPreviewOnDialog = (has_mobile_preview_loaded: boolean) => {
         this.has_mobile_preview_loaded = has_mobile_preview_loaded;

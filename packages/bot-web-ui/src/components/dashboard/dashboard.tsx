@@ -196,6 +196,20 @@ const Dashboard = ({
         });
     }, [has_tour_started]);
 
+    const handleTabChange = (tab_index: number) => {
+        setActiveTab(tab_index);
+        const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
+        const el_id = ids[tab_index];
+        if (el_id) {
+            const el_tab = document.getElementById(el_id);
+            el_tab?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center',
+            });
+        }
+    };
+
     return (
         <React.Fragment>
             <div className='dashboard__main'>
@@ -234,7 +248,7 @@ const Dashboard = ({
                         active_index={active_tab}
                         className='dashboard__tabs'
                         onTabItemChange={onEntered}
-                        onTabItemClick={setActiveTab}
+                        onTabItemClick={handleTabChange}
                         top
                     >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
@@ -282,7 +296,11 @@ const Dashboard = ({
                 </div>
             </div>
             <DesktopWrapper>
-                <div className='dashboard__run-strategy-wrapper'>
+                <div
+                    className={classNames('dashboard__run-strategy-wrapper', {
+                        'dashboard__run-strategy-wrapper--padded': active_tab === 2,
+                    })}
+                >
                     {active_tab !== 2 && <RunStrategy />}
 
                     {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&

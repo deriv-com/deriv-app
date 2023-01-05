@@ -8,6 +8,7 @@ import RootStore from 'Stores/index';
 import './index.scss';
 import { localize } from '@deriv/translations';
 import BotPreview from './bot-preview';
+import { isMobile } from '@deriv/shared';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -65,14 +66,17 @@ const RecentWorkspace = ({
 
     //useOnClickOutside(toggle_ref, onToggleDropdown, validateClickOutside);
 
-    const getPreview = () => {
-        setPreviewOnDialog(!has_mobile_preview_loaded);
-    };
+    const is_mobile = isMobile();
 
     const viewRecentStrategy = (type: string) => {
+        if (is_mobile) {
+            setPreviewOnDialog(true);
+            setTimeout(() => {
+                previewRecentStrategy(workspace.id);
+            }, 2000);
+        }
         if (selected_strategy_id !== workspace.id) {
             previewRecentStrategy(workspace.id);
-            setFileLoaded(true);
         }
         if (type === 'edit') {
             loadFileFromRecent();
@@ -151,7 +155,10 @@ const RecentWorkspace = ({
                         <div
                             className='load-strategy__recent-item__group'
                             onClick={() => {
-                                getPreview();
+                                setPreviewOnDialog(true);
+                                setTimeout(() => {
+                                    viewRecentStrategy('');
+                                }, 2000);
                             }}
                         >
                             <div className='load-strategy__recent-item__group__icon'>
@@ -213,11 +220,10 @@ const RecentWorkspace = ({
                         confirm_button_text={localize('OK')}
                         has_close_icon
                         is_mobile_full_width
-                        onCancel={() => setPreviewOnDialog(false)}
                         onClose={() => setPreviewOnDialog(false)}
-                        onConfirm={() => setPreviewOnDialog(false)}
+                        has_cancel_button
                     >
-                        <BotPreview id_ref />
+                        <BotPreview />
                     </Dialog>
                 </MobileWrapper>
             </div>

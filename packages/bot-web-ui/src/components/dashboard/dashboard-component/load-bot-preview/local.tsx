@@ -75,11 +75,12 @@ const LocalComponent = ({
                             </button>
                         </div>
                     </div>
-                    <DesktopWrapper>
+                    {!isMobile() && (
                         <div className='load-strategy__preview-workspace'>
-                            <BotPreview id_ref={el_ref} />
+                            <BotPreview id_ref={el_ref} type={'local'} />
                         </div>
-                    </DesktopWrapper>
+                    )}
+
                     <div className='load-strategy__button-group'>
                         <input
                             type='file'

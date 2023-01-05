@@ -97,8 +97,8 @@ const Purchase = ({
                     break;
             }
         } else if (vanilla_trade_type === type) {
-                components.push(purchase_fieldset);
-            }
+            components.push(purchase_fieldset);
+        }
     });
     return components;
 };
@@ -109,7 +109,6 @@ Purchase.propTypes = {
     has_cancellation: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     onClickPurchase: PropTypes.func,
@@ -118,7 +117,6 @@ Purchase.propTypes = {
     purchase_info: PropTypes.object,
     purchased_states_arr: PropTypes.array,
     setPurchaseState: PropTypes.func,
-    // togglePurchaseLock        : PropTypes.func,
     trade_types: PropTypes.object,
     validation_errors: PropTypes.object,
 };

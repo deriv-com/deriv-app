@@ -5,6 +5,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import classNames from 'classnames';
 import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
+import { isMobile } from '@deriv/shared';
 
 type TTourTriggrerDialog = {
     active_tab: number;
@@ -27,6 +28,8 @@ const TourTriggrerDialog = ({
     setTourActive,
     setHasTourEnded,
 }: TTourTriggrerDialog) => {
+    const is_mobile = isMobile();
+
     const toggleTour = (value: boolean, type: string) => {
         if (tour_type.key === 'onboard_tour') {
             if (type === 'onConfirm') {
@@ -38,7 +41,7 @@ const TourTriggrerDialog = ({
                 }
                 setHasTourEnded(value);
             } else {
-                setBotBuilderTourState(value);
+                setTourSettings(new Date().getTime(), 'onboard_token');
             }
             tour_type.key = 'onboard_tour';
         } else if (tour_type.key === 'bot_builder') {
@@ -152,13 +155,7 @@ const TourTriggrerDialog = ({
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
-                confirm_button_text={
-                    has_tour_ended
-                        ? active_tab === 0
-                            ? localize('Got it, thanks!')
-                            : localize('OK')
-                        : localize('Start')
-                }
+                confirm_button_text={has_tour_ended ? confirm_button : localize('Start')}
                 onConfirm={() => {
                     const status = tour_status_ended.key === 'finished';
                     toggleTour(status ? false : !has_tour_ended, 'onConfirm');
@@ -172,12 +169,14 @@ const TourTriggrerDialog = ({
                 has_close_icon={false}
             >
                 <div className='dc-dialog__content__header'>
-                    <Text weight='bold' color='prominent'>
+                    <Text weight='bold' color='prominent' size={is_mobile ? 'xs' : 's'}>
                         {is_tour_dialog_visible && getTourContent('header')}
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text color='prominent'>{is_tour_dialog_visible && getTourContent('content')}</Text>
+                    <Text size={is_mobile ? 'xxs' : 'xs'} color='prominent'>
+                        {is_tour_dialog_visible && getTourContent('content')}
+                    </Text>
                 </div>
             </Dialog>
         </div>

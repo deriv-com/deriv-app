@@ -30,13 +30,6 @@ const TourGuide = ({
         setTourActive(false);
     };
 
-    React.useEffect(() => {
-        const tour_guide_timer = setTimeout(() => setActiveTab(dashboard_tab_index), 50);
-        return () => {
-            clearTimeout(tour_guide_timer);
-        };
-    }, [dashboard_tab_index]);
-
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {

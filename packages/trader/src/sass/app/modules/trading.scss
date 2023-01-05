@@ -110,7 +110,17 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        left: 120px;
+                        left: 12rem;
+                    }
+                }
+
+                @include tablet {
+                    .btn-purchase__info--left {
+                        width: 80%;
+                    }
+
+                    .btn-purchase__effect-detail--arrow {
+                        left: 12rem;
                     }
                 }
             }

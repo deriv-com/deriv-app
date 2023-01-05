@@ -1,15 +1,19 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { StatusBadge } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
 import { useStores } from 'Stores/index';
-import StatusBadge from './switcher-status-badge';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 
 const AccountNeedsVerification = observer(() => {
     const { client, traders_hub } = useStores();
-    const { account_list, loginid } = client;
+    const {
+        authentication_status: { document_status },
+        account_list,
+        loginid,
+    } = client;
     const { openModal } = traders_hub;
 
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
@@ -24,7 +28,7 @@ const AccountNeedsVerification = observer(() => {
                 openModal('currency_selection');
             }}
         >
-            <StatusBadge />
+            <StatusBadge document_status={document_status} />
         </CurrencySwitcherContainer>
     );
 });

@@ -413,7 +413,7 @@
             }
         }
 
-        &-text {
+        &-connected-text {
             margin-bottom: 1.6rem;
             font-size: var(--text-size-s);
             font-weight: bold;
@@ -426,6 +426,10 @@
             margin-top: 1.6rem;
             text-align: center;
             color: var(--text-general);
+        }
+
+        &-text {
+            margin-bottom: 1rem;
         }
     }
 }

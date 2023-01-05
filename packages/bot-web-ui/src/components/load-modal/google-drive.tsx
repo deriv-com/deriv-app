@@ -24,7 +24,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     })}
                     size={isMobile() ? 96 : 128}
                 />
-                <div className='load-strategy__google-drive-text'>
+                <div className='load-strategy__google-drive-connected-text'>
                     {is_authorised ? (
                         <Localize i18n_default_text='You are connected to Google Drive' />
                     ) : (
@@ -47,18 +47,22 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     <React.Fragment>
                         <Button text={localize('Connect')} onClick={onDriveConnect} has_effect primary large />
                         <div className='load-strategy__google-drive-terms'>
-                            <Localize
-                                i18n_default_text="Find out how this app handles your data by reviewing Deriv's <0>Privacy policy</0>, which is part of Deriv's <1>Terms and conditions</2>."
-                                components={[
-                                    <StaticUrl
-                                        key={0}
-                                        className='link'
-                                        href='tnc/security-and-privacy.pdf'
-                                        is_document
-                                    />,
-                                    <StaticUrl key={1} className='link' href='terms-and-conditions' />,
-                                ]}
-                            />
+                            <div className='load-strategy__google-drive-text'>
+                                <Localize i18n_default_text="To import your bot from your Google Drive, you'll need to sign in to your Google account." />
+                            </div>
+                            <div className='load-strategy__google-drive-text'>
+                                <Localize
+                                    i18n_default_text='To know how Google Drive handles your data, please review Deriv’s <0>Privacy policy.</0>'
+                                    components={[
+                                        <StaticUrl
+                                            key={0}
+                                            className='link'
+                                            href='tnc/security-and-privacy.pdf'
+                                            is_document
+                                        />,
+                                    ]}
+                                />
+                            </div>
                         </div>
                     </React.Fragment>
                 )}

@@ -46,9 +46,7 @@
         align-items: flex-end;
         width: 35rem;
         background-color: var(--general-section-2);
-        @include desktop {
-            margin: -2.5rem 0;
-        }
+
         @include mobile {
             margin: 0;
             position: fixed;

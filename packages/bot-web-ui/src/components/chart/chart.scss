@@ -137,3 +137,15 @@
     left: 0;
     top: 0;
 }
+//TODO: markets dropdown has been blocked on charts tab, implement it after the design is approved
+.smartcharts .cq-top-ui-widgets > div {
+    @include mobile {
+        pointer-events: none;
+    }
+}
+
+.cq-chart-title.ciq-menu.ciq-enabled .cq-menu-btn > .cq-symbol-select-btn > .ic-icon.cq-symbol-dropdown {
+    @include mobile {
+        display: none;
+    }
+}

@@ -1,6 +1,5 @@
+import { Formik, Field, FormikErrors, FormikValues, FormikHelpers, FormikProps } from 'formik';
 import React from 'react';
-import { useLocation } from 'react-router';
-import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import {
     Autocomplete,
@@ -15,19 +14,35 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex, isSequentialNumber, isRecurringNumberRegex } from '../../idv-document-submit/utils';
-import { useToggleValidation } from '../../../hooks/useToggleValidation';
+import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
-export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
-    const [document_list, setDocumentList] = React.useState([]);
-    const [document_image, setDocumentImage] = React.useState(null);
+type TIdvDocSubmitOnSignup = {
+    citizen_data: FormikValues;
+    has_previous: boolean;
+    onPrevious: (values: FormikValues) => void;
+    onNext: (
+        values: FormikValues,
+        action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
+    ) => void;
+    value: FormikValues;
+    has_idv_error?: boolean;
+};
+
+export const IdvDocSubmitOnSignup = ({
+    citizen_data,
+    has_previous,
+    onPrevious,
+    onNext,
+    value,
+    has_idv_error,
+}: TIdvDocSubmitOnSignup) => {
+    const [document_list, setDocumentList] = React.useState<object[]>([]);
+    const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
 
-    const document_data = citizen_data.identity.services.idv.documents_supported;
+    const document_data = citizen_data?.identity.services.idv.documents_supported;
     const {
         value: country_code,
         identity: {
@@ -73,16 +88,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         document_number: value ? value.document_number : '',
     };
 
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: FormikValues) => {
+        const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number } = values;
-        const is_sequential_number = isSequentialNumber(document_number);
-        const is_recurring_number = isRecurringNumberRegex(document_number);
-
-        // QA can manually toggle this regex now through this feature flag.
-        // Otherwise it blocks their test suite.
-        const is_allowing_validation = validation_is_enabled;
-
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
@@ -92,8 +100,6 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
-            errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {
@@ -105,7 +111,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         return errors;
     };
 
-    const resetDocumentItemSelected = setFieldValue => {
+    const resetDocumentItemSelected = (setFieldValue: FormikHelpers<FormikValues>['setFieldValue']) => {
         setFieldValue(
             'document_type',
             {
@@ -120,11 +126,11 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         setDocumentImage('');
     };
 
-    const getDocument = text => {
-        return document_list.find(d => d.text === text);
+    const getDocument = (text: string) => {
+        return document_list.find((d: FormikValues) => d.text === text);
     };
 
-    const getExampleFormat = example_format => {
+    const getExampleFormat = (example_format: string) => {
         return example_format ? localize('Example: ') + example_format : '';
     };
 
@@ -139,11 +145,30 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             validateOnChange
             validateOnBlur
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isValid, setFieldValue, touched, values }) => (
+            {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+            }: Pick<
+                FormikProps<FormikValues>,
+                | 'errors'
+                | 'handleBlur'
+                | 'handleChange'
+                | 'handleSubmit'
+                | 'isValid'
+                | 'setFieldValue'
+                | 'touched'
+                | 'values'
+            >) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
-                    {({ setRef }) => (
+                    {({ setRef }: { setRef: (instance: HTMLFormElement | null) => void }) => (
                         <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
-                            <ThemedScrollbars height='calc(100vh - 80px'>
+                            <ThemedScrollbars height='calc(100vh - 80px)'>
                                 <div className='details-form'>
                                     <div className='poi-form-on-signup__fields'>
                                         <div className='proof-of-identity__container'>
@@ -184,7 +209,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                 <div className='proof-of-identity__fieldset-container'>
                                                     <fieldset className='proof-of-identity__fieldset'>
                                                         <Field name='document'>
-                                                            {({ field }) => (
+                                                            {({ field }: FormikValues) => (
                                                                 <React.Fragment>
                                                                     <DesktopWrapper>
                                                                         <div className='document-dropdown'>
@@ -203,7 +228,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                 )}
                                                                                 list_items={document_list}
                                                                                 value={values.document_type.text}
-                                                                                onBlur={e => {
+                                                                                onBlur={(
+                                                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                                                ) => {
                                                                                     handleBlur(e);
                                                                                     if (!getDocument(e.target.value)) {
                                                                                         resetDocumentItemSelected(
@@ -212,7 +239,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     }
                                                                                 }}
                                                                                 onChange={handleChange}
-                                                                                onItemSelection={item => {
+                                                                                onItemSelection={(
+                                                                                    item: FormikValues
+                                                                                ) => {
                                                                                     if (
                                                                                         item.text ===
                                                                                             'No results found' ||
@@ -251,9 +280,13 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                             label={localize('Choose the document type')}
                                                                             list_items={document_list}
                                                                             value={values.document_type.text}
-                                                                            onChange={e => {
+                                                                            onChange={(
+                                                                                e: React.ChangeEvent<HTMLSelectElement>
+                                                                            ) => {
                                                                                 handleChange(e);
-                                                                                const selected_document = getDocument(
+                                                                                const selected_document:
+                                                                                    | undefined
+                                                                                    | FormikValues = getDocument(
                                                                                     e.target.value
                                                                                 );
                                                                                 if (selected_document) {
@@ -281,7 +314,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                     </fieldset>
                                                     <fieldset className='proof-of-identity__fieldset-input'>
                                                         <Field name='document_number'>
-                                                            {({ field }) => (
+                                                            {({ field }: FormikValues) => (
                                                                 <Input
                                                                     {...field}
                                                                     name='document_number'
@@ -299,20 +332,20 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
-                                                                    onPaste={e => e.preventDefault()}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
-                                                                    onKeyUp={e => {
+                                                                    onKeyUp={(
+                                                                        e: React.KeyboardEvent<HTMLInputElement>
+                                                                    ) => {
                                                                         const { example_format } = values.document_type;
-                                                                        const current_input = example_format?.includes(
-                                                                            '-'
-                                                                        )
-                                                                            ? formatInput(
-                                                                                  example_format,
-                                                                                  current_input || e.target.value,
-                                                                                  '-'
-                                                                              )
-                                                                            : e.target.value;
+                                                                        const current_input: string =
+                                                                            example_format.includes('-')
+                                                                                ? formatInput(
+                                                                                      example_format,
+                                                                                      e.currentTarget.value,
+                                                                                      '-'
+                                                                                  )
+                                                                                : e.currentTarget.value;
                                                                         setFieldValue(
                                                                             'document_number',
                                                                             current_input,

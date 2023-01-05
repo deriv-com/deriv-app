@@ -10,10 +10,10 @@ import { TGetCardLables } from '../types';
 type TProgressSliderMobileProps = {
     className?: string;
     current_tick: number;
-    expiry_time: number & string;
+    expiry_time: number;
     is_loading: boolean;
     server_time: moment.Moment;
-    start_time: number & string;
+    start_time: number;
     ticks_count: number;
     getCardLabels: TGetCardLables;
 };

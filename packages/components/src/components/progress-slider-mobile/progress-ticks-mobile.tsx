@@ -1,11 +1,12 @@
 import React from 'react';
 import TickProgress from '../tick-progress';
 import Text from '../text';
+import { TGetCardLables } from '../types';
 
 type TProgressTicksMobileProps = {
     current_tick: number;
     ticks_count: number;
-    getCardLabels: () => { [key: string]: string }; // TODO Use the one from shared workspace after migration
+    getCardLabels: TGetCardLables;
 };
 
 const ProgressTicksMobile = ({ current_tick, getCardLabels, ticks_count }: TProgressTicksMobileProps) => {

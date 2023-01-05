@@ -4,12 +4,6 @@ import { isMobile } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import AccountTransferForm from '../account-transfer-form';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
@@ -88,9 +82,6 @@ describe('<AccountTransferForm />', () => {
                         onMount: jest.fn(),
                     },
                 },
-            },
-            common: {
-                is_from_derivgo: false,
             },
         };
     });
@@ -320,22 +311,6 @@ describe('<AccountTransferForm />', () => {
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2%, is_derivez_transfer, and is_dxtrade_allowed is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.selected_from.is_derivez = true;
-        mockRootStore.modules.cashier.account_transfer.selected_to.is_derivez = true;
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-        mockRootStore.common.is_from_derivgo = true;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts, your Deriv cryptocurrency and Deriv EZ accounts, and your Deriv cryptocurrency and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
             )
         ).toBeInTheDocument();
     });

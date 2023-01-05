@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as Duration from '../duration';
 import moment from 'moment';
 
@@ -42,37 +41,37 @@ describe('buildDurationConfig', () => {
     };
 
     it('Returns correct value when durations is not passed', () => {
-        expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
+        expect(Duration.buildDurationConfig(contract, durations)).toEqual(durations);
     });
 
     it('Returns correct value when durations passed', () => {
-        expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
+        expect(Duration.buildDurationConfig(contract, durations)).toEqual(durations);
     });
 });
 
 describe('convertDurationUnit', () => {
     it('Returns correct value convert day to second', () => {
-        expect(Duration.convertDurationUnit(365, 'd', 's')).to.eql(31536000);
+        expect(Duration.convertDurationUnit(365, 'd', 's')).toEqual(31536000);
     });
 
     it('Returns correct value convert minute to second', () => {
-        expect(Duration.convertDurationUnit(5, 'm', 's')).to.eql(300);
+        expect(Duration.convertDurationUnit(5, 'm', 's')).toEqual(300);
     });
 
     it('Returns correct value convert day to minute', () => {
-        expect(Duration.convertDurationUnit(1, 'd', 'm')).to.eql(1440);
+        expect(Duration.convertDurationUnit(1, 'd', 'm')).toEqual(1440);
     });
 
     it('Returns correct value convert second to minute', () => {
-        expect(Duration.convertDurationUnit(180, 's', 'm')).to.eql(3);
+        expect(Duration.convertDurationUnit(180, 's', 'm')).toEqual(3);
     });
 
     it('Returns correct value convert minute to day', () => {
-        expect(Duration.convertDurationUnit(2880, 'm', 'd')).to.eql(2);
+        expect(Duration.convertDurationUnit(2880, 'm', 'd')).toEqual(2);
     });
 
     it('Returns correct value convert second to day', () => {
-        expect(Duration.convertDurationUnit(86400, 's', 'd')).to.eql(1);
+        expect(Duration.convertDurationUnit(86400, 's', 'd')).toEqual(1);
     });
 });
 
@@ -97,48 +96,48 @@ describe('getExpiryType', () => {
     it('Return intraday if expiry date is today', () => {
         store.expiry_date = '2018-12-25';
         store.expiry_type = 'endtime';
-        expect(Duration.getExpiryType(store)).to.eql('intraday');
+        expect(Duration.getExpiryType(store)).toEqual('intraday');
     });
 
     it('Return daily if expiry date is tomorrow', () => {
         store.expiry_date = moment().utc().add(1, 'days').toString();
         store.expiry_type = 'endtime';
-        expect(Duration.getExpiryType(store)).to.eql('daily');
+        expect(Duration.getExpiryType(store)).toEqual('daily');
     });
 
     it('Return tick if duration unit is t', () => {
         store.duration_unit = 't';
         store.expiry_type = 'duration';
-        expect(Duration.getExpiryType(store)).to.eql('tick');
+        expect(Duration.getExpiryType(store)).toEqual('tick');
     });
 
     it('Return intraday if duration unit is m', () => {
         store.duration_unit = 'm';
         store.expiry_type = 'duration';
-        expect(Duration.getExpiryType(store)).to.eql('intraday');
+        expect(Duration.getExpiryType(store)).toEqual('intraday');
     });
 
     it('Return daily if duration unit is d', () => {
         store.duration_unit = 'd';
         store.expiry_type = 'duration';
-        expect(Duration.getExpiryType(store)).to.eql('daily');
+        expect(Duration.getExpiryType(store)).toEqual('daily');
     });
 });
 
 describe('convertDurationLimit', () => {
     it('Returns correct value for ticks unit', () => {
-        expect(Duration.convertDurationLimit(5, 't')).to.eql(5);
+        expect(Duration.convertDurationLimit(5, 't')).toEqual(5);
     });
 
     it('Returns correct value for minutes unit', () => {
-        expect(Duration.convertDurationLimit(180, 'm')).to.eql(3);
+        expect(Duration.convertDurationLimit(180, 'm')).toEqual(3);
     });
 
     it('Returns correct value for hour unit', () => {
-        expect(Duration.convertDurationLimit(7200, 'h')).to.eql(2);
+        expect(Duration.convertDurationLimit(7200, 'h')).toEqual(2);
     });
 
     it('Returns correct value for day unit', () => {
-        expect(Duration.convertDurationLimit(86400, 'd')).to.eql(1);
+        expect(Duration.convertDurationLimit(86400, 'd')).toEqual(1);
     });
 });

@@ -5,12 +5,6 @@ import { StoreProvider } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
@@ -40,6 +34,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    deposit: { is_deposit_locked: true },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,

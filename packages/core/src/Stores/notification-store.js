@@ -1013,14 +1013,8 @@ export default class NotificationStore extends BaseStore {
             },
             poinc_upload_limited: {
                 key: 'poinc_upload_limited',
-                header: localize("You've reached the limit of uploading your documents."),
-                message: localize('Please contact us via live chat.'),
-                action: {
-                    onClick: () => {
-                        window.LC_API.open_chat_window();
-                    },
-                    text: localize('Go to live chat'),
-                },
+                header: localize("You've reached the limit of uploading your documents"),
+                message: localize('Please check your email inbox for more details.'),
                 type: 'danger',
             },
             resticted_mt5_with_pending_poa: {

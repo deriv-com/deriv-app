@@ -2,12 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -15,9 +10,25 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<CryptoTransactionsRenderer />', () => {
-    let row;
+    let mockRootStore;
     beforeEach(() => {
-        row = {
+        mockRootStore = {
+            modules: {
+                cashier: {
+                    transaction_history: {
+                        cancelCryptoTransaction: jest.fn(),
+                        showCryptoTransactionsCancelModal: jest.fn(),
+                        showCryptoTransactionsStatusModal: jest.fn(),
+                    },
+                },
+            },
+            client: {
+                currency: 'BTC',
+            },
+        };
+    });
+    const props = {
+        row: {
             address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
             address_url: 'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
             amount: 0.005,
@@ -28,11 +39,16 @@ describe('<CryptoTransactionsRenderer />', () => {
                 "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
             submit_date: 1640603927,
             transaction_type: 'withdrawal',
-        };
-    });
+        },
+    };
+
+    const renderCryptoTransactionsRenderer = () =>
+        render(<CryptoTransactionsRenderer {...props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
     it('should show the proper data in Desktop mode', () => {
-        render(<CryptoTransactionsRenderer row={row} currency={'BTC'} />);
+        renderCryptoTransactionsRenderer();
 
         expect(screen.getByText('withdrawal')).toBeInTheDocument();
         expect(screen.getByText('Pending')).toBeInTheDocument();
@@ -42,7 +58,8 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should show the popover with the proper message, "Yes" and "No" buttons if the "Cancel transaction" cross-button was clicked in Desktop mode', () => {
-        render(<CryptoTransactionsRenderer row={row} currency={'BTC'} is_transaction_clicked is_valid_to_cancel={1} />);
+        renderCryptoTransactionsRenderer();
+
         const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
         fireEvent.click(cancel_transaction_div);
 
@@ -52,9 +69,8 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should close the popover when "No" button is clicked in Desktop mode', async () => {
-        const { container } = render(
-            <CryptoTransactionsRenderer row={row} currency={'BTC'} is_transaction_clicked is_valid_to_cancel={1} />
-        );
+        renderCryptoTransactionsRenderer();
+
         const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
         fireEvent.click(cancel_transaction_div);
         const no_btn = screen.getByText('No');
@@ -68,16 +84,8 @@ describe('<CryptoTransactionsRenderer />', () => {
     });
 
     it('should close the popover when "Yes" button is clicked in Desktop mode', async () => {
-        const cancelCryptoTransaction = jest.fn();
-        const { container } = render(
-            <CryptoTransactionsRenderer
-                row={row}
-                currency={'BTC'}
-                is_transaction_clicked
-                is_valid_to_cancel={1}
-                cancelCryptoTransaction={cancelCryptoTransaction}
-            />
-        );
+        renderCryptoTransactionsRenderer();
+
         const cancel_transaction_div = screen.getByTestId('dt_crypto_transactions_history_table_button');
         fireEvent.click(cancel_transaction_div);
         const yes_btn = screen.getByText('Yes');
@@ -92,24 +100,21 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should trigger onClick callback when "crypto-transactions-history__table-status" is clicked in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const showCryptoTransactionsStatusModal = jest.fn();
-        render(
-            <CryptoTransactionsRenderer
-                row={row}
-                currency={'BTC'}
-                showCryptoTransactionsStatusModal={showCryptoTransactionsStatusModal}
-            />
-        );
+
+        renderCryptoTransactionsRenderer();
 
         const table_status = screen.getByTestId('dt_table_status');
         fireEvent.click(table_status);
 
-        expect(showCryptoTransactionsStatusModal).toHaveBeenCalledTimes(1);
+        expect(
+            mockRootStore.modules.cashier.transaction_history.showCryptoTransactionsStatusModal
+        ).toHaveBeenCalledTimes(1);
     });
 
     it('should show the proper data in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        render(<CryptoTransactionsRenderer row={row} currency={'BTC'} />);
+
+        renderCryptoTransactionsRenderer();
 
         expect(screen.getByText('withdrawal')).toBeInTheDocument();
         expect(screen.getByText('Pending')).toBeInTheDocument();
@@ -121,18 +126,13 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     it('should trigger onClick callback when the user clicks "Cancel transaction" button in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        const showCryptoTransactionsCancelModal = jest.fn();
 
-        render(
-            <CryptoTransactionsRenderer
-                row={row}
-                currency={'BTC'}
-                showCryptoTransactionsCancelModal={showCryptoTransactionsCancelModal}
-            />
-        );
+        renderCryptoTransactionsRenderer();
 
         const cancel_transaction_btn = screen.getByTestId('dt_cancel_transaction');
         fireEvent.click(cancel_transaction_btn);
-        expect(showCryptoTransactionsCancelModal).toHaveBeenCalledTimes(1);
+        expect(
+            mockRootStore.modules.cashier.transaction_history.showCryptoTransactionsCancelModal
+        ).toHaveBeenCalledTimes(1);
     });
 });

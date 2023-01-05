@@ -71,13 +71,13 @@ const Basis = ({
             {contract_type === 'vanilla' && (
                 <section className='trade-container__stake-field'>
                     <div className='trade-container__stake-field--min'>
-                        <Text size='xxs'>Min. Stake</Text>
+                        <Text size='xxs'>{localize('Min. Stake')}</Text>
                         <Text size='xxs'>
                             {stake_boundary.min_stake} {currency}
                         </Text>
                     </div>
                     <div className='trade-container__stake-field--max'>
-                        <Text size='xxs'>Max. Stake</Text>
+                        <Text size='xxs'>{localize('Max. Stake')}</Text>
                         <Text size='xxs'>
                             {stake_boundary.max_stake} {currency}
                         </Text>

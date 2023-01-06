@@ -16,6 +16,7 @@ type TTourTriggrerDialog = {
     setTourDialogVisibility: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
     setBotBuilderTourState: (param: boolean) => void;
+    toggleOnConfirm: (active_tab: number, value: boolean) => void;
 };
 
 const TourTriggrerDialog = ({
@@ -27,32 +28,21 @@ const TourTriggrerDialog = ({
     setOnBoardTourRunState,
     setTourActive,
     setHasTourEnded,
+    toggleOnConfirm,
 }: TTourTriggrerDialog) => {
     const is_mobile = isMobile();
 
     const toggleTour = (value: boolean, type: string) => {
         if (tour_type.key === 'onboard_tour') {
             if (type === 'onConfirm') {
-                if (active_tab === 0) {
-                    setTourActive(value);
-                    setOnBoardTourRunState(value);
-                } else {
-                    setBotBuilderTourState(value);
-                }
-                setHasTourEnded(value);
+                toggleOnConfirm(active_tab, value);
             } else {
                 setTourSettings(new Date().getTime(), 'onboard_token');
             }
             tour_type.key = 'onboard_tour';
         } else if (tour_type.key === 'bot_builder') {
             if (type === 'onConfirm') {
-                if (active_tab === 0) {
-                    setTourActive(value);
-                    setOnBoardTourRunState(value);
-                } else {
-                    setBotBuilderTourState(value);
-                }
-                setHasTourEnded(value);
+                toggleOnConfirm(active_tab, value);
             } else {
                 setTourSettings(new Date().getTime(), 'bot_builder_token');
             }
@@ -61,93 +51,88 @@ const TourTriggrerDialog = ({
         setTourDialogVisibility(false);
     };
 
-    const getTourContent = (type: string) => {
-        return (
-            <>
-                {type === 'content' && active_tab === 0 ? (
-                    !has_tour_ended ? (
+    const getTourContent = (type: string) => (
+        <>
+            {type === 'content' && active_tab === 0 ? (
+                <>
+                    {!has_tour_ended && (
                         <Localize
                             key={0}
                             i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
                             components={[<strong key={0} />]}
                         />
-                    ) : (
+                    )}
+                    {has_tour_ended && (
                         <Localize
                             key={0}
                             i18n_default_text={'If yes, go to <0>Tutorials</0>.'}
                             components={[<strong key={0} />]}
                         />
-                    )
+                    )}
+                </>
+            ) : (
+                <>
+                    {type === 'header' &&
+                        !has_tour_ended &&
+                        (active_tab === 1 ? localize("Let's build a Bot!") : localize('Get started on DBot'))}
+                    {type === 'header' &&
+                        has_tour_ended &&
+                        (active_tab === 1 ? localize('Congratulations!') : localize('Want to retake the tour?'))}
+                </>
+            )}
+            {type === 'content' &&
+                active_tab === 1 &&
+                (!has_tour_ended ? (
+                    <>
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={'Learn how to build your bot from scratch using a simple strategy.'}
+                            />
+                        </div>
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={'Hit the <0>Start</0> button to begin and follow the tutorial.'}
+                                components={[<strong key={0} />]}
+                            />
+                        </div>
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={'Note: You can also find this tutorial in the <0>Tutorials</0> tab.'}
+                                components={[<strong key={0} />]}
+                            />
+                        </div>
+                    </>
                 ) : (
                     <>
-                        {type === 'header' &&
-                            !has_tour_ended &&
-                            (active_tab === 1 ? localize("Let's build a Bot!") : localize('Get started on DBot'))}
-                        {type === 'header' &&
-                            has_tour_ended &&
-                            (active_tab === 1 ? localize('Congratulations!') : localize('Want to retake the tour?'))}
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={'You have successfully created your bot using a simple strategy.'}
+                            />
+                        </div>
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={'Now, <0>run the bot</0> to test out the stategy.'}
+                                components={[<strong key={0} />]}
+                            />
+                        </div>
+                        <div className='dc-dialog__content__description__text'>
+                            <Localize
+                                key={0}
+                                i18n_default_text={
+                                    'Note: If you wish to learn more about the Bot Builder, you can proceed to the <0>Tutorials</0> tab.'
+                                }
+                                components={[<strong key={0} />]}
+                            />
+                        </div>
                     </>
-                )}
-                {type === 'content' &&
-                    active_tab === 1 &&
-                    (!has_tour_ended ? (
-                        <>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={
-                                        'Learn how to build your bot from scratch using a simple strategy.'
-                                    }
-                                />
-                            </div>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={'Hit the <0>Start</0> button to begin and follow the tutorial.'}
-                                    components={[<strong key={0} />]}
-                                />
-                            </div>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={
-                                        'Note: You can also find this tutorial in the <0>Tutorials</0> tab.'
-                                    }
-                                    components={[<strong key={0} />]}
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={
-                                        'You have successfully created your bot using a simple strategy.'
-                                    }
-                                />
-                            </div>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={'Now, <0>run the bot</0> to test out the stategy.'}
-                                    components={[<strong key={0} />]}
-                                />
-                            </div>
-                            <div className='dc-dialog__content__description__text'>
-                                <Localize
-                                    key={0}
-                                    i18n_default_text={
-                                        'Note: If you wish to learn more about the Bot Builder, you can proceed to the <0>Tutorials</0> tab.'
-                                    }
-                                    components={[<strong key={0} />]}
-                                />
-                            </div>
-                        </>
-                    ))}
-            </>
-        );
-    };
+                ))}
+        </>
+    );
     const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
     return (
         <div>
@@ -192,4 +177,5 @@ export default connect(({ dashboard }: RootStore) => ({
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setHasTourEnded: dashboard.setHasTourEnded,
+    toggleOnConfirm: dashboard.toggleOnConfirm,
 }))(TourTriggrerDialog);

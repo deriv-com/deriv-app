@@ -67,6 +67,7 @@ export default class DashboardStore implements IDashboardStore {
             setInfoPanelVisibility: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setOnBoardingTokenCheck: action.bound,
+            toggleOnConfirm: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -182,5 +183,15 @@ export default class DashboardStore implements IDashboardStore {
 
     setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
         this.is_info_panel_visible = is_info_panel_visible;
+    };
+
+    toggleOnConfirm = (active_tab: number, value: boolean): void => {
+        if (active_tab === 0) {
+            this.setTourActive(value);
+            this.setOnBoardTourRunState(value);
+        } else {
+            this.setBotBuilderTourState(value);
+        }
+        this.setHasTourEnded(value);
     };
 }

@@ -344,6 +344,7 @@ Autocomplete.defaultProps = {
 
 Autocomplete.propTypes = {
     className: PropTypes.string,
+    data_testid: PropTypes.string,
     is_list_visible: PropTypes.bool,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),

@@ -203,12 +203,18 @@ const RunPanel = ({
     total_stake,
     won_contracts,
 }) => {
+    const is_mobile = isMobile();
+
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
-    const is_mobile = isMobile();
+    React.useEffect(() => {
+        if (is_mobile) {
+            toggleDrawer(false);
+        }
+    }, []);
 
     const content = (
         <DrawerContent

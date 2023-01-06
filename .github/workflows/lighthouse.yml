@@ -73,7 +73,7 @@ jobs:
           number: ${{github.event.issue.number}}
           message: ${{steps.lighthouse_score.outputs.comment}}
 
-      - name: Delete Lighthouse progress comment
+      - name: Clear Lighthouse progress comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

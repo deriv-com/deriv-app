@@ -17,7 +17,7 @@ describe('validAddress', () => {
     it('should accept different languages', () => {
         expect(validAddress('Улица đường phố ถนน شارع 街道 거리')).toBe(true);
     });
-    it('should not accept specials characters other then the permitted ones', () => {
+    it('should not accept special characters other then the permitted ones', () => {
         const not_permitted_characters = '§±!$%^&*+=\\?{}[]|';
         [...not_permitted_characters].forEach(c => expect(validAddress(c)).toBe(false));
     });

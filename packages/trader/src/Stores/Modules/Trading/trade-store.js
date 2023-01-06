@@ -1080,6 +1080,14 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
+            // Sometimes the initial barrier doesn't match with current barrier choices received from API.
+            // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
+            if (this.is_vanilla) {
+                const { barrier_choices } = response.error.details;
+
+                this.setStrikeChoices(barrier_choices);
+            }
+
             // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.

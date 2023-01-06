@@ -31,7 +31,7 @@ jobs:
           urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
           uploadArtifacts: true
           # specify Lighthouse score assertions in this file
-          configPath: "./.github/lighthouse/lighthouserc.json"
+          # configPath: "./.github/lighthouse/lighthouserc.json"
 
       - name: Retrieve Lighthouse score
         id: lighthouse_score

@@ -1060,13 +1060,13 @@
     &__manage--mt5 {
         display: flex;
         width: 100%;
-        margin-left: 0.4rem;
-        padding-top: 0.2rem;
+        padding: 0.2rem 0.8rem 0;
 
         .dc-btn {
-            min-width: 12rem;
-            margin-bottom: 1.6rem;
+            min-width: 48%;
             height: 4rem;
+            width: 100%;
+            margin: 0 0 0.8rem;
 
             &:not(:last-child) {
                 margin-right: 0.6rem;
@@ -1363,7 +1363,12 @@
         }
         &-wrapper {
             overflow: scroll;
+            width: inherit;
         }
+    }
+    &__mobile-title {
+        text-align: left;
+        margin: 0 2.4rem;
     }
 }
 
@@ -2108,7 +2113,6 @@
     }
     .cfd-account__platform {
         font-style: italic;
-        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {
@@ -2364,6 +2368,9 @@
         flex-direction: column;
         align-items: center;
     }
+}
+.da-icon-with-message__button {
+    margin: '2rem';
 }
 
 /* stylelint-enable */

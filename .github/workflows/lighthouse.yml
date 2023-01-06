@@ -6,7 +6,6 @@ on:
 
 jobs:
   generate_lighthouse_report:
-    if: contains(github.event.comment.body, 'Visit Preview')
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +14,15 @@ jobs:
         with:
           fetch-depth: 1
           ref: master
+
+      - name: Add Lighthouse progress comment
+        id: generate_lighthouse_comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{github.event.issue.number}}
+          header: generate_lighthouse_comment
+          message: "⏳ **Generating Lighthouse report...**"
 
       - name: Capture Vercel preview URL
         id: vercel_preview_url
@@ -38,11 +46,10 @@ jobs:
           script: |
             const result = ${{ steps.lighthouse_report.outputs.manifest }}[0].summary
             const links = ${{ steps.lighthouse_report.outputs.links }}
-
-            const formatResult = (res) => Math.round((res * 100))
-            Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
-
             const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟧' : '🔺'
+            const formatResult = (res) => Math.round((res * 100))
+
+            Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
 
             const comment = [
                 `🚨 [Lighthouse report](${Object.values(links)[0]}) for the changes in this PR:`,
@@ -56,13 +63,20 @@ jobs:
                 ' ',
                 `*Lighthouse ran with [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
             ].join('\n')
-
              core.setOutput("comment", comment);
 
-      - name: Posting Lighthouse report
-        uses: marocchino/sticky-pull-request-comment@v1
+      - name: Post Lighthouse report
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: Lighthouse report
           number: ${{github.event.issue.number}}
           message: ${{steps.lighthouse_score.outputs.comment}}
+
+      - name: Delete Lighthouse progress comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{github.event.issue.number}}
+          header: generate_lighthouse_comment
+          delete: true

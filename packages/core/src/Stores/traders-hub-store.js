@@ -126,23 +126,37 @@ export default class TradersHubStore extends BaseStore {
         reaction(
             () => [this.selected_region, this.root_store.client.is_landing_company_loaded],
             () => {
-                this.setSwitchEU();
+                if (this.selected_account_type === 'real') {
+                    this.setSwitchEU();
+                }
             }
         );
 
         reaction(
-            () => [this.root_store.client.loginid],
+            () => [this.root_store.client.loginid, this.root_store.client.residence],
             () => {
+                const residence = this.root_store.client.residence;
+                const active_demo = /^VRT/.test(this.root_store.client.loginid);
+                const active_real_mf = /^MF/.test(this.root_store.client.loginid);
+
+                const default_region = () => {
+                    if ((active_demo || active_real_mf) && isEuCountry(residence)) {
+                        return 'EU';
+                    } else if (active_real_mf) {
+                        return 'EU';
+                    }
+                    return 'Non-EU';
+                };
                 this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
-                this.selected_region = /^CR/.test(this.root_store.client.loginid) ? 'Non-EU' : 'EU';
+                this.selected_region = default_region();
             }
         );
     }
 
     async setSwitchEU() {
-        const { account_list, switchAccount, has_maltainvest_account } = this.root_store.client;
+        const { account_list, switchAccount } = this.root_store.client;
 
-        if (this.selected_region === 'EU' && has_maltainvest_account) {
+        if (this.selected_region === 'EU') {
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid);
         } else if (this.selected_region === 'Non-EU') {
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);

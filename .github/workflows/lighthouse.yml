@@ -27,11 +27,10 @@ jobs:
         uses: treosh/lighthouse-ci-action@v9
         id: lighthouse_report
         with:
-          # urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
           temporaryPublicStorage: true
-          urls: "https://deriv-app-git-fork-adrienne-deriv-adrienne-deriv-task-78-14f3fe.binary.sx"
+          urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
           uploadArtifacts: true
-          # specify Lighthouse score assertions here
+          # specify Lighthouse score assertions in this file
           configPath: ".github/lighthouse/lighthouserc.json"
 
       - name: Retrieve Lighthouse score

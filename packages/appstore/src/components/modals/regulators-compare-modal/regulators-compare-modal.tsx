@@ -19,10 +19,9 @@ const RegulatorsCompareModal = () => {
                 <Modal
                     disableApp={disableApp}
                     enableApp={enableApp}
-                    is_open={is_regulators_compare_modal_visible}
+                    // is_open={}
                     title={localize('Non-EU and EU regulator')}
                     toggleModal={closeModal}
-                    type='button'
                     height='792px'
                     width='792px'
                 >
@@ -33,7 +32,7 @@ const RegulatorsCompareModal = () => {
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={localize('Non-EU and EU regulator')}
-                    visible={is_regulators_compare_modal_visible}
+                    // visible={}
                     onClose={closeModal}
                 >
                     <RegulatorsCompareModalContent />

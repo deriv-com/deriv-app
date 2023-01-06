@@ -19,6 +19,7 @@ import ExitTradersHubModal from './exit-traders-hub-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
@@ -141,6 +142,7 @@ const ModalManager = () => {
                 is_modal_open={is_account_transfer_modal_open}
                 toggleModal={toggleAccountTransferModal}
             />
+            <FailedVerificationModal />
         </React.Fragment>
     );
 };

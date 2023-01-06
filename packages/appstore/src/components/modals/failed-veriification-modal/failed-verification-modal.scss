@@ -1,0 +1,32 @@
+.failed-verification-modal {
+    @include mobile {
+        .dc-dialog__dialog {
+            max-width: 32rem;
+        }
+        .dc-dialog__footer {
+            .dc-btn {
+                flex: 1;
+                margin-bottom: 0;
+            }
+        }
+    }
+    &__failed_list {
+        padding: 1.2rem 2.4rem;
+        &-item {
+            display: list-item;
+            list-style-type: disc;
+            &:first-child {
+                margin-bottom: 0.8rem;
+            }
+        }
+    }
+}
+
+.dc-modal__container_failed-verification-modal {
+    .dc-modal-body {
+        padding: 0 2.4rem;
+    }
+    .dc-modal-footer {
+        padding: 2.4rem;
+    }
+}

@@ -263,7 +263,6 @@ const JurisdictionModal = ({
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         context={context}
-                        height='664px'
                         width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
                     >
                         <ModalContent />

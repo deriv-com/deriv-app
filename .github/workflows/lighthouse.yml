@@ -27,7 +27,7 @@ jobs:
         id: lighthouse_report
         with:
           temporaryPublicStorage: true
-          urls: {{  }}
+          urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
           uploadArtifacts: true
 
       - name: Retrieve Lighthouse score

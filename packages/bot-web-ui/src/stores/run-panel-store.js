@@ -32,6 +32,7 @@ export default class RunPanelStore {
             toggleDrawer: action.bound,
             setActiveTabIndex: action.bound,
             onCloseDialog: action.bound,
+            performSelfExclusionCheck: action.bound,
             showStopMultiplierContractDialog: action.bound,
             showLoginDialog: action.bound,
             showRealAccountDialog: action.bound,
@@ -130,6 +131,11 @@ export default class RunPanelStore {
         );
     }
 
+    async performSelfExclusionCheck() {
+        const { self_exclusion } = this.root_store;
+        await self_exclusion.checkRestriction();
+    }
+
     async onRunButtonClick() {
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
@@ -148,7 +154,6 @@ export default class RunPanelStore {
          */
         if (is_ios || isSafari()) this.preloadAudio();
 
-        await self_exclusion.checkRestriction();
         if (!self_exclusion.should_bot_run) {
             self_exclusion.setIsRestricted(true);
             return;

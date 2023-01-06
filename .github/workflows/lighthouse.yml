@@ -35,7 +35,7 @@ jobs:
         id: lighthouse_report
         with:
           temporaryPublicStorage: true
-          urls: "https://deriv-app-git-fork-adrienne-deriv-gh-actions-lighthouse.binary.sx"
+          urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
           uploadArtifacts: true
           # configure Lighthouse score assertions in this file
           configPath: .github/lighthouse/lighthouserc.json

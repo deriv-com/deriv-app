@@ -156,13 +156,10 @@ const DMT5CompareModalContent = ({
     should_restrict_bvi_account_creation,
     should_show_derivx,
     show_eu_related_content,
-    toggleCFDPersonalDetailsModal,
     toggleCFDVerificationModal,
     toggleCompareAccounts,
     trading_platform_available_accounts,
-    updateAccountStatus,
     upgradeable_landing_companies,
-    show_eu_related,
     updateMT5Status,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);

@@ -10,7 +10,13 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<CountrySelector/>', () => {
-    let mock_props = {};
+    let mock_props = {
+        handleSelectionNext: jest.fn(),
+        is_from_external: false,
+        residence_list: [{ value: '', text: '' }],
+        selected_country: '',
+        setSelectedCountry: jest.fn(),
+    };
 
     beforeEach(() => {
         mock_props = {
@@ -29,14 +35,13 @@ describe('<CountrySelector/>', () => {
     it('should render CountrySelector component external', () => {
         mock_props.is_from_external = true;
 
-        const { container } = render(<CountrySelector {...mock_props} />);
+        render(<CountrySelector {...mock_props} />);
 
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
         expect(screen.getByText('Country')).toBeInTheDocument();
 
-        const div_with_external_class = container.querySelector('.external-dropdown');
-        expect(div_with_external_class).toBeInTheDocument();
+        expect(screen.getByTestId('dt_external_dropdown')).toBeInTheDocument();
     });
 
     it('should show error message after clicking the input without choosing the country', async () => {
@@ -59,8 +64,8 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should trigger selection functions and next button', async () => {
-        isDesktop.mockReturnValue(false);
-        isMobile.mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
         mock_props.selected_country = 'Country 2';
 
         render(<CountrySelector {...mock_props} />);

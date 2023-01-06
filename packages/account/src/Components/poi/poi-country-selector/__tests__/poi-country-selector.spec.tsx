@@ -41,7 +41,7 @@ describe('<CountrySelector/>', () => {
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
         expect(screen.getByText('Country')).toBeInTheDocument();
 
-        expect(screen.getByTestId('dt_auto_complete')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_external_dropdown')).toBeInTheDocument();
     });
 
     it('should show error message after clicking the input without choosing the country', async () => {

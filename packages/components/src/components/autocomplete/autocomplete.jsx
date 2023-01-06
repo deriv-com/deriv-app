@@ -31,6 +31,7 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
 const Autocomplete = React.memo(props => {
     const {
         autoComplete,
+        data_testid,
         className,
         dropdown_offset,
         historyValue,
@@ -270,7 +271,7 @@ const Autocomplete = React.memo(props => {
     };
 
     return (
-        <div data-testid='dt_auto_complete' className={classNames('dc-autocomplete', className)}>
+        <div data-testid={data_testid} className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
                 <Input
                     {...other_props}

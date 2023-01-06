@@ -92,6 +92,7 @@ const CountrySelector = ({
                                             <Autocomplete
                                                 className={classNames({ 'external-dropdown': is_from_external })}
                                                 {...field}
+                                                data_testid='dt_external_dropdown'
                                                 name='country_input'
                                                 data-lpignore='true'
                                                 error={touched.country_input && errors.country_input}

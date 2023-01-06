@@ -1,6 +1,7 @@
 name: Generate Lighthouse report
 
 on:
+  pull_request:
   issue_comment:
     types: [edited]
 
@@ -19,7 +20,7 @@ jobs:
         id: generate_lighthouse_comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}
           header: generate_lighthouse_comment
           message: "⏳ **Generating Lighthouse report...**"
@@ -35,8 +36,10 @@ jobs:
         id: lighthouse_report
         with:
           temporaryPublicStorage: true
-          urls: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+          urls: "https://deriv-app-git-fork-adrienne-deriv-gh-actions-lighthouse.binary.sx"
           uploadArtifacts: true
+          # configure Lighthouse score assertions in this file
+          configPath: .github/lighthouse/lighthouserc.json
 
       - name: Retrieve Lighthouse score
         id: lighthouse_score
@@ -68,7 +71,7 @@ jobs:
       - name: Post Lighthouse report
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: Lighthouse report
           number: ${{github.event.issue.number}}
           message: ${{steps.lighthouse_score.outputs.comment}}
@@ -76,7 +79,7 @@ jobs:
       - name: Clear Lighthouse progress comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{github.event.issue.number}}
           header: generate_lighthouse_comment
           delete: true

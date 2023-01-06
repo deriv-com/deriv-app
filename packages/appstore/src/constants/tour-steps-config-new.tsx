@@ -19,14 +19,14 @@ export const tour_step_config: Step[] = [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Non-EU and EU regulators')}
+                {localize('Non-EU and EU regulations')}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
         content: (
             <Text as='p'>
                 <Localize
-                    i18n_default_text='You can create real accounts with non-EU and EU regulators. Click the <0><0/> icon to learn more about these accounts.'
+                    i18n_default_text='You can create real accounts with non-EU and EU regulations. Click the <0><0/> icon to learn more about these accounts.'
                     components={[
                         <Text key={0}>
                             <Icon icon='IcInfoOutline' />

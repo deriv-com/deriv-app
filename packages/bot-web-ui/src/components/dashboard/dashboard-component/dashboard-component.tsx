@@ -1,4 +1,4 @@
-import { DesktopWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -17,6 +17,47 @@ type TDashboard = {
     setActiveTab: (param: number) => void;
 };
 
+type TDashboardMobileCommonProps = {
+    is_mobile: boolean;
+    has_dashboard_strategies: boolean;
+};
+
+const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobileCommonProps) => (
+    <div
+        className={classNames('tab__dashboard__header', {
+            'tab__dashboard__header--not-listed': !has_dashboard_strategies && is_mobile,
+        })}
+    >
+        <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold'>
+            {localize('Load or build your bot')}
+        </Text>
+    </div>
+);
+
+const MobileIconGuide = ({ has_dashboard_strategies }: { has_dashboard_strategies: boolean }) => (
+    <MobileWrapper>
+        <div>
+            <Local />
+        </div>
+    </MobileWrapper>
+);
+
+const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboardMobileCommonProps) => (
+    <div
+        className={classNames('tab__dashboard__description', {
+            'tab__dashboard__description__loaded--listed': has_dashboard_strategies && !is_mobile,
+            'tab__dashboard__description__loaded--not-listed':
+                !has_dashboard_strategies || (!has_dashboard_strategies && is_mobile),
+        })}
+    >
+        <Text color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
+            {localize(
+                'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+            )}
+        </Text>
+    </div>
+);
+
 const DashboardComponent = ({
     is_info_panel_visible,
     dashboard_strategies,
@@ -29,34 +70,55 @@ const DashboardComponent = ({
         <React.Fragment>
             <div
                 className={classNames('tab__dashboard', {
-                    'tab__dashboard--tour-active': has_started_onboarding_tour,
+                    'tab__dashboard--tour-active': has_started_onboarding_tour && !is_mobile,
                 })}
             >
                 <div className='tab__dashboard__content'>
-                    <div className='tab__dashboard__centered'>
-                        <div className='tab__dashboard__header'>
-                            <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold'>
-                                {localize('Load or build your bot')}
-                            </Text>
-                        </div>
+                    <div
+                        className={classNames('tab__dashboard__centered', {
+                            'tab__dashboard__centered--listed': !is_mobile && has_dashboard_strategies,
+                            'tab__dashboard__centered--not-listed': !has_dashboard_strategies,
+                        })}
+                    >
+                        {!has_dashboard_strategies && !is_mobile && (
+                            <DashboardTitle is_mobile={is_mobile} has_dashboard_strategies={has_dashboard_strategies} />
+                        )}
                         <DesktopWrapper>
                             {!has_dashboard_strategies && <UserGuide setActiveTab={setActiveTab} />}
                         </DesktopWrapper>
-                        <div
-                            className={classNames('tab__dashboard__description', {
-                                tab__dashboard__description__loaded: has_dashboard_strategies,
-                            })}
-                        >
-                            <Text color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                                {localize(
-                                    'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+                        <div>
+                            <div
+                                className={classNames({
+                                    'tab__dashboard__mobile-container': is_mobile,
+                                    'tab__dashboard__mobile-container--minimized':
+                                        is_mobile && has_dashboard_strategies,
+                                })}
+                            >
+                                {is_mobile && !has_dashboard_strategies && (
+                                    <DashboardTitle
+                                        is_mobile={is_mobile}
+                                        has_dashboard_strategies={has_dashboard_strategies}
+                                    />
                                 )}
-                            </Text>
+                                {(!is_mobile || (is_mobile && has_dashboard_strategies)) && (
+                                    <DashboardDescription
+                                        is_mobile={is_mobile}
+                                        has_dashboard_strategies={has_dashboard_strategies}
+                                    />
+                                )}
+                                <MobileIconGuide has_dashboard_strategies={has_dashboard_strategies} />
+                            </div>
+                            {is_mobile && !has_dashboard_strategies && (
+                                <DashboardDescription
+                                    is_mobile={is_mobile}
+                                    has_dashboard_strategies={has_dashboard_strategies}
+                                />
+                            )}
                         </div>
-                        <Cards />
+                        <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
                     </div>
 
-                    {has_dashboard_strategies && (
+                    {has_dashboard_strategies && !is_mobile && (
                         <div className='tab__dashboard__preview'>
                             <Local />
                         </div>

@@ -8,7 +8,7 @@ import RootStore from 'Stores/index';
 import './index.scss';
 import { localize } from '@deriv/translations';
 import BotPreview from './bot-preview';
-import { isMobile } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -87,6 +87,7 @@ const RecentWorkspace = ({
             onToggleDeleteDialog(true);
         }
     };
+    const is_desktop = isDesktop();
 
     return (
         <>
@@ -94,6 +95,7 @@ const RecentWorkspace = ({
                 className={classnames('load-strategy__recent-item', {
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                     'load-strategy__recent-item__loaded': dashboard_strategies,
+                    'load-strategy__recent-item--minimized': !!dashboard_strategies?.length && !is_desktop,
                 })}
                 key={workspace.id}
                 ref={trigger_div_ref}
@@ -114,7 +116,7 @@ const RecentWorkspace = ({
                     />
                     <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
                 </div>
-                <DesktopWrapper>
+                {is_desktop && (
                     <div className='load-strategy__recent-item__button'>
                         <div
                             className='load-strategy__recent-item__button'
@@ -141,91 +143,12 @@ const RecentWorkspace = ({
                             <Icon icon='IcDelete' />
                         </div>
                     </div>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <div ref={toggle_ref} onClick={() => onToggleDropdown()}>
-                        <Icon icon='IcMenuDots' />
+                )}
+                {!is_desktop && (
+                    <div className='load-strategy__recent-item__button'>
+                        <Icon icon='IcContextMenu' />
                     </div>
-                    <div
-                        className={classnames('load-strategy__recent-item__mobile', {
-                            'load-strategy__recent-item__mobile--active':
-                                selected_strategy_id === workspace.id && is_dropdown_visible,
-                        })}
-                    >
-                        <div
-                            className='load-strategy__recent-item__group'
-                            onClick={() => {
-                                setPreviewOnDialog(true);
-                                setTimeout(() => {
-                                    viewRecentStrategy('');
-                                }, 2000);
-                            }}
-                        >
-                            <div className='load-strategy__recent-item__group__icon'>
-                                <Icon icon='IcPreview' />
-                            </div>
-                            <Text
-                                color='general'
-                                className='load-strategy__recent-item__group__label'
-                                as='p'
-                                size='xxs'
-                            >
-                                Preview
-                            </Text>
-                        </div>
-                        <div className='load-strategy__recent-item__group'>
-                            <div>
-                                <Icon icon='IcEdit' />
-                            </div>
-                            <Text
-                                color='general'
-                                className='load-strategy__recent-item__group__label'
-                                as='p'
-                                size='xxs'
-                            >
-                                Edit
-                            </Text>
-                        </div>
-                        <div className='load-strategy__recent-item__group'>
-                            <div>
-                                <Icon icon='IcSave' />
-                            </div>
-                            <Text
-                                color='general'
-                                className='load-strategy__recent-item__group__label'
-                                as='p'
-                                size='xxs'
-                            >
-                                Save
-                            </Text>
-                        </div>
-                        <div className='load-strategy__recent-item__group'>
-                            <div>
-                                <Icon icon='IcDelete' />
-                            </div>
-                            <Text
-                                color='general'
-                                className='load-strategy__recent-item__group__label'
-                                as='p'
-                                size='xxs'
-                            >
-                                Delete
-                            </Text>
-                        </div>
-                    </div>
-                    <Dialog
-                        is_visible={has_mobile_preview_loaded}
-                        cancel_button_text={localize('Cancel')}
-                        className={'dc-dialog__wrapper--preview'}
-                        confirm_button_text={localize('OK')}
-                        has_close_icon
-                        is_mobile_full_width
-                        onClose={() => setPreviewOnDialog(false)}
-                        has_cancel_button
-                    >
-                        <BotPreview />
-                    </Dialog>
-                </MobileWrapper>
+                )}
             </div>
         </>
     );

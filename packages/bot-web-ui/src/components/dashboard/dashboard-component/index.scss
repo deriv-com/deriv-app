@@ -111,11 +111,22 @@
 
             @include desktop {
                 align-items: center;
+                padding: 2.2rem 0;
             }
             @include mobile {
                 height: var(--tab-content-height-mobile);
                 align-items: flex-start;
-                padding: 2.2rem 0;
+            }
+        }
+
+        &__mobile-container {
+            display: flex;
+            align-items: center;
+            margin: 1.6rem 1.6rem 1.4rem;
+            column-gap: 1rem;
+            height: 3.2rem;
+            &--minimized {
+                height: 3.6rem;
             }
         }
 
@@ -134,8 +145,13 @@
                 width: 100%;
             }
 
-            @include desktop {
-                width: 50%;
+            &--not-listed {
+                @include desktop {
+                    width: 50%;
+                }
+            }
+            &--listed {
+                margin-top: 10rem;
             }
         }
 
@@ -161,6 +177,12 @@
                     width: 12.8rem;
                     @include align-center;
                     cursor: pointer;
+
+                    @include mobile {
+                        width: 3.2rem;
+                        height: 3.2rem;
+                        padding: 0.8rem;
+                    }
                 }
 
                 &__text {
@@ -197,22 +219,37 @@
 
         &__header {
             margin-bottom: 1.3rem;
+            &--not-listed {
+                @include mobile {
+                    width: 90%;
+                    text-align: end;
+                    margin: 0 !important;
+                }
+            }
         }
 
         &__description {
-            text-align: center;
             @include desktop {
+                text-align: center;
                 margin-bottom: 4rem;
-                padding: 0 3.6rem;
-            }
-            @include mobile {
-                margin-bottom: 1.4rem;
-                padding: 0 0.6rem;
             }
 
             &__loaded {
                 text-align: left;
-                margin-top: 12rem;
+                @include desktop {
+                    margin-top: 12rem;
+                }
+                &--listed {
+                    text-align: left;
+                    padding: 0 3.6rem;
+                }
+                &--not-listed {
+                    @include mobile {
+                        text-align: center;
+                        margin-bottom: 1.4rem;
+                        padding: 0 0.6rem;
+                    }
+                }
             }
         }
 
@@ -231,6 +268,9 @@
 
         &__table {
             width: 90%;
+            &--minimized {
+                width: 100%;
+            }
 
             &__tiles {
                 display: flex;
@@ -238,6 +278,9 @@
                 align-items: center;
                 @include mobile {
                     flex-wrap: wrap;
+                }
+                &--minimized {
+                    align-items: flex-start;
                 }
             }
 
@@ -258,12 +301,28 @@
                 &:hover {
                     cursor: pointer;
                 }
+                &--minimized {
+                    width: 6.4rem;
+                    & .dc-text {
+                        width: 8rem;
+                        text-align: center;
+                    }
+                }
             }
 
             &__images {
                 background-color: var(--general-section-1);
                 margin-bottom: 0.8rem;
                 border-radius: 0.8rem;
+                padding: 1.6rem;
+
+                &--minimized {
+                    @include mobile {
+                        width: 6.4rem;
+                        height: 6.4rem;
+                        padding: 0.8rem;
+                    }
+                }
             }
         }
     }

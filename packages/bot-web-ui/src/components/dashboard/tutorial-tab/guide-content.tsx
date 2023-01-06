@@ -6,6 +6,7 @@ import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { removeKeyValue } from '../../../utils/settings';
+import { tour_type } from '../joyride-config';
 
 type TGuideContent = {
     dialog_options: { [key: string]: string };
@@ -17,6 +18,8 @@ type TGuideContent = {
     guide_list: [];
     setActiveTab: (tab_title: number) => void;
     setTourDialogVisibility: (param: boolean) => boolean;
+    setTourActive: (param: boolean) => boolean;
+    setOnBoardTourRunState: (param: boolean) => boolean;
 };
 
 const GuideContent = ({
@@ -29,6 +32,8 @@ const GuideContent = ({
     setActiveTab,
     setTourDialogVisibility,
     setHasTourEnded,
+    setTourActive,
+    setOnBoardTourRunState,
 }: TGuideContent) => {
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
@@ -38,8 +43,14 @@ const GuideContent = ({
                 removeKeyValue('onboard_tour_status');
                 removeKeyValue('bot_builder_status');
             }
+            tour_type.key = 'onboard_tour';
             setHasTourEnded(false);
-            setTourDialogVisibility(true);
+            if (is_mobile) {
+                setTourActive(true);
+                setOnBoardTourRunState(true);
+            } else {
+                setTourDialogVisibility(true);
+            }
             setActiveTab(0);
         } else {
             if (storage.bot_builder_token) {
@@ -47,6 +58,7 @@ const GuideContent = ({
                 removeKeyValue('bot_builder_status');
                 removeKeyValue('onboard_tour_status');
             }
+            tour_type.key = 'bot_builder';
             setHasTourEnded(false);
             setTourDialogVisibility(true);
             setActiveTab(1);
@@ -179,4 +191,6 @@ export default connect(({ dashboard, load_modal }: RootStore) => ({
     setActiveTab: dashboard.setActiveTab,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setHasTourEnded: dashboard.setHasTourEnded,
+    setTourActive: dashboard.setTourActive,
+    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
 }))(GuideContent);

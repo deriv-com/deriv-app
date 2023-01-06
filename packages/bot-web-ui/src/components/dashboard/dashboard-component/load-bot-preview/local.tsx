@@ -3,10 +3,20 @@ import { Localize, localize } from '@deriv/translations';
 import { Text, Icon, DesktopWrapper } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer';
+import classNames from 'classnames';
+import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
 import './index.scss';
 import { isMobile } from '@deriv/shared';
 import BotPreview from './bot-preview';
+
+type TWorkspace = {
+    id: string;
+    xml: string;
+    name: string;
+    timestamp: number;
+    save_type: string;
+};
 
 type Nullable<T> = T | null;
 type TLocalComponent = {
@@ -18,6 +28,7 @@ type TLocalComponent = {
     onDrop: () => void;
     previewRecentStrategy: () => void;
     setActiveTab: (param: number) => void;
+    dashboard_strategies: Array<TWorkspace>;
     setFileLoaded: (param: boolean) => void;
     setLoadedLocalFile: (data: Nullable<string>) => void;
     setTourDialogVisibility: (param: boolean) => boolean;
@@ -30,6 +41,7 @@ const LocalComponent = ({
     loadFileFromRecent,
     onConfirmSave,
     setActiveTab,
+    dashboard_strategies,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [setIsFileSupported] = React.useState<boolean>(true);
@@ -45,13 +57,23 @@ const LocalComponent = ({
     const clearInjectionDiv = () => {
         el_ref?.current?.removeChild(el_ref?.current?.children[0]);
     };
+    const is_mobile = isMobile();
+    const has_dashboard_strategies = !!dashboard_strategies?.length;
 
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
-            <div className='load-strategy__local-preview'>
+            <div
+                className={classNames('load-strategy__local-preview', {
+                    'load-strategy__local-preview--listed': has_dashboard_strategies,
+                })}
+            >
                 <div className='load-strategy__recent-preview'>
-                    <div className='load-strategy__title load-strategy__recent-preview-title'>
-                        <Localize i18n_default_text='Preview' />
+                    <div
+                        className={classNames('load-strategy__title', 'load-strategy__recent-preview-title', {
+                            'load-strategy__title--listed': has_dashboard_strategies && is_mobile,
+                        })}
+                    >
+                        {!is_mobile && <Localize i18n_default_text='Preview' />}
                         <div className='tab__dashboard__preview__retrigger'>
                             <button
                                 onClick={() => {
@@ -64,52 +86,48 @@ const LocalComponent = ({
                                     height='2.4rem'
                                     icon={'IcDbotUserGuide'}
                                 />
-                                <Text
-                                    color='prominent'
-                                    size='xs'
-                                    line_height='s'
-                                    className={'tab__dashboard__preview__retrigger__text'}
-                                >
-                                    {localize('User Guide')}
-                                </Text>
+                                {!is_mobile && (
+                                    <Text
+                                        color='prominent'
+                                        size='xs'
+                                        line_height='s'
+                                        className={'tab__dashboard__preview__retrigger__text'}
+                                    >
+                                        {localize('User Guide')}
+                                    </Text>
+                                )}
                             </button>
                         </div>
                     </div>
-                    {!isMobile() && (
+                    <DesktopWrapper>
                         <div className='load-strategy__preview-workspace'>
                             <BotPreview id_ref={el_ref} type={'local'} />
                         </div>
-                    )}
-
-                    <div className='load-strategy__button-group'>
-                        <input
-                            type='file'
-                            ref={file_input_ref}
-                            accept='.xml'
-                            style={{ display: 'none' }}
-                            onChange={e => {
-                                clearInjectionDiv();
-                                onConfirmSave();
-                                setIsFileSupported(handleFileChange(e, false));
-                            }}
-                        />
-                        <button
-                            className='load-strategy__button-group--open'
-                            onClick={() => {
-                                loadFileFromRecent();
-                                setActiveTab(1);
-                            }}
-                        >
-                            Open
-                        </button>
-                    </div>
+                        <div className='load-strategy__button-group'>
+                            <input
+                                type='file'
+                                ref={file_input_ref}
+                                accept='.xml'
+                                style={{ display: 'none' }}
+                                onChange={e => {
+                                    clearInjectionDiv();
+                                    onConfirmSave();
+                                    setIsFileSupported(handleFileChange(e, false));
+                                }}
+                            />
+                            <button
+                                className='load-strategy__button-group--open'
+                                onClick={() => {
+                                    loadFileFromRecent();
+                                    setActiveTab(1);
+                                }}
+                            >
+                                Open
+                            </button>
+                        </div>
+                    </DesktopWrapper>
                 </div>
             </div>
-            {isMobile() && (
-                <div className='load-strategy__local-footer'>
-                    <LocalFooter />
-                </div>
-            )}
         </div>
     );
 };
@@ -119,6 +137,7 @@ const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     is_open_button_loading: load_modal.is_open_button_loading,
     loaded_local_file: load_modal.loaded_local_file,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
+    dashboard_strategies: load_modal.dashboard_strategies,
     onConfirmSave: save_modal.onConfirmSave,
     setActiveTab: dashboard.setActiveTab,
     loadFileFromLocal: load_modal.loadFileFromLocal,

@@ -240,6 +240,8 @@
             padding: 2.4rem;
             margin-left: 1.6rem;
             display: none;
+            height: calc(100vh - 16.7rem);
+            overflow-y: auto;
 
             &--active {
                 display: block;
@@ -303,6 +305,11 @@
                         height: 6.4rem;
                         padding: 0.8rem;
                     }
+                }
+            }
+            .load-strategy {
+                &__recent-item-time {
+                    font-size: var(--text-size-xs);
                 }
             }
         }

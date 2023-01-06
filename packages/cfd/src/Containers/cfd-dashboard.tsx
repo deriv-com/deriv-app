@@ -95,6 +95,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
+    context: Record<string, any>;
     createCFDAccount: (objCFDAccount: TObjectCFDAccount) => void;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<
@@ -669,7 +670,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
-                        <CFDServerErrorDialog />
+                        <CFDServerErrorDialog context={props.context} />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
                             <>
                                 <CFDDbViOnBoarding />
@@ -727,6 +728,7 @@ export default withRouter(
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
         client_email: client.email_address,
+        context: { ui, modules },
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         dxtrade_tokens: modules.cfd.dxtrade_tokens,

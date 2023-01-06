@@ -14,8 +14,7 @@ type TAppProps = {
     };
 };
 
-const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
-    const { root_store, WS } = passthrough;
+const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     initContext(root_store, WS);
     setWebsocket(WS);
     const { ui }: TRootStore = useStores();

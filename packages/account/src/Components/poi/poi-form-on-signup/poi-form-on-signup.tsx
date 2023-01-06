@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import IdvDocSubmitOnSignup from './idv-doc-submit-on-signup';
 import { FormikValues } from 'formik';
 
@@ -47,16 +46,4 @@ export const ProofOfIdentityFormOnSignup = ({
             onNext={handleSubmit}
         />
     );
-};
-
-ProofOfIdentityFormOnSignup.propTypes = {
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onSubmit: PropTypes.func,
-    value: PropTypes.object,
-    getCurrentStep: PropTypes.func,
-    goToPreviousStep: PropTypes.func,
-    goToNextStep: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    citizen: PropTypes.string,
 };

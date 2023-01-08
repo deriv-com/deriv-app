@@ -22,6 +22,7 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     if (!counter.is_running && should_not_allow_resend) {
         counter.start();
     }
+
     const send = () => {
         if (!client.email) return;
         if (counter.is_running) return;

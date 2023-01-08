@@ -64,7 +64,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
 };
 
@@ -113,6 +113,7 @@ export type TCFDAccountCard = {
     setIsAcuityModalOpen: (value: boolean) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setAppstorePlatform: (value: string) => void;
 };
 
 export type TTradingPlatformAccounts = {

@@ -1,0 +1,31 @@
+.main-title-bar {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 2.4rem;
+
+    &__right {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &--regulator {
+            display: flex;
+            align-items: center;
+
+            &--compare-modal {
+                padding-right: 1rem;
+            }
+        }
+
+        &--account-type-dropdown {
+            padding: 2px 4px 2px 2px;
+        }
+    }
+}

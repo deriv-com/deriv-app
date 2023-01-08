@@ -13,10 +13,10 @@ import {
 } from '@deriv/components';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import AccountPromptDialog from 'Components/account-prompt-dialog';
-import ErrorDialog from 'Components/error-dialog';
-import { connect } from 'Stores/connect';
-import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from 'Types';
+import AccountPromptDialog from '../../components/account-prompt-dialog';
+import ErrorDialog from '../../components/error-dialog';
+import { connect } from '../../stores/connect';
+import { TClientStore, TCommonStore, TError, TRootStore, TRoute, TUiStore } from '../../types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -44,6 +44,7 @@ type TCashierProps = RouteComponentProps & {
     routeBackInApp: TCommonStore['routeBackInApp'];
     toggleCashier: TUiStore['toggleCashier'];
     resetLastLocation: () => void;
+    is_pre_appstore: boolean;
 };
 
 type TCashierOptions = {
@@ -82,6 +83,7 @@ const Cashier = ({
     setTabIndex,
     tab_index,
     toggleCashier,
+    is_pre_appstore,
 }: TCashierProps) => {
     React.useEffect(() => {
         toggleCashier();
@@ -90,6 +92,7 @@ const Cashier = ({
             toggleCashier();
             resetLastLocation();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleCashier]);
 
     React.useEffect(() => {
@@ -102,7 +105,7 @@ const Cashier = ({
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    const onClickClose = () => routeBackInApp(history);
+    const onClickClose = () => (is_pre_appstore ? history.push(routes.traders_hub) : routeBackInApp(history));
     const getMenuOptions = () => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {
@@ -237,4 +240,5 @@ export default connect(({ client, common, modules, ui }: TRootStore) => ({
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,
     tab_index: modules.cashier.general_store.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(Cashier));

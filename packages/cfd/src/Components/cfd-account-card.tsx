@@ -197,6 +197,7 @@ const CFDAccountCardComponent = ({
     type,
     real_account_creation_unlock_date,
     setShouldShowCooldownModal,
+    setAppstorePlatform,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
 
@@ -433,6 +434,7 @@ const CFDAccountCardComponent = ({
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
                                                 onClick={() => {
+                                                    setAppstorePlatform(platform);
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(acc);
                                                 }}
@@ -481,6 +483,7 @@ const CFDAccountCardComponent = ({
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
                                                 onClick={() => {
+                                                    setAppstorePlatform(platform);
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(existing_data);
                                                 }}
@@ -570,7 +573,7 @@ const CFDAccountCardComponent = ({
                                                             data.landing_company_short === acc.landing_company_short &&
                                                             data.login === acc.login
                                                     );
-
+                                                    setAppstorePlatform(platform);
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(selected_account_data);
                                                 }}
@@ -710,12 +713,13 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
+    setAppstorePlatform: common.setAppstorePlatform,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

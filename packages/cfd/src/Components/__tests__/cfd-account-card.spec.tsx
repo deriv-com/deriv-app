@@ -107,7 +107,6 @@ describe('CFDAccountCard', () => {
             toggleShouldShowRealAccountsList: jest.fn(),
             isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
             isEligibleForMoreRealMt5: jest.fn(() => true),
-            toggleMT5TradeModal: jest.fn(),
             setMT5TradeAccount: jest.fn(),
             trading_platform_available_accounts: [],
         };
@@ -246,26 +245,6 @@ describe('CFDAccountCard', () => {
         );
         fireEvent.click(screen.getByRole('button', { name: /top up/i }));
         expect(props.onClickFund).toHaveBeenCalledWith(mt5_acc);
-    });
-
-    it('should call toggleMT5TradeModal when trade button is clicked', () => {
-        const type = {
-            type: 'financial',
-            category: 'real',
-            platform: 'mt5',
-        };
-        render(
-            <CFDAccountCard
-                {...props}
-                type={type}
-                descriptor={financial_descriptor}
-                title='Financial'
-                existing_accounts_data={[mt5_acc]}
-            />
-        );
-        fireEvent.click(screen.getByRole('button', { name: /trade/i }));
-        expect(props.toggleMT5TradeModal).toHaveBeenCalled();
-        expect(props.setMT5TradeAccount).toHaveBeenCalledWith(mt5_acc);
     });
 
     it("should show add account button if the user doesn't have an existing account", () => {

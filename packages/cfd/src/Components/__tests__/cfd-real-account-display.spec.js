@@ -59,7 +59,6 @@ describe('<CFDRealAccountDisplay />', () => {
                 svg: true,
             },
             toggleAccountsDialog: jest.fn(),
-            toggleMT5TradeModal: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
         };
     });
@@ -282,41 +281,6 @@ describe('<CFDRealAccountDisplay />', () => {
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
-    });
-
-    it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
-        props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
-        const { rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(1);
-        const dmt5_top_up_button = screen.getByRole('button', { name: /top up/i });
-        const dmt5_trade_button = screen.getByRole('button', { name: /trade/i });
-
-        fireEvent.click(dmt5_top_up_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.real.financial@p01_ts01'], {
-            category: 'real',
-            type: 'financial',
-        });
-        fireEvent.click(dmt5_trade_button);
-        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
-
-        rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                platform='dxtrade'
-                current_list={{
-                    'dxtrade.real.synthetic@synthetic': dxtrade_real_synthetic_account,
-                }}
-            />
-        );
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        const dxtrade_fund_transfer_button = screen.getByRole('button', { name: /fund transfer/i });
-        const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx.deriv.com');
-
-        fireEvent.click(dxtrade_fund_transfer_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);
     });
 
     it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {

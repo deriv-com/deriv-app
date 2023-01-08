@@ -1,5 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -9,7 +10,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = ({
@@ -19,11 +19,14 @@ const MenuLink = ({
     is_active,
     is_disabled,
     is_language,
+    is_hidden,
     suffix_icon,
     text,
     onClickLink,
 }) => {
     const deriv_static_url = getStaticUrl(link_to);
+
+    if (is_hidden) return null;
 
     if (is_language) {
         return (
@@ -105,39 +108,42 @@ const MenuLink = ({
 const ToggleMenuDrawer = React.forwardRef(
     (
         {
-            changeCurrentLanguage,
             account_status,
+            active_account_landing_company,
+            changeCurrentLanguage,
             disableApp,
             enableApp,
+            is_account_transfer_visible,
             is_dark_mode,
             is_logged_in,
             is_onramp_tab_visible,
             is_p2p_enabled,
             is_payment_agent_transfer_visible,
             is_payment_agent_visible,
-            is_account_transfer_visible,
-            is_virtual,
+            is_pre_appstore,
             is_risky_client,
+            is_virtual,
             logoutClient,
             platform_switcher,
+            setIsPreAppStore,
             should_allow_authentication,
+            should_show_exit_traders_modal,
             title,
             toggleTheme,
-            active_account_landing_company,
+            toggleExitTradersHubModal,
         },
         ref
     ) => {
         const liveChat = useLiveChat();
+        const { is_appstore } = React.useContext(PlatformContext);
         const [is_open, setIsOpen] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-        const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
-
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore });
+                const routes_config = getRoutesConfig({ is_appstore });
                 let primary_routes = [];
                 let secondary_routes = [];
                 const location = window.location.pathname;
@@ -152,7 +158,7 @@ const ToggleMenuDrawer = React.forwardRef(
                         routes.markets,
                     ];
                     secondary_routes = [];
-                } else if ((is_pre_appstore && location === routes.trading_hub) || is_trading_hub_category) {
+                } else if ((is_pre_appstore && location === routes.traders_hub) || is_trading_hub_category) {
                     primary_routes = [routes.account, routes.cashier];
                     secondary_routes = [];
                 } else {
@@ -167,7 +173,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_appstore, is_pre_appstore, account_status, should_allow_authentication]);
+        }, [is_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);
@@ -221,6 +227,13 @@ const ToggleMenuDrawer = React.forwardRef(
                 return false;
             };
 
+            const hiddenRoute = route_path => {
+                if (/languages/.test(route_path)) {
+                    return !is_pre_appstore;
+                }
+                return false;
+            };
+
             return (
                 <MobileDrawer.SubMenu
                     key={idx}
@@ -267,6 +280,7 @@ const ToggleMenuDrawer = React.forwardRef(
                                         <MenuLink
                                             key={subindex}
                                             is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
+                                            is_hidden={hiddenRoute(subroute.path)}
                                             link_to={subroute.path}
                                             text={subroute.getTitle()}
                                             onClickLink={toggleDrawer}
@@ -336,19 +350,24 @@ const ToggleMenuDrawer = React.forwardRef(
         const history = useHistory();
 
         const is_trading_hub_category =
-            route.startsWith(routes.trading_hub) ||
+            route.startsWith(routes.traders_hub) ||
             route.startsWith(routes.cashier) ||
             route.startsWith(routes.account);
 
         const tradingHubRedirect = () => {
             if (is_pre_appstore) {
-                setIsPreAppStore(false);
-                toggleDrawer();
-                history.push(routes.root);
+                if (should_show_exit_traders_modal) {
+                    toggleDrawer();
+                    toggleExitTradersHubModal();
+                } else {
+                    setIsPreAppStore(false);
+                    toggleDrawer();
+                    history.push(routes.root);
+                }
             } else {
                 setIsPreAppStore(true);
                 toggleDrawer();
-                history.push(routes.trading_hub);
+                history.push(routes.traders_hub);
             }
         };
 
@@ -463,8 +482,10 @@ const ToggleMenuDrawer = React.forwardRef(
                                         {is_logged_in && (
                                             <MobileDrawer.Item>
                                                 <MenuLink
-                                                    link_to={routes.trading_hub}
-                                                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
+                                                    link_to={routes.traders_hub}
+                                                    icon={
+                                                        is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'
+                                                    }
                                                     text={localize("Trader's hub")}
                                                     onClickLink={toggleDrawer}
                                                     changeCurrentLanguage={changeCurrentLanguage}

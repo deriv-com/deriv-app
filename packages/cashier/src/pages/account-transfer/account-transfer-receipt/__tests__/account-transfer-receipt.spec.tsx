@@ -50,6 +50,7 @@ describe('<AccountTransferReceipt />', () => {
                             value: 'CR90000400',
                         },
                         receipt: { amount_transferred: '100' },
+                        setShouldSwitchAccout: jest.fn(),
                     },
                 },
             },

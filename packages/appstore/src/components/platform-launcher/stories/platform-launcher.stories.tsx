@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: To be removed after refactor
 import React from 'react';
 import type { Meta, Story } from '@storybook/react';
 import PlatformLauncher from '../index';

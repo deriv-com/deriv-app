@@ -115,7 +115,6 @@ export default class ClientStore extends BaseStore {
         social_email_change: '',
         system_email_change: '',
     };
-    verify_email_sent_count = 0;
 
     new_email = {
         system_email_change: '',
@@ -124,6 +123,7 @@ export default class ClientStore extends BaseStore {
 
     account_limits = {};
     self_exclusion = {};
+    sent_verify_emails_data = {};
 
     local_currency_config = {
         currency: '',
@@ -193,10 +193,10 @@ export default class ClientStore extends BaseStore {
             cfd_score: observable,
             obj_total_balance: observable,
             verification_code: observable,
-            verify_email_sent_count: observable,
             new_email: observable,
             account_limits: observable,
             self_exclusion: observable,
+            sent_verify_emails_data: observable,
             local_currency_config: observable,
             has_cookie_account: observable,
             financial_assessment: observable,
@@ -295,8 +295,8 @@ export default class ClientStore extends BaseStore {
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
-            setVerifyEmailSentCount: action.bound,
             setCFDScore: action.bound,
+            setSentVerifyEmailsData: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -1108,8 +1108,9 @@ export default class ClientStore extends BaseStore {
         LocalStore.setObject(LANGUAGE_KEY, lang);
     };
 
-    setVerifyEmailSentCount(verify_email_sent_count) {
-        this.verify_email_sent_count = verify_email_sent_count;
+    setSentVerifyEmailsData(sent_verify_emails_data) {
+        this.sent_verify_emails_data = sent_verify_emails_data;
+        LocalStore.setObject('sent_verify_emails_data', sent_verify_emails_data);
     }
 
     setCookieAccount() {
@@ -1500,6 +1501,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+        this.setSentVerifyEmailsData(LocalStore.getObject('sent_verify_emails_data'));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login

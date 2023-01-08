@@ -97,7 +97,7 @@ export default class GeneralStore extends BaseStore {
     is_loading = false;
     is_p2p_visible = false;
     is_populating_values = false;
-    onRemount: () => void = () => this;
+    onRemount: VoidFunction = () => this;
     p2p_advertiser_error?: string = undefined;
     p2p_completed_orders: P2PAdvertInfo[] | null = null;
     p2p_notification_count = 0;
@@ -108,7 +108,7 @@ export default class GeneralStore extends BaseStore {
     should_show_all_available_currencies = false;
     show_p2p_in_cashier_onboarding = false;
 
-    setOnRemount(func: () => void): void {
+    setOnRemount(func: VoidFunction): void {
         this.onRemount = func;
     }
 

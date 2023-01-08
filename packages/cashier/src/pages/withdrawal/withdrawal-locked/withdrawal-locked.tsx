@@ -9,7 +9,7 @@ import CashierLocked from 'Components/cashier-locked';
 type TItem = {
     content: string;
     status: string;
-    onClick: () => void;
+    onClick: VoidFunction;
 };
 
 const WithdrawalLocked = observer(() => {

@@ -8,7 +8,7 @@ import { TReactChangeEvent, TReactChildren } from 'Types';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
-    onComplete: () => void;
+    onComplete: VoidFunction;
 };
 
 type TInputGroupProps = {
@@ -25,10 +25,10 @@ type TCryptoFiatConverterProps = {
         to_currency: string
     ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
-    resetConverter: () => void;
+    resetConverter: VoidFunction;
     to_currency: string;
-    validateFromAmount: () => void;
-    validateToAmount: () => void;
+    validateFromAmount: VoidFunction;
+    validateToAmount: VoidFunction;
 };
 
 const Timer = ({ onComplete }: TTimerProps) => {

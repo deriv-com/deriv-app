@@ -34,8 +34,8 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const { general_store } = cashier;
     const { setNotificationCount, setOnRemount } = general_store;
     const [order_id, setOrderId] = React.useState<string | null>(null);
-    const [action_param, setActionParam] = React.useState<string | null>();
-    const [code_param, setCodeParam] = React.useState<string | null>();
+    const [action_param, setActionParam] = React.useState<string | null>(null);
+    const [code_param, setCodeParam] = React.useState<string | null>(null);
 
     const server_time = {
         get,

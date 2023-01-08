@@ -5,7 +5,7 @@ import { TReactElement } from 'Types';
 
 type TReadMoreWrapperProps = {
     error_content: string | TReactElement;
-    openDialog: () => void;
+    openDialog: VoidFunction;
 };
 
 const ReadMoreWrapper = ({ error_content, openDialog }: TReadMoreWrapperProps) => {

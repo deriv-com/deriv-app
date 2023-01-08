@@ -4,7 +4,7 @@ import Validator from 'Utils/validator/validator';
 import type { TRootStore } from 'Types';
 
 type TListenerResponse = {
-    then: (func: () => void) => void;
+    then: (func: VoidFunction) => void;
 };
 
 type TValidationRules = { [key: string]: Array<string> | string } & {

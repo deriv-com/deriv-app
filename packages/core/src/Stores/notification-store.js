@@ -52,7 +52,6 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             p2p_order_props: observable,
             custom_notifications: computed,
-            filtered_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
@@ -139,10 +138,6 @@ export default class NotificationStore extends BaseStore {
             },
         };
         return notification_content;
-    }
-
-    get filtered_notifications() {
-        return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
     }
 
     addNotificationBar(message) {
@@ -268,7 +263,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, needs_verification },
+                authentication: { document, identity, needs_verification, ownership },
                 status,
                 cashier_validation,
             } = account_status;
@@ -353,6 +348,10 @@ export default class NotificationStore extends BaseStore {
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
+                const poo_required =
+                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() !== 'rejected';
+                const poo_rejected =
+                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
 
                 this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
 
@@ -472,6 +471,12 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(
                         this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                     );
+                }
+                if (poo_required) {
+                    this.addNotificationMessage(this.client_notifications.poo_required);
+                }
+                if (poo_rejected) {
+                    this.addNotificationMessage(this.client_notifications.poo_rejected);
                 }
             }
         }
@@ -1221,6 +1226,53 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Personal details'),
                 },
             },
+            poo_required: {
+                key: 'poo_required',
+                header: (
+                    <Localize
+                        i18n_default_text='<0>Proof of ownership</0> <1>required</1>'
+                        components={[<div key={0} />, <div key={1} />]}
+                    />
+                ),
+                message: (
+                    <Localize
+                        i18n_default_text='<0></0><1>Your account is currently locked</1> <2></2><3>Please upload your proof of</3> <4>ownership to unlock your account.</4> <5></5>'
+                        components={[
+                            <br key={0} />,
+                            <div key={1} />,
+                            <br key={2} />,
+                            <div key={3} />,
+                            <div key={4} />,
+                            <br key={5} />,
+                        ]}
+                    />
+                ),
+                action: {
+                    route: routes.proof_of_ownership,
+                    text: localize('Upload my document'),
+                },
+                type: 'warning',
+            },
+            poo_rejected: {
+                key: 'poo_rejected',
+                header: (
+                    <Localize
+                        i18n_default_text='<0>Proof of ownership</0> <1>verification failed</1>'
+                        components={[<div key={0} />, <div key={1} />]}
+                    />
+                ),
+                message: (
+                    <Localize
+                        i18n_default_text='<0></0><1>Please upload your document</1> <2>with the correct details.</2> <3></3>'
+                        components={[<br key={0} />, <div key={1} />, <div key={2} />, <br key={3} />]}
+                    />
+                ),
+                action: {
+                    route: routes.proof_of_ownership,
+                    text: localize('Upload again'),
+                },
+                type: 'warning',
+            },
             risk_client: {
                 key: 'risk_client',
                 header: localize('You can only make deposits.'),
@@ -1242,6 +1294,7 @@ export default class NotificationStore extends BaseStore {
         this.p2p_order_props = p2p_order_props;
     }
 
+    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

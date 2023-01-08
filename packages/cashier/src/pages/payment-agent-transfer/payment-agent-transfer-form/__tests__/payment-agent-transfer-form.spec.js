@@ -1,12 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
@@ -15,12 +10,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () 
 }));
 
 describe('<PaymentAgentTransferForm />', () => {
-    const balance = '80';
-    const setErrorMessage = jest.fn();
-    const transfer_limit = {
-        min: '1',
-        max: '100',
-    };
+    let mockRootStore;
 
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
@@ -32,20 +22,54 @@ describe('<PaymentAgentTransferForm />', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    beforeEach(() => {
+        mockRootStore = {
+            ui: {
+                disableApp: jest.fn(),
+                enableApp: jest.fn(),
+            },
+            client: {
+                balance: '80',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        confirm: {
+                            amount: null,
+                            description: 'description',
+                            client_id: null,
+                            client_name: 'client_name',
+                        },
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        transfer_limit: {
+                            min: '1',
+                            max: '100',
+                        },
+                    },
+                },
+            },
+        };
+    });
+
+    const renderPaymentAgentTransferForm = () => {
+        return render(
+            <StoreProvider store={mockRootStore}>
+                <PaymentAgentTransferForm />
+            </StoreProvider>
+        );
+    };
+
     it('should render the component', () => {
-        const { container } = render(<PaymentAgentTransferForm />);
+        const { container } = renderPaymentAgentTransferForm();
 
         expect(container.firstChild).toHaveClass('payment-agent-transfer-form__container');
     });
 
     it('should show an error if client login id or amount is not provided', async () => {
-        render(
-            <PaymentAgentTransferForm
-                balance={balance}
-                setErrorMessage={setErrorMessage}
-                transfer_limit={transfer_limit}
-            />
-        );
+        renderPaymentAgentTransferForm();
 
         const submit_button = screen.getByRole('button');
         fireEvent.click(submit_button);
@@ -57,13 +81,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if the login id is not valid', async () => {
-        const { container } = render(
-            <PaymentAgentTransferForm
-                balance={balance}
-                setErrorMessage={setErrorMessage}
-                transfer_limit={transfer_limit}
-            />
-        );
+        const { container } = renderPaymentAgentTransferForm();
 
         const loginid_field = container.querySelector('input[name=loginid]');
         const submit_button = screen.getByRole('button');
@@ -77,13 +95,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if amount to be transferred is greater than the balance', async () => {
-        const { container } = render(
-            <PaymentAgentTransferForm
-                balance={balance}
-                setErrorMessage={setErrorMessage}
-                transfer_limit={transfer_limit}
-            />
-        );
+        const { container } = renderPaymentAgentTransferForm();
 
         const amount_field = container.querySelector('input[name=amount]');
         const submit_button = screen.getByRole('button');
@@ -97,13 +109,7 @@ describe('<PaymentAgentTransferForm />', () => {
     });
 
     it('should show an error if description is not valid', async () => {
-        const { container } = render(
-            <PaymentAgentTransferForm
-                balance={balance}
-                setErrorMessage={setErrorMessage}
-                transfer_limit={transfer_limit}
-            />
-        );
+        const { container } = renderPaymentAgentTransferForm();
 
         const description_field = container.querySelector('[name=description]');
         const submit_button = screen.getByRole('button');

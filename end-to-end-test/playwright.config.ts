@@ -13,6 +13,7 @@ dotenvConf();
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
+    globalSetup: process.env.CI ? undefined : require.resolve('./global-setup'),
     testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 100 * 1000,
@@ -35,6 +36,7 @@ const config: PlaywrightTestConfig = {
     reporter: 'html',
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
+        storageState: '/tmp/storage-state.json',
         ignoreHTTPSErrors: true,
 
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -52,6 +54,10 @@ const config: PlaywrightTestConfig = {
             name: 'chromium',
             use: {
                 ignoreHTTPSErrors: true,
+                httpCredentials: {
+                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
+                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
+                },
                 ...devices['Desktop Chrome'],
             },
         },
@@ -60,6 +66,10 @@ const config: PlaywrightTestConfig = {
             name: 'firefox',
             use: {
                 ignoreHTTPSErrors: true,
+                httpCredentials: {
+                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
+                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
+                },
                 ...devices['Desktop Firefox'],
             },
         },
@@ -68,6 +78,10 @@ const config: PlaywrightTestConfig = {
             name: 'webkit',
             use: {
                 ignoreHTTPSErrors: true,
+                httpCredentials: {
+                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
+                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
+                },
                 ...devices['Desktop Safari'],
             },
         },

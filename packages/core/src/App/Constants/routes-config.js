@@ -166,6 +166,11 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Proof of address'),
                         },
+                        {
+                            path: routes.proof_of_ownership,
+                            component: Account,
+                            getTitle: () => localize('Proof of ownership'),
+                        },
                     ],
                 },
                 {

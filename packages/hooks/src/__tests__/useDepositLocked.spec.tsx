@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
-import type { TRootStore } from '@deriv/stores/types';
+import type { TStores } from '@deriv/stores';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
 import useDepositLocked from '../useDepositLocked';
@@ -17,7 +17,7 @@ const UseDepositLockedExample = () => {
 
 describe('useDepositLocked', () => {
     test('should be false if none of the conditions are met', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
                 is_authentication_needed: false,
@@ -36,7 +36,7 @@ describe('useDepositLocked', () => {
         };
 
         render(<UseDepositLockedExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
         });
 
         const is_deposit_locked = screen.getByTestId('dt_is_deposit_locked');
@@ -44,7 +44,7 @@ describe('useDepositLocked', () => {
     });
 
     test('should be true if is_deposit_lock is true', async () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: true,
                 is_authentication_needed: false,
@@ -63,7 +63,7 @@ describe('useDepositLocked', () => {
         };
 
         render(<UseDepositLockedExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
         });
 
         const is_deposit_locked = screen.getByTestId('dt_is_deposit_locked');
@@ -71,7 +71,7 @@ describe('useDepositLocked', () => {
     });
 
     test('should be true if is_need_tnc is true', async () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
                 is_authentication_needed: false,
@@ -90,7 +90,7 @@ describe('useDepositLocked', () => {
         };
 
         render(<UseDepositLockedExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
         });
 
         const is_deposit_locked = screen.getByTestId('dt_is_deposit_locked');
@@ -98,7 +98,7 @@ describe('useDepositLocked', () => {
     });
 
     test('should be true if is_need_financial_assessment is true', async () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
                 is_authentication_needed: false,
@@ -117,7 +117,7 @@ describe('useDepositLocked', () => {
         };
 
         render(<UseDepositLockedExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
         });
 
         const is_deposit_locked = screen.getByTestId('dt_is_deposit_locked');
@@ -125,7 +125,7 @@ describe('useDepositLocked', () => {
     });
 
     test('should be true if is_need_authentication is true', async () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
                 is_authentication_needed: true,
@@ -144,7 +144,7 @@ describe('useDepositLocked', () => {
         };
 
         render(<UseDepositLockedExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
         });
 
         const is_deposit_locked = screen.getByTestId('dt_is_deposit_locked');

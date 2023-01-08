@@ -3,19 +3,19 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
-import CashierLocked from 'Components/cashier-locked';
-import Error from 'Components/error';
-import NoBalance from 'Components/no-balance';
-import RecentTransaction from 'Components/recent-transaction';
-import SideNote from 'Components/side-note';
-import USDTSideNote from 'Components/usdt-side-note';
-import { Virtual } from 'Components/cashier-container';
+import CashierLocked from '../../components/cashier-locked';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import RecentTransaction from '../../components/recent-transaction';
+import SideNote from '../../components/side-note';
+import USDTSideNote from '../../components/usdt-side-note';
+import { Virtual } from '../../components/cashier-container';
 
 type TWithdrawalSideNoteProps = {
     currency: string;

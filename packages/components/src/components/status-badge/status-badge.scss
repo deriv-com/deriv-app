@@ -1,0 +1,39 @@
+.switcher-status-badge {
+    &__parent {
+        display: flex;
+    }
+
+    &__container {
+        display: inline-flex;
+        padding: 2px 7px;
+        color: var(--text-info-blue);
+        border-radius: 4px;
+        border: 1.5px solid var(--text-info-blue);
+        align-items: center;
+
+        &--pending {
+            border-color: var(--text-warning);
+        }
+        &--failed {
+            border-color: var(--status-danger);
+        }
+
+        &--icon {
+            padding-right: 0.5rem;
+        }
+
+        &__arrow {
+            padding-left: 1rem;
+        }
+    }
+}
+
+.link-default {
+    color: var(--text-info-blue);
+    font-weight: bold;
+}
+
+.link-failed {
+    color: var(--status-danger);
+    font-weight: bold;
+}

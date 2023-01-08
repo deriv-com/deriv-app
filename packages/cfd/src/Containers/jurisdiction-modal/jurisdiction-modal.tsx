@@ -15,7 +15,6 @@ const JurisdictionModal = ({
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
-    is_eu,
     context,
     is_virtual,
     jurisdiction_selected_shortcode,
@@ -28,6 +27,7 @@ const JurisdictionModal = ({
     setAccountSettings,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
+    show_eu_related_content,
     toggleCFDVerificationModal,
     updateAccountStatus,
 }: TJurisdictionModalProps) => {
@@ -80,14 +80,22 @@ const JurisdictionModal = ({
     }, [jurisdiction_selected_shortcode, is_jurisdiction_modal_visible]);
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
-        available_account => available_account.market_type === 'financial'
+        available_account =>
+            available_account.market_type === 'financial' &&
+            (show_eu_related_content
+                ? available_account.shortcode === 'maltainvest'
+                : available_account.shortcode !== 'maltainvest')
     );
 
     const synthetic_available_accounts = trading_platform_available_accounts.filter(
-        available_account => available_account.market_type === 'gaming'
+        available_account =>
+            available_account.market_type === 'gaming' &&
+            (show_eu_related_content
+                ? available_account.shortcode === 'maltainvest'
+                : available_account.shortcode !== 'maltainvest')
     );
 
-    const modal_title = is_eu
+    const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')
         : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
@@ -149,7 +157,7 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
 
-        if (is_eu && is_maltainvest_selected) {
+        if (show_eu_related_content && is_maltainvest_selected) {
             if (poi_poa_verified_for_bvi_labuan_maltainvest) {
                 openPasswordModal(type_of_account);
             } else {
@@ -277,13 +285,13 @@ const JurisdictionModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
+export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore) => ({
     account_type: cfd.account_type,
     account_settings: client.account_settings,
     account_status: client.account_status,
+    content_flag: traders_hub.content_flag,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_eu: client.is_eu,
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
@@ -292,6 +300,7 @@ export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
     setAccountSettings: client.setAccountSettings,
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    show_eu_related_content: traders_hub.show_eu_related_content,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,

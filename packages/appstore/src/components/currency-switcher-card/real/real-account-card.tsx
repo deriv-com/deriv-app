@@ -26,7 +26,9 @@ const RealAccountCard = () => {
                 </Text>
             }
             icon={currency}
-            onClick={() => openModal('currency_selection')}
+            onClick={() => {
+                openModal('currency_selection');
+            }}
             actions={
                 <Button
                     onClick={(e: MouseEvent) => {

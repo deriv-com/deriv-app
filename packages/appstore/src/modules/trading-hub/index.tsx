@@ -284,7 +284,7 @@ const TradingHub: React.FC = () => {
                 <CFDPasswordModal context={store} platform={platform} />
                 <CFDDbviOnBoarding context={store} />
                 <CFDResetPasswordModal context={store} platform={platform} />
-                <CFDServerErrorDialog />
+                <CFDServerErrorDialog context={store} />
                 <CFDTopUpDemoModal context={store} />
                 <MT5TradeModal
                     context={store}
@@ -324,7 +324,7 @@ const TradingHub: React.FC = () => {
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog />
+            <CFDServerErrorDialog context={store} />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

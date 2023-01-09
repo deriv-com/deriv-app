@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { isMobile } from '@deriv/shared';
-import PopupBody from './popup-body.js';
+import PopupBody from './popup-body';
 import PopupContext, { TPopupContext } from './popup-context';
-import PopupHeader from './popup-header.js';
-import PopupOverlay from './popup-overlay.js';
-import PopupOverlayContainer from './popup-overlay-container.js';
+import PopupHeader from './popup-header';
+import PopupOverlay from './popup-overlay';
+import PopupOverlayContainer from './popup-overlay-container';
 import MobileFullPageModal from '../mobile-full-page-modal';
 import Modal from '../modal';
 

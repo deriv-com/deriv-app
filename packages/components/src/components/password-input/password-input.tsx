@@ -3,9 +3,9 @@ import React from 'react';
 import Icon from '../icon';
 import Input, { TInputProps } from '../input';
 
-type TPasswordInput = TInputProps & {
-    className?: string;
+type TPasswordInput = Partial<TInputProps> & {
     autoComplete: string;
+    className?: string;
     input_id?: string;
 };
 
@@ -15,7 +15,7 @@ const PasswordInput = ({
     input_id,
     ...otherProps
 }: TPasswordInput) => {
-    const [should_show_password, setShouldShowPassword] = React.useState<boolean>(false);
+    const [should_show_password, setShouldShowPassword] = React.useState(false);
 
     const togglePasswordVisibility = () => {
         setShouldShowPassword(!should_show_password);

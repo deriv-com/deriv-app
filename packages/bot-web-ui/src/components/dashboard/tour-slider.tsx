@@ -13,14 +13,12 @@ type TTourButton = {
 };
 
 type TTourSlider = {
-    setOnBoardTourRunState: (param: boolean) => void;
-    setTourActive: (param: boolean) => void;
-    setTourDialogVisibility: (param: boolean) => void;
-    setBotBuilderTourState: (param: boolean) => void;
-    setHasTourEnded: (param: boolean) => void;
-    setTourActiveStep: (param: number) => void;
     has_started_onboarding_tour: boolean;
     has_started_bot_builder_tour: boolean;
+    setTourDialogVisibility: (param: boolean) => void;
+    setHasTourEnded: (param: boolean) => void;
+    setTourActiveStep: (param: number) => void;
+    onCloseTour: (param: string) => void;
 };
 
 type TAccordion = {
@@ -76,31 +74,18 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
 };
 
 const TourSlider = ({
-    setOnBoardTourRunState,
-    setBotBuilderTourState,
-    setTourActive,
-    setTourDialogVisibility,
-    setHasTourEnded,
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
+    setTourDialogVisibility,
+    setHasTourEnded,
     setTourActiveStep,
+    onCloseTour,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string>('');
     const [slider_header, setheader] = React.useState<string>('');
     const [slider_image, setimg] = React.useState<string>('');
     const [step_key, setStepKey] = React.useState<number>(0);
-
-    const onCloseTour = (param: string) => {
-        if (param === 'onboard') {
-            setOnBoardTourRunState(false);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        } else {
-            setBotBuilderTourState(false);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        }
-        setTourActive(false);
-    };
 
     React.useEffect(() => {
         setTourActiveStep(step);
@@ -249,12 +234,10 @@ const TourSlider = ({
 export default connect(({ dashboard }: RootStore) => ({
     setActiveTab: dashboard.setActiveTab,
     active_tab: dashboard.active_tab,
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    setTourActive: dashboard.setTourActive,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setHasTourEnded: dashboard.setHasTourEnded,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
-    setBotBuilderTourState: dashboard.setBotBuilderTourState,
     setTourActiveStep: dashboard.setTourActiveStep,
+    onCloseTour: dashboard.onCloseTour,
 }))(TourSlider);

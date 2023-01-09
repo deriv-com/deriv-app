@@ -1,4 +1,5 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
+import { tour_type, setTourSettings } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
@@ -28,6 +29,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    onCloseTour: (param: string) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -68,6 +70,7 @@ export default class DashboardStore implements IDashboardStore {
             setBotBuilderTokenCheck: action.bound,
             setOnBoardingTokenCheck: action.bound,
             toggleOnConfirm: action.bound,
+            onCloseTour: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -193,5 +196,16 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(value);
         }
         this.setHasTourEnded(value);
+    };
+
+    onCloseTour = (param: string) => {
+        if (param === 'onboard') {
+            this.setOnBoardTourRunState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        } else {
+            this.setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        }
+        this.setTourActive(false);
     };
 }

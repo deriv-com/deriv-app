@@ -356,7 +356,7 @@ export const PersonalDetailsForm = ({
             }
         }
 
-        const permitted_characters = ". , ' : ; ( ) @ # / -";
+        const permitted_characters = ". , ' : ; ( ) ° @ # / -";
         const address_validation_message = localize(
             'Use only the following special characters: {{ permitted_characters }}',
             {

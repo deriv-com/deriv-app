@@ -134,6 +134,12 @@ const TourTriggrerDialog = ({
         </>
     );
     const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
+
+    const onHandleConfirm = React.useCallback(() => {
+        const status = tour_status_ended.key === 'finished';
+        toggleTour(status ? false : !has_tour_ended, 'onConfirm');
+        return status ? (tour_status_ended.key = '') : null;
+    }, [has_tour_ended]);
     return (
         <div>
             <Dialog
@@ -141,11 +147,7 @@ const TourTriggrerDialog = ({
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
                 confirm_button_text={has_tour_ended ? confirm_button : localize('Start')}
-                onConfirm={() => {
-                    const status = tour_status_ended.key === 'finished';
-                    toggleTour(status ? false : !has_tour_ended, 'onConfirm');
-                    return status ? (tour_status_ended.key = '') : null;
-                }}
+                onConfirm={onHandleConfirm}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {
                     'tour-dialog': active_tab === 0 || active_tab === 1,

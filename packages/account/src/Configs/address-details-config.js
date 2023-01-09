@@ -16,7 +16,9 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: ". , ' : ; ( ) @ # / -",
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_1,
                     },
@@ -31,7 +33,9 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: ". , ' : ; ( ) @ # / -",
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_2,
                     },

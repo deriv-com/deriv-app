@@ -6,7 +6,7 @@ import AccountInfo from '../account-info.jsx';
 describe('AccountInfo component', () => {
     it('should show "disabled_message" when "is_disabled" property is "true"', () => {
         render(<AccountInfo is_disabled acc_switcher_disabled_message='Test disabled message' />);
-        const popover = screen.getByTestId('dt_popover_container');
+        const popover = screen.getByTestId('dt_popover_wrapper');
         userEvent.hover(popover);
         const disabled_message = screen.getByText(/test disabled message/i);
         expect(disabled_message).toBeInTheDocument();

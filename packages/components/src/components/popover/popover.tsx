@@ -57,7 +57,6 @@ const Popover = ({
 
     return (
         <div
-            data-testid='dt_popover_container'
             ref={hover_ref as RefObject<HTMLDivElement>}
             className={classNames({ 'dc-popover__wrapper': relative_render })}
             onClick={onClick}

@@ -401,6 +401,9 @@
 
 .dc-modal__container_jurisdiction-modal {
     min-height: 664px;
+    .dc-modal-header {
+        border-bottom: 2px solid var(--general-section-1);
+    }
 }
 
 .poi-poa-submitted {

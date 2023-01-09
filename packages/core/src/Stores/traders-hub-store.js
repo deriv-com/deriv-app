@@ -285,9 +285,9 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCFDAccounts() {
         const account_desc =
             !this.is_eu_user || this.is_demo_low_risk
-                ? localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.')
+                ? localize('Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.')
                 : localize(
-                      'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
+                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                   );
 
         const all_available_accounts = [

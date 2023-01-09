@@ -61,8 +61,12 @@ const Sidebar = ({
     ];
     const selected_tab = menu_items?.[active_tab_tutorials] || {};
 
-    const onChangeHandle = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
-        setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
+    const onChangeHandle = React.useCallback(
+        ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+            setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
+        },
+        [active_tab_tutorials]
+    );
 
     return (
         <>

@@ -405,6 +405,18 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
             }
         );
+        // TODO: Remove this after setting trading_hub enabled for all users
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
+                    window.location.href = routes.root;
+                } else if (this.is_pre_appstore && window.location.pathname === routes.root) {
+                    window.location.href = routes.traders_hub;
+                }
+            }
+        );
 
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
@@ -2423,11 +2435,16 @@ export default class ClientStore extends BaseStore {
 
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
-        return this.account_status.risk_classification === 'high';
+        const { gaming_company, financial_company } = this.landing_companies;
+        const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high';
     }
 
     get is_low_risk() {
-        return this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+        const { gaming_company, financial_company } = this.landing_companies;
+        const low_risk_landing_company =
+            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
+        return low_risk_landing_company || this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
     }
 
     get has_residence() {

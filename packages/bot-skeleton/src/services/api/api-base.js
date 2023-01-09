@@ -14,7 +14,7 @@ class APIBase {
     init(force_update = false) {
         if (getLoginId()) {
             this.toggleRunButton(true);
-            if (force_update) this.terminate();
+            if (force_update && this.api) this.api.disconnect();
             this.api = generateDerivApiInstance();
             this.initEventListeners();
             this.authorizeAndSubscribe();
@@ -22,12 +22,6 @@ class APIBase {
             this.time_interval = null;
             this.getTime();
         }
-    }
-
-    terminate() {
-        // eslint-disable-next-line no-console
-        console.log('connection terminated');
-        if (this.api) this.api.disconnect();
     }
 
     initEventListeners() {

@@ -14,6 +14,9 @@ export const modals = {
     BuySellModal: React.lazy(() =>
         import(/* webpackChunkName: "buy-sell-modal" */ 'Components/modal-manager/modals/buy-sell-modal')
     ),
+    BlockUserModal: React.lazy(() =>
+        import(/* webpackChunkName: "block-user-modal" */ 'Components/modal-manager/modals/block-user-modal')
+    ),
     CancelAddPaymentMethodModal: React.lazy(() =>
         import(
             /* webpackChunkName: "cancel-add-payment-method-modal" */ 'Components/modal-manager/modals/cancel-add-payment-method-modal'

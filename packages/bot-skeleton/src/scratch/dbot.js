@@ -243,6 +243,10 @@ class DBot {
         }
     }
 
+    terminateConnection = () => {
+        api_base.terminate();
+    };
+
     /**
      * Unselects any selected block before running the bot.
      */

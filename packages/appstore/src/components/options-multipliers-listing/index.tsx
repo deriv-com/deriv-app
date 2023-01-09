@@ -30,8 +30,10 @@ const OptionsAndMultipliersListing = () => {
 
     const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
 
+    const cr_demo = (high_risk_cr || low_risk_cr_non_eu) && is_demo;
+
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || high_risk_cr || is_demo) && !isMobile()) {
+        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
@@ -51,7 +53,7 @@ const OptionsAndMultipliersListing = () => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                low_risk_cr_non_eu || high_risk_cr || is_demo ? (
+                low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the

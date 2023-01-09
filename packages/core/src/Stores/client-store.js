@@ -266,6 +266,7 @@ export default class ClientStore extends BaseStore {
             is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
+            has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
@@ -374,6 +375,7 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
+            updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
@@ -401,6 +403,18 @@ export default class ClientStore extends BaseStore {
                 const { trading_hub } = this.account_settings;
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
+            }
+        );
+        // TODO: Remove this after setting trading_hub enabled for all users
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
+                    window.location.href = routes.root;
+                } else if (this.is_pre_appstore && window.location.pathname === routes.root) {
+                    window.location.href = routes.traders_hub;
+                }
             }
         );
 
@@ -781,6 +795,10 @@ export default class ClientStore extends BaseStore {
 
     get has_restricted_mt5_account() {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
+    }
+
+    get has_mt5_account_with_rejected_poa() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_rejected')).length;
     }
 
     get should_restrict_bvi_account_creation() {
@@ -2417,11 +2435,16 @@ export default class ClientStore extends BaseStore {
 
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
-        return this.account_status.risk_classification === 'high';
+        const { gaming_company, financial_company } = this.landing_companies;
+        const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high';
     }
 
     get is_low_risk() {
-        return this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+        const { gaming_company, financial_company } = this.landing_companies;
+        const low_risk_landing_company =
+            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
+        return low_risk_landing_company || this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
     }
 
     get has_residence() {
@@ -2495,6 +2518,11 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    async updateMT5Status() {
+        this.updateAccountStatus();
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
     }
 
     setPrevRealAccountLoginid = logind => {

@@ -11,7 +11,7 @@ const DemoAccountCard = () => {
     const { client, traders_hub } = useStores();
     const { accounts, loginid, resetVirtualBalance } = client;
     const {
-        total_platform_demo_balance: { currency, balance },
+        platform_demo_balance: { currency, balance },
         selected_account_type,
     } = traders_hub;
 

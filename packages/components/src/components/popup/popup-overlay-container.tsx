@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
 import PopupContext from './popup-context';
 
-const PopupOverlayContainer = ({ refSetter }) => {
+type TPopupOverlayContainer = {
+    refSetter: (instance: HTMLDivElement | null) => void;
+};
+
+const PopupOverlayContainer = ({ refSetter }: TPopupOverlayContainer) => {
     const { is_overlay_shown } = React.useContext(PopupContext);
 
     return (
@@ -21,10 +24,6 @@ const PopupOverlayContainer = ({ refSetter }) => {
             <div className='dc-popup__overlay' ref={refSetter} />
         </CSSTransition>
     );
-};
-
-PopupOverlayContainer.propTypes = {
-    refSetter: PropTypes.func.isRequired,
 };
 
 export default PopupOverlayContainer;

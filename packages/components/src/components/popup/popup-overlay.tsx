@@ -4,7 +4,20 @@ import PropTypes from 'prop-types';
 import Text from '../text/text';
 import Button from '../button/button';
 
-const PopupOverlay = ({ title, descriptions, overlay_ref, toggleOverlay, done_text }) =>
+type TPopupOverlay = {
+    title: string;
+    descriptions: [
+        {
+            key: number | string;
+            component: React.ReactNode;
+        }
+    ];
+    overlay_ref: HTMLDivElement;
+    toggleOverlay: () => void;
+    done_text: string;
+};
+
+const PopupOverlay = ({ title, descriptions, overlay_ref, toggleOverlay, done_text }: TPopupOverlay) =>
     createPortal(
         <div className='dc-popup__overlay-content'>
             <Text
@@ -37,13 +50,5 @@ const PopupOverlay = ({ title, descriptions, overlay_ref, toggleOverlay, done_te
         </div>,
         overlay_ref
     );
-
-PopupOverlay.propTypes = {
-    descriptions: PropTypes.array.isRequired,
-    done_text: PropTypes.string.isRequired,
-    overlay_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]).isRequired,
-    title: PropTypes.string.isRequired,
-    toggleOverlay: PropTypes.func.isRequired,
-};
 
 export default PopupOverlay;

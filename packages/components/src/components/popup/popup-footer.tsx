@@ -1,8 +1,12 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const PopupFooter = ({ children, has_separator }) => (
+type TPopupFooter = {
+    children: React.ReactNode;
+    has_separator: boolean;
+};
+
+const PopupFooter = ({ children, has_separator }: TPopupFooter) => (
     <div
         className={classNames('dc-popup-footer', {
             'dc-popup-footer__separator': has_separator,
@@ -11,10 +15,5 @@ const PopupFooter = ({ children, has_separator }) => (
         {children}
     </div>
 );
-
-PopupFooter.propTypes = {
-    children: PropTypes.node,
-    has_separator: PropTypes.bool,
-};
 
 export default PopupFooter;

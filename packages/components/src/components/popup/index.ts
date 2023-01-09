@@ -1,4 +1,4 @@
-import Popup from './popup.jsx';
+import Popup from './popup';
 import './popup.scss';
 
 export default Popup;

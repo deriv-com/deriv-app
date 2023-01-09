@@ -29,7 +29,8 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
-    onCloseTour: (param: string) => void;
+    onCloseTour: (param: Partial<string>) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -71,6 +72,7 @@ export default class DashboardStore implements IDashboardStore {
             setOnBoardingTokenCheck: action.bound,
             toggleOnConfirm: action.bound,
             onCloseTour: action.bound,
+            onTourEnd: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -198,7 +200,7 @@ export default class DashboardStore implements IDashboardStore {
         this.setHasTourEnded(value);
     };
 
-    onCloseTour = (param: string) => {
+    onCloseTour = (param: Partial<string>) => {
         if (param === 'onboard') {
             this.setOnBoardTourRunState(false);
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
@@ -207,5 +209,22 @@ export default class DashboardStore implements IDashboardStore {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
         this.setTourActive(false);
+    };
+
+    setTourEnd = (): void => {
+        this.setHasTourEnded(true);
+        this.setTourDialogVisibility(true);
+        setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+    };
+
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
+        if (step === 8) {
+            this.onCloseTour('onboard');
+            this.setTourEnd();
+        }
+        if (!has_started_onboarding_tour && step === 6) {
+            this.onCloseTour('bot_builder');
+            this.setTourEnd();
+        }
     };
 }

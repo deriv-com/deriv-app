@@ -18,7 +18,8 @@ type TTourSlider = {
     setTourDialogVisibility: (param: boolean) => void;
     setHasTourEnded: (param: boolean) => void;
     setTourActiveStep: (param: number) => void;
-    onCloseTour: (param: string) => void;
+    onCloseTour: (param: Partial<string>) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
 };
 
 type TAccordion = {
@@ -80,6 +81,7 @@ const TourSlider = ({
     setHasTourEnded,
     setTourActiveStep,
     onCloseTour,
+    onTourEnd,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string>('');
@@ -113,30 +115,18 @@ const TourSlider = ({
         }
     }, [step]);
 
-    const onTourEnd = () => {
-        if (step === 8) {
-            onCloseTour('onboard');
-            setHasTourEnded(true);
-            setTourDialogVisibility(true);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        }
-        if (!has_started_onboarding_tour && step === 6) {
-            onCloseTour('bot_builder');
-            setHasTourEnded(true);
-            setTourDialogVisibility(true);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        }
-    };
-
-    const onChange = (param: string) => {
-        if (
-            param === 'inc' &&
-            step < Object.keys(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).length
-        )
-            setStep(step + 1);
-        else if (param === 'dec' && step > 1) setStep(step - 1);
-        else if (param === 'skip') onCloseTour('onboard');
-    };
+    const onChange = React.useCallback(
+        (param: string) => {
+            if (
+                param === 'inc' &&
+                step < Object.keys(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).length
+            )
+                setStep(step + 1);
+            else if (param === 'dec' && step > 1) setStep(step - 1);
+            else if (param === 'skip') onCloseTour('onboard');
+        },
+        [step]
+    );
 
     React.useEffect(() => {
         Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
@@ -220,7 +210,7 @@ const TourSlider = ({
                             type='danger'
                             onClick={() => {
                                 onChange('inc');
-                                onTourEnd();
+                                onTourEnd(step, has_started_onboarding_tour);
                             }}
                             label={localize('Next')}
                         />
@@ -240,4 +230,5 @@ export default connect(({ dashboard }: RootStore) => ({
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     setTourActiveStep: dashboard.setTourActiveStep,
     onCloseTour: dashboard.onCloseTour,
+    onTourEnd: dashboard.onTourEnd,
 }))(TourSlider);

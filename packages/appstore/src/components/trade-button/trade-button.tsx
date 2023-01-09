@@ -5,7 +5,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
 
-const TradeButton = ({ link_to, onAction, is_external }: Pick<Actions, 'link_to' | 'onAction' | 'is_external'>) => {
+const TradeButton = ({
+    link_to,
+    onAction,
+    is_external,
+    is_buttons_disabled,
+}: Pick<Actions, 'link_to' | 'onAction' | 'is_external' | 'is_buttons_disabled'>) => {
     const { traders_hub, modules } = useStores();
     const { is_demo } = traders_hub;
     const { dxtrade_tokens } = modules.cfd;
@@ -27,7 +32,7 @@ const TradeButton = ({ link_to, onAction, is_external }: Pick<Actions, 'link_to'
         );
     } else if (onAction) {
         return (
-            <Button primary className='trade-button' onClick={() => onAction()}>
+            <Button primary className='trade-button' onClick={() => onAction()} is_disabled={is_buttons_disabled}>
                 {localize('Trade')}
             </Button>
         );

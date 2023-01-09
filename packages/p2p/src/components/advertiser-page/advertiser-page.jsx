@@ -24,7 +24,7 @@ import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();
-    const { showModal } = useModalManagerContext();
+    const { showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -49,7 +49,6 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
-    const { showModal, useRegisterModalProps } = useModalManagerContext();
 
     React.useEffect(() => {
         advertiser_page_store.onMount();

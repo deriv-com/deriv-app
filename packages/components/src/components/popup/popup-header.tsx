@@ -55,7 +55,7 @@ const PopupHeader = () => {
                                     className='dc-popup__header-button'
                                     icon={<Icon icon='IcPlay' size={10} color='active' />}
                                     onClick={onHeaderButtonClick}
-                                    text={isDesktop() && header_button_text}
+                                    text={isDesktop() ? header_button_text : ''}
                                 />
                             )}
                         </div>

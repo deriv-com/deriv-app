@@ -101,7 +101,7 @@ const OptionsAndMultipliersListing = () => {
                         {...available_platform}
                         type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
-                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 1, 3)}
+                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))
             ) : (

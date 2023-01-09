@@ -44,6 +44,7 @@ const CFDsListing = () => {
         is_demo_low_risk,
         no_MF_account,
         toggleAccountTransferModal,
+        is_demo,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -117,7 +118,7 @@ const CFDsListing = () => {
                                 key={existing_account.key}
                                 type={existing_account.type}
                                 availability={selected_region}
-                                has_divider={!is_eu_user && getHasDivider(index, list_size, 1, 3)}
+                                has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 1, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.type === 'get') {
                                         if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {

@@ -38,36 +38,43 @@ const TradingAppCard = ({
             <div>
                 <TradigPlatformIconProps icon={icon} size={48} />
             </div>
-            <div className={classNames('trading-app-card__details', { 'trading-app-card--divider': has_divider })}>
-                <div>
-                    <Text className='title' size='xs' line_height='s'>
-                        {sub_title}
-                    </Text>
-                    {short_code_and_region && (
-                        <Text
-                            weight='bolder'
-                            size='xxxs'
-                            line_height='s'
-                            className='trading-app-card__details__short-code'
-                        >
-                            {short_code_and_region}
+            <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
+                <div className='trading-app-card__details'>
+                    <div>
+                        <Text className='title' size='xs' line_height='s'>
+                            {sub_title}
                         </Text>
-                    )}
+                        {short_code_and_region && (
+                            <Text
+                                weight='bolder'
+                                size='xxxs'
+                                line_height='s'
+                                className='trading-app-card__details__short-code'
+                            >
+                                {short_code_and_region}
+                            </Text>
+                        )}
+                    </div>
+                    <Text className='title' size='xs' line_height='s' weight='bold'>
+                        {name}
+                    </Text>
+                    <Text
+                        className='description'
+                        color={is_deriv_platform ? 'less-prominent' : 'general'}
+                        size='xxs'
+                        line_height='m'
+                    >
+                        {app_desc}
+                    </Text>
                 </div>
-                <Text className='title' size='xs' line_height='s' weight='bold'>
-                    {name}
-                </Text>
-                <Text
-                    className='description'
-                    color={is_deriv_platform ? 'less-prominent' : 'general'}
-                    size='xxs'
-                    line_height='m'
-                >
-                    {app_desc}
-                </Text>
-            </div>
-            <div className={classNames('trading-app-card__actions', { 'trading-app-card--divider': has_divider })}>
-                <TradingAppCardActions type={type} link_to={link_to} onAction={onAction} is_external={is_external} />
+                <div className='trading-app-card__actions'>
+                    <TradingAppCardActions
+                        type={type}
+                        link_to={link_to}
+                        onAction={onAction}
+                        is_external={is_external}
+                    />
+                </div>
             </div>
         </div>
     );

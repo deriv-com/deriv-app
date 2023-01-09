@@ -14,13 +14,15 @@ export const getHasDivider = (
     list_size: number,
     offset: number,
     available_grid_columns: number
-) =>
-    isMobile()
-        ? current_item_index <
-          list_size -
-              ((list_size + offset) % available_grid_columns === 0
-                  ? offset
-                  : (list_size + offset) % available_grid_columns)
-        : current_item_index <
-          list_size -
-              (list_size % available_grid_columns === 0 ? available_grid_columns : list_size % available_grid_columns);
+) => {
+    if (list_size < available_grid_columns) {
+        return false;
+    } else if (isMobile()) {
+        return current_item_index < list_size - 1;
+    }
+    return (
+        current_item_index <
+        list_size -
+            (list_size % available_grid_columns === 0 ? available_grid_columns : list_size % available_grid_columns)
+    );
+};

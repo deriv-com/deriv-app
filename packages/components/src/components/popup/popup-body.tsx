@@ -1,5 +1,5 @@
 import React from 'react';
-import PopupFooter from './popup-footer.jsx';
+import PopupFooter from './popup-footer';
 import PopupContext, { TDetail } from './popup-context';
 import Tabs from '../tabs';
 

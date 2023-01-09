@@ -5,12 +5,6 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<RecentTransaction />', () => {
     let history, mockRootStore;
     beforeEach(() => {

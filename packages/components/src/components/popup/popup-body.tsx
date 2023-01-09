@@ -1,6 +1,6 @@
 import React from 'react';
-import PopupFooter from './popup-footer.jsx';
-import PopupContext from './popup-context';
+import PopupFooter from './popup-footer';
+import PopupContext, { TDetail } from './popup-context';
 import Tabs from '../tabs';
 
 const PopupBody = () => {
@@ -31,14 +31,14 @@ const PopupBody = () => {
             icon_size={30}
             top
         >
-            {tabs_detail.map(detail => {
-                const { id, icon, has_footer_separator, renderBody, renderFooter, title } = detail;
+            {tabs_detail.map((detail: TDetail) => {
+                const { id, has_footer_separator, renderBody, renderFooter } = detail;
 
                 const BodyComponent = typeof renderBody === 'function' ? renderBody : null;
                 const FooterComponent = typeof renderFooter === 'function' ? renderFooter : null;
 
                 return (
-                    <div key={id} label={title} icon={icon}>
+                    <div key={id}>
                         {BodyComponent && (
                             <BodyComponent overlay_ref={overlay_ref} setIsOverlayShown={setIsOverlayShown} />
                         )}

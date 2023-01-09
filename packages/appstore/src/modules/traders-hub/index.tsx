@@ -14,7 +14,7 @@ import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
-    const { is_eu, is_landing_company_loaded } = client;
+    const { is_eu, is_landing_company_loaded, is_logged_in } = client;
     const { selected_platform_type, setTogglePlatformType } = traders_hub;
 
     const platform_toggle_options = [
@@ -30,7 +30,7 @@ const TradersHub = () => {
     }) => {
         setTogglePlatformType(event.target.value);
     };
-
+    if (!is_logged_in) return null;
     return (
         <>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>

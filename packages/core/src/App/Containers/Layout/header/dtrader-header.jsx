@@ -100,114 +100,114 @@ const DTraderHeader = ({
         });
 
     return (
-        is_logged_in && (
-            <header
-                className={classNames('header', {
-                    'header--is-disabled': is_app_disabled || is_route_modal_on,
-                    'header--is-hidden': platforms[platform],
-                })}
-            >
-                <div className='header__menu-items'>
-                    <div className='header__menu-left'>
-                        <DesktopWrapper>
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                is_pre_appstore={is_pre_appstore}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <ToggleMenuDrawer
-                                changeCurrentLanguage={changeCurrentLanguage}
-                                ref={toggle_menu_drawer_ref}
-                                should_allow_authentication={should_allow_authentication}
-                                account_status={account_status}
-                                enableApp={enableApp}
-                                disableApp={disableApp}
-                                location={location}
-                                logoutClient={logoutClient}
-                                is_dark_mode={is_dark_mode}
-                                is_logged_in={is_logged_in}
-                                is_p2p_enabled={is_p2p_enabled}
-                                is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                                is_onramp_tab_visible={is_onramp_tab_visible}
-                                is_payment_agent_visible={is_payment_agent_visible}
-                                is_account_transfer_visible={is_account_transfer_visible}
-                                is_virtual={is_virtual}
-                                is_pre_appstore={is_pre_appstore}
-                                toggleTheme={setDarkMode}
-                                platform_header={getPlatformInformation(app_routing_history).header}
-                                platform_switcher={
-                                    <PlatformSwitcher
-                                        app_routing_history={app_routing_history}
-                                        is_mobile
-                                        platform_config={filterPlatformsForClients(platform_config)}
-                                        toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
-                                        is_pre_appstore={is_pre_appstore}
-                                    />
-                                }
-                                is_social_signup={is_social_signup}
-                                setIsPreAppStore={setIsPreAppStore}
-                            />
-                            {header_extension && <div className='header__menu-left-extensions'>{header_extension}</div>}
-                        </MobileWrapper>
-                        <DesktopWrapper>
-                            <TradersHubHomeButton />
-                        </DesktopWrapper>
-                        {menu_items && replaceCashierMenuOnclick()}
-                        <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
-                    </div>
-
-                    <div
-                        className={classNames('header__menu-right', {
-                            'header__menu-right--hidden': isMobile() && is_logging_in,
-                        })}
-                    >
-                        <DesktopWrapper>
-                            <div className='header__menu--dtrader--separator--account'>
-                                <Divider />
-                            </div>
-                        </DesktopWrapper>
-                        {is_logging_in && (
-                            <div
-                                id='dt_core_header_acc-info-preloader'
-                                className={classNames('acc-info__preloader__dtrader', {
-                                    'acc-info__preloader__dtrader--no-currency': !currency,
-                                    'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
-                                })}
-                            >
-                                <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
-                            </div>
+        <header
+            className={classNames('header', {
+                'header--is-disabled': is_app_disabled || is_route_modal_on,
+                'header--is-hidden': platforms[platform],
+            })}
+        >
+            <div className='header__menu-items'>
+                <div className='header__menu-left'>
+                    <DesktopWrapper>
+                        <PlatformSwitcher
+                            app_routing_history={app_routing_history}
+                            platform_config={filterPlatformsForClients(platform_config)}
+                            is_pre_appstore={is_pre_appstore}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <ToggleMenuDrawer
+                            changeCurrentLanguage={changeCurrentLanguage}
+                            ref={toggle_menu_drawer_ref}
+                            should_allow_authentication={should_allow_authentication}
+                            account_status={account_status}
+                            enableApp={enableApp}
+                            disableApp={disableApp}
+                            location={location}
+                            logoutClient={logoutClient}
+                            is_dark_mode={is_dark_mode}
+                            is_logged_in={is_logged_in}
+                            is_p2p_enabled={is_p2p_enabled}
+                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                            is_onramp_tab_visible={is_onramp_tab_visible}
+                            is_payment_agent_visible={is_payment_agent_visible}
+                            is_account_transfer_visible={is_account_transfer_visible}
+                            is_virtual={is_virtual}
+                            is_pre_appstore={is_pre_appstore}
+                            toggleTheme={setDarkMode}
+                            platform_header={getPlatformInformation(app_routing_history).header}
+                            platform_switcher={
+                                <PlatformSwitcher
+                                    app_routing_history={app_routing_history}
+                                    is_mobile
+                                    platform_config={filterPlatformsForClients(platform_config)}
+                                    toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                    is_pre_appstore={is_pre_appstore}
+                                />
+                            }
+                            is_social_signup={is_social_signup}
+                            setIsPreAppStore={setIsPreAppStore}
+                        />
+                        {header_extension && is_logged_in && (
+                            <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
-                        <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
-                            <AccountActions
-                                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
-                                balance={balance}
-                                currency={currency}
-                                country_standpoint={country_standpoint}
-                                disableApp={disableApp}
-                                enableApp={enableApp}
-                                is_acc_switcher_on={is_acc_switcher_on}
-                                is_acc_switcher_disabled={is_acc_switcher_disabled}
-                                is_eu={is_eu}
-                                is_notifications_visible={is_notifications_visible}
-                                is_logged_in={is_logged_in}
-                                is_virtual={is_virtual}
-                                onClickDeposit={onClickDeposit}
-                                notifications_count={notifications_count}
-                                toggleAccountsDialog={toggleAccountsDialog}
-                                toggleNotifications={toggleNotifications}
-                                openRealAccountSignup={openRealAccountSignup}
-                            />
+                    </MobileWrapper>
+                    <DesktopWrapper>
+                        <TradersHubHomeButton />
+                    </DesktopWrapper>
+                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
+                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                </div>
+
+                <div
+                    className={classNames('header__menu-right', {
+                        'header__menu-right--hidden': isMobile() && is_logging_in,
+                    })}
+                >
+                    <DesktopWrapper>
+                        <div className='header__menu--dtrader--separator--account'>
+                            <Divider />
                         </div>
+                    </DesktopWrapper>
+                    {is_logging_in && (
+                        <div
+                            id='dt_core_header_acc-info-preloader'
+                            className={classNames('acc-info__preloader__dtrader', {
+                                'acc-info__preloader__dtrader--no-currency': !currency,
+                                'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
+                            })}
+                        >
+                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
+                        </div>
+                    )}
+                    <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
+                        <AccountActions
+                            acc_switcher_disabled_message={acc_switcher_disabled_message}
+                            account_type={account_type}
+                            balance={balance}
+                            currency={currency}
+                            country_standpoint={country_standpoint}
+                            disableApp={disableApp}
+                            enableApp={enableApp}
+                            is_acc_switcher_on={is_acc_switcher_on}
+                            is_acc_switcher_disabled={is_acc_switcher_disabled}
+                            is_eu={is_eu}
+                            is_notifications_visible={is_notifications_visible}
+                            is_logged_in={is_logged_in}
+                            is_virtual={is_virtual}
+                            onClickDeposit={onClickDeposit}
+                            notifications_count={notifications_count}
+                            toggleAccountsDialog={toggleAccountsDialog}
+                            toggleNotifications={toggleNotifications}
+                            openRealAccountSignup={openRealAccountSignup}
+                        />
                     </div>
                 </div>
-                <RealAccountSignup />
-                <SetAccountCurrencyModal />
-                <NewVersionNotification onUpdate={addUpdateNotification} />
-            </header>
-        )
+            </div>
+            <RealAccountSignup />
+            <SetAccountCurrencyModal />
+            <NewVersionNotification onUpdate={addUpdateNotification} />
+        </header>
     );
 };
 

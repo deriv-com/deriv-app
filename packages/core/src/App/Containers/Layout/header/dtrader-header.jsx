@@ -149,14 +149,12 @@ const DTraderHeader = ({
                                 is_social_signup={is_social_signup}
                                 setIsPreAppStore={setIsPreAppStore}
                             />
-                            {header_extension && is_logged_in && (
-                                <div className='header__menu-left-extensions'>{header_extension}</div>
-                            )}
+                            {header_extension && <div className='header__menu-left-extensions'>{header_extension}</div>}
                         </MobileWrapper>
                         <DesktopWrapper>
                             <TradersHubHomeButton />
                         </DesktopWrapper>
-                        {menu_items && is_logged_in && replaceCashierMenuOnclick()}
+                        {menu_items && replaceCashierMenuOnclick()}
                         <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
                     </div>
 

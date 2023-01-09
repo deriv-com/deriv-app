@@ -96,8 +96,9 @@ const Sidebar = ({
                             value={selected_tab.label}
                             label={''}
                             should_show_empty_option={false}
-                            onChange={({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-                                setActiveTabTutorial(menu_items.findIndex(i => i.label === value));
+                            onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => {
+                                const active_tab = menu_items.findIndex(i => i.label === target.value);
+                                setActiveTabTutorial(active_tab);
                             }}
                         />
                     </div>

@@ -54,10 +54,6 @@ const config: PlaywrightTestConfig = {
             name: 'chromium',
             use: {
                 ignoreHTTPSErrors: true,
-                httpCredentials: {
-                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
-                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
-                },
                 ...devices['Desktop Chrome'],
             },
         },
@@ -66,10 +62,6 @@ const config: PlaywrightTestConfig = {
             name: 'firefox',
             use: {
                 ignoreHTTPSErrors: true,
-                httpCredentials: {
-                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
-                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
-                },
                 ...devices['Desktop Firefox'],
             },
         },
@@ -78,10 +70,6 @@ const config: PlaywrightTestConfig = {
             name: 'webkit',
             use: {
                 ignoreHTTPSErrors: true,
-                httpCredentials: {
-                    username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
-                    password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
-                },
                 ...devices['Desktop Safari'],
             },
         },

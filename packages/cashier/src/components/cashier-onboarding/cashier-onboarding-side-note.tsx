@@ -5,14 +5,6 @@ import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shar
 import { useStore, observer } from '@deriv/stores';
 import './cashier-onboarding.scss';
 
-declare global {
-    interface Window {
-        LC_API: {
-            open_chat_window: VoidFunction;
-        };
-    }
-}
-
 type TCashierOnboardingSideNoteProps = {
     is_crypto?: boolean;
 };

@@ -3,7 +3,6 @@
     "compilerOptions": {
         "paths": {
             "_common/*": ["./src/_common/*"],
-            "Assets/*": ["./src/Assets/*"],
             "Constants/*": ["./src/Constants/*"],
             "Components/*": ["./src/Components/*"],
             "Containers/*": ["./src/Containers/*"],

@@ -979,7 +979,11 @@ export default class ClientStore extends BaseStore {
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
         );
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
-            .filter(account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type)
+            .filter(
+                account =>
+                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    account.shortcode !== 'maltainvest'
+            )
             .map(account => account.shortcode);
 
         return !!available_real_accounts_shortcodes.filter(shortcode =>

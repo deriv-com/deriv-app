@@ -110,7 +110,6 @@ const AdvertiserPage = () => {
             })}
         >
             <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
-            />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}
                 should_show_popup={advertiser_page_store.show_ad_popup}

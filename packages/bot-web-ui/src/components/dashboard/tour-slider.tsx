@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile, tour_type, setTourSettings } from './joyride-config';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
@@ -139,6 +139,12 @@ const TourSlider = ({
         });
     }, [step]);
     const content_data = BOT_BUILDER_MOBILE.find(({ key }) => key === step);
+
+    const onClickNext = React.useCallback(() => {
+        onChange('inc');
+        onTourEnd(step, has_started_onboarding_tour);
+    }, [step]);
+
     return (
         <>
             <div
@@ -191,29 +197,12 @@ const TourSlider = ({
                     </div>
                     <div className='dbot-slider__button-group'>
                         {has_started_onboarding_tour && step === 1 && (
-                            <TourButton
-                                onClick={() => {
-                                    onChange('skip');
-                                }}
-                                label={localize('Skip')}
-                            />
+                            <TourButton onClick={onChange('skip')} label={localize('Skip')} />
                         )}
                         {has_started_bot_builder_tour && step !== 1 && (
-                            <TourButton
-                                onClick={() => {
-                                    onChange('dec');
-                                }}
-                                label={localize('Previous')}
-                            />
+                            <TourButton onClick={onChange('dec')} label={localize('Previous')} />
                         )}
-                        <TourButton
-                            type='danger'
-                            onClick={() => {
-                                onChange('inc');
-                                onTourEnd(step, has_started_onboarding_tour);
-                            }}
-                            label={localize('Next')}
-                        />
+                        <TourButton type='danger' onClick={onClickNext()} label={localize('Next')} />
                     </div>
                 </div>
             </div>

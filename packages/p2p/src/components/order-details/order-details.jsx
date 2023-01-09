@@ -18,7 +18,6 @@ import PaymentMethodAccordionContent from './payment-method-accordion-content.js
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import 'Components/order-details/order-details.scss';
-import LoadingModal from '../loading-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -171,7 +170,6 @@ const OrderDetails = observer(() => {
                         is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
                         setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
                     />
-                    <LoadingModal is_loading_modal_open={order_store.is_loading_modal_open} />
                 </React.Fragment>
             )}
             <div className='order-details'>

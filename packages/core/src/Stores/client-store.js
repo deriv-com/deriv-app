@@ -403,6 +403,18 @@ export default class ClientStore extends BaseStore {
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
             }
         );
+        // TODO: Remove this after setting trading_hub enabled for all users
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
+                    window.location.href = routes.root;
+                } else if (this.is_pre_appstore && window.location.pathname === routes.root) {
+                    window.location.href = routes.traders_hub;
+                }
+            }
+        );
 
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,

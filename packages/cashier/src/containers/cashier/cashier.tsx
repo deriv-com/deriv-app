@@ -44,6 +44,7 @@ type TCashierProps = RouteComponentProps & {
     routeBackInApp: TCommonStore['routeBackInApp'];
     toggleCashier: TUiStore['toggleCashier'];
     resetLastLocation: () => void;
+    is_pre_appstore: boolean;
 };
 
 type TCashierOptions = {
@@ -82,6 +83,7 @@ const Cashier = ({
     setTabIndex,
     tab_index,
     toggleCashier,
+    is_pre_appstore,
 }: TCashierProps) => {
     React.useEffect(() => {
         toggleCashier();
@@ -103,7 +105,7 @@ const Cashier = ({
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    const onClickClose = () => routeBackInApp(history);
+    const onClickClose = () => (is_pre_appstore ? history.push(routes.traders_hub) : routeBackInApp(history));
     const getMenuOptions = () => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {
@@ -238,4 +240,5 @@ export default connect(({ client, common, modules, ui }: TRootStore) => ({
     setTabIndex: modules.cashier.general_store.setCashierTabIndex,
     tab_index: modules.cashier.general_store.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(Cashier));

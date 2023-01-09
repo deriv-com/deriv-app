@@ -1,14 +1,22 @@
 .trading-app-card {
     display: inline-flex;
     align-items: center;
-    height: 8.8rem;
+    height: max-content;
+
+    &__container {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        padding: 0 0 1rem;
+        margin-left: 1.6rem;
+    }
 
     &__details {
         display: flex;
         justify-content: center;
         flex-direction: column;
         height: 100%;
-        margin-left: 1.6rem;
         padding: 0 2rem 0 0;
         width: 100%;
         &__short-code {
@@ -34,5 +42,10 @@
 
     &--divider {
         border-bottom: 1px solid var(--general-hover);
+    }
+
+    &__acc_status_badge {
+        max-width: fit-content;
+        margin-top: 1rem;
     }
 }

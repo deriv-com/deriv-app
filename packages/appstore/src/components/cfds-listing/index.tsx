@@ -44,6 +44,7 @@ const CFDsListing = () => {
         is_demo_low_risk,
         no_MF_account,
         toggleAccountTransferModal,
+        is_demo,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -53,6 +54,15 @@ const CFDsListing = () => {
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+
+    const getMT5AccountAuthStatus = (current_acc_status: string) => {
+        if (current_acc_status === 'proof_failed') {
+            return 'failed';
+        } else if (current_acc_status === 'verification_pending') {
+            return 'pending';
+        }
+        return null;
+    };
 
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
     return (
@@ -106,6 +116,8 @@ const CFDsListing = () => {
                 <>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
+                        existing_account.status = 'proof_failed';
+
                         return (
                             <TradingAppCard
                                 icon={existing_account.icon}
@@ -117,7 +129,7 @@ const CFDsListing = () => {
                                 key={existing_account.key}
                                 type={existing_account.type}
                                 availability={selected_region}
-                                has_divider={!is_eu_user && getHasDivider(index, list_size, 1, 3)}
+                                has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.type === 'get') {
                                         if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
@@ -138,6 +150,9 @@ const CFDsListing = () => {
                                         }
                                     }
                                 }}
+                                mt5_acc_auth_status={
+                                    existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : null
+                                }
                             />
                         );
                     })}

@@ -52,6 +52,7 @@ const CurrentSwitcherContainer = ({
                 </div>
                 {children}
             </div>
+
             {actions}
             {(has_interaction || is_eu_user) && (
                 <div className='currency-switcher-container__arrow'>

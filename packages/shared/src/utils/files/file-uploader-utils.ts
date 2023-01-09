@@ -118,6 +118,7 @@ export const DOCUMENT_TYPE = {
     proofid: 'proofid',
     driverslicense: 'driverslicense',
     proofaddress: 'proofaddress',
+    proof_of_ownership: 'proof_of_ownership',
     other: 'other',
 };
 

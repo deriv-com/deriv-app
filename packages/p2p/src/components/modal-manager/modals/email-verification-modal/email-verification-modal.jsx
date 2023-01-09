@@ -1,27 +1,29 @@
+/* eslint-disable no-empty-pattern */
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const EmailVerificationModal = ({
-    email_address,
-    is_email_verification_modal_open,
-    onClickResendEmailButton,
-    setIsEmailVerificationModalOpen,
-    should_show_resend_email_button = true,
-    // TODO: Uncomment when time is available in BE response
-    // remaining_time,
-    // verification_link_expiry_time,
-}) => {
+const EmailVerificationModal = (
+    {
+        // TODO: Uncomment when time is available in BE response
+        //remaining_time,
+        //verification_link_expiry_time,
+    }
+) => {
+    const { order_store } = useStores();
+    const { hideModal, is_modal_open } = useModalManagerContext();
     const [should_show_reasons_if_no_email, setShouldShowReasonsIfNoEmail] = React.useState(false);
+    const { confirmOrderRequest, order_information, user_email_address } = order_store;
 
     return (
         <Modal
             className='email-verification-modal'
             has_close_icon
-            is_open={is_email_verification_modal_open}
+            is_open={is_modal_open}
             renderTitle={() => <></>}
-            toggleModal={() => setIsEmailVerificationModalOpen(false)}
+            toggleModal={hideModal}
             width='440px'
         >
             <Modal.Body className='email-verification-modal--body'>
@@ -34,9 +36,9 @@ const EmailVerificationModal = ({
                     weight='bold'
                 >
                     <Localize
-                        i18n_default_text="We've sent you an email at {{email_address}}.<0 />Please click the verification link in the email to verify your order."
+                        i18n_default_text="We've sent you an email at {{user_email_address}}.<0 />Please click the verification link in the email to verify your order."
                         components={[<br key={0} />]}
-                        values={{ email_address }}
+                        values={{ user_email_address }}
                     />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
@@ -81,13 +83,13 @@ const EmailVerificationModal = ({
                     </React.Fragment>
                 )}
             </Modal.Body>
-            {should_show_resend_email_button && should_show_reasons_if_no_email && (
+            {should_show_reasons_if_no_email && (
                 <Modal.Footer className='email-verification-modal--footer'>
                     <Button
                         large
                         primary
                         onClick={() => {
-                            onClickResendEmailButton();
+                            confirmOrderRequest(order_information.id);
                             setShouldShowReasonsIfNoEmail(false);
                         }}
                     >
@@ -102,14 +104,8 @@ const EmailVerificationModal = ({
 };
 
 EmailVerificationModal.propTypes = {
-    email_address: PropTypes.string,
-    is_email_verification_modal_open: PropTypes.bool,
-    onClickResendEmailButton: PropTypes.func,
     // TODO: Uncomment when time is available in BE response
     // remaining_time: PropTypes.string,
-    setIsEmailVerificationModalOpen: PropTypes.func,
-    should_show_resend_email_button: PropTypes.bool,
-    // TODO: Uncomment when time is available in BE response
     // verification_link_expiry_time: PropTypes.number,
 };
 

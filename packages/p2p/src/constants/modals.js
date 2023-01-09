@@ -24,6 +24,11 @@ export const modals = {
             /* webpackChunkName: "cancel-edit-payment-method-modal" */ 'Components/modal-manager/modals/cancel-edit-payment-method-modal'
         )
     ),
+    CurrencySelectorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
+        )
+    ),
     CreateAdErrorModal: React.lazy(() =>
         import(/* webpackChunkName: "create-ad-error-modal" */ 'Components/modal-manager/modals/create-ad-error-modal')
     ),

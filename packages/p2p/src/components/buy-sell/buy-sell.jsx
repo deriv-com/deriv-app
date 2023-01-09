@@ -9,7 +9,6 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellTable from './buy-sell-table.jsx';
-import { CurrencySelectorModal } from 'Components/buy-sell/currency-selector';
 import './buy-sell.scss';
 
 const BuySell = () => {
@@ -54,7 +53,6 @@ const BuySell = () => {
                 onScroll={onScroll}
             />
             <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
-            <CurrencySelectorModal is_modal_open={buy_sell_store.should_show_currency_selector_modal} />
         </div>
     );
 };

@@ -29,8 +29,8 @@ const Popup = ({
     togglePopupModal,
 }: TPopupContext) => {
     const [overlay_ref, setOverlayRef] = React.useState<HTMLDivElement | null>();
-    const [is_overlay_shown, setIsOverlayShown] = React.useState<boolean>(false);
-    const context_value: TPopupContext = {
+    const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
+    const context_value = {
         Component,
         active_tab_icon_color,
         balance,

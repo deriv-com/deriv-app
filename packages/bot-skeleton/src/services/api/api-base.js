@@ -10,6 +10,7 @@ class APIBase {
     is_running = false;
     subscriptions = [];
     time_interval = null;
+    is_multiplier = false;
 
     init(force_update = false) {
         if (getLoginId()) {
@@ -109,6 +110,12 @@ class APIBase {
     clearSubscriptions() {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions = [];
+        if (this.is_multiplier) {
+            this.init(true);
+            setTimeout(() => {
+                this.toggleRunButton(true);
+            }, 100);
+        }
     }
 
     getTime() {
@@ -117,6 +124,10 @@ class APIBase {
                 this.api.send({ time: 1 });
             }, 30000);
         }
+    }
+
+    setIsMultiplier(is_multiplier) {
+        this.is_multiplier = is_multiplier;
     }
 }
 

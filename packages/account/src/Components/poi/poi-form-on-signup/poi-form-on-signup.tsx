@@ -25,8 +25,7 @@ export const ProofOfIdentityFormOnSignup = ({
     residence_list,
     citizen,
 }: TProofOfIdentityFormOnSignup) => {
-    const citizen_data: FormikValues =
-        residence_list.find((residence: FormikValues) => residence.value === citizen) || {};
+    const citizen_data = residence_list.find((residence: FormikValues) => residence.value === citizen) || {};
 
     const handleSubmit = (values: FormikValues, actions: FormikValues) => {
         onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);

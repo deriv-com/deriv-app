@@ -60,6 +60,10 @@ const Sidebar = ({
         },
     ];
     const selected_tab = menu_items?.[active_tab_tutorials] || {};
+
+    const onChangeHandle = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
+        setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
+
     return (
         <>
             <DesktopWrapper>
@@ -96,10 +100,7 @@ const Sidebar = ({
                             value={selected_tab.label}
                             label={''}
                             should_show_empty_option={false}
-                            onChange={({ target }: React.ChangeEvent<HTMLInputElement>) => {
-                                const active_tab = menu_items.findIndex(i => i.label === target.value);
-                                setActiveTabTutorial(active_tab);
-                            }}
+                            onChange={onChangeHandle}
                         />
                     </div>
                     <div className={classNames({ 'tutorials-mobile__guide': active_tab_tutorials === 0 })}>

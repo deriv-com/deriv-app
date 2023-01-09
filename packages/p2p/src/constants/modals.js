@@ -50,6 +50,9 @@ export const modals = {
             /* webpackChunkName: "email-verification-modal" */ 'Components/modal-manager/modals/email-verification-modal'
         )
     ),
+    ErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "error-modal" */ 'Components/modal-manager/modals/error-modal')
+    ),
     FilterModal: React.lazy(() =>
         import(/* webpackChunkName: "filter-modal" */ 'Components/modal-manager/modals/filter-modal')
     ),

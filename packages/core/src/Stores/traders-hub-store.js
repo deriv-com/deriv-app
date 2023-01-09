@@ -23,14 +23,12 @@ export default class TradersHubStore extends BaseStore {
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
-    prev_selected_loginid = '';
     selected_platform_type = 'options';
     active_index = 0;
-    vrtc_loginid;
-    total_platform_demo_balance = { currency: 'USD', balance: 0 };
-    total_platform_real_balance = { currency: 'USD', balance: 0 };
-    total_cfd_demo_balance = { currency: 'USD', balance: 0 };
-    total_cfd_real_balance = { currency: 'USD', balance: 0 };
+    platform_demo_balance = { currency: 'USD', balance: 0 };
+    platform_real_balance = { currency: 'USD', balance: 0 };
+    cfd_demo_balance = { currency: 'USD', balance: 0 };
+    cfd_real_balance = { currency: 'USD', balance: 0 };
     cfd_accounts;
     modal_data = {
         active_modal: '',
@@ -46,18 +44,21 @@ export default class TradersHubStore extends BaseStore {
             available_cfd_accounts: observable,
             available_dxtrade_accounts: observable,
             available_mt5_accounts: observable,
-            combined_cfd_mt5_accounts: observable,
             available_platforms: observable,
-            is_regulators_compare_modal_visible: observable,
+            cfd_demo_balance: observable,
+            cfd_real_balance: observable,
+            combined_cfd_mt5_accounts: observable,
+            is_account_transfer_modal_open: observable,
+            is_account_type_modal_visible: observable,
             is_exit_traders_hub_modal_visible: observable,
+            is_regulators_compare_modal_visible: observable,
             is_tour_open: observable,
             modal_data: observable,
-            prev_selected_loginid: observable,
+            platform_demo_balance: observable,
+            platform_real_balance: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
-            is_account_type_modal_visible: observable,
-            is_account_transfer_modal_open: observable,
             closeModal: action.bound,
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
@@ -96,23 +97,7 @@ export default class TradersHubStore extends BaseStore {
             () => [
                 this.selected_account_type,
                 this.selected_region,
-                this.root_store.client.is_eu,
                 this.root_store.client.is_switching,
-                this.root_store.client.account_list,
-                this.root_store.client.upgradeable_landing_companies,
-            ],
-            () => {
-                this.getDemoLoginId();
-                this.getPlatformDemoBalance();
-                this.getCFDBalance('demo');
-            }
-        );
-
-        reaction(
-            () => [
-                this.selected_account_type,
-                this.selected_region,
-                this.root_store.client.is_eu,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
@@ -140,15 +125,27 @@ export default class TradersHubStore extends BaseStore {
                 const active_real_mf = /^MF/.test(this.root_store.client.loginid);
 
                 const default_region = () => {
-                    if ((active_demo || active_real_mf) && isEuCountry(residence)) {
-                        return 'EU';
-                    } else if (active_real_mf) {
+                    if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
                         return 'EU';
                     }
                     return 'Non-EU';
                 };
                 this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
                 this.selected_region = default_region();
+            }
+        );
+
+        reaction(
+            () => [
+                this.root_store.client.account,
+                this.root_store.client.obj_total_balance,
+                this.selected_account_type,
+                this.selected_region,
+                this.root_store.client.mt5_login_list,
+                this.root_store.client.dxtrade_accounts_list,
+            ],
+            () => {
+                this.updatePlatformBalance();
             }
         );
     }
@@ -462,52 +459,6 @@ export default class TradersHubStore extends BaseStore {
         this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
-    async getDemoLoginId() {
-        const { account_list } = this.root_store.client;
-        if (account_list || account_list.length) {
-            this.vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid;
-        }
-    }
-
-    getPlatformDemoBalance() {
-        const { accounts } = this.root_store.client;
-        if (accounts && this.vrtc_loginid in accounts && this.vrtc_loginid) {
-            const { balance, currency } = accounts[this.vrtc_loginid];
-            this.total_platform_demo_balance = {
-                currency,
-                balance,
-            };
-        }
-    }
-
-    getCFDBalance(account_type) {
-        const { mt5_login_list } = this.root_store.client;
-        const demo_mt5_accounts = mt5_login_list.filter(mt5_account => mt5_account.account_type === account_type);
-        if (demo_mt5_accounts.length > 0) {
-            const { currency } = demo_mt5_accounts[0];
-            const balance = this.getTotalBalance(demo_mt5_accounts);
-            this.total_cfd_demo_balance = { currency, balance };
-        }
-    }
-
-    getTotalBalance(accounts, base_currency) {
-        const { getExchangeRate } = this.root_store.common;
-        const total_balance = accounts.reduce(
-            async (total, account) => {
-                const { balance, currency } = account;
-
-                let exchange_rate = 1;
-                if (currency !== base_currency) {
-                    exchange_rate = await getExchangeRate(currency, base_currency);
-                }
-
-                total.balance += balance * exchange_rate || 0;
-                return total;
-            },
-            { balance: 0 }
-        );
-        return total_balance.balance;
-    }
     get can_get_more_cfd_mt5_accounts() {
         const {
             client: { isEligibleForMoreRealMt5 },
@@ -520,6 +471,7 @@ export default class TradersHubStore extends BaseStore {
             (isEligibleForMoreRealMt5('synthetic') || isEligibleForMoreRealMt5('financial'))
         );
     }
+
     getServerName = account => {
         if (account) {
             const server_region = account.server_info?.geolocation?.region;
@@ -594,7 +546,64 @@ export default class TradersHubStore extends BaseStore {
             }
         });
     }
+
     toggleAccountTransferModal() {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
+    }
+
+    async updatePlatformBalance() {
+        const { accounts, dxtrade_accounts_list, mt5_login_list } = this.root_store.client;
+
+        const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
+        const platform_demo_account = account_list.find(account => account.is_virtual);
+        if (platform_demo_account) {
+            const { balance, currency } = platform_demo_account;
+            this.platform_demo_balance = { balance, currency };
+        }
+
+        const platform_real_accounts = account_list.filter(account => !account.is_virtual);
+        if (platform_real_accounts?.length) {
+            this.platform_real_balance = await this.getTotalBalance(
+                platform_real_accounts,
+                platform_real_accounts[0].currency
+            );
+        }
+
+        let cfd_accounts = [];
+        if (Array.isArray(mt5_login_list)) {
+            cfd_accounts = [...cfd_accounts, ...mt5_login_list];
+        }
+        if (Array.isArray(dxtrade_accounts_list)) {
+            cfd_accounts = [...cfd_accounts, ...dxtrade_accounts_list];
+        }
+
+        const cfd_real_accounts = cfd_accounts.filter(account => account.account_type === 'real');
+        if (cfd_real_accounts?.length) {
+            this.cfd_real_balance = await this.getTotalBalance(cfd_real_accounts, cfd_real_accounts[0]?.currency);
+        }
+
+        const cfd_demo_accounts = cfd_accounts.filter(account => account.account_type === 'demo');
+        if (cfd_demo_accounts?.length) {
+            this.cfd_demo_balance = await this.getTotalBalance(cfd_demo_accounts, cfd_demo_accounts[0]?.currency);
+        }
+    }
+
+    async getTotalBalance(accounts, base_currency) {
+        const { getExchangeRate } = this.root_store.common;
+        const total_balance = await accounts.reduce(
+            async (total, account) => {
+                const { balance, currency } = account;
+
+                let exchange_rate = 1;
+                if (currency !== base_currency) {
+                    exchange_rate = await getExchangeRate(currency, base_currency);
+                }
+
+                total.balance += balance * exchange_rate || 0;
+                return total;
+            },
+            { balance: 0 }
+        );
+        return { balance: total_balance.balance, currency: base_currency };
     }
 }

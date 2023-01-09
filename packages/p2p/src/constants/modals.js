@@ -27,6 +27,11 @@ export const modals = {
             /* webpackChunkName: "cancel-edit-payment-method-modal" */ 'Components/modal-manager/modals/cancel-edit-payment-method-modal'
         )
     ),
+    CurrencySelectorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
+        )
+    ),
     CreateAdErrorModal: React.lazy(() =>
         import(/* webpackChunkName: "create-ad-error-modal" */ 'Components/modal-manager/modals/create-ad-error-modal')
     ),
@@ -53,8 +58,16 @@ export const modals = {
             /* webpackChunkName: "email-verification-modal" */ 'Components/modal-manager/modals/email-verification-modal'
         )
     ),
+    ErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "error-modal" */ 'Components/modal-manager/modals/error-modal')
+    ),
     FilterModal: React.lazy(() =>
         import(/* webpackChunkName: "filter-modal" */ 'Components/modal-manager/modals/filter-modal')
+    ),
+    InvalidVerificationLinkModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
+        )
     ),
     MyAdsDeleteModal: React.lazy(() =>
         import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')

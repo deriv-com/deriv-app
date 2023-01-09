@@ -17,7 +17,6 @@ import StarRating from 'Components/star-rating';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
-import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -25,6 +24,7 @@ import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -49,7 +49,6 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
-    const [is_error_modal_open, setIsErrorModalOpen] = React.useState(false);
     const { showModal, useRegisterModalProps } = useModalManagerContext();
 
     React.useEffect(() => {
@@ -60,7 +59,21 @@ const AdvertiserPage = () => {
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error) setIsErrorModalOpen(true);
+                if (general_store.block_unblock_user_error)
+                    showModal({
+                        key: 'ErrorModal',
+                        props: {
+                            error_message: general_store.block_unblock_user_error,
+                            error_modal_title: 'Unable to block advertiser',
+                            has_close_icon: false,
+                            setIsErrorModalOpen: is_open => {
+                                if (!is_open) buy_sell_store.hideAdvertiserPage();
+                                advertiser_page_store.onCancel();
+                                general_store.setBlockUnblockUserError('');
+                            },
+                            width: isMobile() ? '90rem' : '40rem',
+                        },
+                    });
             },
             { fireImmediately: true }
         );
@@ -98,17 +111,6 @@ const AdvertiserPage = () => {
             })}
         >
             <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
-            <ErrorModal
-                error_message={general_store.block_unblock_user_error}
-                error_modal_title='Unable to block advertiser'
-                has_close_icon={false}
-                is_error_modal_open={is_error_modal_open}
-                setIsErrorModalOpen={is_open => {
-                    if (!is_open) buy_sell_store.hideAdvertiserPage();
-                    advertiser_page_store.onCancel();
-                    general_store.setBlockUnblockUserError('');
-                }}
-                width={isMobile() ? '90rem' : '40rem'}
             />
             <BuySellModal
                 selected_ad={advertiser_page_store.advert}

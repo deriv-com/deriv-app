@@ -31,6 +31,7 @@ It's mandatory to create this file to pass the needed environment variables to t
 | 6   | `APP_URL`                            | App URL which tests should run on. Local machine URL is `localhost.binary.sx`                                                                                                           | String  | \*       |
 | 7   | `QA_EMAIL_INBOX_USER_NAME`           | Username of qabox events page to retrive the signup email and enable the created account (You can find it in the LP under shared-fe folder with the `QA emails login creds` entry name) | String  | \*       |
 | 8   | QA_EMAIL_INBOX_PASSWORD              | Password of qabox events page to retrive the signup email and enable the created account (You can find it in the LP under shared-fe folder with the `QA emails login creds` entry name) | String  | \*       |
+| 9   | ACCOUNT_RESIDENCE                    | Account residence to create account using it                                                                                                                                            | String  | \*       |
 
 ### `onboarding.ts` file
 

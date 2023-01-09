@@ -149,7 +149,7 @@ const CFDsListing = () => {
                                     }
                                 }}
                                 mt5_acc_auth_status={
-                                    existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : ''
+                                    existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : null
                                 }
                             />
                         );

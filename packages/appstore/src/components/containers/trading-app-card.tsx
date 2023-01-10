@@ -13,7 +13,7 @@ import { ContentFlag } from '@deriv/shared';
 const TradingAppCard = ({
     name,
     icon,
-    type,
+    action_type,
     description,
     is_deriv_platform = false,
     onAction,
@@ -25,7 +25,7 @@ const TradingAppCard = ({
     openFailedVerificationModal,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { traders_hub } = useStores();
-    const { is_eu_user, is_demo_low_risk, content_flag } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -38,7 +38,7 @@ const TradingAppCard = ({
 
     return (
         <div className='trading-app-card'>
-            <div>
+            <div className='trading-app-card__icon--container'>
                 <TradigPlatformIconProps icon={icon} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
@@ -80,11 +80,12 @@ const TradingAppCard = ({
                 </div>
                 <div className='trading-app-card__actions'>
                     <TradingAppCardActions
-                        type={type}
+                        action_type={action_type}
                         link_to={link_to}
                         onAction={onAction}
                         is_external={is_external}
                         is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_real={is_real}
                     />
                 </div>
             </div>

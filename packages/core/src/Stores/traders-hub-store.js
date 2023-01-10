@@ -99,6 +99,7 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
+            showTopUpModal: action.bound,
         });
 
         reaction(
@@ -544,7 +545,7 @@ export default class TradersHubStore extends BaseStore {
                             platform: account.platform,
                             description: existing_account.display_login,
                             key: `trading_app_card_${existing_account.display_login}`,
-                            type: 'transfer_trade',
+                            action_type: 'multi-action',
                             availability: this.selected_region,
                             market_type: account.market_type,
                         },
@@ -559,7 +560,7 @@ export default class TradersHubStore extends BaseStore {
                         platform: account.platform,
                         description: account.description,
                         key: `trading_app_card_${account.name}`,
-                        type: 'get',
+                        action_type: 'get',
                         availability: this.selected_region,
                         market_type: account.market_type,
                     },
@@ -645,5 +646,16 @@ export default class TradersHubStore extends BaseStore {
         }
         this.open_failed_verification_for = from_account;
         this.toggleFailedVerificationModalVisibility();
+    }
+
+    showTopUpModal(data) {
+        const { ui, modules } = this.root_store;
+        const { openTopUpModal } = ui;
+        const { setCurrentAccount } = modules.cfd;
+        setCurrentAccount(data, {
+            category: this.selected_account_type,
+            type: data.market_type,
+        });
+        openTopUpModal();
     }
 }

@@ -46,6 +46,8 @@ const CFDsListing = () => {
         toggleAccountTransferModal,
         is_demo,
         openFailedVerificationModal,
+        showTopUpModal,
+        no_CR_account,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -101,12 +103,11 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {(is_real && has_no_real_account) ||
-                (is_eu_user && no_MF_account && is_real && (
-                    <div className='cfd-full-row'>
-                        <AddOptionsAccount />
-                    </div>
-                ))}
+            {is_real && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) && (
+                <div className='cfd-full-row'>
+                    <AddOptionsAccount />
+                </div>
+            )}
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text size='xs' line_height='m' weight='bold'>
@@ -128,11 +129,11 @@ const CFDsListing = () => {
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                type={existing_account.type}
+                                action_type={existing_account.action_type}
                                 availability={selected_region}
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    if (existing_account.type === 'get') {
+                                    if (existing_account.action_type === 'get') {
                                         if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
@@ -143,9 +144,12 @@ const CFDsListing = () => {
                                             setAppstorePlatform(existing_account.platform);
                                             getAccount();
                                         }
-                                    } else if (existing_account.type === 'transfer_trade') {
-                                        if (e?.currentTarget?.name === 'transfer-btn') {
+                                    } else if (existing_account.action_type === 'multi-action') {
+                                        const button_name = e?.currentTarget?.name;
+                                        if (button_name === 'transfer-btn') {
                                             toggleAccountTransferModal();
+                                        } else if (button_name === 'topup-btn') {
+                                            showTopUpModal(existing_account);
                                         } else {
                                             startTrade(existing_account.platform, existing_account);
                                         }
@@ -200,10 +204,17 @@ const CFDsListing = () => {
                                 description={existing_account.display_login}
                                 platform={account.platform}
                                 key={`trading_app_card_${existing_account.display_login}`}
-                                type='transfer_trade'
+                                action_type='multi-action'
                                 availability={selected_region}
-                                onAction={() => {
-                                    startTrade(account.platform, existing_account);
+                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                    const button_name = e?.currentTarget?.name;
+                                    if (button_name === 'transfer-btn') {
+                                        toggleAccountTransferModal();
+                                    } else if (button_name === 'topup-btn') {
+                                        showTopUpModal(existing_account);
+                                    } else {
+                                        startTrade(account.platform, existing_account);
+                                    }
                                 }}
                             />
                         ))
@@ -226,7 +237,7 @@ const CFDsListing = () => {
                                 }
                             }}
                             key={`trading_app_card_${account.name}`}
-                            type='get'
+                            action_type='get'
                             availability={selected_region}
                         />
                     );

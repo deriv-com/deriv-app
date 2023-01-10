@@ -21,7 +21,9 @@ const CreateAdAddPaymentMethodModal = () => {
                 },
             });
         } else {
-            hideModal();
+            hideModal({
+                should_hide_all_modals: true,
+            });
         }
     };
 

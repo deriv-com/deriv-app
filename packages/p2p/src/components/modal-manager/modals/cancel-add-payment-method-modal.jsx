@@ -34,8 +34,8 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                         my_ads_store.setShouldShowAddPaymentMethod(false);
                         onCancel?.();
                         hideModal({
-                            save_form_history: false,
-                            hide_all_modals: should_hide_all_modals_on_cancel ?? false,
+                            should_save_form_history: false,
+                            should_hide_all_modals: should_hide_all_modals_on_cancel ?? false,
                         });
                     }}
                     secondary
@@ -46,7 +46,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                     large
                     onClick={() => {
                         hideModal({
-                            save_form_history: true,
+                            should_save_form_history: true,
                         });
                     }}
                     primary

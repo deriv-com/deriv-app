@@ -11,47 +11,58 @@ import './status-badge.scss';
 type TStatusBadge = {
     account_status: any;
     class_name?: string;
+    toggleFailedVerificationModalVisibility: () => void;
 };
 
-const status_text = {
-    pending: {
-        text: (
-            <Localize
-                i18n_default_text='<0>Pending verification</0>'
-                components={[
-                    <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--text-warning)' />,
-                ]}
-            />
-        ),
-        icon: 'IcAlertWarning',
-    },
-    failed: {
-        text: (
-            <Localize
-                i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
-                components={[
-                    <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--status-danger)' />,
-                    <Link key={1} className='link-failed' to='' />,
-                ]}
-            />
-        ),
-        icon: 'IcRedWarning',
-    },
-    default: {
-        text: (
-            <Localize
-                i18n_default_text='<0>Need verification.</0> <1>Verify now</1>'
-                components={[
-                    <Text key={0} weight='bold' size='xxxs' color='var(--text-info-blue)' />,
-                    <Link key={1} className='link-default' to='/account/proof-of-identity' />,
-                ]}
-            />
-        ),
-        icon: 'IcAlertInfo',
-    },
-};
-
-const StatusBadge = ({ account_status, class_name }: TStatusBadge) => {
+const StatusBadge = ({ account_status, class_name, toggleFailedVerificationModalVisibility }: TStatusBadge) => {
+    const status_text = {
+        pending: {
+            text: (
+                <Localize
+                    i18n_default_text='<0>Pending verification</0>'
+                    components={[
+                        <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--text-warning)' />,
+                    ]}
+                />
+            ),
+            icon: 'IcAlertWarning',
+        },
+        failed: {
+            text: (
+                <Localize
+                    i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
+                    components={[
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={isMobile() ? 'xxxxs' : 'xxxs'}
+                            color='var(--status-danger)'
+                        />,
+                        <Text
+                            key={1}
+                            className='link-failed'
+                            onClick={() => {
+                                toggleFailedVerificationModalVisibility();
+                            }}
+                        />,
+                    ]}
+                />
+            ),
+            icon: 'IcRedWarning',
+        },
+        default: {
+            text: (
+                <Localize
+                    i18n_default_text='<0>Need verification.</0> <1>Verify now</1>'
+                    components={[
+                        <Text key={0} weight='bold' size='xxxs' color='var(--text-info-blue)' />,
+                        <Link key={1} className='link-default' to='/account/proof-of-identity' />,
+                    ]}
+                />
+            ),
+            icon: 'IcAlertInfo',
+        },
+    };
     const { text, icon } = status_text[account_status as keyof typeof status_text] ?? status_text.default;
 
     return (

@@ -98,6 +98,7 @@ const ModalManager = () => {
 
     getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
+
     return (
         <React.Fragment>
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />

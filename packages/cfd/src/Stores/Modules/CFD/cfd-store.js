@@ -225,7 +225,7 @@ export default class CFDStore extends BaseStore {
             if (category === 'real') {
                 this.toggleJurisdictionModal();
             } else {
-                if (this.root_store.client.is_eu) {
+                if (this.root_store.traders_hub.show_eu_related_content) {
                     this.setJurisdictionSelectedShortcode('maltainvest');
                 } else this.setJurisdictionSelectedShortcode('svg');
                 this.demoCFDSignup();

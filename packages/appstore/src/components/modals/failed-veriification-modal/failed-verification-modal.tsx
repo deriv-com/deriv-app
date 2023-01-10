@@ -11,18 +11,16 @@ const FailedVerificationModal = () => {
         ui,
         modules: { cfd },
     } = useStores();
-    // const { is_failed_verification_modal_visible, toggleFailedVerificationModalVisibility } = traders_hub;
+    const { is_failed_verification_modal_visible, toggleFailedVerificationModalVisibility } = traders_hub;
     const { toggleCFDVerificationModal } = cfd;
     const { is_regulators_compare_modal_visible, toggleRegulatorsCompareModal } = traders_hub;
     const { disableApp, enableApp } = ui;
     const closeModal = () => {
-        // toggleFailedVerificationModalVisibility();
-        toggleRegulatorsCompareModal();
+        toggleFailedVerificationModalVisibility();
     };
 
     const onConfirmModal = () => {
-        // toggleFailedVerificationModalVisibility();
-        toggleRegulatorsCompareModal();
+        toggleFailedVerificationModalVisibility();
         toggleCFDVerificationModal();
     };
     const FailedVerificationModalContent = () => {
@@ -90,7 +88,7 @@ const FailedVerificationModal = () => {
             disableApp={disableApp}
             enableApp={enableApp}
             is_closed_on_confirm
-            is_visible={is_regulators_compare_modal_visible}
+            is_visible={is_failed_verification_modal_visible}
             onCancel={closeModal}
             onConfirm={onConfirmModal}
             className='failed-verification-modal'

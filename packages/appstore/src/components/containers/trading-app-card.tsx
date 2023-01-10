@@ -23,7 +23,7 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { traders_hub } = useStores();
-    const { is_eu_user, is_demo_low_risk, content_flag } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, toggleFailedVerificationModalVisibility } = traders_hub;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -71,6 +71,7 @@ const TradingAppCard = ({
                         <StatusBadge
                             account_status={mt5_acc_auth_status}
                             class_name='trading-app-card__acc_status_badge'
+                            toggleFailedVerificationModalVisibility={toggleFailedVerificationModalVisibility}
                         />
                     )}
                 </div>

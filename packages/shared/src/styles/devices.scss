@@ -50,7 +50,13 @@ $desktop-width: 1024px;
 @mixin touch-device {
     // add css interaction media query to detect touch devices
     // refer to: https://caniuse.com/#feat=css-media-interaction
-    @media (pointer: coarse) {
+    @media screen and (hover: none) and (pointer: coarse) {
+        @content;
+    }
+}
+
+@mixin non-touch-device {
+    @media screen and (hover: hover) and (pointer: fine) {
         @content;
     }
 }

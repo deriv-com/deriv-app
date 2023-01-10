@@ -96,19 +96,21 @@
         }
     }
 
-    @include desktop {
+    @include non-touch-device {
         display: none;
     }
 
-    @include tablet {
-        @media screen and (orientation: portrait) {
-            display: none;
+    @include touch-device {
+        @include tablet {
+            @media screen and (orientation: portrait) {
+                display: none;
+            }
         }
-    }
 
-    @include mobile {
-        @media screen and (max-aspect-ratio: 13/9) {
-            display: none;
+        @include mobile {
+            @media screen and (max-aspect-ratio: 13/9) {
+                display: none;
+            }
         }
     }
 }

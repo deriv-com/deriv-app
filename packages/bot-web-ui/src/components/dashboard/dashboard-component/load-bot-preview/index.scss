@@ -244,6 +244,10 @@
             &:nth-last-child(-n + 5) {
                 .load-strategy__recent-item__mobile {
                     top: -15rem;
+                    &--min {
+                        top: 1rem;
+                        right: 6rem;
+                    }
                 }
             }
 

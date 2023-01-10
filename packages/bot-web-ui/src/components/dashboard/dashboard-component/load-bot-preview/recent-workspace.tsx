@@ -162,6 +162,7 @@ const RecentWorkspace = ({
                         className={classnames('load-strategy__recent-item__mobile', {
                             'load-strategy__recent-item__mobile--active':
                                 selected_strategy_id === workspace.id && is_dropdown_visible,
+                            'load-strategy__recent-item__mobile--min': dashboard_strategies.length <= 5,
                         })}
                     >
                         <div

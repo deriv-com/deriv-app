@@ -6,12 +6,10 @@ import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
-type TSelfExclusionArticleItems = {
-    is_eu: boolean;
-    is_uk: boolean;
-    is_deriv_crypto: boolean;
-    is_app_settings: boolean;
-};
+type TSelfExclusionArticleItems = Record<
+    'is_eu' | 'is_uk' | 'is_deriv_crypto' | 'is_app_settings',
+    boolean | undefined
+>;
 
 type TSelfExclusionArticleContent = {
     is_in_overlay: boolean;

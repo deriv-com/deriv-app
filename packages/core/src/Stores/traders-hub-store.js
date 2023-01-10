@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, reaction, computed } from 'mobx';
+import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
 import {
     available_traders_hub_cfd_accounts,
     CFD_PLATFORMS,
@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
+    is_balance_calculating = false;
     is_exit_traders_hub_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
@@ -25,11 +26,10 @@ export default class TradersHubStore extends BaseStore {
     account_type_card = '';
     selected_platform_type = 'options';
     active_index = 0;
-    platform_demo_balance = { currency: 'USD', balance: 0 };
-    platform_real_balance = { currency: 'USD', balance: 0 };
-    cfd_demo_balance = { currency: 'USD', balance: 0 };
-    cfd_real_balance = { currency: 'USD', balance: 0 };
-    cfd_accounts;
+    platform_demo_balance = { balance: 0, currency: 'USD' };
+    platform_real_balance = { balance: 0, currency: 'USD' };
+    cfd_demo_balance = { balance: 0, currency: 'USD' };
+    cfd_real_balance = { balance: 0, currency: 'USD' };
     modal_data = {
         active_modal: '',
         data: {},
@@ -52,6 +52,7 @@ export default class TradersHubStore extends BaseStore {
             is_account_type_modal_visible: observable,
             is_exit_traders_hub_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
+            is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
             platform_demo_balance: observable,
@@ -59,22 +60,21 @@ export default class TradersHubStore extends BaseStore {
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
+            can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
+            content_flag: computed,
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
             getExistingAccounts: action.bound,
             handleTabItemClick: action.bound,
             has_any_real_account: computed,
-            is_demo: computed,
             is_demo_low_risk: computed,
+            is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
-            can_get_more_cfd_mt5_accounts: computed,
             no_CR_account: computed,
             no_MF_account: computed,
-            content_flag: computed,
-            show_eu_related_content: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -82,15 +82,17 @@ export default class TradersHubStore extends BaseStore {
             selectAccountTypeCard: action.bound,
             selectRegion: action.bound,
             setActiveIndex: action.bound,
+            setCombinedCFDMT5Accounts: action.bound,
             setTogglePlatformType: action.bound,
             should_show_exit_traders_modal: computed,
+            show_eu_related_content: computed,
             startTrade: action.bound,
+            toggleAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             toggleExitTradersHubModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
-            setCombinedCFDMT5Accounts: action.bound,
-            toggleAccountTransferModal: action.bound,
+            updatePlatformBalance: action.bound,
         });
 
         reaction(
@@ -139,11 +141,14 @@ export default class TradersHubStore extends BaseStore {
             () => [
                 this.root_store.client.balance,
                 this.root_store.client.obj_total_balance,
+                this.root_store.client.mt5_login_list,
+                this.root_store.client.dxtrade_accounts_list,
+                this.root_store.accounts,
                 this.selected_account_type,
                 this.selected_region,
             ],
-            () => {
-                this.updatePlatformBalance();
+            async () => {
+                await this.updatePlatformBalance();
             }
         );
     }
@@ -550,6 +555,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async updatePlatformBalance() {
+        runInAction(() => {
+            this.is_balance_calculating = true;
+        });
         const { accounts, dxtrade_accounts_list, mt5_login_list } = this.root_store.client;
 
         const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
@@ -584,6 +592,10 @@ export default class TradersHubStore extends BaseStore {
         if (cfd_demo_accounts?.length) {
             this.cfd_demo_balance = await this.getTotalBalance(cfd_demo_accounts, cfd_demo_accounts[0]?.currency);
         }
+
+        runInAction(() => {
+            this.is_balance_calculating = false;
+        });
     }
 
     async getTotalBalance(accounts, base_currency) {

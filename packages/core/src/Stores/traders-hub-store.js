@@ -140,6 +140,7 @@ export default class TradersHubStore extends BaseStore {
         reaction(
             () => [
                 this.root_store.client.balance,
+                this.root_store.client.loginid,
                 this.root_store.client.obj_total_balance,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,

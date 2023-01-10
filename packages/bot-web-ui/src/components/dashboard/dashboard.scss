@@ -566,5 +566,8 @@
         font-size: 1.2rem;
         position: absolute;
         top: -5rem;
+        @include mobile {
+            top: -8rem;
+        }
     }
 }

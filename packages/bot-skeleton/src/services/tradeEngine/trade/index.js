@@ -95,7 +95,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         globalObserver.emit('bot.running');
 
         this.tradeOptions = tradeOptions;
-
+        api_base.setIsMultiplier('multiplier' in tradeOptions);
         this.store.dispatch(start());
         this.checkLimits(tradeOptions);
         this.makeProposals({ ...this.options, ...tradeOptions });

@@ -7,15 +7,13 @@ type TBotPreview = {
 
 const BotPreview = ({ id_ref }: TBotPreview) => {
     return (
-        <>
-            <div
-                className='load-strategy__preview-workspace-container'
-                id={'load-strategy__blockly-container'}
-                ref={id_ref}
-            >
-                <WorkspaceControl />
-            </div>
-        </>
+        <div
+            className='load-strategy__preview-workspace-container'
+            id={'load-strategy__blockly-container'}
+            ref={id_ref}
+        >
+            <WorkspaceControl />
+        </div>
     );
 };
 

@@ -7,6 +7,7 @@ import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, rangeValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
+import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
@@ -259,7 +260,12 @@ export default class MyAdsStore extends BaseStore {
                         this.setApiErrorCode(response.error.code);
                         this.setActivateDeactivateErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
-                            key: 'ActivateDeactivateErrorModal',
+                            key: 'ErrorModal',
+                            props: {
+                                has_close_icon: false,
+                                message: response.error.message,
+                                title: generateErrorDialogTitle(this.error_code),
+                            },
                         });
                     } else {
                         setIsAdvertActive(!!response.p2p_advert_update.is_active);
@@ -391,7 +397,12 @@ export default class MyAdsStore extends BaseStore {
                 this.setUpdatePaymentMethodsErrorMessage(response.error.message);
                 this.root_store.general_store.hideModal();
                 this.root_store.general_store.showModal({
-                    key: 'QuickAddErrorModal',
+                    key: 'ErrorModal',
+                    props: {
+                        has_close_icon: false,
+                        message: response.error.message,
+                        title: generateErrorDialogTitle(this.error_code),
+                    },
                 });
             }
             this.setIsTableLoading(false);

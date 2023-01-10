@@ -203,7 +203,11 @@ export default class NotificationStore extends BaseStore {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
 
-        if (window.location.pathname !== routes.cashier_p2p) {
+        if (window.location.pathname === routes.personal_details) {
+            this.notification_messages = this.notification_messages.filter(
+                notification => notification.platform === 'Account'
+            );
+        } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -279,6 +283,8 @@ export default class NotificationStore extends BaseStore {
                 poi_name_mismatch,
                 withdrawal_locked,
             } = getStatusValidations(status || []);
+
+            this.handlePOAAddressMismatchNotifications();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1310,4 +1316,52 @@ export default class NotificationStore extends BaseStore {
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }
+
+    handlePOAAddressMismatchNotifications = () => {
+        const { client } = this.root_store;
+        const { account_status } = client;
+        const { status } = account_status;
+        const { poa_address_mismatch } = getStatusValidations(status || []);
+
+        if (poa_address_mismatch) {
+            this.showPOAAddressMismatchWarningNotification();
+        }
+    };
+
+    showPOAAddressMismatchWarningNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_warning',
+            header: localize('Please update your address'),
+            message: localize(
+                'It appears that the address in your document doesn’t match the address in your Deriv profile. Please update your personal details now with the correct address.'
+            ),
+            action: {
+                route: routes.personal_details,
+                text: localize('Go to Personal details'),
+            },
+            type: 'warning',
+            should_show_again: true,
+        });
+    };
+
+    showPOAAddressMismatchSuccessNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_success',
+            header: localize('Your proof of address has been verified'),
+            type: 'announce',
+            should_show_again: true,
+            platform: 'Account',
+        });
+    };
+
+    showPOAAddressMismatchFailureNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_failure',
+            header: localize('Your address doesn’t match your profile'),
+            message: localize('Update the address in your profile.'),
+            type: 'danger',
+            should_show_again: true,
+            platform: 'Account',
+        });
+    };
 }

@@ -1,6 +1,3 @@
-import { reaction } from 'mobx';
-import { api_base } from '../services/api/api-base';
-
 class DBotStoreInterface {
     // TODO here we are suppose to define an interface and implement fields of DBotStore.
     handleFileChange = () => {
@@ -30,11 +27,6 @@ class DBotStore extends DBotStoreInterface {
         this.handleFileChange = store.handleFileChange;
         this.startLoading = store.startLoading;
         this.endLoading = store.endLoading;
-
-        reaction(
-            () => this.client.loginid,
-            () => api_base.createNewInstance(this.client.loginid)
-        );
     }
 
     static setInstance(store) {

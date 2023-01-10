@@ -22,7 +22,7 @@ const OptionsAndMultipliersListing = () => {
         is_demo,
         content_flag,
     } = traders_hub;
-    const { is_landing_company_loaded, is_eu } = client;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account } = client;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -99,7 +99,11 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
-                        action_type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                        action_type={
+                            is_demo || (has_any_real_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                                ? 'trade'
+                                : 'none'
+                        }
                         is_deriv_platform
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />

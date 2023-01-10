@@ -1603,8 +1603,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responseLandingCompany(response) {
-        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
     }

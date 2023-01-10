@@ -111,8 +111,7 @@
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        min-height: calc(100vh - 30rem);
-        height: calc(100% - 40rem);
+        height: calc(100vh - 32.4rem);
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -380,7 +379,7 @@
             }
 
             &-time {
-                font-size: var(--text-size-xs);
+                font-size: var(--text-size-xxs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;

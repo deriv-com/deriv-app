@@ -140,11 +140,10 @@
         @include mobile {
             height: var(--tab-content-height-mobile);
             background: var(--general-main-1);
-            padding: 1.6rem;
 
             .smartcharts {
                 height: calc(100% - 4rem);
-                width: calc(100vw - 3.2rem);
+                z-index: 1;
             }
         }
 

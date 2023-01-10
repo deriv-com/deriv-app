@@ -610,7 +610,7 @@ export default class TradersHubStore extends BaseStore {
                     exchange_rate = await getExchangeRate(currency, base_currency);
                 }
 
-                total.balance += balance * exchange_rate || 0;
+                (await total).balance += balance * exchange_rate || 0;
                 return total;
             },
             { balance: 0 }

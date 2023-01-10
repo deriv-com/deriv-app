@@ -8,11 +8,9 @@ import { isMobile } from '@deriv/shared';
 
 const AddOptions = () => {
     const { traders_hub, ui } = useStores();
-
     const { is_real, is_eu_user } = traders_hub;
 
     const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
-
     const add_deriv_account_btn = localize('Get a Deriv account');
 
     return (

@@ -59,6 +59,8 @@ const PageOverlayWrapper = ({
     subroutes,
     history,
 }) => {
+    const is_from_traders_hub = () => (is_pre_appstore ? history.push(shared_routes.traders_hub) : onClickClose());
+
     if (isMobile() && selected_route) {
         return (
             <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
@@ -87,7 +89,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+        <PageOverlay header={localize('Settings')} onClickClose={is_from_traders_hub} is_from_app={is_from_derivgo}>
             <VerticalTab
                 alignment='center'
                 is_floating

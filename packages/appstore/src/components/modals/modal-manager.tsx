@@ -5,7 +5,6 @@ import {
     JurisdictionModal,
     CFDPasswordModal,
     CFDDbviOnBoarding,
-    CFDPersonalDetailsModal,
     CFDResetPasswordModal,
     CFDServerErrorDialog,
     CFDTopUpDemoModal,
@@ -27,7 +26,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 
 const ModalManager = () => {
     const store = useStores();
-    const { common, client, modules, traders_hub } = store;
+    const { common, client, modules, traders_hub, ui } = store;
     const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
     const { platform } = common;
     const {
@@ -38,7 +37,18 @@ const ModalManager = () => {
         toggleMT5TradeModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
+        current_account,
+        dxtrade_companies,
+        mt5_companies,
+        topUpVirtual,
     } = modules.cfd;
+    const {
+        is_top_up_virtual_open,
+        is_top_up_virtual_in_progress,
+        is_top_up_virtual_success,
+        closeTopUpModal,
+        closeSuccessTopUpModal,
+    } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
@@ -98,15 +108,27 @@ const ModalManager = () => {
 
     getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
+
     return (
         <React.Fragment>
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
-            <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
             <CFDServerErrorDialog context={store} />
-            <CFDTopUpDemoModal context={store} />
+            <CFDTopUpDemoModal
+                context={store}
+                dxtrade_companies={dxtrade_companies}
+                mt5_companies={mt5_companies}
+                current_account={current_account}
+                closeSuccessTopUpModal={closeSuccessTopUpModal}
+                closeTopUpModal={closeTopUpModal}
+                is_top_up_virtual_open={is_top_up_virtual_open}
+                is_top_up_virtual_in_progress={is_top_up_virtual_in_progress}
+                is_top_up_virtual_success={is_top_up_virtual_success}
+                platform={platform}
+                topUpVirtual={topUpVirtual}
+            />
             <MT5TradeModal
                 context={store}
                 current_list={current_list}

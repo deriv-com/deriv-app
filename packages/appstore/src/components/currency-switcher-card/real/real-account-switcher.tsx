@@ -28,7 +28,7 @@ const AccountNeedsVerification = observer(() => {
                 openModal('currency_selection');
             }}
         >
-            <StatusBadge document_status={document_status} />
+            <StatusBadge account_status={document_status} />
         </CurrencySwitcherContainer>
     );
 });

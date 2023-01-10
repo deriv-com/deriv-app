@@ -12,7 +12,7 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import AccountStatistics from '../Components/account-statistics.jsx';
 import FilterComponent from '../Components/filter-component.jsx';
-import { ReportsMeta } from '../Components/reports-meta.jsx';
+import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
 const DetailsComponent = ({ message = '', action_type = '' }) => {

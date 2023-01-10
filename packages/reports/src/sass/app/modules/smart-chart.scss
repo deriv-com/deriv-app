@@ -32,6 +32,10 @@
             margin-left: -8px;
             font-size: 0.8rem;
         }
+        &-small {
+            bottom: -3px;
+            margin-left: -4px;
+        }
     }
     &__entry {
         left: -12px;
@@ -55,6 +59,18 @@
         @include mobile {
             width: 16px;
             height: 16px;
+        }
+        &-small {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-less-prominent);
+
+            @include mobile {
+                width: 4px;
+                height: 4px;
+                bottom: -2px;
+                margin-left: -3px;
+            }
         }
     }
     &__sell {

@@ -73,7 +73,6 @@ const ModalManagerContextProvider = props => {
     const hideModal = (options = {}) => {
         const { save_form_history = false, hide_all_modals = false } = options;
 
-        modal_props.delete(active_modal.key);
         if (save_form_history) {
             general_store.saveFormState();
         } else {

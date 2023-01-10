@@ -1,22 +1,27 @@
 import classnames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Icon, Dialog, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RecentWorkspace from './recent-workspace';
 import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/root-store';
+import BotPreview from '../dashboard/dashboard-component/load-bot-preview/bot-preview';
 
 type TRecentComponentProps = {
     is_explanation_expand: boolean;
     recent_strategies: any[];
     toggleExplanationExpand: boolean;
+    has_mobile_preview_loaded: boolean;
+    setPreviewOnDialog: (param: boolean) => void;
 };
 
 const RecentComponent = ({
     is_explanation_expand,
     recent_strategies,
     toggleExplanationExpand,
+    has_mobile_preview_loaded,
+    setPreviewOnDialog,
 }: TRecentComponentProps) => {
     if (recent_strategies.length) {
         return (
@@ -85,10 +90,12 @@ const RecentComponent = ({
     );
 };
 
-const Recent = connect(({ load_modal }: RootStore) => ({
+const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
     recent_strategies: load_modal.recent_strategies,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
+    has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
+    setPreviewOnDialog: dashboard.setPreviewOnDialog,
 }))(RecentComponent);
 
 export default Recent;

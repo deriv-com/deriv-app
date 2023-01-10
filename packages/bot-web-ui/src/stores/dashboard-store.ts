@@ -109,6 +109,10 @@ export default class DashboardStore implements IDashboardStore {
 
     setPreviewOnDialog = (has_mobile_preview_loaded: boolean) => {
         this.has_mobile_preview_loaded = has_mobile_preview_loaded;
+        const {
+            load_modal: { onLoadModalClose },
+        } = this.root_store;
+        onLoadModalClose();
     };
 
     setStrategySaveType = (strategy_save_type: string) => {
@@ -191,5 +195,13 @@ export default class DashboardStore implements IDashboardStore {
 
     setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
         this.is_info_panel_visible = is_info_panel_visible;
+    };
+
+    onZoomInOutClick = (is_zoom_in: boolean): void => {
+        const workspace = Blockly.mainWorkspace;
+        const metrics = workspace.getMetrics();
+        const addition = is_zoom_in ? 1 : -1;
+
+        workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     };
 }

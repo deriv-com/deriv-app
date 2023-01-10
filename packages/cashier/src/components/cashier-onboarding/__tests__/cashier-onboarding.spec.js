@@ -100,7 +100,7 @@ describe('<CashierOnboarding />', () => {
         expect(screen.getByText('Deposit with Deriv P2P')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
+                'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         ).toBeInTheDocument();
     });
@@ -262,7 +262,7 @@ describe('<CashierOnboarding />', () => {
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
             node.textContent.includes(
-                'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
+                'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
         fireEvent.click(deposit_with_dp2p_detail_div);
@@ -283,7 +283,7 @@ describe('<CashierOnboarding />', () => {
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
             node.textContent.includes(
-                'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
+                'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
         fireEvent.click(deposit_with_dp2p_detail_div);
@@ -301,7 +301,7 @@ describe('<CashierOnboarding />', () => {
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
             node.textContent.includes(
-                'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
+                'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
         fireEvent.click(deposit_with_dp2p_detail_div);

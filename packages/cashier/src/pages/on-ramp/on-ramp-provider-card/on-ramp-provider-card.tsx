@@ -1,22 +1,20 @@
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { TProviderDetails } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 
 type TOnRampProviderCardProps = {
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
     provider: TProviderDetails;
-    setSelectedProvider: (provider: TProviderDetails) => void;
-    is_mobile: TUiStore['is_mobile'];
 };
 
-const OnRampProviderCard = ({
-    is_dark_mode_on,
-    provider,
-    setSelectedProvider,
-    is_mobile,
-}: TOnRampProviderCardProps) => {
+const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => {
+    const { ui, modules } = useStore();
+    const { is_dark_mode_on, is_mobile } = ui;
+    const { cashier } = modules;
+    const { onramp } = cashier;
+    const { setSelectedProvider } = onramp;
+
     const payment_icons = provider.getPaymentIcons();
     const gtm_identifier = provider.name.toLowerCase().replace(' ', '-');
     const logo_size = is_mobile ? 56 : 128;
@@ -62,10 +60,6 @@ const OnRampProviderCard = ({
             />
         </div>
     );
-};
+});
 
-export default connect(({ modules, ui }: TRootStore) => ({
-    setSelectedProvider: modules.cashier.onramp.setSelectedProvider,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_mobile: ui.is_mobile,
-}))(OnRampProviderCard);
+export default OnRampProviderCard;

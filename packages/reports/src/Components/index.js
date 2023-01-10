@@ -1,3 +1,3 @@
-import EmptyPortfolioMessage from './empty-portfolio-message.jsx';
+import EmptyPortfolioMessage from './empty-portfolio-message';
 
 export default EmptyPortfolioMessage;

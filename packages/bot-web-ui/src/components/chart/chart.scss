@@ -79,7 +79,7 @@
             @include mobile {
                 background: transparent;
                 border-width: 0;
-                bottom: 8.8rem;
+                bottom: calc(100% - 90%);
 
                 .sc-chart-mode,
                 .sc-studies {

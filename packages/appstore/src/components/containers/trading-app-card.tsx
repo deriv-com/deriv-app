@@ -36,7 +36,7 @@ const TradingAppCard = ({
 
     return (
         <div className='trading-app-card'>
-            <div>
+            <div className='trading-app-card__icon--container'>
                 <TradigPlatformIconProps icon={icon} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>

@@ -56,7 +56,9 @@ describe('Url', () => {
                     expect(urlFor('`~!@$%^&*=+[}{]\\"\';:?><,|')).toBe(home_url);
                 });
                 it('handles all valid characters', () => {
-                    expect(urlFor('metatrader/comparison-4_vs_5')).toBe(`${website_url}metatrader/comparison-4_vs_5.html`);
+                    expect(urlFor('metatrader/comparison-4_vs_5')).toBe(
+                        `${website_url}metatrader/comparison-4_vs_5.html`
+                    );
                 });
             });
 
@@ -68,7 +70,9 @@ describe('Url', () => {
 
             describe('getPath', () => {
                 it('should return param values in params as a part of path', () => {
-                    expect(getPath('/contract/:contract_id', { contract_id: 37511105068 })).toBe('/contract/37511105068');
+                    expect(getPath('/contract/:contract_id', { contract_id: 37511105068 })).toBe(
+                        '/contract/37511105068'
+                    );
                     expect(
                         getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
                             something_made_up_param1: '789',

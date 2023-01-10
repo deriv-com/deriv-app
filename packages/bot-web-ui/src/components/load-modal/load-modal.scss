@@ -28,15 +28,16 @@
             &-files {
                 width: 35%;
                 overflow: auto;
-                height: 51vh;
+                height: 100%;
             }
 
             &-preview {
                 width: 65%;
 
                 .load-strategy__preview-workspace {
-                    height: 80%;
+                    height: calc(100% - 5.2rem);
                     min-height: unset;
+                    margin: 0;
                 }
 
                 &-title {
@@ -61,6 +62,7 @@
     .load-strategy__preview-workspace {
         min-height: unset;
         height: unset;
+        margin: 0;
     }
 }
 

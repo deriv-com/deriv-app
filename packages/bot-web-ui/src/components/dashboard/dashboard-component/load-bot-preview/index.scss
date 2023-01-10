@@ -68,6 +68,9 @@
         font-weight: 700;
         margin: 1.6rem 1.6rem 1.6rem 0;
         color: var(--text-general);
+        &--listed {
+            margin: 0 !important;
+        }
     }
 
     &__button-group {
@@ -107,8 +110,7 @@
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        min-height: calc(100vh - 30rem);
-        height: calc(100% - 40rem);
+        height: calc(100vh - 32.4rem);
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -149,9 +151,12 @@
 
             &__list {
                 overflow: auto;
-                /* TODO: ThemedScrollbars! */
                 height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;
+
+                @include mobile {
+                    height: 21rem;
+                }
             }
         }
 
@@ -223,11 +228,27 @@
 
         &-item {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            @include desktop {
+                grid-template-columns: repeat(4, 1fr);
+            }
             grid-template-areas: ('text location');
             padding: 0.8rem;
             align-items: center;
             text-align: center;
+            @include mobile {
+                //TODO: without it doesn't work as expected, improve later
+                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
+            }
+            & .dc-text {
+                width: 10rem;
+                @include mobile {
+                    font-size: var(--text-size-xxs);
+                }
+            }
+
+            &--minimized {
+                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
+            }
 
             &.load-dialog {
                 padding: 1.6rem;
@@ -287,7 +308,7 @@
             }
 
             &-time {
-                font-size: var(--text-size-xs);
+                font-size: var(--text-size-xxs);
                 color: var(--text-general);
                 width: 100%;
                 word-break: break-word;
@@ -370,6 +391,11 @@
             @include mobile {
                 padding: 1.6rem;
                 height: calc(100% - 7.4rem); // - footer height
+            }
+            &--listed {
+                @include mobile {
+                    padding: 0;
+                }
             }
 
             &-close {

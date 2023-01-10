@@ -3,8 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Popup } from '@deriv/components';
 import SelfExclusionArticleContent from '../self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
+import { createPortal } from 'react-dom';
 
-Popup.Overlay = jest.fn(() => <div>Trading limits</div>);
+Popup.Overlay = jest.fn(() => createPortal(<div>Trading limits</div>, document.body));
 
 describe('<SelfExclusionArticleContent />', () => {
     let mock_context = {

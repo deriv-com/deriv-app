@@ -1,16 +1,17 @@
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Field, Form, Formik } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 const EditPaymentMethodForm = ({ formik_ref }) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         return () => {
@@ -100,7 +101,14 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                         }
                                     )}
                                 </div>
-                                <div className='add-payment-method-form__buttons'>
+                                <div
+                                    className={classNames('add-payment-method-form__buttons', {
+                                        'add-payment-method-form__buttons--separated-footer':
+                                            general_store.active_index === 3 && isMobile(),
+                                        'add-payment-method-form__buttons--separated-footer-profile':
+                                            general_store.active_index === 3 && isDesktop(),
+                                    })}
+                                >
                                     <Button
                                         secondary
                                         large

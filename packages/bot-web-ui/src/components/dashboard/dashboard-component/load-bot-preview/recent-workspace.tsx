@@ -6,6 +6,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
+import { isDesktop } from '@deriv/shared';
 
 type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
@@ -73,6 +74,7 @@ const RecentWorkspace = ({
             onToggleDeleteDialog(true);
         }
     };
+    const is_desktop = isDesktop();
 
     return (
         <>
@@ -80,6 +82,7 @@ const RecentWorkspace = ({
                 className={classnames('load-strategy__recent-item', {
                     'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
                     'load-strategy__recent-item__loaded': dashboard_strategies,
+                    'load-strategy__recent-item--minimized': !!dashboard_strategies?.length && !is_desktop,
                 })}
                 key={workspace.id}
                 ref={trigger_div_ref}

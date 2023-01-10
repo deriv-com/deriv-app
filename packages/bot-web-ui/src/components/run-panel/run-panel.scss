@@ -15,6 +15,7 @@
             top: 0;
             left: 0;
             width: 100vw;
+            z-index: 99;
 
             &-closed {
                 position: unset;
@@ -45,6 +46,11 @@
         align-items: flex-end;
         width: 35rem;
         background-color: var(--general-section-2);
+
+        @include mobile {
+            margin: 0;
+            position: fixed;
+        }
         &--tour-active {
             display: none;
         }
@@ -112,17 +118,20 @@
     }
     &-tab {
         &__content {
-            height: 52rem;
+            height: calc(100vh - 42rem);
             overflow: hidden;
 
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
             }
             &--mobile {
+                display: flex;
                 height: var(--drawer-content-height-mobile);
                 position: fixed;
                 bottom: 15.7rem;
                 width: 100vw;
+                background-color: var(--general-section-2);
+                border: 1px solid var(--general-main-1);
             }
         }
     }
@@ -148,7 +157,7 @@
         width: 100%;
         background-color: var(--general-main-1);
         border-top: solid 2px var(--general-section-1);
-        z-index: 5;
+        z-index: 8;
     }
     &__buttons {
         padding: 0.8rem 2.4rem;

@@ -14,4 +14,5 @@ export const initContext = (core_store: TRootStore, websocket: Record<string, un
     }
 };
 
+/** @deprecated Use `useStore` from `@deriv/stores` package instead. */
 export const useStores = (): TRootStore => React.useContext(stores_context);

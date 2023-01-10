@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const PlatformBox = ({ platform: { icon, title, description } }) => (
-    <>
+    <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />
         <Icon className='platform-dropdown__list-platform-icon' icon={icon} size={32} />
 
@@ -17,7 +17,7 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
             <p className='platform-dropdown__list-platform-title'>{title()}</p>
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
-    </>
+    </React.Fragment>
 );
 
 const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {

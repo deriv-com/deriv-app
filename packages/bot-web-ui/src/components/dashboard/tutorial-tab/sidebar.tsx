@@ -34,7 +34,11 @@ const Sidebar = ({
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
-        if (search_input?.current?.value) setsearchFAQList([]);
+        if (search_input?.current?.value) {
+            search_input.current.value = '';
+            setsearchFAQList([]);
+        }
+
         setsearchFilteredList(guide_tab_content);
         setsearchFAQList(faq_content);
     }, [active_tab_tutorials]);

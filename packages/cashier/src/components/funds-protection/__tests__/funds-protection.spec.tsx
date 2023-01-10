@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FundsProtection from '../funds-protection';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     modules: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccountPromptDialog from '../account-prompt-dialog.jsx';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

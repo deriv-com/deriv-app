@@ -4,7 +4,7 @@ import { isMobile, routes } from '@deriv/shared';
 import OnRamp from '../on-ramp';
 import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => {
     return {

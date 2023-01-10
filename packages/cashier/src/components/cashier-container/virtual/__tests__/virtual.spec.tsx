@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();

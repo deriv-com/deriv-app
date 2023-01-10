@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 

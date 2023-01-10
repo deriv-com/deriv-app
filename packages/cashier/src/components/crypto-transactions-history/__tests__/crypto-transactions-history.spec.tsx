@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoTransactionsHistory />', () => {
     let mockRootStore;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
     let mockRootStore, verification_code;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoTransactionsStatusModal />', () => {
     let modal_root_el, mockRootStore;

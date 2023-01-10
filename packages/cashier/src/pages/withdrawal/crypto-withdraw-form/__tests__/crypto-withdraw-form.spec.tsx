@@ -2,7 +2,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<CryptoWithdrawForm />', () => {
     let mockRootStore;

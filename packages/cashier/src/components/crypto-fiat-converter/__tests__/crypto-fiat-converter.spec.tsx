@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoFiatConverter from '../crypto-fiat-converter';
 import { Formik } from 'formik';
 import * as formik from 'formik';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore, mockProps;

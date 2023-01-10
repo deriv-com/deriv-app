@@ -4,7 +4,7 @@ import Routes from '../routes';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
 

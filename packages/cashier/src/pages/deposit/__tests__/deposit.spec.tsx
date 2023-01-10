@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Deposit from '../deposit';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

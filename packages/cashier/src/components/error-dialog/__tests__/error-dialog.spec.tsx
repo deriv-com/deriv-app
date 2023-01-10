@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 const mockRootStore: DeepPartial<TRootStore> = {
     ui: { disableApp: jest.fn(), enableApp: jest.fn() },

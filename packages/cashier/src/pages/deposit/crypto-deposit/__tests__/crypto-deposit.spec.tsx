@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

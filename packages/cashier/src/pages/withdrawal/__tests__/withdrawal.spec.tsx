@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));

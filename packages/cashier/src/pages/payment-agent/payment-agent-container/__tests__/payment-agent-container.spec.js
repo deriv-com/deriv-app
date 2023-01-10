@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

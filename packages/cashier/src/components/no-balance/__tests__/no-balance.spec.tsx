@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();

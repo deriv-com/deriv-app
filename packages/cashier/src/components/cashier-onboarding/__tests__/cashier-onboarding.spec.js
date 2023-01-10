@@ -4,7 +4,7 @@ import CashierOnboarding from '../cashier-onboarding';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboarding />', () => {
     let mockRootStore;

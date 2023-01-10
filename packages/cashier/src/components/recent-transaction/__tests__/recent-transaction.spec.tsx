@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<RecentTransaction />', () => {
     let history, mockRootStore;

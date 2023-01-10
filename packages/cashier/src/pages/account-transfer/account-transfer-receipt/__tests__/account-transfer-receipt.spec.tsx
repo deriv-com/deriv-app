@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
 import AccountTransferReceipt from '../account-transfer-receipt';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;

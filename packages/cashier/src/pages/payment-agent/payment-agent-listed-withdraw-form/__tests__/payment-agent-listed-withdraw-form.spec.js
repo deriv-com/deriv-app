@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

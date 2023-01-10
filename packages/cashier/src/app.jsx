@@ -2,7 +2,7 @@ import React from 'react';
 import { setWebsocket } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
-import CashierProviders from './cashier_providers';
+import CashierProviders from './cashier-providers';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {

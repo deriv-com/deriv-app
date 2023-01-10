@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,

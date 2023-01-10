@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...(jest.requireActual('@deriv/components') as any),

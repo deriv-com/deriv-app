@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AccountTransferNoAccount from '../account-transfer-no-account';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;

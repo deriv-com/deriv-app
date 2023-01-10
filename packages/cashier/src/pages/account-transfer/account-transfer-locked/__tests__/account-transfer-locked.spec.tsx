@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import AccountTransferLocked from '../account-transfer-locked';
-import CashierProviders from '../../../../cashier_providers';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('AccountTransferLocked', () => {
     let mockRootStore;

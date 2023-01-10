@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoTransactionsCancelModal />', () => {
     let modal_root_el, mockRootStore;

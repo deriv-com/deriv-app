@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
-import CashierProviders from '../../../cashier_providers';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,

@@ -1,9 +1,10 @@
 import { localize } from '@deriv/translations';
+import { addressPermittedSpecialCharactersMessageString } from '@deriv/shared';
 
 export const FORM_ERROR_MESSAGES = {
     address: () =>
         localize('Use only the following special characters: {{permitted_characters}}', {
-            permitted_characters: ". , ' : ; ( ) ° @ # / -",
+            permitted_characters: addressPermittedSpecialCharactersMessageString,
             interpolation: { escapeValue: false },
         }),
     barrier: () =>

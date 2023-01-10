@@ -6,7 +6,7 @@ import './cfds-listing.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import AddOptionsAccount from 'Components/add-options-account';
-import { isMobile, formatMoney, ContentFlag } from '@deriv/shared';
+import { isMobile, formatMoney } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
@@ -45,7 +45,6 @@ const CFDsListing = () => {
         no_MF_account,
         toggleAccountTransferModal,
         is_demo,
-        content_flag,
         showTopUpModal,
     } = traders_hub;
 
@@ -159,7 +158,7 @@ const CFDsListing = () => {
                             />
                         );
                     })}
-                    {can_get_more_cfd_mt5_accounts && content_flag !== ContentFlag.HIGH_RISK_CR && (
+                    {can_get_more_cfd_mt5_accounts && (
                         <GetMoreAccounts
                             onClick={toggleAccountTypeModalVisibility}
                             icon='IcAppstoreGetMoreAccounts'

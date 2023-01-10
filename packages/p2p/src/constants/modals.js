@@ -14,6 +14,9 @@ export const modals = {
     BuySellModal: React.lazy(() =>
         import(/* webpackChunkName: "buy-sell-modal" */ 'Components/modal-manager/modals/buy-sell-modal')
     ),
+    BlockUserModal: React.lazy(() =>
+        import(/* webpackChunkName: "block-user-modal" */ 'Components/modal-manager/modals/block-user-modal')
+    ),
     CancelAddPaymentMethodModal: React.lazy(() =>
         import(
             /* webpackChunkName: "cancel-add-payment-method-modal" */ 'Components/modal-manager/modals/cancel-add-payment-method-modal'
@@ -65,6 +68,9 @@ export const modals = {
         import(
             /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
         )
+    ),
+    LoadingModal: React.lazy(() =>
+        import(/* webpackChunkName: "loading-modal" */ 'Components/modal-manager/modals/loading-modal')
     ),
     MyAdsDeleteModal: React.lazy(() =>
         import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')

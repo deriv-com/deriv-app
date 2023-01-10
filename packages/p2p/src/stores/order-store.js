@@ -18,7 +18,6 @@ export default class OrderStore {
             is_email_link_blocked_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
-            is_loading_modal_open: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
             orders: observable,
@@ -54,7 +53,6 @@ export default class OrderStore {
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
             setIsLoading: action.bound,
-            setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
             setOrderPaymentMethodDetails: action.bound,
@@ -95,7 +93,6 @@ export default class OrderStore {
     is_email_link_blocked_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
-    is_loading_modal_open = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
     orders = [];
@@ -473,7 +470,7 @@ export default class OrderStore {
                 verification_code,
                 dry_run: 1,
             }).then(response => {
-                this.setIsLoadingModalOpen(false);
+                this.root_store.general_store.hideModal();
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
@@ -538,10 +535,6 @@ export default class OrderStore {
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    setIsLoadingModalOpen(is_loading_modal_open) {
-        this.is_loading_modal_open = is_loading_modal_open;
     }
 
     setIsRatingModalOpen(is_rating_modal_open) {

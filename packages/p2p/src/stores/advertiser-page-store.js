@@ -144,7 +144,9 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onCancel() {
-        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        if (this.root_store.general_store.modal.key === 'BlockUserModal') {
+            this.root_store.general_store.hideModal();
+        }
         this.setIsDropdownMenuVisible(false);
     }
 
@@ -260,7 +262,9 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked &&
             this.counterparty_advertiser_info.id !== this.root_store.general_store.advertiser_id
         ) {
-            this.root_store.general_store.setIsBlockUserModalOpen(true);
+            this.root_store.general_store.showModal({
+                key: 'BlockUserModal',
+            });
         }
     }
 }

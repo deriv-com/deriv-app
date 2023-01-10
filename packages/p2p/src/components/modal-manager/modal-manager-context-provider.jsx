@@ -23,15 +23,29 @@ const ModalManagerContextProvider = props => {
      * @param {Object|Object[]} modals - list of object modals to set props, each modal object must contain a 'key' attribute and 'props' attribute
      */
     const useRegisterModalProps = modals => {
+        const registered_modals = [];
+
         const registerModals = React.useCallback(() => {
             if (Array.isArray(modals)) {
-                modals.forEach(modal => setModalProps(modal_props.set(modal.key, modal.props)));
+                modals.forEach(modal => {
+                    registered_modals.push(modal);
+                    setModalProps(modal_props.set(modal.key, modal.props));
+                });
             } else {
+                registered_modals.push(modals);
                 setModalProps(modal_props.set(modals.key, modals.props));
             }
         }, [modals]);
 
-        React.useEffect(registerModals, [modals]);
+        React.useEffect(() => {
+            registerModals();
+            return () => {
+                registered_modals.forEach(registered_modal => {
+                    modal_props.delete(registered_modal.key);
+                });
+                registered_modals.current = []
+            };
+        }, [modals]);
     };
 
     const showModal = modal => {
@@ -108,6 +122,7 @@ const ModalManagerContextProvider = props => {
 
     general_store.showModal = showModal;
     general_store.hideModal = hideModal;
+    general_store.modal = active_modal;
 
     return <ModalManagerContext.Provider value={state}>{props.children}</ModalManagerContext.Provider>;
 };

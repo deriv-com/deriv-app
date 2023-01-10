@@ -1,12 +1,14 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Text, Icon, DesktopWrapper } from '@deriv/components';
+import { Text, Icon, DesktopWrapper, MobileWrapper, Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import LocalFooter from './local-footer';
 import classNames from 'classnames';
 import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
 import './index.scss';
 import { isMobile } from '@deriv/shared';
+import BotPreview from './bot-preview';
 
 type TWorkspace = {
     id: string;
@@ -30,6 +32,8 @@ type TLocalComponent = {
     setFileLoaded: (param: boolean) => void;
     setLoadedLocalFile: (data: Nullable<string>) => void;
     setTourDialogVisibility: (param: boolean) => boolean;
+    setPreviewOnDialog: (param: boolean) => boolean;
+    has_mobile_preview_loaded: boolean;
 };
 
 const LocalComponent = ({
@@ -40,6 +44,8 @@ const LocalComponent = ({
     onConfirmSave,
     setActiveTab,
     dashboard_strategies,
+    setPreviewOnDialog,
+    has_mobile_preview_loaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [setIsFileSupported] = React.useState<boolean>(true);
@@ -97,39 +103,59 @@ const LocalComponent = ({
                             </button>
                         </div>
                     </div>
-                    <DesktopWrapper>
-                        <div className='load-strategy__preview-workspace'>
-                            <div
-                                className='load-strategy__preview-workspace-container'
-                                id='load-strategy__blockly-container'
-                                ref={el_ref}
-                            >
-                                <WorkspaceControl />
+
+                    {!is_mobile && (
+                        <>
+                            <div className='load-strategy__preview-workspace'>
+                                <BotPreview id_ref={el_ref} type={'local'} />
                             </div>
-                        </div>
-                        <div className='load-strategy__button-group'>
-                            <input
-                                type='file'
-                                ref={file_input_ref}
-                                accept='.xml'
-                                style={{ display: 'none' }}
-                                onChange={e => {
-                                    clearInjectionDiv();
-                                    onConfirmSave();
-                                    setIsFileSupported(handleFileChange(e, false));
-                                }}
-                            />
-                            <button
-                                className='load-strategy__button-group--open'
-                                onClick={() => {
-                                    loadFileFromRecent();
-                                    setActiveTab(1);
-                                }}
-                            >
-                                Open
-                            </button>
-                        </div>
-                    </DesktopWrapper>
+                            <div className='load-strategy__button-group'>
+                                <input
+                                    type='file'
+                                    ref={file_input_ref}
+                                    accept='.xml'
+                                    style={{ display: 'none' }}
+                                    onChange={e => {
+                                        clearInjectionDiv();
+                                        onConfirmSave();
+                                        setIsFileSupported(handleFileChange(e, false));
+                                    }}
+                                />
+                                <button
+                                    className='load-strategy__button-group--open'
+                                    onClick={() => {
+                                        loadFileFromRecent();
+                                        setActiveTab(1);
+                                    }}
+                                >
+                                    Opens
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    <MobileWrapper>
+                        <Dialog
+                            is_visible={has_mobile_preview_loaded}
+                            onCancel={() => setPreviewOnDialog(false)}
+                            is_mobile_full_width
+                            className={'dc-dialog__wrapper--preview'}
+                            has_close_icon
+                            title={'Preview'}
+                        >
+                            <BotPreview id_ref={el_ref} type={'local'} />
+                            <div className='load-strategy__button-group'>
+                                <button
+                                    className='load-strategy__button-group--open'
+                                    onClick={() => {
+                                        loadFileFromRecent();
+                                        setActiveTab(1);
+                                    }}
+                                >
+                                    Open
+                                </button>
+                            </div>
+                        </Dialog>
+                    </MobileWrapper>
                 </div>
             </div>
         </div>
@@ -147,6 +173,8 @@ const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setFileLoaded: dashboard.setFileLoaded,
+    setPreviewOnDialog: dashboard.setPreviewOnDialog,
+    has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
 }))(LocalComponent);
 
 export default Local;

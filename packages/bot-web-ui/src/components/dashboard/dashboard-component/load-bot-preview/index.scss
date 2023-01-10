@@ -68,6 +68,7 @@
         font-weight: 700;
         margin: 1.6rem 1.6rem 1.6rem 0;
         color: var(--text-general);
+
         &--listed {
             margin: 0 !important;
         }
@@ -150,11 +151,16 @@
             height: calc(100% - 3.8rem);
 
             @include mobile {
-                height: unset;
+                overflow: auto;
             }
 
             &__list {
                 overflow: auto;
+
+                @include mobile {
+                    overflow: unset;
+                }
+
                 height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;
 
@@ -234,9 +240,14 @@
             position: relative;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
+
             &:nth-last-child(-n + 5) {
                 .load-strategy__recent-item__mobile {
                     top: -15rem;
+                    &--min {
+                        top: 1rem;
+                        right: 6rem;
+                    }
                 }
             }
 
@@ -251,16 +262,20 @@
             @include desktop {
                 grid-template-columns: repeat(4, 1fr);
             }
+
             grid-template-areas: ('text location');
             padding: 0.8rem;
             align-items: center;
             text-align: center;
+
             @include mobile {
                 //TODO: without it doesn't work as expected, improve later
                 grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
             }
+
             & .dc-text {
                 width: 10rem;
+
                 @include mobile {
                     font-size: var(--text-size-xxs);
                 }
@@ -455,6 +470,7 @@
                 padding: 1.6rem;
                 height: calc(100% - 7.4rem); // - footer height
             }
+
             &--listed {
                 @include mobile {
                     padding: 0;
@@ -540,5 +556,78 @@
 .dc-modal__container_load-strategy {
     @include tablet {
         width: calc(100vw - 4.8rem) !important;
+    }
+}
+
+.dc-dialog {
+    @include mobile {
+        &__wrapper--preview {
+            top: 6.5rem;
+
+            .dc-dialog {
+                &__dialog {
+                    justify-content: flex-start;
+                    min-width: 100vw;
+                    min-height: 100vh;
+                    padding: 0;
+                }
+
+                &__header {
+                    &-wrapper {
+                        margin-bottom: 3.2rem;
+
+                        h1 {
+                            width: 100%;
+                            text-align: center;
+                        }
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 4rem;
+                        box-shadow: inset 0px -1px 0px #f2f3f4;
+                    }
+
+                    &--close {
+                        padding: 1.6rem;
+                        margin-top: -1rem;
+                    }
+                }
+
+                &__content {
+                    max-width: unset;
+
+                    .injectionDiv {
+                        margin: 2.4rem;
+                        height: calc(100vh - 24.5rem);
+                        border: 1px solid #d6d6d6;
+                    }
+
+                    .load-strategy {
+                        &__preview-workspace {
+                            &-container {
+                                position: relative;
+                                margin-bottom: 3.2rem;
+                                min-height: 33rem;
+                            }
+
+                            &-controls {
+                                right: 3.6rem;
+                            }
+                        }
+
+                        &__button-group {
+                            box-shadow: inset 0px 2px 0px #f2f3f4;
+                            margin: 0;
+                            padding: 1.6rem;
+                        }
+                    }
+                }
+
+                &__footer {
+                    display: none;
+                }
+            }
+        }
     }
 }

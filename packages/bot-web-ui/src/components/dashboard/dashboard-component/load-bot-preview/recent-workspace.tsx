@@ -1,14 +1,16 @@
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { DesktopWrapper, Icon, MobileWrapper, Text, useOnClickOutside } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import classnames from 'classnames';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
-import { isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
+import { useComponentVisible } from '../../hooks/useComponentVisible';
 
 type TRecentWorkspace = {
+    active_tab: number;
     getRecentFileIcon: (string: string) => void;
     getSaveType: (type: string) => string;
     previewRecentStrategy: (workspaceId: string) => void;
@@ -24,9 +26,12 @@ type TRecentWorkspace = {
     setActiveTab: (active_tab: number) => void;
     dashboard_strategies: [];
     setLoaderVisible: (param: boolean) => void;
+    has_mobile_preview_loaded: boolean;
+    setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
 };
 
 const RecentWorkspace = ({
+    active_tab,
     getRecentFileIcon,
     getSaveType,
     previewRecentStrategy,
@@ -39,9 +44,8 @@ const RecentWorkspace = ({
     onToggleDeleteDialog,
     setActiveTab,
     dashboard_strategies,
+    setPreviewOnDialog,
 }: TRecentWorkspace) => {
-    const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
-
     React.useEffect(() => {
         if (dashboard_strategies && dashboard_strategies.length && index === 0) {
             setTimeout(() => {
@@ -49,21 +53,38 @@ const RecentWorkspace = ({
             }, 50);
         }
     }, []);
-    const [is_dropdown_visible, setDropdownVisibility] = React.useState(false);
-    const toggle_ref = React.useRef<HTMLDivElement>(null);
-    const validateClickOutside = (event: React.ChangeEvent<HTMLInputElement>) =>
-        is_dropdown_visible && !toggle_ref.current?.contains(event.target);
 
-    const onToggleDropdown = () => {
+    const STRATEGY = {
+        EDIT: 'edit',
+        SAVE: 'save',
+        DELETE: 'delete',
+        PREVIEW: 'preview',
+        PREVIEW_LIST: 'list',
+    };
+
+    const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
+
+    const toggle_ref = React.useRef<HTMLDivElement>(null);
+    const visible = useComponentVisible(toggle_ref);
+
+    const { setDropdownVisibility, is_dropdown_visible } = visible;
+
+    const is_mobile = isMobile();
+
+    const onToggleDropdown = e => {
+        e.preventDefault();
         setDropdownVisibility(!is_dropdown_visible);
     };
 
-    useOnClickOutside(toggle_ref, onToggleDropdown, validateClickOutside);
-
     const viewRecentStrategy = (type: string) => {
-        if (selected_strategy_id !== workspace.id) {
+        if (is_mobile && type === STRATEGY.PREVIEW_LIST) {
+            setPreviewOnDialog(true);
+            setTimeout(() => {
+                previewRecentStrategy(workspace.id);
+            }, 0); // made this async to give it a split second delay
+        }
+        if (selected_strategy_id !== workspace.id || (active_tab === 0 && type === STRATEGY.PREVIEW)) {
             previewRecentStrategy(workspace.id);
-            setFileLoaded(true);
         }
         if (type === 'edit') {
             loadFileFromRecent();
@@ -86,8 +107,10 @@ const RecentWorkspace = ({
                 })}
                 key={workspace.id}
                 ref={trigger_div_ref}
-                onClick={() => {
-                    viewRecentStrategy('preview');
+                onClick={e => {
+                    e.stopPropagation(); //stop event bubbling for child element
+                    if (is_dropdown_visible) setDropdownVisibility(false);
+                    viewRecentStrategy(STRATEGY.PREVIEW);
                 }}
             >
                 <div className='load-strategy__recent-item-text'>
@@ -108,7 +131,7 @@ const RecentWorkspace = ({
                         <div
                             className='load-strategy__recent-item__button'
                             onClick={() => {
-                                viewRecentStrategy('edit');
+                                viewRecentStrategy(STRATEGY.EDIT);
                             }}
                         >
                             <Icon icon='IcEdit' />
@@ -116,15 +139,15 @@ const RecentWorkspace = ({
                         <div
                             className='load-strategy__recent-item__button'
                             onClick={() => {
-                                viewRecentStrategy('save');
+                                viewRecentStrategy(STRATEGY.SAVE);
                             }}
                         >
                             <Icon icon='IcSave' />
                         </div>
                         <div
                             className='load-strategy__recent-item__button'
-                            onClick={e => {
-                                viewRecentStrategy('delete');
+                            onClick={() => {
+                                viewRecentStrategy(STRATEGY.DELETE);
                             }}
                         >
                             <Icon icon='IcDelete' />
@@ -132,16 +155,22 @@ const RecentWorkspace = ({
                     </div>
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <div ref={toggle_ref} onClick={() => onToggleDropdown()}>
+                    <div ref={toggle_ref} onClick={onToggleDropdown}>
                         <Icon icon='IcMenuDots' />
                     </div>
                     <div
                         className={classnames('load-strategy__recent-item__mobile', {
                             'load-strategy__recent-item__mobile--active':
                                 selected_strategy_id === workspace.id && is_dropdown_visible,
+                            'load-strategy__recent-item__mobile--min': dashboard_strategies.length <= 5,
                         })}
                     >
-                        <div className='load-strategy__recent-item__group'>
+                        <div
+                            className='load-strategy__recent-item__group'
+                            onClick={() => {
+                                viewRecentStrategy(STRATEGY.PREVIEW_LIST);
+                            }}
+                        >
                             <div className='load-strategy__recent-item__group__icon'>
                                 <Icon icon='IcPreview' />
                             </div>
@@ -154,7 +183,12 @@ const RecentWorkspace = ({
                                 Preview
                             </Text>
                         </div>
-                        <div className='load-strategy__recent-item__group'>
+                        <div
+                            onClick={() => {
+                                viewRecentStrategy(STRATEGY.EDIT);
+                            }}
+                            className='load-strategy__recent-item__group'
+                        >
                             <div>
                                 <Icon icon='IcEdit' />
                             </div>
@@ -167,7 +201,12 @@ const RecentWorkspace = ({
                                 Edit
                             </Text>
                         </div>
-                        <div className='load-strategy__recent-item__group'>
+                        <div
+                            onClick={() => {
+                                viewRecentStrategy(STRATEGY.SAVE);
+                            }}
+                            className='load-strategy__recent-item__group'
+                        >
                             <div>
                                 <Icon icon='IcSave' />
                             </div>
@@ -180,7 +219,12 @@ const RecentWorkspace = ({
                                 Save
                             </Text>
                         </div>
-                        <div className='load-strategy__recent-item__group'>
+                        <div
+                            onClick={() => {
+                                viewRecentStrategy(STRATEGY.DELETE);
+                            }}
+                            className='load-strategy__recent-item__group'
+                        >
                             <div>
                                 <Icon icon='IcDelete' />
                             </div>
@@ -207,6 +251,8 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     selected_strategy_id: load_modal.selected_strategy_id,
     setFileLoaded: dashboard.setFileLoaded,
     has_file_loaded: dashboard.has_file_loaded,
+    has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
+    setPreviewOnDialog: dashboard.setPreviewOnDialog,
     toggleSaveModal: save_modal.toggleSaveModal,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     loadFileFromRecent: load_modal.loadFileFromRecent,

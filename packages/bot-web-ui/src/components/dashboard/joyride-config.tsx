@@ -86,7 +86,7 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
 const joyride_props: TJoyrideConfig = {
     showProgress: false,
     spotlightClicks: true,
-    disableBeacon: false,
+    disableBeacon: true,
     disableOverlay: false,
 };
 

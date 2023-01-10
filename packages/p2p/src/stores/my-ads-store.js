@@ -26,7 +26,6 @@ export default class MyAdsStore extends BaseStore {
     is_api_error_modal_visible = false;
     is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
-    is_quick_add_error_modal_open = false;
     is_table_loading = false;
     is_loading = false;
     item_offset = 0;
@@ -64,7 +63,6 @@ export default class MyAdsStore extends BaseStore {
             is_api_error_modal_visible: observable,
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
-            is_quick_add_error_modal_open: observable,
             is_table_loading: observable,
             is_loading: observable,
             item_offset: observable,
@@ -113,7 +111,6 @@ export default class MyAdsStore extends BaseStore {
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
-            setIsQuickAddErrorModalOpen: action.bound,
             setIsTableLoading: action.bound,
             setItemOffset: action.bound,
             setP2pAdvertInformation: action.bound,
@@ -261,6 +258,9 @@ export default class MyAdsStore extends BaseStore {
                     if (response.error) {
                         this.setApiErrorCode(response.error.code);
                         this.setActivateDeactivateErrorMessage(response.error.message);
+                        this.root_store.general_store.showModal({
+                            key: 'ActivateDeactivateErrorModal',
+                        });
                     } else {
                         setIsAdvertActive(!!response.p2p_advert_update.is_active);
                     }
@@ -390,7 +390,9 @@ export default class MyAdsStore extends BaseStore {
             } else {
                 this.setUpdatePaymentMethodsErrorMessage(response.error.message);
                 this.root_store.general_store.hideModal();
-                this.setIsQuickAddErrorModalOpen(true);
+                this.root_store.general_store.showModal({
+                    key: 'QuickAddErrorModal',
+                });
             }
             this.setIsTableLoading(false);
         });
@@ -534,10 +536,6 @@ export default class MyAdsStore extends BaseStore {
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    setIsQuickAddErrorModalOpen(is_quick_add_error_modal_open) {
-        this.is_quick_add_error_modal_open = is_quick_add_error_modal_open;
     }
 
     setIsTableLoading(is_table_loading) {

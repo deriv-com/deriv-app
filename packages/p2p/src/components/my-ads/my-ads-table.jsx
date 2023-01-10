@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, HintBox, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
+import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -9,7 +9,6 @@ import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { generateErrorDialogTitle } from 'Utils/adverts';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 
 const getHeaders = offered_currency => [
@@ -136,50 +135,6 @@ const MyAdsTable = () => {
                         </Button>
                     </div>
                 )}
-                <Modal
-                    className='p2p-my-ads__modal-error'
-                    has_close_icon={false}
-                    is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
-                    small
-                    title={generateErrorDialogTitle(my_ads_store.error_code)}
-                >
-                    <Modal.Body>
-                        <Text as='p' size='xs' color='prominent'>
-                            {my_ads_store.activate_deactivate_error_message}
-                        </Text>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.setActivateDeactivateErrorMessage('')}
-                            primary
-                            text={localize('Ok')}
-                        />
-                    </Modal.Footer>
-                </Modal>
-                <Modal
-                    className='p2p-my-ads__modal-error'
-                    has_close_icon={false}
-                    is_open={my_ads_store.is_quick_add_error_modal_open}
-                    small
-                    title={generateErrorDialogTitle(my_ads_store.error_code)}
-                >
-                    <Modal.Body>
-                        <Text as='p' size='xs' color='prominent'>
-                            {my_ads_store.update_payment_methods_error_message}
-                        </Text>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.setIsQuickAddErrorModalOpen(false)}
-                            primary
-                            text={localize('Ok')}
-                        />
-                    </Modal.Footer>
-                </Modal>
             </React.Fragment>
         );
     }

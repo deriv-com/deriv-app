@@ -1,6 +1,11 @@
 import React from 'react';
 
 export const modals = {
+    ActivateDeactivateErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "activate-deactivate-error-modal" */ 'Components/modal-manager/modals/activate-deactivate-error-modal'
+        )
+    ),
     AdExceedsDailyLimitModal: React.lazy(() =>
         import(
             /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
@@ -97,6 +102,9 @@ export const modals = {
     ),
     QuickAddModal: React.lazy(() =>
         import(/* webpackChunkName: "quick-add-modal" */ 'Components/modal-manager/modals/quick-add-modal')
+    ),
+    QuickAddErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "quick-add-error-modal" */ 'Components/modal-manager/modals/quick-add-error-modal')
     ),
     RatingModal: React.lazy(() =>
         import(/* webpackChunkName: "rating-modal" */ 'Components/modal-manager/modals/rating-modal')

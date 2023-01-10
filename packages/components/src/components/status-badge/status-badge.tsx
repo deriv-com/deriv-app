@@ -5,10 +5,12 @@ import { observer } from 'mobx-react-lite';
 import Icon from '../icon';
 import Text from '../text';
 import { Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import './status-badge.scss';
 
 type TStatusBadge = {
-    document_status: any;
+    account_status: any;
+    class_name?: string;
 };
 
 const status_text = {
@@ -16,7 +18,9 @@ const status_text = {
         text: (
             <Localize
                 i18n_default_text='<0>Pending verification</0>'
-                components={[<Text key={0} weight='bold' size='xxxs' color='var(--text-warning)' />]}
+                components={[
+                    <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--text-warning)' />,
+                ]}
             />
         ),
         icon: 'IcAlertWarning',
@@ -26,7 +30,7 @@ const status_text = {
             <Localize
                 i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
                 components={[
-                    <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
+                    <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--status-danger)' />,
                     <Link key={1} className='link-failed' to='' />,
                 ]}
             />
@@ -47,23 +51,24 @@ const status_text = {
     },
 };
 
-const StatusBadge = ({ document_status }: TStatusBadge) => {
-    const { text, icon } = status_text[document_status as keyof typeof status_text] ?? status_text.default;
+const StatusBadge = ({ account_status, class_name }: TStatusBadge) => {
+    const { text, icon } = status_text[account_status as keyof typeof status_text] ?? status_text.default;
 
     return (
         <div
             className={classNames(
                 'switcher-status-badge__container',
-                `switcher-status-badge__container--${document_status || 'failed'}`
+                class_name,
+                `switcher-status-badge__container--${account_status || 'failed'}`
             )}
         >
             <div
                 className={classNames(
                     'switcher-status-badge__container--icon',
-                    `switcher-status-badge__container--icon${document_status || 'failed'}`
+                    `switcher-status-badge__container--icon${account_status || 'failed'}`
                 )}
             >
-                <Icon icon={icon} />
+                <Icon icon={icon} size={isMobile() ? 8 : 16} />
             </div>
             {text}
         </div>

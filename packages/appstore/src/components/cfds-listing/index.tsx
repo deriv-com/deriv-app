@@ -55,6 +55,15 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
+    const getMT5AccountAuthStatus = (current_acc_status: string) => {
+        if (current_acc_status === 'proof_failed') {
+            return 'failed';
+        } else if (current_acc_status === 'verification_pending') {
+            return 'pending';
+        }
+        return null;
+    };
+
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
     return (
         <ListingContainer
@@ -139,6 +148,9 @@ const CFDsListing = () => {
                                         }
                                     }
                                 }}
+                                mt5_acc_auth_status={
+                                    existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : null
+                                }
                             />
                         );
                     })}

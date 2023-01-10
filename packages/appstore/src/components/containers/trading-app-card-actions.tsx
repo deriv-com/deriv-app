@@ -11,9 +11,10 @@ export type Actions = {
     has_divider?: boolean;
     onAction?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     is_external?: boolean;
+    is_buttons_disabled?: boolean;
 };
 
-const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions) => {
+const TradingAppCardActions = ({ type, link_to, onAction, is_external, is_buttons_disabled }: Actions) => {
     switch (type) {
         case 'get':
             return (
@@ -26,7 +27,13 @@ const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions
         case 'dxtrade':
             return <TradeButton link_to={link_to} />;
         case 'transfer_trade':
-            return <TransferTradeButtonGroup link_to={link_to} onAction={onAction} />;
+            return (
+                <TransferTradeButtonGroup
+                    link_to={link_to}
+                    onAction={onAction}
+                    is_buttons_disabled={is_buttons_disabled}
+                />
+            );
         case 'none':
         default:
             return null;

@@ -76,7 +76,7 @@ const CurrencySelectionModal = ({
                                 </div>
                                 <div className='currency-item-card__balance'>
                                     {is_selected && selected_region === 'EU' && is_authentication_needed ? (
-                                        <StatusBadge document_status={authentication_status.document_status} />
+                                        <StatusBadge account_status={authentication_status.document_status} />
                                     ) : (
                                         <Text size='xs' color='prominent'>
                                             <Money amount={balance} currency={currency} show_currency />

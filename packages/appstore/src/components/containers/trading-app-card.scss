@@ -43,4 +43,9 @@
     &--divider {
         border-bottom: 1px solid var(--general-hover);
     }
+
+    &__acc_status_badge {
+        max-width: fit-content;
+        margin-top: 1rem;
+    }
 }

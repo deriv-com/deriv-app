@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { RefObject } from 'react';
-import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
+import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';
@@ -32,7 +32,7 @@ const Popover = ({
     window_border,
     zIndex = '1',
     data_testid,
-}: React.PropsWithChildren<Partial<TPopoverProps>>) => {
+}: React.PropsWithChildren<TPopoverProps>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
 
@@ -74,20 +74,18 @@ const Popover = ({
                             ? is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))
                             : is_open ?? (is_hovered && message)) as boolean
                     }
-                    position={alignment}
-                    transitionDuration={0.25}
+                    positions={[alignment]}
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                         'react-tiny-popover-cursor-option': should_show_cursor,
                     })}
-                    windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
-                              contentDestination: popover_ref,
-                              contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
+                              parentElement: popover_ref,
+                              contentLocation: ({ childRect, popoverRect, nudgedLeft }) => {
                                   const screen_width = document.body.clientWidth;
-                                  const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
+                                  const total_width = childRect.right + (popoverRect.width - childRect.width / 2);
                                   let top_offset = 0;
                                   let left_offset = 0;
 
@@ -100,17 +98,17 @@ const Popover = ({
                                                       : popoverRect.width) + margin
                                               ) * -1;
                                           top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              childRect.height > popoverRect.height
+                                                  ? (childRect.height - popoverRect.height) / 2
+                                                  : ((popoverRect.height - childRect.height) / 2) * -1;
                                           break;
                                       }
                                       case 'right': {
                                           left_offset = popoverRect.width + margin;
                                           top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              childRect.height > popoverRect.height
+                                                  ? (childRect.height - popoverRect.height) / 2
+                                                  : ((popoverRect.height - childRect.height) / 2) * -1;
                                           break;
                                       }
                                       case 'top': {
@@ -126,7 +124,7 @@ const Popover = ({
                                               total_width > screen_width
                                                   ? Math.abs(total_width - screen_width) * -1
                                                   : 0;
-                                          top_offset = targetRect.height + margin;
+                                          top_offset = childRect.height + margin;
                                           break;
                                       }
                                       default:
@@ -139,14 +137,31 @@ const Popover = ({
                               },
                           }
                         : { containerStyle: { zIndex } })}
-                    content={({ position, targetRect, popoverRect }) => {
+                    content={({ position, childRect, popoverRect }) => {
                         return (
                             <ArrowContainer
                                 position={position}
-                                targetRect={targetRect}
+                                childRect={childRect}
                                 popoverRect={popoverRect}
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                 arrowSize={5}
+                                arrowStyle={
+                                    relative_render
+                                        ? {
+                                              borderTop: '10px solid transparent',
+                                              borderLeft: '10px solid transparent',
+                                              borderRight: `10px solid ${
+                                                  has_error ? 'var(--status-danger)' : 'var(--general-active)'
+                                              }`,
+                                              transform: 'rotate(315deg)',
+                                              right: '0px',
+                                              top: '5px',
+                                              height: '10px',
+                                              margin: 'auto',
+                                              bottom: '0px',
+                                          }
+                                        : {}
+                                }
                             >
                                 <div
                                     id={id}

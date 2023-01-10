@@ -82,7 +82,7 @@ const OptionsAndMultipliersListing = () => {
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
                         availability='All'
-                        type='get'
+                        action_type='get'
                         onAction={() => {
                             if (no_MF_account) {
                                 ui.openRealAccountSignup('maltainvest');
@@ -99,7 +99,7 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
-                        type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                        action_type={is_demo || has_any_real_account ? 'trade' : 'none'}
                         is_deriv_platform
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />

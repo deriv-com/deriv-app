@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 
-const CurrencyWrapper = ({ currency }) => (
+type TCurrencyWrapper = {
+    currency: string;
+};
+
+const CurrencyWrapper = ({ currency }: TCurrencyWrapper) => (
     <div className='currency__wrapper'>
         <Text color='colored-background' weight='bold' size='xxxs'>
             {currency}
         </Text>
     </div>
 );
-
-CurrencyWrapper.propTypes = {
-    currency: PropTypes.string,
-};
 
 export default CurrencyWrapper;

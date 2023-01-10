@@ -53,7 +53,6 @@ export default class OrderStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
@@ -140,15 +139,14 @@ export default class OrderStore {
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        clearTimeout(wait);
                         // TODO: remove this once refactoring of EmailLinkVerifiedModal is done
                         this.root_store.general_store.hideModal();
                         this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
+                        this.root_store.general_store.showModal({
+                            key: 'InvalidVerificationLinkModal',
+                            props: { error_message: response.error.message, order_id: id },
+                        });
                     } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
-                        }
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
@@ -466,10 +464,12 @@ export default class OrderStore {
     }
 
     verifyEmailVerificationCode(verification_action, verification_code) {
+        const order_id = this.order_id;
+
         if (verification_action === 'p2p_order_confirm' && verification_code) {
             requestWS({
                 p2p_order_confirm: 1,
-                id: this.order_id,
+                id: order_id,
                 verification_code,
                 dry_run: 1,
             }).then(response => {
@@ -487,10 +487,15 @@ export default class OrderStore {
                     ) {
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
+                        const wait = setTimeout(() => {
+                            this.root_store.general_store.showModal({
+                                key: 'InvalidVerificationLinkModal',
+                                props: { error_message: response.error.message, order_id },
+                            });
+                        }, 750);
                     } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        if (this.root_store.general_store.modal?.key === 'InvalidVerificationLinkModal') {
+                            this.root_store.general_store.hideModal();
                         }
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
@@ -536,10 +541,6 @@ export default class OrderStore {
 
     setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
         this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
-    }
-
-    setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
-        this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;
     }
 
     setIsLoading(is_loading) {

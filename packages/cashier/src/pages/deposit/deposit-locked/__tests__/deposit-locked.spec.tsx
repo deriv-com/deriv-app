@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { StoreProvider } from '@deriv/stores';
 import DepositLocked from '../deposit-locked';
-import { TRootStore } from '../../../../types';
+import { TRootStore } from 'Types';
 
 jest.mock('Components/cashier-locked', () => {
     const CashierLocked = () => (

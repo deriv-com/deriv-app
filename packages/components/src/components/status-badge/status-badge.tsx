@@ -11,10 +11,16 @@ import './status-badge.scss';
 type TStatusBadge = {
     account_status: any;
     class_name?: string;
-    toggleFailedVerificationModalVisibility: () => void;
+    openFailedVerificationModal: (from_account: string) => void;
+    selected_account_type: string;
 };
 
-const StatusBadge = ({ account_status, class_name, toggleFailedVerificationModalVisibility }: TStatusBadge) => {
+const StatusBadge = ({
+    account_status,
+    class_name,
+    openFailedVerificationModal,
+    selected_account_type,
+}: TStatusBadge) => {
     const status_text = {
         pending: {
             text: (
@@ -42,7 +48,7 @@ const StatusBadge = ({ account_status, class_name, toggleFailedVerificationModal
                             key={1}
                             className='link-failed'
                             onClick={() => {
-                                toggleFailedVerificationModalVisibility();
+                                openFailedVerificationModal(selected_account_type);
                             }}
                         />,
                     ]}

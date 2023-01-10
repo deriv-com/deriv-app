@@ -20,7 +20,7 @@ type CurrencySelectionModalProps = {
     is_visible: boolean;
     loginid: string;
     openRealAccountSignup: (account_type: string) => void;
-    toggleFailedVerificationModalVisibility: () => void;
+    openFailedVerificationModal: (from_account: string) => void;
     selected_region: string;
     switchAccount: (loginid: string) => void;
 };
@@ -34,7 +34,7 @@ const CurrencySelectionModal = ({
     is_visible,
     loginid: current_loginid,
     openRealAccountSignup,
-    toggleFailedVerificationModalVisibility,
+    openFailedVerificationModal,
     selected_region,
     switchAccount,
 }: CurrencySelectionModalProps) => {
@@ -80,9 +80,8 @@ const CurrencySelectionModal = ({
                                     {is_selected && selected_region === 'EU' && is_authentication_needed ? (
                                         <StatusBadge
                                             account_status={authentication_status.document_status}
-                                            toggleFailedVerificationModalVisibility={
-                                                toggleFailedVerificationModalVisibility
-                                            }
+                                            openFailedVerificationModal={openFailedVerificationModal}
+                                            selected_account_type='multipliers'
                                         />
                                     ) : (
                                         <Text size='xs' color='prominent'>
@@ -121,5 +120,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     openRealAccountSignup: ui.openRealAccountSignup,
     selected_region: traders_hub.selected_region,
     switchAccount: client.switchAccount,
-    toggleFailedVerificationModalVisibility: traders_hub.toggleFailedVerificationModalVisibility,
+    openFailedVerificationModal: traders_hub.openFailedVerificationModal,
 }))(CurrencySelectionModal);

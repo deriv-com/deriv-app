@@ -27,6 +27,7 @@ export default class TradersHubStore extends BaseStore {
     account_type_card = '';
     selected_platform_type = 'options';
     active_index = 0;
+    open_failed_verification_for = '';
     platform_demo_balance = { balance: 0, currency: 'USD' };
     platform_real_balance = { balance: 0, currency: 'USD' };
     cfd_demo_balance = { balance: 0, currency: 'USD' };
@@ -62,6 +63,7 @@ export default class TradersHubStore extends BaseStore {
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
+            open_failed_verification_for: observable,
             can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
             content_flag: computed,
@@ -93,6 +95,7 @@ export default class TradersHubStore extends BaseStore {
             toggleAccountTypeModalVisibility: action.bound,
             toggleExitTradersHubModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
+            openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
@@ -633,5 +636,14 @@ export default class TradersHubStore extends BaseStore {
     }
     toggleFailedVerificationModalVisibility() {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
+    }
+
+    openFailedVerificationModal(from_account) {
+        const { setJurisdictionSelectedShortcode } = this.root_store.modules.cfd;
+        if (from_account !== 'multipliers') {
+            setJurisdictionSelectedShortcode(from_account);
+        }
+        this.open_failed_verification_for = from_account;
+        this.toggleFailedVerificationModalVisibility();
     }
 }

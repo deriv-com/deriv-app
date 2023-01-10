@@ -14,7 +14,7 @@ const AccountNeedsVerification = observer(() => {
         account_list,
         loginid,
     } = client;
-    const { openModal, toggleFailedVerificationModalVisibility } = traders_hub;
+    const { openModal, openFailedVerificationModal } = traders_hub;
 
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
     const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
@@ -30,7 +30,8 @@ const AccountNeedsVerification = observer(() => {
         >
             <StatusBadge
                 account_status={document_status}
-                toggleFailedVerificationModalVisibility={toggleFailedVerificationModalVisibility}
+                openFailedVerificationModal={openFailedVerificationModal}
+                selected_account_type='multipliers'
             />
         </CurrencySwitcherContainer>
     );

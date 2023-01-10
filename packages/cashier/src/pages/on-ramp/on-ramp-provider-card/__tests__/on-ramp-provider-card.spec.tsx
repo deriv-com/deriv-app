@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderCard from '../on-ramp-provider-card';
-import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../../cashier_providers';
 
 describe('<OnRampProviderCard />', () => {
     const provider = {
@@ -34,7 +34,9 @@ describe('<OnRampProviderCard />', () => {
         };
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText('Changelly')).toBeInTheDocument();
@@ -62,7 +64,9 @@ describe('<OnRampProviderCard />', () => {
         };
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByTestId('dti_provider_icon_dark')).toBeInTheDocument();
@@ -85,7 +89,9 @@ describe('<OnRampProviderCard />', () => {
         };
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         const btn = screen.getByRole('button', { name: 'Select' });

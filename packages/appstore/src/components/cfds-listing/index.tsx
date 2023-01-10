@@ -46,6 +46,7 @@ const CFDsListing = () => {
         toggleAccountTransferModal,
         is_demo,
         showTopUpModal,
+        no_CR_account,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -101,12 +102,11 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {(is_real && has_no_real_account) ||
-                (is_eu_user && no_MF_account && is_real && (
-                    <div className='cfd-full-row'>
-                        <AddOptionsAccount />
-                    </div>
-                ))}
+            {is_real && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) && (
+                <div className='cfd-full-row'>
+                    <AddOptionsAccount />
+                </div>
+            )}
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text size='xs' line_height='m' weight='bold'>

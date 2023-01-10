@@ -18,7 +18,9 @@ const CreateAdAddPaymentMethodModal = () => {
                 key: 'CancelAddPaymentMethodModal',
             });
         } else {
-            hideModal();
+            hideModal({
+                should_hide_all_modals: true,
+            });
         }
     };
 

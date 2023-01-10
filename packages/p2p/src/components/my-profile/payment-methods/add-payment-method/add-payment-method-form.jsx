@@ -11,7 +11,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
-    const { hideModal, showModal } = useModalManagerContext();
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -104,7 +104,6 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                             });
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();
-                                            hideModal();
                                         }
                                     }}
                                     type='button'

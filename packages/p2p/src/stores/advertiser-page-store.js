@@ -17,7 +17,6 @@ export default class AdvertiserPageStore extends BaseStore {
     is_loading = true;
     is_loading_adverts = true;
     is_submit_disabled = true;
-    show_ad_popup = false;
     submitForm = () => {};
 
     constructor(root_store) {
@@ -36,7 +35,6 @@ export default class AdvertiserPageStore extends BaseStore {
             is_loading: observable,
             is_loading_adverts: observable,
             is_submit_disabled: observable,
-            show_ad_popup: observable,
             submitForm: observable,
             account_currency: computed,
             advert: computed,
@@ -62,7 +60,6 @@ export default class AdvertiserPageStore extends BaseStore {
             setIsLoading: action.bound,
             setIsLoadingAdverts: action.bound,
             setIsSubmitDisabled: action.bound,
-            setShowAdPopup: action.bound,
             setSubmitForm: action.bound,
             showAdPopup: action.bound,
             showBlockUserModal: action.bound,
@@ -154,7 +151,7 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onCancelClick() {
-        this.setShowAdPopup(false);
+        this.root_store.general_store.hideModal();
     }
 
     onConfirmClick(order_info) {
@@ -246,10 +243,6 @@ export default class AdvertiserPageStore extends BaseStore {
         this.is_submit_disabled = is_submit_disabled;
     }
 
-    setShowAdPopup(show_ad_popup) {
-        this.show_ad_popup = show_ad_popup;
-    }
-
     setSubmitForm(submitFormFn) {
         this.submitForm = submitFormFn;
     }
@@ -258,7 +251,9 @@ export default class AdvertiserPageStore extends BaseStore {
         if (!this.root_store.general_store.is_advertiser) {
             this.root_store.buy_sell_store.showVerification();
         } else {
-            this.setShowAdPopup(true);
+            this.root_store.general_store.showModal({
+                key: 'BuySellModal',
+            });
         }
     }
 

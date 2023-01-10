@@ -114,7 +114,10 @@ const EditAdForm = () => {
                 !!Object.values({ ...payment_method_names }).length;
             setIsPaymentMethodTouched(is_payment_method_available);
         }
-        return () => my_ads_store.setApiErrorCode(null);
+        return () => {
+            my_ads_store.setApiErrorCode(null);
+            my_ads_store.setShowEditAdForm(false);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

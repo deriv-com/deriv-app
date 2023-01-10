@@ -5,17 +5,13 @@ import CashierStore from './cashier-store';
 const CashierStoreContext = createContext<CashierStore | null>(null);
 
 export const CashierStoreProvider = ({ children }: PropsWithChildren) => {
-    const {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        modules: { cashier },
-    } = useStore();
+    const { modules } = useStore();
     // const memoizedValue = useMemo(() => new CashierStore(), []);
 
     return (
         <CashierStoreContext.Provider
             // value={memoizedValue}
-            value={cashier}
+            value={modules?.cashier || {}}
         >
             {children}
         </CashierStoreContext.Provider>

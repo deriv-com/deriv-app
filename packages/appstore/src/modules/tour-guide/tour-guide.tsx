@@ -22,6 +22,12 @@ const TourGuide = () => {
 
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
+
+    const eu_user =
+        content_flag === ContentFlag.LOW_RISK_CR_EU ||
+        content_flag === ContentFlag.EU_REAL ||
+        content_flag === ContentFlag.EU_DEMO;
+
     tour_step_locale.last = (
         <div
             onClick={() => {
@@ -81,6 +87,8 @@ const TourGuide = () => {
         );
     }
 
+    const high_risk_and_eu_check = content_flag === ContentFlag.HIGH_RISK_CR || content_flag === eu_user;
+
     return (
         <Joyride
             run={is_tour_open}
@@ -88,7 +96,7 @@ const TourGuide = () => {
             disableScrolling
             hideCloseButton
             disableCloseOnEsc
-            steps={content_flag === ContentFlag.HIGH_RISK_CR ? high_risk_tour_step_config : tour_step_config}
+            steps={high_risk_and_eu_check ? high_risk_tour_step_config : tour_step_config}
             styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
             locale={tour_step_locale}
             floaterProps={{

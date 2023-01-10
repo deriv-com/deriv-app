@@ -20,6 +20,8 @@ export interface IDashboardStore {
     has_builder_token: string | number;
     has_onboarding_token: string | number;
     strategy_save_type: string;
+    show_toast: boolean;
+    setShowToast: (show_toast: boolean) => void;
     onCloseDialog: () => void;
     setHasTourEnded: (has_tour_ended: boolean) => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
@@ -52,6 +54,8 @@ export default class DashboardStore implements IDashboardStore {
             has_started_bot_builder_tour: observable,
             has_builder_token: observable,
             has_onboarding_token: observable,
+            show_toast: observable,
+            setShowToast: action.bound,
             setHasTourEnded: action.bound,
             setBotBuilderTourState: action.bound,
             setPreviewOnPopup: action.bound,
@@ -97,6 +101,11 @@ export default class DashboardStore implements IDashboardStore {
     has_onboarding_token = '';
     strategy_save_type = 'unsaved';
     active_tour_step_number = 0;
+    show_toast = false;
+
+    setShowToast = (show_toast: boolean) => {
+        this.show_toast = show_toast;
+    };
 
     setTourActiveStep = (active_tour_step_number: number) => {
         this.active_tour_step_number = active_tour_step_number;

@@ -3,22 +3,24 @@ import { expect } from '@jest/globals';
 
 describe('validAddress', () => {
     it('should not accept empty string', () => {
-        expect(validAddress('')).toBe(false);
+        expect(validAddress('').is_ok).toBe(false);
     });
     it('should not accept string longer than 70 characters', () => {
-        expect(validAddress('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod')).toBe(false);
+        expect(validAddress('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod').is_ok).toBe(
+            false
+        );
     });
     it('should accept English and decimals', () => {
-        expect(validAddress('221B Baker Street')).toBe(true);
+        expect(validAddress('221B Baker Street').is_ok).toBe(true);
     });
     it('should accept permitted characters', () => {
-        expect(validAddress(". , ' : ; ( ) ° @ # / -")).toBe(true);
+        expect(validAddress(". , ' : ; ( ) ° @ # / -").is_ok).toBe(true);
     });
     it('should accept different languages', () => {
-        expect(validAddress('Улица đường phố ถนน شارع 街道 거리')).toBe(true);
+        expect(validAddress('Улица đường phố ถนน شارع 街道 거리').is_ok).toBe(true);
     });
     it('should not accept special characters other then the permitted ones', () => {
         const not_permitted_characters = '§±!$%^&*+=\\?{}[]|';
-        [...not_permitted_characters].forEach(c => expect(validAddress(c)).toBe(false));
+        [...not_permitted_characters].forEach(c => expect(validAddress(c).is_ok).toBe(false));
     });
 });

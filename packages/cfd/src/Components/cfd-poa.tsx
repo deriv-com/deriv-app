@@ -113,10 +113,10 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         const validations: Record<string, Array<(value: string) => boolean>> = {
             address_line_1: [
                 (v: string) => !!v && !v.match(/^\s*$/),
-                (v: string) => validAddress(v),
+                (v: string) => validAddress(v).is_ok,
                 (v: string) => validLength(v, { max: 70 }),
             ],
-            address_line_2: [(v: string) => !v || validAddress(v), (v: string) => validLength(v, { max: 70 })],
+            address_line_2: [(v: string) => !v || validAddress(v).is_ok, (v: string) => validLength(v, { max: 70 })],
             address_city: [
                 (v: string) => !!v && !v.match(/^\s*$/),
                 (v: string) => validLength(v, { min: 1, max: 35 }),

@@ -19,7 +19,11 @@ const validRequired = (value?: string | number /* , options, field */) => {
     const str = value.toString().replace(/\s/g, '');
     return str.length > 0;
 };
-export const validAddress = (value: string) => /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{1,70}$/u.test(value);
+export const validAddress = (value: string) => {
+    const is_ok = /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{1,70}$/u.test(value);
+    const message = is_ok ? null : form_error_messages.address();
+    return { is_ok, message };
+};
 export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);

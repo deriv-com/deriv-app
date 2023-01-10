@@ -22,7 +22,7 @@ const AddPaymentMethodErrorModal = () => {
                     onClick={() => {
                         my_profile_store.setAddPaymentMethodErrorMessage('');
                         hideModal({
-                            save_form_history: true,
+                            should_save_form_history: true,
                         });
                     }}
                     primary

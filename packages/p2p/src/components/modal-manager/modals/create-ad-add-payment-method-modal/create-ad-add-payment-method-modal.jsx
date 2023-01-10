@@ -19,7 +19,7 @@ const CreateAdAddPaymentMethodModal = () => {
             });
         } else {
             hideModal({
-                hide_all_modals: true,
+                should_hide_all_modals: true,
             });
         }
     };

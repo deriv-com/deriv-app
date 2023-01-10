@@ -33,7 +33,7 @@ const CancelAddPaymentMethodModal = () => {
                         my_profile_store.setIsCancelEditPaymentMethodModalOpen(false);
                         my_profile_store.setSelectedPaymentMethod('');
                         hideModal({
-                            hide_all_modals: my_ads_store.show_ad_form || my_ads_store.show_edit_ad_form,
+                            should_hide_all_modals: my_ads_store.show_ad_form || my_ads_store.show_edit_ad_form,
                         });
                     }}
                     secondary
@@ -44,7 +44,7 @@ const CancelAddPaymentMethodModal = () => {
                     large
                     onClick={() => {
                         hideModal({
-                            save_form_history: true,
+                            should_save_form_history: true,
                         });
                     }}
                     primary

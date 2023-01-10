@@ -141,6 +141,7 @@ export default class TradersHubStore extends BaseStore {
         reaction(
             () => [
                 this.root_store.client.balance,
+                this.root_store.client.loginid,
                 this.root_store.client.obj_total_balance,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
@@ -348,17 +349,28 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getExistingAccounts(platform, market_type) {
+        const { residence } = this.root_store.client;
         const current_list = this.root_store.modules?.cfd?.current_list || [];
         const current_list_keys = Object.keys(current_list);
         const selected_account_type = this.selected_account_type;
         const existing_accounts = current_list_keys
             .filter(key => {
-                if (platform === CFD_PLATFORMS.MT5) {
+                const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
+
+                if (platform === CFD_PLATFORMS.MT5 && !this.is_eu_user && !maltainvest_account) {
                     return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
+                if (
+                    platform === CFD_PLATFORMS.MT5 &&
+                    (this.is_eu_user || isEuCountry(residence)) &&
+                    maltainvest_account
+                ) {
+                    return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
+                }
+
                 return key.startsWith(`${platform}.${selected_account_type}.${market_type}@${market_type}`);
             })
             .reduce((_acc, cur) => {
@@ -610,7 +622,7 @@ export default class TradersHubStore extends BaseStore {
                     exchange_rate = await getExchangeRate(currency, base_currency);
                 }
 
-                total.balance += balance * exchange_rate || 0;
+                (await total).balance += balance * exchange_rate || 0;
                 return total;
             },
             { balance: 0 }

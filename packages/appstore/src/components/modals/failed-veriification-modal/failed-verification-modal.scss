@@ -8,6 +8,13 @@
                 flex: 1;
                 margin-bottom: 0;
             }
+
+            .dc-dialog__button {
+                max-width: fit-content;
+                .dc-text.dc-btn__text {
+                    font-size: 1.2rem;
+                }
+            }
         }
     }
     &__failed_list {

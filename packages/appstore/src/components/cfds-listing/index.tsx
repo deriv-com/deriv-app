@@ -118,8 +118,6 @@ const CFDsListing = () => {
                 <>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
-                        existing_account.status = 'proof_failed';
-
                         return (
                             <TradingAppCard
                                 icon={existing_account.icon}

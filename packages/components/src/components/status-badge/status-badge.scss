@@ -38,6 +38,7 @@
 .link-failed {
     color: var(--status-danger);
     font-weight: bold;
+    text-decoration: underline;
     font-size: var(--text-size-xxxs);
     @include mobile {
         font-size: var(--text-size-xxxxs);

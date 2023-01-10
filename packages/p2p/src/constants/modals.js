@@ -95,6 +95,9 @@ export const modals = {
             /* webpackChunkName: "order-details-confirm-modal" */ 'Components/modal-manager/modals/order-details-confirm-modal'
         )
     ),
+    QuickAddModal: React.lazy(() =>
+        import(/* webpackChunkName: "quick-add-modal" */ 'Components/modal-manager/modals/quick-add-modal')
+    ),
     RatingModal: React.lazy(() =>
         import(/* webpackChunkName: "rating-modal" */ 'Components/modal-manager/modals/rating-modal')
     ),

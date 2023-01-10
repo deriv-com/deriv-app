@@ -23,16 +23,16 @@ const ModalManagerContextProvider = props => {
      * @param {Object|Object[]} modals - list of object modals to set props, each modal object must contain a 'key' attribute and 'props' attribute
      */
     const useRegisterModalProps = modals => {
-        const registered_modals = [];
+        const registered_modals = React.useRef([]);
 
         const registerModals = React.useCallback(() => {
             if (Array.isArray(modals)) {
                 modals.forEach(modal => {
-                    registered_modals.push(modal);
+                    registered_modals.current.push(modal);
                     setModalProps(modal_props.set(modal.key, modal.props));
                 });
             } else {
-                registered_modals.push(modals);
+                registered_modals.current.push(modals);
                 setModalProps(modal_props.set(modals.key, modals.props));
             }
         }, [modals]);
@@ -40,10 +40,10 @@ const ModalManagerContextProvider = props => {
         React.useEffect(() => {
             registerModals();
             return () => {
-                registered_modals.forEach(registered_modal => {
+                registered_modals.current.forEach(registered_modal => {
                     modal_props.delete(registered_modal.key);
                 });
-                registered_modals.current = []
+                registered_modals.current = [];
             };
         }, [modals]);
     };
@@ -72,16 +72,15 @@ const ModalManagerContextProvider = props => {
      */
     const hideModal = (options = {}) => {
         const { should_save_form_history = false, should_hide_all_modals = false } = options;
-      
-        modal_props.delete(active_modal.key);
-        if (isDesktop()) {
-            if (should_save_form_history) {
-                general_store.saveFormState();
-            } else {
-                general_store.setSavedFormState(null);
-                general_store.setFormikRef(null);
-            }
 
+        if (should_save_form_history) {
+            general_store.saveFormState();
+        } else {
+            general_store.setSavedFormState(null);
+            general_store.setFormikRef(null);
+        }
+
+        if (isDesktop()) {
             if (should_hide_all_modals) {
                 setPreviousModal({});
                 setActiveModal({});

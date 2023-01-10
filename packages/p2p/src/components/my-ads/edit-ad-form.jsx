@@ -14,6 +14,7 @@ import FloatingRate from 'Components/floating-rate';
 import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -46,6 +47,15 @@ const EditAdForm = () => {
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const [is_payment_method_touched, setIsPaymentMethodTouched] = React.useState(false);
+    const { useRegisterModalProps } = useModalManagerContext();
+
+    // when editing payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
+    useRegisterModalProps({
+        key: 'CancelAddPaymentMethodModal',
+        props: {
+            should_hide_all_modals_on_cancel: true,
+        },
+    });
 
     const setInitialAdRate = () => {
         if (my_ads_store.required_ad_type !== my_ads_store.selected_ad_type) {

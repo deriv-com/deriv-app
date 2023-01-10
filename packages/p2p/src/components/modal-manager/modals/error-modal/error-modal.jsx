@@ -5,8 +5,8 @@ import { Button, Modal } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const ErrorModal = ({ error_message, error_modal_title, has_close_icon, setIsErrorModalOpen, width }) => {
-    const { is_modal_open } = useModalManagerContext();
+const ErrorModal = ({ error_message, error_modal_title, has_close_icon, width }) => {
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
         <Modal
@@ -18,7 +18,7 @@ const ErrorModal = ({ error_message, error_modal_title, has_close_icon, setIsErr
         >
             <Modal.Body className='error-modal__body'>{error_message}</Modal.Body>
             <Modal.Footer>
-                <Button large primary onClick={() => setIsErrorModalOpen(false)}>
+                <Button large primary onClick={hideModal}>
                     <Localize i18n_default_text='Ok' />
                 </Button>
             </Modal.Footer>

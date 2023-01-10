@@ -482,11 +482,18 @@ export default class OrderStore {
                         response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        this.root_store.general_store.showModal({
-                            key: 'InvalidVerificationLinkModal',
-                            props: { error_message: response.error.message, order_id },
-                        });
+                        clearTimeout(wait);
+                        this.setVerificationLinkErrorMessage(response.error.message);
+                        const wait = setTimeout(() => {
+                            this.root_store.general_store.showModal({
+                                key: 'InvalidVerificationLinkModal',
+                                props: { error_message: response.error.message, order_id },
+                            });
+                        }, 750);
                     } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
+                        if (this.root_store.general_store.modal?.key === 'InvalidVerificationLinkModal') {
+                            this.root_store.general_store.hideModal();
+                        }
                         clearTimeout(wait);
                         this.setVerificationLinkErrorMessage(response.error.message);
                         const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);

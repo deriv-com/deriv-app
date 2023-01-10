@@ -3,12 +3,11 @@ import { sell, openContractReceived } from './state/actions';
 import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
 import { doUntilDone } from '../utils/helpers';
 import DBotStore from '../../../scratch/dbot-store';
-import { api_base } from '../../api/api-base';
 
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            const subscription = api_base.api.onMessage().subscribe(({ data }) => {
+            this.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'proposal_open_contract') {
                     const contract = data.proposal_open_contract;
 
@@ -42,7 +41,6 @@ export default Engine =>
                     }
                 }
             });
-            api_base.pushSubscription(subscription);
         }
 
         waitForAfter() {
@@ -53,13 +51,7 @@ export default Engine =>
 
         subscribeToOpenContract(contract_id = this.contractId) {
             this.contractId = contract_id;
-            const request_object = {
-                proposal_open_contract: 1,
-                contract_id,
-                subscribe: 1,
-            };
-
-            doUntilDone(() => api_base.api.send(request_object))
+            doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
                 .then(data => {
                     const { populateConfig } = DBotStore.instance;
                     populateConfig(data.proposal_open_contract);
@@ -67,7 +59,7 @@ export default Engine =>
                 })
                 .catch(error => {
                     if (error.error.code !== 'AlreadySubscribed') {
-                        doUntilDone(() => api_base.api.send(request_object)).then(
+                        doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
                             response => (this.openContractId = response.proposal_open_contract.id)
                         );
                     }

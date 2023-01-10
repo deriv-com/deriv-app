@@ -1,21 +1,32 @@
 .trading-app-card {
     display: inline-flex;
     align-items: center;
-    height: max-content;
+    height: 100%;
+
+    &__icon {
+        &--container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 0 2rem;
+        }
+    }
 
     &__container {
         display: inline-flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         width: 100%;
-        padding: 0 0 1rem;
+        height: 100%;
+        padding: 0 0 2rem;
         margin-left: 1.6rem;
     }
 
     &__details {
-        display: flex;
-        justify-content: center;
+        display: inline-flex;
         flex-direction: column;
+        justify-content: center;
         height: 100%;
         padding: 0 2rem 0 0;
         width: 100%;

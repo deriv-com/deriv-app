@@ -1,11 +1,12 @@
+import 'Sass/app/_common/components/platform-dropdown.scss';
+
+import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
+import { PlatformContext, getActivePlatform, getPlatformSettings, isDesktop, isMobile, routes } from '@deriv/shared';
+
+import { BinaryLink } from 'App/Components/Routes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
-
-import { BinaryLink } from 'App/Components/Routes';
-import 'Sass/app/_common/components/platform-dropdown.scss';
 
 const PlatformBox = ({ platform: { icon, title, description } }) => (
     <>

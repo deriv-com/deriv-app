@@ -5,7 +5,7 @@ import { tabs_title } from 'Constants/load-modal';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
 import React from 'react';
-import GoogleDrive from './google-drive';
+import GoogleDrive from '../dashboard/dashboard-component/load-bot-preview/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';

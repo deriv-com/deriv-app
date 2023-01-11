@@ -559,3 +559,16 @@
         }
     }
 }
+
+.bot-notification {
+    .dc-toast__message {
+        background: var(--text-prominent);
+        font-size: 1.2rem;
+        position: absolute;
+        top: -5rem;
+        left: 20rem;
+        @include mobile {
+            top: -8rem;
+        }
+    }
+}

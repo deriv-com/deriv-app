@@ -64,7 +64,7 @@ const LocalComponent = ({ handleFileChange, loaded_local_file, setLoadedLocalFil
                     }}
                 >
                     {is_mobile ? (
-                        <Icon icon={'IcMobile'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                        <Icon icon={'IcLocal'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
                     ) : (
                         <React.Fragment>
                             <Icon icon={'IcPc'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />

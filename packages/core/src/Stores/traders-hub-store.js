@@ -19,7 +19,6 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type;
     selected_region;
     is_balance_calculating = false;
-    is_exit_traders_hub_modal_visible = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
@@ -53,7 +52,6 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
-            is_exit_traders_hub_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             is_balance_calculating: observable,
@@ -96,7 +94,6 @@ export default class TradersHubStore extends BaseStore {
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
-            toggleExitTradersHubModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
@@ -280,12 +277,14 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get should_show_exit_traders_modal() {
-        //  should display the modal when user have atleast one mf account and cr account
+        //  should display the modal when low risk cr client have atleast one mf account
+        const is_low_risk_cr_client = [
+            ContentFlag.LOW_RISK_CR_EU,
+            ContentFlag.LOW_RISK_CR_NON_EU,
+            ContentFlag.CR_DEMO,
+        ].includes(this.content_flag);
         const { active_accounts } = this.root_store.client;
-        return (
-            active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&
-            active_accounts.some(acc => acc.landing_company_shortcode === 'svg')
-        );
+        return is_low_risk_cr_client && active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
 
     toggleRegulatorsCompareModal() {
@@ -482,10 +481,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
-    }
-
-    toggleExitTradersHubModal() {
-        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
     get can_get_more_cfd_mt5_accounts() {

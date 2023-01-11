@@ -1,17 +1,18 @@
 import React from 'react';
-import { useHistory, withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const ExitTradersHubModal = () => {
+const ExitTradersHubModal = ({
+    disableApp,
+    enableApp,
+    is_exit_traders_hub_modal_visible,
+    toggleExitTradersHubModal,
+    setIsPreAppStore,
+}) => {
     const history = useHistory();
-    const { ui, traders_hub, client } = useStores();
-    const { disableApp, enableApp } = ui;
-    const { setIsPreAppStore } = client;
-    const { is_exit_traders_hub_modal_visible, toggleExitTradersHubModal } = traders_hub;
 
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
@@ -74,4 +75,10 @@ const ExitTradersHubModal = () => {
     );
 };
 
-export default withRouter(observer(ExitTradersHubModal));
+export default connect(({ ui, client }) => ({
+    setIsPreAppStore: client.setIsPreAppStore,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+}))(ExitTradersHubModal);

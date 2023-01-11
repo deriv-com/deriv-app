@@ -5,12 +5,10 @@ import Button from '../button/button';
 
 type TPopupOverlay = {
     title: string;
-    descriptions: [
-        {
-            key: number | string;
-            component: React.ReactNode;
-        }
-    ];
+    descriptions: {
+        key: number | string;
+        component: React.ReactNode;
+    }[];
     overlay_ref: HTMLDivElement;
     toggleOverlay: () => void;
     done_text: string;

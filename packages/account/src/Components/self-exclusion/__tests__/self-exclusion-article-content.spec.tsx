@@ -3,11 +3,18 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Popup } from '@deriv/components';
 import SelfExclusionArticleContent from '../self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
+import { createPortal } from 'react-dom';
 
-Popup.Overlay = jest.fn(() => <div>Trading limits</div>);
+Popup.Overlay = jest.fn(() => createPortal(<div>Trading limits</div>, document.body));
 
 describe('<SelfExclusionArticleContent />', () => {
-    let mock_context = {};
+    let mock_context = {
+        is_app_settings: false,
+        is_eu: false,
+        is_uk: false,
+        overlay_ref: {},
+        toggleArticle: jest.fn(),
+    };
     const descr_text = 'About trading limits and self-exclusion';
     const eu_item =
         'When you set your limits or self-exclusion, they will be aggregated across all your account types in DTrader and DBot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.';

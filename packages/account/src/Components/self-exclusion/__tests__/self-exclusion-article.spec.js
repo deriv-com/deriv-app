@@ -2,7 +2,7 @@ import React from 'react';
 import { isMobile, isDesktop, PlatformContext } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionArticle from '../self-exclusion-article';
-import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content.jsx';
+import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
 
 jest.mock('@deriv/shared', () => ({
@@ -11,8 +11,8 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(),
 }));
 
-jest.mock('Components/self-exclusion/self-exclusion-article-content.jsx', () => ({
-    ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content.jsx'),
+jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
+    ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),
     selfExclusionArticleItems: jest.fn(),
 }));
 

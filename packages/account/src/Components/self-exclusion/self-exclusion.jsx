@@ -13,7 +13,7 @@ import {
 import { localize } from '@deriv/translations';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
-import SelfExclusionArticleContent from './self-exclusion-article-content.jsx';
+import SelfExclusionArticleContent from './self-exclusion-article-content';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionModal from './self-exclusion-modal.jsx';
 import SelfExclusionWrapper from './self-exclusion-wrapper.jsx';

@@ -15,6 +15,7 @@ type TSidebarProps = {
     faq_search_value: string;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (setFAQSearchValue: string) => void;
+    active_tab: number;
 };
 
 const Sidebar = ({
@@ -22,6 +23,7 @@ const Sidebar = ({
     setActiveTabTutorial,
     setFAQSearchValue,
     faq_search_value,
+    active_tab,
 }: TSidebarProps) => {
     const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -41,7 +43,7 @@ const Sidebar = ({
 
         setsearchFilteredList(guide_tab_content);
         setsearchFAQList(faq_content);
-    }, [active_tab_tutorials]);
+    }, [active_tab_tutorials, active_tab]);
 
     React.useEffect(() => {
         const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
@@ -125,4 +127,5 @@ export default connect(({ dashboard }: RootStore) => ({
     faq_search_value: dashboard.faq_search_value,
     setActiveTabTutorial: dashboard.setActiveTabTutorial,
     setFAQSearchValue: dashboard.setFAQSearchValue,
+    active_tab: dashboard.active_tab,
 }))(Sidebar);

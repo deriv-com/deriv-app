@@ -20,13 +20,13 @@ const AssetSummary = () => {
                 currency: platform_real_balance.currency,
             };
         }
+
         return {
             balance: platform_demo_balance.balance + cfd_demo_balance.balance,
             currency: platform_demo_balance.currency,
         };
     };
 
-    const currency = 'USD';
     const is_eu_popover_text = is_eu
         ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
         : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${selected_account_type} accounts`);
@@ -41,7 +41,11 @@ const AssetSummary = () => {
                         </Text>
                     ) : null}
                     <Popover alignment='left' message={is_eu_popover_text}>
-                        <BalanceText currency={currency} balance={getTotalBalance().balance} underline_style='dotted' />
+                        <BalanceText
+                            currency={getTotalBalance().currency}
+                            balance={getTotalBalance().balance}
+                            underline_style='dotted'
+                        />
                     </Popover>
                 </React.Fragment>
             ) : null}

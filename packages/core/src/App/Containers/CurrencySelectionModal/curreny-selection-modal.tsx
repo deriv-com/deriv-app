@@ -20,6 +20,7 @@ type CurrencySelectionModalProps = {
     is_visible: boolean;
     loginid: string;
     openRealAccountSignup: (account_type: string) => void;
+    openFailedVerificationModal: (from_account: string) => void;
     selected_region: string;
     switchAccount: (loginid: string) => void;
 };
@@ -33,6 +34,7 @@ const CurrencySelectionModal = ({
     is_visible,
     loginid: current_loginid,
     openRealAccountSignup,
+    openFailedVerificationModal,
     selected_region,
     switchAccount,
 }: CurrencySelectionModalProps) => {
@@ -76,7 +78,11 @@ const CurrencySelectionModal = ({
                                 </div>
                                 <div className='currency-item-card__balance'>
                                     {is_selected && selected_region === 'EU' && is_authentication_needed ? (
-                                        <StatusBadge document_status={authentication_status.document_status} />
+                                        <StatusBadge
+                                            account_status={authentication_status.document_status}
+                                            openFailedVerificationModal={openFailedVerificationModal}
+                                            selected_account_type='multipliers'
+                                        />
                                     ) : (
                                         <Text size='xs' color='prominent'>
                                             <Money amount={balance} currency={currency} show_currency />
@@ -114,4 +120,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     openRealAccountSignup: ui.openRealAccountSignup,
     selected_region: traders_hub.selected_region,
     switchAccount: client.switchAccount,
+    openFailedVerificationModal: traders_hub.openFailedVerificationModal,
 }))(CurrencySelectionModal);

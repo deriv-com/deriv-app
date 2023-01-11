@@ -22,7 +22,7 @@ const OptionsAndMultipliersListing = () => {
         is_demo,
         content_flag,
     } = traders_hub;
-    const { is_landing_company_loaded, is_eu } = client;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account } = client;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -30,7 +30,7 @@ const OptionsAndMultipliersListing = () => {
 
     const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
 
-    const cr_demo = (high_risk_cr || low_risk_cr_non_eu) && is_demo;
+    const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
     const OptionsTitle = () => {
         if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !isMobile()) {
@@ -82,7 +82,7 @@ const OptionsAndMultipliersListing = () => {
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
                         availability='All'
-                        type='get'
+                        action_type='get'
                         onAction={() => {
                             if (no_MF_account) {
                                 ui.openRealAccountSignup('maltainvest');
@@ -99,7 +99,11 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
-                        type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                        action_type={
+                            is_demo || (has_any_real_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                                ? 'trade'
+                                : 'none'
+                        }
                         is_deriv_platform
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />

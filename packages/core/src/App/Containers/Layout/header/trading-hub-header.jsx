@@ -352,5 +352,5 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleExitTradersHubModal: traders_hub.toggleExitTradersHubModal,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

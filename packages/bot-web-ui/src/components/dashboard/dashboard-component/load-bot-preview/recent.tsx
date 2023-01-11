@@ -1,5 +1,5 @@
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import { Text } from '@deriv/components';
+import { MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import React from 'react';
 import { connect } from 'Stores/connect';
@@ -9,6 +9,7 @@ import DeleteDialog from './delete-dialog';
 import './index.scss';
 import RecentWorkspace from './recent-workspace';
 import { isMobile } from '@deriv/shared';
+import SaveModal from '../../../save-modal';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;
@@ -59,6 +60,9 @@ const RecentComponent = ({
                         })}
                     </div>
                     <DeleteDialog setStrategies={setDashboardStrategies} />
+                    <MobileWrapper>
+                        <SaveModal />
+                    </MobileWrapper>
                 </div>
             </div>
         </div>

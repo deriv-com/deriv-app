@@ -12,7 +12,7 @@ type TStaticUrl = {
     is_document?: boolean;
 };
 
-const StaticUrl: React.FC<React.PropsWithChildren<TStaticUrl>> = ({ href, is_document, children, ...props }) => {
+const StaticUrl = ({ href, is_document, children, ...props }: React.PropsWithChildren<TStaticUrl>) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());

@@ -14,7 +14,7 @@ const AccountNeedsVerification = observer(() => {
         account_list,
         loginid,
     } = client;
-    const { openModal } = traders_hub;
+    const { openModal, openFailedVerificationModal } = traders_hub;
 
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
     const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
@@ -28,13 +28,17 @@ const AccountNeedsVerification = observer(() => {
                 openModal('currency_selection');
             }}
         >
-            <StatusBadge account_status={document_status} />
+            <StatusBadge
+                account_status={document_status}
+                openFailedVerificationModal={openFailedVerificationModal}
+                selected_account_type='multipliers'
+            />
         </CurrencySwitcherContainer>
     );
 });
 
 const RealAccountSwitcher = () => {
-    const { client } = useStores();
+    const { client, traders_hub } = useStores();
     const { is_authentication_needed, is_switching, has_any_real_account } = client;
 
     if (is_switching) {

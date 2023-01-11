@@ -45,6 +45,7 @@ const CFDsListing = () => {
         no_MF_account,
         toggleAccountTransferModal,
         is_demo,
+        openFailedVerificationModal,
         showTopUpModal,
         no_CR_account,
     } = traders_hub;
@@ -155,6 +156,8 @@ const CFDsListing = () => {
                                 mt5_acc_auth_status={
                                     existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : null
                                 }
+                                selected_mt5_jurisdiction={existing_account.landing_company_short}
+                                openFailedVerificationModal={openFailedVerificationModal}
                             />
                         );
                     })}

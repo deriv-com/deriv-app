@@ -20,12 +20,14 @@ export default class TradersHubStore extends BaseStore {
     selected_region;
     is_balance_calculating = false;
     is_exit_traders_hub_modal_visible = false;
+    is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
     active_index = 0;
+    open_failed_verification_for = '';
     platform_demo_balance = { balance: 0, currency: 'USD' };
     platform_real_balance = { balance: 0, currency: 'USD' };
     cfd_demo_balance = { balance: 0, currency: 'USD' };
@@ -52,6 +54,7 @@ export default class TradersHubStore extends BaseStore {
             is_account_type_modal_visible: observable,
             is_exit_traders_hub_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
+            is_failed_verification_modal_visible: observable,
             is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
@@ -60,6 +63,7 @@ export default class TradersHubStore extends BaseStore {
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
+            open_failed_verification_for: observable,
             can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
             content_flag: computed,
@@ -90,6 +94,8 @@ export default class TradersHubStore extends BaseStore {
             toggleAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             toggleExitTradersHubModal: action.bound,
+            toggleFailedVerificationModalVisibility: action.bound,
+            openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
@@ -629,6 +635,19 @@ export default class TradersHubStore extends BaseStore {
         );
         return { balance: total_balance.balance, currency: base_currency };
     }
+    toggleFailedVerificationModalVisibility() {
+        this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
+    }
+
+    openFailedVerificationModal(from_account) {
+        const { setJurisdictionSelectedShortcode } = this.root_store.modules.cfd;
+        if (from_account !== 'multipliers') {
+            setJurisdictionSelectedShortcode(from_account);
+        }
+        this.open_failed_verification_for = from_account;
+        this.toggleFailedVerificationModalVisibility();
+    }
+
     showTopUpModal(data) {
         const { ui, modules } = this.root_store;
         const { openTopUpModal } = ui;

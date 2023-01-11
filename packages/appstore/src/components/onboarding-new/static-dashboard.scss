@@ -158,6 +158,7 @@
             &--apps {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 3rem;
 
                 @include desktop {
                     margin-top: 1rem;

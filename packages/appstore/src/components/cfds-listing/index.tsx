@@ -48,6 +48,7 @@ const CFDsListing = () => {
         openFailedVerificationModal,
         showTopUpModal,
         no_CR_account,
+        setSelectedAccount,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -146,6 +147,7 @@ const CFDsListing = () => {
                                         const button_name = e?.currentTarget?.name;
                                         if (button_name === 'transfer-btn') {
                                             toggleAccountTransferModal();
+                                            setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
                                             showTopUpModal(existing_account);
                                         } else {
@@ -208,6 +210,7 @@ const CFDsListing = () => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {
                                         toggleAccountTransferModal();
+                                        setSelectedAccount(existing_account.login);
                                     } else if (button_name === 'topup-btn') {
                                         showTopUpModal(existing_account);
                                     } else {

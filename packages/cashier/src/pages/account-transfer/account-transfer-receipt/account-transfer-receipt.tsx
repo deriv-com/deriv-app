@@ -13,7 +13,7 @@ type TSwitch = {
 };
 
 type TAccountTransferReceipt = {
-    onClose?: () => void;
+    onClose: () => void;
     history: RouteComponentProps;
 };
 
@@ -73,6 +73,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
+        onClose();
     };
 
     return (

@@ -12,16 +12,18 @@ const QuickStrategyFooter = ({
     submitForm,
     setActiveTab,
 }: TQuickStrategyFooter) => {
-    function handleCreateEdit() {
+    const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
         setActiveTab(1);
-    }
-    function handleRun() {
+    }, [is_submit_enabled]);
+
+    const handleRun = React.useCallback(() => {
         setActiveTab(1);
         setFieldValue('button', 'run');
         submitForm();
-    }
+    }, [is_submit_enabled]);
+
     return (
         <div
             className={classNames('quick-strategy__form-footer', {

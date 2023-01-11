@@ -1,4 +1,5 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
+import { tour_type, setTourSettings } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
@@ -22,6 +23,8 @@ export interface IDashboardStore {
     has_onboarding_token: string | number;
     strategy_save_type: string;
     show_toast: boolean;
+    is_file_supported: boolean;
+    setIsFileSupported: (is_file_supported: boolean) => void;
     setShowToast: (show_toast: boolean) => void;
     onCloseDialog: () => void;
     setHasTourEnded: (has_tour_ended: boolean) => void;
@@ -32,6 +35,8 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
+    onCloseTour: (param: Partial<string>) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -59,6 +64,8 @@ export default class DashboardStore implements IDashboardStore {
             has_mobile_preview_loaded: observable,
             setPreviewOnDialog: action.bound,
             show_toast: observable,
+            is_file_supported: observable,
+            setIsFileSupported: action.bound,
             setShowToast: action.bound,
             setHasTourEnded: action.bound,
             setBotBuilderTourState: action.bound,
@@ -75,6 +82,9 @@ export default class DashboardStore implements IDashboardStore {
             setInfoPanelVisibility: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setOnBoardingTokenCheck: action.bound,
+            toggleOnConfirm: action.bound,
+            onCloseTour: action.bound,
+            onTourEnd: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -107,6 +117,11 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     active_tour_step_number = 0;
     show_toast = false;
+    is_file_supported = false;
+
+    setIsFileSupported = (is_file_supported: boolean) => {
+        this.is_file_supported = is_file_supported;
+    };
 
     setShowToast = (show_toast: boolean) => {
         this.show_toast = show_toast;
@@ -212,5 +227,43 @@ export default class DashboardStore implements IDashboardStore {
         const addition = is_zoom_in ? 1 : -1;
 
         workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
+    };
+
+    toggleOnConfirm = (active_tab: number, value: boolean): void => {
+        if (active_tab === 0) {
+            this.setTourActive(value);
+            this.setOnBoardTourRunState(value);
+        } else {
+            this.setBotBuilderTourState(value);
+        }
+        this.setHasTourEnded(value);
+    };
+
+    onCloseTour = (param: Partial<string>) => {
+        if (param === 'onboard') {
+            this.setOnBoardTourRunState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        } else {
+            this.setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        }
+        this.setTourActive(false);
+    };
+
+    setTourEnd = (): void => {
+        this.setHasTourEnded(true);
+        this.setTourDialogVisibility(true);
+        setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+    };
+
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
+        if (step === 8) {
+            this.onCloseTour('onboard');
+            this.setTourEnd();
+        }
+        if (!has_started_onboarding_tour && step === 6) {
+            this.onCloseTour('bot_builder');
+            this.setTourEnd();
+        }
     };
 }

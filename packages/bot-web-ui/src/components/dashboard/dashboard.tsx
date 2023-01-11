@@ -202,19 +202,22 @@ const Dashboard = ({
         });
     }, [has_tour_started]);
 
-    const handleTabChange = (tab_index: number) => {
-        setActiveTab(tab_index);
-        const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
-        const el_id = ids[tab_index];
-        if (el_id) {
-            const el_tab = document.getElementById(el_id);
-            el_tab?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'center',
-            });
-        }
-    };
+    const handleTabChange = React.useCallback(
+        (tab_index: number) => {
+            setActiveTab(tab_index);
+            const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
+            const el_id = ids[tab_index];
+            if (el_id) {
+                const el_tab = document.getElementById(el_id);
+                el_tab?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                });
+            }
+        },
+        [active_tab]
+    );
 
     return (
         <React.Fragment>

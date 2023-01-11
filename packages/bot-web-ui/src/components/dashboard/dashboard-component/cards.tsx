@@ -20,6 +20,8 @@ type TCardProps = {
     is_running: boolean;
     load_modal: LoadModalStore;
     is_mobile: boolean;
+    file_supported: boolean;
+    setIsFileSupported: (param: boolean) => void;
     loadFileFromLocal: VoidFunction;
     openFileLoader: VoidFunction;
     onOkButtonClick: VoidFunction;
@@ -37,6 +39,7 @@ const Card = ({
     is_dialog_open,
     has_dashboard_strategies,
     is_mobile,
+    setIsFileSupported,
     loadFileFromLocal,
     setActiveTab,
     setFileLoaded,
@@ -55,7 +58,7 @@ const Card = ({
         });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
+
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
@@ -188,4 +191,5 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     showVideoDialog: dashboard.showVideoDialog,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    setIsFileSupported: dashboard.setIsFileSupported,
 }))(Card);

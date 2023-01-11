@@ -55,7 +55,8 @@ const Card = ({
         });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
+    //TODO: implement later, we need to check if the file is supported or not on the upload of the file
+    // const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
@@ -131,7 +132,8 @@ const Card = ({
                         accept='.xml'
                         hidden
                         onChange={e => {
-                            setIsFileSupported(handleFileChange(e, false));
+                            //TODO: implement later, we need to check if the file is supported or not on the upload of the file
+                            // setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
                         }}

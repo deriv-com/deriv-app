@@ -75,7 +75,10 @@
         &__header {
             display: flex;
             flex-direction: column;
-            width: 70%;
+
+            &--limited-width {
+                width: 70%;
+            }
 
             @include mobile {
                 width: 100%;
@@ -160,8 +163,8 @@
                     margin-top: 1rem;
                 }
 
-                &-item {
-                    margin-left: 1rem;
+                &--with-gap {
+                    grid-column-gap: 3rem;
                 }
 
                 &--eu {

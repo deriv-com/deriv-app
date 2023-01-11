@@ -69,6 +69,7 @@ const StaticCFDAccountManager = ({
         <div
             className={classNames('static-cfd-account-manager', {
                 'static-cfd-account-manager--hidden': is_options_hidden,
+                'static-cfd-account-manager--with-margin': platform === 'options',
             })}
         >
             <div className='static-cfd-account-manager__icon'>

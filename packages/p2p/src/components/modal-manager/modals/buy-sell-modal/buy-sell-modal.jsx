@@ -262,7 +262,7 @@ const BuySellModal = () => {
                     {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer={true} />
+                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
                     ) : (
                         <React.Fragment>
                             <Form

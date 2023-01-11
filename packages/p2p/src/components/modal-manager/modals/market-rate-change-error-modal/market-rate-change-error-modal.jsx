@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
-import { useModalManagerContext } from '../../modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const MarketRateChangeErrorModal = () => {
     const { is_modal_open, hideModal } = useModalManagerContext();

@@ -7,12 +7,6 @@ import { routes } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import AccountTransferLocked from '../account-transfer-locked';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('AccountTransferLocked', () => {
     let mockRootStore;
     beforeEach(() => {

@@ -1,11 +1,10 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-transfer-form.scss';
 
@@ -40,17 +39,25 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     return errors;
 };
 
-const PaymentAgentTransferForm = ({
-    amount,
-    balance,
-    currency,
-    description,
-    error,
-    requestTryPaymentAgentTransfer,
-    setErrorMessage,
-    transfer_limit,
-    transfer_to,
-}) => {
+const PaymentAgentTransferForm = observer(() => {
+    const {
+        client,
+        modules: {
+            cashier: { payment_agent_transfer: payment_agent_transfer_store },
+        },
+    } = useStore();
+
+    const { balance, currency } = client;
+
+    const {
+        confirm: { amount, description, client_id: transfer_to },
+        error,
+        requestTryPaymentAgentTransfer,
+        transfer_limit,
+    } = payment_agent_transfer_store;
+
+    const { setErrorMessage } = error;
+
     const validateTransferPassthrough = values =>
         validateTransfer(values, {
             balance,
@@ -177,28 +184,6 @@ const PaymentAgentTransferForm = ({
             </Formik>
         </div>
     );
-};
+});
 
-PaymentAgentTransferForm.propTypes = {
-    amount: PropTypes.string,
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    description: PropTypes.string,
-    error: PropTypes.object,
-    requestTryPaymentAgentTransfer: PropTypes.func,
-    setErrorMessage: PropTypes.func,
-    transfer_limit: PropTypes.object,
-    transfer_to: PropTypes.string,
-};
-
-export default connect(({ client, modules }) => ({
-    balance: client.balance,
-    currency: client.currency,
-    amount: modules.cashier.payment_agent_transfer.confirm.amount,
-    description: modules.cashier.payment_agent_transfer.confirm.description,
-    error: modules.cashier.payment_agent_transfer.error,
-    requestTryPaymentAgentTransfer: modules.cashier.payment_agent_transfer.requestTryPaymentAgentTransfer,
-    setErrorMessage: modules.cashier.payment_agent_transfer.error.setErrorMessage,
-    transfer_limit: modules.cashier.payment_agent_transfer.transfer_limit,
-    transfer_to: modules.cashier.payment_agent_transfer.confirm.client_id,
-}))(PaymentAgentTransferForm);
+export default PaymentAgentTransferForm;

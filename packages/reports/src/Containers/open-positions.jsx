@@ -26,7 +26,7 @@ import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
-import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
+import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,

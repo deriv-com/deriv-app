@@ -13,7 +13,7 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import AccountStatistics from '../Components/account-statistics.jsx';
 import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta';
-import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
+import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 
 const DetailsComponent = ({ message = '', action_type = '' }) => {
     const address_hash_match = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(message.split(/,\s/)[0]);

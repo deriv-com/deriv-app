@@ -191,7 +191,7 @@ const ResetTradingPassword = ({
     );
 };
 
-export type TResetTradingPasswordModal = {
+type TResetTradingPasswordModal = {
     disableApp: () => void;
     enableApp: () => void;
     is_loading: boolean;

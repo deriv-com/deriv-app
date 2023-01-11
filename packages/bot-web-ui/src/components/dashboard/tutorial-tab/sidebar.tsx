@@ -34,7 +34,11 @@ const Sidebar = ({
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
-        if (search_input?.current?.value) setsearchFAQList((search_input.current.value = ''));
+        if (search_input?.current?.value) {
+            search_input.current.value = '';
+            setsearchFAQList([]);
+        }
+
         setsearchFilteredList(guide_tab_content);
         setsearchFAQList(faq_content);
     }, [active_tab_tutorials]);
@@ -60,6 +64,14 @@ const Sidebar = ({
         },
     ];
     const selected_tab = menu_items?.[active_tab_tutorials] || {};
+
+    const onChangeHandle = React.useCallback(
+        ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+            setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
+        },
+        [active_tab_tutorials]
+    );
+
     return (
         <>
             <DesktopWrapper>
@@ -96,9 +108,7 @@ const Sidebar = ({
                             value={selected_tab.label}
                             label={''}
                             should_show_empty_option={false}
-                            onChange={({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-                                setActiveTabTutorial(menu_items.findIndex(i => i.label === value));
-                            }}
+                            onChange={onChangeHandle}
                         />
                     </div>
                     <div className={classNames({ 'tutorials-mobile__guide': active_tab_tutorials === 0 })}>

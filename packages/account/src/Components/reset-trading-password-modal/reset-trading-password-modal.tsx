@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
 import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordModal, verification_code, platform }) => {
-    const handleSubmit = (values, actions) => {
+type TResetTradingPassword = {
+    setDialogTitleFunc?: (value: boolean) => void;
+    toggleResetTradingPasswordModal: (value: boolean) => void;
+    verification_code: string;
+    platform: 'dxtrade' | 'mt5' | 'derivez';
+};
+
+const ResetTradingPassword = ({
+    setDialogTitleFunc,
+    toggleResetTradingPasswordModal,
+    verification_code,
+    platform,
+}: TResetTradingPassword) => {
+    const handleSubmit = (values: FormikValues, actions: FormikValues) => {
         actions.setSubmitting(true);
 
         const params = {
@@ -16,10 +28,10 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
             platform,
         };
 
-        WS.tradingPlatformPasswordReset(params).then(async response => {
+        WS.tradingPlatformPasswordReset(params).then(async (response: FormikValues) => {
             if (response.error) {
                 actions.setStatus({ error_msg: response.error.message, error_code: response.error.code });
-                setDialogTitleFunc(true);
+                setDialogTitleFunc?.(true);
             } else {
                 actions.resetForm({ password: '' });
                 actions.setStatus({ reset_complete: true });
@@ -29,8 +41,8 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
         });
     };
 
-    const validateReset = values => {
-        const errors = {};
+    const validateReset = (values: FormikValues) => {
+        const errors: FormikErrors<FormikValues> = {};
 
         if (
             !validLength(values.password, {
@@ -146,12 +158,12 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                                 label={localize('{{platform}} password', {
                                                     platform: getCFDPlatformLabel(platform),
                                                 })}
-                                                onChange={e => {
+                                                onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                                                     setFieldTouched('password', true);
                                                     handleChange(e);
                                                 }}
                                                 onBlur={handleBlur}
-                                                error={touched.password && errors.password}
+                                                error={touched.password ? errors.password : ''}
                                                 value={values.password}
                                                 data-lpignore='true'
                                                 required
@@ -179,13 +191,12 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
     );
 };
 
-ResetTradingPassword.propTypes = {
-    is_dxtrade_allowed: PropTypes.bool,
-    setDialogTitleFunc: PropTypes.func,
-    toggleResetTradingPasswordModal: PropTypes.func,
-    verification_code: PropTypes.string,
-    platform: PropTypes.string,
-};
+type TResetTradingPasswordModal = {
+    disableApp: () => void;
+    enableApp: () => void;
+    is_loading: boolean;
+    is_visible: boolean;
+} & TResetTradingPassword;
 
 const ResetTradingPasswordModal = ({
     disableApp,
@@ -195,7 +206,7 @@ const ResetTradingPasswordModal = ({
     toggleResetTradingPasswordModal,
     verification_code,
     platform,
-}) => {
+}: TResetTradingPasswordModal) => {
     const [dialog_title, setDialogTitle] = React.useState('');
     const history = useHistory();
     React.useEffect(() => {
@@ -207,7 +218,7 @@ const ResetTradingPasswordModal = ({
         }
     }, [history, is_visible]);
 
-    const setDialogTitleFunc = is_invalid_token => {
+    const setDialogTitleFunc = (is_invalid_token: boolean) => {
         setDialogTitle(
             is_invalid_token
                 ? localize('Reset {{platform}} password', {

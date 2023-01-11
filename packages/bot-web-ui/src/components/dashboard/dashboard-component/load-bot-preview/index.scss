@@ -63,6 +63,7 @@
 
         @include mobile {
             height: 100%;
+            overflow: hidden;
         }
     }
 
@@ -448,6 +449,7 @@
             font-size: var(--text-size-s);
             font-weight: bold;
             line-height: 2.4rem;
+            color: var(--text-general);
         }
 
         &-terms {

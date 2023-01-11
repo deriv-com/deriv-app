@@ -105,8 +105,12 @@
 
             &--empty {
                 display: flex;
-                // height: 100%;
-                // max-height: 450px;
+            }
+
+            &--sticky {
+                display: flex;
+                position: sticky;
+                bottom: 0;
             }
             @include mobile {
                 height: calc(100vh - 40px);

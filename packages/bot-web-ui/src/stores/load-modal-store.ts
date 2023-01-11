@@ -321,8 +321,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const element = '#load-strategy__blockly-container';
-            const ref = document.querySelector(element);
+            const ref = document.getElementById('#load-strategy__blockly-container');
             if (!ref) {
                 // eslint-disable-next-line no-console
                 console.warn('Could not find preview workspace element.');

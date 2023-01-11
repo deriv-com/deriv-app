@@ -1,17 +1,18 @@
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Field, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
 
 const EditPaymentMethodForm = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
 
     if (!my_profile_store.payment_method_info) {
@@ -94,7 +95,14 @@ const EditPaymentMethodForm = () => {
                                         }
                                     )}
                                 </div>
-                                <div className='add-payment-method-form__buttons'>
+                                <div
+                                    className={classNames('add-payment-method-form__buttons', {
+                                        'add-payment-method-form__buttons--separated-footer':
+                                            general_store.active_index === 3 && isMobile(),
+                                        'add-payment-method-form__buttons--separated-footer-profile':
+                                            general_store.active_index === 3 && isDesktop(),
+                                    })}
+                                >
                                     <Button
                                         secondary
                                         large

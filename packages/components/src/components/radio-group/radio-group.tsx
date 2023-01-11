@@ -33,6 +33,10 @@ const RadioGroup = ({
 }: React.PropsWithChildren<TRadioGroup>) => {
     const [selected_option, setSelectedOption] = React.useState(selected);
 
+    React.useEffect(() => {
+        setSelectedOption(selected);
+    }, [selected]);
+
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(e.target.value);
         onToggle(e);

@@ -1,47 +1,56 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CryptoTransactionsHistory />', () => {
+    let mockRootStore;
+
+    beforeEach(() => {
+        mockRootStore = {
+            modules: {
+                cashier: {
+                    transaction_history: {
+                        crypto_transactions: [],
+                        is_loading: false,
+                        setIsCryptoTransactionsVisible: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+            client: {
+                currency: 'BTC',
+            },
+        };
+    });
+
+    const renderCryptoTransactionsHistory = () =>
+        render(<CryptoTransactionsHistory />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
+
     it('should show "USD recent transactions" and "No current transactions available" messages', () => {
-        const setIsCryptoTransactionsVisible = jest.fn();
-        render(
-            <CryptoTransactionsHistory
-                crypto_transactions={[]}
-                currency={'BTC'}
-                setIsCryptoTransactionsVisible={setIsCryptoTransactionsVisible}
-            />
-        );
+        renderCryptoTransactionsHistory();
 
         expect(screen.getByText('BTC recent transactions')).toBeInTheDocument();
         expect(screen.getByText('No current transactions available')).toBeInTheDocument();
     });
 
     it('should trigger onClick callback when the back arrow is clicked', () => {
-        const setIsCryptoTransactionsVisible = jest.fn();
-        render(
-            <CryptoTransactionsHistory
-                crypto_transactions={[]}
-                currency={'BTC'}
-                setIsCryptoTransactionsVisible={setIsCryptoTransactionsVisible}
-            />
-        );
+        renderCryptoTransactionsHistory();
 
         const back_arrow = screen.getByTestId('dt_crypto_transactions_history_back');
         fireEvent.click(back_arrow);
 
-        expect(setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.transaction_history.setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(
+            1
+        );
     });
 
     it('should show the loader when is_loading is equal "true"', () => {
-        const setIsCryptoTransactionsVisible = jest.fn();
-        const crypto_transactions = [
+        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
             {
                 address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                 address_url:
@@ -56,22 +65,16 @@ describe('<CryptoTransactionsHistory />', () => {
                 transaction_type: 'withdrawal',
             },
         ];
-        render(
-            <CryptoTransactionsHistory
-                crypto_transactions={crypto_transactions}
-                currency={'BTC'}
-                setIsCryptoTransactionsVisible={setIsCryptoTransactionsVisible}
-                is_loading
-            />
-        );
+        mockRootStore.modules.cashier.transaction_history.is_loading = true;
+
+        renderCryptoTransactionsHistory();
 
         const loader = screen.getByTestId('dt_initial_loader');
         expect(loader).toBeInTheDocument();
     });
 
     it('should show table headers: "Transaction", "Amount", "Address", "Transaction hash", "Time", "Status", "Action"', () => {
-        const setIsCryptoTransactionsVisible = jest.fn();
-        const crypto_transactions = [
+        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
             {
                 address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                 address_url:
@@ -88,13 +91,7 @@ describe('<CryptoTransactionsHistory />', () => {
         ];
         const headers = ['Transaction', 'Amount', 'Address', 'Transaction hash', 'Time', 'Status', 'Action'];
 
-        render(
-            <CryptoTransactionsHistory
-                crypto_transactions={crypto_transactions}
-                currency={'BTC'}
-                setIsCryptoTransactionsVisible={setIsCryptoTransactionsVisible}
-            />
-        );
+        renderCryptoTransactionsHistory();
 
         headers.forEach(el => {
             expect(screen.getByText(el)).toBeInTheDocument();

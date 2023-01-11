@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import React from 'react';
 import { buildCurrenciesList, getDefaultCurrency } from '../currency';
 
@@ -6,7 +5,7 @@ describe('buildCurrenciesList', () => {
     const payout_currencies = ['AUD', 'BTC', 'ETH', 'EUR', 'LTC', 'USD'];
 
     it('It Returns the desired currencies', () => {
-        expect(buildCurrenciesList(payout_currencies)).to.eql({
+        expect(buildCurrenciesList(payout_currencies)).toEqual({
             Fiat: [
                 {
                     has_tooltip: false,
@@ -46,14 +45,14 @@ describe('buildCurrenciesList', () => {
 
     it('Returns correct default currency when currency is passed', () => {
         const currencies_list = buildCurrenciesList(payout_currencies);
-        expect(getDefaultCurrency(currencies_list, 'EUR')).to.eql({
+        expect(getDefaultCurrency(currencies_list, 'EUR')).toEqual({
             currency: 'EUR',
         });
     });
 
     it('Returns first currency in currencies list when currency is not passed', () => {
         const currencies_list = buildCurrenciesList(payout_currencies);
-        expect(getDefaultCurrency(currencies_list)).to.eql({
+        expect(getDefaultCurrency(currencies_list)).toEqual({
             currency: 'AUD',
         });
     });

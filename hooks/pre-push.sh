@@ -59,7 +59,7 @@ function main() {
             npm run test:stylelint $package
         fi
 
-        npm run test:mocha $package
+        npm run test:jest $package
     done
 }
 

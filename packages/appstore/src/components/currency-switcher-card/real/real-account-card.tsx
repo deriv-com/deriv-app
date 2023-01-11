@@ -6,16 +6,24 @@ import { formatMoney, getCurrencyName, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
+import { TRootStore } from 'Types';
 import { useStores } from 'Stores/index';
 
 const default_balance = { balance: 0, currency: 'USD' };
 
 const RealAccountCard = () => {
     const history = useHistory();
-    const { client, traders_hub } = useStores();
+    const store = useStores();
+    const { client, modules, traders_hub }: TRootStore = store;
+
     const { accounts, loginid } = client;
-    const { openModal } = traders_hub;
+    const { current_list } = modules.cfd;
+    const { openModal, is_eu_user } = traders_hub;
     const { balance, currency } = accounts[loginid] || default_balance;
+
+    const has_mf_mt5_account = Object.keys(current_list)
+        .map(key => current_list[key])
+        .some(account => account.landing_company_short === 'maltainvest');
 
     return (
         <CurrencySwitcherContainer
@@ -27,7 +35,12 @@ const RealAccountCard = () => {
             }
             icon={currency}
             onClick={() => {
-                openModal('currency_selection');
+                if (!is_eu_user && !has_mf_mt5_account) {
+                    openModal('currency_selection');
+                } else if (is_eu_user && has_mf_mt5_account) {
+                    return null;
+                }
+                return openModal('currency_selection');
             }}
             actions={
                 <Button

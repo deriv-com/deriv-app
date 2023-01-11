@@ -22,8 +22,7 @@ const validRequired = (value?: string | number /* , options, field */) => {
 export const address_permitted_special_characters_message_string = ". , ' : ; ( ) ° @ # / -";
 export const validAddress = (value: string) => {
     const is_ok = /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{1,70}$/u.test(value);
-    const error_message = form_error_messages ? form_error_messages.address : null;
-    const message = is_ok ? null : error_message;
+    const message = is_ok ? null : form_error_messages.address();
     return { is_ok, message };
 };
 export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);

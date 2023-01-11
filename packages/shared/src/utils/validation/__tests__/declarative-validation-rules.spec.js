@@ -1,7 +1,11 @@
-import { validAddress } from '../declarative-validation-rules';
-import { expect } from '@jest/globals';
+import { FORM_ERROR_MESSAGES } from '../../../../../core/src/Constants/form-error-messages';
+import { validAddress, initFormErrorMessages } from '../declarative-validation-rules';
+import { beforeAll, expect } from '@jest/globals';
 
 describe('validAddress', () => {
+    beforeAll(() => {
+        initFormErrorMessages(FORM_ERROR_MESSAGES);
+    });
     it('should not accept empty string', () => {
         expect(validAddress('').is_ok).toBe(false);
     });

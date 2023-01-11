@@ -1080,7 +1080,12 @@
         }
         &-wrapper {
             overflow: scroll;
+            width: inherit;
         }
+    }
+    &__mobile-title {
+        text-align: left;
+        margin: 0 2.4rem;
     }
 }
 
@@ -1804,7 +1809,6 @@
     }
     .cfd-account__platform {
         font-style: italic;
-        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {

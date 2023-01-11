@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
 import { isMobile, isDesktop } from '@deriv/shared';
-import { useComponentVisible } from '../../hooks/useComponentVisible';
+import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 
 type TRecentWorkspace = {
     active_tab: number;
@@ -65,7 +65,7 @@ const RecentWorkspace = ({
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
 
     const toggle_ref = React.useRef<HTMLDivElement>(null);
-    const visible = useComponentVisible(toggle_ref);
+    const visible = useComponentVisibility(toggle_ref);
 
     const { setDropdownVisibility, is_dropdown_visible } = visible;
 
@@ -171,11 +171,11 @@ const RecentWorkspace = ({
                                 viewRecentStrategy(STRATEGY.PREVIEW_LIST);
                             }}
                         >
-                            <div className='load-strategy__recent-item__group__icon'>
+                            <div>
                                 <Icon icon='IcPreview' />
                             </div>
                             <Text
-                                color='general'
+                                color='prominent'
                                 className='load-strategy__recent-item__group__label'
                                 as='p'
                                 size='xxs'
@@ -193,7 +193,7 @@ const RecentWorkspace = ({
                                 <Icon icon='IcEdit' />
                             </div>
                             <Text
-                                color='general'
+                                color='prominent'
                                 className='load-strategy__recent-item__group__label'
                                 as='p'
                                 size='xxs'
@@ -211,7 +211,7 @@ const RecentWorkspace = ({
                                 <Icon icon='IcSave' />
                             </div>
                             <Text
-                                color='general'
+                                color='prominent'
                                 className='load-strategy__recent-item__group__label'
                                 as='p'
                                 size='xxs'
@@ -229,7 +229,7 @@ const RecentWorkspace = ({
                                 <Icon icon='IcDelete' />
                             </div>
                             <Text
-                                color='general'
+                                color='prominent'
                                 className='load-strategy__recent-item__group__label'
                                 as='p'
                                 size='xxs'

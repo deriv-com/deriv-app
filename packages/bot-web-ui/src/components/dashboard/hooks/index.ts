@@ -1,3 +1,3 @@
-import useComponentVisible from './useComponentVisible';
+import useComponentVisibility from './useComponentVisibility';
 
-export default useComponentVisible;
+export default useComponentVisibility;

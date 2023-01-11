@@ -247,6 +247,9 @@
                     &--min {
                         top: 1rem;
                         right: 6rem;
+                        &:first-child {
+                            filter: invert(1);
+                        }
                     }
                 }
             }
@@ -286,7 +289,7 @@
             }
 
             &__mobile {
-                background: $color-white;
+                background: var(--general-main-1);
                 width: 15rem;
                 box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
                 position: absolute;

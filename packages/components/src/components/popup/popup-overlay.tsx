@@ -10,7 +10,7 @@ type TPopupOverlay = {
         component: React.ReactNode;
     }[];
     overlay_ref: HTMLDivElement;
-    toggleOverlay: () => void;
+    toggleOverlay?: () => void;
     done_text: string;
 };
 

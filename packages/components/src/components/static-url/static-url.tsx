@@ -7,7 +7,7 @@ export type TPlatformContext = {
     is_pre_appstore?: boolean;
 };
 
-type TStaticUrl = {
+type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
     href?: string;
     is_document?: boolean;
 };

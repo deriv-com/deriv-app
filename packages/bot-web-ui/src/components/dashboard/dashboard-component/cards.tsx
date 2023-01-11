@@ -160,7 +160,7 @@ const Card = ({
                             height_offset='80px'
                             page_overlay
                         >
-                            <div label='Google Drive'>
+                            <div label='Google Drive' className='google-drive-label'>
                                 <GoogleDrive />
                             </div>
                         </MobileFullPageModal>

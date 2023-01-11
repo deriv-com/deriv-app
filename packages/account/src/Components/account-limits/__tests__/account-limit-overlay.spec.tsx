@@ -6,13 +6,13 @@ import AccountLimitsContext from '../account-limits-context';
 
 describe('<AccountLimitsOverlay/>', () => {
     beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(component => {
+        (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {
             return component;
         });
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
     const Component = () => (

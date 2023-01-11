@@ -1,6 +1,6 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
-import { Icon, Dialog, Text } from '@deriv/components';
+import { Icon, Dialog, Text, MobileFullPageModal, MobileWrapper, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -27,6 +27,7 @@ type TCardProps = {
     save_modal: SaveModalStore;
     setFileLoaded: (param: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
+    setPreviewOnPopup: (show: boolean) => void;
 };
 
 const Card = ({
@@ -40,6 +41,7 @@ const Card = ({
     setActiveTab,
     setFileLoaded,
     showVideoDialog,
+    setPreviewOnPopup,
 }: TCardProps) => {
     type TCardArray = {
         icon: string;
@@ -53,7 +55,8 @@ const Card = ({
         });
     };
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
+    //TODO: implement later, we need to check if the file is supported or not on the upload of the file
+    // const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const openFileLoader = () => {
         file_input_ref?.current?.click();
     };
@@ -129,21 +132,41 @@ const Card = ({
                         accept='.xml'
                         hidden
                         onChange={e => {
-                            setIsFileSupported(handleFileChange(e, false));
+                            //TODO: implement later, we need to check if the file is supported or not on the upload of the file
+                            // setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
                         }}
                     />
-                    <Dialog
-                        title={dialog_options.title}
-                        is_visible={is_dialog_open}
-                        onCancel={closeResetDialog}
-                        is_mobile_full_width
-                        className={'dc-dialog__wrapper--google-drive'}
-                        has_close_icon
-                    >
-                        <GoogleDrive />
-                    </Dialog>
+                    <DesktopWrapper>
+                        <Dialog
+                            title={dialog_options.title}
+                            is_visible={is_dialog_open}
+                            onCancel={closeResetDialog}
+                            is_mobile_full_width
+                            className={'dc-dialog__wrapper--google-drive'}
+                            has_close_icon
+                        >
+                            <GoogleDrive />
+                        </Dialog>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <MobileFullPageModal
+                            is_modal_open={is_dialog_open}
+                            className='load-strategy__wrapper'
+                            header={localize('Load strategy')}
+                            onClickClose={() => {
+                                setPreviewOnPopup(false);
+                                closeResetDialog();
+                            }}
+                            height_offset='80px'
+                            page_overlay
+                        >
+                            <div label='Google Drive'>
+                                <GoogleDrive />
+                            </div>
+                        </MobileFullPageModal>
+                    </MobileWrapper>
                 </div>
                 <Recent />
             </div>
@@ -166,4 +189,5 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setActiveTab: dashboard.setActiveTab,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     showVideoDialog: dashboard.showVideoDialog,
+    setPreviewOnPopup: dashboard.setPreviewOnPopup,
 }))(Card);

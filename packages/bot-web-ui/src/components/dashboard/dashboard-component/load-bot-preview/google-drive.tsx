@@ -1,24 +1,19 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import { isMobile } from '@deriv/shared';
+import RootStore from 'Stores/root-store';
 
-type TGoogleDrive = {
+type TGoogleDriveProps = {
     is_authorised: boolean;
     is_open_button_loading: boolean;
     onDriveConnect: () => void;
     onDriveOpen: () => void;
 };
 
-const google_content = [
-    localize("To import your bot from your Google Drive, you'll need to sign in to your Google account."),
-    localize('To know how Google Drive handles your data, please review Deriv’s Privacy policy.'),
-];
-
-const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }: TGoogleDrive) => {
+const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }: TGoogleDriveProps) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -29,21 +24,13 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     })}
                     size={isMobile() ? 96 : 128}
                 />
-
-                <div className='load-strategy__google-drive-text'>
+                <div className='load-strategy__google-drive-connected-text'>
                     {is_authorised ? (
                         <Localize i18n_default_text='You are connected to Google Drive' />
                     ) : (
                         'Google Drive'
                     )}
                 </div>
-                {google_content.map(content => {
-                    return (
-                        <Text align='center' as='p' size='xs' line_height='l' key={content}>
-                            {content}
-                        </Text>
-                    );
-                })}
                 {is_authorised ? (
                     <Button.Group>
                         <Button text={localize('Disconnect')} onClick={onDriveConnect} has_effect secondary large />
@@ -58,6 +45,24 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                     </Button.Group>
                 ) : (
                     <React.Fragment>
+                        <div className='load-strategy__google-drive-terms'>
+                            <div className='load-strategy__google-drive-text'>
+                                <Localize i18n_default_text="To import your bot from your Google Drive, you'll need to sign in to your Google account." />
+                            </div>
+                            <div className='load-strategy__google-drive-text'>
+                                <Localize
+                                    i18n_default_text='To know how Google Drive handles your data, please review Deriv’s <0>Privacy policy.</0>'
+                                    components={[
+                                        <StaticUrl
+                                            key={0}
+                                            className='link'
+                                            href='tnc/security-and-privacy.pdf'
+                                            is_document
+                                        />,
+                                    ]}
+                                />
+                            </div>
+                        </div>
                         <Button text={localize('Connect')} onClick={onDriveConnect} has_effect primary large />
                     </React.Fragment>
                 )}

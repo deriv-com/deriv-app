@@ -386,7 +386,7 @@ export default class LoadModalStore implements ILoadModalStore {
             case save_types.UNSAVED:
                 return 'IcReports';
             case save_types.LOCAL:
-                return 'IcDesktop';
+                return 'IcMyComputer';
             case save_types.GOOGLE_DRIVE:
                 return 'IcGoogleDrive';
             default:

@@ -74,8 +74,8 @@ const SaveModalForm = ({
                                         id='local'
                                         label={
                                             <IconRadio
-                                                text={localize('Local')}
-                                                icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcLocal'} size={48} />}
+                                                text={localize(is_mobile ? 'Local' : 'My computer')}
+                                                icon={<Icon icon={is_mobile ? 'IcLocal' : 'IcMyComputer'} size={48} />}
                                             />
                                         }
                                         value={save_types.LOCAL}

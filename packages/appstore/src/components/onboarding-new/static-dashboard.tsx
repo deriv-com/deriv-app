@@ -232,10 +232,7 @@ const StaticDashboard = ({
                                 </StaticCurrencySwitcherContainer>
                             )}
                         </div>
-                        <div
-                            className='static-dashboard-wrapper__body'
-                            style={has_applauncher_account && !isMobile() ? { height: '4rem' } : {}}
-                        >
+                        <div className='static-dashboard-wrapper__body'>
                             {!has_applauncher_account && (
                                 <StaticCFDAccountManager
                                     type='all'

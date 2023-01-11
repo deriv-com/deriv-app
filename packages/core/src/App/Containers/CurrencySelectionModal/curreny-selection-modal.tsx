@@ -50,8 +50,9 @@ const CurrencySelectionModal = ({
                 {(account_list as AccountListDetail[])
                     .filter(
                         acc =>
-                            (!acc.is_virtual && selected_region === 'Non-EU' && acc.loginid.startsWith('CR')) ||
-                            (selected_region === 'EU' && acc.loginid.startsWith('MF'))
+                            !!acc.is_disabled === false &&
+                            ((!acc.is_virtual && selected_region === 'Non-EU' && acc.loginid.startsWith('CR')) ||
+                                (selected_region === 'EU' && acc.loginid.startsWith('MF')))
                     )
                     .map(({ icon, loginid }) => {
                         const { balance, currency } = accounts[loginid];

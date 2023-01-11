@@ -5,6 +5,7 @@ import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import './currency-switcher-container.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
+import { TRootStore } from 'Types';
 
 interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;
@@ -22,9 +23,28 @@ const CurrentSwitcherContainer = ({
     title,
     ...props
 }: CurrentSwitcherContainerProps) => {
-    const { traders_hub, client } = useStores();
+    const store = useStores();
+    const { client, modules, traders_hub }: TRootStore = store;
+
     const { document_status } = client.authentication_status;
     const { is_eu_user } = traders_hub;
+    const { current_list } = modules.cfd;
+
+    const has_mf_mt5_account = Object.keys(current_list)
+        .map(key => current_list[key])
+        .some(account => account.landing_company_short === 'maltainvest');
+
+    const Dropdown = () => {
+        const icon_dropdown = (
+            <div className='currency-switcher-container__arrow'>
+                <Icon icon='IcChevronDownBold' />
+            </div>
+        );
+        if (is_eu_user && has_mf_mt5_account) {
+            return null;
+        }
+        return icon_dropdown;
+    };
 
     return (
         <div
@@ -54,11 +74,7 @@ const CurrentSwitcherContainer = ({
             </div>
 
             {actions}
-            {(has_interaction || is_eu_user) && (
-                <div className='currency-switcher-container__arrow'>
-                    <Icon icon='IcChevronDownBold' />
-                </div>
-            )}
+            <Dropdown />
         </div>
     );
 };

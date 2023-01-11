@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv/shared';
 import BalanceText from 'Components/elements/text/balance-text';
 import { useStores } from 'Stores';
 import './asset-summary.scss';
@@ -10,8 +10,15 @@ import './asset-summary.scss';
 const AssetSummary = () => {
     const { client, traders_hub } = useStores();
     const { has_active_real_account, is_eu } = client;
-    const { selected_account_type, platform_real_balance, cfd_demo_balance, platform_demo_balance, cfd_real_balance } =
-        traders_hub;
+    const {
+        selected_account_type,
+        platform_real_balance,
+        cfd_demo_balance,
+        platform_demo_balance,
+        cfd_real_balance,
+        content_flag,
+        is_eu_user,
+    } = traders_hub;
 
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
@@ -27,7 +34,9 @@ const AssetSummary = () => {
         };
     };
 
-    const is_eu_popover_text = is_eu
+    const eu_text = content_flag === ContentFlag.EU_REAL || is_eu_user;
+
+    const is_eu_popover_text = eu_text
         ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
         : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${selected_account_type} accounts`);
 

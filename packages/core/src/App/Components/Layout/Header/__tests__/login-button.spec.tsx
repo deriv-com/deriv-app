@@ -1,23 +1,11 @@
-// TODO refactor old tests in this component
 import React from 'react';
-import { Button } from '@deriv/components';
+import { render, screen } from '@testing-library/react';
 import { LoginButton } from '../login-button.jsx';
-import { render } from '@testing-library/react';
-
-// configure({ adapter: new Adapter() });
 
 describe('LoginButton', () => {
-    it('should render one <LoginButton /> component', () => {
-        render(<LoginButton />);
-        // const wrapper = shallow(<LoginButton />);
-        // expect(wrapper).toHaveLength(1);
+    it('should have the right className base on the property', () => {
+        render(<LoginButton className='acc-info__button' />);
+        const button = screen.getByRole('button');
+        expect(button).toHaveClass('acc-info__button');
     });
-    // it('should have Button', () => {
-    //     const wrapper = shallow(<LoginButton />);
-    //     expect(wrapper.find(Button).exists()).toBe(true);
-    // });
-    // it('should have onClick prop of Button as an instance of Function', () => {
-    //     const wrapper = shallow(<LoginButton />);
-    //     expect(wrapper.find(Button).prop('onClick')).toBeInstanceOf(Function);
-    // });
 });

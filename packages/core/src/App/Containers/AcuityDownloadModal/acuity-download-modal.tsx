@@ -64,26 +64,31 @@ const AcuityDownloadModal = ({
                     <Localize i18n_default_text='Power up your trades with cool new tools' />
                 </Text>
                 <div className='acuity-download-modal__body--description'>
-                    <Text as='p' line_height='m' align='center'>
+                    <Text as='p' size='xs' line_height='m' align='center'>
                         <Localize
-                            i18n_default_text={`We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge! <0/><0/>
-                    Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>
-                    This suite is only available for Windows, and is most recommended for financial assets.`}
-                            components={[<br key={0} />, <Text key={1} weight='bold' />]}
+                            i18n_default_text="We've partnered with Acuity to give you a suite of intuitive trading tools for MT5 so you can keep track of market events and trends, free of charge!<0/><0/>"
+                            components={[<br key={0} />]}
                         />
+                        <Localize
+                            i18n_default_text='Download the Acuity suite and take advantage of the <1>Macroeconomic Calendar, Market Alerts, Research Terminal,</1> and <1>Signal Centre Trade Ideas</1> without leaving your MT5 terminal.<0/><0/>'
+                            components={[<br key={0} />, <Text key={1} size='xs' weight='bold' />]}
+                        />
+                        <Localize i18n_default_text='This suite is only available for Windows, and is most recommended for financial assets.' />
                     </Text>
                 </div>
                 <div className='acuity-download-modal__body--guide'>
-                    <Text as='p' line_height='m' align='center'>
+                    <Text as='p' size='xs' align='center' weight='bold'>
+                        <Localize i18n_default_text='Need help using Acuity?' />
+                    </Text>
+                    <Text as='p' size='xxs' align='center'>
                         <Localize
-                            i18n_default_text='<1>Need help using Acuity?</1><0/>Check out this <2>user guide</2>.'
+                            i18n_default_text='Check out this <0>user guide</0>.'
                             components={[
-                                <br key={0} />,
-                                <Text key={1} weight='bold' />,
                                 <Text
-                                    key={2}
+                                    key={0}
                                     className='acuity-download-modal__body--guide__link'
                                     as='a'
+                                    size='xxs'
                                     color='red'
                                     weight='bold'
                                     onClick={openGuide}

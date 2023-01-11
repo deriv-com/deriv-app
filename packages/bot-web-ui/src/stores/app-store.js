@@ -39,7 +39,7 @@ export default class AppStore {
 
     onUnmount() {
         DBot.terminateBot();
-        DBot.terminateConnection();
+
         if (Blockly.derivWorkspace) {
             clearInterval(Blockly.derivWorkspace.save_workspace_interval);
             Blockly.derivWorkspace.dispose();

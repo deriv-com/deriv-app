@@ -3,7 +3,7 @@ import React from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
-type TInputProps = {
+export type TInputProps = {
     autoComplete?: string;
     bottom_label?: string;
     className?: string;

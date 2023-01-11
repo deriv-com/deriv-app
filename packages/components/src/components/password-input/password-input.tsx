@@ -1,15 +1,20 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Icon from '../icon';
-import Input from '../input';
+import Input, { TInputProps } from '../input';
+
+type TPasswordInput = Partial<TInputProps> & {
+    autoComplete: string;
+    className?: string;
+    input_id?: string;
+};
 
 const PasswordInput = ({
     className, // Must not be passed to Input as the only trailing icon should be the visibility icon
     autoComplete, // Must be passed to Input, if not will get console warning
     input_id,
     ...otherProps
-}) => {
+}: TPasswordInput) => {
     const [should_show_password, setShouldShowPassword] = React.useState(false);
 
     const togglePasswordVisibility = () => {
@@ -37,12 +42,6 @@ const PasswordInput = ({
             />
         </div>
     );
-};
-
-PasswordInput.propTypes = {
-    className: PropTypes.string,
-    autoComplete: PropTypes.string.isRequired,
-    input_id: PropTypes.string,
 };
 
 export default PasswordInput;

@@ -100,12 +100,14 @@ const createTickMarkers = contract_info => {
             if (is_accumulator && !is_preexit_spot && !is_current_last_spot) {
                 marker_config.content_config.spot_className = `${marker_config.content_config.spot_className} ${marker_config.content_config.spot_className}-small`;
             }
-        } else if ((is_current_last_spot || is_preexit_spot) && is_accumulator) {
+        } else if ((is_current_last_spot || is_preexit_spot) && is_accumulator && !is_exit_spot) {
             marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
-            marker_config.content_config.is_value_hidden = false;
         } else if (is_exit_spot) {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
+            if (is_accumulator) {
+                marker_config.content_config.is_value_hidden = false;
+            }
         }
 
         if (marker_config) {

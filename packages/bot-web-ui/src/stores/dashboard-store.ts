@@ -1,4 +1,5 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
+import { tour_type, setTourSettings } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
@@ -30,6 +31,8 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
+    onCloseTour: (param: Partial<string>) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -71,6 +74,9 @@ export default class DashboardStore implements IDashboardStore {
             setInfoPanelVisibility: action.bound,
             setBotBuilderTokenCheck: action.bound,
             setOnBoardingTokenCheck: action.bound,
+            toggleOnConfirm: action.bound,
+            onCloseTour: action.bound,
+            onTourEnd: action.bound,
         });
         this.root_store = root_store;
         reaction(
@@ -196,5 +202,43 @@ export default class DashboardStore implements IDashboardStore {
 
     setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
         this.is_info_panel_visible = is_info_panel_visible;
+    };
+
+    toggleOnConfirm = (active_tab: number, value: boolean): void => {
+        if (active_tab === 0) {
+            this.setTourActive(value);
+            this.setOnBoardTourRunState(value);
+        } else {
+            this.setBotBuilderTourState(value);
+        }
+        this.setHasTourEnded(value);
+    };
+
+    onCloseTour = (param: Partial<string>) => {
+        if (param === 'onboard') {
+            this.setOnBoardTourRunState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        } else {
+            this.setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        }
+        this.setTourActive(false);
+    };
+
+    setTourEnd = (): void => {
+        this.setHasTourEnded(true);
+        this.setTourDialogVisibility(true);
+        setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+    };
+
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
+        if (step === 8) {
+            this.onCloseTour('onboard');
+            this.setTourEnd();
+        }
+        if (!has_started_onboarding_tour && step === 6) {
+            this.onCloseTour('bot_builder');
+            this.setTourEnd();
+        }
     };
 }

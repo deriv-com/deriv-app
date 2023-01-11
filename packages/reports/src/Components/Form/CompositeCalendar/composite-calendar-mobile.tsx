@@ -1,11 +1,19 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 
-export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
+type TRadioButtonProps = {
+    id: string;
+    className?: string;
+    selected_value?: string;
+    value?: string;
+    label?: string;
+    onChange: (value: { label?: string; value?: string }) => void;
+};
+
+export const RadioButton = ({ id, className, selected_value, value, label, onChange }: TRadioButtonProps) => {
     return (
         <label
             htmlFor={id}
@@ -34,18 +42,43 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
 };
 const CUSTOM_KEY = 'custom';
 
+type TInputDateRange = {
+    value?: string;
+    label?: string;
+    duration?: number;
+    onClick?: () => void;
+};
+
+type TCompositeCalendarMobileProps = {
+    input_date_range: TInputDateRange;
+    current_focus: string;
+    duration_list: Array<TInputDateRange>;
+    onChange: (value: { from: number | null; to: number; is_batch: boolean }, extra_data: { date_range: any }) => void;
+    setCurrentFocus: (focus: string) => void;
+    from: number;
+    to: number;
+};
+
 const CompositeCalendarMobile = React.memo(
-    ({ input_date_range, current_focus, duration_list, onChange, setCurrentFocus }) => {
+    ({
+        input_date_range,
+        current_focus,
+        duration_list,
+        onChange,
+        setCurrentFocus,
+        from,
+        to,
+    }: TCompositeCalendarMobileProps) => {
         const date_range = input_date_range || duration_list.find(range => range.value === 'all_time');
 
-        const [from, setFrom] = React.useState(from && toMoment(from).format('DD MMM YYYY'));
-        const [to, setTo] = React.useState(to && toMoment(to).format('DD MMM YYYY'));
+        const [from_date, setFrom] = React.useState(from && toMoment(from).format('DD MMM YYYY'));
+        const [to_date, setTo] = React.useState(to && toMoment(to).format('DD MMM YYYY'));
         const [is_open, setIsOpen] = React.useState(false);
 
         const [applied_date_range, setAppliedDateRange] = React.useState(date_range);
         const [selected_date_range, setSelectedDateRange] = React.useState(date_range);
 
-        const selectDateRange = (_selected_date_range, is_today) => {
+        const selectDateRange = (_selected_date_range: TInputDateRange, is_today?: boolean) => {
             const new_from = _selected_date_range.duration;
             onChange(
                 {
@@ -65,7 +98,7 @@ const CompositeCalendarMobile = React.memo(
         const selectCustomDateRange = () => {
             const today = toMoment().format('DD MMM YYYY');
 
-            const new_from = from || to || today;
+            const new_from = from_date || to_date || today;
             const new_to = to || today;
 
             const new_date_range = Object.assign(selected_date_range, {
@@ -74,8 +107,8 @@ const CompositeCalendarMobile = React.memo(
 
             onChange(
                 {
-                    from: toMoment(new_from, 'DD MMM YYYY').startOf('day').add(1, 's').unix(),
-                    to: toMoment(new_to, 'DD MMM YYYY').endOf('day').unix(),
+                    from: toMoment(new_from).startOf('day').add(1, 's').unix(),
+                    to: toMoment(new_to).endOf('day').unix(),
                     is_batch: true,
                 },
                 {
@@ -105,7 +138,7 @@ const CompositeCalendarMobile = React.memo(
             setIsOpen(false);
         };
 
-        const selectDate = (e, key) => {
+        const selectDate = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
             setSelectedDateRange({ value: CUSTOM_KEY });
 
             const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
@@ -142,7 +175,7 @@ const CompositeCalendarMobile = React.memo(
             );
         };
 
-        const onDateRangeChange = _date_range => {
+        const onDateRangeChange = (_date_range: TInputDateRange) => {
             setSelectedDateRange(
                 duration_list.find(range => _date_range && range.value === _date_range.value) || _date_range
             );
@@ -154,8 +187,8 @@ const CompositeCalendarMobile = React.memo(
         };
 
         const today = toMoment().format('YYYY-MM-DD');
-        const max_date = to ? toMoment(to, 'DD MMM YYYY').format('YYYY-MM-DD') : today;
-        const min_date = from && toMoment(from, 'DD MMM YYYY').format('YYYY-MM-DD');
+        const max_date = to_date ? toMoment(to_date).format('YYYY-MM-DD') : today;
+        const min_date = from_date && toMoment(from_date).format('YYYY-MM-DD');
 
         return (
             <React.Fragment>
@@ -207,18 +240,18 @@ const CompositeCalendarMobile = React.memo(
                                     className='composite-calendar-modal__custom-date-range-start-date'
                                     is_nativepicker={true}
                                     placeholder={localize('Start date')}
-                                    value={from}
+                                    value={from_date}
                                     max_date={max_date}
-                                    onChange={e => selectDate(e, 'from')}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
                                 />
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'
                                     is_nativepicker={true}
                                     placeholder={localize('End date')}
-                                    value={to}
+                                    value={to_date}
                                     max_date={today}
                                     min_date={min_date}
-                                    onChange={e => selectDate(e, 'to')}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'to')}
                                 />
                             </div>
                         </div>
@@ -238,14 +271,4 @@ const CompositeCalendarMobile = React.memo(
 );
 
 CompositeCalendarMobile.displayName = 'CompositeCalendarMobile';
-
-CompositeCalendarMobile.propTypes = {
-    current_focus: PropTypes.string,
-    duration_list: PropTypes.array,
-    from: PropTypes.number,
-    input_date_range: PropTypes.object,
-    onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    to: PropTypes.number,
-};
 export default CompositeCalendarMobile;

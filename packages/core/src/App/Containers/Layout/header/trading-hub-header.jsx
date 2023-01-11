@@ -246,6 +246,7 @@ const TradingHubHeader = ({
                                 is_mf={is_mf}
                                 is_eu={is_eu}
                                 is_eu_country={is_eu_country}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>

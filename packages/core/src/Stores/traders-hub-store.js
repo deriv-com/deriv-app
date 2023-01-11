@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
+    is_onboarding_visited = false;
     is_balance_calculating = false;
     is_exit_traders_hub_modal_visible = false;
     is_failed_verification_modal_visible = false;
@@ -59,6 +60,7 @@ export default class TradersHubStore extends BaseStore {
             is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
+            is_onboarding_visited: observable,
             platform_demo_balance: observable,
             platform_real_balance: observable,
             selected_account: observable,
@@ -96,6 +98,7 @@ export default class TradersHubStore extends BaseStore {
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
+            setIsOnboardingVisited: action.bound,
             toggleExitTradersHubModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
@@ -275,6 +278,11 @@ export default class TradersHubStore extends BaseStore {
     toggleAccountTypeModalVisibility() {
         this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
     }
+
+    setIsOnboardingVisited(is_visited) {
+        this.is_onboarding_visited = is_visited;
+    }
+
     get is_eu_selected() {
         return this.selected_region === 'EU';
     }

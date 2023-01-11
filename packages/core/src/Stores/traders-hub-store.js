@@ -37,6 +37,7 @@ export default class TradersHubStore extends BaseStore {
         data: {},
     };
     is_account_transfer_modal_open = false;
+    selected_account = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -60,6 +61,7 @@ export default class TradersHubStore extends BaseStore {
             modal_data: observable,
             platform_demo_balance: observable,
             platform_real_balance: observable,
+            selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
             selected_region: observable,
@@ -87,6 +89,7 @@ export default class TradersHubStore extends BaseStore {
             selectRegion: action.bound,
             setActiveIndex: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
+            setSelectedAccount: action.bound,
             setTogglePlatformType: action.bound,
             should_show_exit_traders_modal: computed,
             show_eu_related_content: computed,
@@ -180,6 +183,10 @@ export default class TradersHubStore extends BaseStore {
         const { active_accounts } = this.root_store.client;
         const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         return !result && this.selected_region === 'Non-EU';
+    }
+
+    setSelectedAccount(account) {
+        this.selected_account = account;
     }
 
     async selectAccountType(account_type) {

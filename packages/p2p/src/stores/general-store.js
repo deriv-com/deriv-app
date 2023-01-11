@@ -155,7 +155,6 @@ export default class GeneralStore extends BaseStore {
             setBlockUnblockUserError: action.bound,
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
-            setIsBlockUserModalOpen: action.bound,
             setShouldShowRealName: action.bound,
             setShouldShowPopup: action.bound,
             setUserBlockedCount: action.bound,
@@ -208,7 +207,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store } = this.root_store;
+        const { advertiser_page_store, general_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -216,7 +215,7 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    this.setIsBlockUserModalOpen(false);
+                    general_store.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
                         advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
@@ -645,10 +644,6 @@ export default class GeneralStore extends BaseStore {
 
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
-    }
-
-    setIsBlockUserModalOpen(is_block_user_modal_open) {
-        this.is_block_user_modal_open = is_block_user_modal_open;
     }
 
     setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {

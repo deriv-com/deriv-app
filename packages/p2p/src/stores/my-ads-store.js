@@ -7,6 +7,7 @@ import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, rangeValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
+import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
@@ -26,8 +27,6 @@ export default class MyAdsStore extends BaseStore {
     is_api_error_modal_visible = false;
     is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
-    is_quick_add_error_modal_open = false;
-    is_quick_add_modal_open = false;
     is_table_loading = false;
     is_loading = false;
     item_offset = 0;
@@ -65,8 +64,6 @@ export default class MyAdsStore extends BaseStore {
             is_api_error_modal_visible: observable,
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
-            is_quick_add_error_modal_open: observable,
-            is_quick_add_modal_open: observable,
             is_table_loading: observable,
             is_loading: observable,
             item_offset: observable,
@@ -115,8 +112,6 @@ export default class MyAdsStore extends BaseStore {
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
-            setIsQuickAddErrorModalOpen: action.bound,
-            setIsQuickAddModalOpen: action.bound,
             setIsTableLoading: action.bound,
             setItemOffset: action.bound,
             setP2pAdvertInformation: action.bound,
@@ -253,7 +248,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     hideQuickAddModal() {
-        this.setIsQuickAddModalOpen(false);
+        this.root_store.general_store.hideModal();
         this.setSelectedAdId(undefined);
     }
 
@@ -264,6 +259,14 @@ export default class MyAdsStore extends BaseStore {
                     if (response.error) {
                         this.setApiErrorCode(response.error.code);
                         this.setActivateDeactivateErrorMessage(response.error.message);
+                        this.root_store.general_store.showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                has_close_icon: false,
+                                message: response.error.message,
+                                title: generateErrorDialogTitle(this.error_code),
+                            },
+                        });
                     } else {
                         setIsAdvertActive(!!response.p2p_advert_update.is_active);
                     }
@@ -392,8 +395,15 @@ export default class MyAdsStore extends BaseStore {
                 this.hideQuickAddModal();
             } else {
                 this.setUpdatePaymentMethodsErrorMessage(response.error.message);
-                this.setIsQuickAddModalOpen(false);
-                this.setIsQuickAddErrorModalOpen(true);
+                this.root_store.general_store.hideModal();
+                this.root_store.general_store.showModal({
+                    key: 'ErrorModal',
+                    props: {
+                        has_close_icon: false,
+                        message: response.error.message,
+                        title: generateErrorDialogTitle(this.error_code),
+                    },
+                });
             }
             this.setIsTableLoading(false);
         });
@@ -464,7 +474,7 @@ export default class MyAdsStore extends BaseStore {
 
     showQuickAddModal(advert) {
         this.setSelectedAdId(advert);
-        this.setIsQuickAddModalOpen(true);
+        this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
     }
 
     setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
@@ -537,14 +547,6 @@ export default class MyAdsStore extends BaseStore {
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    setIsQuickAddErrorModalOpen(is_quick_add_error_modal_open) {
-        this.is_quick_add_error_modal_open = is_quick_add_error_modal_open;
-    }
-
-    setIsQuickAddModalOpen(is_quick_add_modal_open) {
-        this.is_quick_add_modal_open = is_quick_add_modal_open;
     }
 
     setIsTableLoading(is_table_loading) {

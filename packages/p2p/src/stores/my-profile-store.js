@@ -249,8 +249,12 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { general_store, my_ads_store } = this.root_store;
 
-                general_store.hideModal();
+                if (general_store.modal.key === 'BlockUserModal') {
+                    general_store.hideModal();
+                }
                 this.setSelectedPaymentMethod('');
+                general_store.setSavedFormState(null);
+                general_store.setFormikRef(null);
 
                 if (my_ads_store.should_show_add_payment_method) {
                     my_ads_store.setShouldShowAddPaymentMethod(false);
@@ -463,7 +467,10 @@ export default class MyProfileStore extends BaseStore {
     onClickUnblock(advertiser) {
         const { general_store } = this.root_store;
 
-        general_store.setIsBlockUserModalOpen(true);
+        general_store.showModal({
+            key: 'BlockUserModal',
+            props: { advertiser_name: advertiser.name },
+        });
         this.setSelectedBlockedUser(advertiser);
     }
 
@@ -483,7 +490,9 @@ export default class MyProfileStore extends BaseStore {
         const { general_store } = this.root_store;
 
         clearTimeout(delay);
-        general_store.setIsBlockUserModalOpen(false);
+        if (general_store.modal.key === 'BlockUserModal') {
+            general_store.hideModal();
+        }
         general_store.blockUnblockUser(false, this.selected_blocked_user.id);
         const delay = setTimeout(() => this.getBlockedAdvertisersList(), 250);
     }

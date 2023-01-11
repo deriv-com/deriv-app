@@ -21,6 +21,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -36,6 +37,7 @@ const CreateAdForm = () => {
     const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const { useRegisterModalProps } = useModalManagerContext();
 
     // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = selected_methods => {
@@ -57,6 +59,14 @@ const CreateAdForm = () => {
         my_ads_store.setShowAdForm(false);
     };
 
+    // when adding payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
+    useRegisterModalProps({
+        key: 'CancelAddPaymentMethodModal',
+        props: {
+            should_hide_all_modals_on_cancel: true,
+        },
+    });
+
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
@@ -73,6 +83,7 @@ const CreateAdForm = () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
+            my_ads_store.setShowAdForm(false);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

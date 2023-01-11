@@ -11,7 +11,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { my_profile_store } = useStores();
-    const { hideModal, showModal } = useModalManagerContext();
+    const { hideModal, modal, showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -104,7 +104,10 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                             });
                                         } else {
                                             my_profile_store.hideAddPaymentMethodForm();
-                                            hideModal();
+                                            // fixes an issue where in buy-sell-modal mobile, on clicking Cancel button without modifying form it just closes the buy sell modal as
+                                            if (modal.key !== 'BuySellModal') {
+                                                hideModal();
+                                            }
                                         }
                                     }}
                                     type='button'

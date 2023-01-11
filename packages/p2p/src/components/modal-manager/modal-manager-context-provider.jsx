@@ -23,15 +23,29 @@ const ModalManagerContextProvider = props => {
      * @param {Object|Object[]} modals - list of object modals to set props, each modal object must contain a 'key' attribute and 'props' attribute
      */
     const useRegisterModalProps = modals => {
+        const registered_modals = React.useRef([]);
+
         const registerModals = React.useCallback(() => {
             if (Array.isArray(modals)) {
-                modals.forEach(modal => setModalProps(modal_props.set(modal.key, modal.props)));
+                modals.forEach(modal => {
+                    registered_modals.current.push(modal);
+                    setModalProps(modal_props.set(modal.key, modal.props));
+                });
             } else {
+                registered_modals.current.push(modals);
                 setModalProps(modal_props.set(modals.key, modals.props));
             }
         }, [modals]);
 
-        React.useEffect(registerModals, [modals]);
+        React.useEffect(() => {
+            registerModals();
+            return () => {
+                registered_modals.current.forEach(registered_modal => {
+                    modal_props.delete(registered_modal.key);
+                });
+                registered_modals.current = [];
+            };
+        }, [modals]);
     };
 
     const showModal = modal => {
@@ -45,24 +59,44 @@ const ModalManagerContextProvider = props => {
         }
         setIsModalOpen(true);
     };
-    const hideModal = (should_save_form_history = false) => {
-        modal_props.delete(active_modal.key);
-        if (isDesktop()) {
-            if (should_save_form_history) {
-                general_store.saveFormState();
-            } else {
-                general_store.setSavedFormState(null);
-                general_store.setFormikRef(null);
-            }
 
-            if (previous_modal) {
+    /**
+     * Hides the current shown modal.
+     * If a previous modal was present, by default the previous modal will be shown in-place of the current closed modal.
+     * This option can be overriden by setting `should_hide_all_modals` to `true` in the `options` argument to close all modals instead.
+     *
+     * @param {Object} options - list of supported settings to tweak how modals should be hidden:
+     * - **should_hide_all_modals**: `false` by default. If set to `true`, previous modal will not be shown and all modals are hidden.
+     * - **should_save_form_history**: `false` by default. If set to `true`, form values in modals that has a form with `ModalForm` component
+     * will be saved when the modal is hidden and restored when modal is shown again.
+     */
+    const hideModal = (options = {}) => {
+        const { should_save_form_history = false, should_hide_all_modals = false } = options;
+
+        if (should_save_form_history) {
+            general_store.saveFormState();
+        } else {
+            general_store.setSavedFormState(null);
+            general_store.setFormikRef(null);
+        }
+
+        if (isDesktop()) {
+            if (should_hide_all_modals) {
+                setPreviousModal({});
+                setActiveModal({});
+                setIsModalOpen(false);
+            } else if (previous_modal) {
                 setActiveModal(previous_modal);
-                setPreviousModal(null);
+                setPreviousModal({});
             } else {
                 setActiveModal({});
                 setIsModalOpen(false);
             }
         } else if (Object.keys(stacked_modal).length !== 0) {
+            if (should_hide_all_modals) {
+                setActiveModal({});
+                setIsModalOpen(false);
+            }
             setStackedModal({});
         } else {
             setActiveModal({});
@@ -72,19 +106,22 @@ const ModalManagerContextProvider = props => {
 
     general_store.showModal = showModal;
     general_store.hideModal = hideModal;
+    general_store.modal = active_modal;
 
     const state = {
         hideModal,
         is_modal_open,
         modal: active_modal,
         modal_props,
-        useRegisterModalProps,
+        previous_modal,
         stacked_modal,
         showModal,
+        useRegisterModalProps,
     };
 
     general_store.showModal = showModal;
     general_store.hideModal = hideModal;
+    general_store.modal = active_modal;
 
     return <ModalManagerContext.Provider value={state}>{props.children}</ModalManagerContext.Provider>;
 };

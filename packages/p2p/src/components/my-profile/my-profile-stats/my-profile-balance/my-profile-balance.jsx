@@ -2,14 +2,12 @@ import * as React from 'react';
 import { Money, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileBalance = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
     // const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
-    const available_balance = useUpdatingAvailableBalance(my_profile_store.advertiser_info.balance_available);
 
     return (
         <div className='my-profile-balance'>
@@ -42,7 +40,11 @@ const MyProfileBalance = () => {
                     /> */}
                 </div>
                 <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='m' weight='bold'>
-                    <Money amount={available_balance} currency={general_store.client.currency} show_currency />
+                    <Money
+                        amount={general_store.advertiser_info.balance_available}
+                        currency={general_store.client.currency}
+                        show_currency
+                    />
                 </Text>
             </div>
         </div>

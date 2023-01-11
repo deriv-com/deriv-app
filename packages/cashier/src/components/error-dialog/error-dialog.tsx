@@ -3,12 +3,11 @@ import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore, TError, TReactElement } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
-    disableApp: () => void;
-    enableApp: () => void;
+    className: string;
     error: TError | Record<string, never>;
 };
 
@@ -21,7 +20,11 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
+    const {
+        ui: { disableApp, enableApp },
+    } = useStore();
+
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -34,7 +37,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
 
     const dismissError = React.useCallback(() => {
         if (error.setErrorMessage) {
-            error.setErrorMessage('', null, false);
+            error.setErrorMessage({ code: '', message: '' }, null, false);
         }
         setErrorVisibility(false);
     }, [error]);
@@ -126,6 +129,7 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
             title={details.title}
             confirm_button_text={details.confirm_button_text}
             cancel_button_text={details.cancel_button_text}
+            className={className}
             onConfirm={() => {
                 if (typeof details.onConfirm === 'function') {
                     details.onConfirm();
@@ -146,9 +150,6 @@ const ErrorDialog = ({ disableApp, enableApp, error = {} }: TErrorDialogProps) =
             {details.message}
         </Dialog>
     );
-};
+});
 
-export default connect(({ ui }: TRootStore) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(ErrorDialog);
+export default ErrorDialog;

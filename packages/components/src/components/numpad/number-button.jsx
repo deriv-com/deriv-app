@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../button/button.jsx';
+import Button from '../button/button';
 import Text from '../text';
 
 const NumberButton = ({ onSelect, className, number }) => (

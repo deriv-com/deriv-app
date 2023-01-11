@@ -1,18 +1,25 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
+        makeObservable(this, {
+            container: observable,
+            error: observable,
+            onMountDeposit: action.bound,
+            is_deposit_locked: computed,
+            submitFundsProtection: action.bound,
+        });
+
         this.root_store = root_store;
         this.WS = WS;
     }
 
-    @observable container = Constants.containers.deposit;
-    @observable error = new ErrorStore();
+    container = Constants.containers.deposit;
+    error = new ErrorStore();
 
-    @action.bound
     async onMountDeposit(): Promise<void> {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
@@ -33,7 +40,6 @@ export default class DepositStore {
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
-        setLoading(true);
 
         if (!is_session_timeout) {
             checkIframeLoaded();
@@ -78,18 +84,18 @@ export default class DepositStore {
         setLoading(false);
     }
 
-    @computed
     get is_deposit_locked(): boolean {
         const {
+            account_status,
             is_authentication_needed,
-            is_tnc_needed,
             is_financial_account,
             is_financial_information_incomplete,
-            is_trading_experience_incomplete,
-            account_status,
-            is_eu,
-            mt5_login_list,
             is_deposit_lock,
+            is_eu,
+            is_tnc_needed,
+            is_trading_experience_incomplete,
+            landing_company_shortcode,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status?.status) return false;
 
@@ -104,6 +110,16 @@ export default class DepositStore {
                 )) &&
             is_tnc_needed;
 
+        if (landing_company_shortcode === 'maltainvest') {
+            return (
+                is_deposit_lock ||
+                need_authentication ||
+                need_tnc ||
+                is_trading_experience_incomplete ||
+                this.error.is_ask_financial_risk_approval
+            );
+        }
+
         return (
             is_deposit_lock ||
             need_authentication ||
@@ -113,7 +129,6 @@ export default class DepositStore {
         );
     }
 
-    @action.bound
     submitFundsProtection(): void {
         this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {

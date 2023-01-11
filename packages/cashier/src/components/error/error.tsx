@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import ErrorStore from 'Stores/error-store';
 import './error.scss';
 
 type TErrorComponentProps = {
@@ -15,16 +16,6 @@ type TErrorComponentProps = {
 
 type TErrorFields = {
     [k: string]: string;
-};
-
-type TErrorProps = {
-    error: {
-        onClickButton?: () => void;
-        setErrorMessage?: (message: string) => void;
-        message?: JSX.Element | string;
-        code?: string;
-        fields?: string[];
-    };
 };
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }: TErrorComponentProps) => (
@@ -56,7 +47,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({ error }: TErrorProps) => {
+const Error = ({ error }: { error: ErrorStore }) => {
     const error_fields: TErrorFields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -75,7 +66,7 @@ const Error = ({ error }: TErrorProps) => {
     };
 
     const clearErrorMessage = () => {
-        error.setErrorMessage?.('');
+        error.setErrorMessage?.({ code: '', message: '' });
     };
 
     let AccountError;
@@ -104,7 +95,7 @@ const Error = ({ error }: TErrorProps) => {
                                 }
                             />
                             &nbsp;
-                            {error.fields ? (
+                            {Array.isArray(error.fields) ? (
                                 <Localize
                                     i18n_default_text={'Please update your {{details}} to continue.'}
                                     values={{

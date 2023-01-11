@@ -1,4 +1,7 @@
 import IframeStore from '../iframe-store';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 let iframe_store, root_store, WS;
 

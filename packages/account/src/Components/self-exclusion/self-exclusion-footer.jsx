@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { useFormikContext } from 'formik';
-import { AppSettings, Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import SelfExclusionContext from './self-exclusion-context';
 
@@ -11,27 +11,23 @@ const SelfExclusionFooter = () => {
 
     if (footer_ref) {
         return createPortal(
-            <AppSettings.Footer>
-                <AppSettings.Footer.Left>
-                    <a className='link link--prominent' onClick={toggleArticle}>
-                        <Text size='xxs' line_height='m' weight='bold'>
-                            <Localize i18n_default_text='Learn more about trading limits' />
-                        </Text>
-                    </a>
-                </AppSettings.Footer.Left>
-                <AppSettings.Footer.Right>
-                    <Button
-                        disabled={!dirty || !isValid || isSubmitting}
-                        primary
-                        className='da-self-exclusion__button'
-                        large
-                        onClick={() => goToConfirm(values)}
-                        type='button'
-                    >
-                        <Localize i18n_default_text='Next' />
-                    </Button>
-                </AppSettings.Footer.Right>
-            </AppSettings.Footer>,
+            <>
+                <a className='link link--prominent' onClick={toggleArticle}>
+                    <Text size='xxs' line_height='m' weight='bold'>
+                        <Localize i18n_default_text='Learn more about trading limits' />
+                    </Text>
+                </a>
+                <Button
+                    disabled={!dirty || !isValid || isSubmitting}
+                    primary
+                    className='da-self-exclusion__button'
+                    large
+                    onClick={() => goToConfirm(values)}
+                    type='button'
+                >
+                    <Localize i18n_default_text='Next' />
+                </Button>
+            </>,
             footer_ref
         );
     }

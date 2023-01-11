@@ -12,6 +12,7 @@ const ChangePasswordConfirmation = ({
     platform,
     onConfirm,
     onCancel,
+    context,
 }: TCFDChangePasswordConfirmationProps) => (
     <Formik
         initialValues={{
@@ -62,6 +63,7 @@ const ChangePasswordConfirmation = ({
                             is_loading={isSubmitting}
                             has_cancel={true}
                             onCancel={onCancel}
+                            context={context}
                         />
                     </div>
                 </div>

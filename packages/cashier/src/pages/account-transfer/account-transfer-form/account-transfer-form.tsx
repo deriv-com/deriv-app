@@ -12,16 +12,8 @@ import {
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import {
-    TRootStore,
-    TClientStore,
-    TUiStore,
-    TReactChangeEvent,
-    TAccount,
-    TAccountsList,
-    TCryptoTransactionDetails,
-} from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TReactChangeEvent, TAccount, TAccountsList, TSideNotesProps } from 'Types';
 import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import ErrorDialog from 'Components/error-dialog';
 import PercentageSelector from 'Components/percentage-selector';
@@ -30,69 +22,16 @@ import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
 import './account-transfer-form.scss';
 
-type TSelect = {
-    currency: string;
-    balance: number;
-    is_dxtrade: boolean;
-    is_crypto: boolean;
-    is_mt: boolean;
-    value: string;
-    error: string;
-    status?: string;
-};
-
 type TAccountTransferFormProps = {
-    account_limits: TClientStore['account_limits'];
-    account_transfer_amount: string;
-    accounts_list: Array<TAccount>;
-    authentication_status: TClientStore['authentication_status'];
-    converter_from_amount: string;
-    converter_from_error: string;
-    converter_to_amount: string;
-    converter_to_error: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
     error: object;
-    is_crypto: boolean;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_dxtrade_allowed: TClientStore['is_dxtrade_allowed'];
-    minimum_fee: string;
-    mt5_login_list: TClientStore['mt5_login_list'];
-    onChangeConverterFromAmount: () => void;
-    onChangeConverterToAmount: () => void;
-    onChangeTransferFrom: (event: TReactChangeEvent) => void;
-    onChangeTransferTo: (event: TReactChangeEvent) => void;
-    onMount: TClientStore['getLimits'];
-    percentage: number;
-    recentTransactionOnMount: () => void;
-    requestTransferBetweenAccounts: ({ amount }: { amount: number }) => void;
-    resetConverter: () => void;
-    selected_from: TSelect;
-    selected_to: TSelect;
-    setAccountTransferAmount: (amount: string) => void;
-    setErrorMessage: (message: string) => void;
-    setSideNotes: (notes: Array<string | JSX.Element | JSX.Element[]> | null) => void;
-    setTransferPercentageSelectorResult: () => void;
-    should_percentage_reset: boolean;
-    transfer_fee: number;
-    transfer_limit: {
-        min: number;
-        max: number;
-    };
-    validateTransferFromAmount: () => void;
-    validateTransferToAmount: () => void;
+    setSideNotes: (notes: TSideNotesProps) => void;
 };
 
-const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccountsList) => {
-    let server;
-
-    if (account.is_mt) {
-        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-    }
-
+const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
-                <div>
+                <div className='account-transfer-form__icon'>
                     <Icon
                         icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
                         className='account-transfer-form__currency-icon'
@@ -102,25 +41,22 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
 
             <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {account.is_dxtrade || account.is_mt ? account.text : getCurrencyName(account.currency)}
+                    {account.is_dxtrade || account.is_mt || account.is_derivez
+                        ? account.text
+                        : getCurrencyName(account.currency)}
                 </Text>
-                <Text size='xxxs' align='left' color='less-prominent'>
-                    {account.value}
-                </Text>
+                {!account.is_derivez && (
+                    <Text size='xxxs' align='left' color='less-prominent'>
+                        {account.value}
+                    </Text>
+                )}
             </div>
-
-            {server?.market_type === 'synthetic' && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.server_info?.geolocation?.region}&nbsp;
-                    {server.server_info?.geolocation?.sequence !== 1 ? server.server_info?.geolocation?.sequence : ''}
-                </Text>
-            )}
 
             <span className='account-transfer-form__balance'>
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={account.balance && account.balance < 0}
+                    has_sign={!!account.balance && account.balance < 0}
                     show_currency
                 />
             </span>
@@ -128,51 +64,55 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }: TAccou
     );
 };
 
-let remaining_transfers: boolean | undefined;
 let accounts_from: Array<TAccount> = [];
-let mt_accounts_from: Array<TAccount> = [];
-let dxtrade_accounts_from: Array<TAccount> = [];
 let accounts_to: Array<TAccount> = [];
-let mt_accounts_to: Array<TAccount> = [];
+let derivez_accounts_from: Array<TAccount> = [];
+let derivez_accounts_to: Array<TAccount> = [];
+let dxtrade_accounts_from: Array<TAccount> = [];
 let dxtrade_accounts_to: Array<TAccount> = [];
+let mt_accounts_from: Array<TAccount> = [];
+let mt_accounts_to: Array<TAccount> = [];
+let remaining_transfers: boolean | undefined;
 
-const AccountTransferForm = ({
-    account_limits,
-    accounts_list,
-    account_transfer_amount,
-    authentication_status,
-    converter_from_amount,
-    converter_from_error,
-    converter_to_amount,
-    converter_to_error,
-    crypto_transactions,
-    error,
-    is_crypto,
-    is_dxtrade_allowed,
-    is_dark_mode_on,
-    minimum_fee,
-    mt5_login_list,
-    onChangeConverterFromAmount,
-    onChangeConverterToAmount,
-    onChangeTransferFrom,
-    onChangeTransferTo,
-    onMount,
-    percentage,
-    resetConverter,
-    recentTransactionOnMount,
-    requestTransferBetweenAccounts,
-    setErrorMessage,
-    setTransferPercentageSelectorResult,
-    selected_from,
-    selected_to,
-    setAccountTransferAmount,
-    setSideNotes,
-    should_percentage_reset,
-    transfer_fee,
-    transfer_limit,
-    validateTransferFromAmount,
-    validateTransferToAmount,
-}: TAccountTransferFormProps) => {
+const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferFormProps) => {
+    const {
+        client,
+        common: { is_from_derivgo },
+        modules: { cashier },
+    } = useStore();
+
+    const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
+    const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = cashier;
+
+    const {
+        account_transfer_amount,
+        accounts_list,
+        minimum_fee,
+        onChangeTransferFrom,
+        onChangeTransferTo,
+        requestTransferBetweenAccounts,
+        selected_from,
+        selected_to,
+        setAccountTransferAmount,
+        error: { setErrorMessage },
+        setTransferPercentageSelectorResult,
+        transfer_fee,
+        transfer_limit,
+        validateTransferFromAmount,
+        validateTransferToAmount,
+    } = account_transfer;
+    const { is_crypto, percentage, should_percentage_reset } = general_store;
+    const {
+        converter_from_amount,
+        converter_from_error,
+        converter_to_amount,
+        converter_to_error,
+        onChangeConverterFromAmount,
+        onChangeConverterToAmount,
+        resetConverter,
+    } = crypto_fiat_converter;
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState<string>();
@@ -180,10 +120,12 @@ const AccountTransferForm = ({
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5;
     const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
+    const derivez_remaining_transfers = daily_transfers?.derivez;
     const internal_remaining_transfers = daily_transfers?.internal;
 
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
+    const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
@@ -211,14 +153,18 @@ const AccountTransferForm = ({
         return selected_from.currency === selected_to.currency ? !amount : !converter_from_amount;
     };
 
-    const getAccounts = (type: string, { is_mt, is_dxtrade }: TAccount) => {
+    const getAccounts = (type: string, { is_mt, is_dxtrade, is_derivez }: TAccount) => {
         if (type === 'from') {
             if (is_mt) return mt_accounts_from;
             if (is_dxtrade) return dxtrade_accounts_from;
+            if (is_derivez) return derivez_accounts_from;
+
             return accounts_from;
         } else if (type === 'to') {
             if (is_mt) return mt_accounts_to;
             if (is_dxtrade) return dxtrade_accounts_to;
+            if (is_derivez) return derivez_accounts_to;
+
             return accounts_to;
         }
         return [];
@@ -232,81 +178,77 @@ const AccountTransferForm = ({
         accounts_from = [];
         mt_accounts_from = [];
         dxtrade_accounts_from = [];
+        derivez_accounts_from = [];
         accounts_to = [];
         mt_accounts_to = [];
         dxtrade_accounts_to = [];
+        derivez_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = (
-                <AccountOption
-                    mt5_login_list={mt5_login_list}
-                    idx={idx}
-                    account={account}
-                    is_dark_mode_on={is_dark_mode_on}
-                />
-            );
+            const text = <AccountOption idx={idx} account={account} />;
             const value = account.value;
-            const account_server = mt5_login_list.find(server => server.login === account.value);
 
-            const is_cfd_account = account.is_mt || account.is_dxtrade;
-            let server_region = '';
-            if (account_server?.market_type === 'synthetic') {
-                server_region = `[${account_server.server_info?.geolocation?.region}${
-                    account_server.server_info?.geolocation?.sequence !== 1
-                        ? account_server.server_info?.geolocation?.sequence
-                        : ''
-                }]`;
-            }
+            const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
 
             getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
                 is_dxtrade: account.is_dxtrade,
-                nativepicker_text: `${
-                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                is_derivez: account.is_derivez,
+                nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
 
-            if ((selected_from.is_mt && account.is_dxtrade) || (selected_from.is_dxtrade && account.is_mt)) return;
+            if (
+                (selected_from.is_mt && (account.is_dxtrade || account.is_derivez)) ||
+                (selected_from.is_dxtrade && (account.is_mt || account.is_derivez)) ||
+                (selected_from.is_derivez && (account.is_mt || account.is_dxtrade))
+            )
+                return;
 
             // account from and to cannot be the same
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
                 const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
+                const is_selected_from_derivez = selected_from.is_derivez && account.is_derivez;
 
                 // cannot transfer to MT account from MT
                 // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
+                const is_disabled = is_selected_from_mt || is_selected_from_dxtrade || is_selected_from_derivez;
 
                 getAccounts('to', account).push({
                     text,
                     value,
                     is_mt: account.is_mt,
                     is_dxtrade: account.is_dxtrade,
+                    is_derivez: account.is_derivez,
                     disabled: is_disabled,
-                    nativepicker_text: `${
-                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
+                    nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
+                        account.balance
+                    } ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });
 
         setFromAccounts({
-            ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
+            ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
             ...(dxtrade_accounts_from.length && {
                 [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
             }),
+            ...(derivez_accounts_from.length && { [localize('Deriv EZ accounts')]: derivez_accounts_from }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
-            ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
+            ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
             ...(dxtrade_accounts_to.length && {
                 [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
             }),
+            ...(derivez_accounts_to.length && { [localize('Deriv EZ accounts')]: derivez_accounts_to }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -323,6 +265,7 @@ const AccountTransferForm = ({
                         internal: internal_remaining_transfers?.allowed,
                         mt5: mt5_remaining_transfers?.allowed,
                         dxtrade: dxtrade_remaining_transfers?.allowed,
+                        derivez: derivez_remaining_transfers?.allowed,
                     }}
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
@@ -332,6 +275,8 @@ const AccountTransferForm = ({
                     is_dxtrade_allowed={is_dxtrade_allowed}
                     is_dxtrade_transfer={is_dxtrade_transfer}
                     is_mt_transfer={is_mt_transfer}
+                    is_from_derivgo={is_from_derivgo}
+                    is_derivez_transfer={is_derivez_transfer}
                 />
             );
             setSideNotes([
@@ -348,6 +293,8 @@ const AccountTransferForm = ({
                 return mt5_remaining_transfers?.available;
             } else if (is_dxtrade_transfer) {
                 return dxtrade_remaining_transfers?.available;
+            } else if (is_derivez_transfer) {
+                return derivez_remaining_transfers?.available;
             }
             return internal_remaining_transfers?.available;
         };
@@ -471,7 +418,7 @@ const AccountTransferForm = ({
                                         {({ field }: FieldProps<string>) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e: { target: { value: string } }) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                     setAccountTransferAmount(e.target.value);
@@ -499,7 +446,7 @@ const AccountTransferForm = ({
                                                     ) : undefined
                                                 }
                                                 autoComplete='off'
-                                                maxLength='30'
+                                                maxLength={30}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize
@@ -606,6 +553,7 @@ const AccountTransferForm = ({
                                             internal: internal_remaining_transfers?.allowed,
                                             mt5: mt5_remaining_transfers?.allowed,
                                             dxtrade: dxtrade_remaining_transfers?.allowed,
+                                            derivez: derivez_remaining_transfers?.allowed,
                                         }}
                                         transfer_fee={transfer_fee}
                                         currency={selected_from.currency}
@@ -614,6 +562,8 @@ const AccountTransferForm = ({
                                         is_dxtrade_allowed={is_dxtrade_allowed}
                                         is_dxtrade_transfer={is_dxtrade_transfer}
                                         is_mt_transfer={is_mt_transfer}
+                                        is_from_derivgo={is_from_derivgo}
+                                        is_derivez_transfer={is_derivez_transfer}
                                     />
                                 </SideNote>
                                 <ErrorDialog error={error} />
@@ -624,40 +574,6 @@ const AccountTransferForm = ({
             </Formik>
         </div>
     );
-};
+});
 
-export default connect(({ client, modules, ui }: TRootStore) => ({
-    account_limits: client.account_limits,
-    account_transfer_amount: modules.cashier.account_transfer.account_transfer_amount,
-    accounts_list: modules.cashier.account_transfer.accounts_list,
-    authentication_status: client.authentication_status,
-    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
-    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
-    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
-    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    is_crypto: modules.cashier.general_store.is_crypto,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
-    minimum_fee: modules.cashier.account_transfer.minimum_fee,
-    mt5_login_list: client.mt5_login_list,
-    onChangeConverterFromAmount: modules.cashier.crypto_fiat_converter.onChangeConverterFromAmount,
-    onChangeConverterToAmount: modules.cashier.crypto_fiat_converter.onChangeConverterToAmount,
-    onChangeTransferFrom: modules.cashier.account_transfer.onChangeTransferFrom,
-    onChangeTransferTo: modules.cashier.account_transfer.onChangeTransferTo,
-    onMount: client.getLimits,
-    percentage: modules.cashier.general_store.percentage,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    requestTransferBetweenAccounts: modules.cashier.account_transfer.requestTransferBetweenAccounts,
-    resetConverter: modules.cashier.crypto_fiat_converter.resetConverter,
-    selected_from: modules.cashier.account_transfer.selected_from,
-    selected_to: modules.cashier.account_transfer.selected_to,
-    setAccountTransferAmount: modules.cashier.account_transfer.setAccountTransferAmount,
-    setErrorMessage: modules.cashier.account_transfer.error.setErrorMessage,
-    setTransferPercentageSelectorResult: modules.cashier.account_transfer.setTransferPercentageSelectorResult,
-    should_percentage_reset: modules.cashier.general_store.should_percentage_reset,
-    transfer_fee: modules.cashier.account_transfer.transfer_fee,
-    transfer_limit: modules.cashier.account_transfer.transfer_limit,
-    validateTransferFromAmount: modules.cashier.account_transfer.validateTransferFromAmount,
-    validateTransferToAmount: modules.cashier.account_transfer.validateTransferToAmount,
-}))(AccountTransferForm);
+export default AccountTransferForm;

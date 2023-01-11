@@ -4,11 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
 
-jest.mock('@deriv/account', () => ({
-    ...jest.requireActual('@deriv/account'),
-    FormSubHeader: () => <div>FormSubHeader</div>,
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(),
@@ -98,24 +93,25 @@ describe('<CFDPersonalDetailsForm />', () => {
             tax_residence: '',
             tax_identification_number: '',
             account_opening_reason: '',
+            place_of_birth: '',
         },
     };
 
     const citizenship_required_error = 'Citizenship is required';
+    const place_of_birth_required_error = 'Place of birth is required';
     const tax_residence_required_error = 'Tax residence is required';
     const tax_id_required_error = 'Tax identification number is required';
     const opening_reason_required_error = 'Account opening reason is required';
 
-    it('should render properly on desktop', () => {
+    it('should render properly on desktop', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
-        expect(screen.getAllByText('FormSubHeader').length).toBe(3);
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeInTheDocument();
         expect(screen.getByText(/account opening reason/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
     });
 
     it('should not render scrollbars or modal footer wrapper on mobile', () => {
@@ -123,7 +119,6 @@ describe('<CFDPersonalDetailsForm />', () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         expect(screen.queryByTestId('dt_themed_scrollbars')).not.toBeInTheDocument();
-        expect(screen.getAllByText('FormSubHeader').length).toBe(3);
         expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     });
@@ -141,71 +136,91 @@ describe('<CFDPersonalDetailsForm />', () => {
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
     });
 
-    it('should disable Citizenship and Tax residence fields if they were submitted earlier & is_fully_authenticated is true', () => {
+    it('should disable Citizenship and Tax residence fields if they were submitted earlier & immutable from BE', async () => {
         const values = {
             citizen: 'Indonesia',
             tax_residence: 'Indonesia',
             tax_identification_number: '',
             account_opening_reason: '',
+            place_of_birth: 'Indonesia',
         };
-        render(<CFDPersonalDetailsForm {...props} is_fully_authenticated value={values} />);
+
+        const changeable_fields = ['tax_identification_number'];
+        render(
+            <CFDPersonalDetailsForm
+                {...props}
+                is_fully_authenticated
+                value={values}
+                changeable_fields={changeable_fields}
+            />
+        );
 
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeDisabled();
         expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeDisabled();
+        expect(screen.getByRole('textbox', { name: /place of birth/i })).toBeDisabled();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeEnabled();
         expect(screen.getByText(/account opening reason/i)).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
     });
 
-    it('should show an error message received from server that is passed via props as form_error', () => {
+    it('should show an error message received from server that is passed via props as form_error', async () => {
         const form_error = 'Input validation failed: citizen!';
         render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
 
         expect(screen.getByTestId('form_submit_error')).toHaveClass('dc-icon');
         expect(screen.getByText(form_error)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
+    });
+
+    it('should show validation errors in fields', async () => {
+        render(<CFDPersonalDetailsForm {...props} />);
+
+        const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
+        const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
+        const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
+        const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
+        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const next_button = screen.getByRole('button', { name: /next/i });
+
+        fireEvent.blur(citizenship_input);
+        expect(await screen.findByText(citizenship_required_error)).toBeInTheDocument();
+
+        fireEvent.blur(place_of_birth_input);
+        expect(await screen.findByText(place_of_birth_required_error)).toBeInTheDocument();
+
+        fireEvent.blur(tax_residence_input);
+        expect(await screen.findByText(tax_residence_required_error)).toBeInTheDocument();
+
+        fireEvent.blur(tax_id_input);
+        expect(await screen.findByText(tax_id_required_error)).toBeInTheDocument();
+
+        fireEvent.click(opening_reason_input);
+        const hedging = within(screen.getByRole('list')).getByText('Hedging');
+        fireEvent.click(hedging);
+        await waitFor(() => expect(screen.queryByText(opening_reason_required_error)).not.toBeInTheDocument());
+
+        expect(next_button).toBeDisabled();
     });
 
     it('should enable the Next button for form submission when all required fields are filled', async () => {
         render(<CFDPersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
+        const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const opening_reason_input = screen.getByText(/account opening reason/i);
+        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
-        fireEvent.change(citizenship_input, { target: { value: 'Indonesia' } });
-        fireEvent.click(next_button);
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
 
-        expect(await screen.findByText(tax_residence_required_error)).toBeInTheDocument();
-        expect(await screen.findByText(tax_id_required_error)).toBeInTheDocument();
-        expect(await screen.findByText(opening_reason_required_error)).toBeInTheDocument();
-        expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
-        expect(next_button).toBeDisabled();
-
+        fireEvent.change(citizenship_input, { target: { value: 'Aland Islands' } });
+        fireEvent.change(place_of_birth_input, { target: { value: 'Indonesia' } });
         fireEvent.change(tax_residence_input, { target: { value: 'Indonesia' } });
-        fireEvent.click(next_button);
-
-        expect(await screen.findByText(tax_id_required_error)).toBeInTheDocument();
-        expect(await screen.findByText(opening_reason_required_error)).toBeInTheDocument();
-        expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
-        expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
-        expect(next_button).toBeDisabled();
-
         fireEvent.change(tax_id_input, { target: { value: '023124224563456' } });
-        fireEvent.click(next_button);
-
-        expect(await screen.findByText(opening_reason_required_error)).toBeInTheDocument();
-        expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
-        expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
-        expect(screen.queryByText(tax_id_required_error)).not.toBeInTheDocument();
-        expect(next_button).toBeDisabled();
-
         fireEvent.click(opening_reason_input);
-        const hedging = within(screen.getByRole('list')).getByText('Hedging');
-        fireEvent.click(hedging);
-        fireEvent.blur(hedging);
+        const income_earning = within(screen.getByRole('list')).getByText('Income Earning');
+        fireEvent.click(income_earning);
 
         await waitFor(() => {
             expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();

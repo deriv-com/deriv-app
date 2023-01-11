@@ -1,57 +1,56 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import TransferConfirm from 'Components/transfer-confirm';
 
-const PaymentAgentWithdrawConfirm = ({
-    amount,
-    currency,
-    error,
-    loginid,
-    payment_agent_name,
-    requestPaymentAgentWithdraw,
-    setIsTryWithdrawSuccessful,
-    verification_code,
-}) => (
-    <TransferConfirm
-        data={[
-            { label: localize('Payment agent'), value: payment_agent_name || loginid, key: 'pa' },
-            {
-                label: localize('Amount'),
-                value: <Money currency={currency} amount={amount} show_currency />,
-                key: 'amount',
-            },
-        ]}
-        error={error}
-        header={localize('Please confirm the transaction details in order to complete the withdrawal:')}
-        onClickBack={() => {
-            setIsTryWithdrawSuccessful(false);
-        }}
-        onClickConfirm={() => {
-            requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code });
-        }}
-    />
-);
+const PaymentAgentWithdrawConfirm = observer(({ verification_code }) => {
+    const {
+        client,
+        modules: {
+            cashier: { payment_agent },
+        },
+    } = useStore();
+
+    const { loginid: client_loginid } = client;
+
+    const {
+        confirm: { amount, currency, loginid, payment_agent_name },
+        error,
+        requestPaymentAgentWithdraw,
+        setIsTryWithdrawSuccessful,
+    } = payment_agent;
+
+    return (
+        <TransferConfirm
+            data={[
+                { label: localize('From account number'), value: client_loginid, key: 'transfer_from' },
+                {
+                    label: [localize('To account number'), localize('Account holder name')],
+                    value: [loginid.toUpperCase(), payment_agent_name],
+                    key: 'transfer_to',
+                },
+                {
+                    label: localize('Amount'),
+                    value: <Money currency={currency} amount={amount} show_currency />,
+                    key: 'amount',
+                },
+            ]}
+            error={error}
+            is_payment_agent_withdraw
+            onClickBack={() => {
+                setIsTryWithdrawSuccessful(false);
+            }}
+            onClickConfirm={() => {
+                requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code });
+            }}
+        />
+    );
+});
 
 PaymentAgentWithdrawConfirm.propTypes = {
-    amount: PropTypes.number,
-    currency: PropTypes.string,
-    error: PropTypes.object,
-    loginid: PropTypes.string,
-    payment_agent_name: PropTypes.string,
-    requestPaymentAgentWithdraw: PropTypes.func,
-    setIsTryWithdrawSuccessful: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
-export default connect(({ modules }) => ({
-    amount: modules.cashier.payment_agent.confirm.amount,
-    currency: modules.cashier.payment_agent.confirm.currency,
-    error: modules.cashier.payment_agent.error,
-    loginid: modules.cashier.payment_agent.confirm.loginid,
-    payment_agent_name: modules.cashier.payment_agent.confirm.payment_agent_name,
-    requestPaymentAgentWithdraw: modules.cashier.payment_agent.requestPaymentAgentWithdraw,
-    setIsTryWithdrawSuccessful: modules.cashier.payment_agent.setIsTryWithdrawSuccessful,
-}))(PaymentAgentWithdrawConfirm);
+export default PaymentAgentWithdrawConfirm;

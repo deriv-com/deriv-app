@@ -87,7 +87,7 @@ const copyConfig = base => {
             to: 'assetlinks.json',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
+        { from: path.resolve(__dirname, '../src/root_files/custom404.html'), to: 'custom404.html', toType: 'file' },
         {
             from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
             to: 'localstorage-sync.html',
@@ -123,6 +123,10 @@ const copyConfig = base => {
             transform(content, transform_path) {
                 return transformContentUrlBase(content, transform_path, base);
             },
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/pdf'),
+            to: 'public/pdf',
         },
     ];
 

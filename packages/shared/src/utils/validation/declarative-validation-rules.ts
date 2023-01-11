@@ -37,7 +37,7 @@ export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.
 const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
 const validGeneral = (value: string) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value: string, options: TOptions) => options.regex?.test(value);
-const confirmRequired = (value: string) => !!value === true;
+const confirmRequired = (value: string) => !!value;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
 

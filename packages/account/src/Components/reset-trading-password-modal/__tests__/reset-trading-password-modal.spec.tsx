@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render, act, fireEvent, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import ResetTradingPasswordModal from '../reset-trading-password-modal';
+import ResetTradingPasswordModal, { TResetTradingPasswordModal } from '../reset-trading-password-modal';
 import { WS } from '@deriv/shared';
 
 const mock_promise = Promise.resolve();
@@ -40,7 +40,7 @@ const interactWithPasswordField = async (trigger_click = true) => {
 };
 
 describe('<ResetTradingPasswordModal/>', () => {
-    const props = {
+    const props: TResetTradingPasswordModal = {
         disableApp: jest.fn(),
         enableApp: jest.fn(),
         toggleResetTradingPasswordModal: mockFn,
@@ -152,7 +152,7 @@ describe('<ResetTradingPasswordModal/>', () => {
 
         fireEvent.click(screen.getByTestId('dt_password_input_visibility_icon'));
         await waitFor(() => {
-            expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
+            expect(screen.getByDisplayValue('hN795jCWkDtPy5')).toHaveAttribute('type', 'text');
         });
     });
 
@@ -167,7 +167,7 @@ describe('<ResetTradingPasswordModal/>', () => {
         fireEvent.click(el_visibility_icon);
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue('hN795jCWkDtPy5').getAttribute('type')).toBe('text');
+            expect(screen.getByDisplayValue('hN795jCWkDtPy5')).toHaveAttribute('type', 'text');
         });
     });
 

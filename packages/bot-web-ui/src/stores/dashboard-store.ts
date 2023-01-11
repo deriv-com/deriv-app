@@ -102,6 +102,11 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     active_tour_step_number = 0;
     show_toast = false;
+    toast_message = '';
+
+    setToastMessage = (toast_message: string) => {
+        this.toast_message = toast_message;
+    };
 
     setShowToast = (show_toast: boolean) => {
         this.show_toast = show_toast;

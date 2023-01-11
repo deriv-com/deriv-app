@@ -5,10 +5,10 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import LoadModalStore from 'Stores/load-modal-store';
-import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
-import GoogleDrive from './load-bot-preview/google-drive';
 import classNames from 'classnames';
+import Recent from './load-bot-preview/recent';
+import GoogleDrive from './load-bot-preview/google-drive';
 
 type TCardProps = {
     active_tab: number;
@@ -28,6 +28,8 @@ type TCardProps = {
     setFileLoaded: (param: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
     setPreviewOnPopup: (show: boolean) => void;
+    setShowToast: (param: boolean) => void;
+    setToastMessage: (param: string) => void;
 };
 
 const Card = ({
@@ -42,6 +44,8 @@ const Card = ({
     setFileLoaded,
     showVideoDialog,
     setPreviewOnPopup,
+    setShowToast,
+    setToastMessage,
 }: TCardProps) => {
     type TCardArray = {
         icon: string;
@@ -134,6 +138,8 @@ const Card = ({
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
+                            setToastMessage('import');
+                            setShowToast(true);
                         }}
                     />
                     <DesktopWrapper>
@@ -188,4 +194,6 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     showVideoDialog: dashboard.showVideoDialog,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    setShowToast: dashboard.setShowToast,
+    setToastMessage: dashboard.setToastMessage,
 }))(Card);

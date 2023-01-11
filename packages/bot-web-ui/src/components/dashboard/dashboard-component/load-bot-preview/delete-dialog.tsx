@@ -15,6 +15,7 @@ type TDeleteDialog = {
     setDashboardStrategies: (param: string[]) => void;
     show_toast: boolean;
     setShowToast: (show_toast: boolean) => void;
+    setToastMessage: (toast_message: string) => void;
 };
 
 const DeleteDialog = ({
@@ -24,6 +25,7 @@ const DeleteDialog = ({
     setDashboardStrategies,
     setShowToast,
     show_toast,
+    setToastMessage,
 }: TDeleteDialog) => {
     React.useEffect(() => {
         setTimeout(() => {
@@ -49,6 +51,7 @@ const DeleteDialog = ({
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
             setShowToast(true);
+            setToastMessage('delete');
         }
         onToggleDeleteDialog(param);
     };
@@ -95,4 +98,5 @@ export default connect(({ toolbar, load_modal, dashboard }) => ({
     setDashboardStrategies: load_modal.setDashboardStrategies,
     show_toast: dashboard.show_toast,
     setShowToast: dashboard.setShowToast,
+    setToastMessage: dashboard.setToastMessage,
 }))(DeleteDialog);

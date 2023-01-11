@@ -16,3 +16,5 @@ export const DASHBOARD_TABS: TTabsTitleProps = Object.freeze({
 });
 
 export const MAX_STRATEGIES = 10;
+
+export const IDS = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];

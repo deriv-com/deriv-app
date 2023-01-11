@@ -10,7 +10,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import { DASHBOARD_TABS } from '../../constants/bot-contents';
+import { DASHBOARD_TABS, IDS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -200,8 +200,7 @@ const Dashboard = ({
 
     const handleTabChange = (tab_index: number) => {
         setActiveTab(tab_index);
-        const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
-        const el_id = ids[tab_index];
+        const el_id = IDS[tab_index];
         if (el_id) {
             const el_tab = document.getElementById(el_id);
             el_tab?.scrollIntoView({

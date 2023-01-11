@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { ContractCard } from '@deriv/components';
+import { ContractCard, Text } from '@deriv/components';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -105,11 +105,11 @@ const SummaryCard = ({
                 </ContractCard>
             )}
             {!is_contract_loading && !contract_info && (
-                <React.Fragment>
-                    {localize(
-                        'When you’re ready to trade, hit Run. You’ll be able to track your bot’s performance here.'
-                    )}
-                </React.Fragment>
+                <Text as='p' line_height='s' size='xs'>
+                    {localize('When you’re ready to trade, hit ')}
+                    <strong>{localize('Run')}</strong>
+                    {localize('. You’ll be able to track your bot’s performance here.')}
+                </Text>
             )}
         </div>
     );

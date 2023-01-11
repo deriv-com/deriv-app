@@ -2,6 +2,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    background-color: var(--general-section-2);
+    @include desktop {
+        height: inherit;
+    }
 
     &__tiles {
         display: flex;

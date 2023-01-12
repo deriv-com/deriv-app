@@ -72,6 +72,11 @@ export const modals = {
     LoadingModal: React.lazy(() =>
         import(/* webpackChunkName: "loading-modal" */ 'Components/modal-manager/modals/loading-modal')
     ),
+    MarketRateChangeErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "market-rate-change-error-modal" */ 'Components/modal-manager/modals/market-rate-change-error-modal'
+        )
+    ),
     MyAdsDeleteModal: React.lazy(() =>
         import(/* webpackChunkName: "my-ads-delete-modal" */ 'Components/modal-manager/modals/my-ads-delete-modal')
     ),

@@ -76,7 +76,11 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
     }
 
     return (
-        <BuyAdPaymentMethodsList selected_methods={selected_buy_methods} setSelectedMethods={setSelectedBuyMethods} />
+        <BuyAdPaymentMethodsList
+            is_alignment_top
+            selected_methods={selected_buy_methods}
+            setSelectedMethods={setSelectedBuyMethods}
+        />
     );
 };
 

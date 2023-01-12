@@ -12,29 +12,35 @@ import classNames from 'classnames';
 
 type TSidebarProps = {
     active_tab_tutorials: number;
+    active_tab: number;
     faq_search_value: string;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (setFAQSearchValue: string) => void;
-    active_tab: number;
 };
 
 const Sidebar = ({
     active_tab_tutorials,
+    active_tab,
+    faq_search_value,
     setActiveTabTutorial,
     setFAQSearchValue,
-    faq_search_value,
-    active_tab,
 }: TSidebarProps) => {
-    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        debounce(() => {
-            setFAQSearchValue(value);
-        }, 700)();
-    };
     const guide_tab_content = [...user_guide_content, ...guide_content];
     const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
+    const menu_items = [
+        {
+            label: localize('Guide'),
+            content: <GuideContent guide_list={search_filtered_list} />,
+        },
+        {
+            label: localize('FAQ'),
+            content: <FAQContent faq_list={search_faq_list} hide_header={isMobile()} />,
+        },
+    ];
+    const selected_tab = menu_items?.[active_tab_tutorials] || {};
+
     React.useEffect(() => {
         if (search_input?.current?.value) {
             search_input.current.value = '';
@@ -55,17 +61,12 @@ const Sidebar = ({
         return active_tab_tutorials === 0 ? setsearchFilteredList(filtered_list) : setsearchFAQList(filtered_list);
     }, [faq_search_value]);
 
-    const menu_items = [
-        {
-            label: localize('Guide'),
-            content: <GuideContent guide_list={search_filtered_list} />,
-        },
-        {
-            label: localize('FAQ'),
-            content: <FAQContent faq_list={search_faq_list} hide_header={isMobile()} />,
-        },
-    ];
-    const selected_tab = menu_items?.[active_tab_tutorials] || {};
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        debounce(() => {
+            setFAQSearchValue(value);
+        }, 700)();
+    };
 
     const onChangeHandle = React.useCallback(
         ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,8 +125,8 @@ const Sidebar = ({
 
 export default connect(({ dashboard }: RootStore) => ({
     active_tab_tutorials: dashboard.active_tab_tutorials,
+    active_tab: dashboard.active_tab,
     faq_search_value: dashboard.faq_search_value,
     setActiveTabTutorial: dashboard.setActiveTabTutorial,
     setFAQSearchValue: dashboard.setFAQSearchValue,
-    active_tab: dashboard.active_tab,
 }))(Sidebar);

@@ -1,14 +1,12 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
-import { Text, Icon, DesktopWrapper, MobileWrapper, Dialog } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import LocalFooter from './local-footer';
 import classNames from 'classnames';
-import WorkspaceControl from './workspace-control';
 import RootStore from 'Stores/index';
-import './index.scss';
-import { isMobile } from '@deriv/shared';
 import BotPreview from './bot-preview';
+import { Localize, localize } from '@deriv/translations';
+import { Text, Icon, MobileWrapper, Dialog } from '@deriv/components';
+import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
+import './index.scss';
 
 type TWorkspace = {
     id: string;
@@ -21,8 +19,6 @@ type TWorkspace = {
 type Nullable<T> = T | null;
 type TLocalComponent = {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
-    loaded_local_file: boolean;
-    loadFileFromLocal: () => void;
     loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
@@ -38,8 +34,6 @@ type TLocalComponent = {
 
 const LocalComponent = ({
     handleFileChange,
-    loaded_local_file,
-    loadFileFromLocal,
     loadFileFromRecent,
     onConfirmSave,
     setActiveTab,
@@ -48,21 +42,34 @@ const LocalComponent = ({
     has_mobile_preview_loaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    const [setIsFileSupported] = React.useState<boolean>(true);
-    const loadedLocalFileLocation = () => {
-        return loaded_local_file ? loadFileFromLocal() : loadFileFromRecent();
-    };
+    // eslint-disable-next-line no-unused-expressions
+    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    const is_mobile = isMobile();
+    const has_dashboard_strategies = !!dashboard_strategies?.length;
+
     React.useEffect(() => {
         if (el_ref.current?.children.length === 3) {
             el_ref?.current?.removeChild(el_ref?.current?.children[1]);
         }
     }, [el_ref.current?.children.length]);
+
     const clearInjectionDiv = () => {
         el_ref?.current?.removeChild(el_ref?.current?.children[0]);
     };
-    const is_mobile = isMobile();
-    const has_dashboard_strategies = !!dashboard_strategies?.length;
+
+    const renderOpenButton = () => (
+        <button
+            className='load-strategy__button-group--open'
+            onClick={() => {
+                setPreviewOnDialog(false);
+                loadFileFromRecent();
+                setActiveTab(1);
+            }}
+        >
+            {localize('Open')}
+        </button>
+    );
 
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -121,15 +128,7 @@ const LocalComponent = ({
                                         setIsFileSupported(handleFileChange(e, false));
                                     }}
                                 />
-                                <button
-                                    className='load-strategy__button-group--open'
-                                    onClick={() => {
-                                        loadFileFromRecent();
-                                        setActiveTab(1);
-                                    }}
-                                >
-                                    Open
-                                </button>
+                                {renderOpenButton()}
                             </div>
                         </>
                     )}
@@ -138,22 +137,12 @@ const LocalComponent = ({
                             is_visible={has_mobile_preview_loaded}
                             onCancel={() => setPreviewOnDialog(false)}
                             is_mobile_full_width
-                            className={'dc-dialog__wrapper--preview'}
+                            className='dc-dialog__wrapper--preview'
                             has_close_icon
-                            title={'Preview'}
+                            title={localize('Preview')}
                         >
-                            <BotPreview id_ref={el_ref} type={'local'} />
-                            <div className='load-strategy__button-group'>
-                                <button
-                                    className='load-strategy__button-group--open'
-                                    onClick={() => {
-                                        loadFileFromRecent();
-                                        setActiveTab(1);
-                                    }}
-                                >
-                                    Open
-                                </button>
-                            </div>
+                            <BotPreview id_ref={el_ref} type='local' />
+                            <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                         </Dialog>
                     </MobileWrapper>
                 </div>
@@ -165,12 +154,10 @@ const LocalComponent = ({
 const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     handleFileChange: load_modal.handleFileChange,
     is_open_button_loading: load_modal.is_open_button_loading,
-    loaded_local_file: load_modal.loaded_local_file,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     dashboard_strategies: load_modal.dashboard_strategies,
     onConfirmSave: save_modal.onConfirmSave,
     setActiveTab: dashboard.setActiveTab,
-    loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setFileLoaded: dashboard.setFileLoaded,
     setPreviewOnDialog: dashboard.setPreviewOnDialog,

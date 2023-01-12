@@ -13,9 +13,9 @@ import SaveModal from '../../../save-modal';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;
-    strategy_save_type: string;
     setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
     setStrategySaveType: (param: string) => void;
+    strategy_save_type: string;
 };
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
@@ -23,8 +23,8 @@ const HEADERS = ['Bot name', 'Last modified', 'Status'];
 const RecentComponent = ({
     dashboard_strategies,
     setDashboardStrategies,
-    strategy_save_type,
     setStrategySaveType,
+    strategy_save_type,
 }: TRecentComponent) => {
     React.useEffect(() => {
         setTimeout(() => {
@@ -72,8 +72,8 @@ const RecentComponent = ({
 const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
     dashboard_strategies: load_modal.dashboard_strategies,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    strategy_save_type: dashboard.strategy_save_type,
     setStrategySaveType: dashboard.setStrategySaveType,
+    strategy_save_type: dashboard.strategy_save_type,
 }))(RecentComponent);
 
 export default Recent;

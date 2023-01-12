@@ -426,6 +426,15 @@
                 &__recent-item-time {
                     font-size: var(--text-size-xs);
                 }
+                &__recent-item-text {
+                    display: -webkit-box;
+                    max-width: 90%;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    word-break: break-all;
+                }
             }
         }
     }

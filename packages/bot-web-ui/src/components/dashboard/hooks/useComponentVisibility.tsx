@@ -1,10 +1,10 @@
 import React from 'react';
 
-type TuseComponentVisibility = {
-    ref: React.RefObject<HTMLInputElement>;
+type TComponentVisibility = {
+    ref?: React.RefObject<HTMLInputElement>;
 };
 
-export const useComponentVisibility = (ref: TuseComponentVisibility) => {
+export const useComponentVisibility = (ref: TComponentVisibility) => {
     const [is_dropdown_visible, setDropdownVisibility] = React.useState(false);
 
     const handleHideDropdown = (event: KeyboardEvent) => {
@@ -14,7 +14,7 @@ export const useComponentVisibility = (ref: TuseComponentVisibility) => {
     };
 
     const handleClickOutside = (event: Event) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
+        if (!ref?.current?.contains(event.target as Node)) {
             setDropdownVisibility(false);
         }
     };

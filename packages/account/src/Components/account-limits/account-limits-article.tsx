@@ -4,7 +4,11 @@ import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import AccountArticle from 'Components/article';
 
-const AccountLimitsArticle = ({ is_from_derivgo }) => {
+type TAccountLimitsArticle = {
+    is_from_derivgo?: boolean;
+};
+
+const AccountLimitsArticle = ({ is_from_derivgo }: TAccountLimitsArticle) => {
     const getDescription = () => {
         const description = [
             <Localize key={0} i18n_default_text='These are default limits that we apply to your accounts.' />,

@@ -231,7 +231,6 @@ export default class NotificationStore extends BaseStore {
     checkNotificationMessages() {
         const notifications_list = LocalStore.getObject('notification_messages');
         const refined_list = notifications_list ? Object.values(notifications_list)[0] : [];
-        if (!refined_list.length) return;
         if (refined_list.length) {
             refined_list.map(refined => {
                 this.removeNotificationByKey({ key: refined });

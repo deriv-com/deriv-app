@@ -177,7 +177,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setFileLoaded = (has_file_loaded: boolean): void => {
         this.has_file_loaded = has_file_loaded;
-        //clearInjectionDiv();
+        clearInjectionDiv();
     };
 
     onCloseDialog = (): void => {

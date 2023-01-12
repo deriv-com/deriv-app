@@ -16,6 +16,9 @@
             &__body {
                 height: 100%;
             }
+            .google-drive-label {
+                width: 100%;
+            }
         }
 
         & .dc-tabs {
@@ -60,6 +63,7 @@
 
         @include mobile {
             height: 100%;
+            overflow: hidden;
         }
     }
 
@@ -428,7 +432,7 @@
             border: dashed 0.2rem var(--border-normal);
             border-radius: $BORDER_RADIUS;
             margin: 1.6rem;
-            padding: 1.6rem 4.6rem;
+            padding: 1.6rem;
             height: calc(100% - 3.2rem); // - 2x margin.
         }
 
@@ -445,12 +449,13 @@
             font-size: var(--text-size-s);
             font-weight: bold;
             line-height: 2.4rem;
+            color: var(--text-general);
         }
 
         &-terms {
             font-size: var(--text-size-xs);
             line-height: 2rem;
-            margin-top: 1.6rem;
+            margin: 1.6rem 0;
             text-align: center;
             color: var(--text-general);
         }

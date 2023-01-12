@@ -56,7 +56,7 @@ const StatusBadge = ({
             ),
             icon: 'IcRedWarning',
         },
-        default: {
+        need_verification: {
             text: (
                 <Localize
                     i18n_default_text='<0>Need verification.</0> <1>Verify now</1>'
@@ -69,7 +69,7 @@ const StatusBadge = ({
             icon: 'IcAlertInfo',
         },
     };
-    const { text, icon } = status_text[account_status as keyof typeof status_text] ?? status_text.default;
+    const { text, icon } = status_text[account_status as keyof typeof status_text] ?? status_text.need_verification;
 
     return (
         <div

@@ -9,6 +9,7 @@ import {
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
+import { getMultipliersAccountStatus } from './Helpers/client';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
@@ -81,6 +82,7 @@ export default class TradersHubStore extends BaseStore {
             is_real: computed,
             no_CR_account: computed,
             no_MF_account: computed,
+            multipliers_account_status: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -418,6 +420,21 @@ export default class TradersHubStore extends BaseStore {
     get is_eu_user() {
         // const { is_eu } = this.root_store.client;
         return this.selected_region === 'EU';
+    }
+
+    get multipliers_account_status() {
+        const {
+            has_maltainvest_account,
+            account_status: { authentication },
+        } = this.root_store.client;
+
+        const multipliers_account_status = getMultipliersAccountStatus(authentication);
+        const should_show_status_for_multipliers_account =
+            [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
+            has_maltainvest_account &&
+            multipliers_account_status &&
+            ['pending', 'failed', 'need_verification'].includes(multipliers_account_status);
+        return should_show_status_for_multipliers_account ? multipliers_account_status : null;
     }
 
     setActiveIndex(active_index) {

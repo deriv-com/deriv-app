@@ -1,86 +1,95 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Deriv</title>
-    <meta charset="utf-8"/>
-    <meta name='referrer' content='origin' />
-    <script type="text/javascript">
-        var l = window.location;
-        var segmentCount = /^\/(br_)/.test(l.pathname) ? 1 : 0;
+    <head>
+        <title>Deriv</title>
+        <meta charset="utf-8" />
+        <meta name="referrer" content="origin" />
+        <script type="text/javascript">
+            var l = window.location;
+            var segmentCount = /^\/(br_)/.test(l.pathname) ? 1 : 0;
 
-        l.replace(
-            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
-            l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-            (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-            l.hash
-        );
-    </script>
-</head>
-<body>
-<style>
-    .initial-loader {
-        width: 100vw;
-        height: 100vh;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        display: flex;
-        background-color: #f4f4f6;
-    }
-    .initial-loader__barspinner .initial-loader__barspinner--rect {
-        background-color: #21ce99;
-    }
-    .barspinner {
-        margin: 5em auto;
-        width: 6em;
-        height: 2em;
-        white-space: nowrap;
-    }
-    .barspinner__rect {
-         margin: 0.4em;
-         border-radius: 20px;
-         height: 60%;
-         width: 0.6em;
-         display: inline-block;
-        animation: sk-stretchdelay 1.2s infinite ease-in-out;
-     }
-    .barspinner__rect--1 {
-        animation-delay: calc(-1.2s + (0 * 0.1));
-    }
-    .barspinner__rect--2 {
-        animation-delay: calc(-1.2s + (1 * 0.1));
-    }
-    .barspinner__rect--3 {
-        animation-delay: calc(-1.2s + (2 * 0.1));
-    }
-    .barspinner__rect--4 {
-        animation-delay: calc(-1.2s + (3 * 0.1));
-    }
-    .barspinner__rect--5 {
-        animation-delay: calc(-1.2s + (4 * 0.1));
-    }
-    .barspinner--dark .barspinner__rect {
-        background-color: #fff;
-    }
+            l.replace(
+                l.protocol +
+                    '//' +
+                    l.hostname +
+                    (l.port ? ':' + l.port : '') +
+                    l.pathname
+                        .split('/')
+                        .slice(0, 1 + segmentCount)
+                        .join('/') +
+                    '/?p=/' +
+                    l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+                    (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+                    l.hash
+            );
+        </script>
+    </head>
+    <body>
+        <style>
+            .initial-loader {
+                width: 100vw;
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                display: flex;
+                background-color: #f4f4f6;
+            }
+            .initial-loader__barspinner .initial-loader__barspinner--rect {
+                background-color: #21ce99;
+            }
+            .barspinner {
+                margin: 5em auto;
+                width: 6em;
+                height: 2em;
+                white-space: nowrap;
+            }
+            .barspinner__rect {
+                margin: 0.4em;
+                border-radius: 20px;
+                height: 60%;
+                width: 0.6em;
+                display: inline-block;
+                animation: sk-stretchdelay 1.2s infinite ease-in-out;
+            }
+            .barspinner__rect--1 {
+                animation-delay: calc(-1.2s + (0 * 0.1));
+            }
+            .barspinner__rect--2 {
+                animation-delay: calc(-1.2s + (1 * 0.1));
+            }
+            .barspinner__rect--3 {
+                animation-delay: calc(-1.2s + (2 * 0.1));
+            }
+            .barspinner__rect--4 {
+                animation-delay: calc(-1.2s + (3 * 0.1));
+            }
+            .barspinner__rect--5 {
+                animation-delay: calc(-1.2s + (4 * 0.1));
+            }
+            .barspinner--dark .barspinner__rect {
+                background-color: #fff;
+            }
 
-    @keyframes sk-stretchdelay {
-        0%, 40%, 100% {
-            transform: scaleY(1);
-        }
-        20% {
-            transform: scaleY(2);
-        }
-    }
-</style>
-<div class="initial-loader">
-    <div class="initial-loader__barspinner barspinner barspinner-light">
-        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
-        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
-        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
-        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
-        <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
-    </div>
-</div>
-</body>
+            @keyframes sk-stretchdelay {
+                0%,
+                40%,
+                100% {
+                    transform: scaleY(1);
+                }
+                20% {
+                    transform: scaleY(2);
+                }
+            }
+        </style>
+        <div class="initial-loader">
+            <div class="initial-loader__barspinner barspinner barspinner-light">
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--1 rect1"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--2 rect2"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--3 rect3"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--4 rect4"></div>
+                <div class="initial-loader__barspinner--rect barspinner__rect barspinner__rect--5 rect5"></div>
+            </div>
+        </div>
+    </body>
 </html>

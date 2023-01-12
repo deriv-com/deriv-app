@@ -5,26 +5,15 @@ import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 
 type TTourGuide = {
-    label: string | boolean;
     content: string[];
     img?: string;
-    dashboard_tab_index: number;
-    step_index: number;
-    setActiveTab: (param: number) => void;
+    label: string | boolean;
     setOnBoardTourRunState: (param: boolean) => void;
     setTourActive: (param: boolean) => void;
+    step_index: number;
 };
 
-const TourGuide = ({
-    label,
-    content,
-    img,
-    dashboard_tab_index,
-    step_index,
-    setActiveTab,
-    setOnBoardTourRunState,
-    setTourActive,
-}: TTourGuide) => {
+const TourGuide = ({ content, img, label, setOnBoardTourRunState, setTourActive, step_index }: TTourGuide) => {
     const onCloseTour = () => {
         setOnBoardTourRunState(false);
         setTourActive(false);

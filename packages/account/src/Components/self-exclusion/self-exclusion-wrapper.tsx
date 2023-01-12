@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import { isDesktop, isMobile } from '@deriv/shared';
@@ -6,7 +5,7 @@ import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import SelfExclusionArticle from './self-exclusion-article.jsx';
 import SelfExclusionContext from './self-exclusion-context';
 
-const SelfExclusionWrapper = ({ children }) => {
+const SelfExclusionWrapper = ({ children }: { children?: React.ReactNode }) => {
     const { is_app_settings, is_wrapper_bypassed, state } = React.useContext(SelfExclusionContext);
 
     // "is_wrapper_bypassed" is currently used for a <AppSettings> hosted <SelfExclusion>.
@@ -15,6 +14,7 @@ const SelfExclusionWrapper = ({ children }) => {
     if (is_wrapper_bypassed) {
         return (
             <section
+                role='section-self-exclusion-wrapper'
                 className={classNames('da-self-exclusion', {
                     'da-self-exclusion--app-settings': is_app_settings,
                 })}
@@ -40,10 +40,6 @@ const SelfExclusionWrapper = ({ children }) => {
             {isDesktop() && <SelfExclusionArticle />}
         </Div100vhContainer>
     );
-};
-
-SelfExclusionWrapper.propTypes = {
-    children: PropTypes.any.isRequired,
 };
 
 export default SelfExclusionWrapper;

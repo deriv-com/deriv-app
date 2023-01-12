@@ -1,10 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { MobileWrapper, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const AccountStatistics = ({ account_statistics, currency }) => {
+type TAccountStatistics = {
+    account_statistics: {
+        total_withdrawals: number;
+        total_deposits: number;
+    };
+    currency: string;
+};
+
+const AccountStatistics = ({ account_statistics, currency }: TAccountStatistics) => {
     return (
         <div className='statement__account-statistics'>
             <div className='statement__account-statistics-item'>
@@ -59,12 +66,8 @@ const AccountStatistics = ({ account_statistics, currency }) => {
     );
 };
 
-AccountStatistics.propTypes = {
-    account_statistics: PropTypes.object,
-    currency: PropTypes.string,
-};
-
-export default connect(({ modules, client }) => ({
+// TODO: implement reports store TRootStore in types.ts
+export default connect(({ modules, client }: any) => ({
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
 }))(AccountStatistics);

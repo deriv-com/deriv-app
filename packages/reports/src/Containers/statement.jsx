@@ -10,7 +10,7 @@ import { getSupportedContracts } from '_common/contract';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
-import AccountStatistics from '../Components/account-statistics.jsx';
+import AccountStatistics from '../Components/account-statistics';
 import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';

@@ -4,7 +4,7 @@ import {
     getDefaultFields,
     getErrorMessages,
     regex_checks,
-    address_permitted_special_characters_message_string,
+    address_permitted_special_characters_message,
 } from '@deriv/shared';
 
 const address_details_config = ({ account_settings, is_svg }) => {
@@ -23,7 +23,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 [
                     'regular',
                     localize('Use only the following special characters: {{permitted_characters}}', {
-                        permitted_characters: address_permitted_special_characters_message_string,
+                        permitted_characters: address_permitted_special_characters_message,
                         interpolation: { escapeValue: false },
                     }),
                     {
@@ -41,7 +41,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 [
                     'regular',
                     localize('Use only the following special characters: {{permitted_characters}}', {
-                        permitted_characters: address_permitted_special_characters_message_string,
+                        permitted_characters: address_permitted_special_characters_message,
                         interpolation: { escapeValue: false },
                     }),
                     {

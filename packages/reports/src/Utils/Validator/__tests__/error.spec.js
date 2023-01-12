@@ -38,7 +38,7 @@ describe('Errors', () => {
         expect(errors.has('Error')).toBeTruthy();
     });
 
-    it('should return "false" if attribute does not exists', () => {
+    it('should return "false" if the attribute does not exist', () => {
         expect(errors.has('')).toBeFalsy();
     });
 });

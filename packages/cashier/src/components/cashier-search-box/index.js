@@ -1,3 +1,3 @@
-import CashierSearchBox from './cashier-search-box.jsx';
+import CashierSearchBox from './cashier-search-box.tsx';
 
 export default CashierSearchBox;

@@ -9,7 +9,7 @@ import './asset-summary.scss';
 
 const AssetSummary = () => {
     const { client, traders_hub } = useStores();
-    const { has_active_real_account, is_eu } = client;
+    const { has_active_real_account } = client;
     const {
         selected_account_type,
         platform_real_balance,

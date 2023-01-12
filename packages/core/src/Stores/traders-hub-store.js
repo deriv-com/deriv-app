@@ -121,7 +121,11 @@ export default class TradersHubStore extends BaseStore {
         );
 
         reaction(
-            () => [this.selected_region, this.root_store.client.is_landing_company_loaded],
+            () => [
+                this.selected_region,
+                this.root_store.client.is_landing_company_loaded,
+                this.root_store.client.loginid,
+            ],
             () => {
                 if (this.selected_account_type === 'real') {
                     this.setSwitchEU();
@@ -165,12 +169,16 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async setSwitchEU() {
-        const { account_list, switchAccount } = this.root_store.client;
+        const { account_list, switchAccount, loginid } = this.root_store.client;
 
-        if (this.selected_region === 'EU') {
-            await switchAccount(account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid);
-        } else if (this.selected_region === 'Non-EU') {
-            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
+        const mf_account = account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid;
+        const cr_account = account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid;
+
+        if (this.selected_region === 'EU' && !loginid.startsWith('MF')) {
+            // if active_loginid is already EU = do nothing
+            await switchAccount(mf_account);
+        } else if (this.selected_region === 'Non-EU' && !loginid.startsWith('CR')) {
+            await switchAccount(cr_account);
         }
     }
 

@@ -111,7 +111,11 @@ const StaticDashboard = ({
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>
                         <div className='static-dashboard-wrapper__header-and-description'>
-                            <div className='static-dashboard-wrapper__header'>
+                            <div
+                                className={classNames('static-dashboard-wrapper__header', {
+                                    'static-dashboard-wrapper__header--limited-width': has_account,
+                                })}
+                            >
                                 {isMobile() ? (
                                     <React.Fragment>
                                         <ButtonToggle
@@ -228,10 +232,7 @@ const StaticDashboard = ({
                                 </StaticCurrencySwitcherContainer>
                             )}
                         </div>
-                        <div
-                            className='static-dashboard-wrapper__body'
-                            style={has_applauncher_account && !isMobile() ? { height: '4rem' } : {}}
-                        >
+                        <div className='static-dashboard-wrapper__body'>
                             {!has_applauncher_account && (
                                 <StaticCFDAccountManager
                                     type='all'
@@ -251,10 +252,11 @@ const StaticDashboard = ({
                         <div
                             className={classNames('static-dashboard-wrapper__body--apps', {
                                 'static-dashboard-wrapper__body--apps--eu': is_eu_user,
+                                'static-dashboard-wrapper__body--apps--with-gap': has_account,
                             })}
                         >
                             {eu_user ? (
-                                <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon={'DTrader'}
                                         name={'DTrader'}
@@ -265,7 +267,7 @@ const StaticDashboard = ({
                                     />
                                 </div>
                             ) : (
-                                <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon={'DTrader'}
                                         name={'DTrader'}
@@ -280,7 +282,7 @@ const StaticDashboard = ({
 
                             {!eu_user && (
                                 <React.Fragment>
-                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon={'DBot'}
                                             name={'DBot'}
@@ -291,7 +293,7 @@ const StaticDashboard = ({
                                             has_divider
                                         />
                                     </div>
-                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon={'SmartTrader'}
                                             name={'SmartTrader'}
@@ -302,7 +304,7 @@ const StaticDashboard = ({
                                             has_divider
                                         />
                                     </div>
-                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon={'BinaryBot'}
                                             name={'BinaryBot'}
@@ -312,7 +314,7 @@ const StaticDashboard = ({
                                             is_item_blurry={is_blurry.platformlauncher}
                                         />
                                     </div>
-                                    <div className={'static-dashboard-wrapper__body--apps-item'}>
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon={'DerivGo'}
                                             name={'DerivGo'}

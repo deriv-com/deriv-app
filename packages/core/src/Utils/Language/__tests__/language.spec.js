@@ -15,7 +15,7 @@ const languages = {
 };
 
 describe('getAllowedLanguages method', () => {
-    it('should returns the desired allowed languages', () => {
+    it('should return the desired allowed languages', () => {
         expect(getAllowedLanguages()).toEqual(languages);
     });
 });

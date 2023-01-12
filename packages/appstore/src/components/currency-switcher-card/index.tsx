@@ -7,14 +7,15 @@ import { useStores } from 'Stores/index';
 const CurrencySwitcherCard = () => {
     const { traders_hub, client } = useStores();
     const { has_any_real_account, has_maltainvest_account } = client;
-    const { selected_region } = traders_hub;
+    const { is_real, is_demo, is_eu_user } = traders_hub;
 
-    if (
-        (traders_hub.selected_account_type === 'real' && selected_region === 'Non-EU' && has_any_real_account) ||
-        (selected_region === 'EU' && has_maltainvest_account)
-    ) {
+    const has_cr_account = !is_eu_user && has_any_real_account;
+
+    const has_mf_account = is_eu_user && has_maltainvest_account;
+
+    if (is_real && (has_cr_account || has_mf_account)) {
         return <RealAccountSwitcher />;
-    } else if (traders_hub.selected_account_type === 'demo') {
+    } else if (is_demo) {
         return <DemoAccountCard />;
     }
     return null;

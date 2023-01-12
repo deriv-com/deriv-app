@@ -10,7 +10,7 @@ import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
 
 const TwoMonthPicker = Loadable({
-    loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx'),
+    loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker'),
     loading: () => null,
     render(loaded, props) {
         const Component = loaded.default;

@@ -11,10 +11,10 @@ const IdvSubmitComplete = ({ needs_poa, is_from_external }) => {
         <div className='proof-of-identity__container'>
             <IdvDocumentPending className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
-                {localize('Your ID number was submitted successfully')}
+                {localize('Your documents were submitted successfully')}
             </Text>
             <Text className='proof-of-identity__text text' size='xs' align='center'>
-                {localize("We'll process your details within a few minutes and notify its status via email.")}
+                {localize('We’ll review your documents and notify you of its status within 5 minutes.')}
             </Text>
             {!!needs_poa && (
                 <React.Fragment>

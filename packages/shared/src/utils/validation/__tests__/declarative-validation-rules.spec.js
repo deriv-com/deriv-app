@@ -1,9 +1,12 @@
-import { FORM_ERROR_MESSAGES } from '../../../../../core/src/Constants/form-error-messages';
 import { validAddress, initFormErrorMessages } from '../declarative-validation-rules';
+
+const form_error_messages = {
+    address: () => '',
+};
 
 describe('validAddress', () => {
     beforeAll(() => {
-        initFormErrorMessages(FORM_ERROR_MESSAGES);
+        initFormErrorMessages(form_error_messages);
     });
     it('should not accept empty string', () => {
         expect(validAddress('').is_ok).toBe(false);

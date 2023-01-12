@@ -30,7 +30,9 @@ const CreateAdAddPaymentMethodModal = () => {
     if (isMobile()) {
         return (
             <MobileFullPageModal
-                body_className='p2p-my-ads__modal-body'
+                body_className={classNames('p2p-my-ads__modal-body', {
+                    'p2p-my-ads__modal-body--form': my_profile_store.selected_payment_method,
+                })}
                 height_offset='80px'
                 is_flex
                 is_modal_open={is_modal_open}
@@ -45,7 +47,9 @@ const CreateAdAddPaymentMethodModal = () => {
 
     return (
         <Modal
-            className='p2p-my-ads__modal-error'
+            className={classNames('p2p-my-ads__modal-error', {
+                'p2p-my-ads__modal-form': my_profile_store.selected_payment_method,
+            })}
             has_close_icon
             height='560px'
             is_open={is_modal_open}

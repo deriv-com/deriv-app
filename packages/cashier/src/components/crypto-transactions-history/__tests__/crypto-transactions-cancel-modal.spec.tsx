@@ -1,15 +1,24 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CryptoTransactionsCancelModal />', () => {
-    let modal_root_el;
+    let modal_root_el, mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            modules: {
+                cashier: {
+                    transaction_history: {
+                        cancelCryptoTransaction: jest.fn(),
+                        hideCryptoTransactionsCancelModal: jest.fn(),
+                        is_crypto_transactions_cancel_modal_visible: false,
+                    },
+                },
+            },
+        };
+    });
+
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -20,8 +29,15 @@ describe('<CryptoTransactionsCancelModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const renderCryptoTransactionsCancelModal = () =>
+        render(<CryptoTransactionsCancelModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
+
     it('should show "Are you sure you want to cancel this transaction" and "Cancel transaction" messages, "Yes" and "No" buttons', () => {
-        render(<CryptoTransactionsCancelModal is_cancel_modal_visible />);
+        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible = true;
+
+        renderCryptoTransactionsCancelModal();
 
         expect(screen.getByText('Are you sure you want to cancel this transaction?')).toBeInTheDocument();
         expect(screen.getByText('Cancel transaction')).toBeInTheDocument();
@@ -30,29 +46,27 @@ describe('<CryptoTransactionsCancelModal />', () => {
     });
 
     it('should trigger onClick callback when the user clicks "Yes" button', () => {
-        const cancelCryptoTransaction = jest.fn();
+        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible = true;
 
-        render(
-            <CryptoTransactionsCancelModal is_cancel_modal_visible cancelCryptoTransaction={cancelCryptoTransaction} />
-        );
+        renderCryptoTransactionsCancelModal();
+
         const yes_btn = screen.getByText('Yes');
         fireEvent.click(yes_btn);
 
-        expect(cancelCryptoTransaction).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.transaction_history.cancelCryptoTransaction).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger onClick callback when the user clicks "No" button', () => {
-        const hideCryptoTransactionsCancelModal = jest.fn();
+        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible = true;
 
-        render(
-            <CryptoTransactionsCancelModal
-                is_cancel_modal_visible
-                hideCryptoTransactionsCancelModal={hideCryptoTransactionsCancelModal}
-            />
-        );
+        renderCryptoTransactionsCancelModal();
+
+        const yes_btn = screen.getByText('Yes');
         const no_btn = screen.getByText('No');
         fireEvent.click(no_btn);
 
-        expect(hideCryptoTransactionsCancelModal).toHaveBeenCalledTimes(1);
+        expect(
+            mockRootStore.modules.cashier.transaction_history.hideCryptoTransactionsCancelModal
+        ).toHaveBeenCalledTimes(1);
     });
 });

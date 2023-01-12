@@ -18,7 +18,7 @@ export default class MyProfileStore extends BaseStore {
     full_name = '';
     is_button_loading = false;
     is_confirm_delete_modal_open = false;
-    is_loading = true;
+    is_loading = false;
     is_submit_success = false;
     payment_method_value = undefined;
     payment_methods_list = [];

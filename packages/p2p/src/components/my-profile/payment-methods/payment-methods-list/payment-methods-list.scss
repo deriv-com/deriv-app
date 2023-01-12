@@ -8,6 +8,10 @@
             overflow-x: hidden;
             padding: 1rem 2rem;
             width: 100vw;
+
+            &-add {
+                padding: 1rem 0 0;
+            }
         }
 
         &--footer {

@@ -264,6 +264,7 @@ export default class ClientStore extends BaseStore {
             is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
+            has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
@@ -273,7 +274,6 @@ export default class ClientStore extends BaseStore {
             can_have_mlt_account: computed,
             can_have_mx_account: computed,
             can_have_mf_account: computed,
-            can_have_whatsapp: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -286,6 +286,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pre_appstore: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -372,9 +373,11 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
+            updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
+            setIsPreAppStore: action.bound,
         });
 
         reaction(
@@ -771,6 +774,10 @@ export default class ClientStore extends BaseStore {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
     }
 
+    get has_mt5_account_with_rejected_poa() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_rejected')).length;
+    }
+
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
@@ -890,14 +897,6 @@ export default class ClientStore extends BaseStore {
         return countries;
     }
 
-    get can_have_whatsapp() {
-        const country = this.residence || this.clients_country;
-        const allowed_countries = ['za', 'ng'];
-        const is_allowed_country = allowed_countries.includes(country);
-
-        return is_allowed_country;
-    }
-
     get can_upgrade() {
         return this.upgrade_info && (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
@@ -932,6 +931,11 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    get is_pre_appstore() {
+        const { trading_hub } = this.account_settings;
+        return !!trading_hub;
     }
 
     getIsMarketTypeMatching = (account, market_type) =>
@@ -2030,7 +2034,7 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            const is_pre_appstore = window.localStorage.getItem('is_pre_appstore');
+            const is_pre_appstore = !!this.account_settings.trading_hub;
             const redirect_url = sessionStorage.getItem('redirect_url');
             if (
                 is_pre_appstore === 'true' &&
@@ -2489,6 +2493,11 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    async updateMT5Status() {
+        this.updateAccountStatus();
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+    }
+
     setPrevRealAccountLoginid = logind => {
         this.prev_real_account_loginid = logind;
     };
@@ -2506,6 +2515,18 @@ export default class ClientStore extends BaseStore {
             this.setPrevRealAccountLoginid(this.loginid);
             await this.switchAccount(this.virtual_account_loginid);
         }
+    }
+
+    setIsPreAppStore(is_pre_appstore) {
+        const trading_hub = is_pre_appstore ? 1 : 0;
+        WS.setSettings({
+            set_settings: 1,
+            trading_hub,
+        }).then(response => {
+            if (!response.error) {
+                this.account_settings = { ...this.account_settings, trading_hub };
+            }
+        });
     }
 }
 /* eslint-enable */

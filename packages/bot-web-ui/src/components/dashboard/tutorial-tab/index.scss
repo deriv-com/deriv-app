@@ -103,6 +103,9 @@
         overflow: auto;
         height: 100vh;
         padding-bottom: 20rem;
+        @include mobile {
+            padding-bottom: 28rem;
+        }
         &__nosearch {
             @include position-center;
             width: 100%;

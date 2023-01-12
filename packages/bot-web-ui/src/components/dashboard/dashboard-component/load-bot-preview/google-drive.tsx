@@ -63,7 +63,7 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                                 />
                             </div>
                         </div>
-                        <Button text={localize('Connect')} onClick={onDriveConnect} has_effect primary large />
+                        <Button text={localize('Sign in')} onClick={onDriveConnect} has_effect primary large />
                     </React.Fragment>
                 )}
             </div>

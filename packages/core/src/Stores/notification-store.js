@@ -176,7 +176,7 @@ export default class NotificationStore extends BaseStore {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    addVerificationNotifications(identity, document, has_restricted_mt5_account) {
+    addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
@@ -194,6 +194,8 @@ export default class NotificationStore extends BaseStore {
             } else {
                 this.addNotificationMessage(this.client_notifications.resticted_mt5_with_failed_poa);
             }
+        } else if (has_mt5_account_with_rejected_poa) {
+            this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
         } else if (!['none', 'pending'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
@@ -249,6 +251,7 @@ export default class NotificationStore extends BaseStore {
             is_risky_client,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
+            has_mt5_account_with_rejected_poa,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -359,7 +362,12 @@ export default class NotificationStore extends BaseStore {
                 const poo_rejected =
                     needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
 
-                this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
+                this.addVerificationNotifications(
+                    identity,
+                    document,
+                    has_restricted_mt5_account,
+                    has_mt5_account_with_rejected_poa
+                );
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -957,14 +965,23 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
+            poa_rejected_for_mt5: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poa_rejected_for_mt5',
+                header: localize('Please resubmit your proof of address or we may restrict your account.'),
+                message: localize('Please submit your proof of address.'),
+                type: 'danger',
+            },
             poa_failed: {
                 action: {
                     route: routes.proof_of_address,
                     text: localize('Resubmit proof of address'),
                 },
                 key: 'poa_failed',
-                header: localize('Please resubmit your proof of address or we may restrict your account.'),
-                message: localize('Please submit your proof of address.'),
+                header: localize('Please resubmit your proof of address.'),
                 type: 'danger',
             },
             poa_verified: {

@@ -39,10 +39,10 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: { mul
 
 const RealAccountSwitcher = () => {
     const { client, traders_hub } = useStores();
-    const { is_switching, has_any_real_account } = client;
+    const { is_logging_in, is_switching, has_any_real_account } = client;
     const { multipliers_account_status } = traders_hub;
 
-    if (is_switching) {
+    if (is_switching || is_logging_in) {
         return (
             <div className='real-account-switcher__container loader'>
                 <CurrencySwitcherLoader />

@@ -12,7 +12,15 @@
     transition: opacity 0.3s;
     display: flex;
 
+    @media screen and (max-width: 380px) {
+        &__cashier-button {
+            display: none;
+        }
+    }
+
     @include mobile {
+        display: flex;
+        justify-content: space-between;
         height: 4rem;
     }
 

@@ -113,7 +113,6 @@ const BuySellModal = () => {
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
-    const formik_ref = React.useRef();
     const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
 
@@ -231,9 +230,6 @@ const BuySellModal = () => {
             setErrorMessage(null);
         }
 
-        my_profile_store.setSelectedPaymentMethod('');
-        my_profile_store.setSelectedPaymentMethodDisplayName('');
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
 
@@ -262,7 +258,7 @@ const BuySellModal = () => {
                     {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
+                        <AddPaymentMethodForm should_show_separated_footer />
                     ) : (
                         <React.Fragment>
                             <Form
@@ -316,7 +312,7 @@ const BuySellModal = () => {
                             )}
                             <BuySellFormError />
                             {my_profile_store.should_show_add_payment_method_form ? (
-                                <AddPaymentMethodForm formik_ref={formik_ref} should_show_separated_footer />
+                                <AddPaymentMethodForm should_show_separated_footer />
                             ) : (
                                 <Form
                                     advert={buy_sell_store.selected_ad_state}

@@ -143,13 +143,13 @@ const BuyAdPaymentMethodsList = ({
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                     list_items={payment_methods_list}
-                                                    list_portal_id='deriv_app'
+                                                    list_portal_id={list_portal_id ?? 'deriv_app'}
                                                     onBlur={e => {
                                                         e.preventDefault();
                                                         setFieldValue('payment_method', '');
                                                     }}
                                                     onItemSelection={({ value }) => {
-                                                        onClickPaymentMethodItem(value);
+                                                        setTimeout(onClickPaymentMethodItem(value), 0);
                                                     }}
                                                     placeholder={localize('Add')}
                                                     required
@@ -176,10 +176,10 @@ const BuyAdPaymentMethodsList = ({
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off' // prevent chrome autocomplete
-                                                    className='quick-add-modal--input'
+                                                    className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
                                                     hide_list={hide_list}
-                                                    is_alignment_top
+                                                    is_alignment_top={is_alignment_top}
                                                     leading_icon={
                                                         <Icon
                                                             icon={
@@ -191,7 +191,7 @@ const BuyAdPaymentMethodsList = ({
                                                         />
                                                     }
                                                     list_items={[method]}
-                                                    list_portal_id='deriv_app'
+                                                    list_portal_id={list_portal_id ?? 'deriv_app'}
                                                     onBlur={e => {
                                                         e.preventDefault();
                                                         setFieldValue('payment_method', method);
@@ -243,8 +243,13 @@ const BuyAdPaymentMethodsList = ({
                                                                     onClickIcon(payment_method, key, setFieldValue);
                                                             }}
                                                             onMouseDown={() => {
-                                                                if (isDesktop())
+                                                                if (isDesktop() && my_ads_store.show_ad_form)
                                                                     onClickIcon(payment_method, key, setFieldValue);
+                                                            }}
+                                                            onClick={() => {
+                                                                if (isDesktop() && !my_ads_store.show_ad_form) {
+                                                                    onClickIcon(payment_method, key, setFieldValue);
+                                                                }
                                                             }}
                                                         />
                                                     }

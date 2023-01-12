@@ -30,52 +30,45 @@ const InfoPanel = ({
             tutorial_label,
         };
     };
+
     const handleClose = () => {
         setInfoPanelVisibility(false);
         localStorage.setItem('dbot_should_show_info', JSON.stringify(Date.now()));
     };
 
-    const renderInfo = () => {
-        return (
-            <div className='db-info-panel'>
-                <div className='db-info-panel__close-action' onClick={handleClose}>
-                    <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
-                </div>
-
-                {SIDEBAR_INTRO.map((sidebar_item, index) => {
-                    const { label, content, link } = sidebar_item;
-                    return (
-                        <div key={`${label}-${index}`}>
-                            <Text
-                                color='prominent'
-                                line_height='xxl'
-                                size={is_mobile ? 's' : 'm'}
-                                weight='bold'
-                                as='h1'
-                            >
-                                {label}
-                            </Text>
-                            {content.map((text, key) => (
-                                <Text
-                                    key={`info-panel-tour${key}`}
-                                    className={classNames('db-info-panel__card', {
-                                        'db-info-panel__content': link,
-                                    })}
-                                    color='prominent'
-                                    line_height='xl'
-                                    as='p'
-                                    onClick={() => switchTab(link, label)}
-                                    size={is_mobile ? 'xxs' : 's'}
-                                >
-                                    {text}
-                                </Text>
-                            ))}
-                        </div>
-                    );
-                })}
+    const renderInfo = () => (
+        <div className='db-info-panel'>
+            <div className='db-info-panel__close-action' onClick={handleClose}>
+                <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
             </div>
-        );
-    };
+
+            {SIDEBAR_INTRO.map((sidebar_item, index) => {
+                const { label, content, link } = sidebar_item;
+                return (
+                    <div key={`${label}-${index}`}>
+                        <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold' as='h1'>
+                            {label}
+                        </Text>
+                        {content.map((text, key) => (
+                            <Text
+                                key={`info-panel-tour${key}`}
+                                className={classNames('db-info-panel__card', {
+                                    'db-info-panel__content': link,
+                                })}
+                                color='prominent'
+                                line_height='xl'
+                                as='p'
+                                onClick={() => switchTab(link, label)}
+                                size={is_mobile ? 'xxs' : 's'}
+                            >
+                                {text}
+                            </Text>
+                        ))}
+                    </div>
+                );
+            })}
+        </div>
+    );
 
     return (
         <>
@@ -92,7 +85,7 @@ const InfoPanel = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <Modal
-                    className={classNames('statistics__modal', { 'statistics__modal--mobile': is_mobile })}
+                    className='statistics__modal statistics__modal--mobile'
                     is_open={is_info_panel_visible}
                     toggleModal={handleClose}
                     width={'440px'}

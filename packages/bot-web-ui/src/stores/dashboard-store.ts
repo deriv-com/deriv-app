@@ -20,7 +20,7 @@ export interface IDashboardStore {
     has_builder_token: string | number;
     has_onboarding_token: string | number;
     strategy_save_type: string;
-    onCloseDialog: () => void;
+    onCloseDialog: VoidFunction;
     setHasTourEnded: (has_tour_ended: boolean) => void;
     showVideoDialog: (param: { [key: string]: string }) => void;
     setActiveTab: (active_tab: number) => void;
@@ -28,7 +28,7 @@ export interface IDashboardStore {
     setFAQSearchValue: (faq_search_value: string) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
-    initInfoPanel: () => void;
+    initInfoPanel: VoidFunction;
 }
 
 export default class DashboardStore implements IDashboardStore {

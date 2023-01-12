@@ -1,9 +1,9 @@
 import React from 'react';
-import { Modal, MobileDialog, DesktopWrapper, MobileWrapper, Div100vhContainer, Text } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
-import { TCFDPersonalDetailsModalProps } from './props.types';
+import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
@@ -11,21 +11,15 @@ import { GetSettings } from '@deriv/api-types';
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
-const CFDPersonalDetailsModal = ({
+const CFDPersonalDetailsContainer = ({
     account_settings,
-    disableApp,
-    enableApp,
     context,
-    is_from_mt5_compare_accounts_table,
-    is_open,
+    getChangeableFields,
     landing_company,
-    openPasswordModal,
-    toggleCompareAccounts,
-    toggleCFDPersonalDetailsModal,
-    toggleJurisdictionModal,
     residence_list,
     setAccountSettings,
-}: TCFDPersonalDetailsModalProps) => {
+    onSubmit,
+}: TCFDPersonalDetailsContainerProps) => {
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);
     const [form_values, setFormValues] = React.useState<TFormValues>({
@@ -68,14 +62,12 @@ const CFDPersonalDetailsModal = ({
     };
 
     React.useEffect(() => {
-        if (is_open) {
-            setIsLoading(true);
-            initiatePersonalDetails().then(() => {
-                setIsLoading(false);
-            });
-        }
+        setIsLoading(true);
+        initiatePersonalDetails().then(() => {
+            setIsLoading(false);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_open]);
+    }, []);
 
     const transform = (value: unknown) => {
         const [result] = residence_list?.filter(item => item.value === value);
@@ -91,16 +83,6 @@ const CFDPersonalDetailsModal = ({
         });
     };
 
-    const prevStep = () => {
-        setFormError('');
-        toggleCFDPersonalDetailsModal();
-        if (is_from_mt5_compare_accounts_table) {
-            toggleCompareAccounts();
-        } else {
-            toggleJurisdictionModal();
-        }
-    };
-
     const updateValue = async (index: number, value: TFormValues, setSubmitting: TSetSubmitting, is_dirty = true) => {
         if (is_dirty) {
             // Set account settings
@@ -113,9 +95,8 @@ const CFDPersonalDetailsModal = ({
             initiatePersonalDetails(setSubmitting);
         }
         saveFormData(index, value);
-        toggleCFDPersonalDetailsModal();
         setAccountSettings({ ...account_settings, ...value });
-        openPasswordModal();
+        onSubmit(index, value);
     };
 
     const getPersonalDetailsForm = () => (
@@ -132,16 +113,14 @@ const CFDPersonalDetailsModal = ({
             </div>
             <div className='cfd-personal-details-modal__body'>
                 <CFDPersonalDetailsForm
-                    form_error={form_error}
-                    has_previous_button
-                    index={0}
                     context={context}
+                    form_error={form_error}
+                    index={2}
                     is_loading={is_loading}
                     landing_company={landing_company}
-                    onCancel={prevStep}
-                    onSave={saveFormData}
                     onSubmit={updateValue}
                     residence_list={residence_list}
+                    changeable_fields={getChangeableFields()}
                     value={form_values}
                 />
             </div>
@@ -150,51 +129,18 @@ const CFDPersonalDetailsModal = ({
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    className='real-account-signup-modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    has_close_icon={true}
-                    height='688px'
-                    context={context}
-                    id='cfd-personal-details-modal'
-                    is_open={is_open}
-                    title={localize('Add a real MT5 account')}
-                    toggleModal={toggleCFDPersonalDetailsModal}
-                    width='904px'
-                    exit_classname='cfd-modal--custom-exit'
-                >
-                    {getPersonalDetailsForm()}
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    onClose={toggleCFDPersonalDetailsModal}
-                    portal_element_id='modal_root'
-                    title={localize('Add a real MT5 account')}
-                    visible={is_open}
-                    context={context}
-                    wrapper_classname='account-signup-mobile-dialog'
-                >
-                    {getPersonalDetailsForm()}
-                </MobileDialog>
-            </MobileWrapper>
+            <DesktopWrapper>{getPersonalDetailsForm()}</DesktopWrapper>
+            <MobileWrapper>{getPersonalDetailsForm()}</MobileWrapper>
         </React.Fragment>
     );
 };
 
-export default connect(({ modules: { cfd }, ui, client }: RootStore) => ({
+export default connect(({ ui, client }: RootStore) => ({
     account_settings: client.account_settings,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_open: cfd.is_cfd_personal_details_modal_visible,
-    is_from_mt5_compare_accounts_table: cfd.is_from_mt5_compare_accounts_table,
+    getChangeableFields: client.getChangeableFields,
     landing_company: client.landing_company,
-    openPasswordModal: cfd.enableCFDPasswordModal,
     residence_list: client.residence_list,
     setAccountSettings: client.setAccountSettings,
-    toggleCompareAccounts: cfd.toggleCompareAccountsModal,
-    toggleCFDPersonalDetailsModal: cfd.toggleCFDPersonalDetailsModal,
-    toggleJurisdictionModal: cfd.toggleJurisdictionModal,
-}))(CFDPersonalDetailsModal);
+}))(CFDPersonalDetailsContainer);

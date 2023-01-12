@@ -4,12 +4,6 @@ import { isMobile } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
 import AccountTransferForm from '../account-transfer-form';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
@@ -88,6 +82,9 @@ describe('<AccountTransferForm />', () => {
                         onMount: jest.fn(),
                     },
                 },
+            },
+            common: {
+                is_from_derivgo: false,
             },
         };
     });

@@ -316,12 +316,12 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         //to load the bot on first load
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            //clearInjectionDiv();
+            clearInjectionDiv();
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('#load-strategy__blockly-container');
+            const ref = document.getElementById('load-strategy__blockly-container');
             if (!ref) {
                 // eslint-disable-next-line no-console
                 console.warn('Could not find preview workspace element.');

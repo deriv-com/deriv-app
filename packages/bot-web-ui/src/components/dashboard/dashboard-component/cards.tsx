@@ -39,13 +39,13 @@ const Card = ({
     is_dialog_open,
     has_dashboard_strategies,
     is_mobile,
-    setIsFileSupported,
     loadFileFromLocal,
     setActiveTab,
     setFileLoaded,
     showVideoDialog,
     setPreviewOnPopup,
 }: TCardProps) => {
+    const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
     type TCardArray = {
         icon: string;
         content: string;
@@ -191,5 +191,4 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     showVideoDialog: dashboard.showVideoDialog,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
-    setIsFileSupported: dashboard.setIsFileSupported,
 }))(Card);

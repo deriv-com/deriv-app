@@ -128,7 +128,7 @@ const LocalComponent = ({
                                         setActiveTab(1);
                                     }}
                                 >
-                                    Opens
+                                    Open
                                 </button>
                             </div>
                         </>

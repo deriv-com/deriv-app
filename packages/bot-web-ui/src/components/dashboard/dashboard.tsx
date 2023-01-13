@@ -106,9 +106,9 @@ const Dashboard = ({
     let tour_status: { [key: string]: string };
     const is_mobile = isMobile();
 
-    const setTourStatus = (param: { [key: string]: string }) => {
-        if (param) {
-            const { action } = param;
+    const setTourStatus = (status: { [key: string]: string }) => {
+        if (status) {
+            const { action } = status;
             const actions = ['skip', 'close'];
 
             if (actions.includes(action)) {

@@ -49,6 +49,7 @@ const RealAccountCard = () => {
                         history.push(routes.cashier_deposit);
                     }}
                     secondary
+                    className='currency-switcher__button'
                 >
                     {localize('Deposit')}
                 </Button>

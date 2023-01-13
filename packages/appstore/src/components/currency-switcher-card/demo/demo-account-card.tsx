@@ -27,7 +27,7 @@ const DemoAccountCard = () => {
             }
             actions={
                 canResetBalance() && (
-                    <Button secondary onClick={resetVirtualBalance}>
+                    <Button secondary onClick={resetVirtualBalance} className='currency-switcher__button'>
                         {localize('Reset Balance')}
                     </Button>
                 )

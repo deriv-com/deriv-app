@@ -55,28 +55,31 @@ const CurrentSwitcherContainer = ({
             })}
             {...props}
         >
-            <CurrencyIcon icon={icon} size={32} />
-            <div
-                className={classNames(
-                    'currency-switcher-container__content',
-                    `currency-switcher-container--${document_status || 'failed' || 'pending' || 'default'}`
-                )}
-            >
+            <div className='currency-switcher-container--left'>
+                <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
                 <div
                     className={classNames(
-                        'currency-switcher-container__content--text',
-                        `currency-switcher-container__content--text--${
-                            document_status || 'failed' || 'pending' || 'default'
-                        }`
+                        'currency-switcher-container__content',
+                        `currency-switcher-container--${document_status || 'failed' || 'pending' || 'default'}`
                     )}
                 >
-                    {title}
+                    <div
+                        className={classNames(
+                            'currency-switcher-container__content--text',
+                            `currency-switcher-container__content--text--${
+                                document_status || 'failed' || 'pending' || 'default'
+                            }`
+                        )}
+                    >
+                        {title}
+                    </div>
+                    {children}
                 </div>
-                {children}
             </div>
-
-            {actions}
-            <Dropdown />
+            <div className='currency-switcher-container--right'>
+                {actions}
+                <Dropdown />
+            </div>
         </div>
     );
 };

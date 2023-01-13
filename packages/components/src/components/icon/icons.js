@@ -508,6 +508,8 @@ import './common/ic-poo-rejected.svg';
 import './common/ic-poo-submitted.svg';
 import './common/ic-poo-verified.svg';
 import './common/ic-portfolio.svg';
+import './common/ic-preview-icon.svg';
+import './common/ic-preview.svg';
 import './common/ic-profile.svg';
 import './common/ic-profit-table.svg';
 import './common/ic-profit.svg';

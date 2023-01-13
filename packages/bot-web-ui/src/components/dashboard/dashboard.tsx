@@ -327,7 +327,7 @@ const Dashboard = ({
                     <Toast className='bot-notification'>
                         {toast_message === 'delete'
                             ? localize('You’ve successfully deleted a bot.')
-                            : localize('You’ve successfully imported a bot.')}{' '}
+                            : localize('You’ve successfully imported a bot.')}
                     </Toast>
                 </div>
             )}

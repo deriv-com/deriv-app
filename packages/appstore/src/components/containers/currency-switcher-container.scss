@@ -40,10 +40,8 @@
             justify-content: center;
             margin-left: 1rem;
             &--text {
-                &--none {
-                    padding-bottom: 0.5rem;
-                    font-size: var(--text-size-xs);
-                }
+                padding-bottom: 0.5rem;
+                font-size: var(--text-size-xs);
             }
         }
 

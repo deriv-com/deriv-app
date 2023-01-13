@@ -5,9 +5,12 @@ import IconMessageContent from 'Components/icon-message-content';
 
 export const PoincUnverified = ({ onReSubmit }) => (
     <IconMessageContent
-        message={localize('Proof of income verification failed')}
+        message={localize('Income verification failed')}
         text={
-            <Localize i18n_default_text='We are unable to verify your proof of income, please check your email inbox for more details.' />
+            <Localize
+                i18n_default_text="We are unable to verify your income. <0 /> Please check the email we've sent you for further information."
+                components={[<br key={0} />]}
+            />
         }
         icon={<Icon icon='IcPoincFailed' size={128} />}
     >

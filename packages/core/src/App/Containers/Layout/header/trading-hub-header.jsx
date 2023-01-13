@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { getPlatformInformation, routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -95,10 +95,8 @@ const TradingHubHeader = ({
     is_logged_in,
     is_mt5_allowed,
     is_notifications_visible,
-    location,
     notifications_count,
     toggleNotifications,
-    is_social_signup,
     replaceCashierMenuOnclick,
     menu_items,
     toggleIsTourOpen,
@@ -121,8 +119,6 @@ const TradingHubHeader = ({
                 <MobileWrapper>
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
-                        location={location}
-                        platform_header={getPlatformInformation(app_routing_history).header}
                         platform_switcher={
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
@@ -131,7 +127,6 @@ const TradingHubHeader = ({
                                 toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                             />
                         }
-                        is_social_signup={is_social_signup}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -221,8 +216,6 @@ TradingHubHeader.propTypes = {
     is_notifications_visible: PropTypes.bool,
     notifications_count: PropTypes.number,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
-    location: PropTypes.object,
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
@@ -244,7 +237,6 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_notifications_visible: notifications.is_notifications_visible,
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     toggleIsTourOpen: tradinghub.toggleIsTourOpen,

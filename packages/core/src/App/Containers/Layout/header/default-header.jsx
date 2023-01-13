@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -40,7 +40,6 @@ const DefaultHeader = ({
     is_notifications_visible,
     is_route_modal_on,
     is_virtual,
-    location,
     menu_items,
     notifications_count,
     openRealAccountSignup,
@@ -156,8 +155,6 @@ const DefaultHeader = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
-                            location={location}
-                            platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -269,7 +266,6 @@ DefaultHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    location: PropTypes.object,
     menu_items: PropTypes.array,
 };
 

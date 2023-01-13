@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -82,7 +82,6 @@ const DTraderHeader = ({
     is_notifications_visible,
     is_route_modal_on,
     is_virtual,
-    location,
     menu_items,
     notifications_count,
     openRealAccountSignup,
@@ -91,7 +90,6 @@ const DTraderHeader = ({
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
-    is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -147,8 +145,6 @@ const DTraderHeader = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
-                            location={location}
-                            platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -157,7 +153,6 @@ const DTraderHeader = ({
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
                             }
-                            is_social_signup={is_social_signup}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
@@ -251,10 +246,8 @@ DTraderHeader.propTypes = {
     replaceCashierMenuOnclick: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    location: PropTypes.object,
     menu_items: PropTypes.array,
 };
 
@@ -291,5 +284,4 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
 }))(withRouter(DTraderHeader));

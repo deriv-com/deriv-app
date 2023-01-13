@@ -105,7 +105,6 @@ const DashboardPlatformHeader = ({
     is_mt5_allowed,
     is_notifications_visible,
     is_settings_modal_on,
-    location,
     notifications_count,
     settings_extension,
     toggleNotifications,
@@ -126,8 +125,6 @@ const DashboardPlatformHeader = ({
                 <MobileWrapper>
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
-                        location={location}
-                        platform_header={getPlatformInformation(app_routing_history).header}
                         platform_switcher={
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
@@ -189,7 +186,6 @@ DashboardPlatformHeader.propTypes = {
     notifications_count: PropTypes.number,
     toggleNotifications: PropTypes.func,
     toggleSettingsModal: PropTypes.func,
-    location: PropTypes.object,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
 };

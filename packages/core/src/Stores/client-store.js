@@ -1005,7 +1005,11 @@ export default class ClientStore extends BaseStore {
 
     isDxtradeAllowed = landing_companies => {
         // Stop showing DerivX for non-logged in EU users
-        if (!this.is_logged_in && this.is_eu_country) return false;
+        if (
+            (!this.is_logged_in && this.is_eu_country) ||
+            (this.is_logged_in && this.root_store.traders_hub.show_eu_related_content)
+        )
+            return false;
 
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;

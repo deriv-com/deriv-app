@@ -54,7 +54,6 @@ const BotBuilder = ({
                         <WorkspaceWrapper />
                     </div>
                 )}
-                {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             </div>
             {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (
                 <>
@@ -92,6 +91,7 @@ const BotBuilder = ({
                     </DesktopWrapper>
                 </>
             )}
+            {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />
         </>

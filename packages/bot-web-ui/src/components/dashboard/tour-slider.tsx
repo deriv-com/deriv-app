@@ -123,11 +123,8 @@ const TourSlider = ({
     }, [step]);
 
     const onChange = (param: string) => {
-        if (
-            param === 'inc' &&
-            step < Object.keys(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).length
-        )
-            setStep(step + 1);
+        const MOBILE_TOUR = !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE;
+        if (param === 'inc' && step < Object.keys(MOBILE_TOUR).length) setStep(step + 1);
         else if (param === 'dec' && step > 1) setStep(step - 1);
         else if (param === 'skip') onCloseTour('onboard');
     };

@@ -257,12 +257,6 @@ export default class DashboardStore implements IDashboardStore {
         this.setTourActive(false);
     };
 
-    setTourEnd = (): void => {
-        this.setHasTourEnded(true);
-        this.setTourDialogVisibility(true);
-        setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-    };
-
     onTourEnd = (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => {
         if (step === 8) {
             this.onCloseTour('onboard');

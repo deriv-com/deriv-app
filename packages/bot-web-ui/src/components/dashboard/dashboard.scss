@@ -144,6 +144,10 @@
             .smartcharts {
                 height: calc(100% - 4rem);
                 z-index: 1;
+                &:has(.stxMenuActive) {
+                    z-index: 99;
+                    transition: all 1s ease-out;
+                }
             }
         }
 

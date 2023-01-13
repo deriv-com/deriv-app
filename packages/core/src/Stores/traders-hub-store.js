@@ -169,16 +169,20 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async setSwitchEU() {
-        const { account_list, switchAccount, loginid } = this.root_store.client;
+        const { account_list, switchAccount, loginid, setIsLoggingIn } = this.root_store.client;
 
         const mf_account = account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid;
         const cr_account = account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid;
 
         if (this.selected_region === 'EU' && !loginid.startsWith('MF')) {
             // if active_loginid is already EU = do nothing
-            await switchAccount(mf_account);
+            await switchAccount(mf_account).then(() => {
+                setIsLoggingIn(false);
+            });
         } else if (this.selected_region === 'Non-EU' && !loginid.startsWith('CR')) {
-            await switchAccount(cr_account);
+            await switchAccount(cr_account).then(() => {
+                setIsLoggingIn(false);
+            });
         }
     }
 

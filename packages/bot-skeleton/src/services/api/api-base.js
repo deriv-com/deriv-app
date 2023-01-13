@@ -111,6 +111,13 @@ class APIBase {
     clearSubscriptions() {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions = [];
+
+        // Resetting timeout resolvers
+        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+
+        global_timeouts.forEach((_, i) => {
+            clearTimeout(i);
+        });
     }
 
     getTime() {

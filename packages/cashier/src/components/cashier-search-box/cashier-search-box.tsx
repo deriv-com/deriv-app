@@ -67,7 +67,7 @@ const CashierSearchBox = ({
                                                 icon='IcCloseCircle'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
-                                        ) : undefined
+                                        ) : null
                                     }
                                 />
                             )}

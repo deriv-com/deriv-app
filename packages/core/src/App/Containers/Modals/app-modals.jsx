@@ -65,6 +65,7 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
+    cfd_score,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
@@ -136,7 +137,8 @@ const AppModals = ({
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
-        !is_trading_assessment_for_new_user_enabled
+        !is_trading_assessment_for_new_user_enabled &&
+        cfd_score === 0
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
@@ -175,6 +177,7 @@ export default connect(({ client, ui }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
+    cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,

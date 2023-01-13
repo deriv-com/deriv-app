@@ -91,7 +91,6 @@ const DTraderHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
 }) => {
-    const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -144,15 +143,14 @@ const DTraderHeader = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <ToggleMenuDrawer
-                            ref={toggle_menu_drawer_ref}
-                            platform_switcher={
+                            platform_switcher={toggleDrawer => (
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
                                     is_mobile
                                     platform_config={filterPlatformsForClients(platform_config)}
-                                    toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                    toggleDrawer={toggleDrawer}
                                 />
-                            }
+                            )}
                         />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>

@@ -102,7 +102,6 @@ const TradingHubHeader = ({
     toggleIsTourOpen,
 }) => {
     const is_mf = loginid?.startsWith('MF');
-    const toggle_menu_drawer_ref = React.useRef(null);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -118,15 +117,14 @@ const TradingHubHeader = ({
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer
-                        ref={toggle_menu_drawer_ref}
-                        platform_switcher={
+                        platform_switcher={toggleDrawer => (
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
                                 is_mobile
                                 platform_config={filterPlatformsForClients(platform_config)}
-                                toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
+                                toggleDrawer={toggleDrawer}
                             />
-                        }
+                        )}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>

@@ -96,7 +96,7 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_i
     );
 };
 
-const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) => {
+const ToggleMenuDrawer = ({ platform_switcher }) => {
     const { ui, client, modules } = useStore();
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
@@ -173,10 +173,6 @@ const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) =>
         }
         expandSubMenu(false);
     }, [expandSubMenu, is_open]);
-
-    React.useImperativeHandle(ref, () => ({
-        toggleDrawer,
-    }));
 
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
@@ -348,7 +344,7 @@ const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) =>
                 id='dt_mobile_drawer'
                 enableApp={enableApp}
                 disableApp={disableApp}
-                title={title || title === '' ? title : localize('Menu')}
+                title={localize('Menu')}
                 height='100vh'
                 width='295px'
             >
@@ -401,7 +397,7 @@ const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) =>
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
-                                        {platform_switcher}
+                                        {platform_switcher(toggleDrawer)}
                                     </MobileDrawer.SubHeader>
                                 )}
                                 <MobileDrawer.Body>
@@ -552,7 +548,7 @@ const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) =>
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                     })}
                                 >
-                                    {platform_switcher}
+                                    {platform_switcher(toggleDrawer)}
                                 </MobileDrawer.SubHeader>
                                 <MobileDrawer.Body>
                                     <div
@@ -658,7 +654,7 @@ const ToggleMenuDrawer = React.forwardRef(({ platform_switcher, title }, ref) =>
             </MobileDrawer>
         </React.Fragment>
     );
-});
+};
 
 ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
 

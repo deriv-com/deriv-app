@@ -15,7 +15,7 @@ const BotNotification = ({ show_toast, toast_message, setShowToast }: TBotNotifi
     React.useEffect(() => {
         setTimeout(() => {
             setShowToast(false);
-        }, 5000);
+        }, 3000);
     }, [show_toast]);
     const el_portal = document.getElementById('popup_root');
 

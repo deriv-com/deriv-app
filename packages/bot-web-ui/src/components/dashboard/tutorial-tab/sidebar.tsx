@@ -12,6 +12,7 @@ import classNames from 'classnames';
 
 type TSidebarProps = {
     active_tab_tutorials: number;
+    active_tab: number;
     faq_search_value: string;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (setFAQSearchValue: string) => void;
@@ -19,36 +20,15 @@ type TSidebarProps = {
 
 const Sidebar = ({
     active_tab_tutorials,
+    active_tab,
+    faq_search_value,
     setActiveTabTutorial,
     setFAQSearchValue,
-    faq_search_value,
 }: TSidebarProps) => {
-    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        debounce(() => {
-            setFAQSearchValue(value);
-        }, 700)();
-    };
     const guide_tab_content = [...user_guide_content, ...guide_content];
     const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
-    React.useEffect(() => {
-        if (search_input?.current?.value) setsearchFAQList((search_input.current.value = ''));
-        setsearchFilteredList(guide_tab_content);
-        setsearchFAQList(faq_content);
-    }, [active_tab_tutorials]);
-
-    React.useEffect(() => {
-        const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
-        const filtered_list = content_list.filter(data => {
-            return content_list === guide_tab_content
-                ? data.content.toLowerCase().includes(faq_search_value)
-                : data.title.toLowerCase().includes(faq_search_value);
-        });
-        return active_tab_tutorials === 0 ? setsearchFilteredList(filtered_list) : setsearchFAQList(filtered_list);
-    }, [faq_search_value]);
-
     const menu_items = [
         {
             label: localize('Guide'),
@@ -60,6 +40,41 @@ const Sidebar = ({
         },
     ];
     const selected_tab = menu_items?.[active_tab_tutorials] || {};
+
+    React.useEffect(() => {
+        if (search_input?.current?.value) {
+            search_input.current.value = '';
+            setsearchFAQList([]);
+        }
+
+        setsearchFilteredList(guide_tab_content);
+        setsearchFAQList(faq_content);
+    }, [active_tab_tutorials, active_tab]);
+
+    React.useEffect(() => {
+        const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
+        const filtered_list = content_list.filter(data => {
+            return content_list === guide_tab_content
+                ? data.content.toLowerCase().includes(faq_search_value)
+                : data.title.toLowerCase().includes(faq_search_value);
+        });
+        return active_tab_tutorials === 0 ? setsearchFilteredList(filtered_list) : setsearchFAQList(filtered_list);
+    }, [faq_search_value]);
+
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        debounce(() => {
+            setFAQSearchValue(value);
+        }, 700)();
+    };
+
+    const onChangeHandle = React.useCallback(
+        ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+            setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
+        },
+        [active_tab_tutorials]
+    );
+
     return (
         <>
             <DesktopWrapper>
@@ -96,9 +111,7 @@ const Sidebar = ({
                             value={selected_tab.label}
                             label={''}
                             should_show_empty_option={false}
-                            onChange={({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-                                setActiveTabTutorial(menu_items.findIndex(i => i.label === value));
-                            }}
+                            onChange={onChangeHandle}
                         />
                     </div>
                     <div className={classNames({ 'tutorials-mobile__guide': active_tab_tutorials === 0 })}>
@@ -112,6 +125,7 @@ const Sidebar = ({
 
 export default connect(({ dashboard }: RootStore) => ({
     active_tab_tutorials: dashboard.active_tab_tutorials,
+    active_tab: dashboard.active_tab,
     faq_search_value: dashboard.faq_search_value,
     setActiveTabTutorial: dashboard.setActiveTabTutorial,
     setFAQSearchValue: dashboard.setFAQSearchValue,

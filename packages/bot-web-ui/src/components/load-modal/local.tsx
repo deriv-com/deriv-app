@@ -31,11 +31,9 @@ const LocalComponent = ({ handleFileChange, loaded_local_file, setLoadedLocalFil
                     </div>
                     <div className='load-strategy__preview-workspace'>
                         <div id='load-strategy__blockly-container' style={{ height: '100%' }}>
-                            {!is_mobile && (
-                                <div className='load-strategy__local-preview-close'>
-                                    <Icon icon={'IcCross'} onClick={() => setLoadedLocalFile(null)} />
-                                </div>
-                            )}
+                            <div className='load-strategy__local-preview-close'>
+                                <Icon icon='IcCross' onClick={() => setLoadedLocalFile(null)} />
+                            </div>
                             <WorkspaceControl />
                         </div>
                     </div>
@@ -66,10 +64,10 @@ const LocalComponent = ({ handleFileChange, loaded_local_file, setLoadedLocalFil
                     }}
                 >
                     {is_mobile ? (
-                        <Icon icon={'IcMobile'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                        <Icon icon='IcLocal' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
                     ) : (
                         <React.Fragment>
-                            <Icon icon={'IcPc'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                            <Icon icon='IcPc' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
                             <div className='load-strategy__local-title'>
                                 <Localize i18n_default_text='Drag your XML file here' />
                             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Collapsible } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Toast } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
@@ -43,6 +43,8 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
+    show_toast: boolean;
+    setShowToast: (show_toast: boolean) => void;
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
     onEntered: () => void;
@@ -80,6 +82,8 @@ const Dashboard = ({
     onCloseDialog,
     onEntered,
     onOkButtonClick,
+    show_toast,
+    setShowToast,
     setActiveTab,
     setBotBuilderTokenCheck,
     setBotBuilderTourState,
@@ -198,19 +202,22 @@ const Dashboard = ({
         });
     }, [has_tour_started]);
 
-    const handleTabChange = (tab_index: number) => {
-        setActiveTab(tab_index);
-        const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
-        const el_id = ids[tab_index];
-        if (el_id) {
-            const el_tab = document.getElementById(el_id);
-            el_tab?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'center',
-            });
-        }
-    };
+    const handleTabChange = React.useCallback(
+        (tab_index: number) => {
+            setActiveTab(tab_index);
+            const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
+            const el_id = ids[tab_index];
+            if (el_id) {
+                const el_tab = document.getElementById(el_id);
+                el_tab?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                });
+            }
+        },
+        [active_tab]
+    );
 
     return (
         <React.Fragment>
@@ -278,21 +285,6 @@ const Dashboard = ({
                         </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
-                            {active_tab !== 2 && (
-                                <MobileWrapper>
-                                    <div className='mobile-wrapper'>
-                                        <Collapsible position='top' is_collapsed={false} as='div'>
-                                            <ExtendedDiv className='dashboard__run-strategy-wrapper' collapsible>
-                                                <RunStrategy />
-                                            </ExtendedDiv>
-                                        </Collapsible>
-                                    </div>
-                                    {/* // TODO: implement Performance panel as per new design
-                                        {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) && (
-                                        <RunPanel />
-                                    )} */}
-                                </MobileWrapper>
-                            )}
                         </div>
                         <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
@@ -314,6 +306,7 @@ const Dashboard = ({
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
+            <MobileWrapper>{active_tab !== 2 && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}
@@ -329,6 +322,11 @@ const Dashboard = ({
             >
                 {dialog_options.message}
             </Dialog>
+            {show_toast && (
+                <div>
+                    <Toast className='bot-notification'>{localize('You’ve successfully deleted a bot.')}</Toast>
+                </div>
+            )}
         </React.Fragment>
     );
 };
@@ -357,4 +355,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     has_tour_ended: dashboard.has_tour_ended,
+    show_toast: dashboard.show_toast,
+    setShowToast: dashboard.setShowToast,
 }))(Dashboard);

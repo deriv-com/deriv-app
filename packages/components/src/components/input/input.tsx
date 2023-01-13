@@ -34,7 +34,7 @@ type TInputProps = {
     onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;
     required?: boolean;
-    trailing_icon?: React.ReactElement;
+    trailing_icon?: React.ReactElement | null;
     type: string;
     value?: string;
     warn?: string;

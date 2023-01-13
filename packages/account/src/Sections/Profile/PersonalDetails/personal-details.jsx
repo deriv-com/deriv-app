@@ -44,6 +44,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
+import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -109,6 +110,9 @@ export const PersonalDetailsForm = ({
     states_list,
     current_landing_company,
     refreshNotifications,
+    showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification,
+    Notifications,
     fetchResidenceList,
     fetchStatesList,
     has_residence,
@@ -117,6 +121,7 @@ export const PersonalDetailsForm = ({
     history,
     is_social_signup,
     updateAccountStatus,
+    has_poa_address_mismatch,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -241,6 +246,15 @@ export const PersonalDetailsForm = ({
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
+            // Adding a delay to show the notification after the page reload
+            setTimeout(() => {
+                if (data.set_settings.notification) {
+                    showPOAAddressMismatchSuccessNotification();
+                } else if (has_poa_address_mismatch) {
+                    showPOAAddressMismatchFailureNotification();
+                }
+            }, 2000);
+
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
@@ -548,6 +562,7 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <>
+                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form
@@ -986,6 +1001,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                     {!is_appstore && !is_virtual && (
                                         <React.Fragment>
+                                            {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
@@ -1269,6 +1285,9 @@ PersonalDetailsForm.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
     states_list: PropTypes.array,
     refreshNotifications: PropTypes.func,
+    showPOAAddressMismatchSuccessNotification: PropTypes.func,
+    showPOAAddressMismatchFailureNotification: PropTypes.func,
+    Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_residence: PropTypes.bool,
@@ -1278,9 +1297,10 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
+    has_poa_address_mismatch: PropTypes.bool,
 };
 
-export default connect(({ client, notifications }) => ({
+export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
@@ -1296,5 +1316,9 @@ export default connect(({ client, notifications }) => ({
     fetchStatesList: client.fetchStatesList,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
+    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
+    Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
+    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
 }))(withRouter(PersonalDetailsForm));

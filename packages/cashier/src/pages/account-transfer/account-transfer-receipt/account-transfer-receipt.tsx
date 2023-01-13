@@ -93,9 +93,11 @@ const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_from.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_from.value}
+                        </Text>
+                    )}
                 </div>
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
@@ -108,9 +110,11 @@ const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_to.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_to.value}
+                        </Text>
+                    )}
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>

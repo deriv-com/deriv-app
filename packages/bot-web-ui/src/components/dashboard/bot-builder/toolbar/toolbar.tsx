@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import SaveModal from 'Components/save-modal';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import WorkspaceGroup from './workspace-group';
@@ -41,7 +40,6 @@ const Toolbar = (props: TToolbar) => {
                     <WorkspaceGroup {...props} />
                 </div>
             </div>
-            <SaveModal />
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}

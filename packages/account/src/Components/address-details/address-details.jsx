@@ -47,6 +47,7 @@ const AddressDetails = ({
     validate,
     onSubmit,
     is_svg,
+    is_mf,
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
@@ -149,9 +150,9 @@ const AddressDetails = ({
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore
+                                                is_svg || is_appstore || is_mf
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
@@ -171,9 +172,11 @@ const AddressDetails = ({
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore ? localize('Town/City*') : localize('Town/City')
+                                                is_svg || is_appstore || is_mf
+                                                    ? localize('Town/City*')
+                                                    : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
                                         />

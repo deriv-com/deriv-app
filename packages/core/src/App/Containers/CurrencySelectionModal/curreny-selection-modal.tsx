@@ -12,31 +12,29 @@ type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
     account_list: object[];
     //TODO: Replace the type with a proper one when ts migration cards merged
-    authentication_status: any;
     //TODO: Replace the type with a proper one when ts migration cards merged
     accounts: any;
     closeModal: () => void;
-    is_authentication_needed: boolean;
     is_visible: boolean;
     loginid: string;
     openRealAccountSignup: (account_type: string) => void;
     openFailedVerificationModal: (from_account: string) => void;
     selected_region: string;
     switchAccount: (loginid: string) => void;
+    multipliers_account_status: string | null;
 };
 
 const CurrencySelectionModal = ({
     account_list,
-    authentication_status,
     accounts,
     closeModal,
-    is_authentication_needed,
     is_visible,
     loginid: current_loginid,
     openRealAccountSignup,
     openFailedVerificationModal,
     selected_region,
     switchAccount,
+    multipliers_account_status,
 }: CurrencySelectionModalProps) => {
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -78,9 +76,9 @@ const CurrencySelectionModal = ({
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    {is_selected && selected_region === 'EU' && is_authentication_needed ? (
+                                    {multipliers_account_status ? (
                                         <StatusBadge
-                                            account_status={authentication_status.document_status}
+                                            account_status={multipliers_account_status}
                                             openFailedVerificationModal={openFailedVerificationModal}
                                             selected_account_type='multipliers'
                                         />
@@ -114,12 +112,11 @@ const CurrencySelectionModal = ({
 export default connect(({ client, traders_hub, ui }: RootStore) => ({
     account_list: client.account_list,
     accounts: client.accounts,
-    authentication_status: client.authentication_status,
     closeModal: traders_hub.closeModal,
-    is_authentication_needed: client.is_authentication_needed,
     loginid: client.loginid,
     openRealAccountSignup: ui.openRealAccountSignup,
     selected_region: traders_hub.selected_region,
     switchAccount: client.switchAccount,
     openFailedVerificationModal: traders_hub.openFailedVerificationModal,
+    multipliers_account_status: traders_hub.multipliers_account_status,
 }))(CurrencySelectionModal);

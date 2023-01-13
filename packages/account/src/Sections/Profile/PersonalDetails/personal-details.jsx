@@ -357,11 +357,11 @@ export const PersonalDetailsForm = ({
         }
 
         const address_line_1_validation_result = validAddress(values.address_line_1);
-        if (values.address_line_1 && !address_line_1_validation_result.is_ok) {
+        if (!address_line_1_validation_result.is_ok) {
             errors.address_line_1 = address_line_1_validation_result.message;
         }
-        const address_line_2_validation_result = validAddress(values.address_line_2);
-        if (values.address_line_2 && !address_line_2_validation_result.is_ok) {
+        const address_line_2_validation_result = validAddress(values.address_line_2, false);
+        if (!address_line_2_validation_result.is_ok) {
             errors.address_line_2 = address_line_2_validation_result.message;
         }
 

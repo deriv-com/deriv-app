@@ -2,6 +2,7 @@ import { validAddress, initFormErrorMessages } from '../declarative-validation-r
 
 const form_error_messages = {
     address: () => '',
+    empty_address: () => '',
 };
 
 describe('validAddress', () => {
@@ -10,6 +11,15 @@ describe('validAddress', () => {
     });
     it('should not accept empty string', () => {
         expect(validAddress('').is_ok).toBe(false);
+    });
+    it('should not accept a bunch of spaces', () => {
+        expect(validAddress('       ').is_ok).toBe(false);
+    });
+    it('should accept empty string if is_required is false', () => {
+        expect(validAddress('', false).is_ok).toBe(true);
+    });
+    it('should accept a bunch of spaces if is_required is false', () => {
+        expect(validAddress('       ', false).is_ok).toBe(true);
     });
     it('should not accept string longer than 70 characters', () => {
         expect(validAddress('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod').is_ok).toBe(

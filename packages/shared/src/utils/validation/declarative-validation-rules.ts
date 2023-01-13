@@ -20,10 +20,19 @@ const validRequired = (value?: string | number /* , options, field */) => {
     return str.length > 0;
 };
 export const address_permitted_special_characters_message = ". , ' : ; ( ) ° @ # / -";
-export const validAddress = (value: string) => {
-    const is_ok = /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{1,70}$/u.test(value);
-    const message = is_ok ? null : form_error_messages.address();
-    return { is_ok, message };
+export const validAddress = (value: string, is_required = true) => {
+    if (is_required && (!value || value.match(/^\s*$/))) {
+        return {
+            is_ok: false,
+            message: form_error_messages.empty_address(),
+        };
+    } else if (!/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
+        return {
+            is_ok: false,
+            message: form_error_messages.address(),
+        };
+    }
+    return { is_ok: true };
 };
 export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);

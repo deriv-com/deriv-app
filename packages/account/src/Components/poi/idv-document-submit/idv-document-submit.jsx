@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
-import { formatInput, WS, getPlatformFromUrl } from '@deriv/shared';
+import { formatInput, WS } from '@deriv/shared';
 import { isSequentialNumber, isRecurringNumberRegex, getDocumentData, getRegex } from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
@@ -86,11 +86,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const { document_type, document_number } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
-        const { is_staging_deriv_app, is_test_link } = getPlatformFromUrl();
-
-        // QA can manually toggle this regex now through this feature flag.
-        // Otherwise it blocks their test suite.
-        const is_allowing_validation = validation_is_enabled || !is_staging_deriv_app || !is_test_link;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -101,7 +96,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
+        } else if (validation_is_enabled && (is_recurring_number || is_sequential_number)) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);

@@ -104,7 +104,7 @@
         height: 100vh;
         padding-bottom: 20rem;
         @include mobile {
-            padding-bottom: 28rem;
+            height: calc(100vh - 27rem);
         }
         &__nosearch {
             @include position-center;
@@ -115,6 +115,7 @@
             width: 85%;
             @include mobile {
                 width: 100%;
+                height: calc(100vh - 16rem);
             }
         }
         .dc-accordion {

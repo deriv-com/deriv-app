@@ -38,10 +38,10 @@ const AccountNeedsVerification = observer(() => {
 });
 
 const RealAccountSwitcher = () => {
-    const { client, traders_hub } = useStores();
-    const { is_authentication_needed, is_switching, has_any_real_account } = client;
+    const { client } = useStores();
+    const { is_authentication_needed, is_switching, is_logging_in, has_any_real_account } = client;
 
-    if (is_switching) {
+    if (is_switching || is_logging_in) {
         return (
             <div className='real-account-switcher__container loader'>
                 <CurrencySwitcherLoader />

@@ -17,7 +17,14 @@ import { Button } from '@deriv/components';
 
 const TourGuide = () => {
     const { traders_hub, ui } = useStores();
-    const { is_tour_open, toggleIsTourOpen, setIsOnboardingVisited, content_flag, selectAccountType } = traders_hub;
+    const {
+        is_tour_open,
+        toggleIsTourOpen,
+        setIsOnboardingVisited,
+        content_flag,
+        selectAccountType,
+        is_onboarding_visited,
+    } = traders_hub;
     const { is_dark_mode_on } = ui;
 
     const history = useHistory();
@@ -91,7 +98,7 @@ const TourGuide = () => {
 
     return (
         <Joyride
-            run={is_tour_open}
+            run={!is_onboarding_visited && is_tour_open}
             continuous
             disableScrolling
             hideCloseButton

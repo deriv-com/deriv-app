@@ -113,6 +113,7 @@ const TradingHubHeader = ({
     is_eu_country,
     is_eu,
     is_logged_in,
+    is_mobile,
     is_mt5_allowed,
     is_notifications_visible,
     is_onramp_tab_visible,
@@ -197,7 +198,12 @@ const TradingHubHeader = ({
                     <TradersHubHomeButton />
                 </DesktopWrapper>
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
+                <MemoizedMenuLinks
+                    is_logged_in={is_logged_in}
+                    is_mobile={is_mobile}
+                    items={menu_items}
+                    is_pre_appstore={is_pre_appstore}
+                />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -246,6 +252,7 @@ const TradingHubHeader = ({
                                 is_mf={is_mf}
                                 is_eu={is_eu}
                                 is_eu_country={is_eu_country}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -291,6 +298,7 @@ TradingHubHeader.propTypes = {
     is_eu_country: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -330,6 +338,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_eu_country: client.is_eu_country,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
+    is_mobile: ui.is_mobile,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
@@ -352,5 +361,5 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleExitTradersHubModal: traders_hub.toggleExitTradersHubModal,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

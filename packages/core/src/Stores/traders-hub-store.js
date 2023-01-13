@@ -18,8 +18,8 @@ export default class TradersHubStore extends BaseStore {
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
+    is_onboarding_visited = false;
     is_balance_calculating = false;
-    is_exit_traders_hub_modal_visible = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
@@ -53,12 +53,12 @@ export default class TradersHubStore extends BaseStore {
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
-            is_exit_traders_hub_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
             is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
+            is_onboarding_visited: observable,
             platform_demo_balance: observable,
             platform_real_balance: observable,
             selected_account: observable,
@@ -96,7 +96,7 @@ export default class TradersHubStore extends BaseStore {
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
-            toggleExitTradersHubModal: action.bound,
+            setIsOnboardingVisited: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
@@ -121,7 +121,11 @@ export default class TradersHubStore extends BaseStore {
         );
 
         reaction(
-            () => [this.selected_region, this.root_store.client.is_landing_company_loaded],
+            () => [
+                this.selected_region,
+                this.root_store.client.is_landing_company_loaded,
+                this.root_store.client.loginid,
+            ],
             () => {
                 if (this.selected_account_type === 'real') {
                     this.setSwitchEU();
@@ -165,12 +169,16 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async setSwitchEU() {
-        const { account_list, switchAccount } = this.root_store.client;
+        const { account_list, switchAccount, loginid } = this.root_store.client;
 
-        if (this.selected_region === 'EU') {
-            await switchAccount(account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid);
-        } else if (this.selected_region === 'Non-EU') {
-            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
+        const mf_account = account_list.find(acc => acc.loginid.startsWith('MF'))?.loginid;
+        const cr_account = account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid;
+
+        if (this.selected_region === 'EU' && !loginid.startsWith('MF')) {
+            // if active_loginid is already EU = do nothing
+            await switchAccount(mf_account);
+        } else if (this.selected_region === 'Non-EU' && !loginid.startsWith('CR')) {
+            await switchAccount(cr_account);
         }
     }
 
@@ -275,17 +283,24 @@ export default class TradersHubStore extends BaseStore {
     toggleAccountTypeModalVisibility() {
         this.is_account_type_modal_visible = !this.is_account_type_modal_visible;
     }
+
+    setIsOnboardingVisited(is_visited) {
+        this.is_onboarding_visited = is_visited;
+    }
+
     get is_eu_selected() {
         return this.selected_region === 'EU';
     }
 
     get should_show_exit_traders_modal() {
-        //  should display the modal when user have atleast one mf account and cr account
+        //  should display the modal when low risk cr client have atleast one mf account
+        const is_low_risk_cr_client = [
+            ContentFlag.LOW_RISK_CR_EU,
+            ContentFlag.LOW_RISK_CR_NON_EU,
+            ContentFlag.CR_DEMO,
+        ].includes(this.content_flag);
         const { active_accounts } = this.root_store.client;
-        return (
-            active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest') &&
-            active_accounts.some(acc => acc.landing_company_shortcode === 'svg')
-        );
+        return is_low_risk_cr_client && active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
 
     toggleRegulatorsCompareModal() {
@@ -482,10 +497,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
-    }
-
-    toggleExitTradersHubModal() {
-        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
     get can_get_more_cfd_mt5_accounts() {

@@ -22,9 +22,13 @@ const StaticTradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
-    const icon_size = 48;
+    const icon_size = isMobile() || has_applauncher_account ? 48 : 32;
     return (
-        <div className='static-trading-app-card'>
+        <div
+            className={classNames('static-trading-app-card', {
+                'static-trading-app-card--with-bot-margin': has_divider,
+            })}
+        >
             <TradigPlatformIconProps
                 icon={icon}
                 size={icon_size}
@@ -52,12 +56,7 @@ const StaticTradingAppCard = ({
                 >
                     {name}
                 </Text>
-                <Text
-                    className='description'
-                    color={is_item_blurry ? 'less-prominent' : 'prominent'}
-                    size='xxs'
-                    line_height='m'
-                >
+                <Text className='description' color={'less-prominent'} size='xxs' line_height='m'>
                     {app_desc}
                 </Text>
             </div>

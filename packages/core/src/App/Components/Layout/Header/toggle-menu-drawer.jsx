@@ -13,7 +13,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
-const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text }) => {
+const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text }) => {
     const { common, ui } = useStore();
     const { setDarkMode } = ui;
     const { changeCurrentLanguage } = common;
@@ -94,9 +94,9 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_i
             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
         </BinaryLink>
     );
-};
+});
 
-const ToggleMenuDrawer = ({ platform_switcher }) => {
+const ToggleMenuDrawer = observer(({ platform_switcher }) => {
     const { ui, client, modules } = useStore();
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
@@ -654,8 +654,8 @@ const ToggleMenuDrawer = ({ platform_switcher }) => {
             </MobileDrawer>
         </React.Fragment>
     );
-};
+});
 
 ToggleMenuDrawer.displayName = 'ToggleMenuDrawer';
 
-export default observer(ToggleMenuDrawer);
+export default ToggleMenuDrawer;

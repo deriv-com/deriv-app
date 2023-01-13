@@ -177,7 +177,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     refreshNotifications: () => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
-    show_eu_related: boolean;
+    show_eu_related_content: boolean;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -432,7 +432,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         setIsAcuityModalOpen,
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
-        show_eu_related,
+        show_eu_related_content,
     } = props;
 
     const should_show_missing_real_account =
@@ -574,7 +574,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 setIsAcuityModalOpen={setIsAcuityModalOpen}
                                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
-                                                show_eu_related={show_eu_related}
+                                                show_eu_related_content={show_eu_related_content}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -622,7 +622,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 toggleMT5TradeModal={toggleMT5TradeModal}
                                                 platform={platform}
                                                 residence={residence}
-                                                show_eu_related={show_eu_related}
+                                                show_eu_related_content={show_eu_related_content}
                                             />
                                         )}
                                     </div>
@@ -788,6 +788,6 @@ export default withRouter(
         setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
-        show_eu_related: traders_hub.show_eu_related,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(CFDDashboard)
 );

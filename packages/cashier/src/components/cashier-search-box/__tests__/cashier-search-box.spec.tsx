@@ -4,6 +4,8 @@ import CashierSearchBox from '../cashier-search-box';
 
 describe('<CashierSearchBox />', () => {
     const props = {
+        className: '',
+        search_term: '',
         onClear: jest.fn(),
         onSearch: jest.fn(),
         placeholder: 'Search placeholder',

@@ -37,7 +37,7 @@ export interface IDashboardStore {
     initInfoPanel: VoidFunction;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -263,14 +263,18 @@ export default class DashboardStore implements IDashboardStore {
         setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
     };
 
-    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => {
         if (step === 8) {
             this.onCloseTour('onboard');
-            this.setTourEnd();
+            this.setHasTourEnded(true);
+            this.setTourDialogVisibility(true);
+            setTourSettings(new Date().getTime(), `${type.key}_token`);
         }
         if (!has_started_onboarding_tour && step === 6) {
             this.onCloseTour('bot_builder');
-            this.setTourEnd();
+            this.setHasTourEnded(true);
+            this.setTourDialogVisibility(true);
+            setTourSettings(new Date().getTime(), `${type.key}_token`);
         }
     };
 }

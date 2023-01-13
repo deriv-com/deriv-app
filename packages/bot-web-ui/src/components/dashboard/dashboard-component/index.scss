@@ -38,6 +38,7 @@
         @include desktop {
             transform: translateX(calc(0px)) !important;
         }
+
         @include mobile {
             transform: translateY(calc(-100% + 3.6rem));
         }
@@ -102,6 +103,7 @@
                     &__tabs {
                         display: flex;
                         justify-content: space-between;
+
                         @include mobile {
                             flex-direction: column;
                             padding: 0rem 0.8rem;
@@ -209,6 +211,7 @@
                 align-items: center;
                 padding: 2.2rem 0;
             }
+
             @include mobile {
                 height: var(--tab-content-height-mobile);
                 align-items: flex-start;
@@ -221,6 +224,7 @@
             margin: 1.6rem 1.6rem 1.4rem;
             column-gap: 1rem;
             height: 3.2rem;
+
             &--minimized {
                 height: 3.6rem;
             }
@@ -246,6 +250,7 @@
                     width: 50%;
                 }
             }
+
             &--listed {
                 margin-top: 10rem;
             }
@@ -315,6 +320,7 @@
 
         &__header {
             margin-bottom: 1.3rem;
+
             &--not-listed {
                 @include mobile {
                     width: 90%;
@@ -332,13 +338,16 @@
 
             &__loaded {
                 text-align: left;
+
                 @include desktop {
                     margin-top: 12rem;
                 }
+
                 &--listed {
                     text-align: left;
                     padding: 0 3.6rem;
                 }
+
                 &--not-listed {
                     @include mobile {
                         text-align: center;
@@ -366,6 +375,7 @@
 
         &__table {
             width: 88%;
+
             &--minimized {
                 width: 100%;
             }
@@ -374,9 +384,11 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 @include mobile {
                     flex-wrap: wrap;
                 }
+
                 &--minimized {
                     align-items: flex-start;
                 }
@@ -399,8 +411,10 @@
                 &:hover {
                     cursor: pointer;
                 }
+
                 &--minimized {
                     width: 6.4rem;
+
                     & .dc-text {
                         width: 8rem;
                         text-align: center;
@@ -422,10 +436,12 @@
                     }
                 }
             }
+
             .load-strategy {
                 &__recent-item-time {
                     font-size: var(--text-size-xs);
                 }
+
                 &__recent-item-text {
                     display: -webkit-box;
                     max-width: 90%;

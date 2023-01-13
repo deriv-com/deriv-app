@@ -107,8 +107,8 @@ const Dashboard = ({
     const is_mobile = isMobile();
 
     const setTourStatus = (param: { [key: string]: string }) => {
-        if (tour_status) {
-            const { action } = tour_status;
+        if (param) {
+            const { action } = param;
             const actions = ['skip', 'close'];
 
             if (actions.includes(action)) {
@@ -152,7 +152,7 @@ const Dashboard = ({
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
-
+        setTourStatus(tour_status);
         bot_tour_token = getTourSettings('token');
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);

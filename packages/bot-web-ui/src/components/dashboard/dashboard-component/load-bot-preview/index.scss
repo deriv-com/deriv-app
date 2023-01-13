@@ -64,13 +64,14 @@
         @include mobile {
             height: 100%;
             overflow: hidden;
+            padding: 1.5rem;
         }
     }
 
     &__title {
         font-size: var(--text-size-s);
         font-weight: 700;
-        margin: 1.6rem 1.6rem 1.6rem 0;
+        padding: 1.6rem 1.6rem 1.6rem 0;
         color: var(--text-general);
 
         &--listed {
@@ -156,7 +157,7 @@
 
             @include mobile {
                 overflow: auto;
-                height: calc(100vh - 35rem);
+                height: calc(100vh - 38.6rem);
             }
 
             &__list {
@@ -271,7 +272,7 @@
 
             @include mobile {
                 //TODO: without it doesn't work as expected, improve later
-                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
+                grid-template-columns: 1fr 0.7fr 0.7fr 0.3fr;
             }
 
             & .dc-text {
@@ -283,7 +284,7 @@
             }
 
             &--minimized {
-                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
+                grid-template-columns: 1fr 0.7fr 0.7fr 0.3fr;
             }
 
             &__mobile {

@@ -1,5 +1,4 @@
 @import '../dashboard/dashboard-component/index.scss';
-@import '../dashboard/tutorial-tab/index.scss';
 
 .position-center {
     display: flex;
@@ -99,6 +98,8 @@
 
                         @include mobile {
                             flex-direction: column;
+                            padding: 0rem 0.8rem;
+                            background-color: var(--general-section-1);
                         }
                     }
                 }
@@ -115,13 +116,18 @@
                 align-items: center;
 
                 &__loaded {
+                    text-align: left;
+                    padding-left: 1.5rem;
                     @include mobile {
                         text-align: left;
                     }
-                    padding-left: 1.5rem;
                 }
 
-                svg {
+                &__icon {
+                    @include mobile {
+                        padding-top: 0.2rem;
+                    }
+
                     width: 1.6rem;
                     height: 1.6rem;
                     padding-right: 0;
@@ -244,7 +250,7 @@
     left: 1.6rem;
     z-index: -1;
     background: var(--general-main-1);
-    width: calc(100vw - 4.6rem);
+    width: calc(100vw - 1.5rem);
     height: var(--tab-content-height);
 
     &--active {
@@ -258,7 +264,7 @@
     @include mobile {
         top: 5.6rem;
         left: 0;
-        width: 100vw;
+        width: 100%;
         height: var(--tab-content-height-mobile);
     }
 }

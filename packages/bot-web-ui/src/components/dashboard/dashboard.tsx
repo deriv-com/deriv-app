@@ -25,6 +25,7 @@ import {
 import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
+import BotNotification from './bot-notification';
 
 type TDialogOptions = {
     title: string;
@@ -322,15 +323,7 @@ const Dashboard = ({
             >
                 {dialog_options.message}
             </Dialog>
-            {show_toast && (
-                <div>
-                    <Toast className='bot-notification'>
-                        {toast_message === 'delete'
-                            ? localize('You’ve successfully deleted a bot.')
-                            : localize('You’ve successfully imported a bot.')}
-                    </Toast>
-                </div>
-            )}
+            <BotNotification />
         </React.Fragment>
     );
 };

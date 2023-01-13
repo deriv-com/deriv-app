@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Text, Toast } from '@deriv/components';
+import { Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
@@ -13,9 +13,8 @@ type TDeleteDialog = {
     selected_strategy_id: string;
     setStrategies: (param: string[]) => void;
     setDashboardStrategies: (param: string[]) => void;
-    show_toast: boolean;
-    setShowToast: (show_toast: boolean) => void;
-    setToastMessage: (toast_message: string) => void;
+    setShowToast: (param: boolean) => void;
+    setToastMessage: (param: string) => void;
 };
 
 const DeleteDialog = ({
@@ -24,15 +23,8 @@ const DeleteDialog = ({
     onToggleDeleteDialog,
     setDashboardStrategies,
     setShowToast,
-    show_toast,
     setToastMessage,
 }: TDeleteDialog) => {
-    React.useEffect(() => {
-        setTimeout(() => {
-            setShowToast(false);
-        }, 5000);
-    }, [show_toast]);
-
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
         workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
@@ -96,7 +88,6 @@ export default connect(({ toolbar, load_modal, dashboard }) => ({
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    show_toast: dashboard.show_toast,
     setShowToast: dashboard.setShowToast,
     setToastMessage: dashboard.setToastMessage,
 }))(DeleteDialog);

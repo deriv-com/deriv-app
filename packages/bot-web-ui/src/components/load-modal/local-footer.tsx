@@ -11,6 +11,8 @@ type TLocalFooterProps = {
     setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
     setPreviewOnPopup: (show: boolean) => void;
     toggleLoadModal: () => void;
+    setShowToast: (param: boolean) => void;
+    setToastMessage: (param: string) => void;
 };
 
 const LocalFooter = ({
@@ -19,6 +21,8 @@ const LocalFooter = ({
     setLoadedLocalFile,
     setPreviewOnPopup,
     toggleLoadModal,
+    setShowToast,
+    setToastMessage,
 }: TLocalFooterProps) => {
     const is_mobile = isMobile();
     const Wrapper = is_mobile ? Button.Group : React.Fragment;
@@ -34,6 +38,8 @@ const LocalFooter = ({
                     loadFileFromLocal();
                     toggleLoadModal();
                     setPreviewOnPopup(false);
+                    setToastMessage('import');
+                    setShowToast(true);
                 }}
                 is_loading={is_open_button_loading}
                 has_effect
@@ -50,4 +56,6 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     toggleLoadModal: load_modal.toggleLoadModal,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    setShowToast: dashboard.setShowToast,
+    setToastMessage: dashboard.setToastMessage,
 }))(LocalFooter);

@@ -573,3 +573,14 @@
         }
     }
 }
+
+.import-notification {
+    position: fixed;
+    z-index: 5000;
+    left: 0;
+    bottom: 6rem;
+
+    .dc-toast__message {
+        background: var(--text-prominent);
+    }
+}

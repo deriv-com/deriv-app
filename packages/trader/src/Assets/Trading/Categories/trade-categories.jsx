@@ -430,17 +430,17 @@ const TradeCategories = ({ category }) => {
                     <React.Fragment>
                         <Text as='p'>
                             {localize(
-                                'Predict the market direction and select either “Call” or “Put” to open a position.'
+                                'Predict the market direction and movement size, and select either “Call” or “Put” to open a position.'
                             )}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'If you select “Call”, you will earn a payout if the market price is higher than the strike price at the expiry time. Your payout is X.XX USD for each point above the strike price. There won’t be a payout if the market price falls below the strike price when your contract ends.'
+                                "If you select “Call”, you will earn a payout if the market price is higher than the strike price at the expiry time. Your payout will grow proportionally according to the distance between the market and strike prices. There won't be a payout if the market price is below the strike price at the expiry time."
                             )}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'If you select “Put”, you will earn a payout if the market price is lower than the strike price at the expiry time. Your payout is X.XX USD for each point below the strike price. There won’t be a payout if the market price rises above the strike price when your contract ends.'
+                                "If you select “Put”, you will earn a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally according to the distance between the market and strike prices. There won't be a payout if the market price is above the strike price at the expiry time."
                             )}
                         </Text>
                         <Text as='p'>

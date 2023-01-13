@@ -59,7 +59,6 @@ const RedirectToOldInterface = () => {
 const MemoizedMenuLinks = React.memo(MenuLinks);
 const DTraderHeader = ({
     acc_switcher_disabled_message,
-    account_status,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -75,33 +74,23 @@ const DTraderHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_bot_allowed,
-    is_dark_mode,
     is_dxtrade_allowed,
     is_eu,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_p2p_enabled,
-    is_payment_agent_transfer_visible,
-    is_payment_agent_visible,
-    is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
     location,
-    logoutClient,
     menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
     replaceCashierMenuOnclick,
     removeNotificationMessage,
-    setDarkMode,
-    should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
-    changeCurrentLanguage,
     is_social_signup,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
@@ -157,23 +146,8 @@ const DTraderHeader = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <ToggleMenuDrawer
-                            changeCurrentLanguage={changeCurrentLanguage}
                             ref={toggle_menu_drawer_ref}
-                            should_allow_authentication={should_allow_authentication}
-                            account_status={account_status}
-                            enableApp={enableApp}
-                            disableApp={disableApp}
                             location={location}
-                            logoutClient={logoutClient}
-                            is_dark_mode={is_dark_mode}
-                            is_logged_in={is_logged_in}
-                            is_p2p_enabled={is_p2p_enabled}
-                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                            is_onramp_tab_visible={is_onramp_tab_visible}
-                            is_payment_agent_visible={is_payment_agent_visible}
-                            is_account_transfer_visible={is_account_transfer_visible}
-                            is_virtual={is_virtual}
-                            toggleTheme={setDarkMode}
                             platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
                                 <PlatformSwitcher
@@ -249,8 +223,6 @@ const DTraderHeader = ({
 DTraderHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
-    should_allow_authentication: PropTypes.bool,
-    account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -263,7 +235,6 @@ DTraderHeader.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -271,36 +242,25 @@ DTraderHeader.propTypes = {
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_account_transfer_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
-    setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
     location: PropTypes.object,
     menu_items: PropTypes.array,
-    changeCurrentLanguage: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
-    account_status: client.account_status,
     account_type: client.account_type,
-    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: notifications.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -314,7 +274,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_bot_allowed: client.is_bot_allowed,
-    is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
@@ -322,21 +281,14 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
-    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
-    setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,

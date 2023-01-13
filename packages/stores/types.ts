@@ -1,4 +1,4 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -64,6 +64,9 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
+    is_risky_client: boolean;
+    logout: () => Promise<LogOutResponse>;
+    should_allow_authentication: boolean;
 };
 
 type TCommonStoreError = {
@@ -85,6 +88,7 @@ type TCommonStore = {
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
+    changeCurrentLanguage: (new_language: string) => void;
 };
 
 type TUiStore = {
@@ -97,6 +101,7 @@ type TUiStore = {
     setCurrentFocus: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
+    setDarkMode: (is_dark_mode_on: boolean) => boolean;
 };
 
 export type TRootStore = {

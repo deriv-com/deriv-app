@@ -85,10 +85,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
 };
 const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
-    account_status,
     app_routing_history,
-    disableApp,
-    enableApp,
     loginid,
     is_eu,
     is_eu_country,
@@ -98,17 +95,8 @@ const TradingHubHeader = ({
     is_logged_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_p2p_enabled,
-    is_payment_agent_transfer_visible,
-    is_payment_agent_visible,
-    is_account_transfer_visible,
-    is_virtual,
     location,
-    logoutClient,
     notifications_count,
-    setDarkMode,
-    should_allow_authentication,
     toggleNotifications,
     is_social_signup,
     replaceCashierMenuOnclick,
@@ -133,21 +121,7 @@ const TradingHubHeader = ({
                 <MobileWrapper>
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
-                        should_allow_authentication={should_allow_authentication}
-                        account_status={account_status}
-                        enableApp={enableApp}
-                        disableApp={disableApp}
                         location={location}
-                        logoutClient={logoutClient}
-                        is_dark_mode={is_dark_mode}
-                        is_logged_in={is_logged_in}
-                        is_p2p_enabled={is_p2p_enabled}
-                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                        is_onramp_tab_visible={is_onramp_tab_visible}
-                        is_payment_agent_visible={is_payment_agent_visible}
-                        is_account_transfer_visible={is_account_transfer_visible}
-                        is_virtual={is_virtual}
-                        toggleTheme={setDarkMode}
                         platform_header={getPlatformInformation(app_routing_history).header}
                         platform_switcher={
                             <PlatformSwitcher
@@ -238,26 +212,14 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
-    account_status: PropTypes.object,
     app_routing_history: PropTypes.array,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
     header_extension: PropTypes.any,
     is_dark_mode: PropTypes.bool,
     loginid: PropTypes.string,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_account_transfer_visible: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
-    setDarkMode: PropTypes.func,
-    should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     is_social_signup: PropTypes.bool,
     location: PropTypes.object,
@@ -272,10 +234,7 @@ TradingHubHeader.propTypes = {
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu, tradinghub }) => ({
-    account_status: client.account_status,
     app_routing_history: common.app_routing_history,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     header_extension: ui.header_extension,
@@ -283,16 +242,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
-    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
-    is_virtual: client.is_virtual,
-    logoutClient: client.logout,
     notifications_count: notifications.notifications.length,
-    setDarkMode: ui.setDarkMode,
-    should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_social_signup: client.is_social_signup,
     menu_items: menu.extensions,

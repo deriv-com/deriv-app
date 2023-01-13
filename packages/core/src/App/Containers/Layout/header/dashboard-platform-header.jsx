@@ -95,30 +95,19 @@ const AccountBalance = ({ balance, currency }) => {
 };
 
 const DashboardPlatformHeader = ({
-    account_status,
     app_routing_history,
     balance,
     currency,
     disableApp,
     enableApp,
     header_extension,
-    is_dark_mode,
     is_logged_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_p2p_enabled,
-    is_payment_agent_transfer_visible,
-    is_payment_agent_visible,
-    is_account_transfer_visible,
     is_settings_modal_on,
-    is_virtual,
     location,
-    logoutClient,
     notifications_count,
-    setDarkMode,
     settings_extension,
-    should_allow_authentication,
     toggleNotifications,
     toggleSettingsModal,
 }) => {
@@ -137,21 +126,7 @@ const DashboardPlatformHeader = ({
                 <MobileWrapper>
                     <ToggleMenuDrawer
                         ref={toggle_menu_drawer_ref}
-                        should_allow_authentication={should_allow_authentication}
-                        account_status={account_status}
-                        enableApp={enableApp}
-                        disableApp={disableApp}
                         location={location}
-                        logoutClient={logoutClient}
-                        is_dark_mode={is_dark_mode}
-                        is_logged_in={is_logged_in}
-                        is_p2p_enabled={is_p2p_enabled}
-                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                        is_onramp_tab_visible={is_onramp_tab_visible}
-                        is_payment_agent_visible={is_payment_agent_visible}
-                        is_account_transfer_visible={is_account_transfer_visible}
-                        is_virtual={is_virtual}
-                        toggleTheme={setDarkMode}
                         platform_header={getPlatformInformation(app_routing_history).header}
                         platform_switcher={
                             <PlatformSwitcher
@@ -202,27 +177,16 @@ const DashboardPlatformHeader = ({
 };
 
 DashboardPlatformHeader.propTypes = {
-    account_status: PropTypes.object,
     app_routing_history: PropTypes.array,
     balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     header_extension: PropTypes.any,
-    is_dark_mode: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_account_transfer_visible: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
-    setDarkMode: PropTypes.func,
-    should_allow_authentication: PropTypes.bool,
     toggleNotifications: PropTypes.func,
     toggleSettingsModal: PropTypes.func,
     location: PropTypes.object,
@@ -230,27 +194,16 @@ DashboardPlatformHeader.propTypes = {
     is_settings_modal_on: PropTypes.bool,
 };
 
-export default connect(({ client, common, modules, notifications, ui }) => ({
-    account_status: client.account_status,
+export default connect(({ client, common, notifications, ui }) => ({
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     currency: client.currency,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
-    is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
-    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
-    is_virtual: client.is_virtual,
-    logoutClient: client.logout,
     notifications_count: notifications.notifications.length,
-    setDarkMode: ui.setDarkMode,
-    should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(DashboardPlatformHeader));

@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -24,7 +25,7 @@ import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { general_store, advertiser_page_store, buy_sell_store } = useStores();
+    const { general_store, advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -118,7 +119,11 @@ const AdvertiserPage = () => {
             <div className='advertiser-page__page-return-header'>
                 <PageReturn
                     className='buy-sell__advertiser-page-return'
-                    onClick={buy_sell_store.hideAdvertiserPage}
+                    onClick={() => {
+                        buy_sell_store.hideAdvertiserPage();
+                        if (general_store.active_index === general_store.path.my_profile)
+                            my_profile_store.setActiveTab(my_profile_tabs.BLOCK_USERS);
+                    }}
                     page_title={localize("Advertiser's page")}
                 />
                 {!is_my_advert && (

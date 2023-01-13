@@ -18,6 +18,7 @@ const LocalFooter = ({
     loadFileFromLocal,
     setLoadedLocalFile,
     setPreviewOnPopup,
+    toggleLoadModal,
 }: TLocalFooterProps) => {
     const is_mobile = isMobile();
     const Wrapper = is_mobile ? Button.Group : React.Fragment;

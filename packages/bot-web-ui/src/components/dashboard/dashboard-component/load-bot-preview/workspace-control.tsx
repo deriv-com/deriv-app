@@ -24,6 +24,6 @@ const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControl) => (
     </div>
 );
 
-export default connect(({ load_modal }: RootStore) => ({
-    onZoomInOutClick: load_modal.onZoomInOutClick,
+export default connect(({ dashboard }: RootStore) => ({
+    onZoomInOutClick: dashboard.onZoomInOutClick,
 }))(WorkspaceControl);

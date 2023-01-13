@@ -190,6 +190,7 @@
     &__dashboard {
         display: flex;
         width: 100%;
+
         &--tour-active {
             width: 78%;
         }
@@ -230,6 +231,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: 50%;
+
+            @include tablet {
+                width: 100%;
+            }
+
+            @include mobile {
+                width: 100%;
+            }
+
             &--not-listed {
                 @include desktop {
                     width: 50%;
@@ -243,6 +254,14 @@
         &__preview {
             width: 50%;
             height: calc(100% + 2rem);
+
+            @include mobile {
+                display: none;
+            }
+
+            @include tablet {
+                display: none;
+            }
 
             &__retrigger {
                 button {
@@ -406,6 +425,15 @@
             .load-strategy {
                 &__recent-item-time {
                     font-size: var(--text-size-xs);
+                }
+                &__recent-item-text {
+                    display: -webkit-box;
+                    max-width: 90%;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    word-break: break-all;
                 }
             }
         }

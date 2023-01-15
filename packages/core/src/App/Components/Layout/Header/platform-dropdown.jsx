@@ -28,7 +28,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
     return !hide_dropdown_items
         ? (platform.link_to && (
               <BinaryLink
-                  data-testid='dt_binary_link'
+                  data-testid='dt_platform_dropdown'
                   to={platform.link_to}
                   // This is here because in routes-config it needs to have children, but not in menu
                   exact={platform.link_to === routes.trade}
@@ -38,7 +38,11 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
                   <PlatformBox platform={platform} />
               </BinaryLink>
           )) || (
-              <a data-testid='dt_link' href={platform.href} className='platform-dropdown__list-platform'>
+              <a
+                  data-testid='dt_platform_dropdown_link'
+                  href={platform.href}
+                  className='platform-dropdown__list-platform'
+              >
                   <PlatformBox platform={platform} />
               </a>
           )

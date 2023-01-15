@@ -69,7 +69,7 @@ describe('PlatformDropdown component', () => {
                 ]}
             />
         );
-        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_platform_dropdown')).toBeInTheDocument();
 
         rerender(
             <MockPlatformDropdown
@@ -83,6 +83,6 @@ describe('PlatformDropdown component', () => {
                 ]}
             />
         );
-        expect(screen.getByTestId('dt_link')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_platform_dropdown_link')).toBeInTheDocument();
     });
 });

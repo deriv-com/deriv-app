@@ -50,9 +50,6 @@ export default class OnboardingFlow {
         await this.page.click(second_input_selector, { clickCount: 3 });
         await this.page.keyboard.press('Backspace');
         await this.page.type(second_input_selector, process.env.APPID!);
-
-        // await this.page.getByRole('checkbox', { name: 'is_appstore_enabled' }).check();
-
         if (
             !(await this.page.locator("input[name='is_appstore_enabled']").isChecked()) &&
             process.env.ENDPOINT_PAGE_APP_STORE === 'true'
@@ -112,7 +109,6 @@ export default class OnboardingFlow {
         this.signupPage = newPage;
         await suspend(10000);
         await this.updateServerURLAndAppIDInLocalStorage();
-        // await expect(this.page.getByText(/Sign up/)).toBeVisible();
         await this.signupPage.waitForLoadState();
         await this.signupPage.locator('input[name=email]#dm-email-input').isVisible();
         await this.signupPage.locator('input[name=email]#dm-email-input').type(this.email);

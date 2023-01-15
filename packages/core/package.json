@@ -133,6 +133,6 @@
         "react-tiny-popover": "^5.1.0",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "web-push-notifications": "^3.24.0"
+        "web-push-notifications": "^3.33.0"
     }
 }

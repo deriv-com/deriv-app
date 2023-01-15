@@ -14,6 +14,7 @@ jest.mock('Stores/connect.js', () => ({
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;
+    const onClose = jest.fn();
     beforeEach(() => {
         mockRootStore = {
             client: {
@@ -50,6 +51,7 @@ describe('<AccountTransferReceipt />', () => {
                             value: 'CR90000400',
                         },
                         receipt: { amount_transferred: '100' },
+                        setShouldSwitchAccout: jest.fn(),
                     },
                 },
             },
@@ -58,7 +60,7 @@ describe('<AccountTransferReceipt />', () => {
 
     const history = createBrowserHistory();
     const renderAccountTransferReceipt = () =>
-        render(<AccountTransferReceipt />, {
+        render(<AccountTransferReceipt onClose={onClose} />, {
             wrapper: ({ children }) => (
                 <StoreProvider store={mockRootStore}>
                     <Router history={history}>{children}</Router>

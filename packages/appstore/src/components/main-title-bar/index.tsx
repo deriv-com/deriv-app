@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
+import { ContentFlag } from '@deriv/shared';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
@@ -9,10 +10,10 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
-    const { traders_hub, client } = useStores();
-    const { active_index, handleTabItemClick, selected_account_type, toggleRegulatorsCompareModal } = traders_hub;
-    const { is_high_risk, is_low_risk } = client;
-    const is_real = selected_account_type === 'real';
+    const { traders_hub } = useStores();
+    const { active_index, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const is_low_risk_cr_real_account =
+        content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     return (
         <React.Fragment>
@@ -24,7 +25,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && !is_high_risk && is_low_risk && <RegulatorSwitcher />}
+                    {is_low_risk_cr_real_account && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>
@@ -34,7 +35,7 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {is_real && !is_high_risk ? (
+                    {is_low_risk_cr_real_account && (
                         <div className='main-title-bar-mobile--regulator'>
                             <div
                                 className='main-title-bar-mobile--regulator--compare-modal'
@@ -53,7 +54,7 @@ const MainTitleBar = () => {
                                 <div label={localize('EU')} />
                             </Tabs>
                         </div>
-                    ) : null}
+                    )}
                 </div>
                 <AssetSummary />
             </MobileWrapper>

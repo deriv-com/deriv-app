@@ -5,12 +5,20 @@ import RealAccountSwitcher from './real/real-account-switcher';
 import { useStores } from 'Stores/index';
 
 const CurrencySwitcherCard = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
+    const { has_any_real_account, has_maltainvest_account } = client;
+    const { is_real, is_demo, is_eu_user } = traders_hub;
 
-    if (traders_hub.selected_account_type === 'real') {
+    const has_cr_account = !is_eu_user && has_any_real_account;
+
+    const has_mf_account = is_eu_user && has_maltainvest_account;
+
+    if (is_real && (has_cr_account || has_mf_account)) {
         return <RealAccountSwitcher />;
+    } else if (is_demo) {
+        return <DemoAccountCard />;
     }
-    return <DemoAccountCard />;
+    return null;
 };
 
 export default observer(CurrencySwitcherCard);

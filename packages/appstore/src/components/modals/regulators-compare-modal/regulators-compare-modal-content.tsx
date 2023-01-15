@@ -15,9 +15,9 @@ const Row = ({ attribute, content }: TRegulatorsContentProps) => {
             {Object.keys(content).map(rowKey => (
                 <Table.Cell key={rowKey} className='regulators-compare-table__table-row-item'>
                     {Array.isArray(content[rowKey]) ? (
-                        (content[rowKey] as TRowItem[])?.map((item, index) => (
+                        (content[rowKey] as TRowItem[])?.map(item => (
                             <Text
-                                key={index}
+                                key={rowKey}
                                 as='p'
                                 color={item?.options?.color ?? 'prominent'}
                                 weight={item?.options?.weight ?? 'normal'}
@@ -59,10 +59,10 @@ const RegulatorsCompareModalContent = () => {
                             <Table.Row className={'regulators-compare-table__table-header'}>
                                 <Table.Head fixed className='regulators-compare-table__table-empty-cell' />
                                 <Table.Head className='regulators-compare-table__table-header-item'>
-                                    {localize('Non-EU regulators')}
+                                    {localize('Non-EU regulations')}
                                 </Table.Head>
                                 <Table.Head className='regulators-compare-table__table-header-item'>
-                                    {localize('EU regulators')}
+                                    {localize('EU regulation')}
                                 </Table.Head>
                             </Table.Row>
                         </Table.Header>

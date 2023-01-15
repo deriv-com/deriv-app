@@ -13,6 +13,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import CurrencySelectionModal from '../../CurrencySelectionModal';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -39,18 +40,25 @@ export const TradersHubHomeButton = () => {
     );
 };
 
-const RedirectToOldInterface = ({ setIsPreAppStore }) => {
-    const disablePreAppstore = () => setIsPreAppStore(false);
-
+const RedirectToOldInterface = ({ setIsPreAppStore, should_show_exit_traders_modal, toggleExitTradersHubModal }) => {
+    const history = useHistory();
+    const disablePreAppstore = () => {
+        if (should_show_exit_traders_modal) {
+            toggleExitTradersHubModal();
+        } else {
+            setIsPreAppStore(false);
+            history.push(routes.root);
+        }
+    };
     return (
         <div className='trading-hub-header__redirect'>
-            <BinaryLink to={routes.trade} className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
+            <div className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
                 <Text as='p' size='xs' color='general'>
                     <Localize i18n_default_text="Exit Trader's hub" />
                 </Text>
                 <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
                 <Icon icon='IcArrowRight' size={18} color='red' />
-            </BinaryLink>
+            </div>
         </div>
     );
 };
@@ -105,6 +113,7 @@ const TradingHubHeader = ({
     is_eu_country,
     is_eu,
     is_logged_in,
+    is_mobile,
     is_mt5_allowed,
     is_notifications_visible,
     is_onramp_tab_visible,
@@ -118,14 +127,17 @@ const TradingHubHeader = ({
     loginid,
     logoutClient,
     menu_items,
+    modal_data,
     notifications_count,
     replaceCashierMenuOnclick,
     setDarkMode,
     setIsOnboardingVisited,
     setIsPreAppStore,
     should_allow_authentication,
+    should_show_exit_traders_modal,
     toggleIsTourOpen,
     toggleNotifications,
+    toggleExitTradersHubModal,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const toggle_menu_drawer_ref = React.useRef(null);
@@ -171,6 +183,8 @@ const TradingHubHeader = ({
                         }
                         is_social_signup={is_social_signup}
                         setIsPreAppStore={setIsPreAppStore}
+                        should_show_exit_traders_modal={should_show_exit_traders_modal}
+                        toggleExitTradersHubModal={toggleExitTradersHubModal}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -184,11 +198,20 @@ const TradingHubHeader = ({
                     <TradersHubHomeButton />
                 </DesktopWrapper>
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
+                <MemoizedMenuLinks
+                    is_logged_in={is_logged_in}
+                    is_mobile={is_mobile}
+                    items={menu_items}
+                    is_pre_appstore={is_pre_appstore}
+                />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
-                    <RedirectToOldInterface setIsPreAppStore={setIsPreAppStore} />
+                    <RedirectToOldInterface
+                        setIsPreAppStore={setIsPreAppStore}
+                        should_show_exit_traders_modal={should_show_exit_traders_modal}
+                        toggleExitTradersHubModal={toggleExitTradersHubModal}
+                    />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
@@ -229,6 +252,7 @@ const TradingHubHeader = ({
                                 is_mf={is_mf}
                                 is_eu={is_eu}
                                 is_eu_country={is_eu_country}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -258,6 +282,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );
 };
@@ -273,6 +298,7 @@ TradingHubHeader.propTypes = {
     is_eu_country: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -287,6 +313,7 @@ TradingHubHeader.propTypes = {
     loginid: PropTypes.string,
     logoutClient: PropTypes.func,
     menu_items: PropTypes.array,
+    modal_data: PropTypes.object,
     notifications_count: PropTypes.number,
     replaceCashierMenuOnclick: PropTypes.func,
     setDarkMode: PropTypes.func,
@@ -294,8 +321,10 @@ TradingHubHeader.propTypes = {
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_allow_authentication: PropTypes.bool,
+    should_show_exit_traders_modal: PropTypes.bool,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    toggleExitTradersHubModal: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu, traders_hub }) => ({
@@ -309,6 +338,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_eu_country: client.is_eu_country,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
+    is_mobile: ui.is_mobile,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
@@ -318,6 +348,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     is_pre_appstore: client.is_pre_appstore,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
+    modal_data: traders_hub.modal_data,
     notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
@@ -328,5 +359,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
+    should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

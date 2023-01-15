@@ -1,35 +1,48 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { StatusBadge } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
 import { useStores } from 'Stores/index';
-import StatusBadge from './switcher-status-badge';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 
-const AccountNeedsVerification = () => {
+const AccountNeedsVerification = observer(({ multipliers_account_status }: { multipliers_account_status: string }) => {
+    const { client, traders_hub } = useStores();
+    const { account_list, loginid } = client;
+
+    const { openModal, openFailedVerificationModal } = traders_hub;
+
+    const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
+    const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
+
     return (
         <CurrencySwitcherContainer
             className='real-account-switcher__container'
-            title={
-                <Text size='xs' line_height='s'>
-                    {localize('Needs Verification')}
-                </Text>
-            }
-            icon='VIRTUAL'
+            title={title}
+            icon={icon}
+            onClick={() => {
+                if (multipliers_account_status) {
+                    return null;
+                }
+                return openModal('currency_selection');
+            }}
         >
-            <StatusBadge />
+            <StatusBadge
+                account_status={multipliers_account_status}
+                openFailedVerificationModal={openFailedVerificationModal}
+                selected_account_type='multipliers'
+            />
         </CurrencySwitcherContainer>
     );
-};
+});
 
 const RealAccountSwitcher = () => {
-    const { client } = useStores();
-    const { is_authentication_needed, is_switching, has_any_real_account } = client;
+    const { client, traders_hub } = useStores();
+    const { is_logging_in, is_switching, has_any_real_account } = client;
+    const { multipliers_account_status } = traders_hub;
 
-    if (is_switching) {
+    if (is_switching || is_logging_in) {
         return (
             <div className='real-account-switcher__container loader'>
                 <CurrencySwitcherLoader />
@@ -37,8 +50,8 @@ const RealAccountSwitcher = () => {
         );
     }
 
-    if (is_authentication_needed) {
-        return <AccountNeedsVerification />;
+    if (multipliers_account_status) {
+        return <AccountNeedsVerification multipliers_account_status={multipliers_account_status} />;
     }
 
     if (has_any_real_account) {

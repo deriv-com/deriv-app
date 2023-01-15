@@ -1,20 +1,29 @@
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
-import TransferTradeButtonGroup from 'Components/transfer-trade-button-group';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import MultiActionButtonGroup from 'Components/multi-action-button-group';
 
 export type Actions = {
-    type: 'get' | 'none' | 'trade' | 'dxtrade' | 'transfer_trade' | 'dxtrade_transfer_trade';
+    action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action'; // multi-action can be tranfer_trade or top_up_trade
     link_to?: string;
     has_divider?: boolean;
-    onAction?: () => void;
+    onAction?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     is_external?: boolean;
+    is_buttons_disabled?: boolean;
+    is_real?: boolean;
 };
 
-const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions) => {
-    switch (type) {
+const TradingAppCardActions = ({
+    action_type,
+    link_to,
+    onAction,
+    is_external,
+    is_buttons_disabled,
+    is_real,
+}: Actions) => {
+    switch (action_type) {
         case 'get':
             return (
                 <Button primary_light onClick={() => onAction?.()}>
@@ -25,8 +34,15 @@ const TradingAppCardActions = ({ type, link_to, onAction, is_external }: Actions
             return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} />;
         case 'dxtrade':
             return <TradeButton link_to={link_to} />;
-        case 'transfer_trade':
-            return <TransferTradeButtonGroup link_to={link_to} onAction={onAction} />;
+        case 'multi-action':
+            return (
+                <MultiActionButtonGroup
+                    link_to={link_to}
+                    onAction={onAction}
+                    is_buttons_disabled={is_buttons_disabled}
+                    is_real={is_real}
+                />
+            );
         case 'none':
         default:
             return null;

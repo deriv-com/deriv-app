@@ -21,7 +21,10 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
                     line_height='s'
                     size='xs'
                 >
-                    {capitalizeFirstLetter(payment_agent.further_information)}
+                    {capitalizeFirstLetter(payment_agent.further_information).replace(
+                        /( ?Skril?l,? ?)|( ?Net?tel?ler,? ?)/gi,
+                        ''
+                    )}
                 </Text>
             )}
             {payment_agent_urls && (

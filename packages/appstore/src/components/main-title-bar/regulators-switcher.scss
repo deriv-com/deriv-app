@@ -1,8 +1,16 @@
 .regulators-switcher {
-    display: inline-flex;
-    align-items: center;
-    margin: 0 auto;
-    user-select: none;
+    &__container {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 auto;
+        user-select: none;
+    }
+
+    &__container.loader {
+        width: 21rem;
+        padding: 0;
+        cursor: not-allowed;
+    }
 
     &--text {
         display: flex;

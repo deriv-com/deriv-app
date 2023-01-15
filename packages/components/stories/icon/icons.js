@@ -19,6 +19,7 @@ export const icons =
         'IcAppstoreDerivLogo',
         'IcAppstoreEllipse',
         'IcAppstoreError',
+        'IcAppstoreGetMoreAccounts',
         'IcAppstoreHomeDark',
         'IcAppstoreHome',
         'IcAppstoreInformation',

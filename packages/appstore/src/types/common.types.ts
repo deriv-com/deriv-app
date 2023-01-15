@@ -51,6 +51,9 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
     landing_company_short?: string;
     short_code_and_region?: string;
+    mt5_acc_auth_status?: string | null;
+    selected_mt5_jurisdiction?: string;
+    openFailedVerificationModal?: (from_account: string) => void;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -66,7 +69,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
 };
 
@@ -109,6 +112,8 @@ export type TIconTypes =
 
 export interface AvailableAccount {
     name: string;
+    is_item_blurry?: boolean;
+    has_applauncher_account?: boolean;
     sub_title?: string;
     description?: string;
     is_visible?: boolean;

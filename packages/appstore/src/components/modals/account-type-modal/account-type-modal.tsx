@@ -7,6 +7,7 @@ import { useStores } from 'Stores/index';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
+import { CFD_PLATFORMS } from '@deriv/shared';
 
 const derived_account: TAccountType = {
     title_and_type: 'Derived',
@@ -79,16 +80,18 @@ const ModalContent = ({
 };
 
 const MT5AccountTypeModal = () => {
-    const { traders_hub, ui, client, modules } = useStores();
+    const { traders_hub, ui, client, modules, common } = useStores();
     const {
         is_account_type_modal_visible,
         toggleAccountTypeModalVisibility,
         account_type_card,
         selectAccountTypeCard,
+        getAccount,
     } = traders_hub;
-    const { toggleJurisdictionModal, setAccountType, account_type } = modules.cfd;
+    const { setAccountType } = modules.cfd;
     const { trading_platform_available_accounts } = client;
     const { enableApp, disableApp } = ui;
+    const { setAppstorePlatform } = common;
     const is_financial_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
     );
@@ -131,7 +134,8 @@ const MT5AccountTypeModal = () => {
                                 onClick={() => {
                                     set_account_type();
                                     toggleAccountTypeModalVisibility();
-                                    toggleJurisdictionModal();
+                                    setAppstorePlatform(CFD_PLATFORMS.MT5);
+                                    getAccount();
                                 }}
                             >
                                 {localize(`Next`)}
@@ -160,7 +164,8 @@ const MT5AccountTypeModal = () => {
                                 onClick={() => {
                                     set_account_type();
                                     toggleAccountTypeModalVisibility();
-                                    toggleJurisdictionModal();
+                                    setAppstorePlatform(CFD_PLATFORMS.MT5);
+                                    getAccount();
                                 }}
                             >
                                 {localize(`Next`)}

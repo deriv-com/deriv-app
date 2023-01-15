@@ -120,6 +120,7 @@ const AppNotificationMessages = ({
                   'poa_verified',
                   'poa_failed',
                   'resticted_mt5_with_failed_poa',
+                  'poa_rejected_for_mt5',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 

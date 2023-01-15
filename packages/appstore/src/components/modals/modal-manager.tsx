@@ -5,7 +5,6 @@ import {
     JurisdictionModal,
     CFDPasswordModal,
     CFDDbviOnBoarding,
-    CFDPersonalDetailsModal,
     CFDResetPasswordModal,
     CFDServerErrorDialog,
     CFDTopUpDemoModal,
@@ -17,16 +16,40 @@ import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
-import CurrencySelectionModal from './currency-selection-modal';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import FailedVerificationModal from './failed-veriification-modal';
+import AccountTransferModal from 'Components/account-transfer-modal';
+
+type TCurrentList = DetailsOfEachMT5Loginid & {
+    enabled: number;
+};
 
 const ModalManager = () => {
     const store = useStores();
-    const { common, client, modules, traders_hub } = store;
+    const { common, client, modules, traders_hub, ui } = store;
     const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
     const { platform } = common;
-    const { current_list, enableCFDPasswordModal, is_mt5_trade_modal_visible, setAccountType, toggleMT5TradeModal } =
-        modules.cfd;
-    const { is_demo, modal_data } = traders_hub;
+    const {
+        current_list,
+        enableCFDPasswordModal,
+        is_mt5_trade_modal_visible,
+        setAccountType,
+        toggleMT5TradeModal,
+        getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData,
+        current_account,
+        dxtrade_companies,
+        mt5_companies,
+        topUpVirtual,
+    } = modules.cfd;
+    const {
+        is_top_up_virtual_open,
+        is_top_up_virtual_in_progress,
+        is_top_up_virtual_success,
+        closeTopUpModal,
+        closeSuccessTopUpModal,
+    } = ui;
+    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -66,15 +89,46 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+        const current_list_keys = Object.keys(current_list);
+        const should_be_enabled = (list_item: TCurrentList) =>
+            platform === 'dxtrade' ? list_item.enabled === 1 : true;
+        const acc = current_list_keys.some(
+            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+        )
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .reduce((_acc, cur) => {
+                      _acc.push(current_list[cur]);
+                      return _acc;
+                  }, [] as DetailsOfEachMT5Loginid[])
+            : undefined;
+        return acc;
+    };
+
+    getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
+    getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
+
     return (
         <React.Fragment>
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
-            <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
             <CFDServerErrorDialog context={store} />
-            <CFDTopUpDemoModal context={store} />
+            <CFDTopUpDemoModal
+                context={store}
+                dxtrade_companies={dxtrade_companies}
+                mt5_companies={mt5_companies}
+                current_account={current_account}
+                closeSuccessTopUpModal={closeSuccessTopUpModal}
+                closeTopUpModal={closeTopUpModal}
+                is_top_up_virtual_open={is_top_up_virtual_open}
+                is_top_up_virtual_in_progress={is_top_up_virtual_in_progress}
+                is_top_up_virtual_success={is_top_up_virtual_success}
+                platform={platform}
+                topUpVirtual={topUpVirtual}
+            />
             <MT5TradeModal
                 context={store}
                 current_list={current_list}
@@ -104,7 +158,11 @@ const ModalManager = () => {
                 openPasswordModal={openRealPasswordModal}
                 is_real_enabled={has_active_real_account || !is_demo}
             />
-            <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
+            <AccountTransferModal
+                is_modal_open={is_account_transfer_modal_open}
+                toggleModal={toggleAccountTransferModal}
+            />
+            <FailedVerificationModal />
         </React.Fragment>
     );
 };

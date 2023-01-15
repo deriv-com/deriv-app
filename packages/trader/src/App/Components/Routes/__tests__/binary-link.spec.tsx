@@ -23,16 +23,16 @@ describe('BinaryLink component', () => {
 
     it('should have "active_class" when passed in', () => {
         render(<MockBinaryLink to='/' />);
-        expect(screen.getByTestId('dt_nav_link')).toHaveClass('active_class');
+        expect(screen.getByTestId('dt_binary_link')).toHaveClass('active_class');
     });
 
     it('should render "NavLink" when "to" property is passed', () => {
         render(<MockBinaryLink to='/' />);
-        expect(screen.getByTestId('dt_nav_link')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
     });
 
     it('should render "a" element whe property "to" is not passed', () => {
         render(<MockBinaryLink />);
-        expect(screen.getByTestId('dt_link')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
     });
 });

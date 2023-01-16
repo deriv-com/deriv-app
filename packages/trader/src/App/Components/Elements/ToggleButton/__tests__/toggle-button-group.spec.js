@@ -12,9 +12,9 @@ const MockToggleButtonGroup = ({ value, className, multiple, onChange }) => (
 );
 
 describe('ToggleButtonGroup', () => {
-    it('should have "toggle-button-group" class when "className" passed', () => {
+    it('should have "test-class" class when "className" passed', () => {
         render(<MockToggleButtonGroup className='test-class' />);
-        expect(screen.getByTestId('dt_toggle_button_group')).toHaveClass('toggle-button-group');
+        expect(screen.getByTestId('dt_toggle_button_group')).toHaveClass('test-class');
     });
 
     it('should be called when the "ToggleButton" is clicked with value of the button', () => {

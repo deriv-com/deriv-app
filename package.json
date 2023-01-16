@@ -88,7 +88,7 @@
         "install:qa": "npm --prefix ./e2e_tests ci && echo \"IMPORTANT: copy .env.example to .env and update the values for development.\"",
         "prettify": "./node_modules/.bin/prettier --config ./.prettierrc --write \"./packages/*/{stories,script,src,build}/**/*.{js,jsx,ts,tsx,scss}\"",
         "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
-        "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
+        "serve": "f () { docker compose up -d && lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",

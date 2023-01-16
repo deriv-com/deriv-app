@@ -105,7 +105,8 @@
         padding-bottom: 20rem;
 
         @include mobile {
-            height: calc(100vh - 27rem);
+            height: calc(100vh - 28rem);
+            padding-bottom: 0;
         }
 
         &__nosearch {
@@ -118,7 +119,7 @@
 
             @include mobile {
                 width: 100%;
-                height: calc(100vh - 16rem);
+                // height: calc(100vh - 16rem);
             }
         }
         .dc-accordion {

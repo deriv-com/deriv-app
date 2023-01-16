@@ -224,7 +224,7 @@ export default class DashboardStore implements IDashboardStore {
         }
     };
 
-    setInfoPanelVisibility = (is_info_panel_visible: boolean) => {
+    setInfoPanelVisibility = (is_info_panel_visible: boolean): void => {
         this.is_info_panel_visible = is_info_panel_visible;
     };
 
@@ -246,7 +246,7 @@ export default class DashboardStore implements IDashboardStore {
         this.setHasTourEnded(value);
     };
 
-    onCloseTour = (param: Partial<string>) => {
+    onCloseTour = (param: Partial<string>): void => {
         this.setOnBoardTourRunState(false);
         this.setBotBuilderTourState(false);
         setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
@@ -260,7 +260,7 @@ export default class DashboardStore implements IDashboardStore {
         setTourSettings(new Date().getTime(), `${key}_token`);
     };
 
-    onTourEnd = (step: number, has_started_onboarding_tour: boolean) => {
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
         if (step === 8) {
             this.onCloseTour('onboard');
             this.setTourEnd(tour_type);

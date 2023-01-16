@@ -72,7 +72,7 @@ const CFDPasswordForm = ({ ...props }: TCFDPasswordFormProps) => (
                             </PasswordMeter>
                         </div>
                         <Text align='center' size='xxs' styles={{ padding: '0 1rem' }}>
-                            <Localize i18n_default_text='To get an DMT5 app, we need to confirm your account password. We do this to protect your account against unauthorized action.' />
+                            <Localize i18n_default_text='To get an Deriv MT5 app, we need to confirm your account password. We do this to protect your account against unauthorized action.' />
                         </Text>
                         {props.is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from '../icon/icon.jsx';
-import Text from '../text/text.jsx';
+import Text from '../text/text';
+import Icon from '../icon/icon';
 
 const SubMenuSection = props => {
     const { submenu_toggle_class, section_title, section_icon, children } = props;

@@ -9,6 +9,7 @@ import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storag
 import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
+import { setColors } from './hooks/colours';
 
 class DBot {
     constructor() {
@@ -22,6 +23,7 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         const recent_files = await getSavedWorkspaces();
+        setColors();
         return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);

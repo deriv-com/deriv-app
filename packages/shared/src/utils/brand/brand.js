@@ -15,3 +15,7 @@ export const getBrandWebsiteName = () => {
 export const getPlatformSettings = platform_key => {
     return config_data.platforms[platform_key];
 };
+
+export const getPlatformSettingsAppstore = platform_key => {
+    return config_data.platforms_appstore[platform_key];
+};

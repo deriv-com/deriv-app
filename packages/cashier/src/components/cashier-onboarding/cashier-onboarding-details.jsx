@@ -17,7 +17,11 @@ const CashierOnboardingDetails = ({
             <Text size='sm' weight='bold' color='prominent'>
                 {detail_header}
             </Text>
-            <div className='cashier-onboarding-detail__div' onClick={detail_click}>
+            <div
+                className='cashier-onboarding-detail__div'
+                data-testid='dt_cashier_onboarding_detail_div'
+                onClick={detail_click}
+            >
                 <div className='cashier-onboarding-detail__content'>
                     <Text size='xs' className='cashier-onboarding-detail__text'>
                         {detail_description}

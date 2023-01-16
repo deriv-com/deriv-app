@@ -1,0 +1,40 @@
+.currency-dropdown {
+    margin-top: 2.4rem;
+    position: relative;
+
+    @include mobile {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0;
+    }
+
+    &__list {
+        min-width: unset;
+        width: 10rem;
+
+        &-item {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        &--visible {
+            .dc-dropdown__select-arrow {
+                transform: rotate(-180deg);
+            }
+        }
+    }
+
+    .dc-dropdown__display {
+        height: 4.2rem;
+        justify-content: start;
+
+        @include mobile {
+            height: 4rem;
+
+            &:focus {
+                border-color: var(--border-normal);
+            }
+        }
+    }
+}

@@ -1,10 +1,36 @@
 /* @define dc-mobile-drawer; weak */
+@keyframes openDrawer {
+    0% {
+        transform: translateX(-100%);
+    }
+    60%,
+    100% {
+        transform: translateX(0);
+    }
+    80% {
+        transform: translateX(-5%);
+    }
+}
+
+@keyframes closeDrawer {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 .dc-mobile-drawer {
     position: absolute;
     top: 0;
     left: 0;
     will-change: transform;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(-100%);
+    animation-name: openDrawer;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    z-index: 10000;
 
     &__container {
         display: flex;
@@ -54,6 +80,7 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
+            transition: all 0.2s;
         }
     }
     &__subheader {
@@ -73,6 +100,7 @@
             visibility: hidden;
         }
     }
+
     &__submenu {
         &-back {
             width: 16px;
@@ -81,7 +109,8 @@
         }
         &-toggle {
             display: flex;
-            padding: 0 0 3.2rem 4.8rem;
+            height: 5.6rem;
+            padding: 0 1.6rem 0 4.8rem;
             align-items: center;
 
             &-icon {
@@ -92,7 +121,6 @@
             &-suffix-icon {
                 width: 16px;
                 height: 16px;
-                margin-right: 8.3rem;
                 margin-left: auto;
             }
         }
@@ -164,10 +192,14 @@
         overflow-x: hidden;
     }
     &__item {
-        padding: 0 0 3.2rem 4.8rem;
+        padding: 0 1.6rem 0 4.8rem;
         font-size: 1.4rem;
         line-height: 1.5;
+        height: 5.6rem;
         color: var(--text-prominent);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
     &__footer {
         display: flex;
@@ -177,9 +209,18 @@
         justify-content: flex-start;
         align-items: center;
         padding: 1.6rem;
+
+        &--servertime {
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid var(--general-section-2);
+        }
     }
-    &__wrapper {
+    &__overlay {
         z-index: 9999 !important;
         background-color: var(--overlay-outside-dialog) !important;
+    }
+    &.exit {
+        animation: closeDrawer 0.3s;
     }
 }

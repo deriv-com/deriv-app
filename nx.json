@@ -11,8 +11,7 @@
           "package",
           "prepare",
           "build:travis"
-        ],
-        "accessToken": "${process.env.NX_CLOUD_ACCESS_TOKEN}"
+        ]
       }
     }
   },

@@ -3,44 +3,43 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 
-const MenuLinks = ({ is_logged_in, items }) => (
+const MenuItems = ({ item, hide_menu_item }) => {
+    const { id, link_to, href, text, image, logo, icon } = item;
+    return hide_menu_item ? null : (
+        <BinaryLink
+            id={id}
+            key={icon}
+            to={link_to}
+            href={href}
+            className='header__menu-link'
+            active_class='header__menu-link--active'
+        >
+            <Text size='m' line_height='xs' title={text()} className='header__menu-link-text'>
+                {icon}
+                {text()}
+                {logo}
+            </Text>
+            <span className='header__menu-link-text'>
+                {image}
+                {logo}
+            </span>
+        </BinaryLink>
+    );
+};
+
+const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
     <React.Fragment>
         {!!items.length && (
             <div className='header__menu-links'>
-                {items.map((item, idx) => {
-                    const item_text = item.text();
-
-                    return item.login_only && item.login_only !== is_logged_in ? null : (
-                        <BinaryLink
-                            id={item.id}
-                            key={idx}
-                            to={item.link_to || undefined}
-                            onClick={item.onClick || undefined}
-                            href={item.href || undefined}
-                            className='header__menu-link'
-                            active_class='header__menu-link--active'
-                        >
-                            <React.Fragment>
-                                {item_text && (
-                                    <Text
-                                        size='m'
-                                        line_height='xs'
-                                        title={item_text}
-                                        className='header__menu-link-text'
-                                    >
-                                        {item.icon}
-                                        {item_text}
-                                        {item.logo}
-                                    </Text>
-                                )}
-                                {item.image && (
-                                    <span className='header__menu-link-text'>
-                                        {item.image}
-                                        {item.logo}
-                                    </span>
-                                )}
-                            </React.Fragment>
-                        </BinaryLink>
+                {items.map(item => {
+                    return (
+                        is_logged_in && (
+                            <MenuItems
+                                key={`${item.icon}${item.id}`}
+                                item={item}
+                                hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
+                            />
+                        )
                     );
                 })}
             </div>
@@ -60,6 +59,7 @@ MenuLinks.propTypes = {
         })
     ),
     is_logged_in: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export { MenuLinks };

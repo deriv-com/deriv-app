@@ -1,77 +1,120 @@
 import React from 'react';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import ReactDOM from 'react-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
-beforeAll(() => {
-    const portal_root = document.createElement('div');
-    portal_root.setAttribute('id', 'modal_root');
-    document.body.appendChild(portal_root);
-});
-
-afterEach(cleanup);
+import { StoreProvider } from '@deriv/stores';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
-    const amount = 10;
-    const currency = 'BTC';
-    const description = 'testDescription';
-    const error = {
-        code: 'testCode',
-        message: 'testMessage',
-    };
-    const header = 'Please confirm the transaction details in order to complete the withdrawal:';
-    const requestPaymentAgentWithdraw = jest.fn();
-    const setIsTryWithdrawSuccessful = jest.fn();
+    let mockRootStore, verification_code;
 
-    it('component should be rendered', () => {
-        render(<PaymentAgentWithdrawConfirm />);
-
-        expect(screen.getByTestId('dt_cashier_wrapper_transfer_confirm')).toBeInTheDocument();
+    beforeAll(() => {
+        ReactDOM.createPortal = jest.fn(component => {
+            return component;
+        });
     });
 
-    it('component <Row /> should be rendered when has data', () => {
-        render(<PaymentAgentWithdrawConfirm />);
-
-        expect(screen.getByTestId('dt_transfer_confirm_row_0')).toBeInTheDocument();
+    afterAll(() => {
+        ReactDOM.createPortal.mockClear();
     });
 
-    it('component <ErrorDialog /> should be rendered when has an error', () => {
-        render(<PaymentAgentWithdrawConfirm error={error} />);
+    beforeEach(() => {
+        mockRootStore = {
+            ui: { disableApp: jest.fn(), enableApp: jest.fn() },
+            client: { loginid: 'CR90000100' },
+            modules: {
+                cashier: {
+                    payment_agent: {
+                        confirm: {
+                            amount: 20,
+                            currency: 'USD',
+                            loginid: 'CR90000999',
+                            payment_agent_name: 'Alicharger',
+                        },
+                        error: {},
+                        requestPaymentAgentWithdraw: jest.fn(),
+                        setIsTryWithdrawSuccessful: jest.fn(),
+                    },
+                },
+            },
+        };
 
-        expect(screen.getByText('testMessage')).toBeInTheDocument();
+        verification_code = 'ABCdef';
     });
 
-    it('header should be rendered', () => {
-        render(<PaymentAgentWithdrawConfirm />);
-
-        expect(screen.getByText(header)).toBeInTheDocument();
-    });
-
-    it(`setIsTryWithdrawSuccessful func should be triggered when click on 'Back' button`, () => {
-        render(<PaymentAgentWithdrawConfirm setIsTryWithdrawSuccessful={setIsTryWithdrawSuccessful} />);
-
-        const btn = screen.getByText('Back');
-        fireEvent.click(btn);
-        expect(setIsTryWithdrawSuccessful).toBeCalledTimes(1);
-    });
-
-    it(`requestPaymentAgentWithdraw func should be triggered when click on 'Confirm' button`, () => {
-        render(
-            <PaymentAgentWithdrawConfirm
-                amount={amount}
-                currency={currency}
-                description={description}
-                requestPaymentAgentWithdraw={requestPaymentAgentWithdraw}
-            />
+    const renderPaymentAgentWithdrawConfirm = () => {
+        return render(
+            <StoreProvider store={mockRootStore}>
+                <PaymentAgentWithdrawConfirm verification_code={verification_code} />
+            </StoreProvider>
         );
+    };
 
-        const btn = screen.getByText('Confirm');
-        fireEvent.click(btn);
-        expect(requestPaymentAgentWithdraw).toBeCalledTimes(1);
+    it('should show proper messages and buttons', () => {
+        renderPaymentAgentWithdrawConfirm();
+
+        const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
+
+        expect(screen.getByTestId('dt_red_warning_icon')).toBeInTheDocument();
+        expect(screen.getByText('Funds transfer information')).toBeInTheDocument();
+        expect(screen.getByText('From account number')).toBeInTheDocument();
+        expect(screen.getByText('CR90000100')).toBeInTheDocument();
+        expect(screen.getByText('To account number')).toBeInTheDocument();
+        expect(screen.getByText('CR90000999')).toBeInTheDocument();
+        expect(screen.getByText('Alicharger')).toBeInTheDocument();
+        expect(screen.getByText('Amount')).toBeInTheDocument();
+        expect(screen.getByText('20.00 USD')).toBeInTheDocument();
+        expect(screen.getByRole('checkbox')).toBeInTheDocument();
+        expect(back_btn).toBeInTheDocument();
+        expect(transfer_now_btn).toBeInTheDocument();
+    });
+
+    it('should show error messages and button', () => {
+        mockRootStore.modules.cashier.payment_agent.error = {
+            code: 'code',
+            message: 'error_message',
+        };
+
+        renderPaymentAgentWithdrawConfirm();
+
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
+        expect(screen.getByText('error_message')).toBeInTheDocument();
+        expect(screen.getAllByRole('button')[2]).toBeInTheDocument();
+    });
+
+    it('should trigger setIsTryWithdrawSuccessful method when the client clicks on Back button', () => {
+        renderPaymentAgentWithdrawConfirm();
+
+        const [back_btn, _] = screen.getAllByRole('button');
+        fireEvent.click(back_btn);
+
+        expect(mockRootStore.modules.cashier.payment_agent.setIsTryWithdrawSuccessful).toHaveBeenCalledWith(false);
+    });
+
+    it('should enable Transfer now button when checkbox is checked', () => {
+        renderPaymentAgentWithdrawConfirm();
+
+        const el_checkbox = screen.getByRole('checkbox');
+        const [_, transfer_now_btn] = screen.getAllByRole('button');
+        fireEvent.click(el_checkbox);
+
+        expect(transfer_now_btn).toBeEnabled();
+    });
+
+    it('should trigger requestPaymentAgentWithdraw method when the client clicks on Transfer now button', () => {
+        renderPaymentAgentWithdrawConfirm();
+
+        const el_checkbox = screen.getByRole('checkbox');
+        const [_, transfer_now_btn] = screen.getAllByRole('button');
+        fireEvent.click(el_checkbox);
+        fireEvent.click(transfer_now_btn);
+
+        const { loginid, currency, amount } = mockRootStore.modules.cashier.payment_agent.confirm;
+
+        expect(mockRootStore.modules.cashier.payment_agent.requestPaymentAgentWithdraw).toHaveBeenCalledWith({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+        });
     });
 });

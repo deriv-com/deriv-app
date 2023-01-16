@@ -114,7 +114,12 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
                     </React.Fragment>
                 )}
             </div>
-            <div className='cfd-dashboard__download-container-links-download-buttons'>
+            <div
+                className={classnames('cfd-dashboard__download-container-links-download-buttons', {
+                    'cfd-dashboard__download-container-links-download-buttons--column':
+                        isMobile() && platform === CFD_PLATFORMS.MT5,
+                })}
+            >
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
                     href={mobileDownloadLink(platform, 'android')}
@@ -123,14 +128,16 @@ const MobileDownload = ({ is_dark_mode_on, platform }: TMobileDownloadProps) => 
                 >
                     <Icon icon='IcInstallationGoogle' width={135} height={40} />
                 </a>
-                <a
-                    className='cfd-dashboard__download-center-options--mobile-link'
-                    href={mobileDownloadLink(platform, 'ios')}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <Icon icon='IcInstallationApple' width={120} height={40} />
-                </a>
+                {platform === CFD_PLATFORMS.DXTRADE && (
+                    <a
+                        className='cfd-dashboard__download-center-options--mobile-link'
+                        href={mobileDownloadLink(platform, 'ios')}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Icon icon='IcInstallationApple' width={120} height={40} />
+                    </a>
+                )}
                 <a
                     className='cfd-dashboard__download-center-options--mobile-link'
                     href={mobileDownloadLink(platform, 'huawei')}

@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, makeObservable, override } from 'mobx';
 import { toMoment, WS } from '@deriv/shared';
 
 import getDateBoundaries from './Helpers/format-request';
@@ -10,19 +10,48 @@ const batch_size = 50;
 const delay_on_scroll_time = 150;
 
 export default class ProfitTableStore extends BaseStore {
-    @observable data = [];
-    @observable date_from = null;
-    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-    @observable error = '';
-    @observable has_loaded_all = false;
-    @observable is_loading = false;
-    @observable filtered_date_range;
+    data = [];
+    date_from = null;
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    error = '';
+    has_loaded_all = false;
+    is_loading = false;
+    filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
-    @observable client_loginid = '';
+    client_loginid = '';
 
-    @computed
+    constructor({ root_store }) {
+        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
+        super({ root_store });
+
+        makeObservable(this, {
+            data: observable,
+            date_from: observable,
+            date_to: observable,
+            error: observable,
+            has_loaded_all: observable,
+            is_loading: observable,
+            filtered_date_range: observable,
+            client_loginid: observable,
+            total_profit: computed,
+            is_empty: computed,
+            has_selected_date: computed,
+            fetchNextBatch: action.bound,
+            profitTableResponseHandler: action.bound,
+            handleScroll: action.bound,
+            networkStatusChangeListener: action.bound,
+            onMount: action.bound,
+            onUnmount: override,
+            totals: computed,
+            accountSwitcherListener: action.bound,
+            clearTable: action.bound,
+            clearDateFilter: action.bound,
+            handleDateChange: action.bound,
+        });
+    }
+
     get total_profit() {
         return this.data.reduce((previous, current) => {
             const buy_price = Number(parseFloat(current.buy_price));
@@ -32,12 +61,10 @@ export default class ProfitTableStore extends BaseStore {
         }, 0);
     }
 
-    @computed
     get is_empty() {
         return !this.is_loading && this.data.length === 0;
     }
 
-    @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
     }
@@ -47,7 +74,6 @@ export default class ProfitTableStore extends BaseStore {
         return true;
     }
 
-    @action.bound
     async fetchNextBatch() {
         if (!this.shouldFetchNextBatch()) return;
         this.is_loading = true;
@@ -61,7 +87,6 @@ export default class ProfitTableStore extends BaseStore {
         this.profitTableResponseHandler(response);
     }
 
-    @action.bound
     profitTableResponseHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
@@ -87,19 +112,16 @@ export default class ProfitTableStore extends BaseStore {
         }
     }, delay_on_scroll_time);
 
-    @action.bound
     handleScroll(event) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll = scrollHeight - (scrollTop + clientHeight);
         this.fetchOnScroll(left_to_scroll);
     }
 
-    @action.bound
     networkStatusChangeListener(is_online) {
         this.is_loading = !is_online;
     }
 
-    @action.bound
     async onMount() {
         this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
         this.client_loginid = this.root_store.client.loginid;
@@ -117,13 +139,11 @@ export default class ProfitTableStore extends BaseStore {
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay
     as we change tab or click on any contract for later references as discussed with UI/UX and QA */
-    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
     }
 
-    @computed
     get totals() {
         let profit_loss = 0;
 
@@ -135,7 +155,6 @@ export default class ProfitTableStore extends BaseStore {
         };
     }
 
-    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => {
             this.clearTable();
@@ -144,20 +163,17 @@ export default class ProfitTableStore extends BaseStore {
         });
     }
 
-    @action.bound
     clearTable() {
         this.data = [];
         this.has_loaded_all = false;
         this.is_loading = false;
     }
 
-    @action.bound
     clearDateFilter() {
         this.date_from = null;
         this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
-    @action.bound
     handleDateChange(date_values, { date_range } = {}) {
         this.filtered_date_range = date_range;
         this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);

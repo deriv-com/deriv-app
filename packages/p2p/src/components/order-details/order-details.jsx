@@ -19,15 +19,15 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
-import 'Components/order-details/order-details.scss';
 import LoadingModal from '../loading-modal';
 import InvalidVerificationLinkModal from '../invalid-verification-link-modal';
 import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import EmailLinkVerifiedModal from '../email-link-verified-modal';
 import { getDateAfterHours } from 'Utils/date-time';
+import './order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { general_store, order_store, sendbird_store } = useStores();
+    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
 
     const {
         account_currency,
@@ -80,6 +80,7 @@ const OrderDetails = observer(() => {
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
+        my_profile_store.getPaymentMethodsList();
 
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
@@ -92,6 +93,12 @@ const OrderDetails = observer(() => {
             disposeReactions();
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
+            order_store.setActiveOrder(null);
+            general_store.props.setP2POrderProps({
+                order_id: order_store.order_id,
+                redirectToOrderDetails: general_store.redirectToOrderDetails,
+                setIsRatingModalOpen: order_store.setIsRatingModalOpen,
+            });
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -260,11 +267,9 @@ const OrderDetails = observer(() => {
                                                 transparent
                                             >
                                                 <Text size='xss' weight='bold' color='red'>
-                                                    {localize('{{accordion_state}}', {
-                                                        accordion_state: should_expand_all
-                                                            ? 'Collapse all'
-                                                            : 'Expand all',
-                                                    })}
+                                                    {should_expand_all
+                                                        ? localize('Collapse all')
+                                                        : localize('Expand all')}
                                                 </Text>
                                             </Button>
                                         </section>
@@ -279,6 +284,7 @@ const OrderDetails = observer(() => {
                                                 content: (
                                                     <PaymentMethodAccordionContent payment_method={payment_method} />
                                                 ),
+                                                payment_method,
                                             }))}
                                             is_expand_all={should_expand_all}
                                             onChange={setShouldExpandAll}
@@ -295,7 +301,7 @@ const OrderDetails = observer(() => {
                                 )}
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
-                                    className='order-details-card--padding'
+                                    className='order-details-card--padding order-details-card__textbox'
                                     label={labels.contact_details}
                                     size='xs'
                                     weight='bold'
@@ -303,7 +309,7 @@ const OrderDetails = observer(() => {
                                 />
                                 <MyProfileSeparatorContainer.Line className='order-details-card--line' />
                                 <OrderInfoBlock
-                                    className='order-details-card--padding'
+                                    className='order-details-card--padding order-details-card__textbox'
                                     label={labels.instructions}
                                     size='xs'
                                     weight='bold'

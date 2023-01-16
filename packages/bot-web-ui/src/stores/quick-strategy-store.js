@@ -1,4 +1,4 @@
-import { computed, observable, action, runInAction } from 'mobx';
+import { computed, observable, action, runInAction, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
@@ -7,27 +7,64 @@ import { storeSetting, getSetting } from 'Utils/settings';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
+        makeObservable(this, {
+            selected_symbol: observable,
+            selected_trade_type: observable,
+            selected_duration_unit: observable,
+            input_duration_value: observable,
+            input_stake: observable,
+            input_size: observable,
+            input_alembert_unit: observable,
+            input_oscar_unit: observable,
+            input_loss: observable,
+            input_profit: observable,
+            is_strategy_modal_open: observable,
+            active_index: observable,
+            symbol_dropdown: observable,
+            trade_type_dropdown: observable,
+            duration_unit_dropdown: observable,
+            initial_values: computed,
+            initial_errors: computed,
+            setActiveTabIndex: action.bound,
+            setDurationUnitDropdown: action.bound,
+            setSymbolDropdown: action.bound,
+            setTradeTypeDropdown: action.bound,
+            setSelectedDurationUnit: action.bound,
+            setSelectedSymbol: action.bound,
+            setSelectedTradeType: action.bound,
+            setDurationInputValue: action.bound,
+            onChangeDropdownItem: action.bound,
+            onChangeInputValue: action.bound,
+            onHideDropdownList: action.bound,
+            toggleStrategyModal: action.bound,
+            createStrategy: action.bound,
+            updateSymbolDropdown: action.bound,
+            updateTradeTypeDropdown: action.bound,
+            updateDurationDropdown: action.bound,
+            updateDurationValue: action.bound,
+            validateQuickStrategy: action.bound,
+        });
+
         this.root_store = root_store;
         this.qs_cache = getSetting('quick_strategy') || {};
     }
-    @observable selected_symbol = this.qs_cache.selected_symbol || '';
-    @observable selected_trade_type = this.qs_cache.selected_trade_type || '';
-    @observable selected_duration_unit = this.qs_cache.selected_duration_unit || '';
-    @observable input_duration_value = this.qs_cache.input_duration_value || '';
-    @observable input_stake = this.qs_cache.input_stake || '';
-    @observable input_size = this.qs_cache.input_size || '';
-    @observable input_alembert_unit = this.qs_cache.input_alembert_unit || '';
-    @observable input_oscar_unit = this.qs_cache.input_oscar_unit || '';
-    @observable input_loss = this.qs_cache.input_loss || '';
-    @observable input_profit = this.qs_cache.input_profit || '';
+    selected_symbol = this.qs_cache?.selected_symbol || '';
+    selected_trade_type = this.qs_cache?.selected_trade_type || '';
+    selected_duration_unit = this.qs_cache?.selected_duration_unit || '';
+    input_duration_value = this.qs_cache?.input_duration_value || '';
+    input_stake = this.qs_cache?.input_stake || '';
+    input_size = this.qs_cache?.input_size || '';
+    input_alembert_unit = this.qs_cache?.input_alembert_unit || '';
+    input_oscar_unit = this.qs_cache?.input_oscar_unit || '';
+    input_loss = this.qs_cache?.input_loss || '';
+    input_profit = this.qs_cache?.input_profit || '';
 
-    @observable is_strategy_modal_open = false;
-    @observable active_index = 0;
-    @observable symbol_dropdown = [];
-    @observable trade_type_dropdown = [];
-    @observable duration_unit_dropdown = [];
+    is_strategy_modal_open = false;
+    active_index = 0;
+    symbol_dropdown = [];
+    trade_type_dropdown = [];
+    duration_unit_dropdown = [];
 
-    @computed
     get initial_values() {
         const init = {
             'quick-strategy__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
@@ -49,62 +86,52 @@ export default class QuickStrategyStore {
         return init;
     }
 
-    @computed
     get initial_errors() {
         // Persist errors through tab switch + remount.
         return this.validateQuickStrategy(this.initial_values, true);
     }
 
-    @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
     }
 
-    @action.bound
     setDurationUnitDropdown(duration_unit_options) {
         this.duration_unit_dropdown = duration_unit_options;
     }
 
-    @action.bound
     setSymbolDropdown(symbol_options) {
         this.symbol_dropdown = symbol_options;
     }
 
-    @action.bound
     setTradeTypeDropdown(trade_type_options) {
         this.trade_type_dropdown = trade_type_options;
     }
 
-    @action.bound
     setSelectedDurationUnit(duration_unit) {
         this.qs_cache.selected_duration_unit = duration_unit;
         this.selected_duration_unit = duration_unit;
     }
 
-    @action.bound
     setSelectedSymbol(symbol) {
         this.qs_cache.selected_symbol = symbol;
         this.selected_symbol = symbol;
-        delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.duration_value;
-        delete this.qs_cache.selected_trade_type;
+        delete this.qs_cache?.selected_duration_unit;
+        delete this.qs_cache?.duration_value;
+        delete this.qs_cache?.selected_trade_type;
     }
 
-    @action.bound
     setSelectedTradeType(trade_type) {
         this.qs_cache.selected_trade_type = trade_type;
         this.selected_trade_type = trade_type;
-        delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.duration_value;
+        delete this.qs_cache?.selected_duration_unit;
+        delete this.qs_cache?.duration_value;
     }
 
-    @action.bound
     setDurationInputValue(duration_value) {
         this.qs_cache.input_duration_value = duration_value;
         this.input_duration_value = duration_value;
     }
 
-    @action.bound
     onChangeDropdownItem(type, value, setFieldValue) {
         if (!value) {
             return;
@@ -141,14 +168,12 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     onChangeInputValue(field, event) {
         this.qs_cache[field] = event.currentTarget.value;
         this[field] = event.currentTarget.value;
         storeSetting('quick_strategy', this.qs_cache);
     }
 
-    @action.bound
     onHideDropdownList(type, value, setFieldValue) {
         const field_map = this.getFieldMap(type);
         const item = field_map.dropdown.find(i => i.text.toLowerCase() === value.toLowerCase()) || field_map.selected;
@@ -168,7 +193,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async toggleStrategyModal() {
         this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
@@ -178,7 +202,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async createStrategy({ button }) {
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
@@ -265,7 +288,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateSymbolDropdown() {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
@@ -283,7 +305,6 @@ export default class QuickStrategyStore {
         await this.updateTradeTypeDropdown(this.selected_symbol.value);
     }
 
-    @action.bound
     async updateTradeTypeDropdown(symbol, setFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const trade_type_options = [];
@@ -360,7 +381,7 @@ export default class QuickStrategyStore {
                 first_trade_type.text = this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value);
             });
         } else {
-            delete this.qs_cache.selected_trade_type;
+            delete this.qs_cache?.selected_trade_type;
         }
         if (first_trade_type) {
             this.setSelectedTradeType(first_trade_type);
@@ -376,7 +397,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateDurationDropdown(symbol, trade_type, setFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const durations = await contracts_for.getDurations(symbol, trade_type);
@@ -394,7 +414,7 @@ export default class QuickStrategyStore {
                 first_duration_unit.text = this.getFieldValue(duration_options, this.selected_duration_unit.value);
             });
         } else {
-            delete this.qs_cache.selected_duration_unit;
+            delete this.qs_cache?.selected_duration_unit;
         }
         if (first_duration_unit) {
             this.setSelectedDurationUnit(first_duration_unit);
@@ -406,18 +426,17 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     async updateDurationValue(duration_type, setFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const durations = await contracts_for.getDurations(this.selected_symbol.value, this.selected_trade_type.value);
         const min_duration = durations.find(duration => duration.unit === duration_type);
         if (min_duration) {
             let duration_input_value = min_duration.min;
-            const cache_unit = this.qs_cache.input_duration_value;
+            const cache_unit = this.qs_cache?.input_duration_value;
             if (cache_unit && cache_unit < min_duration.max && cache_unit > min_duration.min) {
                 duration_input_value = cache_unit;
             } else {
-                delete this.qs_cache.input_duration_value;
+                delete this.qs_cache?.input_duration_value;
             }
             this.setDurationInputValue(duration_input_value);
 
@@ -427,7 +446,6 @@ export default class QuickStrategyStore {
         }
     }
 
-    @action.bound
     validateQuickStrategy(values, should_ignore_empty = false) {
         const errors = {};
         const number_fields = [

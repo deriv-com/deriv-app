@@ -5,34 +5,26 @@ import { getLanguage } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
-import { connect } from 'Stores/connect';
 import { get, init, timePromise } from 'Utils/server_time';
+import { observer, useStore } from '@deriv/stores';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
-const P2PCashier = ({
-    addNotificationMessage,
-    currency,
-    current_focus,
-    filterNotificationMessages,
-    history,
-    is_dark_mode_on,
-    is_logging_in,
-    is_mobile,
-    is_virtual,
-    local_currency_config,
-    location,
-    loginid,
-    Notifications,
-    platform,
-    refreshNotifications,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    residence,
-    setNotificationCount,
-    setCurrentFocus,
-    balance,
-    setOnRemount,
-}) => {
+const P2PCashier = observer(({ history, location }) => {
+    const { notifications, client, ui, common, modules } = useStore();
+    const {
+        addNotificationMessage,
+        filterNotificationMessages,
+        refreshNotifications,
+        removeNotificationByKey,
+        removeNotificationMessage,
+        setP2POrderProps,
+    } = notifications;
+    const { balance, currency, local_currency_config, loginid, is_logging_in, is_virtual, residence } = client;
+    const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
+    const { platform } = common;
+    const { cashier } = modules;
+    const { general_store } = cashier;
+    const { setNotificationCount, setOnRemount } = general_store;
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
@@ -71,6 +63,8 @@ const P2PCashier = ({
         }
 
         return () => setQueryOrder(null);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setQueryOrder]);
 
     const setQueryOrder = React.useCallback(
@@ -109,7 +103,9 @@ const P2PCashier = ({
                 setOrderId(input_order_id);
             }
         },
-        [history, location.hash, location.search, order_id]
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [history, location.hash, location.search]
     );
 
     if (is_logging_in) {
@@ -140,56 +136,18 @@ const P2PCashier = ({
             setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
+            setP2POrderProps={setP2POrderProps}
             should_show_verification={/verification/.test(location.hash)}
             verification_action={action_param}
             verification_code={code_param}
             websocket_api={WS}
         />
     );
-};
+});
 
 P2PCashier.propTypes = {
-    addNotificationMessage: PropTypes.func,
-    balance: PropTypes.string,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    filterNotificationMessages: PropTypes.func,
     history: PropTypes.object,
-    is_dark_mode_on: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    local_currency_config: PropTypes.object,
     location: PropTypes.object,
-    loginid: PropTypes.string,
-    platform: PropTypes.any,
-    refreshNotifications: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    residence: PropTypes.string,
-    setNotificationCount: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, notifications, ui }) => ({
-    addNotificationMessage: notifications.addNotificationMessage,
-    balance: client.balance,
-    currency: client.currency,
-    filterNotificationMessages: notifications.filterNotificationMessages,
-    local_currency_config: client.local_currency_config,
-    loginid: client.loginid,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_logging_in: client.is_logging_in,
-    is_virtual: client.is_virtual,
-    Notifications: ui.notification_messages_ui,
-    platform: common.platform,
-    refreshNotifications: notifications.refreshNotifications,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    residence: client.residence,
-    setNotificationCount: modules.cashier.general_store.setNotificationCount,
-    setOnRemount: modules.cashier.general_store.setOnRemount,
-    is_mobile: ui.is_mobile,
-    setCurrentFocus: ui.setCurrentFocus,
-    current_focus: ui.current_focus,
-}))(withRouter(P2PCashier));
+export default withRouter(P2PCashier);

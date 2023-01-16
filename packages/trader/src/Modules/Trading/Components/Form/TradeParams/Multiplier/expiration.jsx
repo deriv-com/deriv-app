@@ -5,12 +5,10 @@ import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { getCardLabels } from 'Constants/contract';
 
 const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {
     const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), expiration), 'HH:mm');
-    const unit = days > 1 ? getCardLabels().DAYS : getCardLabels().DAY;
-    const date = getDateFromNow(days, unit, 'DD MMM YYYY');
+    const date = getDateFromNow(days, 'day', 'DD MMM YYYY');
 
     if (is_text_only) {
         return (

@@ -1,5 +1,5 @@
 export type TRoute = {
-    component?: () => React.ReactNode;
+    component?: any;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;
@@ -11,6 +11,9 @@ export type TRoute = {
     path?: string;
     routes?: TRoute[];
     subroutes?: TRoute[];
+    to?: string;
+    is_logged_in?: boolean;
+    is_logging_in?: boolean;
 };
 
 export type TRouteGroup = {
@@ -20,23 +23,8 @@ export type TRouteGroup = {
     path?: string;
     subitems?: number[];
 };
-
-export type TAccountCategory = 'real' | 'demo';
-export type TAccountType = 'synthetic' | 'financial' | 'financial_stp';
-
-export type TCurrenciesList = {
-    [x: string]: {
-        text: string;
-        value: string;
-        has_tooltip: boolean;
-    };
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
 };
-
-export type TUpgradeInfo =
-    | undefined
-    | {
-          type: TAccountType;
-          can_upgrade: boolean;
-          can_upgrade_to: string;
-          can_open_multi: boolean;
-      };

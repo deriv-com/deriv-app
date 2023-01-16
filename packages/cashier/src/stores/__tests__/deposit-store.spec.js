@@ -1,4 +1,7 @@
 import DepositStore from '../deposit-store';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 describe('DepositStore', () => {
     let deposit_store;

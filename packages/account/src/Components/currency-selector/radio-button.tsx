@@ -51,7 +51,7 @@ const USTPopover = ({ id }: TUSTPopover) => {
             icon='info'
             is_bubble_hover_enabled
             message={popover_message}
-            zIndex={9999}
+            zIndex='9999'
         />
     );
 };

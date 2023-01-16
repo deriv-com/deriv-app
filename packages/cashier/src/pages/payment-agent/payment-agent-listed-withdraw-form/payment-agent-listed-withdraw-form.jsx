@@ -1,12 +1,11 @@
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Input, Loading, Money, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
 import './payment-agent-listed-withdraw-form.scss';
 

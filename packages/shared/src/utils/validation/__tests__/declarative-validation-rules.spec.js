@@ -3,6 +3,7 @@ import { validAddress, initFormErrorMessages } from '../declarative-validation-r
 const form_error_messages = {
     address: () => '',
     empty_address: () => '',
+    maxNumber: max_value => '',
 };
 
 describe('validAddress', () => {

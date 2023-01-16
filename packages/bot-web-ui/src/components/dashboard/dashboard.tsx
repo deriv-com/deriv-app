@@ -178,6 +178,11 @@ const Dashboard = ({
                 setTourDialogVisibility(true);
             }
         }
+        if (has_started_bot_builder_tour && active_tab !== 1 && is_mobile) {
+            setTourActive(false);
+            setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
+        }
     }, [active_tab]);
 
     React.useEffect(() => {

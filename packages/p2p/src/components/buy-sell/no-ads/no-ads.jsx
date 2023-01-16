@@ -29,11 +29,7 @@ const NoAds = () => {
                         <Localize i18n_default_text='No ads here at the moment 😞' />
                     </Text>
                     <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
-                        {buy_sell_store.is_buy ? (
-                            <Localize i18n_default_text='Looking to sell USD? Create a Sell ad for others to buy USD from you.' />
-                        ) : (
-                            <Localize i18n_default_text='Looking to buy USD? Create a Buy ad for others to sell you USD.' />
-                        )}
+                        <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
                     </Text>
                     <Button
                         className='no-ads__button'

@@ -412,8 +412,6 @@ export default class ClientStore extends BaseStore {
             () => {
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
                     window.location.href = routes.root;
-                } else if (this.is_pre_appstore && window.location.pathname === routes.root) {
-                    window.location.href = routes.traders_hub;
                 }
             }
         );

@@ -119,7 +119,9 @@ export default class CFDStore extends BaseStore {
 
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies(this.root_store.client.is_eu)[this.account_type.category][this.account_type.type].title
+            ? getMtCompanies(this.root_store.traders_hub.show_eu_related_content)[this.account_type.category][
+                  this.account_type.type
+              ].title
             : '';
     }
 
@@ -131,12 +133,19 @@ export default class CFDStore extends BaseStore {
 
     get current_list() {
         const list = {};
-        this.root_store.client.mt5_login_list.forEach(account => {
-            // e.g. mt5.real.financial_stp
-            list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
-                ...account,
-            };
-        });
+        const show_eu_related_content = this.root_store.traders_hub.show_eu_related_content;
+        this.root_store.client.mt5_login_list
+            .filter(acc =>
+                show_eu_related_content
+                    ? acc.landing_company_short === 'maltainvest'
+                    : acc.landing_company_short !== 'maltainvest'
+            )
+            .forEach(account => {
+                // e.g. mt5.real.financial_stp
+                list[getAccountListKey(account, CFD_PLATFORMS.MT5, account.landing_company_short)] = {
+                    ...account,
+                };
+            });
 
         this.root_store.client.dxtrade_accounts_list.forEach(account => {
             // e.g. dxtrade.real.financial_stp

@@ -53,7 +53,7 @@ type TPasswordModalHeaderProps = {
 type TIconTypeProps = {
     platform: string;
     type?: string;
-    is_eu: boolean;
+    show_eu_related_content: boolean;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -105,6 +105,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
+    show_eu_related_content: boolean;
     submitPassword: TOnSubmitPassword;
 };
 
@@ -136,6 +137,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     cfd_new_account: Mt5NewAccount;
     setCFDSuccessDialog: (value: boolean) => void;
     setMt5Error: (state: boolean, obj?: Error) => void;
+    show_eu_related_content: boolean;
     submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
     submitCFDPassword: (
         values: TCFDPasswordFormValues & { platform?: string },
@@ -193,7 +195,7 @@ const ReviewMessageForMT5 = ({
     return null;
 };
 
-const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
             case 'all':
@@ -211,7 +213,7 @@ const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
         case 'synthetic':
             return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
         case 'financial':
-            if (is_eu) {
+            if (show_eu_related_content) {
                 return <Icon icon='IcMt5CfdPlatform' size={128} />;
             }
             return <Icon icon='IcMt5FinancialPlatform' size={128} />;
@@ -492,10 +494,10 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
-                                            account: props.account_title,
-                                            jurisdiction_shortcode: getFormattedJurisdictionCode(
-                                                props.jurisdiction_selected_shortcode
-                                            ),
+                                            account: !props.show_eu_related_content ? props.account_title : '',
+                                            jurisdiction_shortcode: !props.show_eu_related_content
+                                                ? getFormattedJurisdictionCode(props.jurisdiction_selected_shortcode)
+                                                : 'CFDs',
                                         }}
                                     />
                                 )}
@@ -597,6 +599,7 @@ const CFDPasswordModal = ({
     submitMt5Password,
     submitCFDPassword,
     updateAccountStatus,
+    show_eu_related_content,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -761,8 +764,9 @@ const CFDPasswordModal = ({
 
         const category_label = category === 'real' ? localize('real') : localize('demo');
         const type_label =
-            getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']]
-                .short_title;
+            getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
+                type as keyof TMtCompanies['demo' | 'real']
+            ].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
 
@@ -777,7 +781,7 @@ const CFDPasswordModal = ({
                             platform: getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode:
-                                platform === CFD_PLATFORMS.MT5 && !is_eu ? jurisdiction_label : '',
+                                platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
@@ -827,6 +831,7 @@ const CFDPasswordModal = ({
             platform={platform}
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
+            show_eu_related_content={show_eu_related_content}
         />
     );
 
@@ -885,7 +890,13 @@ const CFDPasswordModal = ({
                 onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText()}
-                icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
+                icon={
+                    <IconType
+                        platform={platform}
+                        type={account_type.type}
+                        show_eu_related_content={show_eu_related_content}
+                    />
+                }
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
                 has_cancel={
@@ -905,7 +916,7 @@ const CFDPasswordModal = ({
     );
 };
 
-export default connect(({ client, modules }: RootStore) => ({
+export default connect(({ client, modules, traders_hub }: RootStore) => ({
     email: client.email,
     account_title: modules.cfd.account_title,
     account_type: modules.cfd.account_type,
@@ -931,4 +942,5 @@ export default connect(({ client, modules }: RootStore) => ({
     mt5_trading_servers: client.mt5_trading_servers,
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(withRouter(CFDPasswordModal));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Toast } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
@@ -44,21 +44,19 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
-    show_toast: boolean;
-    onCancelButtonClick: () => void;
-    onCloseDialog: () => void;
-    onEntered: () => void;
-    onOkButtonClick: () => void;
+    onCancelButtonClick: VoidFunction;
+    onCloseDialog: VoidFunction;
+    onEntered: VoidFunction;
+    onOkButtonClick: VoidFunction;
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: () => void;
+    loadDataStrategy: VoidFunction;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
     setTourDialogVisibility: (param: boolean) => void;
     setHasTourEnded: (param: boolean) => void;
-    toast_message: string;
 };
 
 type Props = {
@@ -83,7 +81,6 @@ const Dashboard = ({
     onCloseDialog,
     onEntered,
     onOkButtonClick,
-    show_toast,
     setActiveTab,
     setBotBuilderTokenCheck,
     setBotBuilderTourState,
@@ -92,7 +89,6 @@ const Dashboard = ({
     setTourActive,
     setTourDialogVisibility,
     setHasTourEnded,
-    toast_message,
 }: TDashboard) => {
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -352,6 +348,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     has_tour_ended: dashboard.has_tour_ended,
-    show_toast: dashboard.show_toast,
-    toast_message: dashboard.toast_message,
 }))(Dashboard);

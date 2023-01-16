@@ -9,10 +9,9 @@ import RootStore from 'Stores/root-store';
 type TGoogleDriveProps = {
     is_authorised: boolean;
     is_open_button_loading: boolean;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
-    setShowToast: (param: boolean) => void;
-    setToastMessage: (param: string) => void;
+    onDriveConnect: VoidFunction;
+    onDriveOpen: VoidFunction;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
 const GoogleDrive = ({
@@ -20,8 +19,7 @@ const GoogleDrive = ({
     is_open_button_loading,
     onDriveConnect,
     onDriveOpen,
-    setShowToast,
-    setToastMessage,
+    setOpenSettings,
 }: TGoogleDriveProps) => {
     return (
         <div className='load-strategy__container'>
@@ -47,8 +45,7 @@ const GoogleDrive = ({
                             text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
-                                setToastMessage('import');
-                                setShowToast(true);
+                                setOpenSettings('import', true);
                             }}
                             is_loading={is_open_button_loading}
                             has_effect
@@ -89,6 +86,5 @@ export default connect(({ load_modal, google_drive, dashboard }: RootStore) => (
     is_open_button_loading: load_modal.is_open_button_loading,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
-    setShowToast: dashboard.setShowToast,
-    setToastMessage: dashboard.setToastMessage,
+    setOpenSettings: dashboard.setOpenSettings,
 }))(GoogleDrive);

@@ -21,8 +21,7 @@ type TCardProps = {
     setActiveTab: (active_tab: number) => void;
     setFileLoaded: (param: boolean) => void;
     setPreviewOnPopup: (show: boolean) => void;
-    setShowToast: (param: boolean) => void;
-    setToastMessage: (param: string) => void;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
 };
 
@@ -43,8 +42,7 @@ const Card = ({
     setActiveTab,
     setFileLoaded,
     setPreviewOnPopup,
-    setShowToast,
-    setToastMessage,
+    setOpenSettings,
     showVideoDialog,
 }: TCardProps) => {
     /* eslint-disable no-unused-expressions */
@@ -131,8 +129,7 @@ const Card = ({
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
-                            setToastMessage('import');
-                            setShowToast(true);
+                            setOpenSettings('import', true);
                         }}
                     />
                     <DesktopWrapper>
@@ -183,7 +180,6 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setFileLoaded: dashboard.setFileLoaded,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
-    setShowToast: dashboard.setShowToast,
-    setToastMessage: dashboard.setToastMessage,
+    setOpenSettings: dashboard.setOpenSettings,
     showVideoDialog: dashboard.showVideoDialog,
 }))(Card);

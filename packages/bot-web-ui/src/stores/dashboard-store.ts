@@ -10,34 +10,35 @@ const clearInjectionDiv = () => {
 };
 export interface IDashboardStore {
     active_tab: number;
-    faq_search_value: string | null;
     dialog_options: { [key: string]: string };
-    has_started_onboarding_tour: boolean;
+    faq_search_value: string | null;
+    has_builder_token: string | number;
+    has_mobile_preview_loaded: boolean;
+    has_onboarding_token: string | number;
     has_started_bot_builder_tour: boolean;
+    has_started_onboarding_tour: boolean;
+    has_tour_ended: boolean;
+    initInfoPanel: VoidFunction;
     is_dialog_open: boolean;
+    is_file_supported: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
-    has_mobile_preview_loaded: boolean;
-    has_tour_ended: boolean;
-    has_builder_token: string | number;
-    has_onboarding_token: string | number;
-    strategy_save_type: string;
-    show_toast: boolean;
-    is_file_supported: boolean;
-    setIsFileSupported: (is_file_supported: boolean) => void;
-    setShowToast: (show_toast: boolean) => void;
     onCloseDialog: VoidFunction;
-    setHasTourEnded: (has_tour_ended: boolean) => void;
-    showVideoDialog: (param: { [key: string]: string }) => void;
+    onCloseTour: (param: Partial<string>) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
+    setHasTourEnded: (has_tour_ended: boolean) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
+    setIsFileSupported: (is_file_supported: boolean) => void;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
-    initInfoPanel: VoidFunction;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
-    onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
+    show_toast: boolean;
+    showVideoDialog: (param: { [key: string]: string }) => void;
+    strategy_save_type: string;
+    toast_message: string;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -45,48 +46,49 @@ export default class DashboardStore implements IDashboardStore {
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
-            active_tab: observable,
             active_tab_tutorials: observable,
-            faq_search_value: observable,
+            active_tab: observable,
             dialog_options: observable,
-            is_dialog_open: observable,
+            faq_search_value: observable,
             getFileArray: observable,
-            has_file_loaded: observable,
-            is_info_panel_visible: observable,
-            has_tour_ended: observable,
-            strategy_save_type: observable,
-            has_tour_started: observable,
-            is_tour_dialog_visible: observable,
-            has_started_onboarding_tour: observable,
-            is_preview_on_popup: observable,
-            has_started_bot_builder_tour: observable,
             has_builder_token: observable,
-            has_onboarding_token: observable,
+            has_file_loaded: observable,
             has_mobile_preview_loaded: observable,
-            setPreviewOnDialog: action.bound,
-            show_toast: observable,
-            is_file_supported: observable,
-            setIsFileSupported: action.bound,
-            setShowToast: action.bound,
-            setHasTourEnded: action.bound,
-            setBotBuilderTourState: action.bound,
-            setPreviewOnPopup: action.bound,
-            setOnBoardTourRunState: action.bound,
-            setTourDialogVisibility: action.bound,
-            setTourActive: action.bound,
-            setFileLoaded: action.bound,
-            onCloseDialog: action.bound,
-            setActiveTab: action.bound,
-            setActiveTabTutorial: action.bound,
-            setFAQSearchValue: action.bound,
-            showVideoDialog: action.bound,
-            setInfoPanelVisibility: action.bound,
-            setBotBuilderTokenCheck: action.bound,
-            setOnBoardingTokenCheck: action.bound,
+            has_onboarding_token: observable,
+            has_started_bot_builder_tour: observable,
+            has_started_onboarding_tour: observable,
+            has_tour_ended: observable,
+            has_tour_started: observable,
             initInfoPanel: action.bound,
-            toggleOnConfirm: action.bound,
+            is_dialog_open: observable,
+            is_file_supported: observable,
+            is_info_panel_visible: observable,
+            is_preview_on_popup: observable,
+            is_tour_dialog_visible: observable,
+            onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
+            setActiveTab: action.bound,
+            setActiveTabTutorial: action.bound,
+            setBotBuilderTokenCheck: action.bound,
+            setBotBuilderTourState: action.bound,
+            setFAQSearchValue: action.bound,
+            setFileLoaded: action.bound,
+            setHasTourEnded: action.bound,
+            setInfoPanelVisibility: action.bound,
+            setIsFileSupported: action.bound,
+            setOnBoardingTokenCheck: action.bound,
+            setOnBoardTourRunState: action.bound,
+            setPreviewOnDialog: action.bound,
+            setPreviewOnPopup: action.bound,
+            setTourActive: action.bound,
+            setTourDialogVisibility: action.bound,
+            setOpenSettings: action.bound,
+            show_toast: observable,
+            showVideoDialog: action.bound,
+            strategy_save_type: observable,
+            toggleOnConfirm: action.bound,
+            toast_message: observable,
         });
         this.root_store = root_store;
         reaction(
@@ -102,37 +104,34 @@ export default class DashboardStore implements IDashboardStore {
 
     active_tab = 0;
     active_tab_tutorials = 0;
-    faq_search_value = null || '';
-    dialog_options = {};
-    is_dialog_open = false;
-    getFileArray = [];
-    has_file_loaded = false;
-    is_info_panel_visible = false;
-    has_tour_started = false;
-    is_tour_dialog_visible = false;
-    has_started_onboarding_tour = false;
-    is_preview_on_popup = false;
-    has_mobile_preview_loaded = false;
-    has_started_bot_builder_tour = false;
-    has_tour_ended = false;
-    has_builder_token = '';
-    has_onboarding_token = '';
-    strategy_save_type = 'unsaved';
     active_tour_step_number = 0;
-    show_toast = false;
-    toast_message = '';
+    dialog_options = {};
+    faq_search_value = null || '';
+    getFileArray = [];
+    has_builder_token = '';
+    has_file_loaded = false;
+    has_mobile_preview_loaded = false;
+    has_onboarding_token = '';
+    has_started_bot_builder_tour = false;
+    has_started_onboarding_tour = false;
+    has_tour_ended = false;
+    has_tour_started = false;
+    is_dialog_open = false;
     is_file_supported = false;
+    is_info_panel_visible = false;
+    is_preview_on_popup = false;
+    is_tour_dialog_visible = false;
+    show_toast = false;
+    strategy_save_type = 'unsaved';
+    toast_message = '';
 
-    setToastMessage = (toast_message: string) => {
+    setOpenSettings = (toast_message: string, show_toast: boolean) => {
         this.toast_message = toast_message;
+        this.show_toast = show_toast;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {
         this.is_file_supported = is_file_supported;
-    };
-
-    setShowToast = (show_toast: boolean) => {
-        this.show_toast = show_toast;
     };
 
     initInfoPanel() {

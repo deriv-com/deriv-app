@@ -11,19 +11,17 @@ type TDeleteDialog = {
     onToggleDeleteDialog: (param: boolean) => void;
     removeBotStrategy: (param: string) => void;
     selected_strategy_id: string;
-    setStrategies: (param: string[]) => void;
     setDashboardStrategies: (param: string[]) => void;
-    setShowToast: (param: boolean) => void;
-    setToastMessage: (param: string) => void;
+    setStrategies: (param: string[]) => void;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
 const DeleteDialog = ({
     is_delete_modal_open,
-    selected_strategy_id,
     onToggleDeleteDialog,
+    selected_strategy_id,
     setDashboardStrategies,
-    setShowToast,
-    setToastMessage,
+    setOpenSettings,
 }: TDeleteDialog) => {
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
@@ -42,8 +40,7 @@ const DeleteDialog = ({
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
-            setShowToast(true);
-            setToastMessage('delete');
+            setOpenSettings('delete', true);
         }
         onToggleDeleteDialog(param);
     };
@@ -56,7 +53,7 @@ const DeleteDialog = ({
                 confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
                     onHandleChange('confirm', false);
-                    setShowToast(true);
+                    setOpenSettings('delete', true);
                 }}
                 cancel_button_text={localize('No')}
                 onCancel={() => {
@@ -88,6 +85,5 @@ export default connect(({ toolbar, load_modal, dashboard }) => ({
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    setShowToast: dashboard.setShowToast,
-    setToastMessage: dashboard.setToastMessage,
+    setOpenSettings: dashboard.setOpenSettings,
 }))(DeleteDialog);

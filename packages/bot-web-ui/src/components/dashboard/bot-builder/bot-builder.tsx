@@ -24,8 +24,8 @@ const BotBuilder = ({
     app,
     active_tab,
     has_started_onboarding_tour,
-    is_preview_on_popup,
     has_started_bot_builder_tour,
+    is_preview_on_popup,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;

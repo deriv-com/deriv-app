@@ -7,14 +7,14 @@ import { connect } from 'Stores/connect';
 
 type TBotNotification = {
     show_toast: boolean;
-    setShowToast: (show_toast: boolean) => void;
     toast_message: string;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
-const BotNotification = ({ show_toast, toast_message, setShowToast }: TBotNotification) => {
+const BotNotification = ({ show_toast, toast_message, setOpenSettings }: TBotNotification) => {
     React.useEffect(() => {
         setTimeout(() => {
-            setShowToast(false);
+            setOpenSettings(toast_message, false);
         }, 3000);
     }, [show_toast]);
     const el_portal = document.getElementById('popup_root');
@@ -40,6 +40,6 @@ const BotNotification = ({ show_toast, toast_message, setShowToast }: TBotNotifi
 
 export default connect(({ dashboard }: RootStore) => ({
     show_toast: dashboard.show_toast,
-    setShowToast: dashboard.setShowToast,
     toast_message: dashboard.toast_message,
+    setOpenSettings: dashboard.setOpenSettings,
 }))(BotNotification);

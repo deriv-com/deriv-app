@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
 import { Loading, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
@@ -7,13 +6,54 @@ import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import DemoMessage from 'Components/demo-message';
 import AccountLimitsArticle from './account-limits-article';
-import AccountLimitsContext from './account-limits-context';
+import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 import AccountLimitsExtraInfo from './account-limits-extra-info';
 import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
+import { FormikValues } from 'formik';
+
+type TAccountLimits = {
+    account_limits: {
+        api_initial_load_error?: string;
+        open_positions?: React.ReactNode;
+        account_balance: string | number;
+        daily_transfers?: object;
+        payout: string | number;
+        lifetime_limit?: number;
+        market_specific: {
+            commodities: TAccountLimitsCollection[];
+            cryptocurrency: TAccountLimitsCollection[];
+            forex: TAccountLimitsCollection[];
+            indices: TAccountLimitsCollection[];
+            synthetic_index: TAccountLimitsCollection[];
+        };
+        num_of_days?: number;
+        num_of_days_limit: string | number;
+        remainder: string | number;
+        withdrawal_for_x_days_monetary?: number;
+        withdrawal_since_inception_monetary: string | number;
+    };
+    currency: string;
+    footer_ref?: React.RefObject<HTMLElement>;
+    is_app_settings?: boolean;
+    getLimits: () => Promise<{ data: object }>;
+    is_fully_authenticated: boolean;
+    is_from_derivgo?: boolean;
+    is_switching: boolean;
+    is_virtual: boolean;
+    overlay_ref: HTMLDivElement;
+    setIsOverlayShown?: (is_overlay_shown: boolean | undefined) => void;
+    setIsPopupOverlayShown?: (is_popup_overlay_shown: boolean) => void;
+    should_bypass_scrollbars?: boolean;
+    should_show_article?: boolean;
+};
+
+type TPlarformContext = {
+    is_appstore: boolean;
+};
 
 const AccountLimits = ({
     account_limits,
@@ -29,11 +69,11 @@ const AccountLimits = ({
     setIsOverlayShown: setIsPopupOverlayShown,
     should_bypass_scrollbars,
     should_show_article,
-}) => {
+}: TAccountLimits) => {
     const isMounted = useIsMounted();
     const [is_loading, setLoading] = React.useState(false);
     const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext<Partial<TPlarformContext>>(PlatformContext);
 
     React.useEffect(() => {
         if (is_virtual) {
@@ -67,6 +107,7 @@ const AccountLimits = ({
     if (is_virtual) {
         return (
             <div
+                data-testid='dt_account_demo_message_wrapper'
                 className={classNames('account__demo-message-wrapper', {
                     'account__demo-message-wrapper-dashboard': is_appstore,
                 })}
@@ -85,7 +126,7 @@ const AccountLimits = ({
         num_of_days_limit,
         remainder,
         withdrawal_since_inception_monetary,
-    } = account_limits;
+    }: TAccountLimits['account_limits'] = account_limits;
 
     if (api_initial_load_error) {
         return <LoadErrorMessage error_message={api_initial_load_error} />;
@@ -96,17 +137,14 @@ const AccountLimits = ({
     }
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
-    const forex_ordered = forex?.slice().sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-    // sort submarkets by names alphabetically and put 'market' at the beginning
+    const forex_ordered = forex
+        ?.slice()
+        .sort((a: FormikValues, b: FormikValues) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
     const derived_ordered = synthetic_index
         ?.slice()
-        .sort((a, b) =>
-            a.level === 'submarket' && b.level === 'submarket'
-                ? a.name.localeCompare(b.name)
-                : a.level.localeCompare(b.level)
-        );
+        .sort((a: FormikValues, b: FormikValues) => (a.level < b.level ? 1 : -1));
 
-    const context_value = {
+    const context_value: TAccountLimitsContext = {
         currency,
         footer_ref,
         overlay_ref,
@@ -163,12 +201,7 @@ const AccountLimits = ({
                                             <Localize i18n_default_text='*Maximum account cash balance' />
                                         </AccountLimitsTableCell>
                                         <AccountLimitsTableCell align='right'>
-                                            {/* null or 0 are expected form BE when max balance limit is not set */}
-                                            {account_balance ? (
-                                                formatMoney(currency, account_balance, true)
-                                            ) : (
-                                                <Localize i18n_default_text='Not set' />
-                                            )}
+                                            {formatMoney(currency, account_balance, true)}
                                         </AccountLimitsTableCell>
                                     </tr>
                                     <tr>
@@ -255,11 +288,13 @@ const AccountLimits = ({
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
-                                                            {is_appstore ? (
-                                                                <Localize i18n_default_text='Total withdrawal limit' />
-                                                            ) : (
-                                                                <Localize i18n_default_text='Total withdrawal allowed' />
-                                                            )}
+                                                            <Localize
+                                                                i18n_default_text={
+                                                                    is_appstore
+                                                                        ? 'Total withdrawal limit'
+                                                                        : 'Total withdrawal allowed'
+                                                                }
+                                                            />
                                                             {is_appstore && !is_fully_authenticated && (
                                                                 <React.Fragment>
                                                                     <Text
@@ -338,23 +373,6 @@ const AccountLimits = ({
             </section>
         </AccountLimitsContext.Provider>
     );
-};
-
-AccountLimits.propTypes = {
-    account_limits: PropTypes.object,
-    currency: PropTypes.string.isRequired,
-    footer_ref: PropTypes.shape({ current: PropTypes.any }),
-    is_app_settings: PropTypes.bool,
-    getLimits: PropTypes.func.isRequired,
-    is_fully_authenticated: PropTypes.bool.isRequired,
-    is_from_derivgo: PropTypes.bool,
-    is_switching: PropTypes.bool.isRequired,
-    is_virtual: PropTypes.bool.isRequired,
-    overlay_ref: PropTypes.shape({ current: PropTypes.any }),
-    setIsOverlayShown: PropTypes.func,
-    setIsPopupOverlayShown: PropTypes.func,
-    should_bypass_scrollbars: PropTypes.bool,
-    should_show_article: PropTypes.bool,
 };
 
 export default AccountLimits;

@@ -93,14 +93,14 @@ const ContractInfo = ({
         if (type === 'VANILLALONGCALL') {
             return (
                 <Localize
-                    i18n_default_text='<0>For Call:</0> Earn payout when the market rises above your strike price at expiry. Your payout will grow by this amount for every point above your strike price.'
+                    i18n_default_text='<0>For Call:</0> Your payout will grow by this amount for every point above your strike price.'
                     components={[<strong key={0} />]}
                 />
             );
         } else if (type === 'VANILLALONGPUT') {
             return (
                 <Localize
-                    i18n_default_text='<0>For Put:</0> Earn payout when the market rises above your strike price at expiry. Your payout will grow by this amount for every point above your strike price.'
+                    i18n_default_text='<0>For Put:</0> Your payout will grow by this amount for every point below your strike price.'
                     components={[<strong key={0} />]}
                 />
             );

@@ -53,7 +53,7 @@ const BlockUserTable = () => {
         );
     }
 
-    if (my_profile_store.trade_partners_list.length) {
+    if (my_profile_store.rendered_trade_partners_list.length) {
         return (
             <React.Fragment>
                 <Table className='block-user-table'>

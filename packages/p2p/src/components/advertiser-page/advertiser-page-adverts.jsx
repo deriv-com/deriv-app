@@ -68,7 +68,7 @@ const AdvertiserPageAdverts = () => {
                         <Empty
                             className={classNames('', { 'advertiser-page-empty': isMobile() })}
                             icon='IcNoData'
-                            title={localize('No ads')}
+                            title={localize('There are no ads yet')}
                         />
                     )}
                 </React.Fragment>

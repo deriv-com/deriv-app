@@ -166,7 +166,9 @@ In order to run our solution for the first time, you need to configure your `hos
 
 ### Starting a Development Server
 
-If you wish to work on Core, simply run `npm run serve core`.
+If you wish to run development server, you need to first make sure that you've installed `docker-cli` on our machine,
+change the configuration to run docker as not-root user (check [this](https://docs.docker.com/engine/install/linux-postinstall/)),
+then simply run `npm run serve core`.
 
 But for working on any of the other packages (such as Trader, Bot, P2P), perform the following:
 

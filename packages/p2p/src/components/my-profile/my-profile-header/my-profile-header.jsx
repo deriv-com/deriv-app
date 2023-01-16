@@ -23,7 +23,7 @@ const MyProfileHeader = () => {
             value: my_profile_tabs.AD_TEMPLATE,
         },
         {
-            text: localize('Block Users'),
+            text: localize('Block users'),
             value: my_profile_tabs.BLOCK_USERS,
         },
     ];

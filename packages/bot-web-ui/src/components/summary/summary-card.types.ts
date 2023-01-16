@@ -5,7 +5,7 @@ type TTransactionIds = {
     buy: number;
 };
 
-type TContractInfo = {
+export type TContractInfo = {
     accountID?: number;
     account_id: number;
     barrier: string;

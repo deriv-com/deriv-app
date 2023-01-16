@@ -79,7 +79,7 @@ const SummaryCard = ({
         <div
             className={classNames('db-summary-card', {
                 'db-summary-card--mobile': is_mobile,
-                'db-summary-card--inactive': is_contract_inactive,
+                'db-summary-card--inactive': is_contract_inactive && !is_contract_loading && !contract_info,
                 'db-summary-card--is-loading': is_contract_loading,
                 'db-summary-card--completed': is_contract_completed,
                 'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
@@ -117,12 +117,10 @@ const SummaryCard = ({
 
 export default connect(({ summary_card, common, run_panel, ui }: RootStore) => ({
     addToast: ui.addToast,
-    contract_info: summary_card.contract_info,
     contract_store: summary_card,
     current_focus: ui.current_focus,
     is_contract_completed: summary_card.is_contract_completed,
     is_contract_inactive: summary_card.is_contract_inactive,
-    is_contract_loading: summary_card.is_contract_loading,
     is_multiplier: summary_card.is_multiplier,
     onClickSell: run_panel.onClickSell,
     is_sell_requested: run_panel.is_sell_requested,

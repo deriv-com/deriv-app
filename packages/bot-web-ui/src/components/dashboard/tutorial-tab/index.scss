@@ -109,7 +109,8 @@
         }
         .dc-accordion__wrapper > div:last-child {
             //iphone 14 specific
-            @media (min-height: 840px) {
+            @media (min-height: 600px) {
+                background-color: #f012f2;
                 padding-bottom: 10rem;
             }
         }

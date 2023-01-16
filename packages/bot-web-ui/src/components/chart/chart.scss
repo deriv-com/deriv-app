@@ -73,6 +73,15 @@
             width: 100%;
         }
 
+        // Handles Track - MS Edge and IE
+        @supports (-ms-ime-align: auto) {
+            .sc-toolbar-widget {
+                @include mobile {
+                    bottom: 13.8rem;
+                }
+            }
+        }
+
         .sc-toolbar-widget {
             transition: transform 0.25s ease;
 

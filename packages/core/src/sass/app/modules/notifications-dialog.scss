@@ -71,7 +71,7 @@
             }
         }
         &__footer {
-            height: 37px;
+            height: 3.7rem;
             align-items: end;
             display: flex;
             justify-content: end;
@@ -83,22 +83,22 @@
             border-bottom-left-radius: 0.5rem;
         }
         &__separator {
-            border-bottom: 1px solid #f2f3f4;
+            border-bottom: 1px solid var(--general-section-1);
         }
         &__clear {
-            border: 1px solid #999999;
+            border: 1px solid var(--shadow-box);
             height: 2.4rem;
             width: auto;
             bottom: 0.6rem;
             right: 1.7rem;
-            padding: 7px;
+            padding: 0.7rem;
 
             &:hover {
                 background: var(--button-secondary-hover);
             }
         }
         &__content {
-            padding: 8px 0;
+            padding: 0.8rem 0;
             height: calc(100% - 37px);
             border-radius: $BORDER_RADIUS;
 

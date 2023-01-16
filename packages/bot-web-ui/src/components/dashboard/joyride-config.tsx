@@ -20,7 +20,7 @@ type TTourStatus = {
     type: string;
 };
 
-type TTourType = Pick<TTourStatus, 'key'>;
+export type TTourType = Pick<TTourStatus, 'key'>;
 
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
     if (type === `${tour_type.key}_token`) {

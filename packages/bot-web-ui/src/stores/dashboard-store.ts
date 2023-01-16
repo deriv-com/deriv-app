@@ -1,5 +1,5 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
-import { tour_type, setTourSettings } from '../components/dashboard/joyride-config';
+import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 
 const clearInjectionDiv = () => {
@@ -252,7 +252,8 @@ export default class DashboardStore implements IDashboardStore {
         setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         this.setTourActive(false);
     };
-    setTourEnd = (key: { [key: string]: string } | any): void => {
+    setTourEnd = (param: TTourType): void => {
+        const { key } = param;
         this.setHasTourEnded(true);
         this.setTourDialogVisibility(true);
         this.setTourActive(false);
@@ -262,11 +263,11 @@ export default class DashboardStore implements IDashboardStore {
     onTourEnd = (step: number, has_started_onboarding_tour: boolean) => {
         if (step === 8) {
             this.onCloseTour('onboard');
-            this.setTourEnd(tour_type.key);
+            this.setTourEnd(tour_type);
         }
         if (!has_started_onboarding_tour && step === 6) {
             this.onCloseTour('bot_builder');
-            this.setTourEnd(tour_type.key);
+            this.setTourEnd(tour_type);
         }
     };
 }

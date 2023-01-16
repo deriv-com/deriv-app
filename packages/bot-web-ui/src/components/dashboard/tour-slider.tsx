@@ -15,8 +15,8 @@ type TTourButton = {
 type TTourSlider = {
     has_started_bot_builder_tour: boolean;
     has_started_onboarding_tour: boolean;
-    onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => void;
+    onCloseTour: () => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
     setTourActiveStep: (param: number) => void;
 };
 
@@ -122,18 +122,21 @@ const TourSlider = ({
         });
     }, [step]);
 
-    const onChange = (param: string) => {
-        const MOBILE_TOUR = !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE;
-        if (param === 'inc' && step < Object.keys(MOBILE_TOUR).length) setStep(step + 1);
-        else if (param === 'dec' && step > 1) setStep(step - 1);
-        else if (param === 'skip') onCloseTour('onboard');
-    };
+    const onChange = React.useCallback(
+        (param: string) => {
+            const MOBILE_TOUR = !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE;
+            if (param === 'inc' && step < Object.keys(MOBILE_TOUR).length) setStep(step + 1);
+            else if (param === 'dec' && step > 1) setStep(step - 1);
+            else if (param === 'skip') onCloseTour();
+        },
+        [step]
+    );
 
     const content_data = BOT_BUILDER_MOBILE.find(({ key }) => key === step);
-    const onClickNext = () => {
+    const onClickNext = React.useCallback(() => {
         onChange('inc');
-        onTourEnd(step, has_started_onboarding_tour, tour_type);
-    };
+        onTourEnd(step, has_started_onboarding_tour);
+    }, [step]);
 
     return (
         <>

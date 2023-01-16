@@ -29,14 +29,14 @@ const TourTriggrerDialog = ({
             if (type === 'onConfirm') {
                 toggleOnConfirm(active_tab, value);
             } else {
-                setTourSettings(new Date().getTime(), 'onboard_token');
+                setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
             }
             tour_type.key = 'onboard_tour';
         } else if (tour_type.key === 'bot_builder') {
             if (type === 'onConfirm') {
                 toggleOnConfirm(active_tab, value);
             } else {
-                setTourSettings(new Date().getTime(), 'bot_builder_token');
+                setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
             }
             tour_type.key = 'bot_builder';
         }

@@ -37,7 +37,7 @@ export interface IDashboardStore {
     initInfoPanel: VoidFunction;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => void;
+    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -247,28 +247,26 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onCloseTour = (param: Partial<string>) => {
-        if (param === 'onboard') {
-            this.setOnBoardTourRunState(false);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        } else {
-            this.setBotBuilderTourState(false);
-            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        }
+        this.setOnBoardTourRunState(false);
+        this.setBotBuilderTourState(false);
+        setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         this.setTourActive(false);
     };
+    setTourEnd = (key: { [key: string]: string } | any): void => {
+        this.setHasTourEnded(true);
+        this.setTourDialogVisibility(true);
+        this.setTourActive(false);
+        setTourSettings(new Date().getTime(), `${key}_token`);
+    };
 
-    onTourEnd = (step: number, has_started_onboarding_tour: boolean, type: { [key: string]: string }) => {
+    onTourEnd = (step: number, has_started_onboarding_tour: boolean) => {
         if (step === 8) {
             this.onCloseTour('onboard');
-            this.setHasTourEnded(true);
-            this.setTourDialogVisibility(true);
-            setTourSettings(new Date().getTime(), `${type.key}_token`);
+            this.setTourEnd(tour_type.key);
         }
         if (!has_started_onboarding_tour && step === 6) {
             this.onCloseTour('bot_builder');
-            this.setHasTourEnded(true);
-            this.setTourDialogVisibility(true);
-            setTourSettings(new Date().getTime(), `${type.key}_token`);
+            this.setTourEnd(tour_type.key);
         }
     };
 }

@@ -170,7 +170,7 @@ const Dashboard = ({
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
         const has_onboard_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_token;
         const has_bot_builder_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
-        if (has_bot_builder_token_set || (has_onboard_token_set && !has_started_bot_builder_tour)) {
+        if (has_bot_builder_token_set || has_onboard_token_set) {
             if (is_mobile && has_started_onboarding_tour) {
                 setTourActive(true);
                 setOnBoardTourRunState(true);

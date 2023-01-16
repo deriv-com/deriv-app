@@ -105,8 +105,13 @@
         padding-bottom: 20rem;
 
         @include mobile {
-            height: calc(100vh - 28rem);
-            padding-bottom: 0;
+            height: calc(100vh - 29rem);
+        }
+        .dc-accordion__wrapper > div:last-child {
+            //iphone 14 specific
+            @media (min-height: 840px) {
+                padding-bottom: 10rem;
+            }
         }
 
         &__nosearch {
@@ -119,7 +124,7 @@
 
             @include mobile {
                 width: 100%;
-                // height: calc(100vh - 16rem);
+                height: calc(100vh - 16rem);
             }
         }
         .dc-accordion {

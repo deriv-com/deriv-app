@@ -12,6 +12,7 @@ import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text }) => {
     const { common, ui } = useStore();
@@ -96,8 +97,9 @@ const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language,
     );
 });
 
-const ToggleMenuDrawer = observer(({ platform_switcher }) => {
-    const { ui, client, modules } = useStore();
+const ToggleMenuDrawer = observer(({ platform_config }) => {
+    const { common, ui, client, modules } = useStore();
+    const { app_routing_history } = common;
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
         account_status,
@@ -397,7 +399,12 @@ const ToggleMenuDrawer = observer(({ platform_switcher }) => {
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
-                                        {platform_switcher(toggleDrawer)}
+                                        <PlatformSwitcher
+                                            app_routing_history={app_routing_history}
+                                            is_mobile
+                                            platform_config={platform_config}
+                                            toggleDrawer={toggleDrawer}
+                                        />
                                     </MobileDrawer.SubHeader>
                                 )}
                                 <MobileDrawer.Body>
@@ -548,7 +555,12 @@ const ToggleMenuDrawer = observer(({ platform_switcher }) => {
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                     })}
                                 >
-                                    {platform_switcher(toggleDrawer)}
+                                    <PlatformSwitcher
+                                        app_routing_history={app_routing_history}
+                                        is_mobile
+                                        platform_config={platform_config}
+                                        toggleDrawer={toggleDrawer}
+                                    />
                                 </MobileDrawer.SubHeader>
                                 <MobileDrawer.Body>
                                     <div

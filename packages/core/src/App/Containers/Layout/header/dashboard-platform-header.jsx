@@ -4,7 +4,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
+import { ToggleNotifications } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
@@ -122,16 +122,7 @@ const DashboardPlatformHeader = ({
         <header className='dashboard-platform-header'>
             <div className='dashboard-platform-header__menu-left'>
                 <MobileWrapper>
-                    <ToggleMenuDrawer
-                        platform_switcher={toggleDrawer => (
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                is_mobile
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                toggleDrawer={toggleDrawer}
-                            />
-                        )}
-                    />
+                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <DesktopWrapper>

@@ -4,7 +4,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
+import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
@@ -85,7 +85,6 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
 };
 const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
-    app_routing_history,
     loginid,
     is_eu,
     is_eu_country,
@@ -116,16 +115,7 @@ const TradingHubHeader = ({
         <header className='trading-hub-header'>
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
-                    <ToggleMenuDrawer
-                        platform_switcher={toggleDrawer => (
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                is_mobile
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                toggleDrawer={toggleDrawer}
-                            />
-                        )}
-                    />
+                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <DesktopWrapper>
@@ -205,7 +195,6 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
-    app_routing_history: PropTypes.array,
     header_extension: PropTypes.any,
     is_dark_mode: PropTypes.bool,
     loginid: PropTypes.string,
@@ -224,8 +213,7 @@ TradingHubHeader.propTypes = {
     is_eu_country: PropTypes.bool,
 };
 
-export default connect(({ client, common, modules, notifications, ui, menu, tradinghub }) => ({
-    app_routing_history: common.app_routing_history,
+export default connect(({ client, modules, notifications, ui, menu, tradinghub }) => ({
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     header_extension: ui.header_extension,

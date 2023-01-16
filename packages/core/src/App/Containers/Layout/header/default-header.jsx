@@ -152,16 +152,7 @@ const DefaultHeader = ({
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ToggleMenuDrawer
-                            platform_switcher={toggleDrawer => (
-                                <PlatformSwitcher
-                                    app_routing_history={app_routing_history}
-                                    is_mobile
-                                    platform_config={filterPlatformsForClients(platform_config)}
-                                    toggleDrawer={toggleDrawer}
-                                />
-                            )}
-                        />
+                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}

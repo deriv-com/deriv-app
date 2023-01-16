@@ -79,6 +79,7 @@ type TCommonStoreError = {
     should_show_refresh: boolean;
     redirectOnClick: () => void;
     setError: (has_error: boolean, error: TCommonStoreError | null) => void;
+    app_routing_history: unknown[];
 };
 
 type TCommonStore = {

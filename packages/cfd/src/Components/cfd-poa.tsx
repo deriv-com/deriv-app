@@ -116,7 +116,7 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                 (v: string) => validLength(v, { max: 70 }),
                 (v: string) => validAddress(v).is_ok,
             ],
-            address_line_2: [(v: string) => validLength(v, { max: 70 }), (v: string) => validAddress(v, false).is_ok],
+            address_line_2: [(v: string) => validLength(v, { max: 70 }), (v: string) => validAddress(v).is_ok],
             address_city: [
                 (v: string) => !!v && !v.match(/^\s*$/),
                 (v: string) => validLength(v, { min: 1, max: 35 }),

@@ -96,11 +96,11 @@ const ProofOfAddressForm = ({
         const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const address_line_1_validation_result = validAddress(values.address_line_1);
+        const address_line_1_validation_result = validAddress(values.address_line_1, { is_required: true });
         if (!address_line_1_validation_result.is_ok) {
             errors.address_line_1 = address_line_1_validation_result.message;
         }
-        const address_line_2_validation_result = validAddress(values.address_line_2, false);
+        const address_line_2_validation_result = validAddress(values.address_line_2);
         if (!address_line_2_validation_result.is_ok) {
             errors.address_line_2 = address_line_2_validation_result.message;
         }

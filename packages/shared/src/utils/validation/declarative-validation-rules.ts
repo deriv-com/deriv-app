@@ -9,6 +9,7 @@ export type TOptions = {
     type?: string;
     decimals?: string | number;
     regex?: RegExp;
+    is_required?: boolean;
 };
 
 const validRequired = (value?: string | number /* , options, field */) => {
@@ -20,11 +21,16 @@ const validRequired = (value?: string | number /* , options, field */) => {
     return str.length > 0;
 };
 export const address_permitted_special_characters_message = ". , ' : ; ( ) ° @ # / -";
-export const validAddress = (value: string, is_required = true) => {
-    if (is_required && (!value || value.match(/^\s*$/))) {
+export const validAddress = (value: string, options?: TOptions) => {
+    if (options?.is_required && (!value || value.match(/^\s*$/))) {
         return {
             is_ok: false,
             message: form_error_messages.empty_address(),
+        };
+    } else if (!validLength(value, { min: 0, max: 70 })) {
+        return {
+            is_ok: false,
+            message: form_error_messages.maxNumber(70),
         };
     } else if (!/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
         return {

@@ -1,7 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Loading = ({ className, is_invisible, theme, id }) => (
+type LoadingProps = {
+    className?: string;
+    is_invisible?: boolean;
+    theme?: string;
+    id?: string;
+};
+
+const Loading = ({ className, is_invisible, theme, id }: LoadingProps) => (
     <div
         id={id}
         className={classNames('barspinner', `barspinner--${theme || 'dark'}`, { invisible: is_invisible }, className)}

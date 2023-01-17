@@ -25,10 +25,10 @@ type TAccordion = {
     expanded: boolean;
 };
 
-const TourButton = ({ label, type = '', ...props }: TTourButton) => {
+const TourButton = ({ label, type = 'default', ...props }: TTourButton) => {
     return (
         <button className={type} {...props}>
-            <Text align='center' weight='bold' as='span' line_height='s' size='xs'>
+            <Text color='prominent' align='center' weight='bold' as='span' line_height='s' size='xs'>
                 {label}
             </Text>
         </button>
@@ -65,7 +65,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                         'dbot-accordion__content--open': is_open,
                     })}
                 >
-                    {content}
+                    {localize(content)}
                 </div>
             </div>
         </div>
@@ -144,12 +144,24 @@ const TourSlider = ({
                 className={classNames('dbot-slider', {
                     'dbot-slider__bot-builder-tour': !has_started_onboarding_tour,
                     'dbot-slider--active': has_started_onboarding_tour && step === 1,
+                    'dbot-slider--tour-position': has_started_onboarding_tour && step_key !== 0,
                 })}
             >
                 {has_started_onboarding_tour && slider_header && step_key !== 0 && (
                     <div className='dbot-slider__navbar'>
-                        <Text weight='less-prominent' line_height='s' size='xxs'>{`${step_key}/7`}</Text>
-                        <Text weight='less-prominent' line_height='s' size='xxs' onClick={onCloseTour}>
+                        <Text
+                            color='less-prominent'
+                            weight='less-prominent'
+                            line_height='s'
+                            size='xxs'
+                        >{`${step_key}/7`}</Text>
+                        <Text
+                            color='prominent'
+                            weight='--text-less-prominent'
+                            line_height='s'
+                            size='xxs'
+                            onClick={onCloseTour}
+                        >
                             {localize('Exit Tour')}
                         </Text>
                     </div>
@@ -157,6 +169,7 @@ const TourSlider = ({
 
                 {has_started_onboarding_tour && slider_header && (
                     <Text
+                        color='prominent'
                         weight='bold'
                         align='center'
                         className='dbot-slider__title'
@@ -179,6 +192,7 @@ const TourSlider = ({
                                 <span key={data}>
                                     <Text
                                         align='center'
+                                        color='prominent'
                                         className='dbot-slider__content'
                                         as='div'
                                         line_height='s'
@@ -220,7 +234,11 @@ const TourSlider = ({
                                 label={localize('Previous')}
                             />
                         )}
-                        <TourButton type='danger' onClick={onClickNext} label={localize('Next')} />
+                        <TourButton
+                            type='danger'
+                            onClick={onClickNext}
+                            label={has_started_onboarding_tour && step_key === 0 ? localize('Start') : localize('Next')}
+                        />
                     </div>
                 </div>
             </div>

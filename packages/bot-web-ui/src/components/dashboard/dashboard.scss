@@ -366,6 +366,12 @@
 
         &__left {
             margin: 0.3rem 0 0 1.2rem;
+            @include mobile {
+                margin: 0;
+                svg {
+                    margin: 0;
+                }
+            }
         }
     }
 }
@@ -379,11 +385,16 @@
     left: 0;
     bottom: 0;
     z-index: 1000;
-    background-color: $color-white;
+    background-color: var(--general-section-1);
     width: 100%;
-    border-top: 1px solid $color-grey-4;
+    border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
+    // top: 0;
+
+    &--tour-position {
+        top: 0;
+    }
 
     &--active {
         height: auto;
@@ -434,6 +445,9 @@
             outline: none;
             cursor: pointer;
             margin-right: 0.8rem;
+            &.default {
+                background: transparent;
+            }
 
             &.danger {
                 background: $color-red;
@@ -489,12 +503,18 @@
                 height: 5rem;
                 display: flex;
                 @extend .position-center;
+                justify-content: flex-start;
             }
 
             &__progress-bar {
                 width: 50%;
                 margin-bottom: unset;
                 @extend .position-center;
+                align-items: center;
+                justify-content: flex-start;
+                .progress-bar-circle {
+                    opacity: 0.16;
+                }
             }
 
             &__button-group {
@@ -550,7 +570,7 @@
         max-height: 0;
         opacity: 0;
         color: $color-white;
-        padding: 1rem 1.6rem;
+        padding: 1rem 0rem;
         font-size: 1.2rem;
 
         &--open {

@@ -33,10 +33,6 @@ export const extractInfoFromShortcode = (shortcode: string) => {
             info_from_shortcode.start_time = extracted[4];
         }
 
-        if (is_vanilla) {
-            info_from_shortcode.category = info_from_shortcode.category === 'Vanillalongcall' ? 'Call' : 'Put';
-        }
-
         if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {
             info_from_shortcode.barrier_1 = extracted[6];
         }

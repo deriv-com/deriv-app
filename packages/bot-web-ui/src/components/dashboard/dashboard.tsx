@@ -1,11 +1,12 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper, Toast } from '@deriv/components';
+import { Tabs, DesktopWrapper, Dialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ReactJoyride from 'react-joyride';
 import classNames from 'classnames';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
@@ -24,7 +25,7 @@ import {
 import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
-import { isMobile } from '@deriv/shared';
+import BotNotification from './bot-notification';
 
 type TDialogOptions = {
     title: string;
@@ -43,16 +44,14 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
-    show_toast: boolean;
-    setShowToast: (show_toast: boolean) => void;
-    onCancelButtonClick: () => void;
-    onCloseDialog: () => void;
-    onEntered: () => void;
-    onOkButtonClick: () => void;
+    onCancelButtonClick: VoidFunction;
+    onCloseDialog: VoidFunction;
+    onEntered: VoidFunction;
+    onOkButtonClick: VoidFunction;
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: () => void;
+    loadDataStrategy: VoidFunction;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -82,8 +81,6 @@ const Dashboard = ({
     onCloseDialog,
     onEntered,
     onOkButtonClick,
-    show_toast,
-    setShowToast,
     setActiveTab,
     setBotBuilderTokenCheck,
     setBotBuilderTourState,
@@ -327,11 +324,7 @@ const Dashboard = ({
             >
                 {dialog_options.message}
             </Dialog>
-            {show_toast && (
-                <div>
-                    <Toast className='bot-notification'>{localize('You’ve successfully deleted a bot.')}</Toast>
-                </div>
-            )}
+            <BotNotification />
         </React.Fragment>
     );
 };
@@ -360,6 +353,4 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     has_tour_ended: dashboard.has_tour_ended,
-    show_toast: dashboard.show_toast,
-    setShowToast: dashboard.setShowToast,
 }))(Dashboard);

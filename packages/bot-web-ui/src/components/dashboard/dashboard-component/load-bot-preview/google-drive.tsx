@@ -9,11 +9,18 @@ import RootStore from 'Stores/root-store';
 type TGoogleDriveProps = {
     is_authorised: boolean;
     is_open_button_loading: boolean;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
+    onDriveConnect: VoidFunction;
+    onDriveOpen: VoidFunction;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
-const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }: TGoogleDriveProps) => {
+const GoogleDrive = ({
+    is_authorised,
+    is_open_button_loading,
+    onDriveConnect,
+    onDriveOpen,
+    setOpenSettings,
+}: TGoogleDriveProps) => {
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -36,7 +43,10 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                         <Button text={localize('Disconnect')} onClick={onDriveConnect} has_effect secondary large />
                         <Button
                             text={localize('Open')}
-                            onClick={onDriveOpen}
+                            onClick={() => {
+                                onDriveOpen();
+                                setOpenSettings('import', true);
+                            }}
                             is_loading={is_open_button_loading}
                             has_effect
                             primary
@@ -71,9 +81,10 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
     );
 };
 
-export default connect(({ load_modal, google_drive }: RootStore) => ({
+export default connect(({ load_modal, google_drive, dashboard }: RootStore) => ({
     is_authorised: google_drive.is_authorised,
     is_open_button_loading: load_modal.is_open_button_loading,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
+    setOpenSettings: dashboard.setOpenSettings,
 }))(GoogleDrive);

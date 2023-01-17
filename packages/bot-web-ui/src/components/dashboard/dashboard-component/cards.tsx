@@ -4,10 +4,10 @@ import { Icon, Dialog, Text, MobileFullPageModal, MobileWrapper, DesktopWrapper 
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import Recent from './load-bot-preview/recent';
 import SaveModalStore from 'Stores/save-modal-store';
-import GoogleDrive from './load-bot-preview/google-drive';
 import classNames from 'classnames';
+import Recent from './load-bot-preview/recent';
+import GoogleDrive from './load-bot-preview/google-drive';
 
 type TCardProps = {
     closeResetDialog: VoidFunction;
@@ -21,6 +21,7 @@ type TCardProps = {
     setActiveTab: (active_tab: number) => void;
     setFileLoaded: (param: boolean) => void;
     setPreviewOnPopup: (show: boolean) => void;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
 };
 
@@ -41,6 +42,7 @@ const Card = ({
     setActiveTab,
     setFileLoaded,
     setPreviewOnPopup,
+    setOpenSettings,
     showVideoDialog,
 }: TCardProps) => {
     /* eslint-disable no-unused-expressions */
@@ -127,6 +129,7 @@ const Card = ({
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
+                            setOpenSettings('import', true);
                         }}
                     />
                     <DesktopWrapper>
@@ -177,5 +180,6 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setFileLoaded: dashboard.setFileLoaded,
     setLoadedLocalFile: load_modal.setLoadedLocalFile,
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    setOpenSettings: dashboard.setOpenSettings,
     showVideoDialog: dashboard.showVideoDialog,
 }))(Card);

@@ -15,17 +15,17 @@ type TBotBuilder = {
     app: AppStore;
     active_tab: number;
     has_started_onboarding_tour: boolean;
+    has_started_bot_builder_tour: boolean;
     is_preview_on_popup: boolean;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => boolean;
-    has_started_bot_builder_tour: boolean;
 };
 
 const BotBuilder = ({
     app,
     active_tab,
     has_started_onboarding_tour,
-    is_preview_on_popup,
     has_started_bot_builder_tour,
+    is_preview_on_popup,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
@@ -102,7 +102,7 @@ export default connect(({ app, dashboard }: RootStore) => ({
     app,
     active_tab: dashboard.active_tab,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
-    is_preview_on_popup: dashboard.is_preview_on_popup,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
+    is_preview_on_popup: dashboard.is_preview_on_popup,
+    setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
 }))(BotBuilder);

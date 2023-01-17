@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Text, Toast } from '@deriv/components';
+import { Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
@@ -11,26 +11,18 @@ type TDeleteDialog = {
     onToggleDeleteDialog: (param: boolean) => void;
     removeBotStrategy: (param: string) => void;
     selected_strategy_id: string;
-    setStrategies: (param: string[]) => void;
     setDashboardStrategies: (param: string[]) => void;
-    show_toast: boolean;
-    setShowToast: (show_toast: boolean) => void;
+    setStrategies: (param: string[]) => void;
+    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
 const DeleteDialog = ({
     is_delete_modal_open,
-    selected_strategy_id,
     onToggleDeleteDialog,
+    selected_strategy_id,
     setDashboardStrategies,
-    setShowToast,
-    show_toast,
+    setOpenSettings,
 }: TDeleteDialog) => {
-    React.useEffect(() => {
-        setTimeout(() => {
-            setShowToast(false);
-        }, 5000);
-    }, [show_toast]);
-
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
         workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
@@ -48,7 +40,7 @@ const DeleteDialog = ({
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
-            setShowToast(true);
+            setOpenSettings('delete', true);
         }
         onToggleDeleteDialog(param);
     };
@@ -61,7 +53,7 @@ const DeleteDialog = ({
                 confirm_button_text={localize('Yes, delete')}
                 onConfirm={() => {
                     onHandleChange('confirm', false);
-                    setShowToast(true);
+                    setOpenSettings('delete', true);
                 }}
                 cancel_button_text={localize('No')}
                 onCancel={() => {
@@ -93,6 +85,5 @@ export default connect(({ toolbar, load_modal, dashboard }) => ({
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     selected_strategy_id: load_modal.selected_strategy_id,
     setDashboardStrategies: load_modal.setDashboardStrategies,
-    show_toast: dashboard.show_toast,
-    setShowToast: dashboard.setShowToast,
+    setOpenSettings: dashboard.setOpenSettings,
 }))(DeleteDialog);

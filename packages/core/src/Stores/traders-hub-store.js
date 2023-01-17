@@ -88,6 +88,7 @@ export default class TradersHubStore extends BaseStore {
             openRealAccount: action.bound,
             selectAccountType: action.bound,
             selectAccountTypeCard: action.bound,
+            switchToCRAccount: action.bound,
             selectRegion: action.bound,
             setActiveIndex: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
@@ -216,6 +217,22 @@ export default class TradersHubStore extends BaseStore {
             }
         }
         this.selected_account_type = account_type;
+    }
+
+    async switchToCRAccount() {
+        const { account_list, switchAccount, prev_real_account_loginid } = this.root_store.client;
+
+        if (prev_real_account_loginid && !prev_real_account_loginid.startsWith('MF')) {
+            //switch to previously selected CR account
+            await switchAccount(prev_real_account_loginid);
+        } else {
+            //if no previously selected CR account , then switch to default CR account
+            await switchAccount(
+                account_list.find(acc => !acc.is_virtual && !acc.is_disabled && !acc.loginid.startsWith('MF'))?.loginid
+            );
+        }
+
+        this.selected_account_type = 'real';
     }
 
     selectAccountTypeCard(account_type_card) {

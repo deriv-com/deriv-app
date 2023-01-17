@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     available_dxtrade_accounts = [];
     combined_cfd_mt5_accounts = [];
     selected_account_type;
+    traders_hub_ref = null;
     selected_region;
     is_onboarding_visited = false;
     is_balance_calculating = false;
@@ -51,6 +52,7 @@ export default class TradersHubStore extends BaseStore {
             available_platforms: observable,
             cfd_demo_balance: observable,
             cfd_real_balance: observable,
+            traders_hub_ref: observable,
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
@@ -71,6 +73,7 @@ export default class TradersHubStore extends BaseStore {
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
+            setTradersHubRef: action.bound,
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
             getExistingAccounts: action.bound,
@@ -241,6 +244,10 @@ export default class TradersHubStore extends BaseStore {
 
     selectRegion(region) {
         this.selected_region = region;
+    }
+
+    setTradersHubRef(ref) {
+        this.traders_hub_ref = ref;
     }
 
     toggleIsTourOpen(is_tour_open) {

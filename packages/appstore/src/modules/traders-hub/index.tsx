@@ -16,6 +16,23 @@ const TradersHub = () => {
     const { traders_hub, client } = useStores();
     const { is_eu, is_landing_company_loaded, is_logged_in } = client;
     const { selected_platform_type, setTogglePlatformType } = traders_hub;
+    const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
+
+    // const handleScroll = () => {
+    //     const element = traders_hub_ref?.current;
+    //     if (element) {
+    //         element.scrollIntoView({ behavior: 'smooth' });
+    //     }
+    //     console.log('hello');
+    // };
+
+    // React.useEffect(() => {
+    //     setTradersHubRef(traders_hub_ref?.current);
+    // }, []);
+
+    // React.useEffect(() => {
+    //     handleScroll();
+    // });
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
@@ -34,7 +51,7 @@ const TradersHub = () => {
     return (
         <>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
-                <div id='traders-hub' className='traders-hub'>
+                <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

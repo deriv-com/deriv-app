@@ -19,16 +19,26 @@ const Divider = () => {
     return <div className='trading-hub-header__divider' />;
 };
 
-export const TradersHubHomeButton = () => {
+export const TradersHubHomeButton = ({ traders_hub_ref }) => {
     const history = useHistory();
     const { pathname } = history.location;
+
+    const handleScroll = () => {
+        const element = traders_hub_ref?.current;
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <div
             className={classNames('trading-hub-header__tradershub', {
                 'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
             })}
-            onClick={() => history.push(routes.traders_hub)}
+            onClick={() => {
+                handleScroll();
+                history.push(routes.traders_hub);
+            }}
         >
             <div className='trading-hub-header__tradershub--home-logo'>
                 <Icon icon='IcAppstoreTradersHubHome' size={17} />
@@ -128,6 +138,7 @@ const TradingHubHeader = ({
     logoutClient,
     menu_items,
     modal_data,
+    traders_hub_ref,
     notifications_count,
     replaceCashierMenuOnclick,
     setDarkMode,
@@ -195,7 +206,7 @@ const TradingHubHeader = ({
                 )}
                 <DesktopWrapper>
                     <Divider />
-                    <TradersHubHomeButton />
+                    <TradersHubHomeButton traders_hub_ref={traders_hub_ref} />
                 </DesktopWrapper>
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MemoizedMenuLinks
@@ -311,6 +322,7 @@ TradingHubHeader.propTypes = {
     is_virtual: PropTypes.bool,
     location: PropTypes.object,
     loginid: PropTypes.string,
+    traders_hub_ref: PropTypes.object,
     logoutClient: PropTypes.func,
     menu_items: PropTypes.array,
     modal_data: PropTypes.object,
@@ -360,6 +372,7 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
+    traders_hub_ref: traders_hub.traders_hub_ref,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

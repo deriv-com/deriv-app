@@ -20,7 +20,7 @@ type TTourStatus = {
     type: string;
 };
 
-type TTourType = Pick<TTourStatus, 'key'>;
+export type TTourType = Pick<TTourStatus, 'key'>;
 
 export const setTourSettings = (param: number | { [key: string]: string }, type: string) => {
     if (type === `${tour_type.key}_token`) {
@@ -507,58 +507,71 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
 export const DBOT_ONBOARDING_MOBILE = [
     {
         header: localize('Get started on DBot'),
-        content: localize('Hi Hit Start for a quick tour to help you get started.'),
+        content: [
+            <Localize
+                key='get-started=mobile'
+                i18n_default_text='Hi Hit <0>Start</0> for a quick tour to help you get started.'
+                components={[<strong key={0} />]}
+            />,
+        ],
         key: 1,
         step_key: 0,
     },
     {
         header: localize('Build from scratch'),
         img: getImageLocation('ic_onb_step_1.png'),
-        content: localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
+        content: [
+            localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
+            localize(
+                'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
+            ),
+        ],
         key: 2,
         step_key: 1,
     },
     {
         header: localize('Start with a template'),
         img: getImageLocation('ic_onb_step_2.png'),
-        content: localize(
-            'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-        ),
+        content: [
+            localize(
+                'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
+            ),
+        ],
         key: 3,
         step_key: 2,
     },
     {
         header: localize('Monitor the market'),
         img: getImageLocation('ic_onb_step_3.png'),
-        content: localize('View the market price of your favourite assets.'),
+        content: [localize('View the market price of your favourite assets.')],
         key: 4,
         step_key: 3,
     },
     {
         header: localize('Guides and FAQs to help you'),
         img: getImageLocation('ic_onb_step_4.png'),
-        content: localize('Start with a video guide and the FAQs.'),
+        content: [localize('Start with a video guide and the FAQs.')],
         key: 5,
         step_key: 4,
     },
     {
         header: localize('Shortcuts'),
         img: getImageLocation('ic_onb_step_5.png'),
-        content: localize('You can also use these shortcuts to import or build your bot.'),
+        content: [localize('You can also use these shortcuts to import or build your bot.')],
         key: 6,
         step_key: 5,
     },
     {
         header: localize('How is my bot doing?'),
         img: getImageLocation('ic_onb_step_6.png'),
-        content: localize("See your bot's performance in real-time."),
+        content: [localize("See your bot's performance in real-time.")],
         key: 7,
         step_key: 6,
     },
     {
         header: localize('Run or stop your bot'),
         img: getImageLocation('ic_onb_step_7.png'),
-        content: localize('Click Run when you want to start trading, and click Stop when you want to stop.'),
+        content: [localize('Click Run when you want to start trading, and click Stop when you want to stop.')],
         key: 8,
         step_key: 7,
     },

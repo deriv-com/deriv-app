@@ -38,7 +38,12 @@
 }
 
 .tour-dialog {
+    transition: unset;
     .dc-dialog__dialog {
+        transform: unset;
+        opacity: unset;
+        transition: unset;
+
         @include mobile {
             width: 90vw;
             padding: 1.6rem;

@@ -27,7 +27,12 @@ const MarkerSpotLabel = ({
 
     if (has_hover_toggle) {
         marker_spot = (
-            <div className='marker-hover-container' onMouseEnter={handleHoverToggle} onMouseLeave={handleHoverToggle}>
+            <div
+                data-testid='dt_marker_hover_container'
+                className='marker-hover-container'
+                onMouseEnter={handleHoverToggle}
+                onMouseLeave={handleHoverToggle}
+            >
                 {marker_spot}
             </div>
         );
@@ -38,6 +43,7 @@ const MarkerSpotLabel = ({
             {show_label && !is_value_hidden && (
                 <div className='chart-spot-label__info-container'>
                     <div
+                        data-testid='dt_time_value_container'
                         className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
                     >
                         {spot_epoch && (
@@ -54,6 +60,7 @@ const MarkerSpotLabel = ({
                             </div>
                         )}
                         <div
+                            data-testid='dt_value_container'
                             className={classNames('chart-spot-label__value-container', {
                                 'chart-spot-label__value-container--won': status === 'won',
                                 'chart-spot-label__value-container--lost': status === 'lost',

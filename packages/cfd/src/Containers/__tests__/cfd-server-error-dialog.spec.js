@@ -37,9 +37,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        const { container } = render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        const { container } = render(<CFDServerErrorDialog context={mockRootStore} />);
 
         expect(container.firstChild).toHaveClass('dc-dialog__wrapper dc-dialog__wrapper--enter');
     });
@@ -61,9 +59,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        render(<CFDServerErrorDialog context={mockRootStore} />);
 
         expect(screen.getByText(/Sorry, an error occured while processing your request/i)).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('OK');
@@ -87,9 +83,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        render(<CFDServerErrorDialog context={mockRootStore} />);
 
         expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
     });
@@ -111,9 +105,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        render(<CFDServerErrorDialog context={mockRootStore} />);
 
         expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
     });
@@ -135,9 +127,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
+        render(<CFDServerErrorDialog context={mockRootStore} />);
 
         const ok_btn = screen.getByRole('button', { name: /OK/i });
         fireEvent.click(ok_btn);

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
+import { routes, isDesktop, isMobile, getActivePlatform, getPlatformSettings } from '@deriv/shared';
 
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -39,7 +39,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
         : null;
 };
 
-const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, is_pre_appstore }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
 
@@ -55,7 +55,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             closeDrawer();
         }
     };
-    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     useOnClickOutside(ref, handleClickOutside, () => isDesktop());
 

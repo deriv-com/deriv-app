@@ -2,11 +2,12 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, PlatformContext } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {
     contents: Record<
@@ -26,12 +27,9 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { tradinghub, client } = useStores();
-    const { toggleIsTourOpen } = tradinghub;
-    const { is_eu, is_eu_country, is_logged_in } = client;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
-    const { setIsPreAppStore } = React.useContext(PlatformContext);
+    const { traders_hub, client } = useStores();
+    const { toggleIsTourOpen } = traders_hub;
+    const { is_eu, is_eu_country, is_logged_in, setIsPreAppStore } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -42,7 +40,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
             setIsPreAppStore(true);
-            history.push(routes.trading_hub);
+            history.push(routes.traders_hub);
             toggleIsTourOpen(true);
         }
     };
@@ -60,10 +58,14 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
 
     const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
 
+    if (!is_logged_in) {
+        return <EmptyOnboarding />;
+    }
+
     return (
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
-                <WalletIcon icon={'DerivLogo'} />
+                <TradigPlatformIconProps icon={'DerivLogo'} />
                 <Icon
                     icon='IcCross'
                     custom_color='var(--general-main-1)'
@@ -71,7 +73,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     onClick={() => {
                         setIsPreAppStore(true);
                         toggleIsTourOpen(false);
-                        history.push(routes.trading_hub);
+                        history.push(routes.traders_hub);
                     }}
                 />
             </div>

@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
-import RecentTransaction from 'Components/recent-transaction';
+import RecentTransaction from '../../../components/recent-transaction';
 import './crypto-deposit.scss';
 
 const CryptoDeposit = observer(() => {

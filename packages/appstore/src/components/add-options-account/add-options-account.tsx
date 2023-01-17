@@ -4,25 +4,20 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { TRootStore } from 'Types';
 import { isMobile } from '@deriv/shared';
 
-const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
-    const { client } = useStores();
-    const { is_eu } = client;
-    const is_eu_country_text = is_eu
-        ? 'You need to create a Multipliers account to create a CFD account.'
-        : 'You need to create an Options and Multipliers account to add a CFD account.';
+const AddOptions = () => {
+    const { traders_hub, ui } = useStores();
+    const { is_real, is_eu_user } = traders_hub;
 
-    const is_eu_country_btn = is_eu
-        ? localize('Get a Multipliers account')
-        : localize('Get an Options and Multipliers account');
+    const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
+    const add_deriv_account_btn = localize('Get a Deriv account');
 
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
-                    <Localize i18n_default_text={is_eu_country_text} />
+                    <Localize i18n_default_text={add_deriv_account_text} />
                 </Text>
             </div>
             <div className='add-options-account__button'>
@@ -31,11 +26,15 @@ const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
                     type='submit'
                     has_effect
                     onClick={() => {
-                        ui.openRealAccountSignup();
+                        if (is_real && is_eu_user) {
+                            ui.openRealAccountSignup('maltainvest');
+                        } else {
+                            ui.openRealAccountSignup();
+                        }
                     }}
                     is_disabled={false}
                     is_loading={false}
-                    text={is_eu_country_btn}
+                    text={add_deriv_account_btn}
                     medium
                     primary
                 />
@@ -44,16 +43,15 @@ const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
     );
 };
 
-const AddOptionsAccount: React.FC = () => {
-    const { ui } = useStores();
+const AddOptionsAccount = () => {
     return (
         <React.Fragment>
             <div className='add-options-account'>
                 <DesktopWrapper>
-                    <AddOptions ui={ui} />
+                    <AddOptions />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <AddOptions ui={ui} />
+                    <AddOptions />
                 </MobileWrapper>
             </div>
         </React.Fragment>

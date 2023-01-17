@@ -19,18 +19,16 @@ const BotNotification = ({ show_toast, toast_message, setOpenSettings }: TBotNot
     }, [show_toast]);
     const el_portal = document.getElementById('popup_root');
 
-    if (el_portal) {
+    if (el_portal && show_toast) {
         return ReactDOM.createPortal(
             <div className='import-notification'>
-                {show_toast && (
-                    <div>
-                        <Toast>
-                            {toast_message === 'delete'
-                                ? localize('You’ve successfully deleted a bot.')
-                                : localize('You’ve successfully imported a bot.')}
-                        </Toast>
-                    </div>
-                )}
+                <div>
+                    <Toast>
+                        {toast_message === 'delete'
+                            ? localize('You’ve successfully deleted a bot.')
+                            : localize('You’ve successfully imported a bot.')}
+                    </Toast>
+                </div>
             </div>,
             el_portal
         );

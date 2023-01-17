@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Text } from '@deriv/components';
+import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -31,15 +31,19 @@ const MyProfile = () => {
     }
 
     return (
-        <div className='my-profile'>
-            <div className='my-profile__content'>
-                <MyProfileDetailsContainer />
-                <DesktopWrapper>
-                    <MyProfileHeader />
-                </DesktopWrapper>
-                <MyProfileContent />
-            </div>
-        </div>
+        <AutoSizer>
+            {({ height, width }) => (
+                <div className='my-profile' style={{ height, width }}>
+                    <div className='my-profile__content'>
+                        <MyProfileDetailsContainer />
+                        <DesktopWrapper>
+                            <MyProfileHeader />
+                        </DesktopWrapper>
+                        <MyProfileContent />
+                    </div>
+                </div>
+            )}
+        </AutoSizer>
     );
 };
 

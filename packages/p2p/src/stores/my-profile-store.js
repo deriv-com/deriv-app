@@ -98,6 +98,7 @@ export default class MyProfileStore extends BaseStore {
             payment_methods_list_methods: computed,
             payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
+            trade_partner_dropdown_list: computed,
             createPaymentMethod: action.bound,
             getAdvertiserPaymentMethods: action.bound,
             getCounterpartyAdvertiserInfo: action.bound,
@@ -181,18 +182,16 @@ export default class MyProfileStore extends BaseStore {
     get block_user_sort_list() {
         return [
             {
-                text: localize('All ({{trade_partners_list}})', {
-                    trade_partners_list: this.search_term
-                        ? this.search_results.length
-                        : this.trade_partners_list.length,
+                text: localize('All ({{list_value}})', {
+                    list_value: this.is_block_user_table_loading ? '...' : this.trade_partner_dropdown_list.length,
                 }),
                 value: 'all_users',
             },
             {
-                text: localize('Blocked ({{trade_partners_list}})', {
-                    trade_partners_list: this.search_term
-                        ? this.search_results.filter(partner => partner.is_blocked === 1).length
-                        : this.trade_partners_list.filter(partner => partner.is_blocked === 1).length,
+                text: localize('Blocked ({{list_value}})', {
+                    list_value: this.is_block_user_table_loading
+                        ? '...'
+                        : this.trade_partner_dropdown_list.filter(partner => partner.is_blocked === 1).length,
                 }),
                 value: 'blocked_users',
             },
@@ -282,6 +281,15 @@ export default class MyProfileStore extends BaseStore {
         return this.selected_sort_value === 'all_users'
             ? this.trade_partners_list
             : this.trade_partners_list.filter(partner => partner.is_blocked === 1);
+    }
+
+    get trade_partner_dropdown_list() {
+        if (this.search_term) {
+            if (this.search_results.length) return this.search_results;
+            else if (this.search_results.length === 0) return [];
+        }
+
+        return this.trade_partners_list;
     }
 
     createPaymentMethod(values, { setSubmitting }) {

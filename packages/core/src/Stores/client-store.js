@@ -410,11 +410,21 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
+                const { trading_hub } = this.account_settings;
+                const is_traders_hub = !!trading_hub;
+
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
                     window.location.href = routes.root;
-                } else if (this.is_pre_appstore && window.location.pathname === routes.root) {
+                } else if (
+                    this.is_pre_appstore &&
+                    window.location.pathname === routes.root &&
+                    is_traders_hub !== this.is_pre_appstore
+                ) {
                     window.location.href = routes.traders_hub;
+                } else {
+                    return null;
                 }
+                return null;
             }
         );
 

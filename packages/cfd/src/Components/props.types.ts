@@ -118,6 +118,7 @@ export type TCFDAccountCard = {
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     setAppstorePlatform: (value: string) => void;
+    show_eu_related_content: boolean;
 };
 
 export type TTradingPlatformAccounts = {

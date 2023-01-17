@@ -267,11 +267,14 @@ const DMT5CompareModalContent = ({
     };
 
     const onSelectRealAccount = (item: TCompareAccountFooterButtonData) => {
-        const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
+        const selected_account_type = () => {
+            if (item.action === 'derivx') return 'all';
+            return item.action.startsWith('financial') ? 'financial' : 'synthetic';
+        };
 
         const type_of_account = {
             category: is_demo_tab ? 'demo' : 'real',
-            type: account_type,
+            type: selected_account_type(),
         };
         clearCFDError();
         setAccountType(type_of_account);

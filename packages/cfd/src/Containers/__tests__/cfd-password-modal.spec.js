@@ -324,10 +324,9 @@ describe('<CFDPasswordModal/>', () => {
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_eu is_cfd_success_dialog_enabled />
+                <CFDPasswordModal {...mock_props} {...props} show_eu_related_content is_cfd_success_dialog_enabled />
             </Router>
         );
-
         expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
     });
 

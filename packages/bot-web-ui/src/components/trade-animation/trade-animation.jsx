@@ -85,16 +85,9 @@ const TradeAnimation = ({
     info_direction,
     toggleAnimationInfoModal,
     cashier_validation,
-    performSelfExclusionCheck,
 }) => {
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
-
-    // perform self-exclusion checks which will be stored under the self-exclusion-store
-    React.useEffect(() => {
-        performSelfExclusionCheck();
-    }, []);
-
     React.useEffect(() => {
         if (is_button_disabled) {
             setTimeout(() => {
@@ -102,7 +95,6 @@ const TradeAnimation = ({
             }, 1000);
         }
     }, [is_button_disabled]);
-
     const status_classes = ['', '', ''];
     let progress_status =
         contract_stage -
@@ -182,7 +174,6 @@ TradeAnimation.propTypes = {
     is_stop_button_disabled: PropTypes.bool,
     onRunButtonClick: PropTypes.func,
     onStopButtonClick: PropTypes.func,
-    performSelfExclusionCheck: PropTypes.func,
     profit: PropTypes.number,
     should_show_overlay: PropTypes.bool,
 };
@@ -196,7 +187,6 @@ export default connect(({ summary_card, run_panel, toolbar, ui, client }) => ({
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
-    performSelfExclusionCheck: run_panel.performSelfExclusionCheck,
     profit: summary_card.profit,
     should_show_overlay: run_panel.should_show_overlay,
     toggleAnimationInfoModal: toolbar.toggleAnimationInfoModal,

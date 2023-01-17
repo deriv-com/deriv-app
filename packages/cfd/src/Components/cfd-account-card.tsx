@@ -202,18 +202,20 @@ const CFDAccountCardComponent = ({
     real_account_creation_unlock_date,
     setShouldShowCooldownModal,
     setAppstorePlatform,
+    show_eu_related_content,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
 
     const should_show_extra_add_account_button =
         is_logged_in &&
-        !is_eu &&
+        !show_eu_related_content &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.category === 'demo'
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
+    const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
+
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
@@ -538,7 +540,7 @@ const CFDAccountCardComponent = ({
                             type.category === 'real' &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {existing_data?.display_balance && is_logged_in && !is_eu && (
+                                    {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                         <div className='cfd-account-card__item--banner'>
                                             <Localize
                                                 i18n_default_text={
@@ -757,7 +759,7 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
@@ -768,6 +770,7 @@ const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common }: RootSt
     setAppstorePlatform: common.setAppstorePlatform,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     updateAccountStatus: client.updateAccountStatus,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

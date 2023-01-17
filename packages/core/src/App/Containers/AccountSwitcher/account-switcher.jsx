@@ -1250,7 +1250,8 @@ const AccountSwitcher = props => {
                     isRealAccountTab &&
                     !canUpgrade() &&
                     canOpenMulti() &&
-                    (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
+                    (!props.show_eu_related_content ||
+                        (props.show_eu_related_content && props.can_change_fiat_currency)) && (
                         <Button
                             className={classNames('acc-switcher__btn', {
                                 'acc-switcher__btn--traders_hub': props.is_pre_appstore,
@@ -1262,9 +1263,7 @@ const AccountSwitcher = props => {
                                     : () => props.openRealAccountSignup('manage')
                             }
                         >
-                            {props.has_fiat &&
-                                props.available_crypto_currencies?.length > 1 &&
-                                localize('Manage account')}
+                            {localize('Manage account')}
                         </Button>
                     )}
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>

@@ -362,7 +362,8 @@ const PersonalDetails = ({
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen')
+                                                                    (!!props.value.citizen &&
+                                                                        disabled_items.includes('citizen'))
                                                                 }
                                                                 list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -379,7 +380,8 @@ const PersonalDetails = ({
                                                                 name={field.name}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen')
+                                                                    (!!props.value.citizen &&
+                                                                        disabled_items.includes('citizen'))
                                                                 }
                                                                 label={localize('Citizenship')}
                                                                 list_items={residence_list}

@@ -28,6 +28,12 @@ describe('<AccountTransfer />', () => {
             client: {
                 is_switching: false,
                 is_virtual: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             ui: {
                 is_dark_mode_on: false,

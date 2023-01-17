@@ -99,9 +99,9 @@ const Dashboard = ({
     let tour_status: { [key: string]: string };
     const is_mobile = isMobile();
 
-    const setTourStatus = (param: { [key: string]: string }) => {
-        if (tour_status) {
-            const { action } = tour_status;
+    const setTourStatus = (status: { [key: string]: string }) => {
+        if (status) {
+            const { action } = status;
             const actions = ['skip', 'close'];
 
             if (actions.includes(action)) {
@@ -145,7 +145,7 @@ const Dashboard = ({
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
         }
-
+        setTourStatus(tour_status);
         bot_tour_token = getTourSettings('token');
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
@@ -163,13 +163,18 @@ const Dashboard = ({
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
         const has_onboard_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_token;
         const has_bot_builder_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
-        if (has_bot_builder_token_set || (has_onboard_token_set && !has_started_bot_builder_tour)) {
+        if (has_bot_builder_token_set || has_onboard_token_set) {
             if (is_mobile && has_started_onboarding_tour) {
                 setTourActive(true);
                 setOnBoardTourRunState(true);
             } else {
                 setTourDialogVisibility(true);
             }
+        }
+        if (has_started_bot_builder_tour && active_tab !== 1 && is_mobile) {
+            setTourActive(false);
+            setBotBuilderTourState(false);
+            setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
     }, [active_tab]);
 

@@ -11,29 +11,29 @@ import { tour_type } from '../joyride-config';
 type TGuideContent = {
     dialog_options: { [key: string]: string };
     faq_search_value: string;
-    is_dialog_open: boolean;
-    setHasTourEnded: (param: boolean) => boolean;
-    onOkButtonClick: () => void;
-    showVideoDialog: (param: { [key: string]: string }) => void;
     guide_list: [];
+    is_dialog_open: boolean;
+    onOkButtonClick: () => void;
     setActiveTab: (tab_title: number) => void;
-    setTourDialogVisibility: (param: boolean) => boolean;
-    setTourActive: (param: boolean) => boolean;
+    setHasTourEnded: (param: boolean) => boolean;
     setOnBoardTourRunState: (param: boolean) => boolean;
+    setTourActive: (param: boolean) => boolean;
+    setTourDialogVisibility: (param: boolean) => boolean;
+    showVideoDialog: (param: { [key: string]: string }) => void;
 };
 
 const GuideContent = ({
     dialog_options,
     faq_search_value,
+    guide_list,
     is_dialog_open,
     onOkButtonClick,
-    showVideoDialog,
-    guide_list,
     setActiveTab,
-    setTourDialogVisibility,
     setHasTourEnded,
-    setTourActive,
     setOnBoardTourRunState,
+    setTourActive,
+    setTourDialogVisibility,
+    showVideoDialog,
 }: TGuideContent) => {
     const triggerTour = (type: string) => {
         const storage = JSON.parse(localStorage?.dbot_settings);
@@ -182,15 +182,15 @@ const GuideContent = ({
 };
 
 export default connect(({ dashboard, load_modal }: RootStore) => ({
+    dialog_options: dashboard.dialog_options,
     faq_search_value: dashboard.faq_search_value,
     is_dialog_open: dashboard.is_dialog_open,
     onOkButtonClick: dashboard.onCloseDialog,
-    showVideoDialog: dashboard.showVideoDialog,
-    dialog_options: dashboard.dialog_options,
-    toggleLoadModal: load_modal.toggleLoadModal,
     setActiveTab: dashboard.setActiveTab,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
     setHasTourEnded: dashboard.setHasTourEnded,
-    setTourActive: dashboard.setTourActive,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
+    setTourActive: dashboard.setTourActive,
+    setTourDialogVisibility: dashboard.setTourDialogVisibility,
+    showVideoDialog: dashboard.showVideoDialog,
+    toggleLoadModal: load_modal.toggleLoadModal,
 }))(GuideContent);

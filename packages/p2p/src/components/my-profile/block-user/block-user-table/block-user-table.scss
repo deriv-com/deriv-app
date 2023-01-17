@@ -13,12 +13,6 @@
         flex-direction: column;
     }
 
-    & .data-list {
-        @include desktop {
-            height: 65rem;
-        }
-    }
-
     &__text {
         display: inline-block;
         padding-top: 3rem;

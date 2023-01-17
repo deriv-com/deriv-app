@@ -9,6 +9,12 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
+    // We need the condition to update the label for vanilla trade type since the label doesn't match with the trade type key unlike other contracts
+    const category_label = is_vanilla
+        ? info_from_shortcode.category.replace('Vanillalong', '').charAt(0).toUpperCase() +
+          info_from_shortcode.category.replace('Vanillalong', '').slice(1)
+        : info_from_shortcode.category;
+
     if (should_show_category_icon && info_from_shortcode) {
         return (
             <div className={classNames('market-symbol-icon', { 'market-symbol-icon__vanilla': is_vanilla })}>
@@ -51,7 +57,7 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
                             color='brand'
                         />
                     </Popover>
-                    {show_description && info_from_shortcode.category}
+                    {show_description && category_label}
                 </div>
                 {should_show_multiplier && info_from_shortcode.multiplier && (
                     <div className='market-symbol-icon__multiplier'>x{info_from_shortcode.multiplier}</div>

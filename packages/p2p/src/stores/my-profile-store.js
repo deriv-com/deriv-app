@@ -16,7 +16,6 @@ export default class MyProfileStore extends BaseStore {
     error_message = '';
     form_error = '';
     full_name = '';
-    has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
     is_cancel_add_payment_method_modal_open = false;
@@ -61,7 +60,6 @@ export default class MyProfileStore extends BaseStore {
             error_message: observable,
             form_error: observable,
             full_name: observable,
-            has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
             is_cancel_add_payment_method_modal_open: observable,
@@ -130,7 +128,6 @@ export default class MyProfileStore extends BaseStore {
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
-            setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
             setIsCancelAddPaymentMethodModalOpen: action.bound,
             setIsCancelEditPaymentMethodModalOpen: action.bound,
@@ -445,7 +442,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    getTradePartnersList({ startIndex }, is_initial_load = false) {
+    getTradePartnersList(is_initial_load = false) {
         const { general_store } = this.root_store;
 
         if (is_initial_load) this.setIsBlockUserTableLoading(true);
@@ -453,19 +450,14 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_list: 1,
             trade_partners: 1,
-            offset: startIndex,
-            limit: general_store.list_item_limit,
             ...(this.search_term ? { advertiser_name: this.search_term } : {}),
         }).then(response => {
             if (response) {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_list;
-                    const partners_list = startIndex === 0 ? list : [...this.trade_partners_list, ...list];
-                    const searched_list = startIndex === 0 ? list : [...this.search_results, ...list];
-                    this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                    if (this.search_term) this.setSearchResults(searched_list);
-                    else this.setTradePartnersList(partners_list);
+                    if (this.search_term) this.setSearchResults(list);
+                    else this.setTradePartnersList(list);
                 } else {
                     general_store.setBlockUnblockUserError(response.error.message);
                 }
@@ -476,7 +468,7 @@ export default class MyProfileStore extends BaseStore {
 
     handleChange(e) {
         this.setSelectedSortValue(e.target.value);
-        this.getTradePartnersList({ startIndex: 0 }, true);
+        this.getTradePartnersList(true);
 
         if (isMobile()) {
             this.setIsFilterModalOpen(false);
@@ -525,7 +517,7 @@ export default class MyProfileStore extends BaseStore {
      */
     getSearchedTradePartners() {
         if (this.search_term) {
-            this.getTradePartnersList({ startIndex: 0 });
+            this.getTradePartnersList(true);
         }
     }
 
@@ -551,7 +543,7 @@ export default class MyProfileStore extends BaseStore {
         if (this.search_term) {
             this.setSearchTerm('');
             this.setSearchResults([]);
-            this.getTradePartnersList({ startIndex: 0 });
+            this.getTradePartnersList(true);
         }
     }
 
@@ -580,7 +572,7 @@ export default class MyProfileStore extends BaseStore {
         clearTimeout(delay);
         general_store.setIsBlockUserModalOpen(false);
         general_store.blockUnblockUser(!this.selected_trade_partner.is_blocked, this.selected_trade_partner.id);
-        const delay = setTimeout(() => this.getTradePartnersList({ startIndex: 0 }), 250);
+        const delay = setTimeout(() => this.getTradePartnersList(), 250);
     }
 
     showAddPaymentMethodForm() {
@@ -720,10 +712,6 @@ export default class MyProfileStore extends BaseStore {
 
     setFullName(full_name) {
         this.full_name = full_name;
-    }
-
-    setHasMoreItemsToLoad(has_more_items_to_load) {
-        this.has_more_items_to_load = has_more_items_to_load;
     }
 
     setIsBlockUserTableLoading(is_block_user_table_loading) {

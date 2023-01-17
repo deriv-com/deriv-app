@@ -13,6 +13,7 @@
 }
 
 .tutorials-wrap {
+    padding-bottom: 20rem;
     &--placeholder {
         width: 28rem;
     }
@@ -108,7 +109,7 @@
             height: calc(100vh - 27rem);
             .dc-accordion__wrapper > div:last-child {
                 //iphone 14 specific
-                @media (min-height: 600px) and (max-height: 750px) {
+                @media (min-height: 450px) and (max-height: 750px) {
                     padding-bottom: 10rem;
                 }
             }

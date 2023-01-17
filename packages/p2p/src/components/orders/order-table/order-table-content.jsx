@@ -46,9 +46,10 @@ const OrderTableContent = () => {
 
     if (order_store.orders.length) {
         const { client, props } = general_store;
-        const modified_list = order_store.orders.map(order =>
-            createExtendedOrderDetails(order, client.loginid, props.server_time)
-        );
+        const modified_list = order_store.orders
+            .map(order => createExtendedOrderDetails(order, client.loginid, props.server_time))
+            // TODO: Get rid of this filter if confirmed that BE is sending correct data.
+            .filter(order => (general_store.is_active_tab ? order.is_active_order : order.is_inactive_order));
 
         if (modified_list.length) {
             return (

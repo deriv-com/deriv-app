@@ -78,7 +78,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                 classNameBubble='dc-clipboard__popover'
                 message={localize('Delete this token')}
                 relative_render={false}
-                zIndex={9999}
+                zIndex='9999'
                 is_open={is_popover_open}
             >
                 <Icon

@@ -112,7 +112,6 @@ describe('Integration checks', () => {
             }
         }
 
-        const error_message = `Invalid string format passed to localize/<Localize>:\n\n\t${errors.join('\n\t')}\n\n\t`;
         /* eslint-disable-next-line no-unused-expressions */
         expect(Object.keys(errors)).toHaveLength(0);
     });

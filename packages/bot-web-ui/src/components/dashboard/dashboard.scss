@@ -378,7 +378,7 @@
 
 .dbot-slider {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     position: fixed;
@@ -405,6 +405,7 @@
         justify-content: space-between;
         padding: 0 1.6rem;
         width: 100%;
+        margin-bottom: 1.8rem;
     }
     &__title {
         margin-bottom: 0.8rem;
@@ -414,6 +415,9 @@
         text-align: center;
         padding: 0 1.6rem;
         margin-bottom: 1.6rem;
+        &:last-child {
+            margin-bottom: 3rem;
+        }
     }
 
     &__image {
@@ -421,6 +425,7 @@
         text-align: center;
         padding: 0.8rem;
         width: 100%;
+        margin-bottom: 0.8rem;
     }
 
     &__progress-bar {

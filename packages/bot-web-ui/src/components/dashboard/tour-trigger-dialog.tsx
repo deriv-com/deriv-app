@@ -77,16 +77,15 @@ const TourTriggrerDialog = ({
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
-                                    i18n_default_text={
-                                        'Learn how to build your bot from scratch using a simple strategy.'
-                                    }
+                                    i18n_default_text={'Here’s a quick guide on how to use DBot on the go.'}
                                 />
                             </div>
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
-                                    i18n_default_text={'Hit the <0>Start</0> button to begin and follow the tutorial.'}
-                                    components={[<strong key={0} />]}
+                                    i18n_default_text={
+                                        'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+                                    }
                                 />
                             </div>
                             <div className='dc-dialog__content__description__text'>

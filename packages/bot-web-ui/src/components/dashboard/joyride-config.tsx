@@ -470,40 +470,29 @@ export type TStepMobile = {
 export const BOT_BUILDER_MOBILE: TStepMobile[] = [
     {
         header: localize('Step 1'),
-        content: (
-            <>
-                <Step1 key={0} />
-                <Step1A key={1} />
-            </>
-        ),
+        content: <Localize i18n_default_text={`First, click the Import icon on the tool bar.`} />,
         key: 1,
     },
     {
         header: localize('Step 2'),
-        content: <Step2 />,
+        content: (
+            <Localize
+                i18n_default_text={`Next, import your bot directly from your mobile device or from Google Drive.`}
+            />
+        ),
         key: 2,
     },
     {
         header: localize('Step 3'),
-        content: <Step3 />,
+        content: (
+            <Localize
+                i18n_default_text={`Once imported, you will see a preview of the bot on the workspace. Click run to start trading with this bot.`}
+            />
+        ),
         key: 3,
     },
-    {
-        header: localize('Step 4'),
-        content: <Step4 />,
-        key: 4,
-    },
-    {
-        header: localize('Step 5'),
-        content: <Step5 />,
-        key: 5,
-    },
-    {
-        header: localize('Step 6'),
-        content: <Step6 />,
-        key: 6,
-    },
 ];
+
 export const DBOT_ONBOARDING_MOBILE = [
     {
         header: localize('Get started on DBot'),

@@ -92,6 +92,7 @@ const TourSlider = ({
                 setContent(data?.content);
                 setheader(data?.header);
                 setimg(data?.img);
+                setStepKey(data?.step_key);
             }
         });
         if (has_started_bot_builder_tour) {
@@ -109,17 +110,6 @@ const TourSlider = ({
                     break;
             }
         }
-    }, [step]);
-
-    React.useEffect(() => {
-        Object.values(!has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE).forEach(data => {
-            if (data.key === step) {
-                setContent(data?.content);
-                setheader(data?.header);
-                setimg(data?.img);
-                setStepKey(data?.step_key);
-            }
-        });
     }, [step]);
 
     const onChange = React.useCallback(
@@ -189,18 +179,17 @@ const TourSlider = ({
                     <>
                         {slider_content.map(data => {
                             return (
-                                <span key={data}>
-                                    <Text
-                                        align='center'
-                                        color='prominent'
-                                        className='dbot-slider__content'
-                                        as='div'
-                                        line_height='s'
-                                        size='xxs'
-                                    >
-                                        {localize(data)}
-                                    </Text>
-                                </span>
+                                <Text
+                                    key={data}
+                                    align='center'
+                                    color='prominent'
+                                    className='dbot-slider__content'
+                                    as='div'
+                                    line_height='s'
+                                    size='xxs'
+                                >
+                                    {localize(data)}
+                                </Text>
                             );
                         })}
                     </>

@@ -265,7 +265,7 @@ export default class DashboardStore implements IDashboardStore {
             this.onCloseTour();
             this.setTourEnd(tour_type);
         }
-        if (!has_started_onboarding_tour && step === 6) {
+        if (!has_started_onboarding_tour && step === 3) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
         }

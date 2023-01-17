@@ -76,7 +76,7 @@ const MobileDialog = props => {
             }}
             unmountOnExit
         >
-            <div className='dc-mobile-dialog' onClick={handleClick}>
+            <div data-testid='dt_mobile_dialog' className='dc-mobile-dialog' onClick={handleClick}>
                 <Div100vhContainer
                     className={classNames('dc-mobile-dialog__container', {
                         'dc-mobile-dialog__container--has-scroll': props.has_content_scroll,

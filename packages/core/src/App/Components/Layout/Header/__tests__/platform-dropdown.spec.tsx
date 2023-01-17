@@ -1,38 +1,88 @@
-// TODO refactor old tests in this component
-import { render } from '@testing-library/react';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { PlatformDropdown, PlatformBox } from '../platform-dropdown';
 
-const mockFunction = jest.fn();
+type TMockPlatformDropdown = {
+    platform_config: {
+        link_to?: string;
+        href?: string;
+        name: string;
+        title: () => string;
+        description: () => string;
+    }[];
+};
 
-describe('PlatformDropdown', () => {
-    // const portalRoot = global.document.createElement('div');
-    // portalRoot.setAttribute('id', 'deriv_app');
-    // const body = global.document.querySelector('body');
-    // body.appendChild(portalRoot);
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect:
+        () =>
+        <T,>(Component: T) =>
+            Component,
+}));
 
-    const platform_config = [
-        {
-            link_to: '/',
-            name: 'DTrader',
-        },
-    ];
+const MockPlatformDropdown = ({ platform_config }: TMockPlatformDropdown) => {
+    return (
+        <BrowserRouter>
+            <PlatformDropdown
+                platform_config={platform_config}
+                app_routing_history={[{ pathname: '' }]}
+                closeDrawer={jest.fn()}
+            />
+        </BrowserRouter>
+    );
+};
 
-    it('should render one <PlatformDropdown /> component', () => {
-        // render(
-        //     <PlatformDropdown app_routing_history={{}} closeDrawer={mockFunction} platform_config={platform_config} />
-        // );
-        // const wrapper = shallow(<PlatformDropdown platform_config={platform_config} />);
-        // expect(wrapper).toHaveLength(1);
+describe('PlatformBox component', () => {
+    it('should render "title", "icon" and "description"', () => {
+        const platform = {
+            icon: 'test',
+            title: () => 'test title',
+            description: () => 'test description',
+        };
+        render(<PlatformBox platform={platform} />);
+        const icon = screen.getByTestId('dt_platform_box_icon');
+        const title = screen.getByText('test title');
+        const description = screen.getByText('test description');
+        expect(icon).toBeInTheDocument();
+        expect(title).toBeInTheDocument();
+        expect(description).toBeInTheDocument();
     });
+});
 
-    // it('should not have .platform-dropdown__list-platform if platform_config is an empty array', () => {
-    //     const wrapper = shallow(<PlatformDropdown platform_config={[]} />);
-    //     expect(wrapper.find('.platform-dropdown__list-platform').exists()).toBe(false);
-    // });
+describe('PlatformDropdown component', () => {
+    beforeAll(() => (ReactDOM.createPortal = jest.fn(element => element)));
+    afterEach(() => ReactDOM.createPortal.mockClear());
 
-    // it('should not contain <PlatformBox /> if platform_config is an empty array', () => {
-    //     const wrapper = shallow(<PlatformDropdown platform_config={[]} />);
-    //     expect(wrapper.find(PlatformBox)).toHaveLength(0);
-    // });
+    it('should render proper component base on the "link_to" property', () => {
+        const { rerender } = render(
+            <MockPlatformDropdown
+                platform_config={[
+                    {
+                        link_to: '/test',
+                        name: 'DTrader',
+                        title: () => 'test title',
+                        description: () => 'test description',
+                    },
+                ]}
+            />
+        );
+        expect(screen.getByTestId('dt_platform_dropdown')).toBeInTheDocument();
+
+        rerender(
+            <MockPlatformDropdown
+                platform_config={[
+                    {
+                        href: '/test',
+                        name: 'DTrader',
+                        title: () => 'test title',
+                        description: () => 'test description',
+                    },
+                ]}
+            />
+        );
+        expect(screen.getByTestId('dt_platform_dropdown_link')).toBeInTheDocument();
+    });
 });

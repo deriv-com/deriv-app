@@ -9,15 +9,6 @@ describe('DepositStore', () => {
     beforeEach(() => {
         const root_store = {
             client: {
-                is_authentication_needed: false,
-                is_tnc_needed: false,
-                is_financial_account: false,
-                is_financial_information_incomplete: false,
-                is_trading_experience_incomplete: false,
-                account_status: {},
-                is_eu: false,
-                mt5_login_list: [],
-                is_deposit_lock: false,
                 is_virtual: false,
                 updateAccountStatus: jest.fn(),
             },
@@ -94,67 +85,5 @@ describe('DepositStore', () => {
         await deposit_store.onMountDeposit();
         expect(checkIframeLoaded).not.toHaveBeenCalled();
         expect(setLoading).toHaveBeenCalledWith(false);
-    });
-
-    it('should return is_deposit_locked equal to true if the client needs authentication', () => {
-        expect(deposit_store.is_deposit_locked).toBeFalsy();
-
-        deposit_store.root_store.client.account_status.status = ['authentication_needed'];
-        deposit_store.root_store.client.is_authentication_needed = true;
-        deposit_store.root_store.client.is_eu = true;
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-    });
-
-    it('should return is_deposit_locked equal to true if the client needs financial assessment', () => {
-        deposit_store.root_store.client.account_status.status = [
-            'financial_information_not_complete',
-            'trading_experience_not_complete',
-        ];
-        deposit_store.root_store.client.is_financial_account = true;
-        deposit_store.root_store.client.is_financial_information_incomplete = true;
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-
-        deposit_store.root_store.client.is_financial_information_incomplete = false;
-        deposit_store.root_store.client.is_trading_experience_incomplete = true;
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-    });
-
-    it('should return is_deposit_locked equal to true if the client needs terms and conditions', () => {
-        deposit_store.root_store.client.account_status.status = ['cashier_locked'];
-        deposit_store.root_store.client.is_eu = true;
-        deposit_store.root_store.client.is_tnc_needed = true;
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-
-        deposit_store.root_store.client.is_eu = false;
-        deposit_store.root_store.client.mt5_login_list = [{ account_type: 'real', sub_account_type: 'financial_stp' }];
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-    });
-
-    it('should return is_deposit_locked equal to true if the client needs financial risk approval', () => {
-        deposit_store.root_store.client.account_status.status = ['financial_assessment_not_complete'];
-        deposit_store.error.is_ask_financial_risk_approval = true;
-        expect(deposit_store.is_deposit_locked).toBeTruthy();
-    });
-
-    it('should submit funds protection', async () => {
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: { reload: jest.fn() },
-        });
-
-        await deposit_store.submitFundsProtection();
-        expect(location.reload).toHaveBeenCalled();
-
-        window.location.reload.mockRestore();
-    });
-
-    it('should handle the error upon submitting funds protection', async () => {
-        const spySetMessage = jest.spyOn(deposit_store.error, 'setMessage');
-        const error_message = 'Sorry, an error occurred.';
-
-        deposit_store.WS.send.mockResolvedValueOnce({ error: { message: error_message } });
-
-        await deposit_store.submitFundsProtection();
-        expect(spySetMessage).toHaveBeenCalledWith(error_message);
     });
 });

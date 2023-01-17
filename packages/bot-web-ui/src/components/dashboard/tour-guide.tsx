@@ -8,17 +8,11 @@ type TTourGuide = {
     content: string[];
     img?: string;
     label: string | boolean;
-    setOnBoardTourRunState: (param: boolean) => void;
-    setTourActive: (param: boolean) => void;
+    onCloseTour: () => void;
     step_index: number;
 };
 
-const TourGuide = ({ content, img, label, setOnBoardTourRunState, setTourActive, step_index }: TTourGuide) => {
-    const onCloseTour = () => {
-        setOnBoardTourRunState(false);
-        setTourActive(false);
-    };
-
+const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide) => {
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {
@@ -72,4 +66,5 @@ const TourGuide = ({ content, img, label, setOnBoardTourRunState, setTourActive,
 export default connect(({ dashboard }: RootStore) => ({
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
     setTourActive: dashboard.setTourActive,
+    onCloseTour: dashboard.onCloseTour,
 }))(TourGuide);

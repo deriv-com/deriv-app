@@ -26,7 +26,7 @@ const NoAds = () => {
                         size='s'
                         weight='bold'
                     >
-                        <Localize i18n_default_text='No ads here at the moment 😞' />
+                        <Localize i18n_default_text='No ads for this currency 😞' />
                     </Text>
                     <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />

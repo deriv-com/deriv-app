@@ -51,9 +51,9 @@ export class ChartBarrierStore {
         this.onChartBarrierChange =
             typeof onChartBarrierChange === 'function' ? onChartBarrierChange.bind(this) : () => {};
 
-        this.high = +high_barrier || 0; // 0 to follow the price
+        this.high = high_barrier || 0; // 0 to follow the price
         if (low_barrier) {
-            this.low = +low_barrier;
+            this.low = low_barrier;
         }
 
         this.shade = this.default_shade;
@@ -68,8 +68,8 @@ export class ChartBarrierStore {
         if (!isFromChart) {
             this.relative = /^[+-]/.test(high);
         }
-        this.high = +high || undefined;
-        this.low = +low || undefined;
+        this.high = high || undefined;
+        this.low = low || undefined;
     }
 
     updateBarrierShade(should_display, contract_type) {

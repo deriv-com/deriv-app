@@ -14,11 +14,13 @@ const BinaryRoutes = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
+    const is_eu_country = props.isEuropeCountry;
+
     return (
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig({ is_appstore }).map((route, idx) => (
+                {getRoutesConfig({ is_appstore, is_eu_country }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
@@ -26,8 +28,9 @@ const BinaryRoutes = props => {
     );
 };
 
-export default connect(({ ui, gtm }) => ({
+export default connect(({ ui, gtm, client }) => ({
     prompt_when: ui.prompt_when,
     promptFn: ui.promptFn,
     pushDataLayer: gtm.pushDataLayer,
+    isEuropeCountry: client.isEuropeCountry,
 }))(BinaryRoutes);

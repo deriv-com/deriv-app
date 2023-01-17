@@ -25,6 +25,20 @@ type TOptionsAccountsProps = {
     accountType: string;
 };
 
+type TAccount = {
+    // TODO: Replace with the one from client store when it's migrated to TS
+    account_type: string;
+    balance: number;
+    created_at: number;
+    currency: string;
+    excluded_until: string;
+    is_disabled: number;
+    is_virtual: number;
+    landing_company_name: string;
+    landing_company_shortcode: string;
+    token: string;
+};
+
 const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComponentProps> = props => {
     const { client, ui } = useStores();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
@@ -73,6 +87,11 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
         await switchAccount(loginid_selected);
     };
 
+    const canResetBalance = (account: TAccount) => {
+        const account_init_balance = 10000;
+        return !!account.is_virtual && account.balance !== account_init_balance;
+    };
+
     const is_eu_title = is_eu ? 'Multipliers' : 'Options and Multipliers';
 
     const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
@@ -101,7 +120,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                     ) : (
                         <Localize
                             key={1}
-                            i18n_default_text='Earn fixed payouts by predicting price movements with <0>Options</0>, or combine the upside of CFDs with the simplicity of Options with <1>Multipliers</1>.'
+                            i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
                             components={[
                                 <StaticUrl key={0} className='link' href='trade-types/options/' />,
                                 <StaticUrl key={1} className='link' href='trade-types/multiplier/' />,
@@ -126,7 +145,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                             currency_icon={`IcCurrency-${account.icon}`}
                                             display_type={'currency'}
                                             has_balance={'balance' in accounts[account.loginid]}
-                                            has_reset_balance={accounts[account.loginid].is_virtual}
+                                            has_reset_balance={canResetBalance(accounts[account.loginid])}
                                             is_disabled={account.is_disabled}
                                             is_virtual={account.is_virtual}
                                             loginid_text={account.loginid}
@@ -257,9 +276,6 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                 />
                             </div>
                         )}
-                        {!has_any_real_account && (
-                            <span className='options-accounts-container__appLauncher--account--divider' />
-                        )}
                     </React.Fragment>
                 ) : (
                     <Loading
@@ -321,7 +337,14 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                     ))}
                 </MobileDialog>
             </div>
-            <div className='options-accounts-container__platformLauncher'>
+            {!has_any_real_account && props.accountType === 'real' && (
+                <hr className='options-accounts-container__divider' />
+            )}
+            <div
+                className={`options-accounts-container__platformLauncher${
+                    has_any_real_account || props.accountType === 'demo' ? '' : '--applauncher'
+                }`}
+            >
                 {props.platformlauncherprops.map((item, index) => {
                     return (
                         <div className='options-accounts-container__platformLauncher--item' key={item.app_title}>

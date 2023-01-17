@@ -1,4 +1,4 @@
-export type TReactChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type TReactChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 export type TReactChildren = React.ReactNode;
 

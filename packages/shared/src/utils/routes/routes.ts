@@ -3,11 +3,13 @@ import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
 export const routes = {
     error404: '/404',
     account: '/account',
+    trading_assessment: '/account/trading-assessment',
     languages: '/account/languages',
     financial_assessment: '/account/financial-assessment',
     personal_details: '/account/personal-details',
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
+    proof_of_ownership: '/account/proof-of-ownership',
     passwords: '/account/passwords',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
@@ -59,6 +61,6 @@ export const routes = {
 
     // Appstore
     appstore: '/appstore',
-    trading_hub: '/appstore/trading-hub',
+    trading_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
 };

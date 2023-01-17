@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
-import { StoreProvider } from '../../../../hooks';
 
 describe('<CryptoWithdrawReceipt />', () => {
     let mockRootStore;

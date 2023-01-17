@@ -35,18 +35,17 @@
                     max-width: 100%;
                 }
                 &__add-derived {
-                    margin-top: 1.4rem;
+                    margin-bottom: 2.4rem;
                 }
                 .existing-accounts,
                 .available-accounts {
                     display: flex;
                     flex-direction: column;
-                    gap: 1.6rem;
                 }
             }
             @include mobile {
                 flex-direction: column;
-                gap: 3.6rem;
+                gap: 0;
             }
         }
     }
@@ -1081,7 +1080,12 @@
         }
         &-wrapper {
             overflow: scroll;
+            width: inherit;
         }
+    }
+    &__mobile-title {
+        text-align: left;
+        margin: 0 2.4rem;
     }
 }
 
@@ -1805,7 +1809,6 @@
     }
     .cfd-account__platform {
         font-style: italic;
-        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {

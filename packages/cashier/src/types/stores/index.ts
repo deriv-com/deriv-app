@@ -1,4 +1,3 @@
-export * from './client-store.types';
-export * from './common-store.types';
-export * from './root-store.types';
-export * from './ui-store.types';
+import { useStore } from '@deriv/stores';
+
+export type TRootStore = ReturnType<typeof useStore>;

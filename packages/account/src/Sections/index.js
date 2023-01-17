@@ -1,9 +1,11 @@
 import Passwords from 'Sections/Security/Passwords';
 import AccountLimits from 'Sections/Security/AccountLimits';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
-import FinancialAssessment from 'Sections/Profile/FinancialAssessment';
+import TradingAssessment from 'Sections/Assessment/TradingAssessment';
+import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
+import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
@@ -19,9 +21,11 @@ export {
     AccountLimits,
     Passwords,
     PersonalDetails,
+    TradingAssessment,
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfOwnership,
     TwoFactorAuthentication,
     ApiToken,
     SelfExclusion,

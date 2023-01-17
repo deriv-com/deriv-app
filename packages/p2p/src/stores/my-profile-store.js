@@ -21,7 +21,7 @@ export default class MyProfileStore extends BaseStore {
     is_cancel_edit_payment_method_modal_open = false;
     is_confirm_delete_modal_open = false;
     is_delete_payment_method_error_modal_open = false;
-    is_loading = true;
+    is_loading = false;
     is_submit_success = false;
     payment_method_value = undefined;
     payment_methods_list = [];
@@ -38,6 +38,9 @@ export default class MyProfileStore extends BaseStore {
     should_show_add_payment_method_error_modal = false;
     should_show_add_payment_method_form = false;
     should_show_edit_payment_method_form = false;
+
+    // TODO: Refactor this out once modal management refactoring is completed
+    MODAL_TRANSITION_DURATION = 280;
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call

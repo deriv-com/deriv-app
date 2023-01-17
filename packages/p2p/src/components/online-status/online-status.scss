@@ -1,0 +1,42 @@
+.online-status {
+    &__icon {
+        width: 1rem;
+        height: 1rem;
+        margin: auto 0.5rem auto 0rem;
+        border-radius: 50%;
+
+        @include mobile {
+            width: 0.8rem;
+            height: 0.8rem;
+        }
+
+        &--online {
+            background: var(--text-profit-success);
+        }
+        &--offline {
+            background: var(--checkbox-disabled-grey);
+        }
+    }
+
+    &__avatar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        height: fit-content;
+
+        &-text {
+            position: absolute;
+        }
+
+        & .online-status__icon {
+            position: absolute;
+            bottom: -0.1px;
+            right: -0.1px;
+            margin: 0;
+            border-radius: 50%;
+            transform: scale(1.1);
+        }
+    }
+}

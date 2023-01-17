@@ -298,7 +298,7 @@ const MT5TradeModal = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_open}
-                    title='Trade'
+                    title={localize('Trade')}
                     toggleModal={toggleModal}
                     should_header_stick_body={false}
                     width='600px'
@@ -310,11 +310,11 @@ const MT5TradeModal = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
-                    className='cfd-trade-modal__mobile-view'
                     is_open={is_open}
                     portal_id='deriv_app'
                     header='Trade'
                     onClickClose={toggleModal}
+                    header_classname='cfd-trade-modal__mobile-title'
                 >
                     <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
                         {getPageContent()}

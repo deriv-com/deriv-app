@@ -40,7 +40,7 @@ const AddOptions = ({ number_of_accounts, title, description, is_mf }: TAddOptio
                                     height={getHeightWidthOfIcon().height}
                                 />
                             )}
-                            <Text weight='bold' size='xxs' line_height='l'>
+                            <Text weight='bold' size='xs' line_height='l'>
                                 <Localize i18n_default_text={title} />
                             </Text>
                         </div>

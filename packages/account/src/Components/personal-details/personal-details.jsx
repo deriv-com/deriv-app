@@ -21,8 +21,10 @@ import {
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
+import classNames from 'classnames';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>
@@ -58,7 +60,7 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength={props.maxLength || '30'}
+                maxLength={props.maxLength || 30}
                 error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}
@@ -161,7 +163,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form
@@ -256,7 +258,7 @@ const PersonalDetails = ({
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
-                                                hint={getFieldHint('first name')}
+                                                hint={getFieldHint(localize('first name'))}
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'
@@ -267,7 +269,7 @@ const PersonalDetails = ({
                                                 name='last_name'
                                                 required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
-                                                hint={getFieldHint('last name')}
+                                                hint={getFieldHint(localize('last name'))}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                                 data-testid='last_name'
@@ -283,7 +285,7 @@ const PersonalDetails = ({
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
-                                                hint={getFieldHint('date of birth')}
+                                                hint={getFieldHint(localize('date of birth'))}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}
@@ -537,6 +539,44 @@ const PersonalDetails = ({
                                                 )}
                                                 {warning_items?.tax_identification_number && (
                                                     <div className='details-form__tin-warn-divider' />
+                                                )}
+                                                {'employment_status' in props.value && (
+                                                    <fieldset
+                                                        className={classNames('account-form__fieldset', 'emp-status')}
+                                                    >
+                                                        <DesktopWrapper>
+                                                            <Dropdown
+                                                                placeholder={localize('Employment status')}
+                                                                is_align_text_left
+                                                                name='employment_status'
+                                                                list={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                name='employment_status'
+                                                                label={localize('Employment status')}
+                                                                list_items={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                                onChange={e => {
+                                                                    setFieldTouched('employment_status', true);
+                                                                    handleChange(e);
+                                                                }}
+                                                            />
+                                                        </MobileWrapper>
+                                                    </fieldset>
                                                 )}
                                                 {'tax_identification_confirm' in props.value && (
                                                     <Checkbox

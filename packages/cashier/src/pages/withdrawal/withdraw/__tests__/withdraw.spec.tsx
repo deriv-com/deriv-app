@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import Withdraw from '../withdraw';
-import { StoreProvider } from '../../../../hooks';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 

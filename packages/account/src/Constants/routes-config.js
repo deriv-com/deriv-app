@@ -5,9 +5,11 @@ import {
     AccountLimits,
     Passwords,
     PersonalDetails,
+    TradingAssessment,
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfOwnership,
     ApiToken,
     TwoFactorAuthentication,
     SelfExclusion,
@@ -54,6 +56,17 @@ const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
                         getTitle: () => localize('Personal details'),
                         default: true,
                     },
+                ],
+            },
+            {
+                getTitle: () => localize('Assessments'),
+                icon: 'IcAssessment',
+                subroutes: [
+                    {
+                        path: routes.trading_assessment,
+                        component: TradingAssessment,
+                        getTitle: () => localize('Trading assessment'),
+                    },
                     {
                         path: routes.financial_assessment,
                         component: FinancialAssessment,
@@ -83,6 +96,11 @@ const initRoutesConfig = ({ is_appstore, is_pre_appstore }) => [
                         path: routes.proof_of_address,
                         component: ProofOfAddress,
                         getTitle: () => localize('Proof of address'),
+                    },
+                    {
+                        path: routes.proof_of_ownership,
+                        component: ProofOfOwnership,
+                        getTitle: () => localize('Proof of ownership'),
                     },
                 ],
             },

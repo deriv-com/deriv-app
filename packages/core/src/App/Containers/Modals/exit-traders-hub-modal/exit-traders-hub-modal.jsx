@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes, ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const ExitTradersHubModal = ({
@@ -11,6 +11,8 @@ const ExitTradersHubModal = ({
     is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal,
     setIsPreAppStore,
+    switchToCRAccount,
+    content_flag,
 }) => {
     const history = useHistory();
 
@@ -37,9 +39,13 @@ const ExitTradersHubModal = ({
         toggleExitTradersHubModal();
     };
 
-    const onClickExitButton = () => {
+    const onClickExitButton = async () => {
         toggleExitTradersHubModal();
         setIsPreAppStore(false);
+        if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+            //if eu is currently selected , switch to non-eu on exiting tradershub
+            await switchToCRAccount();
+        }
         history.push(routes.root);
     };
     return (
@@ -75,10 +81,12 @@ const ExitTradersHubModal = ({
     );
 };
 
-export default connect(({ ui, client }) => ({
+export default connect(({ ui, client, traders_hub }) => ({
     setIsPreAppStore: client.setIsPreAppStore,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    content_flag: traders_hub.content_flag,
+    switchToCRAccount: traders_hub.switchToCRAccount,
 }))(ExitTradersHubModal);

@@ -39,7 +39,7 @@
         "mobx-react-lite": "^3.4.0",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
-        "react": "^16.14.0",
+        "react": "^17.0.2",
         "react-router": "^5.2.0",
         "react-joyride": "^2.5.3",
         "react-router-dom": "^5.2.0"

@@ -1,31 +1,29 @@
-// TODO refactor old tests in this component
 import React from 'react';
-// import { fake } from 'sinon';
+import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import TogglePositions from '../toggle-positions.jsx';
-import { Icon } from '@deriv/components';
 
-// configure({ adapter: new Adapter() });
-
-describe('TogglePositions', () => {
-    it('should render one <TogglePositions /> component', () => {
-        //     const wrapper = shallow(<TogglePositions is_open={true} />);
+describe('TogglePositions component', () => {
+    it('should have "positions-toggle--active" class when "is_open" is "true"', () => {
+        render(<TogglePositions is_open />);
+        expect(screen.getByTestId('dt_positions_toggle')).toHaveClass('positions-toggle--active');
     });
-    // it('should have active class when is_positions_drawer_on is true', () => {
-    //     const wrapper = shallow(<TogglePositions is_open={true} />);
-    //     expect(wrapper.find('.positions-toggle--active').exists()).toBe(true);
-    // });
-    // it('should not have active class when is_positions_drawer_on is false', () => {
-    //     const wrapper = shallow(<TogglePositions is_open={false} />);
-    //     expect(wrapper.find('.positions-toggle--active').exists()).toBe(false);
-    // });
-    // it("should contain <Icon icon='IcPortfolio' />", () => {
-    //     const wrapper = shallow(<TogglePositions />);
-    //     expect(wrapper.contains(<Icon icon='IcPortfolio' className='positions-toggle__icon' />)).toBe(true);
-    // });
-    // it('should call twDrawer passed onClick', () => {
-    //     const callback = fake();
-    //     const wrapper = shallow(<TogglePositions togglePositions={callback} />);
-    //     wrapper.prop('onClick')();
-    //     expect(callback.toBeCalled()).toBe(true);
-    // });
+
+    it('should have "positions-toggle--has-count" class when "positions_count > 0"', () => {
+        render(<TogglePositions positions_count={4} />);
+        expect(screen.getByTestId('dt_positions_toggle')).toHaveClass('positions-toggle--has-count');
+    });
+
+    it('should call "togglePositions" when the user clicked on the link', () => {
+        const mockTogglePositions = jest.fn();
+        render(<TogglePositions togglePositions={mockTogglePositions} />);
+        const link = screen.getByTestId('dt_positions_toggle');
+        userEvent.click(link);
+        expect(mockTogglePositions).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render "IcPortfolio" icon', () => {
+        render(<TogglePositions />);
+        expect(screen.getByTestId('dt_icon')).toBeVisible();
+    });
 });

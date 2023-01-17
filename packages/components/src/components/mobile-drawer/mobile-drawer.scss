@@ -1,10 +1,36 @@
 /* @define dc-mobile-drawer; weak */
+@keyframes openDrawer {
+    0% {
+        transform: translateX(-100%);
+    }
+    60%,
+    100% {
+        transform: translateX(0);
+    }
+    80% {
+        transform: translateX(-5%);
+    }
+}
+
+@keyframes closeDrawer {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 .dc-mobile-drawer {
     position: absolute;
     top: 0;
     left: 0;
     will-change: transform;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(-100%);
+    animation-name: openDrawer;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    z-index: 10000;
 
     &__container {
         display: flex;
@@ -54,6 +80,7 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
+            transition: all 0.2s;
         }
     }
     &__subheader {
@@ -189,8 +216,11 @@
             border-top: 1px solid var(--general-section-2);
         }
     }
-    &__wrapper {
+    &__overlay {
         z-index: 9999 !important;
         background-color: var(--overlay-outside-dialog) !important;
+    }
+    &.exit {
+        animation: closeDrawer 0.3s;
     }
 }

@@ -133,6 +133,7 @@ const DataList = React.memo(
         }
         return (
             <div
+                data-testid='dt_data_list'
                 className={classNames(className, 'data-list', {
                     [`${className}__data-list`]: className,
                 })}

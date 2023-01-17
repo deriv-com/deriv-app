@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
-import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
+import { isCryptocurrency, isEmptyObject, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import CashierNotifications from 'Components/cashier-notifications';
@@ -20,7 +20,6 @@ export default class GeneralStore extends BaseStore {
             is_cashier_onboarding: observable,
             deposit_target: observable,
             should_set_currency_modal_title_change: observable,
-            p2p_advertiser_error: observable,
             has_set_currency: observable,
             should_percentage_reset: observable,
             percentage: observable,
@@ -46,8 +45,6 @@ export default class GeneralStore extends BaseStore {
             continueRoute: action.bound,
             setAccountSwitchListener: action.bound,
             init: action.bound,
-            getAdvertizerError: action.bound,
-            setP2pAdvertiserError: action.bound,
             checkP2pStatus: action.bound,
             setP2pCompletedOrders: action.bound,
             getP2pCompletedOrders: action.bound,
@@ -97,7 +94,6 @@ export default class GeneralStore extends BaseStore {
     is_cashier_onboarding = true;
     deposit_target = '';
     should_set_currency_modal_title_change = false;
-    p2p_advertiser_error = undefined;
     has_set_currency = false;
     should_percentage_reset = false;
     percentage = 0;
@@ -143,13 +139,15 @@ export default class GeneralStore extends BaseStore {
     showP2pInCashierOnboarding() {
         const { account_list, is_virtual } = this.root_store.client;
 
-        const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
+        const website_status = this.WS.wait('website_status');
+
+        const is_p2p_disabled = website_status?.website_status?.p2p_config?.disabled;
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
             account => !isCryptocurrency(account.title) && account.title !== 'Real'
         );
 
-        if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
+        if (is_p2p_disabled || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
             this.show_p2p_in_cashier_onboarding = false;
         } else {
             this.show_p2p_in_cashier_onboarding = true;
@@ -283,7 +281,6 @@ export default class GeneralStore extends BaseStore {
             await this.WS.wait('get_settings');
 
             if (is_logged_in) {
-                await this.getAdvertizerError();
                 if (!switched) {
                     this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
@@ -298,19 +295,10 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    async getAdvertizerError() {
-        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
-    }
-
-    setP2pAdvertiserError(value) {
-        this.p2p_advertiser_error = value;
-    }
-
     checkP2pStatus() {
-        const advertiser_error = this.p2p_advertiser_error;
-        const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-        this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
+        const website_status = this.WS.wait('website_status');
+        const is_p2p_disabled = website_status?.website_status?.p2p_config?.disabled;
+        this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
     }
 
     setP2pCompletedOrders(p2p_completed_orders) {

@@ -22,7 +22,8 @@ const BinarySocketGeneral = (() => {
                 client_store.logout();
                 return;
             }
-            WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+            // Waiting for authorize call to be completed so BE can use residence instead of IP
+            WS.wait('authorize').then(() => WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus));
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -187,7 +188,6 @@ const BinarySocketGeneral = (() => {
                         'trading_platform_password_reset',
                         'trading_platform_investor_password_reset',
                         'new_account_virtual',
-                        'p2p_advertiser_info',
                         'portfolio',
                         'proposal_open_contract',
                         'change_email',

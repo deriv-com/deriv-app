@@ -3,12 +3,12 @@ import RootStore from 'Stores/index';
 import { Tabs, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import GuideContent from './guide-content';
-import FAQContent from './faq-content';
 import debounce from 'lodash.debounce';
-import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
+import GuideContent from './guide-content';
+import FAQContent from './faq-content';
+import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
 type TSidebarProps = {
     active_tab_tutorials: number;

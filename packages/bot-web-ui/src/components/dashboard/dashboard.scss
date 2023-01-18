@@ -597,7 +597,8 @@
         top: -5rem;
         left: 20rem;
         @include mobile {
-            top: -8rem;
+            top: -12rem;
+            left: 10rem;
         }
     }
 }
@@ -622,4 +623,15 @@
     animation: blink 1.25s ease-in infinite;
     border-radius: $BORDER-RADIUS * 12.5;
     padding: 1rem 0;
+}
+
+.import-notification {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    bottom: 6rem;
+
+    .dc-toast__message {
+        background: var(--text-prominent);
+    }
 }

@@ -387,11 +387,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-
-                @include mobile {
-                    flex-wrap: wrap;
-                }
-
                 &--minimized {
                     align-items: flex-start;
                 }

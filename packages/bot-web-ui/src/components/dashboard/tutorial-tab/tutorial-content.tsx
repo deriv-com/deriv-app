@@ -10,12 +10,12 @@ export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TContent = {
-    description: TDescription[];
     content?: string;
-    src?: string;
-    title: string;
-    subtype?: string;
+    description: TDescription[];
     id: number;
+    src?: string;
+    subtype?: string;
+    title: string;
     type: string;
     url?: string;
 };
@@ -40,7 +40,7 @@ export const guide_content: TGuideContent[] = [
     {
         id: 1,
         type: 'DBotVideo',
-        content: localize('DBot -- your automated trading partner'),
+        content: localize('DBot - your automated trading partner'),
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: getImageLocation('video_dbot.webp'),
     },

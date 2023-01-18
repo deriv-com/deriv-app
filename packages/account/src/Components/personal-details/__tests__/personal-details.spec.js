@@ -396,7 +396,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).toBeDisabled();
+        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
         expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is empty, so enable the field
     });
 

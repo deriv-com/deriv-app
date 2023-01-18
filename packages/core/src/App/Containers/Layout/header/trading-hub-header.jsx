@@ -28,9 +28,7 @@ export const TradersHubHomeButton = () => {
             className={classNames('trading-hub-header__tradershub', {
                 'trading-hub-header__tradershub--active': pathname === routes.traders_hub,
             })}
-            onClick={() => {
-                history.push(routes.traders_hub);
-            }}
+            onClick={() => history.push(routes.traders_hub)}
         >
             <div className='trading-hub-header__tradershub--home-logo'>
                 <Icon icon='IcAppstoreTradersHubHome' size={17} />

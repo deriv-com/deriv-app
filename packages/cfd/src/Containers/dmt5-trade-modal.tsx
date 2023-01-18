@@ -1,20 +1,16 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import {
-    TAccountIconValues,
-    TPasswordBoxProps,
-    TTradingPlatformAccounts,
-    TCFDDashboardContainer,
-} from '../Components/props.types';
+import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase, getCFDAccountKey } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
-    is_eu_user: boolean;
+    show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -29,14 +25,6 @@ type TMT5TradeModalProps = {
 export type TSpecBoxProps = {
     value: string | undefined;
     is_bold?: boolean;
-};
-
-const account_icons: { [key: string]: TAccountIconValues } = {
-    mt5: {
-        synthetic: 'IcMt5SyntheticPlatform',
-        financial: 'IcMt5FinancialPlatform',
-        cfd: 'IcMt5CfdPlatform',
-    },
 };
 
 const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
@@ -88,12 +76,17 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     </div>
 );
 
-const getTitle = (market_type: string, is_eu_user: boolean) => {
-    if (is_eu_user) localize('MT5 CFDs');
+const getTitle = (market_type: string, show_eu_related_content: boolean) => {
+    if (show_eu_related_content) localize('MT5 CFDs');
     return market_type;
 };
 
-const DMT5TradeModal = ({ mt5_trade_account, is_eu_user, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
+const DMT5TradeModal = ({
+    mt5_trade_account,
+    show_eu_related_content,
+    onPasswordManager,
+    toggleModal,
+}: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
             (mt5_trade_account.account_type === 'demo' &&
@@ -111,15 +104,19 @@ const DMT5TradeModal = ({ mt5_trade_account, is_eu_user, onPasswordManager, togg
             market_type: mt5_trade_account.market_type,
             sub_account_type: mt5_trade_account.sub_account_type,
             platform: CFD_PLATFORMS.MT5,
-            is_eu: is_eu_user,
+            is_eu: show_eu_related_content,
             shortcode: getCompanyShortcode(),
             is_mt5_trade_modal: true,
         });
-
+    const getAccountIcon = () => {
+        if (show_eu_related_content) return 'CFDs';
+        else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
+        return 'Financial';
+    };
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                <Icon icon={account_icons.mt5[is_eu_user ? 'cfd' : mt5_trade_account.market_type]} size={24} />
+                <TradingPlatformIcon icon={getAccountIcon()} size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                         {getHeadingTitle()}
@@ -168,7 +165,7 @@ const DMT5TradeModal = ({ mt5_trade_account, is_eu_user, onPasswordManager, togg
                                 });
                                 onPasswordManager(
                                     mt5_trade_account?.login,
-                                    getTitle(mt5_trade_account.market_type, is_eu_user),
+                                    getTitle(mt5_trade_account.market_type, show_eu_related_content),
                                     mt5_trade_account.account_type,
                                     account_type,
                                     (mt5_trade_account as DetailsOfEachMT5Loginid)?.server

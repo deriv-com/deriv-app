@@ -33,6 +33,7 @@ import SuccessDialog from '../Components/success-dialog';
 import 'Sass/cfd.scss';
 import { connect } from '../Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -211,14 +212,14 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
 
     switch (type) {
         case 'synthetic':
-            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            return <TradingPlatformIcon icon='Derived' size={128} />;
         case 'financial':
             if (show_eu_related_content) {
-                return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                return <TradingPlatformIcon icon='CFDs' size={128} />;
             }
-            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+            return <TradingPlatformIcon icon='Financial' size={128} />;
         default:
-            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
+            return <TradingPlatformIcon icon='Financial' size={128} />;
     }
 });
 IconType.displayName = 'IconType';
@@ -491,9 +492,10 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
                                 {props.account_type.category === 'real' && (
                                     <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
+                                            platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: !props.show_eu_related_content ? props.account_title : '',
                                             jurisdiction_shortcode: !props.show_eu_related_content
                                                 ? getFormattedJurisdictionCode(props.jurisdiction_selected_shortcode)
@@ -503,9 +505,10 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                 )}
                                 {props.account_type.category === 'demo' && (
                                     <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
+                                            platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: props.account_title,
                                         }}
                                     />
@@ -778,7 +781,7 @@ const CFDPasswordModal = ({
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                            platform: getCFDPlatformLabel(platform),
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',

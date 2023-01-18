@@ -161,6 +161,9 @@ const DMT5CompareModalContent = ({
     trading_platform_available_accounts,
     upgradeable_landing_companies,
     updateMT5Status,
+    no_CR_account,
+    is_eu_user,
+    no_MF_account,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -358,8 +361,16 @@ const DMT5CompareModalContent = ({
         });
 
     const onButtonClick = (item: TCompareAccountFooterButtonData) => {
+        const if_no_corresponding_real_account = is_pre_appstore_setting
+            ? (no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)
+            : has_real_account;
+
         const should_show_missing_real_account =
-            is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0 && is_real_enabled;
+            is_logged_in &&
+            if_no_corresponding_real_account &&
+            upgradeable_landing_companies?.length > 0 &&
+            is_real_enabled;
+
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
             if (real_account_creation_unlock_date) {
@@ -521,7 +532,7 @@ const DMT5CompareModalContent = ({
     );
 };
 
-export default connect(({ modules, client, common, ui }: RootStore) => ({
+export default connect(({ modules, client, common, ui, traders_hub }: RootStore) => ({
     account_settings: client.account_settings,
     account_status: client.account_status,
     account_type: modules.cfd.account_type,
@@ -540,4 +551,7 @@ export default connect(({ modules, client, common, ui }: RootStore) => ({
     updateMT5Status: client.updateMT5Status,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
     setAppstorePlatform: common.setAppstorePlatform,
+    no_CR_account: traders_hub.no_CR_account,
+    is_eu_user: traders_hub.is_eu_user,
+    no_MF_account: traders_hub.no_MF_account,
 }))(DMT5CompareModalContent);

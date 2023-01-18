@@ -33,7 +33,6 @@ import Divider from 'Components/elements/divider';
 import { TAccountCategory } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './trading-hub.scss';
-import { toJS } from 'mobx';
 
 const TradingHub: React.FC = () => {
     const store = useStores();

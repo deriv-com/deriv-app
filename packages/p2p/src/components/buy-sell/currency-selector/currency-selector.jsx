@@ -48,6 +48,13 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                             onItemSelection={({ value }) => {
                                 if (value) onSelect?.(value);
                             }}
+                            onSearch={(value, list_items) => {
+                                return list_items.filter(
+                                    item =>
+                                        item.display_name.toLowerCase().includes(value) ||
+                                        item.text.toLowerCase().includes(value)
+                                );
+                            }}
                             placeholder={localize('Search')}
                             trailing_icon={
                                 field.value ? (

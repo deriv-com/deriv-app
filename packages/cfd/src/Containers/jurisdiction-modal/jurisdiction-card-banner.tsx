@@ -20,12 +20,15 @@ const VerificationStatusBanner = ({
 }: TVerificationStatusBannerProps) => {
     const {
         poi_not_submitted_for_vanuatu_maltainvest,
-        poi_or_poa_not_submitted,
+        poi_and_poa_not_submitted,
         poi_resubmit_for_vanuatu_maltainvest,
         poi_resubmit_for_bvi_labuan,
         need_poa_resubmission,
         need_poi_for_bvi_labuan,
         poa_pending,
+        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan,
+        poa_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
@@ -94,7 +97,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (poi_or_poa_not_submitted) {
+    } else if (poi_and_poa_not_submitted) {
         // if poi or poa is not submitted
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
@@ -124,7 +127,18 @@ const VerificationStatusBanner = ({
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxs' align='center' color='prominent'>
-                    <Localize i18n_default_text='You will need to submit proof of identity' />
+                    <Localize i18n_default_text='Proof of identity is required' />
+                </Text>
+            </div>
+        );
+    } else if (
+        ((is_bvi || is_labuan) && poi_acknowledged_for_vanuatu_maltainvest && poa_not_submitted) ||
+        ((is_vanuatu || is_maltainvest) && poi_acknowledged_for_bvi_labuan && poa_not_submitted)
+    ) {
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Proof of address is required' />
                 </Text>
             </div>
         );

@@ -236,6 +236,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
 
     const poi_not_submitted = poi_status === 'none';
     const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
+    const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
 
     //vanuatu-maltainvest
 
@@ -304,6 +305,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
+        poi_and_poa_not_submitted,
         poa_not_submitted,
         poi_not_submitted,
         need_poi_for_vanuatu_maltainvest,

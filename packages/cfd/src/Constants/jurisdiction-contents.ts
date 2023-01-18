@@ -34,8 +34,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     vanuatu: {
-        over_header: localize('Better spreads'),
-        is_over_header_available: true,
+        is_over_header_available: false,
         header: localize('Vanuatu'),
         synthetic_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
@@ -45,8 +44,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
         financial_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
-            `${localize('Registered with the Financial Commission')}`,
-            `${localize('30+ assets: forex and commodities')}`,
+            `${localize('30+ assets: synthetics, basket indices and derived FX')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
     },

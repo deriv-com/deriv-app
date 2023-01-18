@@ -493,7 +493,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 38rem;
+    min-height: 36rem;
     width: 27.6em;
     position: relative;
     padding: 1.6rem;
@@ -2140,7 +2140,7 @@
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        grid-template-columns: 11rem 38rem 46rem;
         &__pre-appstore {
             grid-template-columns: 0.9fr 1.39fr 2.74fr 0.9fr;
         }
@@ -2179,20 +2179,20 @@
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
         &__pre-appstore {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
         &--leverage {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
+            grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
             }
         }
         &--instruments {
-            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
+            grid-template-columns: 11rem 38rem 26rem 10rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
         }
     }
@@ -2205,14 +2205,13 @@
         }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
-        height: 5.8rem;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+        height: 4.8rem;
         &__pre-appstore {
             grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
-            height: 5.8rem;
         }
         &__item {
-            height: 5.8rem;
+            height: 4.8rem;
             justify-content: center;
             &--verification-pending {
                 display: flex;

@@ -62,16 +62,12 @@ const JurisdictionModal = ({
     );
 
     const synthetic_available_accounts = trading_platform_available_accounts.filter(
-        available_account =>
-            available_account.market_type === 'gaming' &&
-            (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+        available_account => available_account.market_type === 'gaming'
     );
 
     const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
+        : localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 

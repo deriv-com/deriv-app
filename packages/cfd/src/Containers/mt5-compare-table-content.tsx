@@ -305,6 +305,7 @@ const DMT5CompareModalContent = ({
                     toggleCFDVerificationModal();
                 }
                 break;
+            case 'synthetic_vanuatu':
             case 'financial_vanuatu':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');

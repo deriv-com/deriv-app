@@ -585,6 +585,7 @@
     bottom: 7rem;
 
     .dc-toast__message {
-        background: var(--text-prominent);
+        background: var(--text-general);
+        color: var(--general-main-1);
     }
 }

@@ -106,15 +106,16 @@ Before running or contribute to this project, you need to have the setup of the 
 
 All packages must contain the following scripts to perform the stated actions:
 
-| Package param | Command            | Description                                                                                                                                                            |
-| :-----------: | ------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|      ✅       | `start`            | Runs complete test and build suite and starts the dev server.                                                                                                          |
-|      ✅       | `serve`            | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`) |
-|      ✅       | `build:all`        | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument.                                                                          |
-|      ✅       | `test`             | Runs the test suite with eslint, stylelint and jest.                                                                                                                   |
-|      ✅       | `test:jest`        | Runs only the jest test suite.                                                                                                                                         |
-|      ✅       | `test:qa`          | Runs the e2e test suite.                                                                                                                                               |
-|      ✅       | `test:performance` | Runs the performance test suite.                                                                                                                                       |
+| Package param | Command                    | Description                                                                                                                                                            |
+| :-----------: | -------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      ✅       | `start`                    | Runs complete test and build suite and starts the dev server.                                                                                                          |
+|      ✅       | `serve`                    | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`) |
+|      ✅       | `build:one <package_name>` | Runs build suite and outputs the result into `dist`. for the passed package name.                                                                                      |
+|      ✅       | `build:all`                | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument.                                                                          |
+|      ✅       | `test`                     | Runs the test suite with eslint, stylelint and jest.                                                                                                                   |
+|      ✅       | `test:jest`                | Runs only the jest test suite.                                                                                                                                         |
+|      ✅       | `test:qa`                  | Runs the e2e test suite.                                                                                                                                               |
+|      ✅       | `test:performance`         | Runs the performance test suite.                                                                                                                                       |
 
 [comment]: <> (The following scripts are not to be used except for CI/CD environments)
 [comment]: <> (| ❌ | `deploy` | Runs `build` script, then pushes the output to GH Pages. |)

@@ -6,21 +6,26 @@ import { useStores } from 'Stores';
 import { Button, Table, Text } from '@deriv/components';
 import UserAvatar from 'Components/user/user-avatar';
 import { localize } from 'Components/i18next';
+import classNames from 'classnames';
 
 const BlockUserRow = ({ row: advertiser }) => {
-    const { buy_sell_store, my_profile_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store } = useStores();
     const { id, is_blocked, name } = advertiser;
 
     return (
         <Table.Row className='block-user-row'>
             <Table.Cell>
                 <div
-                    className='block-user-row__cell'
+                    className={classNames('block-user-row__cell', {
+                        'block-user-row__cell--barred': general_store.is_barred,
+                    })}
                     onClick={() => {
-                        my_profile_store.getCounterpartyAdvertiserInfo(id);
-                        buy_sell_store.setSelectedAdState({
-                            advertiser_details: { id, name },
-                        });
+                        if (!general_store.is_barred) {
+                            my_profile_store.getCounterpartyAdvertiserInfo(id);
+                            buy_sell_store.setSelectedAdState({
+                                advertiser_details: { id, name },
+                            });
+                        }
                     }}
                 >
                     <UserAvatar nickname={name} size={32} text_size='s' />

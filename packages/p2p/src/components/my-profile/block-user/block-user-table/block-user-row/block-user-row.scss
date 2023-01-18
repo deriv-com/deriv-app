@@ -26,6 +26,10 @@
         display: flex;
         cursor: pointer;
 
+        &--barred {
+            cursor: not-allowed;
+        }
+
         &-container {
             display: flex;
             flex-direction: column;

@@ -20,16 +20,14 @@ const TradersHub = () => {
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
-        if (element) {
+        if (element && is_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
     React.useEffect(() => {
         const scroll = setInterval(() => {
-            if (is_tour_open) {
-                handleScroll();
-            }
+            handleScroll();
         }, 500);
 
         return () => {

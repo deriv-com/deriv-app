@@ -864,6 +864,9 @@ export default class TradeStore extends BaseStore {
             if (typeof obj_new_values.duration === 'string') {
                 obj_new_values.duration = +obj_new_values.duration;
             }
+            if (this.is_vanilla && obj_new_values?.duration_unit !== 'd') {
+                obj_new_values.barrier_1 = '+0';
+            }
         }
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.

@@ -1,0 +1,85 @@
+name: Generate Lighthouse report
+
+on:
+  issue_comment:
+    types: [edited]
+
+jobs:
+  generate_lighthouse_report:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
+
+      - name: Add Lighthouse progress comment
+        id: generate_lighthouse_comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{github.event.issue.number}}
+          header: generate_lighthouse_comment
+          message: "⏳ **Generating Lighthouse report...**"
+
+      - name: Capture Vercel preview URL
+        id: vercel_preview_url
+        uses: binary-com/vercel-preview-url-action@v1.0.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Lighthouse report
+        uses: treosh/lighthouse-ci-action@v9
+        id: lighthouse_report
+        with:
+          temporaryPublicStorage: true
+          urls: |
+            ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+          uploadArtifacts: true
+          # configure Lighthouse score assertions in this file
+          # configPath: .github/lighthouse/lighthouserc.json
+
+      - name: Retrieve Lighthouse score
+        id: lighthouse_score
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const result = ${{ steps.lighthouse_report.outputs.manifest }}[0].summary
+            const links = ${{ steps.lighthouse_report.outputs.links }}
+            const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟧' : '🔺'
+            const formatResult = (res) => Math.round((res * 100))
+
+            Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
+
+            const comment = [
+                `🚨 [Lighthouse report](${Object.values(links)[0]}) for the changes in this PR:`,
+                '| Category | Score |',
+                '| --- | --- |',
+                `| ${score(result.performance)} Performance | ${result.performance} |`,
+                `| ${score(result.accessibility)} Accessibility | ${result.accessibility} |`,
+                `| ${score(result['best-practices'])} Best practices | ${result['best-practices']} |`,
+                `| ${score(result.seo)} SEO | ${result.seo} |`,
+                `| ${score(result.pwa)} PWA | ${result.pwa} |`,
+                ' ',
+                `*Lighthouse ran with [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
+            ].join('\n')
+             core.setOutput("comment", comment);
+
+      - name: Post Lighthouse report
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          header: Lighthouse report
+          number: ${{github.event.issue.number}}
+          message: ${{steps.lighthouse_score.outputs.comment}}
+
+      - name: Clear Lighthouse progress comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{github.event.issue.number}}
+          header: generate_lighthouse_comment
+          delete: true

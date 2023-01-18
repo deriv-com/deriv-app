@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
@@ -111,6 +111,7 @@ const ToggleMenuDrawer = React.forwardRef(
             account_status,
             active_account_landing_company,
             changeCurrentLanguage,
+            content_flag,
             disableApp,
             enableApp,
             is_account_transfer_visible,
@@ -128,6 +129,7 @@ const ToggleMenuDrawer = React.forwardRef(
             setIsPreAppStore,
             should_allow_authentication,
             should_show_exit_traders_modal,
+            switchToCRAccount,
             title,
             toggleTheme,
             toggleExitTradersHubModal,
@@ -354,13 +356,16 @@ const ToggleMenuDrawer = React.forwardRef(
             route.startsWith(routes.cashier) ||
             route.startsWith(routes.account);
 
-        const tradingHubRedirect = () => {
+        const tradingHubRedirect = async () => {
             if (is_pre_appstore) {
                 if (should_show_exit_traders_modal) {
                     toggleDrawer();
                     toggleExitTradersHubModal();
                 } else {
                     setIsPreAppStore(false);
+                    if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+                        await switchToCRAccount();
+                    }
                     toggleDrawer();
                     history.push(routes.root);
                 }

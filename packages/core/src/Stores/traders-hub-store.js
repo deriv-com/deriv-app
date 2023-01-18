@@ -233,6 +233,7 @@ export default class TradersHubStore extends BaseStore {
         }
 
         this.selected_account_type = 'real';
+        this.selected_region = 'Non-EU';
     }
 
     selectAccountTypeCard(account_type_card) {

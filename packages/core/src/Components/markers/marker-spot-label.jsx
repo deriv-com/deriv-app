@@ -28,7 +28,12 @@ const MarkerSpotLabel = ({
 
     if (has_hover_toggle) {
         marker_spot = (
-            <div className='marker-hover-container' onMouseEnter={handleHoverToggle} onMouseLeave={handleHoverToggle}>
+            <div
+                data-testid='dt_marker_hover_container'
+                className='marker-hover-container'
+                onMouseEnter={handleHoverToggle}
+                onMouseLeave={handleHoverToggle}
+            >
                 {marker_spot}
             </div>
         );
@@ -36,57 +41,76 @@ const MarkerSpotLabel = ({
 
     return (
         <div>
-            <div className={'chart-spot-label'}>
-                {show_label && (
-                    <div className='chart-spot-label__info-container'>
-                        <div
-                            className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
-                        >
-                            <div className='chart-spot-label__time-container'>
-                                <Icon
-                                    icon='IcClockOutline'
-                                    height={10}
-                                    width={10}
-                                    className='chart-spot-label__time-icon'
-                                />
-                                <Text as='p' color='prominent' size='xxxs'>
-                                    {toMoment(+spot_epoch).format('HH:mm:ss')}
-                                </Text>
-                            </div>
-                            <div
-                                className={classNames('chart-spot-label__value-container', {
-                                    'chart-spot-label__value-container--won': status === 'won',
-                                    'chart-spot-label__value-container--lost': status === 'lost',
-                                })}
-                            >
-                                <p>{addComma(spot_value)}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                {marker_spot}
-            </div>
-            {spot_profit && (
-                <div
-                    className={classNames('chart-spot-label-profit', {
-                        'chart-spot-label-profit--won': status === 'won',
-                        'chart-spot-label-profit--lost': status === 'lost',
-                    })}
-                >
-                    <div
-                        className={classNames('chart-spot-label__value-container', {
-                            'chart-spot-label__value-container--won': status === 'won',
-                            'chart-spot-label__value-container--lost': status === 'lost',
-                        })}
-                    >
-                        <Text as='p' size='xxs'>
-                            {localize('Total profit/loss:')}
-                        </Text>
-                        <Text as='p' size='xs'>{`${spot_profit}`}</Text>
-                    </div>
-                </div>
-            )}
-        </div>
+          <div className={'chart-spot-label'}>
+              {show_label && (
+                  <div className='chart-spot-label__info-container'>
+                      <div
+                          data-testid='dt_time_value_container'
+                          className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
+                      >
+                          <div className='chart-spot-label__time-container'>
+                              <Icon
+                                  icon='IcClockOutline'
+                                  height={10}
+                                  width={10}
+                                  className='chart-spot-label__time-icon'
+                              />
+                              <Text as='p' color='prominent' size='xxxs'>
+                                  {toMoment(+spot_epoch).format('HH:mm:ss')}
+                              </Text>
+                          </div>
+                          <div
+                              data-testid='dt_value_container'
+                              className={classNames('chart-spot-label__value-container', {
+                                  'chart-spot-label__value-container--won': status === 'won',
+                                  'chart-spot-label__value-container--lost': status === 'lost',
+                              })}
+                          >
+                              <div className='chart-spot-label__time-container'>
+                                  <Icon
+                                      icon='IcClockOutline'
+                                      height={10}
+                                      width={10}
+                                      className='chart-spot-label__time-icon'
+                                  />
+                                  <Text as='p' color='prominent' size='xxxs'>
+                                      {toMoment(+spot_epoch).format('HH:mm:ss')}
+                                  </Text>
+                              </div>
+                              <div
+                                  className={classNames('chart-spot-label__value-container', {
+                                      'chart-spot-label__value-container--won': status === 'won',
+                                      'chart-spot-label__value-container--lost': status === 'lost',
+                                  })}
+                              >
+                                  <p>{addComma(spot_value)}</p>
+                              </div>
+                          </div>
+                      </div>
+                  )}
+                  {marker_spot}
+              </div>
+              {spot_profit && (
+                  <div
+                      className={classNames('chart-spot-label-profit', {
+                          'chart-spot-label-profit--won': status === 'won',
+                          'chart-spot-label-profit--lost': status === 'lost',
+                      })}
+                  >
+                      <div
+                          className={classNames('chart-spot-label__value-container', {
+                              'chart-spot-label__value-container--won': status === 'won',
+                              'chart-spot-label__value-container--lost': status === 'lost',
+                          })}
+                      >
+                          <Text as='p' size='xxs'>
+                              {localize('Total profit/loss:')}
+                          </Text>
+                          <Text as='p' size='xs'>{`${spot_profit}`}</Text>
+                      </div>
+                  </div>
+              )}
+          </div>
     );
 };
 

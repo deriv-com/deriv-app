@@ -12,22 +12,14 @@ import { TCFDPasswordFormValues } from './cfd-password-modal';
 import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
-export type TCFDPersonalDetailsModalProps = {
+export type TCFDPersonalDetailsContainerProps = {
     account_settings: GetSettings;
-    enableApp: () => void;
-    disableApp: () => void;
     getChangeableFields: () => string[];
-    is_from_mt5_compare_accounts_table: boolean;
-    is_open: boolean;
     context: RootStore;
-    openPasswordModal: () => void;
-    toggleCompareAccounts: () => void;
-    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
-    toggleJurisdictionModal: () => void;
-    is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     residence_list: ResidenceList;
     setAccountSettings: (account_settings: GetSettings) => void;
+    onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
 type CFD_Platform = 'dxtrade' | 'mt5';
@@ -195,15 +187,13 @@ export type TVerificationStatusBannerProps = {
 };
 
 export type TJurisdictionCheckBoxProps = {
-    account_status: GetAccountStatus;
-    context: RootStore;
     class_name: string;
+    context: RootStore;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
     should_restrict_bvi_account_creation: boolean;
 };
-
 type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
@@ -214,9 +204,8 @@ export type TJurisdictionModalProps = {
         type: string;
         category: string;
     };
-    context: RootStore;
-    account_settings: GetSettings;
     account_status: GetAccountStatus;
+    context: RootStore;
     disableApp: () => void;
     enableApp: () => void;
     is_eu: boolean;
@@ -224,16 +213,16 @@ export type TJurisdictionModalProps = {
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
+    fetchAccountSettings: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
-    updateAccountStatus: () => void;
+    updateMT5Status: () => void;
+    has_submitted_cfd_personal_details: boolean;
 };
 
 export type TJurisdictionModalContentProps = {
@@ -254,9 +243,26 @@ export type TJurisdictionModalContentProps = {
 
 export type TJurisdictionModalFootNoteProps = {
     account_status: GetAccountStatus;
-    context: RootStore;
-    card_classname: string;
     account_type: string;
+    card_classname: string;
+    context: RootStore;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
+};
+
+export type TCFDDbviOnboardingProps = {
+    account_status: GetAccountStatus;
+    context: RootStore;
+    disableApp: () => void;
+    enableApp: () => void;
+    fetchAccountSettings: () => void;
+    has_created_account_for_selected_jurisdiction: boolean;
+    has_submitted_cfd_personal_details: boolean;
+    is_cfd_verification_modal_visible: boolean;
+    is_virtual: boolean;
+    jurisdiction_selected_shortcode: string;
+    openPasswordModal: () => void;
+    toggleCFDVerificationModal: () => void;
+    updateAccountStatus: () => void;
+    updateMT5Status: () => void;
 };

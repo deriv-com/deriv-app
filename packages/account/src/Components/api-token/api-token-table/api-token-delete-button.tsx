@@ -1,9 +1,8 @@
-import React from 'react';
-import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { Button, Icon, Modal, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ApiTokenContext from './api-token-context';
-import { TPopoverAlignment, TToken, TApiContext } from 'Types';
+import React from 'react';
+import { TPopoverAlignment, TToken } from 'Types';
+import useApiToken from '../hooks/use-api-token';
 
 type TApiTokenDeleteButton = {
     popover_alignment?: TPopoverAlignment;
@@ -11,11 +10,10 @@ type TApiTokenDeleteButton = {
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
+    const { deleteApiToken } = useApiToken();
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
-    const isMounted = useIsMounted();
 
     const getConfirmationBeforeDelete = () => {
         setIsPopoverOpen(false);
@@ -32,14 +30,14 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
 
     const handleNo = () => setIsDeleting(false);
 
+    const onFinished = () => {
+        setIsLoading(false);
+        setIsDeleting(false);
+    };
+
     const handleYes = () => {
         setIsLoading(true);
-        deleteToken(token.token).finally(() => {
-            if (isMounted()) {
-                setIsLoading(false);
-                setIsDeleting(false);
-            }
-        });
+        deleteApiToken(token.token, onFinished);
     };
 
     return (
@@ -78,7 +76,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                 classNameBubble='dc-clipboard__popover'
                 message={localize('Delete this token')}
                 relative_render={false}
-                zIndex={9999}
+                zIndex={'9999'}
                 is_open={is_popover_open}
             >
                 <Icon

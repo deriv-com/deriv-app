@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
 import Text from '../text/text';
 
@@ -9,7 +9,22 @@ export type TLoadingProps = React.HTMLProps<HTMLDivElement> & {
     theme: string;
 };
 
-const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status, theme }: Partial<TLoadingProps>) => {
+interface ILoadingProps extends HTMLAttributes<HTMLDivElement> {
+    is_fullscreen: boolean;
+    is_slow_loading: boolean;
+    status: string[];
+    theme: string;
+}
+
+const Loading = ({
+    className,
+    id,
+    is_fullscreen = true,
+    is_slow_loading,
+    status,
+    theme,
+    ...rest
+}: Partial<ILoadingProps>) => {
     const theme_class = theme ? `barspinner-${theme}` : 'barspinner-light';
     return (
         <div
@@ -21,6 +36,7 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
                 },
                 className
             )}
+            {...rest}
         >
             <div id={id} className={classNames('initial-loader__barspinner', 'barspinner', theme_class)}>
                 {Array.from(new Array(5)).map((x, inx) => (

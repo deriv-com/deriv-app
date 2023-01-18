@@ -33,6 +33,7 @@
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
+        "jest-websocket-mock": "^2.4.0",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",
         "circular-dependency-plugin": "^5.2.2",

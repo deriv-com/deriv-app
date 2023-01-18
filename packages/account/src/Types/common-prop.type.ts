@@ -3,6 +3,7 @@
 import { Authorize } from '@deriv/api-types';
 import { Requireable, InferProps } from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { TAuthorizedSocket } from '../../../core/src/_common/base/ts_socket_base';
 
 export type TToken = {
     display_name: string;
@@ -59,16 +60,24 @@ export type TRealAccount = {
     error_code: number;
 };
 
+export interface IFormValues {
+    token_name: string;
+    read: boolean;
+    trade: boolean;
+    payments: boolean;
+    trading_information: boolean;
+    admin: boolean;
+    [field: string]: boolean | string;
+}
+
 export type TApiContext = {
-    api_tokens: NonNullable<TToken[]> | undefined;
-    deleteToken: (token: string) => Promise<void>;
-    footer_ref: Element | DocumentFragment | undefined;
-    overlay_ref:
-        | ((...args: unknown[]) => unknown)
-        | InferProps<{
-              current: Requireable<unknown>;
-          }>;
-    toggleOverlay: () => void;
+    loading: boolean;
+    ws: any;
+    api_tokens?: NonNullable<TToken[]> | undefined;
+    error_message?: string;
+    update_error_message: (error: string) => void;
+    toggle_loading: () => void;
+    update_tokens: (tokens: TToken[]) => void;
 };
 
 export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';

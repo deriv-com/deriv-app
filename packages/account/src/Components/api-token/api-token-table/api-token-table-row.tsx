@@ -15,7 +15,7 @@ const ApiTokenTableRow = ({ token }: TApiTokenTableRow) => (
         <ApiTokenTableRowCell should_bypass_text>
             <ApiTokenTableRowTokenCell token={token.token as string} scopes={token.scopes as string[]} />
         </ApiTokenTableRowCell>
-        <ApiTokenTableRowCell should_bypass_text>
+        <ApiTokenTableRowCell should_bypass_text data-testid='cell-scopes'>
             <ApiTokenTableRowScopesCell scopes={token.scopes as string[]} />
         </ApiTokenTableRowCell>
         <ApiTokenTableRowCell>{token.last_used}</ApiTokenTableRowCell>

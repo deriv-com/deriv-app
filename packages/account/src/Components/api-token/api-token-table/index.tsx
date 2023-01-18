@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text } from '@deriv/components';
 import { isMobile, formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import ApiTokenContext from './api-token-context';
-import ApiTokenDeleteButton from './api-token-delete-button';
 import ApiTokenTableBodyRow from './api-token-table-row';
 import ApiTokenTableRowHeader from './api-token-table-row-header';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
-import { TApiContext, TToken } from 'Types';
+import { TToken } from 'Types';
+import useApiTokenContext from '../hooks/use-api-context';
+import useApiToken from '../hooks/use-api-token';
+import ApiTokenDeleteButton from './api-token-delete-button';
 
-const ApiTokenTable = () => {
-    const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
+const ApiTokenTable = ({ is_switching }: { is_switching: boolean }) => {
+    const prev_is_switching = React.useRef(is_switching);
+
+    const { api_tokens } = useApiTokenContext();
+
+    const { getApiTokens } = useApiToken();
+
+    useEffect(() => {
+        getApiTokens();
+    }, [getApiTokens]);
+
+    useEffect(() => {
+        if (prev_is_switching.current !== is_switching) {
+            prev_is_switching.current = is_switching;
+            getApiTokens();
+        }
+    }, [getApiTokens, is_switching]);
 
     const formatTokenScopes = (str: string) => {
         const replace_filter = str.replace(/-|_/g, ' ');
@@ -118,7 +134,7 @@ const ApiTokenTable = () => {
                     <th />
                 </tr>
             </thead>
-            <tbody>
+            <tbody data-testid='api-token-table-body'>
                 {api_tokens?.map((api_token: TToken) => (
                     <ApiTokenTableBodyRow key={api_token.token} token={getScopeValue(api_token)} />
                 ))}

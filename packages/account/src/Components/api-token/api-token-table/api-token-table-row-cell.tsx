@@ -11,13 +11,18 @@ const ApiTokenTableRowCell = ({
     className,
     children,
     should_bypass_text,
+    ...rest
 }: React.PropsWithChildren<Partial<TApiTokenTableRowCell>>) => {
     if (should_bypass_text) {
-        return <td className={classNames('da-api-token__table-cell', className)}>{children}</td>;
+        return (
+            <td className={classNames('da-api-token__table-cell', className)} {...rest}>
+                {children}
+            </td>
+        );
     }
 
     return (
-        <td className={classNames('da-api-token__table-cell', className)}>
+        <td className={classNames('da-api-token__table-cell', className)} {...rest}>
             <Text color='prominent ' size='xs' line_height='m'>
                 {children}
             </Text>

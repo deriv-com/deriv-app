@@ -33,6 +33,7 @@
 .link-default {
     color: var(--text-info-blue);
     font-weight: bold;
+    cursor: pointer;
 }
 
 .link-failed {
@@ -40,6 +41,7 @@
     font-weight: bold;
     text-decoration: underline;
     font-size: var(--text-size-xxxs);
+    cursor: pointer;
     @include mobile {
         font-size: var(--text-size-xxxxs);
     }

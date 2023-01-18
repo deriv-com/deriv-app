@@ -31,7 +31,7 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 
-import { processTradeParams, processMinMaxStake } from './Helpers/process';
+import { processTradeParams } from './Helpers/process';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
@@ -69,8 +69,6 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list = [];
     currency = '';
-    min_stake = {};
-    max_stake = {};
     stake_boundary = {};
 
     // Duration
@@ -227,8 +225,6 @@ export default class TradeStore extends BaseStore {
             main_barrier: observable,
             market_close_times: observable,
             market_open_times: observable,
-            max_stake: observable,
-            min_stake: observable,
             multiplier_range_list: observable,
             multiplier: observable,
             previous_symbol: observable,
@@ -1107,10 +1103,8 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
             if (this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal;
-                this.setMinStake(contract_type, min_stake);
-                this.setMaxStake(contract_type, max_stake);
                 this.setStrikeChoices(barrier_choices);
-                this.setStakeBoundary(processMinMaxStake(this.min_stake, this.max_stake));
+                this.setStakeBoundary(min_stake, max_stake);
             }
         }
 
@@ -1410,15 +1404,7 @@ export default class TradeStore extends BaseStore {
         this.strike_price_choices = strike_prices ?? [];
     }
 
-    setMinStake(type, min_stake) {
-        this.min_stake[type] = min_stake;
-    }
-
-    setMaxStake(type, max_stake) {
-        this.max_stake[type] = max_stake;
-    }
-
-    setStakeBoundary(stake_boundary) {
-        this.stake_boundary = { ...stake_boundary };
+    setStakeBoundary(min_stake, max_stake) {
+        this.stake_boundary = { min_stake, max_stake };
     }
 }

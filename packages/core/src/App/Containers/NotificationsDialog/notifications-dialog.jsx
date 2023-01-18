@@ -29,6 +29,7 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
 
         return `IcAlert${toTitleCase(type)}`;
     };
+
     const getButtonSettings = item =>
         ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
 

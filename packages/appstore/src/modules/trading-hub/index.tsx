@@ -45,7 +45,6 @@ const TradingHub: React.FC = () => {
         is_populating_dxtrade_account_list,
         switchAccountHandlerForAppstore,
     } = client;
-
     const {
         setAccountType,
         enableCFDPasswordModal,

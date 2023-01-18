@@ -301,7 +301,10 @@ const PersonalDetails = ({
                                                         <DesktopWrapper>
                                                             <Autocomplete
                                                                 {...field}
-                                                                disabled={disabled_items.includes('place_of_birth')}
+                                                                disabled={
+                                                                    !!props.value.place_of_birth &&
+                                                                    disabled_items.includes('place_of_birth')
+                                                                }
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
@@ -323,7 +326,10 @@ const PersonalDetails = ({
                                                             <SelectNative
                                                                 placeholder={localize('Place of birth')}
                                                                 name={field.name}
-                                                                disabled={disabled_items.includes('place_of_birth')}
+                                                                disabled={
+                                                                    !!props.value.place_of_birth &&
+                                                                    disabled_items.includes('place_of_birth')
+                                                                }
                                                                 label={localize('Place of birth')}
                                                                 list_items={residence_list}
                                                                 value={values.place_of_birth}

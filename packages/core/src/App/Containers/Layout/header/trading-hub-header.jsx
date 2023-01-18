@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { getPlatformInformation, routes } from '@deriv/shared';
+import { getPlatformInformation, routes, ContentFlag } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -40,12 +40,21 @@ export const TradersHubHomeButton = () => {
     );
 };
 
-const RedirectToOldInterface = ({ setIsPreAppStore, should_show_exit_traders_modal, toggleExitTradersHubModal }) => {
+const RedirectToOldInterface = ({
+    setIsPreAppStore,
+    should_show_exit_traders_modal,
+    toggleExitTradersHubModal,
+    content_flag,
+    switchToCRAccount,
+}) => {
     const history = useHistory();
-    const disablePreAppstore = () => {
+    const disablePreAppstore = async () => {
         if (should_show_exit_traders_modal) {
             toggleExitTradersHubModal();
         } else {
+            if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+                await switchToCRAccount();
+            }
             setIsPreAppStore(false);
             history.push(routes.root);
         }
@@ -105,6 +114,7 @@ const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
     account_status,
     app_routing_history,
+    content_flag,
     disableApp,
     enableApp,
     header_extension,
@@ -138,6 +148,7 @@ const TradingHubHeader = ({
     toggleIsTourOpen,
     toggleNotifications,
     toggleExitTradersHubModal,
+    switchToCRAccount,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const toggle_menu_drawer_ref = React.useRef(null);
@@ -185,6 +196,8 @@ const TradingHubHeader = ({
                         setIsPreAppStore={setIsPreAppStore}
                         should_show_exit_traders_modal={should_show_exit_traders_modal}
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
+                        content_flag={content_flag}
+                        switchToCRAccount={switchToCRAccount}
                     />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -211,6 +224,8 @@ const TradingHubHeader = ({
                         setIsPreAppStore={setIsPreAppStore}
                         should_show_exit_traders_modal={should_show_exit_traders_modal}
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
+                        content_flag={content_flag}
+                        switchToCRAccount={switchToCRAccount}
                     />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
@@ -325,6 +340,8 @@ TradingHubHeader.propTypes = {
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
     toggleExitTradersHubModal: PropTypes.func,
+    content_flag: PropTypes.string,
+    switchToCRAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, notifications, ui, menu, traders_hub }) => ({
@@ -362,4 +379,6 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    content_flag: traders_hub.content_flag,
+    switchToCRAccount: traders_hub.switchToCRAccount,
 }))(withRouter(TradingHubHeader));

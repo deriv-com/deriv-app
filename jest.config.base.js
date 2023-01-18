@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-    collectCoverage: false,
+    collectCoverage: true,
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',

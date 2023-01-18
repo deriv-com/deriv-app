@@ -310,6 +310,9 @@ export type TDMT5CompareModalContentProps = {
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     updateMT5Status: () => void;
     upgradeable_landing_companies: unknown[];
+    no_CR_account: boolean;
+    is_eu_user: boolean;
+    no_MF_account: boolean;
 };
 
 export type TCFDDbviOnboardingProps = {

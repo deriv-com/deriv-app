@@ -26,6 +26,7 @@ type TMT5TradeModalProps = {
     platform: 'mt5' | 'dxtrade';
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
+    show_eu_related_content: boolean;
 };
 
 const MT5TradeModal = ({
@@ -40,13 +41,14 @@ const MT5TradeModal = ({
     dxtrade_tokens,
     platform,
     is_demo,
+    show_eu_related_content,
 }: TMT5TradeModalProps) => {
     const CFDTradeModal = () => {
         if (platform === 'mt5') {
             return (
                 <DMT5TradeModal
                     mt5_trade_account={mt5_trade_account}
-                    is_eu_user={is_eu_user}
+                    show_eu_related_content={show_eu_related_content}
                     onPasswordManager={onPasswordManager}
                     toggleModal={toggleModal}
                     dxtrade_tokens={dxtrade_tokens}
@@ -99,10 +101,11 @@ const MT5TradeModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, modules, ui, common }: RootStore) => ({
+export default connect(({ modules: { cfd }, modules, ui, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     platform: common.platform,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     mt5_trade_account: modules.cfd.mt5_trade_account,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(MT5TradeModal);

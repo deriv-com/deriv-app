@@ -396,7 +396,6 @@
     border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
-    // top: 0;
 
     &--tour-position {
         top: 0;
@@ -585,7 +584,7 @@
         max-height: 0;
         opacity: 0;
         color: $color-white;
-        padding: 1rem 0rem;
+        padding: 1rem 0;
         font-size: 1.2rem;
 
         &--open {
@@ -615,16 +614,13 @@
 }
 
 @keyframes blink {
-    0% {
-        border: 1px solid rgb(255, 68, 79);
+    0%,
+    100% {
+        border: 1px solid $color-red;
     }
 
     50% {
         border: 1px solid transparent;
-    }
-
-    100% {
-        border: 1px solid rgb(255, 68, 79);
     }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -9,9 +10,9 @@ import { useCashierStore } from '../../stores/useCashierStores';
 const NoBalance = observer(({ history }: RouteComponentProps) => {
     const { client } = useStore();
     const { currency } = client;
-    const { deposit, general_store } = useCashierStore();
-    const { is_deposit_locked } = deposit;
+    const { general_store } = useCashierStore();
     const { setCashierTabIndex: setTabIndex } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0

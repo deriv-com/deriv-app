@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
@@ -31,7 +32,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     } = client;
     const { iframe, deposit, transaction_history, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url } = iframe;
-    const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
+    const { container, error, onMountDeposit: onMount } = deposit;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -48,6 +49,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;

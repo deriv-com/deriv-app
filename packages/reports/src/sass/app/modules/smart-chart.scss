@@ -70,6 +70,40 @@
 
 /** @define chart-spot-label */
 .chart-spot-label {
+    &-profit {
+        position: relative;
+        top: 2.8rem;
+        left: 2.5rem;
+
+        .chart-spot-label__value-container {
+            padding: 0.8rem;
+            line-height: normal;
+            border-radius: 0.6rem;
+        }
+
+        &--lost {
+            &:before {
+                border-bottom: 0.5rem solid var(--text-loss-danger);
+            }
+        }
+
+        &--won {
+            &:before {
+                border-bottom: 0.5rem solid var(--text-profit-success);
+            }
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -1rem;
+            border-top: 0.5rem solid transparent;
+            border-right: 0.5rem solid transparent;
+            border-left: 0.5rem solid transparent;
+            transform: translateY(-50%) rotate(270deg);
+        }
+    }
     &__info-container {
         width: 100%;
         position: relative;
@@ -88,6 +122,13 @@
             }
             @include mobile {
                 bottom: 9.5px;
+            }
+        }
+        &--middle {
+            bottom: -21px;
+
+            .chart-spot-label__time-container {
+                margin-bottom: 2px;
             }
         }
         &--bottom {

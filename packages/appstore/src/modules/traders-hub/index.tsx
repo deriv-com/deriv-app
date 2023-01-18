@@ -26,13 +26,9 @@ const TradersHub = () => {
     };
 
     React.useEffect(() => {
-        const scroll = setInterval(() => {
+        setTimeout(() => {
             handleScroll();
         }, 500);
-
-        return () => {
-            clearInterval(scroll);
-        };
     }, [is_tour_open]);
 
     const platform_toggle_options = [

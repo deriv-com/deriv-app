@@ -33,10 +33,11 @@ import Divider from 'Components/elements/divider';
 import { TAccountCategory } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './trading-hub.scss';
+import { toJS } from 'mobx';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client, tradinghub } = useStores();
+    const { ui, modules, common, client, tradinghub, notifications } = useStores();
     const {
         is_logged_in,
         is_eu,
@@ -45,6 +46,7 @@ const TradingHub: React.FC = () => {
         is_populating_dxtrade_account_list,
         switchAccountHandlerForAppstore,
     } = client;
+
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -55,7 +57,8 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on } = ui;
+    const { notification_messages_ui: Notifications, is_dark_mode_on } = ui;
+
     const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
@@ -199,6 +202,7 @@ const TradingHub: React.FC = () => {
 
     return (
         <div id='trading-hub' className='trading-hub'>
+            <Notifications />
             <div className='trading-hub_header'>
                 <div className='trading-hub_header--title'>
                     <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>

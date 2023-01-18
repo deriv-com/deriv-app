@@ -165,7 +165,7 @@ export default class NotificationStore extends BaseStore {
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
-                if (!excluded_notifications.includes(notification.key)) {
+                if (notification.key.includes('svg') || !excluded_notifications.includes(notification.key)) {
                     this.updateNotifications(this.notification_messages);
                 }
             }
@@ -1404,7 +1404,9 @@ export default class NotificationStore extends BaseStore {
     }
 
     updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
+        this.notifications = notifications_array.filter(message =>
+            message.key.includes('svg') ? message : !excluded_notifications.includes(message.key)
+        );
     }
 
     handlePOAAddressMismatchNotifications = () => {

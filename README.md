@@ -79,37 +79,6 @@ Before running or contribute to this project, you need to have the setup of the 
     npm run build:all
     ```
 
-6.  Discard any changes related `package-lock.json` (if applicable)
-7.  Make sure that the Node version is the same as recommended version otherwise upgrade or downgrade it
-8.  Run the following commands:
-
-    ```sh
-    $ npm run clean
-    $ npm ci
-    $ lerna link
-    $ lerna bootstrap --ci --hoist --strict
-    $ lerna link
-    $ npm run build:all
-    ```
-
-    > **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root `node_modules` instead of individual packages.
-    > This behavior benefits us from having issues with multiple instances of the same library across dependencies, but it throws errors if the package versions are out of date. This was a trade-off we decided to So when you are adding a dependency which already exists in other packages, their version should be matched.
-    > In case of wanting a new version for a dependency, please update all packages.
-
-    [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
-    [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
-    [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
-
-9.  **Set custom domain:**
-
-    If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
-
-10. **Build the project:**
-
-    ```sh
-    npm run build
-    ```
-
 <br />
 
 ## Packages
@@ -216,7 +185,11 @@ You can read more on the various lerna commands (and the [`clean` command](https
 
 ### Examples of Script Usage
 
-`core` is required to run any of the other packages such as if you want to run the bot-web-ui the core must be instantiated before.
+✅ `core` is required to run any of the other packages such as if you want to run the bot-web-ui the core must be instantiated before.
+
+```bash
+npm run serve core
+```
 
 If a script supports the "Package param", you can supply a `{package name}` for it to run the script in. At the moment, only 1 package name can be given to a script, if you wish to run in multiple, please use the `lerna` command that's used under the hood as per its docs.
 

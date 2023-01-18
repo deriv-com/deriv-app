@@ -18,6 +18,7 @@ type TTourSlider = {
     onCloseTour: () => void;
     onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
     setTourActiveStep: (param: number) => void;
+    toggleLoadModal: () => void;
 };
 
 type TAccordion = {
@@ -33,14 +34,6 @@ const TourButton = ({ label, type = 'default', ...props }: TTourButton) => {
             </Text>
         </button>
     );
-};
-
-const makeCenter = (type: string) => {
-    const blocks: { [k: string]: any } = {};
-    Blockly?.derivWorkspace?.getTopBlocks().forEach(b => {
-        blocks[b.type] = b.id;
-    });
-    Blockly.derivWorkspace.centerOnBlock(blocks[type]);
 };
 
 const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => {
@@ -78,6 +71,7 @@ const TourSlider = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     setTourActiveStep,
+    toggleLoadModal,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string | string[]>('');
@@ -95,20 +89,15 @@ const TourSlider = ({
                 setStepKey(data?.step_key);
             }
         });
-        if (has_started_bot_builder_tour) {
-            switch (step) {
-                case 1:
-                    makeCenter('trade_definition');
-                    break;
-                case 2:
-                    makeCenter('before_purchase');
-                    break;
-                case 5:
-                    makeCenter('after_purchase');
-                    break;
-                default:
-                    break;
-            }
+        const el_ref = document.querySelector('[data-testid="dt_popover_wrapper"]:nth-child(2)');
+        if (has_started_bot_builder_tour && step === 1) {
+            //component does not rerender
+            el_ref?.classList.add('dbot-tour-blink');
+        } else {
+            el_ref?.classList.remove('dbot-tour-blink');
+        }
+        if (has_started_bot_builder_tour && step === 2) {
+            toggleLoadModal();
         }
     }, [step]);
 
@@ -226,7 +215,13 @@ const TourSlider = ({
                         <TourButton
                             type='danger'
                             onClick={onClickNext}
-                            label={has_started_onboarding_tour && step_key === 0 ? localize('Start') : localize('Next')}
+                            label={
+                                has_started_onboarding_tour && step_key === 0
+                                    ? localize('Start')
+                                    : !has_started_onboarding_tour && step === 3
+                                    ? localize('Finish')
+                                    : localize('Next')
+                            }
                         />
                     </div>
                 </div>
@@ -235,7 +230,7 @@ const TourSlider = ({
     );
 };
 
-export default connect(({ dashboard }: RootStore) => ({
+export default connect(({ dashboard, load_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
@@ -243,4 +238,5 @@ export default connect(({ dashboard }: RootStore) => ({
     onTourEnd: dashboard.onTourEnd,
     setActiveTab: dashboard.setActiveTab,
     setTourActiveStep: dashboard.setTourActiveStep,
+    toggleLoadModal: load_modal.toggleLoadModal,
 }))(TourSlider);

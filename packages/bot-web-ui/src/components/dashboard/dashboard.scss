@@ -601,3 +601,25 @@
         }
     }
 }
+
+@keyframes blink {
+    0% {
+        border: 1px solid rgb(255, 68, 79);
+    }
+
+    50% {
+        border: 1px solid transparent;
+    }
+
+    100% {
+        border: 1px solid rgb(255, 68, 79);
+    }
+}
+
+.dbot-tour-blink {
+    -webkit-animation: blink 1.25s infinite;
+    -moz-animation: blink 1.25s ease-in infinite;
+    animation: blink 1.25s ease-in infinite;
+    border-radius: $BORDER-RADIUS * 12.5;
+    padding: 1rem 0;
+}

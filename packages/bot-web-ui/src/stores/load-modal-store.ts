@@ -372,6 +372,14 @@ export default class LoadModalStore implements ILoadModalStore {
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
+        const { has_started_bot_builder_tour, active_tour_step_number } = this.root_store.dashboard;
+        if (has_started_bot_builder_tour && isMobile()) {
+            if (active_tour_step_number === 2) {
+                this.is_load_modal_open = true;
+            } else {
+                this.is_load_modal_open = false;
+            }
+        }
     };
 
     updateListStrategies = (workspaces: Array<TWorkspace>): void => {

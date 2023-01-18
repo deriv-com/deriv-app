@@ -1,42 +1,43 @@
-import debounce from 'lodash.debounce';
-import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable, override } from 'mobx';
+import * as Symbol from './Actions/symbol';
+
 import {
+    WS,
     cloneObject,
+    convertDurationLimit,
     extractInfoFromShortcode,
+    findFirstOpenMarket,
+    getBarrierPipSize,
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
+    isBarrierSupported,
     isCryptocurrency,
     isDesktop,
     isEmptyObject,
-    isMobile,
-    showDigitalOptionsUnavailableError,
-    WS,
-    pickDefaultSymbol,
-    showUnavailableLocationError,
     isMarketClosed,
-    findFirstOpenMarket,
-    showMxMltUnavailableError,
-    convertDurationLimit,
-    resetEndTimeOnVolatilityIndices,
-    getBarrierPipSize,
-    isBarrierSupported,
+    isMobile,
+    pickDefaultSymbol,
     removeBarrier,
+    resetEndTimeOnVolatilityIndices,
+    showDigitalOptionsUnavailableError,
+    showMxMltUnavailableError,
+    showUnavailableLocationError,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
-import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import ServerTime from '_common/base/server_time';
-import { processPurchase } from './Actions/purchase';
-import * as Symbol from './Actions/symbol';
-
-import { processTradeParams } from './Helpers/process';
+import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import { getMultiplierValidationRules, getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import BaseStore from '../../base-store';
+import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import ServerTime from '_common/base/server_time';
+import debounce from 'lodash.debounce';
+import { localize } from '@deriv/translations';
+import { processPurchase } from './Actions/purchase';
+import { processTradeParams } from './Helpers/process';
+import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -69,7 +70,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list = [];
     currency = '';
-    stake_boundary = {};
+    stake_boundary = { VANILLALONGCALL: {}, VANILLALONGPUT: {} };
 
     // Duration
     duration = 5;
@@ -1081,7 +1082,7 @@ export default class TradeStore extends BaseStore {
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
             if (this.is_vanilla) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
-                this.setStakeBoundary(min_stake, max_stake);
+                this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setStrikeChoices(barrier_choices);
             }
 
@@ -1102,7 +1103,7 @@ export default class TradeStore extends BaseStore {
             if (this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal;
                 this.setStrikeChoices(barrier_choices);
-                this.setStakeBoundary(min_stake, max_stake);
+                this.setStakeBoundary(contract_type, min_stake, max_stake);
             }
         }
 
@@ -1402,7 +1403,7 @@ export default class TradeStore extends BaseStore {
         this.strike_price_choices = strike_prices ?? [];
     }
 
-    setStakeBoundary(min_stake, max_stake) {
-        this.stake_boundary = { min_stake, max_stake };
+    setStakeBoundary(type, min_stake, max_stake) {
+        this.stake_boundary[type] = { min_stake, max_stake };
     }
 }

@@ -118,6 +118,7 @@
                     @include mobile {
                         text-align: left;
                     }
+
                     padding-left: 1.5rem;
                 }
 
@@ -144,6 +145,7 @@
             .smartcharts {
                 height: calc(100% - 4rem);
                 z-index: 1;
+
                 &:has(.stxMenuActive) {
                     z-index: 99;
                     transition: all 1s ease-out;
@@ -212,9 +214,11 @@
         @include desktop {
             position: absolute;
         }
+
         &--padded {
             margin-top: 4rem;
         }
+
         right: 1.6rem;
         top: 1.6rem;
         z-index: 2;
@@ -366,8 +370,10 @@
 
         &__left {
             margin: 0.3rem 0 0 1.2rem;
+
             @include mobile {
                 margin: 0;
+
                 svg {
                     margin: 0;
                 }
@@ -407,6 +413,7 @@
         width: 100%;
         margin-bottom: 1.8rem;
     }
+
     &__title {
         margin-bottom: 0.8rem;
     }
@@ -415,6 +422,7 @@
         text-align: center;
         padding: 0 1.6rem;
         margin-bottom: 1.6rem;
+
         &:last-child {
             margin-bottom: 3rem;
         }
@@ -450,6 +458,7 @@
             outline: none;
             cursor: pointer;
             margin-right: 0.8rem;
+
             &.default {
                 background: transparent;
             }
@@ -517,6 +526,7 @@
                 @extend .position-center;
                 align-items: center;
                 justify-content: flex-start;
+
                 .progress-bar-circle {
                     opacity: 0.16;
                 }
@@ -596,6 +606,7 @@
         position: absolute;
         top: -5rem;
         left: 20rem;
+
         @include mobile {
             top: -12rem;
             left: 10rem;
@@ -622,7 +633,9 @@
     -moz-animation: blink 1.25s ease-in infinite;
     animation: blink 1.25s ease-in infinite;
     border-radius: $BORDER-RADIUS * 12.5;
-    padding: 1rem 0;
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    padding: 0.2rem 0;
 }
 
 .import-notification {

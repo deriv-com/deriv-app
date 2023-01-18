@@ -89,7 +89,7 @@ const TourSlider = ({
                 setStepKey(data?.step_key);
             }
         });
-        const el_ref = document.querySelector('[data-testid="dt_popover_wrapper"]:nth-child(2)');
+        const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
         if (has_started_bot_builder_tour && step === 1) {
             //component does not rerender
             el_ref?.classList.add('dbot-tour-blink');

@@ -73,7 +73,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: true,
                         is_requesting_widget_html: true,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -109,7 +109,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -145,7 +145,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -181,7 +181,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -223,7 +223,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -267,7 +267,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -318,7 +318,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -355,7 +355,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },

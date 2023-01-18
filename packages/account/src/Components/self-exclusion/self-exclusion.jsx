@@ -16,7 +16,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import SelfExclusionArticleContent from './self-exclusion-article-content';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionModal from './self-exclusion-modal';
-import SelfExclusionWrapper from './self-exclusion-wrapper.jsx';
+import SelfExclusionWrapper from './self-exclusion-wrapper';
 import SelfExclusionForm from './self-exclusion-form.jsx';
 
 const SelfExclusion = ({

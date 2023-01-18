@@ -24,6 +24,10 @@ const Strike = ({
     const [should_open_dropdown, setShouldOpenDropdown] = React.useState(false);
     const [selected_value, setSelectedValue] = React.useState(barrier_1);
 
+    React.useEffect(() => {
+        setSelectedValue(barrier_1);
+    }, [barrier_1]);
+
     const toggleWidget = () => setIsOpen(!is_open);
 
     const is_24_hours_contract = expiry_date ? toMoment(expiry_date).isSame(toMoment(server_time), 'day') : false;

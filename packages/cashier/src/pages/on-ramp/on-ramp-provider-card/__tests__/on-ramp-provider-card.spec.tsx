@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderCard from '../on-ramp-provider-card';
 import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import { jest } from '@jest/globals';
 
 describe('<OnRampProviderCard />', () => {
     const props = {
@@ -19,6 +20,14 @@ describe('<OnRampProviderCard />', () => {
                     'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
             ),
             getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFlexepinDark', light: 'IcCashierFlexepinLight' }]),
+            getAllowedResidencies: jest.fn(() => []),
+            getScriptDependencies: jest.fn(() => []),
+            getDefaultFromCurrency: jest.fn(() => ''),
+            getFromCurrencies: jest.fn(() => ''),
+            getToCurrencies: jest.fn(() => ''),
+            getWidgetHtml: jest.fn((): Promise<void> => new Promise(() => undefined)),
+            onMountWidgetContainer: jest.fn(),
+            should_show_deposit_address: false,
         },
         getDescription: jest.fn(
             () =>
@@ -42,7 +51,7 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
@@ -70,7 +79,7 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
@@ -93,7 +102,7 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 

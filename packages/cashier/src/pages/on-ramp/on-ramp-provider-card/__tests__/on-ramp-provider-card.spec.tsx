@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderCard from '../on-ramp-provider-card';
 import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
-import { jest } from '@jest/globals';
 
 describe('<OnRampProviderCard />', () => {
     const props = {
@@ -25,7 +24,7 @@ describe('<OnRampProviderCard />', () => {
             getDefaultFromCurrency: jest.fn(() => ''),
             getFromCurrencies: jest.fn(() => ''),
             getToCurrencies: jest.fn(() => ''),
-            getWidgetHtml: jest.fn((): Promise<void> => new Promise(() => undefined)),
+            getWidgetHtml: jest.fn(() => Promise.resolve()),
             onMountWidgetContainer: jest.fn(),
             should_show_deposit_address: false,
         },
@@ -109,6 +108,6 @@ describe('<OnRampProviderCard />', () => {
         const btn = screen.getByRole('button', { name: 'Select' });
         fireEvent.click(btn);
 
-        expect(mockRootStore.modules!.cashier!.onramp.setSelectedProvider).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules!.cashier!.onramp!.setSelectedProvider).toHaveBeenCalledTimes(1);
     });
 });

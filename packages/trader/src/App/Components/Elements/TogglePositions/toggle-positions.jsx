@@ -12,11 +12,12 @@ const TogglePositions = ({ positions_count, is_open, togglePositions }) => {
     return (
         <a
             id='dt_positions_toggle'
+            data-testid='dt_positions_toggle'
             className={positions_toggle_class}
             onClick={togglePositions}
             data-count={positions_count}
         >
-            <Icon icon='IcPortfolio' className='positions-toggle__icon' />
+            <Icon data_testid='dt_icon' icon='IcPortfolio' className='positions-toggle__icon' />
         </a>
     );
 };

@@ -56,6 +56,11 @@ Before running or contribute to this project, you need to have the setup of the 
     git clone git@github.com:binary-com/deriv-app.git
     ```
 
+> **Internal**: NX and Lerna integration
+>
+> -   Find and copy nx-cloud accessToken
+> -   Make a copy of `nx-cloud.env.example` from root directory of the project and name it `nx-cloud.env` and replace the `<token>` with provided token.
+
 3.  **Enter project directory**
 
     ```sh
@@ -68,19 +73,23 @@ Before running or contribute to this project, you need to have the setup of the 
     npm run bootstrap
     ```
 
-**Note**: If you get the error `peer dependencies`, follow the instruction below:
-
-1. Discard any changes related `package-lock.json` (if applicable)
-2. Make sure that the Node version is the same as recommended version otherwise upgrade or downgrade it
-3. Run the following commands:
+5.  **Build packages:**
 
     ```sh
+    npm run build:all
+    ```
+
+6.  Discard any changes related `package-lock.json` (if applicable)
+7.  Make sure that the Node version is the same as recommended version otherwise upgrade or downgrade it
+8.  Run the following commands:
+
+    ```sh
+    $ npm run clean
     $ npm ci
     $ lerna link
     $ lerna bootstrap --ci --hoist --strict
     $ lerna link
-    $ npm run build
-    $ npm run bootstrap
+    $ npm run build:all
     ```
 
     > **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root `node_modules` instead of individual packages.
@@ -91,11 +100,11 @@ Before running or contribute to this project, you need to have the setup of the 
     [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
     [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
 
-4. **Set custom domain:**
+9.  **Set custom domain:**
 
     If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
 
-5. **Build the project:**
+10. **Build the project:**
 
     ```sh
     npm run build
@@ -132,7 +141,7 @@ All packages must contain the following scripts to perform the stated actions:
 | :-----------: | ------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |      ✅       | `start`            | Runs complete test and build suite and starts the dev server.                                                                                                          |
 |      ✅       | `serve`            | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`) |
-|      ✅       | `build`            | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument.                                                                          |
+|      ✅       | `build:all`        | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument.                                                                          |
 |      ✅       | `test`             | Runs the test suite with eslint, stylelint and jest.                                                                                                                   |
 |      ✅       | `test:jest`        | Runs only the jest test suite.                                                                                                                                         |
 |      ✅       | `test:qa`          | Runs the e2e test suite.                                                                                                                                               |
@@ -191,14 +200,30 @@ You can read more on the various lerna commands (and the [`clean` command](https
 
 <br />
 
+## Servable packages
+
+-   account
+-   appstore
+-   bot-web-ui
+-   cashier
+-   cfd
+-   components
+-   core
+-   p2p
+-   trader
+
+<br />
+
 ### Examples of Script Usage
+
+`core` is required to run any of the other packages such as if you want to run the bot-web-ui the core must be instantiated before.
 
 If a script supports the "Package param", you can supply a `{package name}` for it to run the script in. At the moment, only 1 package name can be given to a script, if you wish to run in multiple, please use the `lerna` command that's used under the hood as per its docs.
 
-✅ In order to run the `start` script for the `bot` package, simply run:
+✅ In order to run the `bot` package, simply run:
 
 ```bash
-npm run start bot
+npm run serve bot-web-ui
 ```
 
 ✅ Likewise for `trader` (or any other package) with a different script:

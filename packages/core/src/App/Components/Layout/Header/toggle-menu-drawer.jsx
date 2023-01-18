@@ -129,11 +129,13 @@ const ToggleMenuDrawer = React.forwardRef(
     ) => {
         const liveChat = useLiveChat();
         const [is_open, setIsOpen] = React.useState(false);
+        const [transitionExit, setTransitionExit] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
         const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+        const timeout = React.useRef();
 
         React.useEffect(() => {
             const processRoutes = () => {
@@ -167,10 +169,19 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
+
+            return () => clearTimeout(timeout);
         }, [is_appstore, is_pre_appstore, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
-            setIsOpen(!is_open);
+            if (!is_open) setIsOpen(!is_open);
+            else {
+                setTransitionExit(true);
+                timeout.current = setTimeout(() => {
+                    setIsOpen(false);
+                    setTransitionExit(false);
+                }, 400);
+            }
             expandSubMenu(false);
         }, [expandSubMenu, is_open]);
 
@@ -366,6 +377,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     alignment={is_appstore ? 'right' : 'left'}
                     icon_class='header__menu-toggle'
                     is_open={is_open}
+                    transitionExit={transitionExit}
                     toggle={toggleDrawer}
                     id='dt_mobile_drawer'
                     enableApp={enableApp}

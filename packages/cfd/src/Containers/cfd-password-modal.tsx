@@ -17,6 +17,7 @@ import {
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
+    getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
     getLegalEntityName,
@@ -80,6 +81,11 @@ type TMultiStepRefProps = {
     goNextStep: () => void;
     goPrevStep: () => void;
 };
+type TReviewMsgForMT5 = {
+    is_selected_mt5_verified: boolean;
+    jurisdiction_selected_shortcode: string;
+    manual_status: string;
+};
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     account_title: string;
@@ -117,6 +123,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     form_error?: string;
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
+    is_logged_in: boolean;
     is_fully_authenticated: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
@@ -134,6 +141,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
         values: TCFDPasswordFormValues & { platform?: string },
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
+    updateAccountStatus: () => void;
 };
 
 const PasswordModalHeader = ({
@@ -165,52 +173,24 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (
-    platform: string,
-    is_eu: boolean,
-    needs_poi: boolean,
-    jurisdiction_selected_shortcode: string,
-    type?: string,
-    category?: string
-) => {
-    if (!category && !type) return '';
-
-    const category_label = category === 'real' ? localize('real') : localize('demo');
-    const type_label =
-        getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].short_title;
-    const jurisdiction_label = getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-
-    if (category === 'real') {
-        if (needs_poi) {
-            return localize('We need proof of your identity and address before you can start trading.');
-        }
-
+const ReviewMessageForMT5 = ({
+    is_selected_mt5_verified,
+    jurisdiction_selected_shortcode,
+    manual_status,
+}: TReviewMsgForMT5) => {
+    if (is_selected_mt5_verified) {
         return (
-            <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}} {{jurisdiction_selected_shortcode}}</0> account. To start trading, transfer funds from your Deriv account into this account.'
-                values={{
-                    // TODO: remove below condition once deriv x changes are completed
-                    type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                    platform: getCFDPlatformLabel(platform),
-                    category: category_label,
-                    jurisdiction_selected_shortcode: jurisdiction_label,
-                }}
-                components={[<strong className='cfd-account__platform' key={0} />]}
-            />
+            <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
         );
+    } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
+        if (manual_status === 'pending') {
+            return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
+        }
+        return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
+    } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
+        return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
-
-    return (
-        <Localize
-            i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} <0>{{type}}</0> account.'
-            values={{
-                type: type_label,
-                platform: getCFDPlatformLabel(platform),
-                category: category_label,
-            }}
-            components={[<strong className='cfd-account__platform' key={0} />]}
-        />
-    );
+    return null;
 };
 
 const IconType = React.memo(({ platform, type, is_eu }: TIconTypeProps) => {
@@ -601,8 +581,8 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_eu,
+    is_logged_in,
     context,
-    is_fully_authenticated,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
     is_dxtrade_allowed,
@@ -616,6 +596,7 @@ const CFDPasswordModal = ({
     setMt5Error,
     submitMt5Password,
     submitCFDPassword,
+    updateAccountStatus,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -628,6 +609,37 @@ const CFDPasswordModal = ({
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+
+    const { poi_verified_for_bvi_labuan, poi_verified_for_vanuatu_maltainvest, poa_verified, manual_status } =
+        getAuthenticationStatusInfo(account_status);
+
+    const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
+
+    const getVerificationStatus = () => {
+        if (jurisdiction_selected_shortcode === 'svg') {
+            setIsSelectedMT5Verified(true);
+        } else if (jurisdiction_selected_shortcode === 'bvi') {
+            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
+        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+        } else if (jurisdiction_selected_shortcode === 'labuan') {
+            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
+        } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+        }
+    };
+
+    React.useEffect(() => {
+        if (is_logged_in) {
+            updateAccountStatus();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        getVerificationStatus();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [jurisdiction_selected_shortcode, account_status]);
 
     const validatePassword = (values: TCFDPasswordFormValues) => {
         const errors: FormikErrors<TCFDPasswordFormValues> = {};
@@ -664,12 +676,8 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            if (needs_poi) {
-                history.push(routes.proof_of_identity);
-            } else {
-                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
-                history.push(routes.cashier_acc_transfer);
-            }
+            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
+            history.push(routes.cashier_acc_transfer);
         }
     };
 
@@ -737,17 +745,67 @@ const CFDPasswordModal = ({
         return false;
     }, [should_set_trading_password, should_show_password]);
 
-    const needs_poi = is_eu && !is_fully_authenticated;
-
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
-            if (needs_poi) {
-                return localize('Submit proof');
+            if (platform === CFD_PLATFORMS.MT5) {
+                return is_selected_mt5_verified ? localize('Transfer now') : localize('Ok');
             }
             return localize('Transfer now');
         }
         return localize('Continue');
-    }, [account_type, needs_poi]);
+    }, [platform, account_type, is_selected_mt5_verified]);
+
+    const getSubmitText = () => {
+        const { category, type } = account_type;
+        if (!category && !type) return '';
+
+        const category_label = category === 'real' ? localize('real') : localize('demo');
+        const type_label =
+            getMtCompanies(is_eu)[category as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']]
+                .short_title;
+        const jurisdiction_label =
+            jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
+
+        if (category === 'real') {
+            return (
+                <React.Fragment>
+                    <Localize
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
+                        values={{
+                            // TODO: remove below condition once deriv x changes are completed
+                            type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
+                            platform: getCFDPlatformLabel(platform),
+                            category: category_label,
+                            jurisdiction_selected_shortcode:
+                                platform === CFD_PLATFORMS.MT5 && !is_eu ? jurisdiction_label : '',
+                        }}
+                        components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
+                    />
+                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                        <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+                    ) : (
+                        <ReviewMessageForMT5
+                            is_selected_mt5_verified={is_selected_mt5_verified}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            manual_status={manual_status}
+                        />
+                    )}
+                </React.Fragment>
+            );
+        }
+
+        return (
+            <Localize
+                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+                values={{
+                    type: type_label,
+                    platform: getCFDPlatformLabel(platform),
+                    category: category_label,
+                }}
+                components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
+            />
+        );
+    };
 
     const cfd_password_form = (
         <CFDPasswordForm
@@ -816,14 +874,6 @@ const CFDPasswordModal = ({
         </MobileDialog>
     );
 
-    const success_heading = needs_poi ? (
-        <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
-            {localize('Your account is ready')}
-        </Text>
-    ) : (
-        ''
-    );
-
     return (
         <React.Fragment>
             {password_modal}
@@ -832,21 +882,15 @@ const CFDPasswordModal = ({
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
-                onSubmit={closeOpenSuccess}
+                onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                heading={success_heading}
-                message={getSubmitText(
-                    platform,
-                    is_eu,
-                    needs_poi,
-                    jurisdiction_selected_shortcode,
-                    account_type.type,
-                    account_type.category
-                )}
+                message={getSubmitText()}
                 icon={<IconType platform={platform} type={account_type.type} is_eu={is_eu} />}
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
-                has_cancel={account_type.category === 'real'}
+                has_cancel={
+                    platform === CFD_PLATFORMS.MT5 ? is_selected_mt5_verified : account_type.category === 'real'
+                }
                 has_close_icon={false}
                 width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
@@ -886,5 +930,5 @@ export default connect(({ client, modules }: RootStore) => ({
     cfd_new_account: modules.cfd.new_account_response,
     mt5_trading_servers: client.mt5_trading_servers,
     mt5_login_list: client.mt5_login_list,
-    is_fully_authenticated: client.is_fully_authenticated,
+    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(CFDPasswordModal));

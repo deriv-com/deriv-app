@@ -29,12 +29,15 @@
         &__message {
             margin: 0 auto;
             margin-bottom: 2rem;
+            & .dc-text {
+                line-height: var(--text-lh-xxl);
+            }
         }
         &__list {
-            list-style-type: circle;
+            list-style-type: disc;
             margin-left: 2rem;
             font-size: var(--text-size-xxs);
-            line-height: var(--text-lh-m);
+            line-height: var(--text-lh-xl);
             color: var(--text-less-prominent);
         }
     }

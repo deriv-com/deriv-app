@@ -11,7 +11,7 @@ import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
 import QuickStrategy from './quick-strategy';
-import { DASHBOARD_TABS } from '../../constants/bot-contents';
+import { DASHBOARD_TABS, TAB_IDS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
@@ -58,13 +58,6 @@ type TDashboard = {
     setTourDialogVisibility: (param: boolean) => void;
     setHasTourEnded: (param: boolean) => void;
 };
-
-type Props = {
-    collapsible: boolean;
-};
-type TDiv = Props & React.HTMLAttributes<HTMLDivElement>;
-
-const ExtendedDiv = ({ collapsible, ...props }: TDiv) => <div {...props}>{props.children}</div>;
 
 const Dashboard = ({
     active_tab,
@@ -207,8 +200,7 @@ const Dashboard = ({
     const handleTabChange = React.useCallback(
         (tab_index: number) => {
             setActiveTab(tab_index);
-            const ids = ['id-dbot-dashboard', 'id-bot-builder', 'id-quick-strategy', 'id-charts', 'id-tutorials'];
-            const el_id = ids[tab_index];
+            const el_id = TAB_IDS[tab_index];
             if (el_id) {
                 const el_tab = document.getElementById(el_id);
                 el_tab?.scrollIntoView({

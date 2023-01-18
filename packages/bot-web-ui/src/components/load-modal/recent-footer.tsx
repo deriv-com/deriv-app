@@ -7,15 +7,15 @@ import RootStore from 'Stores/root-store';
 type TRecentFooterProps = {
     is_open_button_loading: boolean;
     loadFileFromRecent: () => void;
+    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
     toggleLoadModal: () => void;
-    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
 };
 
 const RecentFooter = ({
     is_open_button_loading,
     loadFileFromRecent,
-    toggleLoadModal,
     setOpenSettings,
+    toggleLoadModal,
 }: TRecentFooterProps) => {
     return (
         <Button
@@ -23,7 +23,7 @@ const RecentFooter = ({
             onClick={() => {
                 loadFileFromRecent();
                 toggleLoadModal();
-                setOpenSettings('import', true);
+                setOpenSettings('import');
             }}
             is_loading={is_open_button_loading}
             has_effect

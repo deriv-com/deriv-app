@@ -21,7 +21,7 @@ type TCardProps = {
     setActiveTab: (active_tab: number) => void;
     setFileLoaded: (param: boolean) => void;
     setPreviewOnPopup: (show: boolean) => void;
-    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
+    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
     showVideoDialog: (param: { [key: string]: string | React.ReactNode }) => void;
 };
 
@@ -129,7 +129,7 @@ const Card = ({
                             setIsFileSupported(handleFileChange(e, false));
                             loadFileFromLocal();
                             setFileLoaded(true);
-                            setOpenSettings('import', true);
+                            setOpenSettings('import');
                         }}
                     />
                     <DesktopWrapper>

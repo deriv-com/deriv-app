@@ -125,7 +125,7 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
 
-    setOpenSettings = (toast_message: string, show_toast: boolean) => {
+    setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
         this.show_toast = show_toast;
     };

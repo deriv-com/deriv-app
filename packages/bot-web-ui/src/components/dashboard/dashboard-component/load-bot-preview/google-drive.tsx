@@ -11,7 +11,7 @@ type TGoogleDriveProps = {
     is_open_button_loading: boolean;
     onDriveConnect: VoidFunction;
     onDriveOpen: VoidFunction;
-    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
+    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
 };
 
 const GoogleDrive = ({
@@ -45,7 +45,7 @@ const GoogleDrive = ({
                             text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
-                                setOpenSettings('import', true);
+                                setOpenSettings('import');
                             }}
                             is_loading={is_open_button_loading}
                             has_effect

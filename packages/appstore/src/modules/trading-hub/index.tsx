@@ -36,7 +36,7 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client, tradinghub, notifications } = useStores();
+    const { ui, modules, common, client, tradinghub } = useStores();
     const {
         is_logged_in,
         is_eu,

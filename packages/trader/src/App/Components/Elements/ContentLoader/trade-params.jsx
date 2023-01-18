@@ -12,6 +12,7 @@ const TradeParamsLoader = ({ speed }) => (
                 speed={speed}
                 primaryColor={'var(--general-section-1)'}
                 secondaryColor={'var(--general-hover)'}
+                viewBox='0 0 344 176'
             >
                 <rect x='148' y='24' rx='3' ry='3' width='40' height='4' />
                 <rect x='8' y='40' rx='4' ry='4' width='328' height='40' />

@@ -291,8 +291,6 @@ export default class TradeStore extends BaseStore {
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
             setMarketStatus: action.bound,
-            setMaxStake: action.bound,
-            setMinStake: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
             setPurchaseSpotBarrier: action.bound,

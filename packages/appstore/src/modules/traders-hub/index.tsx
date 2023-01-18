@@ -15,24 +15,27 @@ import './traders-hub.scss';
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
     const { is_eu, is_landing_company_loaded, is_logged_in } = client;
-    const { selected_platform_type, setTogglePlatformType } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
-    // const handleScroll = () => {
-    //     const element = traders_hub_ref?.current;
-    //     if (element) {
-    //         element.scrollIntoView({ behavior: 'smooth' });
-    //     }
-    //     console.log('hello');
-    // };
+    const handleScroll = () => {
+        const element = traders_hub_ref?.current;
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
-    // React.useEffect(() => {
-    //     setTradersHubRef(traders_hub_ref?.current);
-    // }, []);
+    React.useEffect(() => {
+        const scroll = setInterval(() => {
+            if (is_tour_open) {
+                handleScroll();
+            }
+        }, 500);
 
-    // React.useEffect(() => {
-    //     handleScroll();
-    // });
+        return () => {
+            clearInterval(scroll);
+        };
+    }, [is_tour_open]);
 
     const platform_toggle_options = [
         { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },

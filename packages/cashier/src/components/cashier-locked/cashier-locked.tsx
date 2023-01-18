@@ -1,15 +1,16 @@
 import React from 'react';
 import { EmptyState } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
+import { useDepositLocked } from '@deriv/hooks';
 import getMessage from './cashier-locked-provider';
 
 const CashierLocked = observer(() => {
+    const is_deposit_locked = useDepositLocked();
     const { client, modules } = useStore();
     const {
         account_status,
         accounts,
         current_currency_type,
-        is_deposit_lock: is_deposit_locked,
         is_withdrawal_lock: is_withdrawal_locked,
         loginid,
         is_identity_verification_needed,

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Tabs, Money, Numpad, Text } from '@deriv/components';
-import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Money, Numpad, Tabs, Text } from '@deriv/components';
+import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
+
+import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
@@ -23,6 +24,7 @@ const Basis = ({
     setAmountError,
     contract_type,
     stake_boundary,
+    vanilla_trade_type,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -73,13 +75,13 @@ const Basis = ({
                     <div className='trade-container__stake-field--min'>
                         <Text size='xxs'>{localize('Min. Stake')}</Text>
                         <Text size='xxs'>
-                            {stake_boundary.min_stake} {currency}
+                            {stake_boundary[vanilla_trade_type].min_stake} {currency}
                         </Text>
                     </div>
                     <div className='trade-container__stake-field--max'>
                         <Text size='xxs'>{localize('Max. Stake')}</Text>
                         <Text size='xxs'>
-                            {stake_boundary.max_stake} {currency}
+                            {stake_boundary[vanilla_trade_type].max_stake} {currency}
                         </Text>
                     </div>
                 </section>
@@ -120,6 +122,7 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     currency: client.currency,
     addToast: ui.addToast,
     contract_type: modules.trade.contract_type,
+    vanilla_trade_type: ui.vanilla_trade_type,
     stake_boundary: modules.trade.stake_boundary,
 }))(Basis);
 

@@ -46,7 +46,7 @@ export default class AccountPromptDialogStore {
         this.is_confirmed = true;
 
         const has_fiat_account = Object.values(client.accounts).some(
-            acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+            acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency || '')
         );
         if (isCryptocurrency(client?.currency) && has_fiat_account) await this.doSwitch();
     }
@@ -57,7 +57,7 @@ export default class AccountPromptDialogStore {
 
         const non_crypto_account_loginid = Object.entries(client.accounts).reduce(
             (initial_value, [loginid, settings]) => {
-                return !settings.is_virtual && !isCryptocurrency(settings.currency) ? loginid : initial_value;
+                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') ? loginid : initial_value;
             },
             ''
         );

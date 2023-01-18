@@ -321,11 +321,11 @@ export default class WithdrawStore {
         const { crypto_fiat_converter } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
-        const min_withdraw_amount = this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal;
+        const min_withdraw_amount = Number(this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal);
         const max_withdraw_amount =
             Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);
 
-        const format_balance = formatMoney(currency, balance, true);
+        const format_balance = formatMoney(currency, balance || '', true);
         const format_min_withdraw_amount = formatMoney(currency, min_withdraw_amount, true);
         const format_max_withdraw_amount = formatMoney(currency, max_withdraw_amount, true);
 
@@ -333,8 +333,10 @@ export default class WithdrawStore {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
+                min: 0,
+                max: 0,
             });
-            if (!is_ok) error_message = message;
+            if (!is_ok) error_message = message || '';
             else if (Number(balance) < Number(converter_from_amount)) error_message = localize('Insufficient funds');
             else if (min_withdraw_amount && Number(balance) < Number(min_withdraw_amount)) {
                 error_message = localize(
@@ -371,9 +373,11 @@ export default class WithdrawStore {
         if (converter_to_amount) {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(current_fiat_currency),
+                decimals: getDecimalPlaces(current_fiat_currency || ''),
+                min: 0,
+                max: 0,
             });
-            if (!is_ok) error_message = message;
+            if (!is_ok) error_message = message || '';
         }
 
         setConverterToError(error_message);

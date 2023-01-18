@@ -103,7 +103,7 @@ export default class CryptoFiatConverterStore {
                 account_transfer.setAccountTransferAmount('');
             } else {
                 const rate = await this.getExchangeRate(from_currency, to_currency);
-                const decimals = getDecimalPlaces(to_currency);
+                const decimals = getDecimalPlaces(to_currency || '');
                 const amount = (Number(rate) * Number(target.value)).toFixed(decimals);
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(amount);

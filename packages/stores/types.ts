@@ -94,7 +94,7 @@ type TClientStore = {
     account_list: TAccountsList;
     account_status: GetAccountStatus;
     available_crypto_currencies: string[];
-    balance?: string;
+    balance?: string | number;
     can_change_fiat_currency: boolean;
     currency: string;
     current_currency_type?: string;

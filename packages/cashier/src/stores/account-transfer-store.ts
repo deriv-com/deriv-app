@@ -17,7 +17,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TServerError, TAccount, TTransferAccount } from 'Types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from 'Types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -127,9 +127,10 @@ export default class AccountTransferStore {
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
     async onMountAccountTransfer() {
-        const { client, modules } = this.root_store;
+        const { client, common, modules } = this.root_store;
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
+        const { is_from_derivgo } = common;
 
         setLoading(true);
         setOnRemount(this.onMountAccountTransfer);
@@ -158,11 +159,17 @@ export default class AccountTransferStore {
                 return;
             }
 
+            if (!is_from_derivgo) {
+                transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
+                    account => account.account_type !== CFD_PLATFORMS.DERIVEZ
+                );
+            }
+
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
 
-            await this.sortAccountsTransfer(transfer_between_accounts);
+            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
@@ -215,16 +222,16 @@ export default class AccountTransferStore {
 
     setTransferFee() {
         const transfer_fee = getPropertyValue(getCurrencies(), [
-            this.selected_from.currency,
+            this.selected_from.currency || '',
             'transfer_between_accounts',
             'fees',
-            this.selected_to.currency,
+            this.selected_to.currency || '',
         ]);
         this.transfer_fee = Number(transfer_fee || 0);
     }
 
     setMinimumFee() {
-        const decimals = getDecimalPlaces(this.selected_from.currency);
+        const decimals = getDecimalPlaces(this.selected_from.currency || '');
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
@@ -232,23 +239,26 @@ export default class AccountTransferStore {
     setTransferLimit() {
         const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
         const is_dxtrade_transfer = this.selected_from.is_dxtrade || this.selected_to.is_dxtrade;
+        const is_derivez_transfer = this.selected_from.is_derivez || this.selected_to.is_derivez;
 
         let limits_key;
         if (is_mt_transfer) {
             limits_key = 'limits_mt5';
         } else if (is_dxtrade_transfer) {
             limits_key = 'limits_dxtrade';
+        } else if (is_derivez_transfer) {
+            limits_key = 'limits_derivez';
         } else {
             limits_key = 'limits';
         }
 
         const transfer_limit = getPropertyValue(getCurrencies(), [
-            this.selected_from.currency,
+            this.selected_from.currency || '',
             'transfer_between_accounts',
             limits_key,
         ]);
         const balance = this.selected_from.balance;
-        const decimal_places = getDecimalPlaces(this.selected_from.currency);
+        const decimal_places = getDecimalPlaces(this.selected_from.currency || '');
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.transfer_limit = {
             max:
@@ -261,7 +271,10 @@ export default class AccountTransferStore {
     }
 
     // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
-    async sortAccountsTransfer(response_accounts?: Partial<TransferBetweenAccountsResponse>) {
+    async sortAccountsTransfer(
+        response_accounts?: Partial<TransferBetweenAccountsResponse>,
+        is_from_derivgo?: boolean
+    ) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
@@ -269,9 +282,18 @@ export default class AccountTransferStore {
             }
         }
 
+        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
+                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
+            );
+        }
+
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
         // TODO: move `tradingPlatformAccountsList` to deriv-api to use storage
         const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE))
+            ?.trading_platform_accounts;
+
+        const derivez_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ))
             ?.trading_platform_accounts;
 
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
@@ -300,6 +322,17 @@ export default class AccountTransferStore {
 
                 return { ...account, ...found_account, account_type: CFD_PLATFORMS.DXTRADE };
             }
+            if (
+                account.account_type === CFD_PLATFORMS.DERIVEZ &&
+                Array.isArray(derivez_accounts_list) &&
+                derivez_accounts_list.length
+            ) {
+                const found_account = derivez_accounts_list.find(acc => acc.login === account.loginid);
+
+                if (found_account === undefined) return account;
+
+                return { ...account, ...found_account, account_type: CFD_PLATFORMS.DERIVEZ };
+            }
             return account;
         });
         // sort accounts as follows:
@@ -310,6 +343,8 @@ export default class AccountTransferStore {
             accounts?.sort((a, b) => {
                 const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
+                const a_is_derivez = a.account_type === CFD_PLATFORMS.DERIVEZ;
+                const b_is_derivez = b.account_type === CFD_PLATFORMS.DERIVEZ;
                 const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
                 const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
@@ -322,6 +357,8 @@ export default class AccountTransferStore {
                         return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
+                } else if ((a_is_crypto && b_is_derivez) || (a_is_fiat && b_is_derivez) || (a_is_derivez && b_is_mt)) {
+                    return -1;
                 } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                     return a.currency && b.currency && a.currency < b.currency ? -1 : 1;
                 } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
@@ -337,6 +374,7 @@ export default class AccountTransferStore {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
+                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
@@ -385,6 +423,7 @@ export default class AccountTransferStore {
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
+                is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon: cfd_icon_display,
                     status: account?.status,
@@ -500,8 +539,9 @@ export default class AccountTransferStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }: { amount: number }) => {
-        const { client, modules } = this.root_store;
+        const { client, modules, common } = this.root_store;
         const { setLoading } = modules.cashier.general_store;
+        const { is_from_derivgo } = common;
         const {
             is_logged_in,
             responseMt5LoginList,
@@ -529,6 +569,12 @@ export default class AccountTransferStore {
             amount
         );
 
+        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
+                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
+            );
+        }
+
         if (is_mt_transfer) this.setIsMT5TransferInProgress(false);
 
         if (transfer_between_accounts.error) {
@@ -541,7 +587,7 @@ export default class AccountTransferStore {
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
+            this.setReceiptTransfer({ amount: Number(formatMoney(currency || '', amount, true)) });
             transfer_between_accounts.accounts?.forEach(account => {
                 this.setBalanceByLoginId(account.loginid || '', account.balance || '');
                 if (account.loginid === this.selected_from.value) {
@@ -614,9 +660,9 @@ export default class AccountTransferStore {
         } else {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(this.selected_from.currency),
-                min: this.transfer_limit.min,
-                max: this.transfer_limit.max,
+                decimals: getDecimalPlaces(this.selected_from.currency || ''),
+                min: Number(this.transfer_limit.min),
+                max: Number(this.transfer_limit.max),
             });
             if (!is_ok) {
                 setConverterFromError(message);
@@ -635,7 +681,9 @@ export default class AccountTransferStore {
             const currency = this.selected_to.currency;
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(currency),
+                decimals: getDecimalPlaces(currency || ''),
+                min: 0,
+                max: 0,
             });
             if (!is_ok) {
                 setConverterToError(message);

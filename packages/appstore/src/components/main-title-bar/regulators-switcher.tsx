@@ -30,7 +30,7 @@ const RegulatorSwitcher = () => {
     return (
         <div className='regulators-switcher__container'>
             <div className='regulators-switcher--text'>
-                <Text>Regulations:</Text>
+                <Text>Regulation:</Text>
                 <div className='regulators-switcher--icon' onClick={() => toggleRegulatorsCompareModal()}>
                     <Icon icon='IcInfoOutline' />
                 </div>

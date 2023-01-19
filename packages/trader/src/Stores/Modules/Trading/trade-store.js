@@ -859,9 +859,6 @@ export default class TradeStore extends BaseStore {
             if (typeof obj_new_values.duration === 'string') {
                 obj_new_values.duration = +obj_new_values.duration;
             }
-            if (this.is_vanilla && obj_new_values?.duration_unit !== 'd') {
-                obj_new_values.barrier_1 = '+0';
-            }
         }
         // Sets the default value to Amount when Currency has changed from Fiat to Crypto and vice versa.
         // The source of default values is the website_status response.
@@ -992,7 +989,6 @@ export default class TradeStore extends BaseStore {
 
     requestProposal() {
         const requests = createProposalRequests(this);
-
         if (Object.values(this.validation_errors).some(e => e.length)) {
             this.proposal_info = {};
             this.purchase_info = {};
@@ -1020,7 +1016,7 @@ export default class TradeStore extends BaseStore {
     }
 
     onProposalResponse(response) {
-        const contract_type = response.echo_req.contract_type;
+        const { contract_type, duration_unit } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
@@ -1084,6 +1080,12 @@ export default class TradeStore extends BaseStore {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setStrikeChoices(barrier_choices);
+                if (duration_unit !== 'd' && !this.strike_price_choices.includes(this.barrier_1)) {
+                    // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
+                    // The new list is set and the mid value is assigned
+                    const index = Math.floor(this.strike_price_choices.length / 2);
+                    this.barrier_1 = this.strike_price_choices[index];
+                }
             }
 
             // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.

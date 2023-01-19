@@ -38,9 +38,13 @@ const light_theme = {
     bg: '#ffffff',
 };
 
-function get_color({ status, profit, is_dark_theme }) {
+function get_color({ status, profit, is_dark_theme, is_vanilla }) {
     const colors = is_dark_theme ? dark_theme : light_theme;
     let color = colors[status || 'open'];
+    if (is_vanilla) {
+        if (status === 'open') return colors.open;
+        return colors[profit > 0 ? 'won' : 'lost'];
+    }
     if (status === 'open' && profit) {
         color = colors[profit > 0 ? 'won' : 'lost'];
     }
@@ -362,9 +366,7 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        const color = isVanillaContract(contract_type)
-            ? light_theme.open
-            : get_color({ status, profit, is_dark_theme });
+        const color = get_color({ status, profit, is_dark_theme, is_vanilla: isVanillaContract(contract_type) });
 
         ctx.save();
         ctx.strokeStyle = color;

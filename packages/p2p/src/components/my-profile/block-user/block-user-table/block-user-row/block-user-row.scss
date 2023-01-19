@@ -22,7 +22,9 @@
             // Needed to override sticky hover in mobile
             @include mobile {
                 &--block-hover {
-                    background: transparent !important;
+                    &:hover {
+                        background: transparent !important;
+                    }
 
                     & > span {
                         color: var(--brand-red-coral) !important;
@@ -30,7 +32,9 @@
                 }
 
                 &--unblock-hover {
-                    background: transparent !important;
+                    &:hover {
+                        background: transparent !important;
+                    }
                 }
             }
         }

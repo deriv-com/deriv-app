@@ -28,7 +28,7 @@ const BlockUserEmpty = () => {
                     body_className='block-user-empty'
                     height_offset='80px'
                     is_modal_open
-                    page_header_text={localize('Block users')}
+                    page_header_text={localize('My Counterparties')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <Icon

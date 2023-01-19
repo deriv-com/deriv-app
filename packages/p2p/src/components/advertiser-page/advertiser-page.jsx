@@ -96,7 +96,8 @@ const AdvertiserPage = () => {
                 is_error_modal_open={is_error_modal_open}
                 setIsErrorModalOpen={is_open => {
                     if (!is_open) buy_sell_store.hideAdvertiserPage();
-                    if (general_store.active_index !== 0) my_profile_store.setActiveTab(my_profile_tabs.BLOCK_USERS);
+                    if (general_store.active_index !== 0)
+                        my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                     advertiser_page_store.onCancel();
                     general_store.setBlockUnblockUserError('');
                 }}
@@ -123,7 +124,7 @@ const AdvertiserPage = () => {
                     onClick={() => {
                         buy_sell_store.hideAdvertiserPage();
                         if (general_store.active_index === general_store.path.my_profile)
-                            my_profile_store.setActiveTab(my_profile_tabs.BLOCK_USERS);
+                            my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                     }}
                     page_title={localize("Advertiser's page")}
                 />

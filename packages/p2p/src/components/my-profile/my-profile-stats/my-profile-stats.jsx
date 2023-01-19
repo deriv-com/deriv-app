@@ -25,8 +25,8 @@ const MyStats = () => {
             onClick: () => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE),
         },
         {
-            default_text: 'Block users',
-            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCK_USERS),
+            default_text: 'My Counterparties',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES),
         },
     ];
 

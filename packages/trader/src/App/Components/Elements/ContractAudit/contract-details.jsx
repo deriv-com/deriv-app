@@ -102,13 +102,9 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     icon={<Icon icon='IcContractPayout' size={24} />}
                                     label={localize('Payout per point')}
                                     value={
-                                        `${formatMoney(
-                                            currency,
-                                            number_of_contracts,
-                                            true,
-                                            2,
-                                            0
-                                        )} ${getCurrencyDisplayCode(currency)}` || ' - '
+                                        `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
+                                            currency
+                                        )}` || ' - '
                                     }
                                 />
                             </React.Fragment>

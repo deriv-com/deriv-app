@@ -33,6 +33,7 @@ const Row = ({
     classname_for_demo_and_eu,
     is_pre_appstore_setting,
     content_flag,
+    is_high_risk_for_mt5,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -46,7 +47,7 @@ const Row = ({
     if (is_platform_row && !is_pre_appstore_setting) {
         return null;
     }
-    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR) {
+    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
         // needed to adjust the design for high risk
         values.financial_svg = { text: 'MT5' };
     }
@@ -187,6 +188,7 @@ const DMT5CompareModalContent = ({
             ? 4
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
+    const is_high_risk_for_mt5 = synthetic_accounts_count === 1 && financial_accounts_count === 1;
     const {
         poi_or_poa_not_submitted,
         poi_acknowledged_for_vanuatu_maltainvest,
@@ -474,6 +476,7 @@ const DMT5CompareModalContent = ({
                                     classname_for_demo_and_eu={classname_for_demo_and_eu}
                                     is_pre_appstore_setting={is_pre_appstore_setting}
                                     content_flag={content_flag}
+                                    is_high_risk_for_mt5={is_high_risk_for_mt5}
                                 />
                             ))}
                         </Table.Body>

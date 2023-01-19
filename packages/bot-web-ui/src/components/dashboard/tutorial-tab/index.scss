@@ -110,7 +110,7 @@
             .dc-accordion__wrapper > div:last-child {
                 //iphone 14 specific
                 @media (min-height: 450px) and (max-height: 750px) {
-                    padding-bottom: 10rem;
+                    margin-bottom: 10rem;
                 }
             }
         }

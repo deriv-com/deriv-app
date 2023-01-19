@@ -349,6 +349,12 @@
                     background-color: none;
                     cursor: default;
                 }
+
+                @include mobile {
+                    span:last-child {
+                        padding-left: 1.5rem;
+                    }
+                }
             }
 
             &:not(:last-child) {

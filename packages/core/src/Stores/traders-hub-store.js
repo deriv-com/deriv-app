@@ -544,13 +544,15 @@ export default class TradersHubStore extends BaseStore {
         const {
             client: { isEligibleForMoreRealMt5 },
         } = this.root_store;
+        const { is_high_risk_client_for_mt5 } = this.root_store.modules.cfd;
+
         return (
             this.is_real &&
             !this.is_eu_user &&
             (this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'synthetic') ||
                 this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial')) &&
             (isEligibleForMoreRealMt5('synthetic') || isEligibleForMoreRealMt5('financial')) &&
-            this.content_flag !== ContentFlag.HIGH_RISK_CR
+            !is_high_risk_client_for_mt5
         );
     }
 

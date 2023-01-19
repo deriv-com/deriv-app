@@ -272,7 +272,7 @@ export default class TradersHubStore extends BaseStore {
         ) {
             if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
             return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') {
+        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg' && this.is_real) {
             return ContentFlag.HIGH_RISK_CR;
         }
 

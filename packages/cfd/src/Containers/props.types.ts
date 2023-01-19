@@ -267,6 +267,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     content_flag: string;
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
+    is_high_risk_for_mt5: boolean;
 };
 
 export type TCompareAccountContentProps = {

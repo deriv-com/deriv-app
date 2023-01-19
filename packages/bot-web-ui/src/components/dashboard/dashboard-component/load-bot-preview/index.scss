@@ -165,6 +165,7 @@
                 @include mobile {
                     overflow: unset;
                     height: 100%;
+                    padding-bottom: 8rem;
                 }
 
                 height: calc(100% - 15rem); // 100% - Title height

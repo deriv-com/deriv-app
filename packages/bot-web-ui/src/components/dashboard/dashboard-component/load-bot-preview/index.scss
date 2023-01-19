@@ -164,7 +164,7 @@
 
                 @include mobile {
                     overflow: unset;
-                    height: 100%;
+                    height: calc(100vh - 15rem);
                 }
 
                 height: calc(100% - 15rem); // 100% - Title height
@@ -284,14 +284,6 @@
 
             &--minimized {
                 grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
-                .load-strategy__recent-item--minimized > div:last-child {
-                    @include mobile {
-                        //iphone 14 specific
-                        @media (min-height: 450px) and (max-height: 750px) {
-                            padding-bottom: 10rem;
-                        }
-                    }
-                }
             }
 
             &__mobile {

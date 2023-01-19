@@ -40,11 +40,11 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     </ContractCardItem>
 
                     <ContractCardItem header={getCardLabels().ENTRY_SPOT}>
-                        <Money amount={entry_spot_display_value} currency={currency} />
+                        <Money amount={entry_spot_display_value} />
                     </ContractCardItem>
 
                     <ContractCardItem header={getCardLabels().STRIKE}>
-                        <Money amount={barrier} currency={currency} />
+                        <Money amount={barrier} />
                     </ContractCardItem>
                 </div>
                 <ContractCardItem

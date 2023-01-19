@@ -17,8 +17,17 @@ jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
 }));
 
 describe('<SelfExclusionArticle />', () => {
-    let mock_platform_context = {};
-    let mock_self_exclusion_context = {};
+    let mock_platform_context = {
+        is_appstore: false,
+        is_deriv_crypto: false,
+    };
+    let mock_self_exclusion_context = {
+        is_app_settings: false,
+        is_eu: false,
+        is_uk: false,
+        overlay_ref: {},
+        toggleArticle: jest.fn(),
+    };
 
     const eu_item =
         /these trading limits and self-exclusion help you control the amount of money and time you spend on deriv.com and exercise/i;
@@ -40,11 +49,11 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
-        isDesktop.mockReturnValueOnce(true);
-        isMobile.mockReturnValueOnce(false);
+        (isDesktop as jest.Mock).mockReturnValueOnce(true);
+        (isMobile as jest.Mock).mockReturnValueOnce(false);
         mock_platform_context.is_appstore = true;
 
-        selfExclusionArticleItems.mockImplementation(() => ['Self Exclusion Article Items']);
+        (selfExclusionArticleItems as jest.Mock).mockImplementation(() => ['Self Exclusion Article Items']);
 
         render(
             <PlatformContext.Provider value={mock_platform_context}>
@@ -78,8 +87,8 @@ describe('<SelfExclusionArticle />', () => {
 
     it('should render SelfExclusionArticle desktop component for non EU items', () => {
         mock_platform_context.is_appstore = true;
-        isDesktop.mockReturnValueOnce(false);
-        isMobile.mockReturnValueOnce(false);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(false);
 
         render(
             <PlatformContext.Provider value={mock_platform_context}>
@@ -95,8 +104,8 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle mobile component and trigger click', () => {
-        isDesktop.mockReturnValueOnce(false);
-        isMobile.mockReturnValueOnce(true);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
         const mockToggleArticle = mock_self_exclusion_context.toggleArticle;
 
         render(

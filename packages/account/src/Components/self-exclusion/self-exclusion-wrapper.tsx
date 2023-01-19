@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
-import SelfExclusionArticle from './self-exclusion-article.jsx';
+import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';
 
 const SelfExclusionWrapper = ({ children }: { children?: React.ReactNode }) => {

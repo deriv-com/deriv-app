@@ -36,7 +36,7 @@ export const tour_step_config: Step[] = [
             </Text>
         ),
 
-        target: '.regulators-switcher',
+        target: '.regulators-switcher__container',
         disableBeacon: true,
     },
     {

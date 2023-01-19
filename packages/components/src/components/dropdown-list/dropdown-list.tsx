@@ -1,9 +1,57 @@
+import React, { CSSProperties, LegacyRef } from 'react';
 import classNames from 'classnames';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
+
+type TItem = {
+    disabled?: string;
+    phone_idd?: string;
+    text: string;
+    value: string;
+    tin_format?: string[];
+    // group?: TItem;
+    component?: any;
+    identity?: {
+        services: {
+            idv: object;
+            onfido: object;
+        };
+    };
+};
+
+type TListItem = {
+    is_active: boolean;
+    is_disabled?: boolean;
+    index: number;
+    item: TItem;
+    child_ref: LegacyRef<HTMLDivElement>;
+    onItemSelection: (item: TItem) => void;
+    is_object_list?: boolean;
+    setActiveIndex: (index: number) => void;
+};
+
+type TListItems = {
+    active_index: number;
+    is_object_list?: boolean;
+    list_items: TItem[];
+    not_found_text: string;
+    onItemSelection: () => void;
+    setActiveIndex: () => void;
+};
+
+type TDropDownList = {
+    active_index: number;
+    is_visible: boolean;
+    list_items: TItem[];
+    list_height: string;
+    onScrollStop: () => void;
+    onItemSelection: () => void;
+    setActiveIndex: () => void;
+    style: CSSProperties;
+    not_found_text: string;
+    portal_id: string;
+};
 
 const ListItem = ({
     is_active,
@@ -14,7 +62,7 @@ const ListItem = ({
     onItemSelection,
     is_object_list,
     setActiveIndex,
-}) => {
+}: TListItem) => {
     return (
         <div
             ref={child_ref}
@@ -27,14 +75,13 @@ const ListItem = ({
                 'dc-dropdown-list__item--active': is_active,
                 'dc-dropdown-list__item--disabled': is_disabled,
             })}
-            value={is_object_list ? item.value : null}
         >
             {is_object_list ? item.component || item.text : item}
         </div>
     );
 };
 
-const ListItems = React.forwardRef((props, ref) => {
+const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
     const is_grouped_list = list_items.some(list_item => !!list_item.group);
 
@@ -107,7 +154,13 @@ const ListItems = React.forwardRef((props, ref) => {
 });
 ListItems.displayName = 'ListItems';
 
-const DropdownList = React.forwardRef((props, ref) => {
+type TRef = React.MutableRefObject<{
+    dropdown_ref: LegacyRef<HTMLDivElement>;
+    list_item_ref: LegacyRef<HTMLDivElement>;
+    list_wrapper_ref: LegacyRef<HTMLDivElement>;
+}>;
+
+const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {
     const { dropdown_ref, list_item_ref, list_wrapper_ref } = ref;
     const {
         active_index,
@@ -172,34 +225,11 @@ const DropdownList = React.forwardRef((props, ref) => {
     );
 
     if (portal_id) {
-        return ReactDOM.createPortal(el_dropdown_list, document.getElementById(portal_id));
+        const container = document.getElementById(portal_id);
+        return container && ReactDOM.createPortal(el_dropdown_list, container);
     }
     return el_dropdown_list;
 });
 DropdownList.displayName = 'DropdownList';
 
 export default DropdownList;
-
-const list_items_shape = PropTypes.arrayOf(
-    PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-    })
-);
-
-DropdownList.propTypes = {
-    active_index: PropTypes.number,
-    is_visible: PropTypes.bool,
-    list_items: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.string),
-        list_items_shape,
-        PropTypes.objectOf(list_items_shape),
-    ]),
-    list_height: PropTypes.string,
-    not_found_text: PropTypes.string,
-    onItemSelection: PropTypes.func,
-    style: PropTypes.object,
-    portal_id: PropTypes.string,
-    onScrollStop: PropTypes.func,
-    setActiveIndex: PropTypes.func,
-};

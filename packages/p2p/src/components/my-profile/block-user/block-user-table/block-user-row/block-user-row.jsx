@@ -3,10 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { Button, Table, Text } from '@deriv/components';
-import UserAvatar from 'Components/user/user-avatar';
-import { localize } from 'Components/i18next';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
+import { Button, Table, Text } from '@deriv/components';
+import { localize } from 'Components/i18next';
+import UserAvatar from 'Components/user/user-avatar';
 
 const BlockUserRow = ({ row: advertiser }) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
@@ -38,11 +39,27 @@ const BlockUserRow = ({ row: advertiser }) => {
             </Table.Cell>
             <Table.Cell className='block-user-row__button-group'>
                 {is_blocked ? (
-                    <Button secondary medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+                    <Button
+                        className={classNames('block-user-row__button-group__button', {
+                            'block-user-row__button-group__button--unblock-hover':
+                                isMobile() && general_store.is_block_user_modal_open,
+                        })}
+                        secondary
+                        medium
+                        onClick={() => my_profile_store.onClickUnblock(advertiser)}
+                    >
                         {localize('Unblock')}
                     </Button>
                 ) : (
-                    <Button alternate medium onClick={() => my_profile_store.onClickUnblock(advertiser)}>
+                    <Button
+                        className={classNames('block-user-row__button-group__button', {
+                            'block-user-row__button-group__button--block-hover':
+                                isMobile() && general_store.is_block_user_modal_open,
+                        })}
+                        alternate
+                        medium
+                        onClick={() => my_profile_store.onClickUnblock(advertiser)}
+                    >
                         {localize('Block')}
                     </Button>
                 )}

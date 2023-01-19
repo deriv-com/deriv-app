@@ -20,6 +20,7 @@
         @include mobile {
             align-items: center;
             margin: 0 1.6rem;
+            z-index: 7;
         }
     }
 
@@ -28,6 +29,7 @@
 
         @include mobile {
             margin: 1.6rem;
+            z-index: 7;
         }
     }
 }

@@ -42,7 +42,7 @@ const BlockUser = () => {
                     is_flex
                     is_modal_open
                     page_header_className='buy-sell__modal-header'
-                    page_header_text={localize('My Counterparties')}
+                    page_header_text={localize('My counterparties')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <BlockUserList />

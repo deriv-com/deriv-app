@@ -23,7 +23,7 @@ const MyProfileHeader = () => {
             value: my_profile_tabs.AD_TEMPLATE,
         },
         {
-            text: localize('My Counterparties'),
+            text: localize('My counterparties'),
             value: my_profile_tabs.MY_COUNTERPARTIES,
         },
     ];

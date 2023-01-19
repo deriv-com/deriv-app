@@ -559,7 +559,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={routes.index}
                                                     icon='IcLogout'
                                                     text={localize('Log out')}
-                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             <MobileDrawer.Footer className='dc-mobile-drawer__footer--servertime'>
@@ -678,11 +677,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 toggleDrawer();
                                             }}
                                         >
-                                            <MenuLink
-                                                icon='IcLogout'
-                                                text={localize('Log out')}
-                                                onClickLink={toggleDrawer}
-                                            />
+                                            <MenuLink icon='IcLogout' text={localize('Log out')} />
                                         </MobileDrawer.Item>
                                     )}
                                 </MobileDrawer.Body>

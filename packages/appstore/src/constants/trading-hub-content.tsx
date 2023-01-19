@@ -42,7 +42,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 }}
             />
         ),
-        footer_header: localize(`Welcome to Trader's Hub`),
+        footer_header: localize(`Welcome to Trader's hub`),
         footer_text: localize('This is your personal start page for Deriv'),
         has_next_content: false,
     },

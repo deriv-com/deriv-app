@@ -80,6 +80,7 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
@@ -335,6 +336,14 @@ export default class TradersHubStore extends BaseStore {
 
     get has_any_real_account() {
         return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
+    }
+
+    get is_currency_switcher_disabled_for_mf() {
+        return !!(
+            this.is_eu_user &&
+            this.multipliers_account_status &&
+            this.multipliers_account_status !== 'need_verification'
+        );
     }
 
     setTogglePlatformType(platform_type) {

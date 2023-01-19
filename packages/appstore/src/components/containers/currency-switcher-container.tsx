@@ -27,7 +27,7 @@ const CurrentSwitcherContainer = ({
     const { client, modules, traders_hub }: TRootStore = store;
 
     const { document_status } = client.authentication_status;
-    const { is_eu_user, is_demo } = traders_hub;
+    const { is_eu_user, is_demo, is_currency_switcher_disabled_for_mf } = traders_hub;
     const { current_list } = modules.cfd;
 
     const has_mf_mt5_account = Object.keys(current_list)
@@ -36,11 +36,12 @@ const CurrentSwitcherContainer = ({
 
     const Dropdown = () => {
         const icon_dropdown = (
-            <div className='currency-switcher-container__arrow'>
+            <div className='currency-switcher-container__arrow' {...props}>
                 <Icon icon='IcChevronDownBold' />
             </div>
         );
-        if (is_eu_user && has_mf_mt5_account) {
+
+        if ((is_eu_user && has_mf_mt5_account) || is_currency_switcher_disabled_for_mf) {
             return null;
         } else if (is_demo) {
             return null;
@@ -53,7 +54,6 @@ const CurrentSwitcherContainer = ({
             className={classNames(className, 'currency-switcher-container', {
                 'currency-switcher-container--has-interaction': has_interaction,
             })}
-            {...props}
         >
             <div className='currency-switcher-container--left'>
                 <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />

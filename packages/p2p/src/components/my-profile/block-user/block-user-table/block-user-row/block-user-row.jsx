@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import classNames from 'classnames';
-import { isMobile } from '@deriv/shared';
 import { Button, Table, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
@@ -40,10 +39,7 @@ const BlockUserRow = ({ row: advertiser }) => {
             <Table.Cell className='block-user-row__button-group'>
                 {is_blocked ? (
                     <Button
-                        className={classNames('block-user-row__button-group__button', {
-                            'block-user-row__button-group__button--unblock-hover':
-                                isMobile() && general_store.is_block_user_modal_open,
-                        })}
+                        className='block-user-row__button-group__unblock-button'
                         secondary
                         medium
                         onClick={() => my_profile_store.onClickUnblock(advertiser)}
@@ -52,10 +48,7 @@ const BlockUserRow = ({ row: advertiser }) => {
                     </Button>
                 ) : (
                     <Button
-                        className={classNames('block-user-row__button-group__button', {
-                            'block-user-row__button-group__button--block-hover':
-                                isMobile() && general_store.is_block_user_modal_open,
-                        })}
+                        className='block-user-row__button-group__block-button'
                         alternate
                         medium
                         onClick={() => my_profile_store.onClickUnblock(advertiser)}

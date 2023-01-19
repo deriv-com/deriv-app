@@ -16,25 +16,28 @@
         justify-content: flex-end;
         align-items: center;
 
-        &__button {
+        & button {
             min-width: 9rem;
+        }
 
+        &__unblock-button {
             // Needed to override sticky hover in mobile
             @include mobile {
-                &--block-hover {
-                    &:hover {
-                        background: transparent !important;
-                    }
+                &:hover {
+                    background: transparent !important;
+                }
+            }
+        }
 
-                    & > span {
-                        color: var(--brand-red-coral) !important;
-                    }
+        &__block-button {
+            // Needed to override sticky hover in mobile
+            @include mobile {
+                &:hover {
+                    background: transparent !important;
                 }
 
-                &--unblock-hover {
-                    &:hover {
-                        background: transparent !important;
-                    }
+                & > span {
+                    color: var(--brand-red-coral) !important;
                 }
             }
         }

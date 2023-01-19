@@ -3,8 +3,6 @@
     flex-flow: column nowrap;
     background: inherit;
     position: relative;
-    overscroll-behavior: none;
-    scroll-behavior: smooth;
 
     &__table-header,
     &__table-row {
@@ -48,6 +46,8 @@
             height: 100%;
             margin: 1.6rem 1.7rem;
             overflow-x: auto;
+            scroll-behavior: auto;
+
             &__cell {
                 &--fixed {
                     background-color: var(--general-main-1);

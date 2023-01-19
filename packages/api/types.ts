@@ -41,7 +41,7 @@ export type TSocketEndpoints = {
         response: PingResponse;
     };
     verify_email: {
-        request: Omit<VerifyEmailRequest, 'verify_email_cellxpert'> & { verify_email_cellxpert?: string };
+        request: VerifyEmailRequest;
         response: VerifyEmailResponse;
     };
     exchange_rates: {

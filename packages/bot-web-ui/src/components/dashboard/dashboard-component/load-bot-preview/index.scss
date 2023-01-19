@@ -165,10 +165,9 @@
                 @include mobile {
                     overflow: unset;
                     height: 100%;
-                    &:last-child {
-                        @media (min-height: 450px) and (max-height: 750px) {
-                            margin-bottom: 10rem;
-                        }
+
+                    @media (min-height: 450px) and (max-height: 750px) {
+                        margin-bottom: 10rem;
                     }
                 }
 

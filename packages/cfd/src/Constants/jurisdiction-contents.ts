@@ -34,8 +34,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     vanuatu: {
-        over_header: localize('Better spreads'),
-        is_over_header_available: true,
+        is_over_header_available: false,
         header: localize('Vanuatu'),
         synthetic_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
@@ -69,19 +68,18 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     maltainvest: {
-        over_header: localize('Better spreads'),
-        is_over_header_available: true,
-        header: localize('Malta Financial'),
+        is_over_header_available: false,
+        header: localize('Malta'),
         synthetic_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('50+ assets: forex, stocks, stock indices, synthetics indices, and cryptocurrencies.')}`,
+            `${localize('140+ assets: forex, stocks, stock indices, synthetics, and cryptocurrencies.')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
         financial_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('50+ assets: forex, stocks, stock indices, synthetics indices, and cryptocurrencies.')}`,
+            `${localize('140+ assets: forex, stocks, stock indices, synthetics, and cryptocurrencies.')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
     },

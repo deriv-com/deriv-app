@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({
@@ -65,7 +65,14 @@ const FooterNote = ({
 const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
     return (
         <div className={`${props.card_classname}__footnote`}>
-            <Text as='p' color='prominent' align='center' size='xs' weight='bold' line_height='xs'>
+            <Text
+                as='p'
+                color='prominent'
+                align='center'
+                size={isMobile() ? 'xxs' : 'xs'}
+                weight='bold'
+                line_height='xs'
+            >
                 <FooterNote {...props} />
             </Text>
         </div>

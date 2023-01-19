@@ -73,13 +73,13 @@ export const jurisdiction_contents: TJurisdictionContent = {
         synthetic_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('140+ assets: forex, stocks, stock indices, synthetics, and cryptocurrencies.')}`,
+            `${localize('140+assets :forex , stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
         financial_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('140+ assets: forex, stocks, stock indices, synthetics, and cryptocurrencies.')}`,
+            `${localize('140+assets :forex , stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
     },

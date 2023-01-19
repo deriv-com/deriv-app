@@ -95,7 +95,7 @@ const CreateAdForm = () => {
             <Formik
                 initialValues={{
                     contact_info: general_store.contact_info,
-                    default_advert_description: my_ads_store.default_advert_description,
+                    default_advert_description: general_store.default_advert_description,
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',

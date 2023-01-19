@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfiniteLoader from 'react-virtualized/dist/es/InfiniteLoader';
+import InfiniteLoader from '@enykeev/react-virtualized/dist/es/InfiniteLoader';
 import DataList from '../data-list/data-list.jsx';
 
 const InfiniteDataList = ({

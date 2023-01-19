@@ -39,6 +39,12 @@ describe('<OnRamp />', () => {
                 account_status: {
                     status: [],
                 },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             common: {
                 routeTo: jest.fn(),
@@ -54,9 +60,6 @@ describe('<OnRamp />', () => {
                         setIsOnRampModalOpen: jest.fn(),
                         should_show_dialog: false,
                         onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    deposit: {
-                        is_deposit_locked: false,
                     },
                     general_store: {
                         is_cashier_onboarding: false,
@@ -91,7 +94,7 @@ describe('<OnRamp />', () => {
     });
     const renderOnRamp = (is_rerender = false) => {
         const ui = (
-            <StoreProvider store={mockRootStore}>
+            <StoreProvider store={mockRootStore as TRootStore}>
                 <OnRamp {...props} />
             </StoreProvider>
         );

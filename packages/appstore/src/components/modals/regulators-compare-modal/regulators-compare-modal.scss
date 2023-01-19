@@ -3,6 +3,8 @@
     flex-flow: column nowrap;
     background: inherit;
     position: relative;
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
 
     &__table-header,
     &__table-row {

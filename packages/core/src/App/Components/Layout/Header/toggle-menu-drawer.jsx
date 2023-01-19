@@ -14,9 +14,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 
-const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text }) => {
-    const { common, ui } = useStore();
-    const { setDarkMode } = ui;
+const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
+    const { common } = useStore();
     const { changeCurrentLanguage } = common;
     const deriv_static_url = getStaticUrl(link_to);
 
@@ -29,7 +28,7 @@ const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language,
                 })}
                 active_class='header__menu-mobile-link--active'
                 onClick={() => {
-                    setDarkMode();
+                    onClickLink();
                     changeLanguage(link_to, changeCurrentLanguage);
                 }}
             >
@@ -81,7 +80,7 @@ const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language,
                 'header__menu-mobile-link--active': is_active,
             })}
             active_class='header__menu-mobile-link--active'
-            onClick={setDarkMode}
+            onClick={onClickLink}
         >
             <Icon className='header__menu-mobile-link-icon' icon={icon} />
             <Text
@@ -195,6 +194,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                         link_to={route_config.path}
                         icon={route_config.icon_component}
                         text={route_config.getTitle()}
+                        onClickLink={toggleDrawer}
                     />
                 </MobileDrawer.Item>
             );
@@ -241,6 +241,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         link_to={route.path}
                                         icon={route.icon_component}
                                         text={route.getTitle()}
+                                        onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
                             );
@@ -261,12 +262,18 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
+                                        onClickLink={toggleDrawer}
                                     />
                                 ))}
                             </MobileDrawer.SubMenuSection>
                         ) : (
                             <MobileDrawer.Item key={index}>
-                                <MenuLink link_to={route.path} icon={route.icon_component} text={route.getTitle()} />
+                                <MenuLink
+                                    link_to={route.path}
+                                    icon={route.icon_component}
+                                    text={route.getTitle()}
+                                    onClickLink={toggleDrawer}
+                                />
                             </MobileDrawer.Item>
                         );
                     })}
@@ -293,6 +300,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}
                             text={getAllowedLanguages()[lang]}
+                            onClickLink={toggleDrawer}
                         />
                     </MobileDrawer.Item>
                 ))}
@@ -303,7 +311,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const HelpCentreRoute = has_border_bottom => {
         return (
             <MobileDrawer.Item className={classNames({ 'header__menu-mobile-theme': has_border_bottom })}>
-                <MenuLink link_to={getStaticUrl('/help-centre')} icon='IcHelpCentre' text={localize('Help centre')} />
+                <MenuLink
+                    link_to={getStaticUrl('/help-centre')}
+                    icon='IcHelpCentre'
+                    text={localize('Help centre')}
+                    onClickLink={toggleDrawer}
+                />
             </MobileDrawer.Item>
         );
     };
@@ -447,12 +460,18 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 link_to={routes.trading_hub}
                                                 icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
                                                 text={localize("Trader's hub")}
+                                                onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
                                     )}
                                     {is_logged_in && !is_trading_hub_category && (
                                         <MobileDrawer.Item>
-                                            <MenuLink link_to={routes.trade} icon='IcTrade' text={localize('Trade')} />
+                                            <MenuLink
+                                                link_to={routes.trade}
+                                                icon='IcTrade'
+                                                text={localize('Trade')}
+                                                onClickLink={toggleDrawer}
+                                            />
                                         </MobileDrawer.Item>
                                     )}
                                     {primary_routes_config.map((route_config, idx) =>
@@ -485,6 +504,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={routes.account_limits}
                                                     icon='IcAccountLimits'
                                                     text={localize('Account Limits')}
+                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             <MobileDrawer.Item>
@@ -492,6 +512,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={getStaticUrl('/responsible')}
                                                     icon='IcVerification'
                                                     text={localize('Responsible trading')}
+                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             <MobileDrawer.Item>
@@ -499,6 +520,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={getStaticUrl('/regulatory')}
                                                     icon='IcRegulatoryInformation'
                                                     text={localize('Regulatory information')}
+                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
@@ -506,6 +528,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={getStaticUrl('/')}
                                                     icon='IcDerivOutline'
                                                     text={localize('Go to Deriv.com')}
+                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             {liveChat.isReady && (
@@ -536,6 +559,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     link_to={routes.index}
                                                     icon='IcLogout'
                                                     text={localize('Log out')}
+                                                    onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
                                             <MobileDrawer.Footer className='dc-mobile-drawer__footer--servertime'>
@@ -595,7 +619,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </Button>
                                     </MobileDrawer.Item>
                                     <MobileDrawer.Item>
-                                        <MenuLink link_to={routes.trade} icon='IcTrade' text={localize('Trade')} />
+                                        <MenuLink
+                                            link_to={routes.trade}
+                                            icon='IcTrade'
+                                            text={localize('Trade')}
+                                            onClickLink={toggleDrawer}
+                                        />
                                     </MobileDrawer.Item>
                                     {primary_routes_config.map((route_config, idx) =>
                                         getRoutesWithSubMenu(route_config, idx)
@@ -649,7 +678,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 toggleDrawer();
                                             }}
                                         >
-                                            <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                            <MenuLink
+                                                icon='IcLogout'
+                                                text={localize('Log out')}
+                                                onClickLink={toggleDrawer}
+                                            />
                                         </MobileDrawer.Item>
                                     )}
                                 </MobileDrawer.Body>

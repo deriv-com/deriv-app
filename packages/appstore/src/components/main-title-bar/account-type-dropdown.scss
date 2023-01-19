@@ -4,7 +4,8 @@
     line-height: 2rem;
     text-transform: capitalize;
     border: 2px solid;
-    height: 2.4em;
+    height: 2em;
+    width: 5.4em;
 
     &--parent {
         padding: 0;
@@ -33,7 +34,7 @@
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 2px solid var(--status-info);
+        border: 1px solid var(--status-info);
         & > .dc-text {
             color: var(--status-info);
         }
@@ -42,7 +43,7 @@
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 2px solid var(--status-success);
+        border: 1px solid var(--status-success);
         & > .dc-text {
             color: var(--status-success);
         }

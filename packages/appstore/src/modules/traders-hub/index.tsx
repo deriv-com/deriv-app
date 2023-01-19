@@ -7,7 +7,7 @@ import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
-import { isDesktop, routes } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer } from '@deriv/components';
 
 import './traders-hub.scss';
@@ -15,7 +15,7 @@ import './traders-hub.scss';
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
     const { is_eu, is_landing_company_loaded, is_logged_in } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const handleScroll = () => {
@@ -31,8 +31,10 @@ const TradersHub = () => {
         }, 500);
     }, [is_tour_open]);
 
+    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL;
+
     const platform_toggle_options = [
-        { text: `${is_eu ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
+        { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
         { text: 'CFDs', value: 'cfd' },
     ];
 

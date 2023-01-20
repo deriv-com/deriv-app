@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import './static-currency-switcher-container.scss';
+import { Icon } from '@deriv/components';
 
 type CurrentSwitcherContainerProps = {
     actions?: ReactNode;
@@ -26,7 +27,12 @@ const StaticCurrencySwitcherContainer = ({ children, icon, title, actions }: Cur
                 {title}
                 {children}
             </div>
-            {actions}
+            <div className='currency-switcher-container--right'>
+                {actions}
+                <div className='currency-switcher-container__arrow--onboarding'>
+                    <Icon icon='IcChevronDownBold' />
+                </div>
+            </div>
         </div>
     );
 };

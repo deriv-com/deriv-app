@@ -46,6 +46,7 @@
             height: 100%;
             margin: 1.6rem 1.7rem;
             overflow-x: auto;
+            overflow-y: hidden;
             scroll-behavior: auto;
 
             &__cell {

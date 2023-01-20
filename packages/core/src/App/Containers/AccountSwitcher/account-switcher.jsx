@@ -1090,7 +1090,7 @@ const AccountSwitcher = props => {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
                                                 } else {
-                                                    props.openRealAccountSignup('manage');
+                                                    props.openRealAccountSignup(account);
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'

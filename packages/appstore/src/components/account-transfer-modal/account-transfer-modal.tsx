@@ -18,13 +18,16 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
                 account_transfer: { is_transfer_confirm, should_switch_account },
             },
         },
-        traders_hub: { closeModal, openModal },
+        traders_hub: { closeModal, openModal, setSelectedAccount },
     } = useStore();
 
     const history = useHistory();
 
     React.useEffect(() => {
-        return () => closeModal();
+        return () => {
+            setSelectedAccount({});
+            closeModal();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

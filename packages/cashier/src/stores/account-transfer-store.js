@@ -436,7 +436,14 @@ export default class AccountTransferStore {
                   );
 
             const obj_values = {
-                text: account_text_display,
+                text:
+                    is_cfd &&
+                    account.account_type === CFD_PLATFORMS.MT5 &&
+                    this.root_store.client.is_pre_appstore &&
+                    this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
+                        ? this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
+                              .sub_title
+                        : account_text_display,
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
@@ -445,7 +452,14 @@ export default class AccountTransferStore {
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
-                    platform_icon: cfd_icon_display,
+                    platform_icon:
+                        account.account_type === CFD_PLATFORMS.MT5 &&
+                        this.root_store.client.is_pre_appstore &&
+                        this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
+                            ? this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
+                                  x => x.login === account.login
+                              ).icon
+                            : cfd_icon_display,
                     status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,

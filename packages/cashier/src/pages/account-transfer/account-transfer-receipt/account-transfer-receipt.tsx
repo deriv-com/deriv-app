@@ -101,7 +101,12 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
                         <Icon
-                            icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
+                            icon={
+                                (is_pre_appstore && selected_from.is_mt
+                                    ? `IcAppstore${selected_from.platform_icon}`
+                                    : selected_from.platform_icon) ||
+                                `IcCurrency-${selected_from?.currency?.toLowerCase()}`
+                            }
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>
@@ -118,7 +123,11 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
                         <Icon
-                            icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
+                            icon={
+                                (is_pre_appstore && selected_to.is_mt
+                                    ? `IcAppstore${selected_to.platform_icon}`
+                                    : selected_to.platform_icon) || `IcCurrency-${selected_to?.currency?.toLowerCase()}`
+                            }
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>

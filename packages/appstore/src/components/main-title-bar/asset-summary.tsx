@@ -37,7 +37,7 @@ const AssetSummary = () => {
     const eu_text = content_flag === ContentFlag.EU_REAL || is_eu_user;
 
     const is_eu_popover_text = eu_text
-        ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
+        ? localize(`Total assets in your Multipliers and Deriv MT5 ${selected_account_type} accounts`)
         : localize(
               `Total assets in your Options & Multipliers, Deriv MT5 and Deriv X ${selected_account_type} accounts`
           );

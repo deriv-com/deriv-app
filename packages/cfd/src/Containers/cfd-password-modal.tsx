@@ -762,9 +762,9 @@ const CFDPasswordModal = ({
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
+                return is_selected_mt5_verified ? localize('Top-up now') : localize('OK');
             }
-            return localize('Transfer now');
+            return localize('Top-up now');
         }
         return localize('Continue');
     }, [platform, account_type, is_selected_mt5_verified]);

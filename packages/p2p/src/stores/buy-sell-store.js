@@ -529,7 +529,7 @@ export default class BuySellStore extends BaseStore {
             currency_list.push({
                 component: (
                     <div className='currency-dropdown__list-item'>
-                        <div>{symbol}</div>
+                        <div className='currency-dropdown__list-item-symbol'>{symbol}</div>
                         <Text as='div' align='right' size='xs' line_height='xxs'>
                             {display_name}
                         </Text>

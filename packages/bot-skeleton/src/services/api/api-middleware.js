@@ -11,6 +11,22 @@ const REQUESTS = [
     'history', // only response, there is no `history` type but instead it is response type
 ];
 
+// eslint-disable-next-line consistent-return
+const log = (measures = [], req_type = '') => {
+    if (!measures || !measures.length) return null;
+    //eslint-disable-next-line no-console
+    console.table(measures);
+    if (measures.length > 1) {
+        const max = Math.max(...measures.map(i => i.duration));
+        const min = Math.min(...measures.map(i => i.duration));
+
+        //eslint-disable-next-line no-console
+        console.log(`%c ${req_type} --- min: ${min}`, 'color: #00AB41');
+        //eslint-disable-next-line no-console
+        console.log(`%c ${req_type} --- max: ${max}`, 'color: #FF0000');
+    }
+};
+
 const getRequestType = request => {
     let req_type;
     REQUESTS.forEach(type => {
@@ -46,10 +62,9 @@ class APIMiddleware {
     };
 
     printStats = () => {
-        REQUESTS.forEach(req => {
-            const measure = performance.getEntriesByName(req);
-            //eslint-disable-next-line no-console
-            if (measure && measure.length) console.table(measure);
+        REQUESTS.forEach(req_type => {
+            const measure = performance.getEntriesByName(req_type);
+            if (measure && measure.length) log(measure, req_type);
         });
         performance.clearMeasures();
         performance.clearMarks();

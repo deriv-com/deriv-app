@@ -576,7 +576,22 @@ export default class TradersHubStore extends BaseStore {
         }
         return '';
     };
-
+    hasMultipleSVGAccounts = () => {
+        const all_svg_acc = [];
+        this.combined_cfd_mt5_accounts.map(acc => {
+            if (acc.landing_company_short === 'svg' && acc.market_type === 'synthetic') {
+                if (all_svg_acc.length) {
+                    all_svg_acc.forEach(svg_acc => {
+                        if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
+                        return all_svg_acc;
+                    });
+                } else {
+                    all_svg_acc.push(acc);
+                }
+            }
+        });
+        return all_svg_acc.length > 1;
+    };
     getShortCodeAndRegion(account) {
         let short_code_and_region;
         if (this.is_real && !this.is_eu_user) {
@@ -587,11 +602,13 @@ export default class TradersHubStore extends BaseStore {
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 
-            const region =
-                account.market_type !== 'financial' && account.landing_company_short !== 'bvi'
-                    ? ` - ${this.getServerName(account)}`
-                    : '';
-
+            let region = '';
+            if (this.hasMultipleSVGAccounts()) {
+                region =
+                    account.market_type !== 'financial' && account.landing_company_short !== 'bvi'
+                        ? ` - ${this.getServerName(account)}`
+                        : '';
+            }
             short_code_and_region = `${short_code}${region}`;
         }
         return short_code_and_region;

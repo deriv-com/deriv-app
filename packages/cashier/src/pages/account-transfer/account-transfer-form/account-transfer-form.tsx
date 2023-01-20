@@ -30,16 +30,15 @@ type TAccountTransferFormProps = {
 };
 
 const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
+    const account_platform_icon =
+        is_pre_appstore && account.is_mt ? `IcAppstore${account.platform_icon}` : account.platform_icon;
+
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
                     <Icon
-                        icon={
-                            (is_pre_appstore && account.is_mt
-                                ? `IcAppstore${account.platform_icon}`
-                                : account.platform_icon) || `IcCurrency-${account?.currency?.toLowerCase()}`
-                        }
+                        icon={account_platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
                         className='account-transfer-form__currency-icon'
                     />
                 </div>

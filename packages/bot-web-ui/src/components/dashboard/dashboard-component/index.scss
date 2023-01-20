@@ -106,7 +106,6 @@
 
                         @include mobile {
                             flex-direction: column;
-                            padding: 0rem 0.8rem;
                             background-color: var(--general-section-1);
                         }
                     }
@@ -246,6 +245,7 @@
 
             @include mobile {
                 width: 100%;
+                padding: 0 1rem;
             }
 
             &--not-listed {
@@ -377,7 +377,9 @@
         }
 
         &__table {
-            width: 88%;
+            @include mobile-tablet-mix {
+                width: calc(100% - 9.3rem);
+            }
 
             &--minimized {
                 width: 100%;
@@ -387,8 +389,16 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                @include mobile {
+                    flex-wrap: wrap;
+                }
                 &--minimized {
                     align-items: flex-start;
+                    @include mobile-tablet-mix {
+                        display: flex;
+                        justify-content: space-around;
+                        flex-flow: unset;
+                    }
                 }
             }
 
@@ -404,7 +414,7 @@
                 align-items: center;
                 flex-direction: column;
                 width: 10.2rem;
-                margin: 1rem;
+                margin: 1rem 0;
 
                 &:hover {
                     cursor: pointer;

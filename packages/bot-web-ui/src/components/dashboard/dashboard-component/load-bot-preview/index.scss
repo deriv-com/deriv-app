@@ -586,7 +586,7 @@
 
                 &__header {
                     &-wrapper {
-                        margin-bottom: 3.2rem;
+                        margin-bottom: 0;
 
                         h1 {
                             width: 100%;
@@ -611,7 +611,7 @@
 
                     .injectionDiv {
                         margin: 2.4rem;
-                        height: calc(100vh - 24.5rem);
+                        height: calc(100vh - 26.5rem);
                         border: 1px solid $color-grey-6;
                     }
 

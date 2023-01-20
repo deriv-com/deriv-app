@@ -14,7 +14,7 @@ describe('<Submitted />', () => {
 
     it('should render the Submitted component', () => {
         renderWithRouter(<Submitted needs_poi />);
-        expect(screen.getByText('Your proof of address was submitted successfully')).toBeInTheDocument();
+        expect(screen.getByText('Your documents were submitted successfully')).toBeInTheDocument();
     });
 
     it('should show submit_poi message if needs_poi is true', () => {
@@ -22,9 +22,11 @@ describe('<Submitted />', () => {
         expect(screen.getByText('You must also submit a proof of identity.')).toBeInTheDocument();
     });
 
-    it('should show review message if needs_poi is false', () => {
+    it('should show review message if needs_poi is true', () => {
         renderWithRouter(<Submitted needs_poi />);
-        expect(screen.getByText('Your document is being reviewed, please check back in 1-3 days.')).toBeInTheDocument();
+        expect(
+            screen.getByText('We’ll review your documents and notify you of its status within 1 to 3 days.')
+        ).toBeInTheDocument();
     });
 
     it('should show ContinueTradingButton if needs_poi is false and is_description_enabled is false', () => {

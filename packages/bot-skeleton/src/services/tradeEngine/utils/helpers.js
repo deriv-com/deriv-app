@@ -130,17 +130,13 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
     return !is_ignorable_error;
 };
 
-export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_index, api_base) => {
+export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_index) => {
     return new Promise((resolve, reject) => {
         const promise = promiseFn();
 
         if (promise) {
             promise.then(resolve).catch(error => {
-                /**
-                 * if bot is not running there is no point of recovering from error
-                 * `!api_base.is_running` will check the bot status if it is not running it will kick out the control from loop
-                 */
-                if (shouldThrowError(error, errors_to_ignore) || (api_base && !api_base.is_running)) {
+                if (shouldThrowError(error, errors_to_ignore)) {
                     reject(error);
                     return;
                 }
@@ -176,13 +172,7 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
     });
 };
 
-/**
- * @param {*} promiseFn api call - it could be api call or subscription
- * @param {*} errors_to_ignore list of errors to ignore
- * @param {*} api_base instance of APIBase class to check if the bot is running or not
- * @returns a new promise
- */
-export const doUntilDone = (promiseFn, errors_to_ignore, api_base) => {
+export const doUntilDone = (promiseFn, errors_to_ignore) => {
     let delay_index = 1;
 
     return new Promise((resolve, reject) => {
@@ -192,7 +182,7 @@ export const doUntilDone = (promiseFn, errors_to_ignore, api_base) => {
         };
 
         const repeatFn = () => {
-            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index, api_base).then(resolve).catch(reject);
+            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index).then(resolve).catch(reject);
         };
 
         repeatFn();

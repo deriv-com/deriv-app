@@ -165,7 +165,7 @@ export default class NotificationStore extends BaseStore {
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
-                if (!excluded_notifications.includes(notification.key)) {
+                if (notification.key.includes('svg') || !excluded_notifications.includes(notification.key)) {
                     this.updateNotifications(this.notification_messages);
                 }
             }
@@ -176,7 +176,7 @@ export default class NotificationStore extends BaseStore {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    addVerificationNotifications(identity, document, has_restricted_mt5_account) {
+    addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
         //identity
         if (identity.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poi_verified);
@@ -194,6 +194,8 @@ export default class NotificationStore extends BaseStore {
             } else {
                 this.addNotificationMessage(this.client_notifications.resticted_mt5_with_failed_poa);
             }
+        } else if (has_mt5_account_with_rejected_poa) {
+            this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
         } else if (!['none', 'pending'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
@@ -203,7 +205,11 @@ export default class NotificationStore extends BaseStore {
         if (LocalStore.get('active_loginid') !== 'null')
             this.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
 
-        if (window.location.pathname !== routes.cashier_p2p) {
+        if (window.location.pathname === routes.personal_details) {
+            this.notification_messages = this.notification_messages.filter(
+                notification => notification.platform === 'Account'
+            );
+        } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -245,12 +251,14 @@ export default class NotificationStore extends BaseStore {
             is_risky_client,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
+            has_mt5_account_with_rejected_poa,
         } = this.root_store.client;
         const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const virtual_account = landing_company_shortcode === 'virtual';
+        const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
@@ -279,6 +287,8 @@ export default class NotificationStore extends BaseStore {
                 poi_name_mismatch,
                 withdrawal_locked,
             } = getStatusValidations(status || []);
+
+            this.handlePOAAddressMismatchNotifications();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -352,8 +362,27 @@ export default class NotificationStore extends BaseStore {
                     needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() !== 'rejected';
                 const poo_rejected =
                     needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
+                const svg_needs_poi_poa =
+                    cr_account &&
+                    status.includes('allow_document_upload') &&
+                    (identity?.status === 'none' || identity?.status === 'rejected') &&
+                    (document?.status === 'none' || document?.status === 'rejected');
+                const svg_needs_poa =
+                    cr_account &&
+                    status.includes('allow_document_upload') &&
+                    (document?.status === 'none' || document?.status === 'rejected');
+                const svg_needs_poi =
+                    cr_account &&
+                    status.includes('allow_document_upload') &&
+                    (identity?.status === 'none' || identity?.status === 'rejected');
+                const svg_poi_expired = cr_account && identity?.status === 'expired';
 
-                this.addVerificationNotifications(identity, document, has_restricted_mt5_account);
+                this.addVerificationNotifications(
+                    identity,
+                    document,
+                    has_restricted_mt5_account,
+                    has_mt5_account_with_rejected_poa
+                );
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -477,6 +506,16 @@ export default class NotificationStore extends BaseStore {
                 }
                 if (poo_rejected) {
                     this.addNotificationMessage(this.client_notifications.poo_rejected);
+                }
+                //add notification message for SVG clients
+                if (svg_needs_poi_poa) {
+                    this.addNotificationMessage(this.client_notifications.svg_needs_poi_poa);
+                } else if (svg_needs_poa) {
+                    this.addNotificationMessage(this.client_notifications.svg_needs_poa);
+                } else if (svg_needs_poi) {
+                    this.addNotificationMessage(this.client_notifications.svg_needs_poi);
+                } else if (svg_poi_expired) {
+                    this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
         }
@@ -951,14 +990,23 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
             },
+            poa_rejected_for_mt5: {
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Resubmit proof of address'),
+                },
+                key: 'poa_rejected_for_mt5',
+                header: localize('Please resubmit your proof of address or we may restrict your account.'),
+                message: localize('Please submit your proof of address.'),
+                type: 'danger',
+            },
             poa_failed: {
                 action: {
                     route: routes.proof_of_address,
                     text: localize('Resubmit proof of address'),
                 },
                 key: 'poa_failed',
-                header: localize('Please resubmit your proof of address or we may restrict your account.'),
-                message: localize('Please submit your proof of address.'),
+                header: localize('Please resubmit your proof of address.'),
                 type: 'danger',
             },
             poa_verified: {
@@ -1285,6 +1333,54 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Start assessment'),
                 },
             },
+            svg_needs_poi_poa: {
+                key: 'svg_needs_poi_poa',
+                header: localize('Account verification required'),
+                message: (
+                    <Localize i18n_default_text='Please submit your proof of identity and proof of address to verify your account and continue trading.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Go to my account settings'),
+                },
+            },
+            svg_needs_poa: {
+                key: 'svg_needs_poa',
+                header: localize('Proof of address required'),
+                message: (
+                    <Localize i18n_default_text='Please submit your proof of address to verify your account and continue trading.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Submit proof of address'),
+                },
+            },
+            svg_needs_poi: {
+                key: 'svg_needs_poi',
+                header: localize('Proof of identity required'),
+                message: (
+                    <Localize i18n_default_text='Please submit your proof of identity to verify your account and continue trading.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Submit proof of identity'),
+                },
+            },
+            svg_poi_expired: {
+                key: 'svg_poi_expired',
+                header: localize('Your proof of identity is expired'),
+                message: (
+                    <Localize i18n_default_text='Your proof of identity has expired. Please submit a new proof of identity to verify your account and continue trading.' />
+                ),
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_identity,
+                    text: localize('Submit proof of identity'),
+                },
+            },
         };
 
         this.client_notifications = notifications;
@@ -1308,6 +1404,56 @@ export default class NotificationStore extends BaseStore {
     }
 
     updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
+        this.notifications = notifications_array.filter(message =>
+            message.key.includes('svg') ? message : !excluded_notifications.includes(message.key)
+        );
     }
+
+    handlePOAAddressMismatchNotifications = () => {
+        const { client } = this.root_store;
+        const { account_status } = client;
+        const { status } = account_status;
+        const { poa_address_mismatch } = getStatusValidations(status || []);
+
+        if (poa_address_mismatch) {
+            this.showPOAAddressMismatchWarningNotification();
+        }
+    };
+
+    showPOAAddressMismatchWarningNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_warning',
+            header: localize('Please update your address'),
+            message: localize(
+                'It appears that the address in your document doesn’t match the address in your Deriv profile. Please update your personal details now with the correct address.'
+            ),
+            action: {
+                route: routes.personal_details,
+                text: localize('Go to Personal details'),
+            },
+            type: 'warning',
+            should_show_again: true,
+        });
+    };
+
+    showPOAAddressMismatchSuccessNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_success',
+            header: localize('Your proof of address has been verified'),
+            type: 'announce',
+            should_show_again: true,
+            platform: 'Account',
+        });
+    };
+
+    showPOAAddressMismatchFailureNotification = () => {
+        this.addNotificationMessage({
+            key: 'poa_address_mismatch_failure',
+            header: localize('Your address doesn’t match your profile'),
+            message: localize('Update the address in your profile.'),
+            type: 'danger',
+            should_show_again: true,
+            platform: 'Account',
+        });
+    };
 }

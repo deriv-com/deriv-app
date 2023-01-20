@@ -10,8 +10,9 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 
 const MainTitleBar = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const { active_index, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const { is_landing_company_loaded } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
@@ -37,7 +38,7 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && (
+                    {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             <div
                                 className='main-title-bar-mobile--regulator--compare-modal'
@@ -56,7 +57,7 @@ const MainTitleBar = () => {
                                 <div label={localize('EU')} />
                             </Tabs>
                         </div>
-                    )}
+                    ) : null}
                 </div>
                 <AssetSummary />
             </MobileWrapper>

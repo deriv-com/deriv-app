@@ -69,6 +69,26 @@ const CFDsListing = () => {
     };
 
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
+
+    const AddDerivAccount = () => {
+        if (is_real) {
+            if (no_CR_account && !is_eu_user) {
+                return (
+                    <div className='cfd-full-row'>
+                        <AddOptionsAccount />
+                    </div>
+                );
+            } else if (no_MF_account && is_eu_user) {
+                return (
+                    <div className='cfd-full-row'>
+                        <AddOptionsAccount />
+                    </div>
+                );
+            }
+        }
+        return null;
+    };
+
     return (
         <ListingContainer
             title={
@@ -104,11 +124,7 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {is_real && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) && (
-                <div className='cfd-full-row'>
-                    <AddOptionsAccount />
-                </div>
-            )}
+            <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text size='xs' line_height='m' weight='bold'>
@@ -210,7 +226,7 @@ const CFDsListing = () => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {
                                         toggleAccountTransferModal();
-                                        setSelectedAccount(existing_account.login);
+                                        setSelectedAccount(existing_account);
                                     } else if (button_name === 'topup-btn') {
                                         showTopUpModal(existing_account);
                                     } else {

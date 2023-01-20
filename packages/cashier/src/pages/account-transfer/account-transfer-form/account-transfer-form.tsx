@@ -29,13 +29,17 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const AccountOption = ({ account, idx }: TAccountsList) => {
+const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
                     <Icon
-                        icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
+                        icon={
+                            (is_pre_appstore && account.is_mt
+                                ? `IcAppstore${account.platform_icon}`
+                                : account.platform_icon) || `IcCurrency-${account?.currency?.toLowerCase()}`
+                        }
                         className='account-transfer-form__currency-icon'
                     />
                 </div>
@@ -82,6 +86,7 @@ const AccountTransferForm = observer(
             client,
             common: { is_from_derivgo },
             modules: { cashier },
+            traders_hub,
         } = useStore();
 
         const {
@@ -121,6 +126,7 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
         const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+        const { selected_account } = traders_hub;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
@@ -197,7 +203,7 @@ const AccountTransferForm = observer(
             derivez_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
-                const text = <AccountOption idx={idx} account={account} />;
+                const text = <AccountOption idx={idx} account={account} is_pre_appstore={is_pre_appstore} />;
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;

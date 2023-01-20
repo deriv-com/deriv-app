@@ -38,7 +38,9 @@ const AssetSummary = () => {
 
     const is_eu_popover_text = eu_text
         ? localize(`Total assets in your Multipliers and DMT5 ${selected_account_type} accounts`)
-        : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${selected_account_type} accounts`);
+        : localize(
+              `Total assets in your Options & Multipliers, Deriv MT5 and Deriv X ${selected_account_type} accounts`
+          );
 
     return (
         <div className='asset-summary'>

@@ -4,7 +4,6 @@ import { createScope } from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
-import { api_base } from '../../api/api-base';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
@@ -181,14 +180,16 @@ const Interpreter = () => {
     }
 
     function terminateSession() {
+        const { connection } = $scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
+        }
+
         $scope.stopped = true;
         $scope.is_error_triggered = false;
         globalObserver.emit('bot.stop');
-        const { ticksService } = $scope;
-        // Unsubscribe previous ticks_history subscription
-        ticksService.unsubscribeFromTicksService();
-        // Unsubscribe the subscriptions from Proposal, Balance and OpenContract
-        api_base.clearSubscriptions();
     }
 
     function run(code) {

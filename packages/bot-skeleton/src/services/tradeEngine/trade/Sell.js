@@ -3,7 +3,6 @@ import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
-import { api_base } from '../../api/api-base';
 
 export default Engine =>
     class Sell extends Engine {
@@ -43,9 +42,9 @@ export default Engine =>
                 const contract_id = this.contractId;
 
                 const sellContractAndGetContractInfo = () => {
-                    return doUntilDone(() => api_base.api.send({ sell: contract_id, price: 0 }))
+                    return doUntilDone(() => this.api.send({ sell: contract_id, price: 0 }))
                         .then(sell_response => {
-                            doUntilDone(() => api_base.api.send({ proposal_open_contract: 1, contract_id })).then(
+                            doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id })).then(
                                 () => sell_response
                             );
                         })
@@ -71,7 +70,7 @@ export default Engine =>
 
                             // For every other error, check whether the contract is not actually already sold.
                             return doUntilDone(() =>
-                                api_base.api.send({
+                                this.api.send({
                                     proposal_open_contract: 1,
                                     contract_id,
                                 })

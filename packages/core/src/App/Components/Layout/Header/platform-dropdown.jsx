@@ -1,14 +1,15 @@
+import 'Sass/app/_common/components/platform-dropdown.scss';
+
+import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
+import { PlatformContext, getActivePlatform, getPlatformSettings, isDesktop, isMobile, routes } from '@deriv/shared';
+
+import { BinaryLink } from 'App/Components/Routes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
-
-import { BinaryLink } from 'App/Components/Routes';
-import 'Sass/app/_common/components/platform-dropdown.scss';
 
 const PlatformBox = ({ platform: { icon, title, description } }) => (
-    <>
+    <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />
         <Icon
             data_testid='dt_platform_box_icon'
@@ -21,7 +22,7 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
             <p className='platform-dropdown__list-platform-title'>{title()}</p>
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
-    </>
+    </React.Fragment>
 );
 
 const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {

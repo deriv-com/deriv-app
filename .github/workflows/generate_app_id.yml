@@ -14,6 +14,7 @@ jobs:
               uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
             - name: Generate Deriv App ID for deployment Preview URL
               id: generate_app_id
               uses: binary-com/deriv-app-id-action@v1

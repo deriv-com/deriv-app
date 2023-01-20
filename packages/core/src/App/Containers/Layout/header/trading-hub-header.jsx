@@ -19,7 +19,7 @@ const Divider = () => {
     return <div className='trading-hub-header__divider' />;
 };
 
-export const TradersHubHomeButton = () => {
+export const TradersHubHomeButton = ({ is_dark_mode }) => {
     const history = useHistory();
     const { pathname } = history.location;
 
@@ -31,7 +31,10 @@ export const TradersHubHomeButton = () => {
             onClick={() => history.push(routes.traders_hub)}
         >
             <div className='trading-hub-header__tradershub--home-logo'>
-                <Icon icon='IcAppstoreTradersHubHome' size={17} />
+                <Icon
+                    icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
+                    size={is_dark_mode ? 15 : 17}
+                />
             </div>
             <Text className='trading-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's hub" />
@@ -208,7 +211,7 @@ const TradingHubHeader = ({
                 )}
                 <DesktopWrapper>
                     <Divider />
-                    <TradersHubHomeButton />
+                    <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
                 {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MemoizedMenuLinks

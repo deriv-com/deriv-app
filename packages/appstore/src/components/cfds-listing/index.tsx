@@ -226,7 +226,7 @@ const CFDsListing = () => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {
                                         toggleAccountTransferModal();
-                                        setSelectedAccount(existing_account.login);
+                                        setSelectedAccount(existing_account);
                                     } else if (button_name === 'topup-btn') {
                                         showTopUpModal(existing_account);
                                     } else {

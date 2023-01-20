@@ -22,4 +22,5 @@ export type TMt5LoginList = Array<DetailsOfEachMT5Loginid>;
 export type TAccountsList = {
     account: TAccount;
     idx: string | number;
+    is_pre_appstore: boolean;
 };

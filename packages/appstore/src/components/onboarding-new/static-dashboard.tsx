@@ -478,7 +478,6 @@ const StaticDashboard = ({
                                     is_last_step={is_last_step}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
                                 />

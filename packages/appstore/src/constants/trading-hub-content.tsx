@@ -176,13 +176,12 @@ export const trading_hub_contents: TTradingHubContents = {
                 financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
-                is_last_step
                 is_derivx_last_step
                 is_financial_last_step
             />
         ),
         footer_header: localize('Top-up your account'),
-        footer_text: localize('Once you have an account click ‘Top-up’ to add funds '),
+        footer_text: localize('Once you have an account click on ‘Deposit’ or ‘Transfer’ to add funds to an account'),
         has_next_content: false,
     },
     step6: {
@@ -218,7 +217,6 @@ export const trading_hub_contents: TTradingHubContents = {
                 financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
-                is_last_step
                 is_derivx_last_step
                 is_financial_last_step
             />

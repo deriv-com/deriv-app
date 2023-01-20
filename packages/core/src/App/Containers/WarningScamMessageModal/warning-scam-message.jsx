@@ -49,7 +49,6 @@ const WarningScamMessage = ({ is_warning_scam_message_modal_visible, setScamMess
             </React.Fragment>
         );
     }
-
     return null;
 };
 

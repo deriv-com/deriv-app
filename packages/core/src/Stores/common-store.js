@@ -1,10 +1,12 @@
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages } from '@deriv/translations';
+import { getAllowedLanguages, changeLanguage as changeLanguageTranslation } from '@deriv/translations';
 import { action, computed, observable, makeObservable } from 'mobx';
 import { currentLanguage } from 'Utils/Language/index';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
+import WS from 'Services/ws-methods';
+import * as SocketCache from '_common/base/socket_cache';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -34,6 +36,7 @@ export default class CommonStore extends BaseStore {
             init: action.bound,
             checkAppId: action.bound,
             changeCurrentLanguage: action.bound,
+            setAppstorePlatform: action.bound,
             setPlatform: action.bound,
             is_from_derivgo: computed,
             setInitialRouteHistoryItem: action.bound,
@@ -48,6 +51,8 @@ export default class CommonStore extends BaseStore {
             setAppRouterHistory: action.bound,
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
+            changeLanguage: action.bound,
+            getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
     }
@@ -105,6 +110,10 @@ export default class CommonStore extends BaseStore {
                 this.is_language_changing = false;
             }, 10000);
         }
+    }
+
+    setAppstorePlatform(platform) {
+        this.platform = platform;
     }
 
     setPlatform() {
@@ -254,6 +263,37 @@ export default class CommonStore extends BaseStore {
         }
         this.app_routing_history.unshift(router_action);
     }
+
+    changeLanguage = (key, changeCurrentLanguage) => {
+        const request = {
+            set_settings: 1,
+            preferred_language: key,
+        };
+        SocketCache.clear();
+        if (key === 'EN') {
+            window.localStorage.setItem('i18n_language', key);
+        }
+
+        WS.setSettings(request).then(() => {
+            const new_url = new URL(window.location.href);
+            if (key === 'EN') {
+                new_url.searchParams.delete('lang');
+            } else {
+                new_url.searchParams.set('lang', key);
+            }
+            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+            changeLanguageTranslation(key, () => {
+                changeCurrentLanguage(key);
+                BinarySocket.closeAndOpenNewConnection(key);
+            });
+        });
+    };
+
+    getExchangeRate = async (from_currency, to_currency) => {
+        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
+
+        return exchange_rates?.rates?.[to_currency];
+    };
 
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;

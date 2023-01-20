@@ -9,14 +9,14 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 
 const MyProfileForm = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     const content = (
         <Formik
             enableReinitialize
             initialValues={{
-                contact_info: my_profile_store.contact_info,
-                default_advert_description: my_profile_store.default_advert_description,
+                contact_info: general_store.contact_info,
+                default_advert_description: general_store.default_advert_description,
                 payment_info: my_profile_store.payment_info,
             }}
             onSubmit={my_profile_store.handleSubmit}
@@ -38,7 +38,7 @@ const MyProfileForm = () => {
                                     error={errors.contact_info}
                                     className='my-profile-form__textarea'
                                     has_character_counter
-                                    initial_character_count={my_profile_store.contact_info.length}
+                                    initial_character_count={general_store.contact_info.length}
                                     max_characters={300}
                                 />
                             )}
@@ -58,7 +58,7 @@ const MyProfileForm = () => {
                                     is_relative_hint
                                     className='my-profile-form__textarea'
                                     has_character_counter
-                                    initial_character_count={my_profile_store.default_advert_description.length}
+                                    initial_character_count={general_store.default_advert_description.length}
                                     max_characters={300}
                                 />
                             )}

@@ -42,6 +42,8 @@ export const isTestLink = () => {
     return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
 };
 
+export const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
+
 export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here

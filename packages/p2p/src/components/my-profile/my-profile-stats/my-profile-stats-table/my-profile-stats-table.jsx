@@ -6,7 +6,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileStatsTable = () => {
-    const { my_profile_store, general_store } = useStores();
+    const { general_store } = useStores();
 
     const {
         buy_completion_rate,
@@ -20,7 +20,7 @@ const MyProfileStatsTable = () => {
         sell_orders_count,
         total_orders_count,
         total_turnover,
-    } = my_profile_store.advertiser_info;
+    } = general_store.advertiser_info;
 
     const [show_lifetime_turnover_value, setShowLifetimeTurnoverValue] = React.useState(false);
     const [show_lifetime_order_value, setShowLifetimeOrderValue] = React.useState(false);

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
+import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
 
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -10,7 +10,12 @@ import 'Sass/app/_common/components/platform-dropdown.scss';
 const PlatformBox = ({ platform: { icon, title, description } }) => (
     <>
         <div className='platform-dropdown__list-platform-background' />
-        <Icon className='platform-dropdown__list-platform-icon' icon={icon} size={32} />
+        <Icon
+            data_testid='dt_platform_box_icon'
+            className='platform-dropdown__list-platform-icon'
+            icon={icon}
+            size={32}
+        />
 
         <div className='platform-dropdown__list-platform-details'>
             <p className='platform-dropdown__list-platform-title'>{title()}</p>
@@ -18,6 +23,31 @@ const PlatformBox = ({ platform: { icon, title, description } }) => (
         </div>
     </>
 );
+
+const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {
+    return !hide_dropdown_items
+        ? (platform.link_to && (
+              <BinaryLink
+                  data-testid='dt_platform_dropdown'
+                  to={platform.link_to}
+                  // This is here because in routes-config it needs to have children, but not in menu
+                  exact={platform.link_to === routes.trade}
+                  className='platform-dropdown__list-platform'
+                  isActive={() => getActivePlatform(app_routing_history) === platform.name}
+              >
+                  <PlatformBox platform={platform} />
+              </BinaryLink>
+          )) || (
+              <a
+                  data-testid='dt_platform_dropdown_link'
+                  href={platform.href}
+                  className='platform-dropdown__list-platform'
+              >
+                  <PlatformBox platform={platform} />
+              </a>
+          )
+        : null;
+};
 
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
     React.useEffect(() => {
@@ -35,31 +65,28 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             closeDrawer();
         }
     };
+    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     useOnClickOutside(ref, handleClickOutside, () => isDesktop());
 
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
-                {platform_config.map((platform, idx) => (
-                    <div key={idx} onClick={closeDrawer} ref={ref}>
-                        {platform.link_to ? (
-                            <BinaryLink
-                                to={platform.link_to}
-                                // This is here because in routes-config it needs to have children, but not in menu
-                                exact={platform.link_to === routes.trade}
-                                className='platform-dropdown__list-platform'
-                                isActive={() => getActivePlatform(app_routing_history) === platform.name}
-                            >
-                                <PlatformBox platform={platform} />
-                            </BinaryLink>
-                        ) : (
-                            <a href={platform.href} className='platform-dropdown__list-platform'>
-                                <PlatformBox platform={platform} />
-                            </a>
-                        )}
-                    </div>
-                ))}
+                {platform_config.map(platform => {
+                    const should_hide_dropdown_item =
+                        (platform.name === getPlatformSettings('mt5').name ||
+                            platform.name === getPlatformSettings('dxtrade').name) &&
+                        is_pre_appstore;
+                    return (
+                        <div key={platform.name} onClick={closeDrawer} ref={ref}>
+                            <PlatformDropdownContent
+                                platform={platform}
+                                app_routing_history={app_routing_history}
+                                hide_dropdown_items={should_hide_dropdown_item}
+                            />
+                        </div>
+                    );
+                })}
             </Div100vhContainer>
         </div>
     );

@@ -14,14 +14,14 @@ import Div100vh from 'react-div-100vh';
 /* To manually remove rvh calculation and revert to default browser calculation use is_disabled */
 /* To bypass usage of component altogether, use is_bypassed */
 
-type TDiv100vhContainerProps = {
-    id?: string;
-    height_offset?: string;
+type TDiv100vhContainer = {
+    id: string;
+    height_offset: string;
     is_bypassed: boolean;
     is_disabled: boolean;
-    max_height_offset?: string;
-    className?: string;
-    max_autoheight_offset?: string;
+    max_height_offset: string;
+    className: string;
+    max_autoheight_offset: string;
 };
 
 const Div100vhContainer = ({
@@ -32,15 +32,15 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}: React.PropsWithChildren<TDiv100vhContainerProps>) => {
+}: React.PropsWithChildren<Partial<TDiv100vhContainer>>) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
     const height_style = {
         height: max_autoheight_offset ? '' : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : '',
     };
-    if (is_bypassed) return children;
+    if (is_bypassed) return children as JSX.Element;
     return (
-        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
+        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style} data-testid='dt_div_100_vh'>
             {children}
         </Div100vh>
     );

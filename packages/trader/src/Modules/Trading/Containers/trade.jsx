@@ -51,6 +51,7 @@ const Trade = ({
     should_show_multipliers_onboarding,
     symbol,
     is_synthetics_available,
+    is_synthetics_trading_market_available,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -63,7 +64,7 @@ const Trade = ({
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
-            return { category: 'synthetic_index' };
+            return { category: 'synthetics' };
         } else if (try_open_markets && category) {
             return { category, subcategory };
         }
@@ -127,14 +128,17 @@ const Trade = ({
         }
     };
 
-    const topWidgets = ({ ...params }) => (
-        <ChartTopWidgets
-            open_market={open_market}
-            open={try_synthetic_indices || try_open_markets}
-            charts_ref={charts_ref}
-            is_digits_widget_active={is_digits_widget_active}
-            {...params}
-        />
+    const topWidgets = React.useCallback(
+        ({ ...params }) => (
+            <ChartTopWidgets
+                open_market={open_market}
+                open={try_synthetic_indices || try_open_markets}
+                charts_ref={charts_ref}
+                is_digits_widget_active={is_digits_widget_active}
+                {...params}
+            />
+        ),
+        [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
@@ -198,8 +202,8 @@ const Trade = ({
                 {is_market_closed && !is_market_unavailable_visible && (
                     <MarketIsClosedOverlay
                         is_eu={is_eu}
-                        is_synthetics_available={is_synthetics_available}
-                        {...(is_eu && category && { is_market_available: true })}
+                        is_synthetics_trading_market_available={is_synthetics_trading_market_available}
+                        {...(is_eu && category)}
                         onClick={onTryOtherMarkets}
                         onMarketOpen={prepareTradeStore}
                         symbol={symbol}
@@ -220,6 +224,7 @@ export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_eu: client.is_eu,
     is_synthetics_available: modules.trade.is_synthetics_available,
+    is_synthetics_trading_market_available: modules.trade.is_synthetics_trading_market_available,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,

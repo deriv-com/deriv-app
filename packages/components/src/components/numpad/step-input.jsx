@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency } from '@deriv/shared';
-import Input from '../input/input.jsx';
+import Input from '../input/input';
 import Button from '../button/button';
 
 const getDecimals = val => {

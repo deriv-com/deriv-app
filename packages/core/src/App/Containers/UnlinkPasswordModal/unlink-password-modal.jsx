@@ -3,12 +3,26 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, redirectToLogin, toTitleCase, validPassword, validLength } from '@deriv/shared';
+import {
+    getErrorMessages,
+    redirectToLogin,
+    toTitleCase,
+    validPassword,
+    validLength,
+    getActionFromUrl,
+} from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPasswordModal, verification_code }) => {
+const UnlinkPassword = ({
+    logoutClient,
+    social_identity_provider,
+    toggleResetPasswordModal,
+    verification_code,
+    new_email,
+}) => {
+    const url_action = getActionFromUrl();
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
@@ -23,20 +37,36 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
         actions.setStatus({ reset_complete: true });
     };
 
-    const handleSubmit = (values, actions) => {
-        const api_request = {
-            reset_password: 1,
-            new_password: values.password,
-            verification_code,
-        };
+    const onGetPasswordResponse = (response, actions) => {
+        if (response.error) {
+            onResetComplete(response.error.message, actions);
+        } else {
+            onResetComplete(null, actions);
+        }
+    };
 
-        WS.resetPassword(api_request).then(async response => {
-            if (response.error) {
-                onResetComplete(response.error.message, actions);
-            } else {
-                onResetComplete(null, actions);
-            }
-        });
+    const handleSubmit = (values, actions) => {
+        if (url_action === 'social_email_change') {
+            const api_request = {
+                change_email: 'update',
+                new_email,
+                new_password: values.password,
+                verification_code,
+            };
+
+            WS.changeEmail(api_request).then(async response => {
+                onGetPasswordResponse(response, actions);
+            });
+        } else {
+            const api_request = {
+                reset_password: 1,
+                new_password: values.password,
+                verification_code,
+            };
+            WS.resetPassword(api_request).then(async response => {
+                onGetPasswordResponse(response, actions);
+            });
+        }
     };
 
     const validateReset = values => {
@@ -85,7 +115,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
                                     <Text align='center' as='p' size='xs' className='unlink-password__subtext'>
                                         <Localize
                                             i18n_default_text={
-                                                'Your Deriv account is unlinked from {{social_identity_provider}}. Use your email and password for future log in.'
+                                                'Your Deriv account has been unlinked from your {{social_identity_provider}} account. You can now log in to Deriv using your new email address and password.'
                                             }
                                             values={{
                                                 social_identity_provider: toTitleCase(social_identity_provider),
@@ -103,7 +133,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
                                         primary
                                         large
                                     >
-                                        <Localize i18n_default_text='Got it' />
+                                        <Localize i18n_default_text='Login now' />
                                     </Button>
                                 </div>
                             ) : (
@@ -178,7 +208,9 @@ const UnlinkPasswordModal = ({
     logoutClient,
     social_identity_provider,
     toggleResetPasswordModal,
-    verification_code,
+    reset_verification_code,
+    unlink_verification_code,
+    new_email,
 }) => {
     return (
         <Dialog
@@ -192,7 +224,8 @@ const UnlinkPasswordModal = ({
                 logoutClient={logoutClient}
                 social_identity_provider={social_identity_provider}
                 toggleResetPasswordModal={toggleResetPasswordModal}
-                verification_code={verification_code}
+                verification_code={unlink_verification_code || reset_verification_code}
+                new_email={new_email}
             />
         </Dialog>
     );
@@ -206,10 +239,14 @@ UnlinkPasswordModal.propTypes = {
     logoutClient: PropTypes.func,
     social_identity_provider: PropTypes.string,
     toggleResetPasswordModal: PropTypes.func,
-    verification_code: PropTypes.string,
+    reset_verification_code: PropTypes.string,
+    unlink_verification_code: PropTypes.string,
+    new_email: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({
+    email: client.email,
+    new_email: client.new_email.social_email_change,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
@@ -217,5 +254,6 @@ export default connect(({ ui, client }) => ({
     logoutClient: client.logout,
     social_identity_provider: client.social_identity_provider,
     toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    verification_code: client.verification_code.reset_password,
+    reset_verification_code: client.verification_code.reset_password,
+    unlink_verification_code: client.verification_code.social_email_change,
 }))(UnlinkPasswordModal);

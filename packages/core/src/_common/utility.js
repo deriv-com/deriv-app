@@ -44,14 +44,6 @@ class PromiseClass {
     }
 }
 
-const copyToClipboard = text => {
-    const textField = document.createElement('textarea');
-    textField.innerText = text;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
-};
 // TODO: [duplicate_code] - Move this to shared package
 // eu countries to support
 const eu_countries = [
@@ -109,5 +101,4 @@ module.exports = {
     isOptionsBlocked,
     isSyntheticsUnavailable,
     isMultipliersOnly,
-    copyToClipboard,
 };

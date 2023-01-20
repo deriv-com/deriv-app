@@ -3,13 +3,11 @@ import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore, TError, TReactElement } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TError, TReactElement } from 'Types';
 
 type TErrorDialogProps = {
     className: string;
-    disableApp: () => void;
-    enableApp: () => void;
     error: TError | Record<string, never>;
 };
 
@@ -22,7 +20,11 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
+    const {
+        ui: { disableApp, enableApp },
+    } = useStore();
+
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState<TSetDetails>({
@@ -35,7 +37,7 @@ const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDia
 
     const dismissError = React.useCallback(() => {
         if (error.setErrorMessage) {
-            error.setErrorMessage('', null, false);
+            error.setErrorMessage({ code: '', message: '' }, null, false);
         }
         setErrorVisibility(false);
     }, [error]);
@@ -148,9 +150,6 @@ const ErrorDialog = ({ className, disableApp, enableApp, error = {} }: TErrorDia
             {details.message}
         </Dialog>
     );
-};
+});
 
-export default connect(({ ui }: TRootStore) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(ErrorDialog);
+export default ErrorDialog;

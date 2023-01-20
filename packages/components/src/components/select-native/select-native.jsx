@@ -56,12 +56,13 @@ const SelectNative = ({
     list_items,
     onItemSelection,
     placeholder,
-    should_hide_disabled_options,
+    should_hide_disabled_options = true,
     should_show_empty_option = true,
     suffix_icon,
     use_text,
     value,
     data_testid,
+    hide_top_placeholder = false,
     ...props
 }) => (
     <div
@@ -91,6 +92,7 @@ const SelectNative = ({
                 <div
                     className={classNames('dc-select-native__placeholder', {
                         'dc-select-native__placeholder--has-value': value,
+                        'dc-select-native__placeholder--hide-top-placeholder': value && hide_top_placeholder,
                         'dc-select-native__placeholder--disabled': disabled,
                     })}
                 >
@@ -199,10 +201,7 @@ SelectNative.propTypes = {
     data_testid: PropTypes.string,
     hide_selected_value: PropTypes.bool,
     onItemSelection: PropTypes.func,
-};
-
-SelectNative.defaultProps = {
-    should_hide_disabled_options: true,
+    hide_top_placeholder: PropTypes.bool,
 };
 
 export default SelectNative;

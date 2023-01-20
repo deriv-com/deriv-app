@@ -128,14 +128,17 @@ const Trade = ({
         }
     };
 
-    const topWidgets = ({ ...params }) => (
-        <ChartTopWidgets
-            open_market={open_market}
-            open={try_synthetic_indices || try_open_markets}
-            charts_ref={charts_ref}
-            is_digits_widget_active={is_digits_widget_active}
-            {...params}
-        />
+    const topWidgets = React.useCallback(
+        ({ ...params }) => (
+            <ChartTopWidgets
+                open_market={open_market}
+                open={try_synthetic_indices || try_open_markets}
+                charts_ref={charts_ref}
+                is_digits_widget_active={is_digits_widget_active}
+                {...params}
+            />
+        ),
+        [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';

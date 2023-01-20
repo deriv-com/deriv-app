@@ -21,13 +21,13 @@ const FilterDropdown = ({
 }: FilterDropdownProps) => {
     const [selected_filter, setSelectedFilter] = React.useState(initial_selected_filter ?? filter_list?.[0]?.value);
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    function onChange(event: React.ChangeEvent<HTMLInputElement>) {
         setSelectedFilter(event.target.value);
 
         if (typeof handleFilterChange === 'function') {
             handleFilterChange(event.target.value);
         }
-    };
+    }
 
     if (isMobile()) {
         return (

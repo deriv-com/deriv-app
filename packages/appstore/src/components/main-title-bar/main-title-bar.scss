@@ -4,6 +4,10 @@
     align-items: center;
     margin-bottom: 2.4rem;
 
+    &__text {
+        font-size: 1.9rem;
+    }
+
     &__right {
         display: inline-flex;
         align-items: center;
@@ -26,7 +30,7 @@
         }
 
         &--account-type-dropdown {
-            padding: 2px 4px 2px 2px;
+            padding-top: 0.5rem;
         }
     }
 }

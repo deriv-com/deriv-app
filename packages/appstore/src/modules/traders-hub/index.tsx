@@ -14,8 +14,8 @@ import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client } = useStores();
-    const { is_eu, is_landing_company_loaded, is_logged_in } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag } = traders_hub;
+    const { is_landing_company_loaded, is_logged_in } = client;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const handleScroll = () => {
@@ -31,7 +31,7 @@ const TradersHub = () => {
         }, 500);
     }, [is_tour_open]);
 
-    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL;
+    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 
     const platform_toggle_options = [
         { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },

@@ -435,14 +435,17 @@ export default class AccountTransferStore {
                       account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
                   );
 
+            const combined_cfd_mt5_account = this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
+                x => x.login === account.login
+            );
+
             const obj_values = {
                 text:
                     is_cfd &&
                     account.account_type === CFD_PLATFORMS.MT5 &&
                     this.root_store.client.is_pre_appstore &&
-                    this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
-                        ? this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
-                              .sub_title
+                    combined_cfd_mt5_account
+                        ? `${combined_cfd_mt5_account.sub_title} ${combined_cfd_mt5_account.short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
                 balance: account.balance,

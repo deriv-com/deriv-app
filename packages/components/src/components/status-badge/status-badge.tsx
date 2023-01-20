@@ -27,7 +27,12 @@ const StatusBadge = ({
                 <Localize
                     i18n_default_text='<0>Pending verification</0>'
                     components={[
-                        <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--text-warning)' />,
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={isMobile() ? 'xxxxs' : 'xxxs'}
+                            color='var(--status-warning)'
+                        />,
                     ]}
                 />
             ),
@@ -61,7 +66,7 @@ const StatusBadge = ({
                 <Localize
                     i18n_default_text='<0>Need verification.</0> <1>Verify now</1>'
                     components={[
-                        <Text key={0} weight='bold' size='xxxs' color='var(--text-info-blue)' />,
+                        <Text key={0} weight='bold' size='xxxs' color='blue' />,
                         <Link key={1} className='link-default' to='/account/proof-of-identity' />,
                     ]}
                 />

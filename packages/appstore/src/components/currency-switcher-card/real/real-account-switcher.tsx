@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { StatusBadge } from '@deriv/components';
+import { StatusBadge, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
 import { useStores } from 'Stores/index';
@@ -24,7 +24,11 @@ const AccountNeedsVerification = observer(
         return (
             <CurrencySwitcherContainer
                 className='real-account-switcher__container'
-                title={title}
+                title={
+                    <Text size='xs' line_height='s'>
+                        {title}
+                    </Text>
+                }
                 icon={icon}
                 onClick={() => {
                     if (is_currency_switcher_disabled_for_mf) {

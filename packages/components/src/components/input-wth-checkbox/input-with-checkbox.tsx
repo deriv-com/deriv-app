@@ -1,9 +1,35 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
 import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
+
+type InputWithCheckboxProps = {
+    addToast: (e: object) => void;
+    removeToast: (e: object | string) => void;
+    checkbox_tooltip_label: any | object | string | ReactNode;
+    className: string;
+    classNameInlinePrefix: string;
+    classNameInput: string;
+    classNamePrefix: string;
+    currency: string;
+    current_focus: string;
+    defaultChecked: boolean;
+    error_messages: Array<any> | string | any;
+    is_negative_disabled: boolean | undefined | null;
+    is_single_currency: boolean;
+    is_input_hidden: boolean;
+    label: string;
+    max_value: number;
+    name: string;
+    onChange: (e: any) => void;
+    setCurrentFocus: () => void;
+    tooltip_label: string;
+    tooltip_alignment: string;
+    error_message_alignment: string;
+    value: number | string;
+    is_disabled: boolean;
+};
 
 const InputWithCheckbox = ({
     addToast,
@@ -29,9 +55,10 @@ const InputWithCheckbox = ({
     tooltip_alignment,
     tooltip_label,
     value,
-}) => {
-    const checkboxRef = React.useRef();
-    const input_wrapper_ref = React.useRef();
+}: InputWithCheckboxProps) => {
+    const checkboxRef: any = React.useRef();
+
+    const input_wrapper_ref: any = React.useRef();
 
     const [is_checked, setChecked] = React.useState(defaultChecked);
 
@@ -40,11 +67,10 @@ const InputWithCheckbox = ({
     React.useEffect(() => {
         setChecked(defaultChecked);
     }, [defaultChecked]);
-
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (isMobile()) {
-            const showErrorToast = () => {
+            const showErrorToast = (e: any) => {
                 if (typeof addToast === 'function') {
                     addToast({
                         key: `${name}__error`,
@@ -76,7 +102,7 @@ const InputWithCheckbox = ({
         });
     };
 
-    const changeValue = e => {
+    const changeValue = (e: any) => {
         const new_is_checked = !is_checked;
         // e.target.checked is not reliable, we have to toggle its previous value
         onChange({ target: { name: e.target.name, value: new_is_checked } });
@@ -161,7 +187,7 @@ const InputWithCheckbox = ({
                         is_bubble_hover_enabled
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 216}
-                        zIndex={9999}
+                        zIndex={'9999'}
                         {...(isDesktop() ? { relative_render: true } : {})}
                     />
                 )}
@@ -169,33 +195,6 @@ const InputWithCheckbox = ({
             {!is_input_hidden && input}
         </React.Fragment>
     );
-};
-
-InputWithCheckbox.propTypes = {
-    addToast: PropTypes.func,
-    removeToast: PropTypes.func,
-    checkbox_tooltip_label: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
-    className: PropTypes.string,
-    classNameInlinePrefix: PropTypes.string,
-    classNameInput: PropTypes.string,
-    classNamePrefix: PropTypes.string,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    defaultChecked: PropTypes.bool,
-    error_messages: PropTypes.array,
-    is_negative_disabled: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    is_input_hidden: PropTypes.bool,
-    label: PropTypes.string,
-    max_value: PropTypes.number,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    tooltip_label: PropTypes.string,
-    tooltip_alignment: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_disabled: PropTypes.bool,
 };
 
 export default InputWithCheckbox;

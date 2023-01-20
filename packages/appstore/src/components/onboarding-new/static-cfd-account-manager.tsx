@@ -57,6 +57,7 @@ const StaticCFDAccountManager = ({
     has_account,
     description,
     is_last_step,
+    is_derivx_last_step,
     derived_amount,
     is_blurry,
     financial_amount,
@@ -80,7 +81,8 @@ const StaticCFDAccountManager = ({
                             icon='Financial'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
-                                'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
+                                'static-cfd-account-manager__icon--blurry':
+                                    is_blurry.icon || is_last_step || is_derivx_last_step,
                             })}
                         />
                     ) : (
@@ -100,7 +102,8 @@ const StaticCFDAccountManager = ({
                             icon='CFDs'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
-                                'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
+                                'static-cfd-account-manager__icon--blurry':
+                                    is_blurry.icon || is_last_step || is_derivx_last_step,
                             })}
                         />
                     ) : (
@@ -118,7 +121,8 @@ const StaticCFDAccountManager = ({
                         icon='DerivX'
                         size={icon_size}
                         className={classNames('static-cfd-account-manager--cfds', {
-                            'static-cfd-account-manager__icon--blurry': is_blurry.icon || is_last_step,
+                            'static-cfd-account-manager__icon--blurry':
+                                is_blurry.icon || is_last_step || is_derivx_last_step,
                         })}
                     />
                 )}
@@ -143,18 +147,28 @@ const StaticCFDAccountManager = ({
                         <Text
                             size='xs'
                             weight='bold'
-                            color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
+                            color={
+                                is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'
+                            }
                         >{`${formatMoney(
                             currency,
                             type === 'financial' ? financial_amount : derived_amount,
                             true
                         )} ${currency}`}</Text>
-                        <Text size='xs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
+                        <Text
+                            size='xs'
+                            color={
+                                is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'
+                            }
+                        >
                             {localize(`${loginid}`)}
                         </Text>
                     </React.Fragment>
                 ) : (
-                    <Text size='xxs' color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}>
+                    <Text
+                        size='xxs'
+                        color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'}
+                    >
                         {`${description}`}
                     </Text>
                 )}

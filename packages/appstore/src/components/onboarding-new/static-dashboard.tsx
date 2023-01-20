@@ -238,7 +238,7 @@ const StaticDashboard = ({
                                     type='all'
                                     platform='options'
                                     appname={is_eu_account_title}
-                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
+                                    description='Get a real Deriv account, start trading and manage your funds.'
                                     currency={currency}
                                     has_account={has_account}
                                     is_blurry={is_blurry}
@@ -478,7 +478,6 @@ const StaticDashboard = ({
                                     is_last_step={is_last_step}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
                                 />

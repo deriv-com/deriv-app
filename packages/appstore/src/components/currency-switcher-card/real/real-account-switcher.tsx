@@ -45,8 +45,8 @@ const AccountNeedsVerification = observer(
 
 const RealAccountSwitcher = () => {
     const { client, traders_hub } = useStores();
-    const { is_logging_in, is_switching, has_any_real_account } = client;
-    const { multipliers_account_status, is_currency_switcher_disabled_for_mf } = traders_hub;
+    const { is_logging_in, is_switching, has_maltainvest_account } = client;
+    const { multipliers_account_status, is_currency_switcher_disabled_for_mf, is_eu_user, no_CR_account } = traders_hub;
 
     if (is_switching || is_logging_in) {
         return (
@@ -56,7 +56,7 @@ const RealAccountSwitcher = () => {
         );
     }
 
-    if (multipliers_account_status) {
+    if (multipliers_account_status && is_eu_user) {
         return (
             <AccountNeedsVerification
                 multipliers_account_status={multipliers_account_status}
@@ -65,7 +65,9 @@ const RealAccountSwitcher = () => {
         );
     }
 
-    if (has_any_real_account) {
+    if (has_maltainvest_account && is_eu_user) {
+        return <RealAccountCard />;
+    } else if (!no_CR_account && !is_eu_user) {
         return <RealAccountCard />;
     }
 

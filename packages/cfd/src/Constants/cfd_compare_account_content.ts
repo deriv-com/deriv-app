@@ -102,7 +102,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
     },
     {
         id: 'regulator',
-        attribute: localize('Regulator/External dispute resolution'),
+        attribute: localize('Regulators/External dispute resolution'),
         values: {
             synthetic_svg: { text: localize('Financial Commission') },
             synthetic_bvi: {

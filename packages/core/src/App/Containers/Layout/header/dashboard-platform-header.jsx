@@ -1,14 +1,16 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useHistory, withRouter } from 'react-router-dom';
+
 import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
-import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
+import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
+import { useHistory, withRouter } from 'react-router-dom';
+
+import { BinaryLink } from 'App/Components/Routes';
+import PropTypes from 'prop-types';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import { BinaryLink } from 'App/Components/Routes';
+import platform_config from 'App/Constants/platform-config';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;

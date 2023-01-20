@@ -110,6 +110,7 @@ export default class NotificationStore extends BaseStore {
                     this.setClientNotifications();
                     this.handleClientNotifications();
                     this.filterNotificationMessages();
+                    this.checkNotificationMessages();
                 }
             }
         );
@@ -224,6 +225,17 @@ export default class NotificationStore extends BaseStore {
                 }
 
                 return false;
+            });
+        }
+    }
+
+    // check for the already added keys in the notification_messages and don't display those notifications
+    checkNotificationMessages() {
+        const notifications_list = LocalStore.getObject('notification_messages');
+        const refined_list = Object.values(notifications_list)?.[0];
+        if (refined_list?.length) {
+            refined_list.map(refined => {
+                this.removeNotificationByKey({ key: refined });
             });
         }
     }

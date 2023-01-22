@@ -126,7 +126,6 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
         const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
-        const { selected_account } = traders_hub;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});

@@ -5,7 +5,7 @@ const { IS_RELEASE } = require('./constants');
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /custom404\.html$/],
     skipWaiting: true,
     clientsClaim: true,
 });

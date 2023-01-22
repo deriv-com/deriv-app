@@ -15,10 +15,12 @@
 
         &--amount {
             color: var(--text-profit-success);
+            padding-right: 0.5rem;
         }
 
         &--no-amount {
             color: var(--general-section-6);
+            padding-right: 0.5rem;
         }
     }
 

@@ -15,7 +15,11 @@ const WithdrawalTab = observer(() => {
         if (payment_agent.active_tab_index && !verification_code) {
             verify.send();
         }
-    }, [payment_agent.active_tab_index, verification_code, verify]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [payment_agent.active_tab_index, verification_code]);
+    // TODO: `verify` should not be a dependency of the `useEffect` hook as it will cause a loop,
+    // We shouldn't call `verify.send()` inside the `useEffect` and we should improve the UX to
+    // match the behavior of the `Withdrawal` page and first inform the user.
 
     if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
     if (!verify.is_loading && verify.has_been_sent)

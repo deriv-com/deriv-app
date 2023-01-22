@@ -15,18 +15,19 @@ export const tour_step_config: Step[] = [
         content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.account-type-dropdown--parent',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Non-EU and EU regulators')}
+                {localize('Non-EU and EU regulations')}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
         content: (
             <Text as='p'>
                 <Localize
-                    i18n_default_text='You can create real accounts with non-EU and EU regulators. Click the <0><0/> icon to learn more about these accounts.'
+                    i18n_default_text='You can create real accounts with non-EU and EU regulations. Click the <0><0/> icon to learn more about these accounts.'
                     components={[
                         <Text key={0}>
                             <Icon icon='IcInfoOutline' />
@@ -36,8 +37,9 @@ export const tour_step_config: Step[] = [
             </Text>
         ),
 
-        target: '.regulators-switcher',
+        target: '.regulators-switcher__container',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
     {
         title: (
@@ -50,10 +52,11 @@ export const tour_step_config: Step[] = [
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
 ];
 
-export const eu_tour_step_config: Step[] = [
+export const high_risk_tour_step_config: Step[] = [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
@@ -61,33 +64,23 @@ export const eu_tour_step_config: Step[] = [
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
-        target: '.toggle-account-type__button',
+        content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
+        target: '.account-type-dropdown--parent',
         disableBeacon: true,
-        placement: 'bottom-end',
+        disableOverlayClose: true,
     },
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Trading hub tour')}
+                {localize(`Trader's hub tour`)}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: (
-            <Text as='p'>
-                <Localize
-                    i18n_default_text='Need help moving around? <0><0/>'
-                    components={[
-                        <Text as='p' key={0}>
-                            {localize(`We have a short turorial that might help.`)}
-                        </Text>,
-                    ]}
-                />
-            </Text>
-        ),
+        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
 ];
 
@@ -145,7 +138,8 @@ export const tour_step_locale: Locale = {
     skip: localize('Skip'),
 };
 
-export const eu_tour_step_locale: Locale = {
+export const high_risk_tour_step_locale: Locale = {
+    back: <Button has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

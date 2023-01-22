@@ -8,8 +8,7 @@ import { useStores } from 'Stores';
 import './asset-summary.scss';
 
 const AssetSummary = () => {
-    const { client, traders_hub } = useStores();
-    const { has_active_real_account } = client;
+    const { traders_hub } = useStores();
     const {
         selected_account_type,
         platform_real_balance,
@@ -18,6 +17,8 @@ const AssetSummary = () => {
         cfd_real_balance,
         content_flag,
         is_eu_user,
+        no_CR_account,
+        no_MF_account,
     } = traders_hub;
 
     const getTotalBalance = () => {
@@ -34,6 +35,8 @@ const AssetSummary = () => {
         };
     };
 
+    const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
+
     const eu_text = content_flag === ContentFlag.EU_REAL || is_eu_user;
 
     const is_eu_popover_text = eu_text
@@ -44,7 +47,7 @@ const AssetSummary = () => {
 
     return (
         <div className='asset-summary'>
-            {has_active_real_account || selected_account_type === 'demo' ? (
+            {has_active_related_deriv_account || selected_account_type === 'demo' ? (
                 <React.Fragment>
                     {!isMobile() ? (
                         <Text align='right' size='xs' line_height='s'>

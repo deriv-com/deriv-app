@@ -674,7 +674,13 @@ export default class TradersHubStore extends BaseStore {
             this.platform_demo_balance = { balance, currency };
         }
 
-        const platform_real_accounts = account_list.filter(account => !account.is_virtual);
+        const platform_real_accounts = account_list.filter(
+            account =>
+                !account.is_virtual &&
+                (this.is_eu_user
+                    ? account.landing_company_shortcode === 'maltainvest'
+                    : account.landing_company_shortcode !== 'maltainvest')
+        );
         if (platform_real_accounts?.length) {
             this.platform_real_balance = await this.getTotalBalance(
                 platform_real_accounts,
@@ -690,9 +696,17 @@ export default class TradersHubStore extends BaseStore {
             cfd_accounts = [...cfd_accounts, ...dxtrade_accounts_list];
         }
 
-        const cfd_real_accounts = cfd_accounts.filter(account => account.account_type === 'real');
+        const cfd_real_accounts = cfd_accounts.filter(
+            account =>
+                account.account_type === 'real' &&
+                (this.is_eu_user
+                    ? account.landing_company_short === 'maltainvest'
+                    : account.landing_company_short !== 'maltainvest')
+        );
         if (cfd_real_accounts?.length) {
             this.cfd_real_balance = await this.getTotalBalance(cfd_real_accounts, cfd_real_accounts[0]?.currency);
+        } else {
+            this.cfd_real_balance = { balance: 0, currency: 'USD' };
         }
 
         const cfd_demo_accounts = cfd_accounts.filter(account => account.account_type === 'demo');

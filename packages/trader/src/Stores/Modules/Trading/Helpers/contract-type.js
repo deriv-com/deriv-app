@@ -128,9 +128,11 @@ export const ContractType = (() => {
             });
 
             // cleanup categories
-            Object.keys(available_categories).categories?.forEach(key => {
-                available_categories[key] = available_categories[key].filter(item => typeof item === 'object');
-                if (available_categories[key].length === 0) {
+            Object.keys(available_categories).forEach(key => {
+                available_categories[key].categories = available_categories[key].categories?.filter(
+                    item => typeof item === 'object'
+                );
+                if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];
                 }
             });

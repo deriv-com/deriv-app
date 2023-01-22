@@ -1,30 +1,48 @@
-// TODO refactor old tests in this component
 import React from 'react';
-import { RouteWithSubRoutesRender } from '../route-with-sub-routes.jsx';
 import { Redirect } from 'react-router-dom';
-import { PlatformContext } from '@deriv/shared';
+import { render, screen } from '@testing-library/react';
+import RouteWithSubRoutes from '../route-with-sub-routes';
 
-// configure({ adapter: new Adapter() });
+type TMockFunction = {
+    path: string;
+    exact?: boolean;
+};
 
-describe('<RouteWithSubRoutes />', () => {
-    it('should render one <RouteWithSubRoutesRender /> component', () => {
-        // const comp = (
-        //     <PlatformContext.Provider>
-        //         <RouteWithSubRoutesRender />
-        //     </PlatformContext.Provider>
-        // );
-        // const wrapper = shallow(comp);
-        // expect(wrapper).toHaveLength(1);
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    Route: jest.fn(({ path, exact }: TMockFunction) => (
+        <div>
+            <span>{`path param: ${path}`}</span>
+            <span>{`exact param: ${exact}`}</span>
+        </div>
+    )),
+}));
+
+afterEach(() => jest.clearAllMocks());
+
+const route = {
+    getTitle: jest.fn(),
+    component: Redirect,
+    is_logging_in: true,
+    is_logged_in: true,
+    exact: true,
+    path: '/test-path',
+};
+
+const MockRouteWithSubRoutes = () => <RouteWithSubRoutes {...route} />;
+
+describe('RouteWithSubRoutes component', () => {
+    it('should render the "RouteWithSubRoutes" component', () => {
+        render(<MockRouteWithSubRoutes />);
+        const span_element = screen.getByText(/path param: \/test-path/i);
+        expect(span_element).toBeInTheDocument();
     });
-    // it('should have props as passed as route', () => {
-    //     const route = { path: '/', component: Redirect, title: '', exact: true, to: '/root' };
-    //     const comp = (
-    //         <PlatformContext.Provider>
-    //             <RouteWithSubRoutesRender {...route} />
-    //         </PlatformContext.Provider>
-    //     );
-    //     const wrapper = shallow(comp);
-    //     expect(wrapper.prop('exact')).toBe(true);
-    //     expect(wrapper.prop('path')).toBe('/');
-    // });
+
+    it('should render properties', () => {
+        render(<MockRouteWithSubRoutes />);
+        const path_param = screen.getByText(/\/test-path/i);
+        const exact_param = screen.getByText(/exact param: true/i);
+        expect(path_param).toBeInTheDocument();
+        expect(exact_param).toBeInTheDocument();
+    });
 });

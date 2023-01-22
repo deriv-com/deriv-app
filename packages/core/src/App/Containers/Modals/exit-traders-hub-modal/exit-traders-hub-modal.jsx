@@ -1,17 +1,20 @@
 import React from 'react';
-import { useHistory, withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes, ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const ExitTradersHubModal = () => {
+const ExitTradersHubModal = ({
+    disableApp,
+    enableApp,
+    is_exit_traders_hub_modal_visible,
+    toggleExitTradersHubModal,
+    setIsPreAppStore,
+    switchToCRAccount,
+    content_flag,
+}) => {
     const history = useHistory();
-    const { ui, traders_hub, client } = useStores();
-    const { disableApp, enableApp } = ui;
-    const { setIsPreAppStore } = client;
-    const { is_exit_traders_hub_modal_visible, toggleExitTradersHubModal } = traders_hub;
 
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
@@ -36,9 +39,13 @@ const ExitTradersHubModal = () => {
         toggleExitTradersHubModal();
     };
 
-    const onClickExitButton = () => {
+    const onClickExitButton = async () => {
         toggleExitTradersHubModal();
         setIsPreAppStore(false);
+        if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+            //if eu is currently selected , switch to non-eu on exiting tradershub
+            await switchToCRAccount();
+        }
         history.push(routes.root);
     };
     return (
@@ -74,4 +81,12 @@ const ExitTradersHubModal = () => {
     );
 };
 
-export default withRouter(observer(ExitTradersHubModal));
+export default connect(({ ui, client, traders_hub }) => ({
+    setIsPreAppStore: client.setIsPreAppStore,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    content_flag: traders_hub.content_flag,
+    switchToCRAccount: traders_hub.switchToCRAccount,
+}))(ExitTradersHubModal);

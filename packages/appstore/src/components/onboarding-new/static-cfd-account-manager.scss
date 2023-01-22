@@ -1,10 +1,16 @@
 .static-cfd-account-manager {
     display: flex;
-    width: 37.3rem;
+    width: 38.3rem;
     margin-top: 2rem;
     margin-right: 2rem;
     align-items: center;
     justify-content: space-between;
+
+    &--with-margin {
+        @include desktop {
+            margin-bottom: 2rem;
+        }
+    }
 
     @include mobile {
         align-items: flex-start;

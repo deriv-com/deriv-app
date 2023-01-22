@@ -13,7 +13,7 @@ type TSwitch = {
 };
 
 type TAccountTransferReceipt = {
-    onClose?: () => void;
+    onClose: () => void;
     history: RouteComponentProps;
 };
 
@@ -36,6 +36,14 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
+
+    const selcted_from_platform_icon =
+        is_pre_appstore && selected_from.is_mt
+            ? `IcAppstore${selected_from.platform_icon}`
+            : selected_from.platform_icon;
+
+    const selcted_to_platform_icon =
+        is_pre_appstore && selected_to.is_mt ? `IcAppstore${selected_to.platform_icon}` : selected_to.platform_icon;
 
     React.useEffect(() => {
         return () => {
@@ -73,6 +81,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
+        onClose();
     };
 
     return (
@@ -100,31 +109,35 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
                         <Icon
-                            icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
+                            icon={selcted_from_platform_icon || `IcCurrency-${selected_from?.currency?.toLowerCase()}`}
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_from.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_from.value}
+                        </Text>
+                    )}
                 </div>
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
                         <Icon
-                            icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
+                            icon={selcted_to_platform_icon || `IcCurrency-${selected_to?.currency?.toLowerCase()}`}
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_to.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_to.value}
+                        </Text>
+                    )}
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>

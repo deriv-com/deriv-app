@@ -105,7 +105,7 @@ const RealAccountSignup = ({
     has_real_account,
     history,
     is_belgium_residence,
-    is_eu,
+    show_eu_related_content,
     is_from_restricted_country,
     is_isle_of_man_residence,
     is_pre_appstore,
@@ -260,7 +260,7 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (is_eu && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
+            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -556,7 +556,7 @@ const RealAccountSignup = ({
                                             currency={currency}
                                             has_fiat={has_fiat}
                                             is_belgium_residence={is_belgium_residence}
-                                            is_eu={is_eu}
+                                            is_eu={show_eu_related_content}
                                             is_isle_of_man_residence={is_isle_of_man_residence}
                                             is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
@@ -569,7 +569,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '904px'}
+                            width={!has_close_icon ? 'auto' : '955px'}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent
@@ -622,7 +622,7 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common, modules }) => ({
+export default connect(({ ui, client, common, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -636,7 +636,6 @@ export default connect(({ ui, client, common, modules }) => ({
     has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_eu: client.is_eu,
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_pre_appstore: client.is_pre_appstore,
@@ -656,4 +655,5 @@ export default connect(({ ui, client, common, modules }) => ({
     should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(withRouter(RealAccountSignup));

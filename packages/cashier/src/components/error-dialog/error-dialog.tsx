@@ -120,6 +120,11 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
 
+    React.useEffect(() => {
+        return () => dismissError();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const setErrorVisibility = (is_error_visible: boolean) => {
         setIsVisible(is_error_visible);
     };

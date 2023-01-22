@@ -51,7 +51,7 @@ const AssetSummary = () => {
                             {localize('Total assets')}
                         </Text>
                     ) : null}
-                    <Popover alignment='left' message={is_eu_popover_text}>
+                    <Popover alignment='left' message={is_eu_popover_text} zIndex={9999} is_bubble_hover_enabled>
                         <BalanceText
                             currency={getTotalBalance().currency}
                             balance={getTotalBalance().balance}

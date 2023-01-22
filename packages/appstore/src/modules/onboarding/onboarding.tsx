@@ -78,9 +78,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                 />
             </div>
             <div className='onboarding-body'>
-                <Text as='h2' weight='bold' align='center' color='white'>
-                    {contents[onboarding_step]?.component}
-                </Text>
+                <div>{contents[onboarding_step]?.component}</div>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>

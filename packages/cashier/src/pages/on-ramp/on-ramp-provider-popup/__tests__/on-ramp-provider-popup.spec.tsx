@@ -10,6 +10,24 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('<OnRampProviderPopup />', () => {
+    const props = {
+        api_error: '',
+        deposit_address: 'tb1qhux20f7h42ya9nqdntl6r9p7p264a2ct8t3n6p',
+        is_deposit_address_loading: false,
+        is_requesting_widget_html: false,
+        selected_provider: {
+            name: 'Banxa',
+            should_show_deposit_address: true,
+            onMountWidgetContainer: jest.fn(),
+        },
+        should_show_dialog: false,
+        should_show_widget: false,
+        widget_error: '',
+        widget_html: 'Widget HTML',
+        onClickDisclaimerContinue: jest.fn(),
+        onClickGoToDepositPage: jest.fn(),
+        setIsOnRampModalOpen: jest.fn(),
+    };
     it('should not render <OnRampProviderPopup /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             ui: {
@@ -55,7 +73,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: true,
                         is_requesting_widget_html: true,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -91,7 +109,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -127,7 +145,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -163,7 +181,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -205,7 +223,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -249,7 +267,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -280,7 +298,7 @@ describe('<OnRampProviderPopup />', () => {
         expect(screen.getByText('Disclaimer')).toBeInTheDocument();
         expect(
             screen.getByText(
-                "By clicking 'Continue' you will be redirected to Changelly, a third-party payment service provider. Please note that Deriv is not responsible for the content or services provided by Changelly. If you encounter any issues related to Changelly services, you must contact Changelly directly."
+                "By clicking 'Continue' you will be redirected to Banxa, a third-party payment service provider. Please note that Deriv is not responsible for the content or services provided by Banxa. If you encounter any issues related to Banxa services, you must contact Banxa directly."
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
@@ -300,7 +318,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },
@@ -337,7 +355,7 @@ describe('<OnRampProviderPopup />', () => {
                         is_deposit_address_loading: false,
                         is_requesting_widget_html: false,
                         selected_provider: {
-                            name: 'Changelly',
+                            name: 'Banxa',
                             should_show_deposit_address: true,
                             onMountWidgetContainer: jest.fn(),
                         },

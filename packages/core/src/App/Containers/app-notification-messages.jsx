@@ -124,6 +124,10 @@ const AppNotificationMessages = ({
                   'poa_address_mismatch_warning',
                   'poa_address_mismatch_success',
                   'poa_address_mismatch_failure',
+                  'svg_needs_poi_poa',
+                  'svg_needs_poa',
+                  'svg_needs_poi',
+                  'svg_poi_expired',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -135,7 +139,7 @@ const AppNotificationMessages = ({
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
     const filtered_excluded_notifications = notifications.filter(message =>
-        excluded_notifications.includes(message.key)
+        message.key.includes('svg') ? message : excluded_notifications.includes(message.key)
     );
     const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 

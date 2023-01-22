@@ -8,13 +8,16 @@ import { localize } from '@deriv/translations';
 import './main-title-bar.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
+import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { active_index, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
-    const { is_landing_company_loaded } = client;
+    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
+
+    const [active_index, setActiveIndex] = React.useState(selected_region === 'Non-EU' ? 0 : 1);
 
     return (
         <React.Fragment>
@@ -40,22 +43,33 @@ const MainTitleBar = () => {
                     </div>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
-                            <div
-                                className='main-title-bar-mobile--regulator--compare-modal'
-                                onClick={() => toggleRegulatorsCompareModal()}
-                            >
-                                <Icon icon='IcInfoOutline' />
-                            </div>
-                            <Tabs
-                                active_index={active_index}
-                                onTabItemClick={handleTabItemClick}
-                                top
-                                is_scrollable
-                                is_overflow_hidden
-                            >
-                                <div label={localize('Non-EU')} />
-                                <div label={localize('EU')} />
-                            </Tabs>
+                            {!is_switching ? (
+                                <>
+                                    <div
+                                        className='main-title-bar-mobile--regulator--compare-modal'
+                                        onClick={() => toggleRegulatorsCompareModal()}
+                                    >
+                                        <Icon icon='IcInfoOutline' />
+                                    </div>
+                                    <Tabs
+                                        active_index={active_index}
+                                        onTabItemClick={(index: number) => {
+                                            setActiveIndex(index);
+                                            handleTabItemClick(index);
+                                        }}
+                                        top
+                                        is_scrollable
+                                        is_overflow_hidden
+                                    >
+                                        <div label={localize('Non-EU')} />
+                                        <div label={localize('EU')} />
+                                    </Tabs>
+                                </>
+                            ) : (
+                                <div className='main-title-bar-mobile--regulator__container loader'>
+                                    <RegulationsSwitcherLoader />
+                                </div>
+                            )}
                         </div>
                     ) : null}
                 </div>

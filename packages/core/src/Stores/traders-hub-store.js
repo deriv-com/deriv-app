@@ -91,7 +91,6 @@ export default class TradersHubStore extends BaseStore {
             selectAccountTypeCard: action.bound,
             switchToCRAccount: action.bound,
             selectRegion: action.bound,
-            setActiveIndex: action.bound,
             setCombinedCFDMT5Accounts: action.bound,
             setSelectedAccount: action.bound,
             setTogglePlatformType: action.bound,
@@ -478,12 +477,7 @@ export default class TradersHubStore extends BaseStore {
         return should_show_status_for_multipliers_account ? multipliers_account_status : null;
     }
 
-    setActiveIndex(active_index) {
-        this.active_index = active_index;
-    }
-
     handleTabItemClick(idx) {
-        this.setActiveIndex(idx);
         if (idx === 0) {
             this.selected_region = 'Non-EU';
         } else {

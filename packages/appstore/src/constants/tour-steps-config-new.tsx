@@ -15,6 +15,7 @@ export const tour_step_config: Step[] = [
         content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.account-type-dropdown--parent',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
     {
         title: (
@@ -38,6 +39,7 @@ export const tour_step_config: Step[] = [
 
         target: '.regulators-switcher__container',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
     {
         title: (
@@ -50,6 +52,7 @@ export const tour_step_config: Step[] = [
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
 ];
 
@@ -64,6 +67,7 @@ export const high_risk_tour_step_config: Step[] = [
         content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.account-type-dropdown--parent',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
     {
         title: (
@@ -76,6 +80,7 @@ export const high_risk_tour_step_config: Step[] = [
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
+        disableOverlayClose: true,
     },
 ];
 

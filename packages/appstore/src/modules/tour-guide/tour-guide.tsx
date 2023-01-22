@@ -17,14 +17,7 @@ import { Button } from '@deriv/components';
 
 const TourGuide = () => {
     const { traders_hub, ui } = useStores();
-    const {
-        is_tour_open,
-        toggleIsTourOpen,
-        setIsOnboardingVisited,
-        content_flag,
-        selectAccountType,
-        is_onboarding_visited,
-    } = traders_hub;
+    const { is_tour_open, toggleIsTourOpen, setIsOnboardingVisited, content_flag, is_onboarding_visited } = traders_hub;
     const { is_dark_mode_on } = ui;
 
     const history = useHistory();
@@ -54,21 +47,13 @@ const TourGuide = () => {
 
     if (joyride_index === 0) {
         tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    selectAccountType('real');
-                }}
-            >
+            <div>
                 <Localize i18n_default_text='Next' />
             </div>
         );
 
         high_risk_tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    selectAccountType('real');
-                }}
-            >
+            <div>
                 <Localize i18n_default_text='Next' />
             </div>
         );

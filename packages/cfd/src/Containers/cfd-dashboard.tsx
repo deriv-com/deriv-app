@@ -16,11 +16,10 @@ import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from '../Stores/connect';
 import MissingRealAccount from './missing-real-account';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
-import CFDPersonalDetailsModal from './cfd-personal-details-modal';
 import CompareAccountsModal from './compare-accounts-modal';
 import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
 import MT5TradeModal from './mt5-trade-modal';
-import CFDDbViOnBoarding from './cfd-dbvi-onboarding';
+import CFDDbviOnboarding from './cfd-dbvi-onboarding';
 import CFDDownloadContainer from '../Components/cfd-download-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
@@ -95,6 +94,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     account_status: object;
     beginRealSignupForMt5: () => void;
     country: string;
+    context: Record<string, any>;
     createCFDAccount: (objCFDAccount: TObjectCFDAccount) => void;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<
@@ -177,6 +177,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     refreshNotifications: () => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
+    show_eu_related_content: boolean;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -431,6 +432,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         setIsAcuityModalOpen,
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
+        show_eu_related_content,
     } = props;
 
     const should_show_missing_real_account =
@@ -572,6 +574,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 setIsAcuityModalOpen={setIsAcuityModalOpen}
                                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                                show_eu_related_content={show_eu_related_content}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -619,6 +622,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 toggleMT5TradeModal={toggleMT5TradeModal}
                                                 platform={platform}
                                                 residence={residence}
+                                                show_eu_related_content={show_eu_related_content}
                                             />
                                         )}
                                     </div>
@@ -669,12 +673,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
-                        <CFDServerErrorDialog />
+                        <CFDServerErrorDialog context={props.context} />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
-                            <>
-                                <CFDDbViOnBoarding />
-                                <CFDPersonalDetailsModal />
-                            </>
+                            <CFDDbviOnboarding openPasswordModal={openRealPasswordModal} />
                         )}
                         <CFDResetPasswordModal platform={platform} />
                         <ResetTradingPasswordModal
@@ -722,11 +723,12 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 };
 
 export default withRouter(
-    connect(({ client, modules, notifications, ui }: RootStore) => ({
+    connect(({ client, modules, notifications, ui, traders_hub }: RootStore) => ({
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
         client_email: client.email_address,
+        context: { ui, modules },
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         dxtrade_tokens: modules.cfd.dxtrade_tokens,
@@ -786,5 +788,6 @@ export default withRouter(
         setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(CFDDashboard)
 );

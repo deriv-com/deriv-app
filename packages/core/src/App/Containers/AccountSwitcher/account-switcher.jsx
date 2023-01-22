@@ -45,6 +45,8 @@ const AccountSwitcher = props => {
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
+    const [filtered_real_accounts, setFilteredRealAccounts] = React.useState([]);
+    const [filtered_remaining_real_accounts, setFilteredRemainingRealAccounts] = React.useState([]);
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
@@ -83,6 +85,21 @@ const AccountSwitcher = props => {
         }
         if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
+        }
+        if (props.is_low_risk) {
+            const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
+                account => !account.is_virtual && account.loginid.startsWith('CR')
+            );
+            setFilteredRealAccounts(real_accounts);
+            const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'svg');
+            setFilteredRemainingRealAccounts(remaining_real_accounts);
+        } else if (props.show_eu_related_content) {
+            const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
+                account => !account.is_virtual && account.loginid.startsWith('MF')
+            );
+            setFilteredRealAccounts(real_accounts);
+            const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'maltainvest');
+            setFilteredRemainingRealAccounts(remaining_real_accounts);
         }
     }, []);
 
@@ -165,7 +182,7 @@ const AccountSwitcher = props => {
         const has_required_account =
             account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
 
-        if (props.is_eu && !has_required_account) {
+        if (props.show_eu_related_content && !has_required_account) {
             closeAccountsDialog();
             props.openDerivRealAccountNeededModal();
         } else {
@@ -201,7 +218,7 @@ const AccountSwitcher = props => {
     };
 
     const openMt5DemoAccount = account_type => {
-        if (props.is_eu && !props.has_maltainvest_account && props.standpoint.iom) {
+        if (props.show_eu_related_content && !props.has_maltainvest_account && props.standpoint.iom) {
             closeAccountsDialog();
             props.openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
@@ -339,14 +356,14 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(
             getDemoMT5(),
             CFD_PLATFORMS.MT5,
-            props.is_eu,
+            props.show_eu_related_content,
             true,
             props.isEligibleForMoreDemoMt5Svg
         );
     };
 
     const getRemainingDemoDXTrade = () => {
-        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu, true);
+        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE, props.show_eu_related_content, true);
     };
 
     const getRealMT5 = () => {
@@ -372,14 +389,14 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(
             getRealMT5(),
             CFD_PLATFORMS.MT5,
-            props.is_eu,
+            props.show_eu_related_content,
             false,
             props.isEligibleForMoreRealMt5
         );
     };
 
     const getRemainingRealDXTrade = () => {
-        return getRemainingAccounts(getRealDXTrade(), CFD_PLATFORMS.DXTRADE, props.is_eu);
+        return getRemainingAccounts(getRealDXTrade(), CFD_PLATFORMS.DXTRADE, props.show_eu_related_content);
     };
 
     const canOpenMulti = () => {
@@ -388,13 +405,18 @@ const AccountSwitcher = props => {
     };
 
     const is_regulated_able_to_change_currency =
-        props.is_eu &&
+        props.show_eu_related_content &&
         (props.landing_company_shortcode === 'malta' ||
             (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0));
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (props.is_eu || props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
+        if (
+            props.show_eu_related_content ||
+            props.is_virtual ||
+            !canOpenMulti() ||
+            is_regulated_able_to_change_currency
+        ) {
             return props.upgradeable_landing_companies;
         }
         return [];
@@ -454,7 +476,7 @@ const AccountSwitcher = props => {
     const isRealMT5AddDisabled = sub_account_type => {
         // disabling synthetic account creation for MLT/MF users
         if (props.standpoint.malta && sub_account_type === 'synthetic') return true;
-        if (props.is_eu) {
+        if (props.show_eu_related_content) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return props.isAccountOfTypeDisabled(account?.account_type);
         }
@@ -463,7 +485,7 @@ const AccountSwitcher = props => {
     };
 
     const isRealDXTradeAddDisabled = sub_account_type => {
-        if (props.is_eu) {
+        if (props.show_eu_related_content) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return props.isAccountOfTypeDisabled(account?.account_type);
         }
@@ -608,7 +630,7 @@ const AccountSwitcher = props => {
                                         {getDemoMT5().map(account => (
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
-                                                is_eu={props.is_eu}
+                                                is_eu={props.show_eu_related_content}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -619,7 +641,7 @@ const AccountSwitcher = props => {
                                                     market_type: account.market_type,
                                                     sub_account_type: account.sub_account_type,
                                                     platform: CFD_PLATFORMS.MT5,
-                                                    is_eu: props.is_eu,
+                                                    is_eu: props.show_eu_related_content,
                                                 })}`}
                                                 country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
@@ -770,34 +792,30 @@ const AccountSwitcher = props => {
                     }}
                 >
                     <div className='acc-switcher__accounts'>
-                        {getSortedAccountList(props.account_list, props.accounts)
-                            .filter(account => !account.is_virtual)
-                            .map(account => {
-                                return (
-                                    <AccountList
-                                        account_type={props.account_type}
-                                        is_dark_mode_on={props.is_dark_mode_on}
-                                        key={account.loginid}
-                                        balance={props.accounts[account.loginid].balance}
-                                        currency={props.accounts[account.loginid].currency}
-                                        currency_icon={`IcCurrency-${account.icon}`}
-                                        country_standpoint={props.country_standpoint}
-                                        display_type={'currency'}
-                                        has_balance={'balance' in props.accounts[account.loginid]}
-                                        is_disabled={account.is_disabled}
-                                        is_virtual={account.is_virtual}
-                                        is_eu={props.is_eu}
-                                        loginid={account.loginid}
-                                        redirectAccount={
-                                            account.is_disabled ? undefined : () => doSwitch(account.loginid)
-                                        }
-                                        selected_loginid={props.account_loginid}
-                                        should_show_server_name={checkMultipleSvgAcc()}
-                                    />
-                                );
-                            })}
+                        {filtered_real_accounts.map(account => {
+                            return (
+                                <AccountList
+                                    account_type={props.account_type}
+                                    is_dark_mode_on={props.is_dark_mode_on}
+                                    key={account.loginid}
+                                    balance={props.accounts[account.loginid].balance}
+                                    currency={props.accounts[account.loginid].currency}
+                                    currency_icon={`IcCurrency-${account.icon}`}
+                                    country_standpoint={props.country_standpoint}
+                                    display_type={'currency'}
+                                    has_balance={'balance' in props.accounts[account.loginid]}
+                                    is_disabled={account.is_disabled}
+                                    is_virtual={account.is_virtual}
+                                    is_eu={props.show_eu_related_content}
+                                    loginid={account.loginid}
+                                    redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                    selected_loginid={props.account_loginid}
+                                    should_show_server_name={checkMultipleSvgAcc()}
+                                />
+                            );
+                        })}
                     </div>
-                    {getRemainingRealAccounts().map((account, index) => (
+                    {filtered_remaining_real_accounts.map((account, index) => (
                         <div key={index} className='acc-switcher__new-account'>
                             <Icon icon='IcDeriv' size={24} />
                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
@@ -827,7 +845,8 @@ const AccountSwitcher = props => {
                     ))}
                     {!canUpgrade() &&
                         canOpenMulti() &&
-                        (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
+                        (!props.show_eu_related_content ||
+                            (props.show_eu_related_content && props.can_change_fiat_currency)) && (
                             <Button
                                 className='acc-switcher__btn'
                                 secondary
@@ -865,7 +884,7 @@ const AccountSwitcher = props => {
                                         {getRealMT5().map(account => (
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
-                                                is_eu={props.is_eu}
+                                                is_eu={props.show_eu_related_content}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -876,7 +895,7 @@ const AccountSwitcher = props => {
                                                     market_type: account.market_type,
                                                     sub_account_type: account.sub_account_type,
                                                     platform: CFD_PLATFORMS.MT5,
-                                                    is_eu: props.is_eu,
+                                                    is_eu: props.show_eu_related_content,
                                                 })}`}
                                                 country_standpoint={props.country_standpoint}
                                                 has_balance={'balance' in account}
@@ -1018,7 +1037,7 @@ const AccountSwitcher = props => {
                     <React.Fragment>
                         <AccountWrapper
                             className='acc-switcher__title'
-                            header={localize('Non-EU regulators')}
+                            header={localize('Non-EU regulation')}
                             is_visible={is_non_eu_regulator_visible}
                             toggleVisibility={() => {
                                 toggleVisibility('real_deriv');
@@ -1088,7 +1107,7 @@ const AccountSwitcher = props => {
                 ) : null}
                 {!props.is_high_risk || props.is_eu ? (
                     <AccountWrapper
-                        header={localize('EU regulator')}
+                        header={localize('EU regulation')}
                         is_visible={is_eu_regulator_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_deriv');
@@ -1231,7 +1250,8 @@ const AccountSwitcher = props => {
                     isRealAccountTab &&
                     !canUpgrade() &&
                     canOpenMulti() &&
-                    (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
+                    (!props.show_eu_related_content ||
+                        (props.show_eu_related_content && props.can_change_fiat_currency)) && (
                         <Button
                             className={classNames('acc-switcher__btn', {
                                 'acc-switcher__btn--traders_hub': props.is_pre_appstore,
@@ -1243,9 +1263,7 @@ const AccountSwitcher = props => {
                                     : () => props.openRealAccountSignup('manage')
                             }
                         >
-                            {props.has_fiat &&
-                                props.available_crypto_currencies?.length > 1 &&
-                                localize('Manage account')}
+                            {localize('Manage account')}
                         </Button>
                     )}
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
@@ -1312,6 +1330,7 @@ AccountSwitcher.propTypes = {
     openRealAccountSignup: PropTypes.func,
     routeBackInApp: PropTypes.func,
     should_show_real_accounts_list: PropTypes.bool,
+    show_eu_related_content: PropTypes.bool,
     standpoint: PropTypes.object,
     switchAccount: PropTypes.func,
     resetVirtualBalance: PropTypes.func,
@@ -1326,7 +1345,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(
-    connect(({ client, common, ui }) => ({
+    connect(({ client, common, ui, traders_hub }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
@@ -1387,6 +1406,7 @@ const account_switcher = withRouter(
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(AccountSwitcher)
 );
 

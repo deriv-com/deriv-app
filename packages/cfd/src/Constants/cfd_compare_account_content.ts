@@ -47,7 +47,7 @@ export const eu_real_content: TCompareAccountContentProps[] = [
             financial_maltainvest: [
                 { text: localize('Synthetics'), options: { should_show_asterick_at_end: true } },
                 { text: localize('Forex: standard') },
-                { text: localize('Stock') },
+                { text: localize('Stocks') },
                 { text: localize('Stock indices') },
                 { text: localize('Commodities') },
                 { text: localize('Cryptocurrencies') },
@@ -102,7 +102,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
     },
     {
         id: 'regulator',
-        attribute: localize('Regulator/External dispute resolution'),
+        attribute: localize('Regulators/External dispute resolution'),
         values: {
             synthetic_svg: { text: localize('Financial Commission') },
             synthetic_bvi: {

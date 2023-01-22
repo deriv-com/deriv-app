@@ -121,12 +121,13 @@
         margin-bottom: 2.4rem;
     }
     &__subtext {
-        margin: 1rem 0 0.8rem;
+        margin: 0;
         @include mobile {
             margin-bottom: 3.4rem;
         }
 
         &--error {
+            margin-bottom: 1rem;
             @include mobile {
                 margin-top: -1.4rem;
                 margin-bottom: 0.8rem;

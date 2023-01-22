@@ -109,6 +109,7 @@ describe('CFDAccountCard', () => {
             isEligibleForMoreRealMt5: jest.fn(() => true),
             setMT5TradeAccount: jest.fn(),
             trading_platform_available_accounts: [],
+            show_eu_related_content: false,
         };
     });
 
@@ -129,7 +130,7 @@ describe('CFDAccountCard', () => {
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5SyntheticPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/synthetic/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(/trade cfds on our synthetic indices that simulate real-world market movement./i)
@@ -156,7 +157,7 @@ describe('CFDAccountCard', () => {
             />
         );
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/financial/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text, Button } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { platform_config } from 'Constants/platform-config';
-import './static-trading-app-card.scss';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
+import { Text, Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { platform_config } from 'Constants/platform-config';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+
+import './static-trading-app-card.scss';
 
 const StaticTradingAppCard = ({
     name,
@@ -21,17 +22,21 @@ const StaticTradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
-    const icon_size = isMobile() ? 72 : 48;
+    const icon_size = isMobile() || has_applauncher_account ? 48 : 32;
     return (
-        <div className='trading-app-card'>
+        <div
+            className={classNames('static-trading-app-card', {
+                'static-trading-app-card--with-bot-margin': has_divider,
+            })}
+        >
             <TradigPlatformIconProps
                 icon={icon}
-                size={has_applauncher_account ? 72 : icon_size}
-                className={is_item_blurry ? 'trading-app-card--blurry' : ''}
+                size={icon_size}
+                className={is_item_blurry ? 'static-trading-app-card--blurry' : ''}
             />
             <div
-                className={classNames('trading-app-card__details', {
-                    'trading-app-card--divider': has_divider && !isMobile(),
+                className={classNames('static-trading-app-card__details', {
+                    'static-trading-app-card--divider': has_divider && !isMobile(),
                 })}
             >
                 <Text
@@ -51,21 +56,16 @@ const StaticTradingAppCard = ({
                 >
                     {name}
                 </Text>
-                <Text
-                    className='description'
-                    color={is_item_blurry ? 'less-prominent' : 'prominent'}
-                    size='xxs'
-                    line_height='m'
-                >
+                <Text className='description' color={'less-prominent'} size='xxs' line_height='m'>
                     {app_desc}
                 </Text>
             </div>
-            <div className={classNames('trading-app-card__actions')}>
+            <div className={classNames('static-trading-app-card__actions')}>
                 <Button
                     primary
                     className={classNames('', {
-                        'trading-app-card__actions--blurry': is_item_blurry,
-                        'trading-app-card__button--hidden': !has_applauncher_account,
+                        'static-trading-app-card__actions--blurry': is_item_blurry,
+                        'static-trading-app-card__button--hidden': !has_applauncher_account,
                     })}
                 >
                     {localize(`Trade`)}

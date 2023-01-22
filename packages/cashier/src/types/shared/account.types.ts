@@ -8,6 +8,7 @@ export type TAccount = {
     currency?: string;
     disabled?: boolean;
     is_dxtrade?: boolean;
+    is_derivez?: boolean;
     is_mt?: boolean;
     market_type?: string;
     nativepicker_text: string;
@@ -21,4 +22,5 @@ export type TMt5LoginList = Array<DetailsOfEachMT5Loginid>;
 export type TAccountsList = {
     account: TAccount;
     idx: string | number;
+    is_pre_appstore: boolean;
 };

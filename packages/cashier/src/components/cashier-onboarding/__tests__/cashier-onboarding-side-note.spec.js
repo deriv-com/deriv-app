@@ -3,12 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
 import { StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CashierOnboardingSideNote />', () => {
     let mockRootStore;
     beforeEach(() => {

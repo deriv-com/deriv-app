@@ -29,7 +29,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
     const { toggleIsTourOpen } = traders_hub;
-    const { is_eu, is_eu_country, is_logged_in, setIsPreAppStore } = client;
+    const { is_eu_country, is_logged_in, setIsPreAppStore } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -44,7 +44,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             toggleIsTourOpen(true);
         }
     };
-    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    const is_eu_user = (is_logged_in && is_eu_country) || (!is_logged_in && is_eu_country);
 
     const onboarding_step = number_of_steps[step - 1];
 
@@ -78,9 +78,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                 />
             </div>
             <div className='onboarding-body'>
-                <Text as='h2' weight='bold' align='center' color='white'>
-                    {contents[onboarding_step]?.component}
-                </Text>
+                <div>{contents[onboarding_step]?.component}</div>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>

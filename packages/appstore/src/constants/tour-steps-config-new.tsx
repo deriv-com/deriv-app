@@ -109,8 +109,8 @@ export const tour_styles: Styles = {
 export const tour_styles_dark_mode: Styles = {
     options: {
         width: 350,
-        backgroundColor: 'var(--brand-dark-grey)',
-        arrowColor: 'var(--brand-dark-grey)',
+        backgroundColor: 'var(--general-section-3)',
+        arrowColor: 'var(--general-section-3)',
     },
     tooltipTitle: {
         color: 'var(--brand-red-coral)',

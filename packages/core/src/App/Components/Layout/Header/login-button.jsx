@@ -9,7 +9,7 @@ const LoginButton = ({ className }) => (
         id='dt_login_button'
         className={className}
         has_effect
-        text={localize('Log in')}
+        text={localize('Log in text')}
         onClick={() => redirectToLogin(false, getLanguage())}
         tertiary
     />

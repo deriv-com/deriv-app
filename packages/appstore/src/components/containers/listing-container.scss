@@ -66,6 +66,7 @@
 }
 
 .cfd-full-row {
+    user-select: none;
     display: grid;
     width: 100%;
     grid-column: 1 / span 3;

@@ -86,7 +86,6 @@ type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
     jurisdiction_selected_shortcode: string;
     manual_status: string;
-    is_pre_appstore: boolean;
 };
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -182,16 +181,10 @@ const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
     jurisdiction_selected_shortcode,
     manual_status,
-    is_pre_appstore,
 }: TReviewMsgForMT5) => {
     if (is_selected_mt5_verified) {
         return (
-            <Localize
-                i18n_default_text='To start trading, {{message_text}} funds from your Deriv account into this account.'
-                values={{
-                    message_text: !is_pre_appstore ? 'transfer' : 'top-up',
-                }}
-            />
+            <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
     } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
         if (manual_status === 'pending') {
@@ -762,9 +755,9 @@ const CFDPasswordModal = ({
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Top-up now') : localize('OK');
+                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
-            return localize('Top-up now');
+            return localize('Transfer now');
         }
         return localize('Continue');
     }, [platform, account_type, is_selected_mt5_verified]);
@@ -804,7 +797,6 @@ const CFDPasswordModal = ({
                             is_selected_mt5_verified={is_selected_mt5_verified}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             manual_status={manual_status}
-                            is_pre_appstore={is_pre_appstore}
                         />
                     )}
                 </React.Fragment>

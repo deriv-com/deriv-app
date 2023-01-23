@@ -237,7 +237,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should show success dialog with buttons to Top-up now or later when password has been updated successfully', async () => {
+    it('should show success dialog with buttons to Transfer now or later when password has been updated successfully', async () => {
         render(
             <Router history={history}>
                 <CFDPasswordModal
@@ -252,7 +252,7 @@ describe('<CFDPasswordModal/>', () => {
         );
 
         expect(await screen.findByRole('button', { name: /maybe later/i }));
-        expect(await screen.findByRole('button', { name: /top-up now/i }));
+        expect(await screen.findByRole('button', { name: /transfer now/i }));
     });
 
     it('should display Derived icon in Success Dialog', async () => {

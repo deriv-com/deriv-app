@@ -10,4 +10,5 @@ export const api_error_codes = Object.freeze({
     ORDER_CREATE_FAIL_RATE_CHANGED: 'OrderCreateFailRateChanged',
     PERMISSION_DENIED: 'PermissionDenied',
     RESTRICTED_COUNTRY: 'RestrictedCountry',
+    TEST: 'test',
 });

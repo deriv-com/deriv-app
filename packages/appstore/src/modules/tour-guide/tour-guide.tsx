@@ -16,9 +16,17 @@ import { routes, ContentFlag } from '@deriv/shared';
 import { Button } from '@deriv/components';
 
 const TourGuide = () => {
-    const { traders_hub, ui } = useStores();
-    const { is_tour_open, toggleIsTourOpen, setIsOnboardingVisited, content_flag, is_onboarding_visited } = traders_hub;
+    const { traders_hub, ui, client } = useStores();
+    const {
+        is_tour_open,
+        toggleIsTourOpen,
+        setIsOnboardingVisited,
+        content_flag,
+        is_onboarding_visited,
+        selectAccountType,
+    } = traders_hub;
     const { is_dark_mode_on } = ui;
+    const { prev_account_type } = client;
 
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
@@ -28,6 +36,7 @@ const TourGuide = () => {
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
+                selectAccountType(prev_account_type);
             }}
         >
             <Localize i18n_default_text='OK' />

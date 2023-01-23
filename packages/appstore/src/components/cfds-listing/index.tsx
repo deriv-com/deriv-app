@@ -135,11 +135,14 @@ const CFDsListing = () => {
                 <>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
+                        const has_mt5_account_status = existing_account.status
+                            ? getMT5AccountAuthStatus(existing_account.status)
+                            : null;
                         return (
                             <TradingAppCard
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
-                                name={existing_account?.name}
+                                name={!has_mt5_account_status ? existing_account?.name : ''}
                                 short_code_and_region={existing_account?.short_code_and_region}
                                 platform={existing_account.platform}
                                 description={existing_account.description}
@@ -171,9 +174,7 @@ const CFDsListing = () => {
                                         }
                                     }
                                 }}
-                                mt5_acc_auth_status={
-                                    existing_account.status ? getMT5AccountAuthStatus(existing_account.status) : null
-                                }
+                                mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={existing_account.landing_company_short}
                                 openFailedVerificationModal={openFailedVerificationModal}
                             />

@@ -74,20 +74,18 @@ const TourGuide = () => {
         );
     }
 
-    if (high_risk_tour_step_config.length === joyride_index + 1) {
-        high_risk_tour_step_locale.back = (
-            <Button
-                has_effect
-                text={localize('Repeat tour')}
-                secondary
-                medium
-                onClick={() => {
-                    history.push(routes.onboarding);
-                    toggleIsTourOpen(true);
-                }}
-            />
-        );
-    }
+    high_risk_tour_step_locale.back = (
+        <Button
+            has_effect
+            text={localize('Repeat tour')}
+            secondary
+            medium
+            onClick={() => {
+                history.push(routes.onboarding);
+                toggleIsTourOpen(true);
+            }}
+        />
+    );
 
     const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
@@ -100,7 +98,7 @@ const TourGuide = () => {
             disableCloseOnEsc
             steps={low_risk ? tour_step_config : high_risk_tour_step_config}
             styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-            locale={tour_step_locale}
+            locale={low_risk ? tour_step_locale : high_risk_tour_step_locale}
             floaterProps={{
                 disableAnimation: true,
             }}

@@ -1,12 +1,13 @@
-import classNames from 'classnames';
+import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
+
+import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
+import { CSSTransition } from 'react-transition-group';
+import { Localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import classNames from 'classnames';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
 const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
     is_disabled && disabled_message ? (
@@ -57,6 +58,7 @@ const AccountInfo = ({
     is_disabled,
 }) => {
     const currency_lower = currency?.toLowerCase();
+
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />

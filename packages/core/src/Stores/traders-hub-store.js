@@ -458,7 +458,6 @@ export default class TradersHubStore extends BaseStore {
         return this.selected_account_type === 'real';
     }
     get is_eu_user() {
-        // const { is_eu } = this.root_store.client;
         return this.selected_region === 'EU';
     }
 

@@ -50,9 +50,19 @@ const AccountNeedsVerification = observer(
 const RealAccountSwitcher = () => {
     const { client, traders_hub } = useStores();
     const { is_logging_in, is_switching, has_maltainvest_account } = client;
-    const { multipliers_account_status, is_currency_switcher_disabled_for_mf, is_eu_user, no_CR_account } = traders_hub;
+    const {
+        multipliers_account_status,
+        is_currency_switcher_disabled_for_mf,
+        is_eu_user,
+        no_CR_account,
+        no_MF_account,
+    } = traders_hub;
 
-    if (is_switching || is_logging_in) {
+    const eu_account = is_eu_user && !no_MF_account;
+    const cr_account = !is_eu_user && !no_CR_account;
+
+    //dont show loader if user has no respective regional account
+    if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
         return (
             <div className='real-account-switcher__container loader'>
                 <CurrencySwitcherLoader />
@@ -74,7 +84,6 @@ const RealAccountSwitcher = () => {
     } else if (!no_CR_account && !is_eu_user) {
         return <RealAccountCard />;
     }
-
     return null;
 };
 

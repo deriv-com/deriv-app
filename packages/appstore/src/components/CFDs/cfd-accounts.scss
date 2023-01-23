@@ -267,13 +267,13 @@
 
     &__wrapper {
         padding: 0;
-        margin-top: 2.4rem;
+        margin-top: 4.8rem;
         display: flex;
         justify-content: center;
-        align-items: center;
 
         @include mobile {
             flex-direction: column;
+            align-items: center;
         }
     }
     &--selected {
@@ -327,11 +327,10 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 1.6rem auto 0;
-        @include desktop {
-            width: 99.2rem;
-        }
+        margin: 1.6rem 2.4rem;
+
         @include mobile {
+            margin: unset;
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
         }
@@ -344,7 +343,9 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
-        margin-top: 1.6rem;
+        @include mobile {
+            padding: 0.8rem;
+        }
     }
 
     &__over-header {
@@ -1084,7 +1085,12 @@
         }
         &-wrapper {
             overflow: scroll;
+            width: inherit;
         }
+    }
+    &__mobile-title {
+        text-align: left;
+        margin: 0 2.4rem;
     }
 }
 
@@ -1808,7 +1814,6 @@
     }
     .cfd-account__platform {
         font-style: italic;
-        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {

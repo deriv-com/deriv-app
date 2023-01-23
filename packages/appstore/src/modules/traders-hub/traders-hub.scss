@@ -20,7 +20,7 @@
     }
 
     &--mobile {
-        overflow: scroll;
+        overflow: scroll !important;
         &::-webkit-scrollbar {
             display: none;
         }

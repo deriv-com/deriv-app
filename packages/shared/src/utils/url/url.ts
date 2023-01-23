@@ -133,8 +133,8 @@ export const setUrlLanguage = (lang: string) => {
 
 // TODO: cleanup options param usage
 // eslint-disable-next-line no-unused-vars
-export const getStaticUrl = (path = '', _options = {}, is_document = false) => {
-    const host = deriv_urls.DERIV_COM_PRODUCTION;
+export const getStaticUrl = (path = '', _options = {}, is_document = false, is_eu_url = false) => {
+    const host = is_eu_url ? deriv_urls.DERIV_COM_PRODUCTION_EU : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
 
     if (lang && lang !== 'en') {

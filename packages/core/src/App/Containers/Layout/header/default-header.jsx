@@ -73,26 +73,6 @@ const DefaultHeader = ({
         [removeNotificationMessage]
     );
 
-    const RedirectToOldInterface = () => {
-        const disablePreAppstore = () => setIsPreAppStore(false);
-
-        return (
-            <div className='trading-hub-header__redirect'>
-                <BinaryLink
-                    to={routes.trade}
-                    className='trading-hub-header__redirect--link'
-                    onClick={disablePreAppstore}
-                >
-                    <Text as='p' size='xs' color='general'>
-                        <Localize i18n_default_text="Exit Trader's hub" />
-                    </Text>
-                    <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
-                    <Icon icon='IcArrowRight' size={18} color='red' />
-                </BinaryLink>
-            </div>
-        );
-    };
-
     React.useEffect(() => {
         if (is_logged_in) replaceCashierMenuOnclick();
     }, [is_logged_in]);
@@ -205,16 +185,14 @@ const DefaultHeader = ({
                     </MobileWrapper>
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
-                {is_logged_in && (
-                    <DesktopWrapper>
-                        {window.location.pathname.startsWith(routes.appstore) ? (
-                            <RedirectToOldInterface />
-                        ) : (
-                            <ExploreTradingHub />
-                        )}
-                        <Divider />
-                    </DesktopWrapper>
-                )}
+                {is_logging_in
+                    ? null
+                    : is_logged_in && (
+                          <DesktopWrapper>
+                              <ExploreTradingHub />
+                              <Divider />
+                          </DesktopWrapper>
+                      )}
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,

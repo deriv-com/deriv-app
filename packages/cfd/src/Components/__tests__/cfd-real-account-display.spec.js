@@ -60,6 +60,7 @@ describe('<CFDRealAccountDisplay />', () => {
             },
             toggleAccountsDialog: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
+            show_eu_related_content: false,
         };
     });
 
@@ -232,10 +233,15 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add real account" button on Deriv MT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
+    it('should render a CFDs card only with enabled "Add real account" button on Deriv MT5 when is_logged_in=true, should_enable_add_button=true & show_eu_related_content=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(
-            <CFDRealAccountDisplay {...props} is_eu should_enable_add_button account_settings={account_settings_eu} />
+            <CFDRealAccountDisplay
+                {...props}
+                show_eu_related_content
+                should_enable_add_button
+                account_settings={account_settings_eu}
+            />
         );
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -248,7 +254,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add real account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} show_eu_related_content />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);

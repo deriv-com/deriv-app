@@ -7,7 +7,7 @@ export const alternateLinkTagChange = () => {
         : 'en';
 
     const alternate_rel_link = document.querySelector("link[rel='alternate']");
-    alternate_rel_link?.setAttribute('hreflang', current_lang);
+    alternate_rel_link?.setAttribute('hreflang', `${current_lang}-${current_lang.toUpperCase()}`);
     alternate_rel_link?.setAttribute('href', `${deriv_urls.DERIV_APP_PRODUCTION}${location.pathname}`);
 };
 

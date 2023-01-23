@@ -140,6 +140,9 @@ const CFDsListing = () => {
                             : null;
                         return (
                             <TradingAppCard
+                                action_type={existing_account.action_type}
+                                availability={selected_region}
+                                clickable_icon
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
@@ -147,8 +150,6 @@ const CFDsListing = () => {
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                action_type={existing_account.action_type}
-                                availability={selected_region}
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
@@ -211,6 +212,9 @@ const CFDsListing = () => {
                     return has_existing_accounts ? (
                         existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
                             <TradingAppCard
+                                action_type='multi-action'
+                                availability={selected_region}
+                                clickable_icon
                                 icon={account.icon}
                                 sub_title={account.name}
                                 name={`${formatMoney(
@@ -221,8 +225,6 @@ const CFDsListing = () => {
                                 description={existing_account.display_login}
                                 platform={account.platform}
                                 key={`trading_app_card_${existing_account.display_login}`}
-                                action_type='multi-action'
-                                availability={selected_region}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {
@@ -238,6 +240,9 @@ const CFDsListing = () => {
                         ))
                     ) : (
                         <TradingAppCard
+                            action_type='get'
+                            availability={selected_region}
+                            clickable_icon
                             icon={account.icon}
                             name={account.name}
                             platform={account.platform}
@@ -255,8 +260,6 @@ const CFDsListing = () => {
                                 }
                             }}
                             key={`trading_app_card_${account.name}`}
-                            action_type='get'
-                            availability={selected_region}
                         />
                     );
                 })

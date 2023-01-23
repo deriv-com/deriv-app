@@ -78,11 +78,12 @@ const OptionsAndMultipliersListing = () => {
             {is_real && (no_CR_account || no_MF_account) && (
                 <div className='full-row'>
                     <TradingAppCard
+                        action_type='get'
+                        availability='All'
+                        clickable_icon
                         name={localize('Deriv account')}
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
-                        availability='All'
-                        action_type='get'
                         onAction={() => {
                             if (no_MF_account) {
                                 ui.openRealAccountSignup('maltainvest');

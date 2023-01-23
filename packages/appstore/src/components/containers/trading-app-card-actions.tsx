@@ -7,6 +7,7 @@ import MultiActionButtonGroup from 'Components/multi-action-button-group';
 
 export type Actions = {
     action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action'; // multi-action can be tranfer_trade or top_up_trade
+    clickable_icon?: boolean;
     link_to?: string;
     has_divider?: boolean;
     onAction?: (e?: React.MouseEvent<HTMLButtonElement>) => void;

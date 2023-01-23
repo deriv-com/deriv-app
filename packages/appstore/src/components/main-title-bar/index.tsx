@@ -29,7 +29,7 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && <RegulatorSwitcher />}
+                    {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>

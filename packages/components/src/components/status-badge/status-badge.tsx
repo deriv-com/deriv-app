@@ -90,7 +90,7 @@ const StatusBadge = ({
                     `switcher-status-badge__container--icon${account_status || 'failed'}`
                 )}
             >
-                <Icon icon={icon} size={isMobile() ? 8 : 16} />
+                <Icon icon={icon} size={isMobile() ? 8 : 11} />
             </div>
             {text}
         </div>

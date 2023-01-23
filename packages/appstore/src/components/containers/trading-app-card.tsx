@@ -15,6 +15,7 @@ const TradingAppCard = ({
     name,
     icon,
     action_type,
+    clickable_icon = false,
     description,
     is_deriv_platform = false,
     onAction,
@@ -49,8 +50,12 @@ const TradingAppCard = ({
 
     return (
         <div className='trading-app-card'>
-            <div className='trading-app-card__icon--container'>
-                <TradigPlatformIconProps icon={icon} onClick={openStaticPage} size={48} />
+            <div
+                className={classNames('trading-app-card__icon--container', {
+                    'trading-app-card__icon--container__clickable': clickable_icon,
+                })}
+            >
+                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>

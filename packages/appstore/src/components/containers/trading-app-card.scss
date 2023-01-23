@@ -10,6 +10,9 @@
             justify-content: center;
             height: 100%;
             padding: 0 0 2rem;
+            &__clickable {
+                cursor: pointer;
+            }
         }
     }
 
@@ -24,6 +27,7 @@
     }
 
     &__details {
+        user-select: none;
         display: inline-flex;
         flex-direction: column;
         justify-content: center;
@@ -58,5 +62,9 @@
     &__acc_status_badge {
         max-width: fit-content;
         margin-top: 1rem;
+    }
+
+    &__title {
+        user-select: none;
     }
 }

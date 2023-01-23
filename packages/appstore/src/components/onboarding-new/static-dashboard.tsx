@@ -258,10 +258,10 @@ const StaticDashboard = ({
                             {eu_user ? (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon={'DTrader'}
-                                        name={'DTrader'}
-                                        description={'Multipliers trading platform.'}
-                                        availability={'All'}
+                                        icon='DTrader'
+                                        name='DTrader'
+                                        description='Multipliers trading platform.'
+                                        availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                     />
@@ -269,10 +269,10 @@ const StaticDashboard = ({
                             ) : (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon={'DTrader'}
-                                        name={'DTrader'}
-                                        description={'Options and multipliers trading platform.'}
-                                        availability={'All'}
+                                        icon='DTrader'
+                                        name='DTrader'
+                                        description='Options and multipliers trading platform.'
+                                        availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider
@@ -284,10 +284,10 @@ const StaticDashboard = ({
                                 <React.Fragment>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'DBot'}
-                                            name={'DBot'}
-                                            description={`Automate your trading, no coding needed.`}
-                                            availability={'Non-EU'}
+                                            icon='DBot'
+                                            name='DBot'
+                                            description='Automate your trading, no coding needed.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                             has_divider
@@ -295,10 +295,10 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'SmartTrader'}
-                                            name={'SmartTrader'}
-                                            description={`Automate your trading, no coding needed.`}
-                                            availability={'Non-EU'}
+                                            icon='SmartTrader'
+                                            name='SmartTrader'
+                                            description='Automate your trading, no coding needed.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                             has_divider
@@ -306,20 +306,20 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'BinaryBot'}
-                                            name={'BinaryBot'}
-                                            description={`Our legacy automated trading platform.`}
-                                            availability={'Non-EU'}
+                                            icon='BinaryBot'
+                                            name='BinaryBot'
+                                            description='Our legacy automated trading platform.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                         />
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'DerivGo'}
-                                            name={'DerivGo'}
-                                            description={`Trade on the go with our mobile app.`}
-                                            availability={'Non-EU'}
+                                            icon='DerivGo'
+                                            name='DerivGo'
+                                            description='Trade on the go with our mobile app.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                         />
@@ -364,7 +364,7 @@ const StaticDashboard = ({
                                         components={[
                                             <Text
                                                 key={0}
-                                                color={'red'}
+                                                color='red'
                                                 size='xxxs'
                                                 weight='bold'
                                                 className={classNames(
@@ -391,7 +391,7 @@ const StaticDashboard = ({
                                     components={[
                                         <Text
                                             key={0}
-                                            color={'red'}
+                                            color='red'
                                             size='xxs'
                                             line_height='xl'
                                             weight='bold'
@@ -435,7 +435,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
-                                    appname={has_account ? 'Derived SVG' : 'Derived'}
+                                    appname='Derived'
                                     description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
                                     loginid={loginid}
                                     currency={currency}
@@ -452,7 +452,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname={'CFDs'}
+                                    appname='CFDs'
                                     description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                                     loginid={loginid}
                                     currency={is_eu_user ? mf_currency : currency}
@@ -468,7 +468,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname={has_account ? 'Financial BVI' : 'Financial'}
+                                    appname='Financial'
                                     description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
                                     financial_amount={financial_amount}
                                     derived_amount={derived_amount}

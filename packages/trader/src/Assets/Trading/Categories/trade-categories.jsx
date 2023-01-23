@@ -440,7 +440,7 @@ const TradeCategories = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'f you select “Put”, you will get a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or above the strike price at the expiry time, there won’t be a payout.'
+                                'If you select “Put”, you will get a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or above the strike price at the expiry time, there won’t be a payout.'
                             )}
                         </Text>
                         <Text as='p'>

@@ -32,8 +32,8 @@ const TradersHub = () => {
             handleScroll();
             setTimeout(() => {
                 setScrolled(true);
-            }, 500);
-        }, 500);
+            }, 200);
+        }, 100);
     }, [is_tour_open]);
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;

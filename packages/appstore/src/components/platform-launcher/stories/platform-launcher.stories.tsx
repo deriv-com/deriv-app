@@ -17,7 +17,7 @@ export const PlatformLauncherDTrader = Template.bind({});
 PlatformLauncherDTrader.args = {
     app_icon: 'DTrader',
     app_title: 'DTrader',
-    app_desc: 'Options & multipliers trading platform.',
+    app_desc: 'Options and multipliers trading platform.',
 };
 export const PlatformLauncherDBot = Template.bind({});
 PlatformLauncherDBot.args = {

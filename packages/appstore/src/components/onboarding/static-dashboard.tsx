@@ -445,7 +445,7 @@ const StaticDashboard = ({
                                 app_desc={
                                     is_eu_user
                                         ? 'Multipliers trading platform.'
-                                        : 'Options & multipliers trading platform.'
+                                        : 'Options and multipliers trading platform.'
                                 }
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}

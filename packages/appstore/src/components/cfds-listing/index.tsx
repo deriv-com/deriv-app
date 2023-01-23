@@ -127,7 +127,7 @@ const CFDsListing = () => {
             <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text size='xs' line_height='m' weight='bold'>
+                <Text line_height='m' weight='bold'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
@@ -198,7 +198,7 @@ const CFDsListing = () => {
             )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
-                    <Text size='xs' line_height='m' weight='bold'>
+                    <Text line_height='m' weight='bold'>
                         {localize('Other CFDs')}
                     </Text>
                 </div>

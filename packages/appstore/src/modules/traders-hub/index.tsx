@@ -18,6 +18,8 @@ const TradersHub = () => {
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
+    const [scrolled, setScrolled] = React.useState(false);
+
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
         if (element && is_tour_open) {
@@ -28,7 +30,10 @@ const TradersHub = () => {
     React.useEffect(() => {
         setTimeout(() => {
             handleScroll();
-        }, 500);
+            setTimeout(() => {
+                setScrolled(true);
+            }, 200);
+        }, 100);
     }, [is_tour_open]);
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
@@ -76,7 +81,7 @@ const TradersHub = () => {
                         {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
-                    <TourGuide />
+                    {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
         </>

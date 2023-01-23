@@ -12,7 +12,6 @@ import {
     getPropertyValue,
     validNumber,
     CFD_PLATFORMS,
-    routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import Constants from '../constants/constants';
@@ -389,9 +388,6 @@ export default class AccountTransferStore {
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const is_from_pre_appstore =
-            this.root_store.client.is_pre_appstore && !location.pathname.startsWith(routes.cashier);
-
         accounts.forEach(account => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
@@ -474,10 +470,7 @@ export default class AccountTransferStore {
             };
 
             // set current logged in client as the default transfer from account
-            if (
-                (account.loginid === this.root_store.client.loginid && !is_from_pre_appstore) ||
-                (account.loginid === this.root_store.traders_hub?.selected_account.login && is_from_pre_appstore)
-            ) {
+            if (account.loginid === this.root_store.client.loginid) {
                 // check if selected from is not allowed account
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     obj_values.error = getSelectedError(obj_values.value, true);

@@ -28,8 +28,15 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
-    const { toggleIsTourOpen } = traders_hub;
-    const { is_eu_country, is_logged_in, setIsPreAppStore, is_landing_company_loaded } = client;
+    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk } = traders_hub;
+    const {
+        is_eu_country,
+        is_logged_in,
+        setIsPreAppStore,
+        is_landing_company_loaded,
+        prev_account_type,
+        setPrevAccountType,
+    } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -40,8 +47,12 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
             setIsPreAppStore(true);
-            history.push(routes.traders_hub);
             toggleIsTourOpen(true);
+            history.push(routes.traders_hub);
+            if (is_demo_low_risk) {
+                selectAccountType('real');
+                setPrevAccountType('demo');
+            }
         }
     };
     const is_eu_user = (is_logged_in && is_eu_country) || (!is_logged_in && is_eu_country);
@@ -74,6 +85,8 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                         setIsPreAppStore(true);
                         toggleIsTourOpen(false);
                         history.push(routes.traders_hub);
+                        selectAccountType(prev_account_type);
+                        setPrevAccountType(prev_account_type);
                     }}
                 />
             </div>

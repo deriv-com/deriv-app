@@ -38,11 +38,6 @@
             margin-top: 1rem;
         }
 
-        @include mobile {
-            position: fixed;
-            top: 72%;
-        }
-
         &__progress-bar {
             margin-top: 2rem;
         }
@@ -74,6 +69,8 @@
                 width: 100%;
                 margin: 1.5rem 0;
                 overflow-y: auto;
+                position: fixed;
+                bottom: 0;
                 &--full-size {
                     width: 80%;
                     height: 3.8rem;

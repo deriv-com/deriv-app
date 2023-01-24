@@ -3,22 +3,12 @@ import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
+import { ResidenceList } from '@deriv/api-types';
 
-type TItem = {
-    disabled?: string;
-    phone_idd?: string;
-    text: string;
-    value: string;
-    tin_format?: string[];
-    // group?: TItem;
-    component?: any;
-    identity?: {
-        services: {
-            idv: object;
-            onfido: object;
-        };
-    };
-};
+type TItem = string & {
+    component?: React.ReactNode;
+    group?: string;
+} & ResidenceList[0];
 
 type TListItem = {
     is_active: boolean;
@@ -36,7 +26,7 @@ type TListItems = {
     is_object_list?: boolean;
     list_items: TItem[];
     not_found_text: string;
-    onItemSelection: () => void;
+    onItemSelection: (item: TItem) => void;
     setActiveIndex: () => void;
 };
 
@@ -86,7 +76,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
     const is_grouped_list = list_items.some(list_item => !!list_item.group);
 
     if (is_grouped_list) {
-        const groups = {};
+        const groups: { [key: string]: TItem[] } = {};
 
         list_items.forEach(list_item => {
             const group = list_item.group || '?';

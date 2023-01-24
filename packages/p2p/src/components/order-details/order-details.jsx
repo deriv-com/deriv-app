@@ -117,7 +117,7 @@ const OrderDetails = observer(() => {
         key: 'RatingModal',
         props: {
             is_buy_order_for_user,
-            is_user_recommended_previously: is_recommended_by_user,
+            is_user_recommended_previously,
             onClickDone: () => {
                 order_store.setOrderRating(id);
                 general_store.props.removeNotificationMessage({
@@ -131,6 +131,7 @@ const OrderDetails = observer(() => {
                 order_store.setRatingValue(0);
                 hideModal();
             },
+            previous_recommendation,
         },
     });
 
@@ -145,28 +146,6 @@ const OrderDetails = observer(() => {
 
     return (
         <OrderDetailsWrapper page_title={page_title}>
-            {is_active_order && (
-                <RatingModal
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    is_rating_modal_open={order_store.is_rating_modal_open}
-                    is_user_recommended_previously={is_user_recommended_previously}
-                    onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                    onClickDone={() => {
-                        order_store.setOrderRating(id);
-                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
-                    }}
-                    onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                    onClickRecommended={() => order_store.setIsRecommended(1)}
-                    onClickSkip={() => {
-                        order_store.setRatingValue(0);
-                        order_store.setIsRatingModalOpen(false);
-                    }}
-                    onClickStar={order_store.handleRating}
-                    previous_recommendation={previous_recommendation}
-                    rating_value={order_store.rating_value}
-                />
-            )}
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
                     <HintBox

@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop, routes, PlatformContext } from '@deriv/shared';
+import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
@@ -28,7 +28,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
-    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk } = traders_hub;
+    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const {
         is_eu_country,
         is_logged_in,
@@ -55,8 +55,13 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
             }
         }
     };
-    const is_eu_user = (is_logged_in && is_eu_country) || (!is_logged_in && is_eu_country);
 
+    const eu_user =
+        content_flag === ContentFlag.LOW_RISK_CR_EU ||
+        content_flag === ContentFlag.EU_REAL ||
+        content_flag === ContentFlag.EU_DEMO;
+
+    const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
     const onboarding_step = number_of_steps[step - 1];
 
     const footer_header = contents[onboarding_step]?.footer_header;

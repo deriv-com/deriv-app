@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import { List } from '@enykeev/react-virtualized/dist/es/List';
+import { List } from 'react-virtualized/dist/es/List';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { AutoSizer } from '@enykeev/react-virtualized/dist/es/AutoSizer';
-import { CellMeasurer, CellMeasurerCache } from '@enykeev/react-virtualized/dist/es/CellMeasurer';
+import { AutoSizer , CellMeasurer, CellMeasurerCache } from 'react-virtualized';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 

@@ -1,4 +1,4 @@
-import DataList from './data-list.jsx';
+import DataList from './data-list';
 import DataListCell from './data-list-cell.jsx';
 import './data-list.scss';
 

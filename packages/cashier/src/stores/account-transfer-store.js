@@ -439,13 +439,17 @@ export default class AccountTransferStore {
                 x => x.login === account.login
             );
 
+            const short_code_and_region = combined_cfd_mt5_account?.short_code_and_region
+                ? ` ${combined_cfd_mt5_account?.short_code_and_region}`
+                : '';
+
             const obj_values = {
                 text:
                     is_cfd &&
                     account.account_type === CFD_PLATFORMS.MT5 &&
                     this.root_store.client.is_pre_appstore &&
                     combined_cfd_mt5_account
-                        ? `${combined_cfd_mt5_account.sub_title} ${combined_cfd_mt5_account.short_code_and_region}`
+                        ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
                 balance: account.balance,

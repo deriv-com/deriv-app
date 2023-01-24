@@ -98,6 +98,7 @@ const DataTable = ({
     }
     return (
         <div
+            data-testid='dt_data_table'
             className={classNames('table', {
                 [`${className}`]: className,
                 [`${className}__table`]: className,

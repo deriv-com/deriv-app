@@ -248,8 +248,8 @@ const CFDsListing = () => {
                             platform={account.platform}
                             description={account.description}
                             onAction={() => {
-                                if (has_no_real_account && is_real) {
-                                    ui.openDerivRealAccountNeededModal();
+                                if ((has_no_real_account || no_CR_account) && is_real) {
+                                    openDerivRealAccountNeededModal();
                                 } else {
                                     setAccountType({
                                         category: selected_account_type,

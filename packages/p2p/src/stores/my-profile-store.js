@@ -21,7 +21,7 @@ export default class MyProfileStore extends BaseStore {
     is_cancel_edit_payment_method_modal_open = false;
     is_confirm_delete_modal_open = false;
     is_delete_payment_method_error_modal_open = false;
-    is_loading = true;
+    is_loading = false;
     is_submit_success = false;
     payment_method_value = undefined;
     payment_methods_list = [];

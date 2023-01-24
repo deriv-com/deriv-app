@@ -18,7 +18,7 @@ const derived_account: TAccountType = {
 const financial_account: TAccountType = {
     title_and_type: 'Financial',
     icon: 'Financial',
-    description: 'Trade CFDs on MT5 with forex, stocks & indices, commodities, and cryptocurrencies.',
+    description: 'Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.',
 };
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {

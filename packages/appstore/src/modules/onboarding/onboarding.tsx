@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile, isDesktop, routes, PlatformContext } from '@deriv/shared';
+import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { trading_hub_contents } from 'Constants/trading-hub-content';
@@ -28,8 +28,15 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
-    const { toggleIsTourOpen } = traders_hub;
-    const { is_eu, is_eu_country, is_logged_in, setIsPreAppStore } = client;
+    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
+    const {
+        is_eu_country,
+        is_logged_in,
+        setIsPreAppStore,
+        is_landing_company_loaded,
+        prev_account_type,
+        setPrevAccountType,
+    } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -40,12 +47,21 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
             setIsPreAppStore(true);
-            history.push(routes.traders_hub);
             toggleIsTourOpen(true);
+            history.push(routes.traders_hub);
+            if (is_demo_low_risk) {
+                selectAccountType('real');
+                setPrevAccountType('demo');
+            }
         }
     };
-    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
+    const eu_user =
+        content_flag === ContentFlag.LOW_RISK_CR_EU ||
+        content_flag === ContentFlag.EU_REAL ||
+        content_flag === ContentFlag.EU_DEMO;
+
+    const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
     const onboarding_step = number_of_steps[step - 1];
 
     const footer_header = contents[onboarding_step]?.footer_header;
@@ -58,7 +74,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
 
     const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
 
-    if (!is_logged_in) {
+    if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
     }
 
@@ -74,13 +90,13 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                         setIsPreAppStore(true);
                         toggleIsTourOpen(false);
                         history.push(routes.traders_hub);
+                        selectAccountType(prev_account_type);
+                        setPrevAccountType(prev_account_type);
                     }}
                 />
             </div>
             <div className='onboarding-body'>
-                <Text as='h2' weight='bold' align='center' color='white'>
-                    {contents[onboarding_step]?.component}
-                </Text>
+                <div>{contents[onboarding_step]?.component}</div>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>

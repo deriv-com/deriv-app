@@ -10,10 +10,7 @@ import { localize } from '@deriv/translations';
 const DemoAccountCard = () => {
     const { client, traders_hub } = useStores();
     const { accounts, loginid, resetVirtualBalance } = client;
-    const {
-        total_platform_demo_balance: { currency, balance },
-        selected_account_type,
-    } = traders_hub;
+    const { platform_demo_balance, selected_account_type } = traders_hub;
 
     const canResetBalance = () => {
         return accounts[loginid]?.balance !== 10000;
@@ -30,13 +27,13 @@ const DemoAccountCard = () => {
             }
             actions={
                 canResetBalance() && (
-                    <Button secondary onClick={resetVirtualBalance}>
+                    <Button secondary onClick={resetVirtualBalance} className='currency-switcher__button'>
                         {localize('Reset Balance')}
                     </Button>
                 )
             }
         >
-            <BalanceText currency={currency} balance={balance} size='xs' />
+            <BalanceText currency={platform_demo_balance.currency} balance={platform_demo_balance.balance} size='xs' />
         </CurrencySwitcherContainer>
     );
 };

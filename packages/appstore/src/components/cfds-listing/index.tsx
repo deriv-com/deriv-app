@@ -44,6 +44,11 @@ const CFDsListing = () => {
         is_demo_low_risk,
         no_MF_account,
         toggleAccountTransferModal,
+        is_demo,
+        openFailedVerificationModal,
+        showTopUpModal,
+        no_CR_account,
+        setSelectedAccount,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -54,7 +59,38 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
+    const getMT5AccountAuthStatus = (current_acc_status: string) => {
+        if (current_acc_status === 'proof_failed') {
+            return 'failed';
+        } else if (current_acc_status === 'verification_pending') {
+            return 'pending';
+        }
+        return null;
+    };
+
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
+
+    const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
+
+    const AddDerivAccount = () => {
+        if (is_real) {
+            if (no_CR_account && !is_eu_user) {
+                return (
+                    <div className='cfd-full-row'>
+                        <AddOptionsAccount />
+                    </div>
+                );
+            } else if (no_MF_account && is_eu_user) {
+                return (
+                    <div className='cfd-full-row'>
+                        <AddOptionsAccount />
+                    </div>
+                );
+            }
+        }
+        return null;
+    };
+
     return (
         <ListingContainer
             title={
@@ -77,7 +113,7 @@ const CFDsListing = () => {
                         i18n_default_text={
                             'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
                         }
-                        components={[<StaticUrl key={0} className='options' href='/dmt5' />]}
+                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
                     />
                 </Text>
             }
@@ -90,15 +126,10 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {(is_real && has_no_real_account) ||
-                (is_eu_user && no_MF_account && is_real && (
-                    <div className='cfd-full-row'>
-                        <AddOptionsAccount />
-                    </div>
-                ))}
+            <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text size='xs' line_height='m' weight='bold'>
+                <Text line_height='m' weight='bold'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
@@ -106,21 +137,25 @@ const CFDsListing = () => {
                 <>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
+                        const has_mt5_account_status = existing_account.status
+                            ? getMT5AccountAuthStatus(existing_account.status)
+                            : null;
                         return (
                             <TradingAppCard
+                                action_type={existing_account.action_type}
+                                availability={selected_region}
+                                clickable_icon
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
-                                name={existing_account?.name}
+                                name={!has_mt5_account_status ? existing_account?.name : ''}
                                 short_code_and_region={existing_account?.short_code_and_region}
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                type={existing_account.type}
-                                availability={selected_region}
-                                has_divider={!is_eu_user && getHasDivider(index, list_size, 1, 3)}
+                                has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    if (existing_account.type === 'get') {
-                                        if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
+                                    if (existing_account.action_type === 'get') {
+                                        if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
                                             setAccountType({
@@ -130,14 +165,21 @@ const CFDsListing = () => {
                                             setAppstorePlatform(existing_account.platform);
                                             getAccount();
                                         }
-                                    } else if (existing_account.type === 'transfer_trade') {
-                                        if (e?.currentTarget?.name === 'transfer-btn') {
+                                    } else if (existing_account.action_type === 'multi-action') {
+                                        const button_name = e?.currentTarget?.name;
+                                        if (button_name === 'transfer-btn') {
                                             toggleAccountTransferModal();
+                                            setSelectedAccount(existing_account);
+                                        } else if (button_name === 'topup-btn') {
+                                            showTopUpModal(existing_account);
                                         } else {
                                             startTrade(existing_account.platform, existing_account);
                                         }
                                     }
                                 }}
+                                mt5_acc_auth_status={has_mt5_account_status}
+                                selected_mt5_jurisdiction={existing_account.landing_company_short}
+                                openFailedVerificationModal={openFailedVerificationModal}
                             />
                         );
                     })}
@@ -160,7 +202,7 @@ const CFDsListing = () => {
             )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
-                    <Text size='xs' line_height='m' weight='bold'>
+                    <Text line_height='m' weight='bold'>
                         {localize('Other CFDs')}
                     </Text>
                 </div>
@@ -172,6 +214,9 @@ const CFDsListing = () => {
                     return has_existing_accounts ? (
                         existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
                             <TradingAppCard
+                                action_type='multi-action'
+                                availability={selected_region}
+                                clickable_icon
                                 icon={account.icon}
                                 sub_title={account.name}
                                 name={`${formatMoney(
@@ -182,22 +227,31 @@ const CFDsListing = () => {
                                 description={existing_account.display_login}
                                 platform={account.platform}
                                 key={`trading_app_card_${existing_account.display_login}`}
-                                type='transfer_trade'
-                                availability={selected_region}
-                                onAction={() => {
-                                    startTrade(account.platform, existing_account);
+                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                    const button_name = e?.currentTarget?.name;
+                                    if (button_name === 'transfer-btn') {
+                                        toggleAccountTransferModal();
+                                        setSelectedAccount(existing_account);
+                                    } else if (button_name === 'topup-btn') {
+                                        showTopUpModal(existing_account);
+                                    } else {
+                                        startTrade(account.platform, existing_account);
+                                    }
                                 }}
                             />
                         ))
                     ) : (
                         <TradingAppCard
+                            action_type='get'
+                            availability={selected_region}
+                            clickable_icon
                             icon={account.icon}
                             name={account.name}
                             platform={account.platform}
                             description={account.description}
                             onAction={() => {
-                                if (has_no_real_account && is_real) {
-                                    ui.openDerivRealAccountNeededModal();
+                                if ((has_no_real_account || no_CR_account) && is_real) {
+                                    openDerivRealAccountNeededModal();
                                 } else {
                                     setAccountType({
                                         category: selected_account_type,
@@ -208,8 +262,6 @@ const CFDsListing = () => {
                                 }
                             }}
                             key={`trading_app_card_${account.name}`}
-                            type='get'
-                            availability={selected_region}
                         />
                     );
                 })

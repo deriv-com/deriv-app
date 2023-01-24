@@ -12,7 +12,15 @@
     transition: opacity 0.3s;
     display: flex;
 
+    @media screen and (max-width: 380px) {
+        &__cashier-button {
+            display: none;
+        }
+    }
+
     @include mobile {
+        display: flex;
+        justify-content: space-between;
         height: 4rem;
     }
 
@@ -87,6 +95,7 @@
         justify-content: center;
         align-items: center;
         padding: 0 1rem 0 1.6rem;
+        cursor: pointer;
 
         &:hover:not(&--active) {
             background-color: var(--general-hover);
@@ -129,6 +138,7 @@
 
     &__redirect {
         display: flex;
+        cursor: pointer;
 
         &--link {
             display: flex;

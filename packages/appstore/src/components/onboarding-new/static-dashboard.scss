@@ -75,7 +75,10 @@
         &__header {
             display: flex;
             flex-direction: column;
-            width: 70%;
+
+            &--limited-width {
+                width: 70%;
+            }
 
             @include mobile {
                 width: 100%;
@@ -155,13 +158,14 @@
             &--apps {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 3rem;
 
                 @include desktop {
                     margin-top: 1rem;
                 }
 
-                &-item {
-                    margin-left: 1rem;
+                &--with-gap {
+                    grid-column-gap: 3rem;
                 }
 
                 &--eu {

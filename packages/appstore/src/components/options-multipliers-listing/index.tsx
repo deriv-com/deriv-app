@@ -22,7 +22,7 @@ const OptionsAndMultipliersListing = () => {
         is_demo,
         content_flag,
     } = traders_hub;
-    const { is_landing_company_loaded, is_eu } = client;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account } = client;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -30,8 +30,10 @@ const OptionsAndMultipliersListing = () => {
 
     const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
 
+    const cr_demo = content_flag === ContentFlag.CR_DEMO;
+
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || high_risk_cr || is_demo) && !isMobile()) {
+        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !isMobile()) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
@@ -51,7 +53,7 @@ const OptionsAndMultipliersListing = () => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                low_risk_cr_non_eu || high_risk_cr || is_demo ? (
+                low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
@@ -76,11 +78,12 @@ const OptionsAndMultipliersListing = () => {
             {is_real && (no_CR_account || no_MF_account) && (
                 <div className='full-row'>
                     <TradingAppCard
+                        action_type='get'
+                        availability='All'
+                        clickable_icon
                         name={localize('Deriv account')}
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'
-                        availability='All'
-                        type='get'
                         onAction={() => {
                             if (no_MF_account) {
                                 ui.openRealAccountSignup('maltainvest');
@@ -97,9 +100,13 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
-                        type={is_demo || has_any_real_account ? 'trade' : 'none'}
+                        action_type={
+                            is_demo || (has_any_real_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                                ? 'trade'
+                                : 'none'
+                        }
                         is_deriv_platform
-                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 1, 3)}
+                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))
             ) : (

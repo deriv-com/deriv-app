@@ -7,8 +7,9 @@ import { useStores } from 'Stores';
 import './account-type-dropdown.scss';
 
 const AccountTypeDropdown = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const { selected_account_type, selectAccountType } = traders_hub;
+    const { setPrevAccountType } = client;
 
     return (
         <div className={classNames('account-type-dropdown--parent')}>
@@ -22,6 +23,7 @@ const AccountTypeDropdown = () => {
                 list={account_types}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await selectAccountType(e.target.value);
+                    await setPrevAccountType(e.target.value);
                 }}
             />
         </div>

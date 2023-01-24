@@ -16,7 +16,7 @@ import AccountTransferLocked from './account-transfer-locked';
 type TAccountTransferProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
-    onClose?: () => void;
+    onClose: () => void;
     openAccountSwitcherModal?: () => void;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
@@ -117,6 +117,7 @@ const AccountTransfer = observer(
                 setSideNotes={setSideNotes}
                 onClickDeposit={onClickDeposit}
                 onClickNotes={onClickNotes}
+                onClose={onClose}
             />
         );
     }

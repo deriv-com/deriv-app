@@ -19,6 +19,7 @@ const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
 
 const AccountInfoIcon = ({ is_virtual, currency }) => (
     <Icon
+        data_testid='dt_icon'
         icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
         className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
         size={24}
@@ -55,12 +56,13 @@ const AccountInfo = ({
     toggleDialog,
     is_disabled,
 }) => {
-    const currency_lower = currency.toLowerCase();
+    const currency_lower = currency?.toLowerCase();
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
             <AccountInfoWrapper is_disabled={is_disabled} disabled_message={acc_switcher_disabled_message}>
                 <div
+                    data-testid='dt_acc_info'
                     id='dt_core_account-info_acc-info'
                     className={classNames('acc-info', {
                         'acc-info--show': is_dialog_on,
@@ -82,6 +84,7 @@ const AccountInfo = ({
                     {(typeof balance !== 'undefined' || !currency) && (
                         <div className='acc-info__account-type-and-balance'>
                             <p
+                                data-testid='dt_balance'
                                 className={classNames('acc-info__balance', {
                                     'acc-info__balance--no-currency': !currency && !is_virtual,
                                 })}
@@ -102,9 +105,13 @@ const AccountInfo = ({
                         </div>
                     )}
                     {is_disabled ? (
-                        <Icon icon='IcLock' />
+                        <Icon data_testid='dt_lock_icon' icon='IcLock' />
                     ) : (
-                        <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
+                        <Icon
+                            data_testid='dt_select_arrow'
+                            icon='IcChevronDownBold'
+                            className='acc-info__select-arrow'
+                        />
                     )}
                 </div>
             </AccountInfoWrapper>

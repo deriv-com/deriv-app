@@ -1,4 +1,4 @@
-import React, { CSSProperties, LegacyRef } from 'react';
+import React, { CSSProperties, LegacyRef, RefObject } from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -154,14 +154,14 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 });
 ListItems.displayName = 'ListItems';
 
-type TRef = React.MutableRefObject<{
-    dropdown_ref: LegacyRef<HTMLDivElement>;
-    list_item_ref: LegacyRef<HTMLDivElement>;
-    list_wrapper_ref: LegacyRef<HTMLDivElement>;
-}>;
+type TRef = {
+    dropdown_ref: RefObject<HTMLDivElement>;
+    list_item_ref: RefObject<HTMLDivElement>;
+    list_wrapper_ref: RefObject<HTMLDivElement>;
+};
 
 const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {
-    const { dropdown_ref, list_item_ref, list_wrapper_ref } = ref;
+    const { dropdown_ref, list_item_ref, list_wrapper_ref } = ref as unknown as TRef;
     const {
         active_index,
         is_visible,
@@ -230,6 +230,7 @@ const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {
     }
     return el_dropdown_list;
 });
+
 DropdownList.displayName = 'DropdownList';
 
 export default DropdownList;

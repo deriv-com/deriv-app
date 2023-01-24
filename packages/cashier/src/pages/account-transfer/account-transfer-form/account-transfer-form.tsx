@@ -40,7 +40,11 @@ const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
             )}
 
             <div className='account-transfer-form__currency-wrapper'>
-                <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
+                <Text
+                    size='xxs'
+                    line_height='xs'
+                    styles={{ color: is_pre_appstore ? 'prominent' : 'inherit', fontWeight: 'inherit' }}
+                >
                     {account.is_dxtrade || account.is_mt || account.is_derivez
                         ? account.text
                         : getCurrencyName(account.currency)}

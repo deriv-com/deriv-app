@@ -58,7 +58,7 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on } = ui;
+    const { notification_messages_ui: Notifications, is_dark_mode_on } = ui;
     const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = traders_hub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
@@ -202,6 +202,7 @@ const TradingHub: React.FC = () => {
     return (
         <Div100vhContainer height_offset='40px' is_disabled={isDesktop()}>
             <div id='trading-hub' className='trading-hub'>
+                <Notifications />
                 <div className='trading-hub_header'>
                     <div className='trading-hub_header--title'>
                         <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>

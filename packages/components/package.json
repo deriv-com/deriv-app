@@ -85,6 +85,7 @@
     "react-swipeable": "^6.2.1",
     "react-tiny-popover": "^7.0.1",
     "react-transition-group": "4.4.2",
-    "@enykeev/react-virtualized": "^9.22.4-mirror.1"
+    "react-virtualized": "npm:@enykeev/react-virtualized@^9.22.4-mirror.1",
+    "@types/react-virtualized": "^9.21.21"
   }
 }

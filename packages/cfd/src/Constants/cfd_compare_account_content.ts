@@ -53,7 +53,7 @@ export const eu_real_content: TCompareAccountContentProps[] = [
                 { text: localize('Cryptocurrencies') },
                 {
                     text: localize('*Boom 300 and Crash 300 Index'),
-                    options: { color: 'loss-danger', weight: 'bold', styles: { 'padding-top': '2rem' } },
+                    options: { color: 'loss-danger', weight: 'bold', styles: { paddingTop: '2rem' } },
                 },
             ],
         },
@@ -255,7 +255,7 @@ export const preppstore_eu_demo_content: TCompareAccountContentProps[] = [
                 { text: localize('Cryptocurrencies') },
                 {
                     text: localize('*Boom 300 and Crash 300 Index'),
-                    options: { color: 'loss-danger', weight: 'bold', styles: { 'padding-top': '2rem' } },
+                    options: { color: 'loss-danger', weight: 'bold', styles: { paddingTop: '2rem' } },
                 },
             ],
         },

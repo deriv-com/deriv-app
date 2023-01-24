@@ -21,14 +21,14 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('St. Vincent & Grenadines'),
         synthetic_contents: [
             `${localize('Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
-            `${localize('25+ assets: synthetics')}`,
+            `${localize('30+ assets: synthetics, basket indices and derived FX')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
         financial_contents: [
             `${localize('Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
             `${localize('Registered with the Financial Commission')}`,
             `${localize(
-                '170+ assets: forex (standard/micro), stocks, stock indices, commodities, basket indices, and cryptocurrencies'
+                '165+ assets: forex (standard/micro), stocks, stock indices, commodities, and cryptocurrencies'
             )}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
@@ -39,13 +39,13 @@ export const jurisdiction_contents: TJurisdictionContent = {
         synthetic_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('30+ assets: forex and commodities')}`,
+            `${localize('90+ assets: forex, stock indices, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
         financial_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('30+ assets: forex and commodities')}`,
+            `${localize('90+ assets: forex, stock indices, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
     },
@@ -73,13 +73,13 @@ export const jurisdiction_contents: TJurisdictionContent = {
         synthetic_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('140+ assets :forex , stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
+            `${localize('150+ assets: forex, stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
         financial_contents: [
             `${localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             `${localize('Registered with the Financial Commission')}`,
-            `${localize('140+ assets :forex , stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
+            `${localize('150+ assets: forex, stocks, stock indices, synthetics, commodities and cryptocurrencies')}`,
             `${localize('Leverage up to 1:30')}`,
         ],
     },
@@ -90,7 +90,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize(
                 'Regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)'
             )}`,
-            `${localize('25+ assets: synthetics')}`,
+            `${localize('30+ assets: synthetics, basket indices and derived FX')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
         financial_contents: [
@@ -99,7 +99,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             )}`,
             `${localize('Registered with the Financial Commission')}`,
             `${localize(
-                '170+ assets: forex (standard/micro), stocks, stock indices, commodities, basket indices, and cryptocurrencies'
+                '165+ assets: forex (standard/micro), stocks, stock indices, commodities, and cryptocurrencies'
             )}`,
             `${localize('Leverage up to 1:1000')}`,
         ],

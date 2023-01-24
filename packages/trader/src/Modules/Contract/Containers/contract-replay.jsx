@@ -19,8 +19,6 @@ import {
     isEmptyObject,
     getPlatformRedirect,
     urlFor,
-    getDurationPeriod,
-    getDurationUnitText,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -285,7 +283,7 @@ const Chart = props => {
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            shouldFetchTickHistory
             contractInfo={passthrough_contract_info}
         >
             {props.markers_array.map(marker => (

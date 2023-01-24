@@ -1,4 +1,4 @@
-import React, { CSSProperties, LegacyRef, RefObject } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -15,7 +15,7 @@ type TListItem = {
     is_disabled?: boolean;
     index: number;
     item: TItem;
-    child_ref: LegacyRef<HTMLDivElement>;
+    child_ref: React.LegacyRef<HTMLDivElement>;
     onItemSelection: (item: TItem) => void;
     is_object_list?: boolean;
     setActiveIndex: (index: number) => void;
@@ -38,7 +38,7 @@ type TDropDownList = {
     onScrollStop: () => void;
     onItemSelection: () => void;
     setActiveIndex: () => void;
-    style: CSSProperties;
+    style: React.CSSProperties;
     not_found_text: string;
     portal_id: string;
 };
@@ -145,9 +145,9 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 ListItems.displayName = 'ListItems';
 
 type TRef = {
-    dropdown_ref: RefObject<HTMLDivElement>;
-    list_item_ref: RefObject<HTMLDivElement>;
-    list_wrapper_ref: RefObject<HTMLDivElement>;
+    dropdown_ref: React.RefObject<HTMLDivElement>;
+    list_item_ref: React.RefObject<HTMLDivElement>;
+    list_wrapper_ref: React.RefObject<HTMLDivElement>;
 };
 
 const DropdownList = React.forwardRef<TRef, TDropDownList>((props, ref) => {

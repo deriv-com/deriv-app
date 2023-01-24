@@ -1,24 +1,24 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
-import RealAccountSignup from 'App/Containers/RealAccountSignup';
-import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
-import { connect } from 'Stores/connect';
-import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { PlatformContext, getDecimalPlaces, getPlatformInformation, isMobile, platforms, routes } from '@deriv/shared';
+
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
+import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import platform_config from 'App/Constants/platform-config';
+import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
-    can_have_whatsapp,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -64,6 +64,7 @@ const DefaultHeader = ({
     changeCurrentLanguage,
     is_trading_assessment_for_existing_user_enabled,
     active_account_landing_company,
+    is_landing_company_loaded,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -104,6 +105,7 @@ const DefaultHeader = ({
     }, [removeUpdateNotification]);
 
     const onClickDeposit = () => history.push(routes.cashier_deposit);
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -164,6 +166,9 @@ const DefaultHeader = ({
                     <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
+                            is_landing_company_loaded={is_landing_company_loaded}
+                            is_logged_in={is_logged_in}
+                            is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
                         />
                     </DesktopWrapper>
@@ -173,7 +178,6 @@ const DefaultHeader = ({
                             ref={toggle_menu_drawer_ref}
                             should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
-                            can_have_whatsapp={can_have_whatsapp}
                             enableApp={enableApp}
                             disableApp={disableApp}
                             location={location}
@@ -194,6 +198,9 @@ const DefaultHeader = ({
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
                                     is_mobile
+                                    is_landing_company_loaded={is_landing_company_loaded}
+                                    is_logged_in={is_logged_in}
+                                    is_logging_in={is_logging_in}
                                     platform_config={filterPlatformsForClients(platform_config)}
                                     toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
                                 />
@@ -256,9 +263,9 @@ const DefaultHeader = ({
                     </div>
                 </div>
             </div>
-            {/* 
-                Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by 
-                removing the parent element from DOM 
+            {/*
+                Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by
+                removing the parent element from DOM
             */}
             {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
             <SetAccountCurrencyModal />
@@ -272,7 +279,6 @@ DefaultHeader.propTypes = {
     account_type: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
-    can_have_whatsapp: PropTypes.bool,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -287,7 +293,6 @@ DefaultHeader.propTypes = {
     is_bot_allowed: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -322,7 +327,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
-    can_have_whatsapp: client.can_have_whatsapp,
     account_type: client.account_type,
     should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -340,7 +344,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_bot_allowed: client.is_bot_allowed,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
-    is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
@@ -356,7 +359,7 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_risky_client: client.is_risky_client,
     logoutClient: client.logout,
     menu_items: menu.extensions,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
@@ -366,4 +369,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     active_account_landing_company: client.landing_company_shortcode,
+    is_landing_company_loaded: client.is_landing_company_loaded,
 }))(withRouter(DefaultHeader));

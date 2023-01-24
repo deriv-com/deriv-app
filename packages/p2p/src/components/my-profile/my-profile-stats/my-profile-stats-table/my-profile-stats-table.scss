@@ -20,7 +20,7 @@
         }
 
         & + & {
-            padding-left: 2.4rem;
+            padding: 0 2.4rem;
 
             @include mobile {
                 padding: 0.4rem 1.6rem;

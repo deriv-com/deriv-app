@@ -4,12 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile, routes } from '@deriv/shared';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -19,28 +14,48 @@ jest.mock('@deriv/shared', () => ({
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
 
 describe('<PaymentAgentReceipt />', () => {
-    const history = createBrowserHistory();
-    const props = {
-        currency: 'USD',
-        is_from_derivgo: false,
-        loginid: 'CR90000170',
-        receipt: {
-            amount_transferred: '20.00',
-            payment_agent_email: 'reshma+cr1@binary.com',
-            payment_agent_id: 'CR90000089',
-            payment_agent_name: 'Ms QA script reshmacrcdD',
-            payment_agent_phone: [{ phone_number: '+62417522087' }],
-            payment_agent_url: [{ url: 'https://deriv.com/' }],
-        },
-        resetPaymentAgent: jest.fn(),
+    let history, mockRootStore;
+
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                currency: 'USD',
+            },
+            common: {
+                is_from_derivgo: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent: {
+                        receipt: {
+                            amount_transferred: '20.00',
+                            payment_agent_email: 'reshma+cr1@binary.com',
+                            payment_agent_id: 'CR90000089',
+                            payment_agent_name: 'Ms QA script reshmacrcdD',
+                            payment_agent_phone: [{ phone_number: '+62417522087' }],
+                            payment_agent_url: [{ url: 'https://deriv.com/' }],
+                        },
+                        resetPaymentAgent: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        history = createBrowserHistory();
+    });
+
+    const renderPaymentAgentReceipt = () => {
+        return render(
+            <Router history={history}>
+                <StoreProvider store={mockRootStore}>
+                    <PaymentAgentReceipt />
+                </StoreProvider>
+            </Router>
+        );
     };
 
     it('should show the proper text/messages', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentReceipt {...props} />
-            </Router>
-        );
+        renderPaymentAgentReceipt();
 
         const [view_transactions_btn, make_a_new_withdrawal_btn] = screen.getAllByRole('button');
 
@@ -60,11 +75,7 @@ describe('<PaymentAgentReceipt />', () => {
     });
 
     it('should redirect to "/reports/statement" when the "View transactions" button is clicked', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentReceipt {...props} />
-            </Router>
-        );
+        renderPaymentAgentReceipt();
 
         const [view_transactions_btn] = screen.getAllByRole('button');
         fireEvent.click(view_transactions_btn);
@@ -72,35 +83,24 @@ describe('<PaymentAgentReceipt />', () => {
     });
 
     it('should trigger onClick callback when the "Make a new withdrawal" button is clicked', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentReceipt {...props} />
-            </Router>
-        );
+        renderPaymentAgentReceipt();
 
         const [_, make_a_new_withdrawal_btn] = screen.getAllByRole('button');
 
         fireEvent.click(make_a_new_withdrawal_btn);
-        expect(props.resetPaymentAgent).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.payment_agent.resetPaymentAgent).toHaveBeenCalledTimes(1);
     });
 
     it('should not show "View transactions" if is_from_derivgo equal to true', () => {
-        render(
-            <Router history={history}>
-                <PaymentAgentReceipt {...props} is_from_derivgo />
-            </Router>
-        );
+        mockRootStore.common.is_from_derivgo = true;
+        renderPaymentAgentReceipt();
 
         expect(screen.getAllByRole('button').length).toBe(1);
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
         isMobile.mockReturnValue(true);
-        render(
-            <Router history={history}>
-                <PaymentAgentReceipt {...props} />
-            </Router>
-        );
+        renderPaymentAgentReceipt();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();
     });

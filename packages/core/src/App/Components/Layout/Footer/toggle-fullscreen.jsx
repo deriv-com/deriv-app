@@ -41,7 +41,12 @@ const ToggleFullScreen = () => {
         'ic-fullscreen--active': is_full_screen,
     });
     return (
-        <a className={`${full_screen_icon_class} footer__link`} onClick={toggleFullScreen} id='dt_fullscreen_toggle'>
+        <a
+            data-testid='dt_fullscreen_toggle'
+            className={`${full_screen_icon_class} footer__link`}
+            onClick={toggleFullScreen}
+            id='dt_fullscreen_toggle'
+        >
             <Popover
                 alignment='top'
                 message={is_full_screen ? localize('Exit') : localize('Full screen')}
@@ -50,7 +55,7 @@ const ToggleFullScreen = () => {
                 {is_full_screen ? (
                     <Icon icon='IcFullScreenRestore' className='footer__icon' />
                 ) : (
-                    <Icon icon='IcFullScreen' className='footer__icon' />
+                    <Icon data_testid='dt_icon' icon='IcFullScreen' className='footer__icon' />
                 )}
             </Popover>
         </a>

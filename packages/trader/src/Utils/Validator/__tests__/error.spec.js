@@ -1,53 +1,44 @@
-import { expect } from 'chai';
 import Errors from '../errors';
 
-describe('Error', () => {
+describe('Errors', () => {
     let errors;
+
     beforeEach(() => {
         errors = new Errors();
         errors.add('Error', 100);
     });
 
-    describe('.add', () => {
-        it('should add error to errors', () => {
-            errors.add('Error', 101);
-            expect(errors.errors).to.have.property('Error').with.length(2);
-        });
-        it('should not add error if already existed', () => {
-            errors.add('Error', 100);
-            expect(errors.errors).to.have.property('Error').with.length(1);
-        });
+    it('should add a new error to the errors', () => {
+        errors.add('Error', 101);
+        expect(errors.errors['Error']).toHaveLength(2);
     });
 
-    describe('.all', () => {
-        it('should return all errors', () => {
-            expect(errors.all()).to.be.eql({
-                Error: [100],
-            });
-        });
+    it('should not add an error if already existed', () => {
+        errors.add('Error', 100);
+        expect(errors.errors['Error']).toHaveLength(1);
     });
 
-    describe('.first', () => {
-        it('should return first error if attribute exists', () => {
-            expect(errors.first('Error')).to.eql(100);
-        });
+    it('should return all errors', () => {
+        expect(errors.all()).toEqual({ Error: [100] });
     });
 
-    describe('.get', () => {
-        it('should return data if attribute exists', () => {
-            expect(errors.get('Error')).to.eql([100]);
-        });
-        it('should return [] if attribute does not exist', () => {
-            expect(errors.get('')).to.eql([]);
-        });
+    it('should return first error if attribute exists', () => {
+        expect(errors.first('Error')).toEqual(100);
     });
 
-    describe('.has', () => {
-        it('should return true if attribute exists', () => {
-            expect(errors.has('Error')).to.be.true;
-        });
-        it('should return false if attribute does not exists', () => {
-            expect(errors.has('')).to.be.false;
-        });
+    it('should return data if attribute exists', () => {
+        expect(errors.get('Error')).toEqual([100]);
+    });
+
+    it('should return an empty array if attribute does not exist', () => {
+        expect(errors.get('')).toEqual([]);
+    });
+
+    it('should return "true" if attribute exists', () => {
+        expect(errors.has('Error')).toBeTruthy();
+    });
+
+    it('should return "false" if the attribute does not exist', () => {
+        expect(errors.has('')).toBeFalsy();
     });
 });

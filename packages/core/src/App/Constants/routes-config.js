@@ -166,6 +166,11 @@ const getModules = ({ is_pre_appstore }) => {
                             component: Account,
                             getTitle: () => localize('Proof of address'),
                         },
+                        {
+                            path: routes.proof_of_ownership,
+                            component: Account,
+                            getTitle: () => localize('Proof of ownership'),
+                        },
                     ],
                 },
                 {
@@ -220,7 +225,7 @@ const getModules = ({ is_pre_appstore }) => {
             path: routes.trading_hub,
             component: AppStore,
             is_authenticated: true,
-            getTitle: () => localize('Trading hub'),
+            getTitle: () => localize('Traders Hub'),
         },
         {
             path: routes.onboarding,
@@ -231,7 +236,7 @@ const getModules = ({ is_pre_appstore }) => {
                 {
                     path: routes.trading_hub,
                     component: AppStore,
-                    getTitle: () => localize('Trading hub'),
+                    getTitle: () => localize('Traders Hub'),
                 },
                 {
                     path: routes.onboarding,

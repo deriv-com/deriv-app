@@ -1,15 +1,9 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
+import { StoreProvider } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
-import { StoreProvider } from '../../../hooks';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -34,12 +28,19 @@ describe('<AccountTransfer />', () => {
             client: {
                 is_switching: false,
                 is_virtual: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             ui: {
                 is_dark_mode_on: false,
             },
             modules: {
                 cashier: {
+                    deposit: { is_deposit_locked: true },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,

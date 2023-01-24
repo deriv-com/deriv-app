@@ -90,7 +90,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                 {!is_demo_tab && (
                     <div className='cfd-accounts-container__compare-accounts' onClick={toggleCompareAccountsModal}>
                         <Text weight='bold' size='xxs' color='red'>
-                            <Localize i18n_default_text='Compare accounts' />
+                            <Localize i18n_default_text={is_eu ? 'Account Information' : 'Compare accounts'} />
                         </Text>
                     </div>
                 )}
@@ -101,7 +101,7 @@ const CFDAccounts = ({ account_type }: TCFDAccountsProps) => {
                         i18n_default_text={
                             'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
                         }
-                        components={[<StaticUrl key={0} className='link' href='/dmt5' />]}
+                        components={[<StaticUrl key={0} className='link' href='/trade-types/cfds' />]}
                     />
                 </Text>
             </div>

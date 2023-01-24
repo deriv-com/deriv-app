@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import Deposit from '../deposit';
-import { StoreProvider } from '../../../hooks';
-import { TRootStore, DeepPartial } from '../../../types';
+import { TRootStore } from 'Types';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -49,6 +49,12 @@ describe('<Deposit />', () => {
     it('should render <Loading /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -67,7 +73,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -84,12 +89,12 @@ describe('<Deposit />', () => {
         };
 
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
-        rerender(<Deposit setSideNotes={jest.fn()} is_switching={false} is_loading iframe_url='' />);
+        rerender(<Deposit setSideNotes={jest.fn()} />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -97,6 +102,12 @@ describe('<Deposit />', () => {
     it('should render <Virtual /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -113,7 +124,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -129,7 +139,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
@@ -138,6 +148,12 @@ describe('<Deposit />', () => {
     it('should render <CashierLocked /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -154,7 +170,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -169,18 +184,16 @@ describe('<Deposit />', () => {
             },
         };
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(
-            <Deposit setSideNotes={jest.fn()} is_system_maintenance is_deposit_locked current_currency_type='crypto' />
-        );
+        rerender(<Deposit setSideNotes={jest.fn()} />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(<Deposit setSideNotes={jest.fn()} is_cashier_locked />);
+        rerender(<Deposit setSideNotes={jest.fn()} />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
@@ -188,6 +201,12 @@ describe('<Deposit />', () => {
     it('should render <FundsProtection /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -204,7 +223,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: true, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -220,7 +238,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('FundsProtection')).toBeInTheDocument();
@@ -229,6 +247,13 @@ describe('<Deposit />', () => {
     it('should render <DepositLocked /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'real',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+                is_deposit_lock: true,
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -245,7 +270,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: true,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -261,7 +285,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('DepositLocked')).toBeInTheDocument();
@@ -270,6 +294,12 @@ describe('<Deposit />', () => {
     it('should render <CryptoTransactionsHistory /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -286,7 +316,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -302,7 +331,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
@@ -311,6 +340,12 @@ describe('<Deposit />', () => {
     it('should render <Error /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -327,7 +362,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: 'error', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -343,7 +377,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Error')).toBeInTheDocument();
@@ -352,6 +386,12 @@ describe('<Deposit />', () => {
     it('should render <CryptoDeposit /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'BTC',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -368,7 +408,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -385,7 +424,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
@@ -394,6 +433,12 @@ describe('<Deposit />', () => {
     it('should render <Real /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -410,7 +455,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -426,7 +470,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
@@ -435,6 +479,12 @@ describe('<Deposit />', () => {
     it('should render <CashierOnboarding /> component', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'USD',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -451,7 +501,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -467,7 +516,7 @@ describe('<Deposit />', () => {
         };
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
@@ -476,6 +525,12 @@ describe('<Deposit />', () => {
     it('should trigger "setSideNotes" callback', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
                 currency: 'UST',
                 can_change_fiat_currency: false,
                 current_currency_type: 'fiat',
@@ -493,7 +548,6 @@ describe('<Deposit />', () => {
                     },
                     deposit: {
                         error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        is_deposit_locked: false,
                         onMountDeposit: jest.fn(),
                     },
                     general_store: {
@@ -512,7 +566,7 @@ describe('<Deposit />', () => {
         const setSideNotes = jest.fn();
 
         render(<Deposit setSideNotes={setSideNotes} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(setSideNotes).toHaveBeenCalledTimes(2);

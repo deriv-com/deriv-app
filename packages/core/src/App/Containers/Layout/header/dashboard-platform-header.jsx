@@ -1,14 +1,16 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useHistory, withRouter } from 'react-router-dom';
+
 import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
-import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
+import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
+import { useHistory, withRouter } from 'react-router-dom';
+
+import { BinaryLink } from 'App/Components/Routes';
+import PropTypes from 'prop-types';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import { BinaryLink } from 'App/Components/Routes';
+import platform_config from 'App/Constants/platform-config';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -96,7 +98,6 @@ const AccountBalance = ({ balance, currency }) => {
 
 const DashboardPlatformHeader = ({
     account_status,
-    can_have_whatsapp,
     app_routing_history,
     balance,
     currency,
@@ -140,7 +141,6 @@ const DashboardPlatformHeader = ({
                         ref={toggle_menu_drawer_ref}
                         should_allow_authentication={should_allow_authentication}
                         account_status={account_status}
-                        can_have_whatsapp={can_have_whatsapp}
                         enableApp={enableApp}
                         disableApp={disableApp}
                         location={location}
@@ -205,7 +205,6 @@ const DashboardPlatformHeader = ({
 
 DashboardPlatformHeader.propTypes = {
     account_status: PropTypes.object,
-    can_have_whatsapp: PropTypes.bool,
     app_routing_history: PropTypes.array,
     balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
@@ -235,7 +234,6 @@ DashboardPlatformHeader.propTypes = {
 
 export default connect(({ client, common, modules, notifications, ui }) => ({
     account_status: client.account_status,
-    can_have_whatsapp: client.can_have_whatsapp,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     currency: client.currency,
@@ -253,7 +251,7 @@ export default connect(({ client, common, modules, notifications, ui }) => ({
     is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
-    notifications_count: notifications.filtered_notifications.length,
+    notifications_count: notifications.notifications.length,
     setDarkMode: ui.setDarkMode,
     should_allow_authentication: client.should_allow_authentication,
     toggleNotifications: notifications.toggleNotificationsModal,

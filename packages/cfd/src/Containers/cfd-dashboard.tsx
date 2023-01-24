@@ -465,7 +465,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
-    if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
+    if (platform === CFD_PLATFORMS.DXTRADE) {
+        if (is_pre_appstore) return <Redirect to={routes.traders_hub} />;
+        else if (!is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
+    }
     if (platform === CFD_PLATFORMS.MT5 && is_pre_appstore) return <Redirect to={routes.traders_hub} />;
     if ((is_logged_in && !landing_companies) || is_loading) return <Loading />;
 

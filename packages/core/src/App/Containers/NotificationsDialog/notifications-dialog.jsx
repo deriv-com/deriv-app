@@ -15,7 +15,7 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { isEmptyObject, isMobile, toTitleCase, PlatformContext } from '@deriv/shared';
+import { isEmptyObject, isMobile, toTitleCase } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -117,48 +117,49 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
     );
 };
 
-const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
-    const is_empty = !notifications.length;
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+const NotificationListWrapper = React.forwardRef(
+    ({ notifications, toggleDialog, clearNotifications, is_pre_appstore }, ref) => {
+        const is_empty = !notifications.length;
 
-    return (
-        <div
-            className={classNames('notifications-dialog', {
-                'notifications-dialog--pre-appstore': is_pre_appstore,
-            })}
-            ref={ref}
-        >
-            <div className='notifications-dialog__header'>
-                <Text
-                    as='h2'
-                    className='notifications-dialog__header-text'
-                    size='s'
-                    weight='bold'
-                    color='prominent'
-                    styles={{
-                        lineHeight: '1.6rem',
-                    }}
-                >
-                    <Localize i18n_default_text='Notifications' />
-                </Text>
-            </div>
+        return (
             <div
-                className={classNames('notifications-dialog__content', {
-                    'notifications-dialog__content--empty': is_empty,
+                className={classNames('notifications-dialog', {
+                    'notifications-dialog--pre-appstore': is_pre_appstore,
                 })}
+                ref={ref}
             >
-                <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
-                    {is_empty ? (
-                        <EmptyNotification />
-                    ) : (
-                        <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
-                    )}
-                </ThemedScrollbars>
+                <div className='notifications-dialog__header'>
+                    <Text
+                        as='h2'
+                        className='notifications-dialog__header-text'
+                        size='s'
+                        weight='bold'
+                        color='prominent'
+                        styles={{
+                            lineHeight: '1.6rem',
+                        }}
+                    >
+                        <Localize i18n_default_text='Notifications' />
+                    </Text>
+                </div>
+                <div
+                    className={classNames('notifications-dialog__content', {
+                        'notifications-dialog__content--empty': is_empty,
+                    })}
+                >
+                    <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
+                        {is_empty ? (
+                            <EmptyNotification />
+                        ) : (
+                            <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
+                        )}
+                    </ThemedScrollbars>
+                </div>
+                <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
             </div>
-            <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
-        </div>
-    );
-});
+        );
+    }
+);
 
 NotificationListWrapper.displayName = 'NotificationListWrapper';
 

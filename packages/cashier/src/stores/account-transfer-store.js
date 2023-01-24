@@ -12,6 +12,7 @@ import {
     getPropertyValue,
     validNumber,
     CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import Constants from '../constants/constants';
@@ -388,6 +389,9 @@ export default class AccountTransferStore {
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
+        const is_from_pre_appstore =
+            this.root_store.client.is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+
         accounts.forEach(account => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
@@ -435,13 +439,17 @@ export default class AccountTransferStore {
                 x => x.login === account.login
             );
 
+            const short_code_and_region = combined_cfd_mt5_account?.short_code_and_region
+                ? ` ${combined_cfd_mt5_account?.short_code_and_region}`
+                : '';
+
             const obj_values = {
                 text:
                     is_cfd &&
                     account.account_type === CFD_PLATFORMS.MT5 &&
                     this.root_store.client.is_pre_appstore &&
                     combined_cfd_mt5_account
-                        ? `${combined_cfd_mt5_account.sub_title} ${combined_cfd_mt5_account.short_code_and_region}`
+                        ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
                 balance: account.balance,
@@ -454,10 +462,8 @@ export default class AccountTransferStore {
                     platform_icon:
                         account.account_type === CFD_PLATFORMS.MT5 &&
                         this.root_store.client.is_pre_appstore &&
-                        this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
-                            ? this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
-                                  x => x.login === account.login
-                              ).icon
+                        combined_cfd_mt5_account
+                            ? combined_cfd_mt5_account.icon
                             : cfd_icon_display,
                     status: account?.status,
                     market_type: getCFDAccount({
@@ -482,8 +488,14 @@ export default class AccountTransferStore {
                     // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);
                 }
-                // set the first available account as the default transfer to account
-                this.setSelectedTo(obj_values);
+
+                const { account_id, login } = this.root_store.traders_hub?.selected_account;
+
+                //if from appstore -> set selected account as the default transfer to account
+                //if not from appstore -> set the first available account as the default transfer to account
+                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
+                    this.setSelectedTo(obj_values);
+                }
             }
             arr_accounts.push(obj_values);
         });
@@ -546,10 +558,9 @@ export default class AccountTransferStore {
             // not allowed to transfer from MT to MT
             // not allowed to transfer from Dxtrade to Dxtrade
             // not allowed to transfer between MT and Dxtrade
-            const first_non_cfd = this.accounts_list.find(
-                account => !account.is_mt && !account.is_dxtrade && !account.is_derivez
-            );
-            this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
+            // if new value of selected_from is different from selected_to
+            // switch the value of selected_to to current client loginid
+            this.onChangeTransferTo({ target: { value: this.root_store.client.loginid } });
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {

@@ -491,9 +491,7 @@ export default class AccountTransferStore {
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_pre_appstore) {
-                    this.setSelectedTo(obj_values);
-                } else if ([account_id, login].includes(account.loginid)) {
+                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
                     this.setSelectedTo(obj_values);
                 }
             }

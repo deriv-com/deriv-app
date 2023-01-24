@@ -70,6 +70,8 @@ const CFDsListing = () => {
 
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
 
+    const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
+
     const AddDerivAccount = () => {
         if (is_real) {
             if (no_CR_account && !is_eu_user) {
@@ -153,7 +155,7 @@ const CFDsListing = () => {
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
-                                        if ((has_no_real_account && is_real) || no_real_mf_account_eu_regulator) {
+                                        if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
                                             setAccountType({

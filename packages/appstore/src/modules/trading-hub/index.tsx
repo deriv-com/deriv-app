@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { platform_config, mf_platform_config } from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
-import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
+import { Text, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
@@ -30,6 +30,7 @@ import CFDAccounts from 'Components/CFDs';
 import OptionsAccounts from 'Components/options';
 import TotalAssets from 'Components/total-assets';
 import Divider from 'Components/elements/divider';
+import SpanButton from 'Components/elements/span-button';
 import { TAccountCategory } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './trading-hub.scss';
@@ -165,7 +166,7 @@ const TradingHub: React.FC = () => {
     );
 
     tour_step_locale.back = (
-        <Button
+        <SpanButton
             has_effect
             text={localize('Repeat tour')}
             secondary

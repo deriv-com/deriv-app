@@ -203,6 +203,7 @@ const TradingHubHeader = ({
                         <TradingHubOnboarding
                             is_dark_mode={is_dark_mode}
                             toggleIsTourOpen={toggleIsTourOpen}
+                            setIsOnboardingVisited={setIsOnboardingVisited}
                             is_mf={is_mf}
                             is_eu={is_eu}
                             is_eu_country={is_eu_country}

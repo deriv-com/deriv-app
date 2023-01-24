@@ -10,6 +10,7 @@ export default class TradingHubStore extends BaseStore {
         makeObservable(this, {
             is_tour_open: observable,
             toggleIsTourOpen: action.bound,
+            setIsOnboardingVisited: action.bound,
         });
     }
     toggleIsTourOpen(is_tour_open) {

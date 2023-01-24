@@ -142,7 +142,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
-    prev_account_type = 'real';
+    prev_account_type = 'demo';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];

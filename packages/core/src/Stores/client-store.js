@@ -1,37 +1,39 @@
+import * as SocketCache from '_common/base/socket_cache';
+
 import {
+    CFD_PLATFORMS,
+    LocalStore,
+    State,
+    deriv_urls,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
-    LocalStore,
-    redirectToLogin,
-    setCurrencies,
-    State,
-    toMoment,
-    deriv_urls,
-    urlForLanguage,
-    filterUrlQuery,
-    CFD_PLATFORMS,
-    routes,
-    isTestLink,
-    isProduction,
     isLocal,
+    isProduction,
     isStaging,
+    isTestLink,
+    redirectToLogin,
+    routes,
+    setCurrencies,
+    toMoment,
+    urlForLanguage,
 } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable } from 'mobx';
-import moment from 'moment';
-import { requestLogout, WS } from 'Services';
-import BinarySocketGeneral from 'Services/socket-general';
-import BinarySocket from '_common/base/socket_base';
-import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
-import BaseStore from './base-store';
+import { WS, requestLogout } from 'Services';
+import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
-import { setDeviceDataCookie } from './Helpers/device';
+import { getLanguage, localize } from '@deriv/translations';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import BinarySocketGeneral from 'Services/socket-general';
+import Cookies from 'js-cookie';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import moment from 'moment';
+import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -1607,8 +1609,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responseLandingCompany(response) {
-        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
     }

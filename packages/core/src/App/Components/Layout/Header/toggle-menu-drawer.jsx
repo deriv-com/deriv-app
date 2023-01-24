@@ -137,8 +137,8 @@ const ToggleMenuDrawer = React.forwardRef(
         ref
     ) => {
         const liveChat = useLiveChat();
-        const { is_appstore } = React.useContext(PlatformContext);
         const [is_open, setIsOpen] = React.useState(false);
+        const { is_appstore } = React.useContext(PlatformContext);
         const [transitionExit, setTransitionExit] = React.useState(false);
         const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);

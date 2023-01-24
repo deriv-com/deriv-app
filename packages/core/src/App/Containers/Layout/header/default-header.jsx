@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { getDecimalPlaces, getPlatformInformation, isMobile, platforms, routes } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
+import { getDecimalPlaces, getPlatformInformation, isMobile, platforms, routes } from '@deriv/shared';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
@@ -14,6 +13,7 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
 import platform_config from 'App/Constants/platform-config';
+import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,

@@ -16,14 +16,12 @@ type TLanguageSettings = {
     changeCurrentLanguage: TchangeCurrentLanguage;
     changeLanguage: (lang: string, changeCurrentLanguage: TchangeCurrentLanguage) => Promise<void>;
     isCurrentLanguage: (lang: string) => boolean;
-    toggleSettingsModal: () => void;
 };
 
 const LanguageSettings = ({
     changeCurrentLanguage,
     changeLanguage,
     current_language,
-    toggleSettingsModal,
     isCurrentLanguage,
 }: TLanguageSettings) => {
     const { i18n } = useTranslation();
@@ -36,7 +34,6 @@ const LanguageSettings = ({
                 const { language_code } = values;
                 await changeLanguage(language_code, changeCurrentLanguage);
                 await i18n.changeLanguage?.(language_code);
-                toggleSettingsModal();
             }}
         >
             {({ handleSubmit, setFieldValue, values }: FormikHandlers & FormikHelpers<FormikValues> & FormikValues) => {
@@ -85,7 +82,6 @@ const LanguageSettings = ({
 export default connect(({ common, ui }: TCoreStore) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
     current_language: common.current_language,
-    toggleSettingsModal: ui.toggleSettingsModal,
     changeLanguage: common.changeLanguage,
     isCurrentLanguage: common.isCurrentLanguage,
 }))(LanguageSettings);

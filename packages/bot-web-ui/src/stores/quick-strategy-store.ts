@@ -165,7 +165,6 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_symbol = symbol;
         this.selected_symbol = symbol;
         delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.input_duration_value;
         delete this.qs_cache.selected_trade_type;
     }
 
@@ -173,7 +172,6 @@ export default class QuickStrategyStore {
         this.qs_cache.selected_trade_type = trade_type;
         this.selected_trade_type = trade_type;
         delete this.qs_cache.selected_duration_unit;
-        delete this.qs_cache.input_duration_value;
     }
 
     setDurationInputValue(duration_value: string | number): void {
@@ -459,8 +457,10 @@ export default class QuickStrategyStore {
         }));
         this.setDurationUnitDropdown(duration_options);
         let first_duration_unit: TDurationOptions = duration_options[0];
-        if (this.selected_duration_unit && duration_options.some(e => e.value === this.selected_duration_unit.value)) {
-            first_duration_unit = this.selected_duration_unit;
+        if (this.selected_duration_unit && duration_options?.some(e => e.value === this.selected_duration_unit.value)) {
+            first_duration_unit =
+                duration_options?.find(e => e.value === this.selected_duration_unit.value) ||
+                this.selected_duration_unit;
             runInAction(() => {
                 first_duration_unit.text = this.getFieldValue(duration_options, this.selected_duration_unit.value);
             });
@@ -469,7 +469,10 @@ export default class QuickStrategyStore {
         }
         if (first_duration_unit) {
             this.setSelectedDurationUnit(first_duration_unit);
-            this.updateDurationValue(this.selected_duration_unit.value, setFieldValue);
+            this.updateDurationValue(
+                this.qs_cache?.selected_duration_unit?.value || this.selected_duration_unit.value,
+                setFieldValue
+            );
 
             if (setFieldValue) {
                 setFieldValue('quick-strategy__duration-unit', first_duration_unit.text);
@@ -483,7 +486,7 @@ export default class QuickStrategyStore {
         const min_duration = (durations as TDurations).find(duration => duration.unit === duration_type);
         if (min_duration) {
             let duration_input_value: number | string = min_duration.min;
-            const cache_unit = this.qs_cache.input_duration_value;
+            const cache_unit = this.qs_cache?.input_duration_value;
             if (cache_unit && cache_unit < min_duration.max && cache_unit > min_duration.min) {
                 duration_input_value = cache_unit;
             } else {

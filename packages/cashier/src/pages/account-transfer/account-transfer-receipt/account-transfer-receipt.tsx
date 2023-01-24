@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
@@ -36,14 +37,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
-
-    const selcted_from_platform_icon =
-        is_pre_appstore && selected_from.is_mt
-            ? `IcAppstore${selected_from.platform_icon}`
-            : selected_from.platform_icon;
-
-    const selcted_to_platform_icon =
-        is_pre_appstore && selected_to.is_mt ? `IcAppstore${selected_to.platform_icon}` : selected_to.platform_icon;
 
     React.useEffect(() => {
         return () => {
@@ -108,10 +101,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
-                        <Icon
-                            icon={selcted_from_platform_icon || `IcCurrency-${selected_from?.currency?.toLowerCase()}`}
-                            size={32}
-                        />
+                        <AccountPlatformIcon account={selected_from} is_pre_appstore={is_pre_appstore} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
@@ -125,10 +115,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
-                        <Icon
-                            icon={selcted_to_platform_icon || `IcCurrency-${selected_to?.currency?.toLowerCase()}`}
-                            size={32}
-                        />
+                        <AccountPlatformIcon account={selected_to} is_pre_appstore={is_pre_appstore} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>

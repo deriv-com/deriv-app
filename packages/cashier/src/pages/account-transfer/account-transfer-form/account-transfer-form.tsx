@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -20,6 +20,7 @@ import PercentageSelector from '../../../components/percentage-selector';
 import RecentTransaction from '../../../components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from '../../../components/side-note';
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -30,17 +31,11 @@ type TAccountTransferFormProps = {
 };
 
 const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
-    const account_platform_icon =
-        is_pre_appstore && account.is_mt ? `IcAppstore${account.platform_icon}` : account.platform_icon;
-
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
-                    <Icon
-                        icon={account_platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
-                        className='account-transfer-form__currency-icon'
-                    />
+                    <AccountPlatformIcon account={account} is_pre_appstore={is_pre_appstore} size={16} />
                 </div>
             )}
 
@@ -85,7 +80,6 @@ const AccountTransferForm = observer(
             client,
             common: { is_from_derivgo },
             modules: { cashier },
-            traders_hub,
         } = useStore();
 
         const {

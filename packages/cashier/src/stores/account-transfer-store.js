@@ -454,10 +454,8 @@ export default class AccountTransferStore {
                     platform_icon:
                         account.account_type === CFD_PLATFORMS.MT5 &&
                         this.root_store.client.is_pre_appstore &&
-                        this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(x => x.login === account.login)
-                            ? this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
-                                  x => x.login === account.login
-                              ).icon
+                        combined_cfd_mt5_account
+                            ? combined_cfd_mt5_account.icon
                             : cfd_icon_display,
                     status: account?.status,
                     market_type: getCFDAccount({

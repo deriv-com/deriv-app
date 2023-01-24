@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from 'Types';
@@ -9,8 +9,6 @@ export default class DepositStore {
             container: observable,
             error: observable,
             onMountDeposit: action.bound,
-            is_deposit_locked: computed,
-            submitFundsProtection: action.bound,
         });
 
         this.root_store = root_store;
@@ -82,60 +80,5 @@ export default class DepositStore {
         }
 
         setLoading(false);
-    }
-
-    get is_deposit_locked(): boolean {
-        const {
-            account_status,
-            is_authentication_needed,
-            is_financial_account,
-            is_financial_information_incomplete,
-            is_deposit_lock,
-            is_eu,
-            is_tnc_needed,
-            is_trading_experience_incomplete,
-            landing_company_shortcode,
-            mt5_login_list,
-        } = this.root_store.client;
-        if (!account_status?.status) return false;
-
-        const need_authentication = this.error.is_ask_authentication || (is_authentication_needed && is_eu);
-        const need_financial_assessment =
-            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
-        // CR can deposit without accepting latest tnc except those with Financial STP
-        const need_tnc =
-            (is_eu ||
-                mt5_login_list.some(
-                    item => item.account_type === 'real' && item.sub_account_type === 'financial_stp'
-                )) &&
-            is_tnc_needed;
-
-        if (landing_company_shortcode === 'maltainvest') {
-            return (
-                is_deposit_lock ||
-                need_authentication ||
-                need_tnc ||
-                is_trading_experience_incomplete ||
-                this.error.is_ask_financial_risk_approval
-            );
-        }
-
-        return (
-            is_deposit_lock ||
-            need_authentication ||
-            need_tnc ||
-            need_financial_assessment ||
-            this.error.is_ask_financial_risk_approval
-        );
-    }
-
-    submitFundsProtection(): void {
-        this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
-            if (response.error) {
-                this.error.setMessage(response.error.message);
-            } else {
-                location.reload();
-            }
-        });
     }
 }

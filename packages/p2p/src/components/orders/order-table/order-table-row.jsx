@@ -94,6 +94,9 @@ const OrderRow = ({ row: order }) => {
                     order_store.setRatingValue(0);
                     general_store.props.removeNotificationMessage({ key: `order-${id}` });
                     general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    order_store.setIsLoading(true);
+                    order_store.setOrders([]);
+                    order_store.loadMoreOrders({ startIndex: 0 });
                 },
                 onClickSkip: () => {
                     order_store.setRatingValue(0);

@@ -30,7 +30,7 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
-    const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
     const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
@@ -83,6 +83,7 @@ const CreateAdForm = () => {
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
             my_ads_store.setShowAdForm(false);
+            buy_sell_store.setCreateSellAdFromNoAds(false);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,7 +113,7 @@ const CreateAdForm = () => {
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
                     rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
-                    type: buy_sell.BUY,
+                    type: buy_sell_store.create_sell_ad_from_no_ads ? buy_sell.SELL : buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
                 validate={my_ads_store.validateCreateAdForm}

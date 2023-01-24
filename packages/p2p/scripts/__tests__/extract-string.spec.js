@@ -111,7 +111,6 @@ describe('Integration checks', () => {
                 console.log(e);
             }
         }
-
         /* eslint-disable-next-line no-unused-expressions */
         expect(Object.keys(errors)).toHaveLength(0);
     });

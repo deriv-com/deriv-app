@@ -4,11 +4,11 @@ import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deri
 import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
-import Empty from 'Components/empty/empty.jsx';
+import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
+import NoAds from './no-ads/no-ads.jsx';
 
 const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();
@@ -122,7 +122,7 @@ const BuySellTable = ({ onScroll }) => {
         );
     }
 
-    return <Empty className='buy-sell__empty' has_tabs icon='IcCashierNoAds' title={localize('There are no ads.')} />;
+    return <NoAds />;
 };
 
 BuySellTable.displayName = 'BuySellTable';

@@ -142,6 +142,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    prev_account_type = 'real';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -204,6 +205,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -379,6 +381,7 @@ export default class ClientStore extends BaseStore {
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
+            setPrevAccountType: action.bound,
         });
 
         reaction(
@@ -2545,6 +2548,10 @@ export default class ClientStore extends BaseStore {
 
     setPrevRealAccountLoginid = logind => {
         this.prev_real_account_loginid = logind;
+    };
+
+    setPrevAccountType = acc_type => {
+        this.prev_account_type = acc_type;
     };
 
     setIsPreAppStore(is_pre_appstore) {

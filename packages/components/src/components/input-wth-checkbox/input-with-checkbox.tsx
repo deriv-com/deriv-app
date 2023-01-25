@@ -3,7 +3,7 @@ import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
 import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
-
+//Added position type
 type Position = 'left' | 'right' | 'top' | 'bottom';
 
 type InputWithCheckboxProps = {

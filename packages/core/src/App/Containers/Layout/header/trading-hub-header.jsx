@@ -83,7 +83,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
         </div>
     );
 };
-const MemoizedMenuLinks = React.memo(MenuLinks);
+
 const TradingHubHeader = ({
     loginid,
     is_eu,
@@ -96,8 +96,6 @@ const TradingHubHeader = ({
     is_notifications_visible,
     notifications_count,
     toggleNotifications,
-    replaceCashierMenuOnclick,
-    menu_items,
     toggleIsTourOpen,
 }) => {
     const is_mf = loginid?.startsWith('MF');
@@ -109,7 +107,6 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
-    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     return (
         <header className='trading-hub-header'>
@@ -127,8 +124,7 @@ const TradingHubHeader = ({
                     <DerivBrandLogo className='trading-hub-header__logo' />
                 )}
                 <Divider />
-                {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} is_pre_appstore={is_pre_appstore} />
+                <MenuLinks />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -206,14 +202,12 @@ TradingHubHeader.propTypes = {
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
-    menu_items: PropTypes.array,
-    replaceCashierMenuOnclick: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     is_eu: PropTypes.bool,
     is_eu_country: PropTypes.bool,
 };
 
-export default connect(({ client, modules, notifications, ui, menu, tradinghub }) => ({
+export default connect(({ client, notifications, ui, tradinghub }) => ({
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     header_extension: ui.header_extension,
@@ -223,8 +217,6 @@ export default connect(({ client, modules, notifications, ui, menu, tradinghub }
     is_notifications_visible: notifications.is_notifications_visible,
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
-    menu_items: menu.extensions,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     toggleIsTourOpen: tradinghub.toggleIsTourOpen,
     setIsOnboardingVisited: tradinghub.setIsOnboardingVisited,
     loginid: client.loginid,

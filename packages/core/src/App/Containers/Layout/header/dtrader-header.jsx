@@ -56,7 +56,7 @@ const RedirectToOldInterface = () => {
         </div>
     );
 };
-const MemoizedMenuLinks = React.memo(MenuLinks);
+
 const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_type,
@@ -82,11 +82,9 @@ const DTraderHeader = ({
     is_notifications_visible,
     is_route_modal_on,
     is_virtual,
-    menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
-    replaceCashierMenuOnclick,
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
@@ -147,8 +145,7 @@ const DTraderHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MenuLinks />
                 </div>
 
                 <div
@@ -232,15 +229,13 @@ DTraderHeader.propTypes = {
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
-    replaceCashierMenuOnclick: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    menu_items: PropTypes.array,
 };
 
-export default connect(({ client, common, ui, menu, modules, notifications }) => ({
+export default connect(({ client, common, ui, notifications }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -265,10 +260,8 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,

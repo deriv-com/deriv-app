@@ -4,7 +4,7 @@ import { toMoment } from '@deriv/shared';
 import { CommonPropTypes } from './types';
 import { getCentury, getDecade } from '../helpers';
 
-const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }) => {
+const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }: CommonPropTypes) => {
     const moment_selected = toMoment(selected_date);
     const moment_date = toMoment(calendar_date);
     const start_year = getCentury(moment_date).split('-')[0];
@@ -22,8 +22,8 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
                 const [start_of_decade, end_of_decade] = decade.split('-');
                 const is_active = +start_of_decade === moment_selected.year();
                 const is_disabled =
-                    isPeriodDisabled(moment_date.clone().year(start_of_decade), 'year') &&
-                    isPeriodDisabled(moment_date.clone().year(end_of_decade), 'year');
+                    isPeriodDisabled(moment_date.clone().year(+start_of_decade), 'year') &&
+                    isPeriodDisabled(moment_date.clone().year(+end_of_decade), 'year');
                 const is_other_century = idx === 0 || idx === 11;
                 return (
                     <span
@@ -33,7 +33,7 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
                             'dc-calendar__cell--disabled': is_disabled,
                             'dc-calendar__cell--other': is_other_century,
                         })}
-                        onClick={is_disabled ? undefined : e => updateSelected(e, 'decade')}
+                        onClick={is_disabled ? undefined : e => updateSelected(e, 'year')}
                         data-decade={decade}
                     >
                         {decade}
@@ -43,7 +43,5 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
         </div>
     );
 };
-
-Decades.propTypes = { ...CommonPropTypes };
 
 export default Decades;

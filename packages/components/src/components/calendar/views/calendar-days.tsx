@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
     addDays,
@@ -11,33 +10,47 @@ import {
     toMoment,
     padLeft,
 } from '@deriv/shared';
-
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
 import Text from '../../text';
+
+type TDaysProps = CommonPropTypes & {
+    date_format: string;
+    has_range_selection: boolean;
+    events?: Array<{
+        dates: string[];
+        descrip: string;
+    }>;
+    onMouseLeave: React.MouseEventHandler<HTMLSpanElement> | undefined;
+    onMouseOver: React.MouseEventHandler<HTMLSpanElement> | undefined;
+    start_date: string;
+    disabled_days?: number[];
+    should_show_today: boolean;
+    hide_others?: boolean;
+};
 
 const getDays = ({
     calendar_date,
     date_format,
     has_range_selection,
     hide_others,
-    events,
+    events = [],
     isPeriodDisabled,
     start_date,
     selected_date,
     updateSelected,
-    disabled_days,
+    disabled_days = [],
     onMouseOver,
     onMouseLeave,
     should_show_today = true,
-}) => {
+}: TDaysProps) => {
     // adjust Calendar week by 1 day so that Calendar week starts on Monday
     // change to zero to set Calendar week to start on Sunday
     const day_offset = 1;
 
     const dates = [];
-    const days = [];
+    const days: JSX.Element[] = [];
     const moment_today = toMoment().startOf('day');
     const moment_cur_date = toMoment(calendar_date);
     const num_of_days = moment_cur_date.daysInMonth() + 1;
@@ -55,14 +68,14 @@ const getDays = ({
     }
     // populate current months' dates
     for (let idx = 1; idx < num_of_days; idx += 1) {
-        dates.push(moment_cur_date.clone().format(date_format.replace('DD', padLeft(idx, 2, '0'))));
+        dates.push(moment_cur_date.clone().format(date_format.replace('DD', padLeft(idx.toString(), 2, '0'))));
     }
     // populate next months' dates
     const start_of_next_month = addMonths(moment_cur_date, 1).startOf('month').day();
     if (start_of_next_month - day_offset > 0 || dates.length <= 28) {
         // if start_of_next_month doesn't falls on Monday, append rest of the week
         for (let i = 1; i <= 7 - start_of_next_month + day_offset; i++) {
-            dates.push(addDays(moment_month_end, i, 'day').format(date_format));
+            dates.push(addDays(moment_month_end, i).format(date_format));
         }
     } else if (!start_of_next_month) {
         // if start_of_next_month falls on Sunday, append 1 day
@@ -126,7 +139,7 @@ const getDays = ({
                         icon='dot'
                         is_bubble_hover_enabled
                         message={message}
-                        zIndex={9999}
+                        zIndex={'9999'}
                         should_show_cursor
                     />
                 )}
@@ -138,7 +151,7 @@ const getDays = ({
     return days;
 };
 
-const Days = props => {
+const Days = (props: TDaysProps) => {
     const days = getDays(props).map(day => day);
 
     return (
@@ -151,27 +164,6 @@ const Days = props => {
             {days}
         </div>
     );
-};
-
-Days.defaultProps = {
-    events: [],
-    disabled_days: [],
-};
-
-Days.propTypes = {
-    ...CommonPropTypes,
-    date_format: PropTypes.string,
-    has_range_selection: PropTypes.bool,
-    events: PropTypes.arrayOf(
-        PropTypes.shape({
-            dates: PropTypes.array,
-            descrip: PropTypes.string,
-        })
-    ),
-    onMouseLeave: PropTypes.func,
-    onMouseOver: PropTypes.func,
-    start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    disabled_days: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Days;

@@ -1,4 +1,4 @@
-import Calendar from './calendar.jsx';
+import Calendar from './calendar';
 import './calendar.scss';
 
 export default Calendar;

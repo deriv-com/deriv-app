@@ -1,9 +1,28 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 
-const Button = ({ children, className, is_disabled, is_hidden, icon, label, onClick }) => (
+type TButtonProps = {
+    className?: string;
+    icon?: string;
+    is_disabled?: boolean;
+    is_hidden?: boolean;
+    label?: string;
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
+    secondary?: boolean;
+    small?: boolean;
+    text?: string;
+};
+
+const Button = ({
+    children,
+    className,
+    is_disabled,
+    is_hidden,
+    icon,
+    label,
+    onClick,
+}: React.PropsWithChildren<TButtonProps>) => (
     <>
         {!is_hidden && (
             <span
@@ -22,15 +41,5 @@ const Button = ({ children, className, is_disabled, is_hidden, icon, label, onCl
         )}
     </>
 );
-
-Button.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string]),
-    className: PropTypes.string,
-    icon: PropTypes.string,
-    is_disabled: PropTypes.bool,
-    is_hidden: PropTypes.bool,
-    label: PropTypes.string,
-    onClick: PropTypes.func,
-};
 
 export default Button;

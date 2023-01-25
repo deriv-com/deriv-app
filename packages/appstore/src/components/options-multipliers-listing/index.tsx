@@ -22,7 +22,9 @@ const OptionsAndMultipliersListing = () => {
         is_demo,
         content_flag,
     } = traders_hub;
-    const { is_landing_company_loaded, is_eu, has_maltainvest_account } = client;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
+
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -86,9 +88,13 @@ const OptionsAndMultipliersListing = () => {
                         icon='Options'
                         onAction={() => {
                             if (no_MF_account) {
-                                ui.openRealAccountSignup('maltainvest');
+                                if (real_account_creation_unlock_date) {
+                                    setShouldShowCooldownModal(true);
+                                } else {
+                                    openRealAccountSignup('maltainvest');
+                                }
                             } else {
-                                ui.openRealAccountSignup();
+                                openRealAccountSignup();
                             }
                         }}
                     />

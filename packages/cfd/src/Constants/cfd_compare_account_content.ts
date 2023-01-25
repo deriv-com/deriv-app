@@ -179,6 +179,10 @@ export const eu_real_footer_button: TCompareAccountFooterButtonData[] = [
     { label: localize('Add'), action: 'financial_maltainvest' },
 ];
 
+export const eu_demo_footer_button: TCompareAccountFooterButtonData[] = [
+    { label: localize('Add'), action: 'financial_maltainvest' },
+];
+
 export const preappstore_cr_demo_content: TCompareAccountContentProps[] = [
     {
         id: 'platform',

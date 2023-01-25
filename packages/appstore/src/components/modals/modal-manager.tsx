@@ -27,7 +27,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 const ModalManager = () => {
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
+    const { is_logged_in, is_eu, is_eu_country, has_active_real_account, real_account_creation_unlock_date } = client;
     const { platform } = common;
     const {
         current_list,
@@ -48,6 +48,7 @@ const ModalManager = () => {
         is_top_up_virtual_success,
         closeTopUpModal,
         closeSuccessTopUpModal,
+        setShouldShowCooldownModal,
     } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
@@ -157,6 +158,8 @@ const ModalManager = () => {
                 is_demo_tab={is_demo}
                 openPasswordModal={openRealPasswordModal}
                 is_real_enabled={has_active_real_account || !is_demo}
+                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                setShouldShowCooldownModal={setShouldShowCooldownModal}
             />
             <AccountTransferModal
                 is_modal_open={is_account_transfer_modal_open}

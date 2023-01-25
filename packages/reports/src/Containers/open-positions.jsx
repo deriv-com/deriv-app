@@ -312,11 +312,11 @@ const OpenPositions = ({
 }) => {
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [trade_type_value, setTradeTypeValue] = React.useState('Options');
+    const [contract_type_value, setContractTypeValue] = React.useState('Options');
     const previous_active_positions = usePrevious(active_positions);
-    const trade_types = [
+    const contract_types = [
         {
-            text: 'Options',
+            text: localize('Options'),
             value: 'Options',
         },
         {
@@ -358,7 +358,7 @@ const OpenPositions = ({
 
     if (error) return <p>{error}</p>;
 
-    const is_multiplier_selected = has_multiplier_contract && trade_type_value === 'Multipliers';
+    const is_multiplier_selected = has_multiplier_contract && contract_type_value === 'Multipliers';
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
@@ -408,31 +408,31 @@ const OpenPositions = ({
     };
 
     const handleChange = e => {
-        setTradeTypeValue(e.target.value);
+        setContractTypeValue(e.target.value);
     };
 
     return (
         <React.Fragment>
             <NotificationMessages />
             <DesktopWrapper>
-                <div className='trade-types-container'>
+                <div className='contract-types-container'>
                     <Dropdown
                         is_align_text_left
-                        name='trade_types'
-                        list={trade_types}
-                        value={trade_type_value}
+                        name='contract_types'
+                        list={contract_types}
+                        value={contract_type_value}
                         onChange={handleChange}
                     />
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
                 <SelectNative
-                    className='reports__trade-types-selection'
-                    list_items={trade_types.map(option => ({
+                    className='reports__contract-types-selection'
+                    list_items={contract_types.map(option => ({
                         text: option.text,
                         value: option.value,
                     }))}
-                    value={trade_type_value}
+                    value={contract_type_value}
                     should_show_empty_option={false}
                     onChange={handleChange}
                 />

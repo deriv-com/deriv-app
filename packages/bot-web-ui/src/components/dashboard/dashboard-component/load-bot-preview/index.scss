@@ -157,9 +157,6 @@
             @include mobile {
                 overflow: auto;
                 height: calc(100vh - 35rem);
-                @media (min-height: 450px) and (max-height: 750px) {
-                    height: calc(100vh - 37rem);
-                }
             }
 
             &__list {

@@ -119,7 +119,7 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
 
 const NotificationListWrapper = React.forwardRef(
     ({ notifications, toggleDialog, clearNotifications, is_pre_appstore }, ref) => {
-        const is_empty = !notifications.length;
+        const is_empty = !notifications?.length;
 
         return (
             <div

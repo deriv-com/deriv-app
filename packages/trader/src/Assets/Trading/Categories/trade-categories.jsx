@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 
@@ -435,17 +435,17 @@ const TradeCategories = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                "If you select “Call”, you will earn a payout if the market price is higher than the strike price at the expiry time. Your payout will grow proportionally according to the distance between the market and strike prices. There won't be a payout if the market price is below the strike price at the expiry time."
+                                'If you select “Call”, you will get a payout if the market price is higher than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or below the strike price at the expiry time, there won’t be a payout.'
                             )}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                "If you select “Put”, you will earn a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally according to the distance between the market and strike prices. There won't be a payout if the market price is above the strike price at the expiry time."
+                                'If you select “Put”, you will get a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or above the strike price at the expiry time, there won’t be a payout.'
                             )}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'You will earn a profit if the payout is higher than your stake. You can determine the expiry for your contract by setting the duration or end time.'
+                                'You can determine the expiry of your contract by setting the duration or end time.'
                             )}
                         </Text>
                     </React.Fragment>

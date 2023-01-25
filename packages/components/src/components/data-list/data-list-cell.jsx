@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { isVanillaContract } from '@deriv/shared';
 
 const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
@@ -11,7 +11,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
         <div className={classNames(className, column.col_index)}>
             {!is_footer && (
                 <div className={classNames(`${column.col_index}__row-title`, 'data-list__row-title')}>
-                    {column.renderHeader ? column.renderHeader(title, is_vanilla) : title}
+                    {column.renderHeader ? column.renderHeader({ title }) : title}
                 </div>
             )}
             <div className='data-list__row-content'>

@@ -291,7 +291,7 @@ describe('OnRampStore', () => {
 
     it('should set selected provider', () => {
         const spyPollApiForDepositAddress = jest.spyOn(onramp_store, 'pollApiForDepositAddress');
-        const provider = OnRampProviders.createChangellyProvider(onramp_store);
+        const provider = OnRampProviders.createBanxaProvider(onramp_store);
         onramp_store.setSelectedProvider(provider);
         expect(onramp_store.selected_provider).toBe(provider);
         expect(onramp_store.is_onramp_modal_open).toBeTruthy();

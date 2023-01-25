@@ -51,7 +51,7 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     >
         <Text color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
             {localize(
-                'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+                'Import a bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
             )}
         </Text>
     </div>

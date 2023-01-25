@@ -20,6 +20,7 @@ const Summary = ({ is_drawer_open, is_contract_loading, contract_info }: TSummar
             className={classnames({
                 'run-panel-tab__content': !is_mobile,
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
+                'run-panel-tab__content--summary-tab': !is_mobile && is_drawer_open,
             })}
         >
             <ThemedScrollbars

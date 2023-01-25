@@ -41,7 +41,7 @@ type TDropDownList = {
     setActiveIndex: () => void;
     style: React.CSSProperties;
     not_found_text: string;
-    portal_id: string;
+    portal_id?: string;
 };
 
 const ListItem = ({

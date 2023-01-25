@@ -1,15 +1,17 @@
-import classNames from 'classnames';
-import React from 'react';
-import PropTypes from 'prop-types';
+import 'Sass/app/modules/trading-mobile.scss';
+
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
+
+import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
+import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { Div100vhContainer, Tabs, Modal, Money, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
-import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
-import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
-import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
-import 'Sass/app/modules/trading-mobile.scss';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -239,7 +241,7 @@ const TradeParamsMobile = ({
                 return (
                     <div className='trade-params__header'>
                         <div className='trade-params__header-label'>
-                            {is_vanilla ? localize('Strike') : localize('Amount')}
+                            {is_vanilla ? localize('Stake') : localize('Amount')}
                         </div>
                         <div
                             className={classNames('trade-params__header-value', {

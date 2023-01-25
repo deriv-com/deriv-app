@@ -15,7 +15,7 @@ type TFooterProps = {
 const FooterIcon = (use_icon?: string) => use_icon || 'IcCalendarToday';
 
 const Footer = ({ footer, has_today_btn, onClick, use_icon, has_clear_btn, clear_text, onClear }: TFooterProps) => (
-    <>
+    <React.Fragment>
         {(has_today_btn || footer || has_clear_btn) && (
             <div className='dc-calendar__footer'>
                 {footer && (
@@ -31,7 +31,7 @@ const Footer = ({ footer, has_today_btn, onClick, use_icon, has_clear_btn, clear
                 )}
             </div>
         )}
-    </>
+    </React.Fragment>
 );
 
 export default Footer;

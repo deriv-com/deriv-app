@@ -26,7 +26,7 @@ const Body = (props: TBodyProps) => {
         decade: <Views.Decades {...props} />,
     };
 
-    return <>{calendar_body[props.calendar_view]}</>;
+    return <React.Fragment>{calendar_body[props.calendar_view]}</React.Fragment>;
 };
 
 export default Body;

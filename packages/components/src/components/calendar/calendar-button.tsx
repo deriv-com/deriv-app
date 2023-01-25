@@ -23,7 +23,7 @@ const Button = ({
     label,
     onClick,
 }: React.PropsWithChildren<TButtonProps>) => (
-    <>
+    <React.Fragment>
         {!is_hidden && (
             <span
                 className={classNames('dc-calendar__btn', className, {
@@ -39,7 +39,7 @@ const Button = ({
                 {children}
             </span>
         )}
-    </>
+    </React.Fragment>
 );
 
 export default Button;

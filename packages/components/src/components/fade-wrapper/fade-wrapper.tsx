@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import posed, { PoseGroup } from 'react-pose';
+import { motion } from 'framer-motion';
 
 type TFadeWrapperProps = {
     children: ReactNode;
@@ -9,81 +9,93 @@ type TFadeWrapperProps = {
     className?: string;
 };
 
-const FadeInFromTopDiv = posed.div({
-    enter: {
-        y: 0,
-        opacity: 1,
-        delay: 300,
-        transition: {
-            default: { duration: 250 },
-        },
-    },
-    exit: {
+const FadeInFromTopDiv = {
+    initial: {
         y: -50,
         opacity: 0,
-        transition: { duration: 250 },
     },
-});
-
-const FadeInFromBottomDiv = posed.div({
-    enter: {
+    animate: {
         y: 0,
         opacity: 1,
-        delay: 300,
-        transition: {
-            default: { duration: 250 },
-        },
     },
-    exit: {
+
+    transition: { duration: 250, delay: 0.3 },
+};
+
+const FadeInFromBottomDiv = {
+    initial: {
         y: 50,
         opacity: 0,
-        transition: { duration: 250 },
     },
-});
-
-const FadeInOnlyDiv = posed.div({
-    enter: {
+    animate: {
+        y: 0,
         opacity: 1,
-        transition: { duration: 300 },
     },
-    exit: {
+
+    transition: { duration: 0.25, delay: 0.3 },
+};
+
+const FadeInOnlyDiv = {
+    initial: {
         opacity: 0,
-        transition: { duration: 300 },
     },
-});
+    animate: {
+        opacity: 1,
+    },
+
+    transition: { duration: 0.3 },
+};
 
 // `flipMove={false}` is necessary to fix react-pose bug: https://github.com/Popmotion/popmotion/issues/805
 const FadeWrapper = ({ children, className, is_visible, keyname, type }: TFadeWrapperProps) => {
     if (type === 'top') {
         return (
-            <PoseGroup flipMove={false}>
+            <>
                 {is_visible && (
-                    <FadeInFromTopDiv className={className} key={keyname}>
+                    <motion.div
+                        animate={FadeInFromTopDiv.animate}
+                        initial={FadeInFromTopDiv.initial}
+                        transition={FadeInFromTopDiv.transition}
+                        className={className}
+                        key={keyname}
+                    >
                         {children}
-                    </FadeInFromTopDiv>
+                    </motion.div>
                 )}
-            </PoseGroup>
+            </>
         );
     }
     if (type === 'bottom') {
         return (
-            <PoseGroup flipMove={false}>
+            <>
                 {is_visible && (
-                    <FadeInFromBottomDiv className={className} key={keyname}>
+                    <motion.div
+                        animate={FadeInFromBottomDiv.animate}
+                        initial={FadeInFromBottomDiv.initial}
+                        transition={FadeInFromBottomDiv.transition}
+                        className={className}
+                        key={keyname}
+                    >
                         {children}
-                    </FadeInFromBottomDiv>
+                    </motion.div>
                 )}
-            </PoseGroup>
+            </>
         );
     }
     return (
-        <PoseGroup flipMove={false}>
+        <>
             {is_visible && (
-                <FadeInOnlyDiv className={className} key={keyname}>
+                <motion.div
+                    animate={FadeInOnlyDiv.animate}
+                    initial={FadeInOnlyDiv.initial}
+                    transition={FadeInOnlyDiv.transition}
+                    className={className}
+                    key={keyname}
+                >
                     {children}
-                </FadeInOnlyDiv>
+                </motion.div>
             )}
-        </PoseGroup>
+        </>
     );
 };
 

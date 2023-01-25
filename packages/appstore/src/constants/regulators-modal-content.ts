@@ -88,6 +88,10 @@ export const cfd_content: TRegulatorsContentProps[] = [
                     text: localize('*Boom 300 and Crash 300 Index'),
                     options: { color: 'loss-danger', weight: 'bold' },
                 },
+                {
+                    text: localize('*Volatility 150 Index and Volatility 250 Index'),
+                    options: { color: 'loss-danger', weight: 'bold' },
+                },
             ],
         },
     },
@@ -148,6 +152,10 @@ export const options_content: TRegulatorsContentProps[] = [
                 { text: localize('Cryptocurrencies') },
                 {
                     text: localize('*Boom 300 and Crash 300 Index'),
+                    options: { color: 'loss-danger', weight: 'bold' },
+                },
+                {
+                    text: localize('*Volatility 150 Index and Volatility 250 Index'),
                     options: { color: 'loss-danger', weight: 'bold' },
                 },
             ],

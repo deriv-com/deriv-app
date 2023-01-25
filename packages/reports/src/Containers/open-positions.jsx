@@ -415,7 +415,7 @@ const OpenPositions = ({
         <React.Fragment>
             <NotificationMessages />
             <DesktopWrapper>
-                <div className='contract-types-container'>
+                <div className='contract-types-selector-container'>
                     <Dropdown
                         is_align_text_left
                         name='contract_types'
@@ -427,7 +427,7 @@ const OpenPositions = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <SelectNative
-                    className='reports__contract-types-selection'
+                    className='reports__contract-types-selector'
                     list_items={contract_types.map(option => ({
                         text: option.text,
                         value: option.value,

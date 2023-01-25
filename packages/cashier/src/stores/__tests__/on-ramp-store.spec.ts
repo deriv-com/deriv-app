@@ -6,7 +6,7 @@ import { TRootStore, TWebSocket, TOnRampProvider } from 'Types';
 
 configure({ safeDescriptors: false });
 
-let changelly_provider: TOnRampProvider,
+let banxa_provider: TOnRampProvider,
     onramp_store: OnRampStore,
     onramp_providers: TOnRampProvider[],
     root_store: DeepPartial<TRootStore>,
@@ -27,12 +27,8 @@ beforeEach(() => {
         },
     };
     onramp_store = new OnRampStore(WS as TWebSocket, root_store as TRootStore);
-    onramp_providers = [
-        OnRampProviders.createChangellyProvider(onramp_store),
-        OnRampProviders.createXanPoolProvider(onramp_store),
-        OnRampProviders.createBanxaProvider(onramp_store),
-    ];
-    changelly_provider = OnRampProviders.createChangellyProvider(onramp_store);
+    onramp_providers = [OnRampProviders.createBanxaProvider(onramp_store)];
+    banxa_provider = OnRampProviders.createBanxaProvider(onramp_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -72,7 +68,7 @@ describe('OnRampStore', () => {
     it('should return three providers for BTC cryptocurrency', () => {
         onramp_store.setOnrampProviders(onramp_providers);
 
-        expect(onramp_store.filtered_onramp_providers.length).toBe(3);
+        expect(onramp_store.filtered_onramp_providers.length).toBe(1);
     });
 
     it('should return proper onramp popup modal title if should_show_widget = true', () => {
@@ -82,14 +78,14 @@ describe('OnRampStore', () => {
     });
 
     it('should return proper onramp popup modal title if should_show_widget = false and there is selected provider with should_show_dialog = true', () => {
-        onramp_store.setSelectedProvider(changelly_provider);
+        onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.setApiError('API Error');
 
         expect(onramp_store.onramp_popup_modal_title).toBe('Our server cannot retrieve an address.');
     });
 
     it('should return empty string to render header + close icon if should_show_widget = false and there is selected provider with should_show_dialog = false', () => {
-        onramp_store.setSelectedProvider(changelly_provider);
+        onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.setApiError('');
 
         expect(onramp_store.onramp_popup_modal_title).toBe(' ');
@@ -102,8 +98,8 @@ describe('OnRampStore', () => {
     it('should have returned from onMountOnramp method if there is no selected_provider', () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
-        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependency']);
-        onramp_store.setSelectedProvider(changelly_provider);
+        banxa_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependency']);
+        onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.setSelectedProvider();
 
         expect(spyOnMountOnramp).toHaveReturned();
@@ -112,16 +108,16 @@ describe('OnRampStore', () => {
     it('should have returned from onMountOnramp method if there is an empty array without dependencies', async () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
-        changelly_provider.getScriptDependencies = jest.fn().mockReturnValueOnce([]);
-        onramp_store.setSelectedProvider(changelly_provider);
+        banxa_provider.getScriptDependencies = jest.fn().mockReturnValueOnce([]);
+        onramp_store.setSelectedProvider(banxa_provider);
 
         expect(spyOnMountOnramp).toHaveReturned();
     });
 
     it('should set widget html if it is defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetWidgetHtml = jest.spyOn(onramp_store, 'setWidgetHtml');
-        onramp_store.setSelectedProvider(changelly_provider);
-        changelly_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('widget');
+        onramp_store.setSelectedProvider(banxa_provider);
+        banxa_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('widget');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
 
@@ -130,8 +126,8 @@ describe('OnRampStore', () => {
 
     it('should set should_show_widget into false if html widget is not defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetShouldShowWidget = jest.spyOn(onramp_store, 'setShouldShowWidget');
-        onramp_store.setSelectedProvider(changelly_provider);
-        changelly_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('');
+        onramp_store.setSelectedProvider(banxa_provider);
+        banxa_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
 
@@ -142,8 +138,8 @@ describe('OnRampStore', () => {
 
     it('should set widget error if there is an error when requesting widget when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetWidgetError = jest.spyOn(onramp_store, 'setWidgetError');
-        onramp_store.setSelectedProvider(changelly_provider);
-        changelly_provider.getWidgetHtml = jest.fn().mockRejectedValueOnce('Request error');
+        onramp_store.setSelectedProvider(banxa_provider);
+        banxa_provider.getWidgetHtml = jest.fn().mockRejectedValueOnce('Request error');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
 
@@ -155,7 +151,7 @@ describe('OnRampStore', () => {
     it('should not call setIsRequestingWidgetHtml method if is_requesting_widget_html already equal to true when disposeGetWidgetHtmlReaction reaction is running', () => {
         const spySetIsRequestingWidgetHtml = jest.spyOn(onramp_store, 'setIsRequestingWidgetHtml');
         onramp_store.is_requesting_widget_html = true;
-        onramp_store.setSelectedProvider(changelly_provider);
+        onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
 

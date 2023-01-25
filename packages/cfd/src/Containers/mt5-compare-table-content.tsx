@@ -21,6 +21,7 @@ import {
     preappstore_cr_demo_content,
     preappstore_cr_demo_footer_buttons,
     preppstore_eu_demo_content,
+    eu_demo_footer_button,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
@@ -333,7 +334,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+                if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
@@ -378,7 +379,7 @@ const DMT5CompareModalContent = ({
 
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
-            if (real_account_creation_unlock_date) {
+            if (real_account_creation_unlock_date && item.action === 'financial_maltainvest') {
                 setShouldShowCooldownModal(true);
             } else {
                 openDerivRealAccountNeededModal();
@@ -407,6 +408,7 @@ const DMT5CompareModalContent = ({
 
     const modal_footer = () => {
         if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
+        else if (is_demo_tab && show_eu_related_content) return eu_demo_footer_button;
         return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
     };
 

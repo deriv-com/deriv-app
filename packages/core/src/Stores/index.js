@@ -4,7 +4,6 @@ import GTMStore from './gtm-store';
 import RudderStackStore from './rudderstack-store';
 import PushWooshStore from './pushwoosh-store';
 import ModulesStore from './Modules';
-import MenuStore from './menu-store';
 import NotificationStore from './notification-store';
 import UIStore from './ui-store';
 import ActiveSymbolsStore from './active-symbols-store';
@@ -22,7 +21,6 @@ export default class RootStore {
         this.ui = new UIStore(this);
         this.gtm = new GTMStore(this);
         this.rudderstack = new RudderStackStore(this);
-        this.menu = new MenuStore(this);
         this.pushwoosh = new PushWooshStore(this);
         this.notifications = new NotificationStore(this);
         this.active_symbols = new ActiveSymbolsStore(this);

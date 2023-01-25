@@ -6,9 +6,10 @@ import { isMobile, ContentFlag } from '@deriv/shared';
 import BalanceText from 'Components/elements/text/balance-text';
 import { useStores } from 'Stores';
 import './asset-summary.scss';
+import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 
 const AssetSummary = () => {
-    const { traders_hub } = useStores();
+    const { traders_hub, client } = useStores();
     const {
         selected_account_type,
         platform_real_balance,
@@ -20,6 +21,7 @@ const AssetSummary = () => {
         no_CR_account,
         no_MF_account,
     } = traders_hub;
+    const { is_logging_in, is_switching } = client;
 
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
@@ -44,6 +46,14 @@ const AssetSummary = () => {
         : localize(
               `Total assets in your Options & Multipliers, Deriv MT5 and Deriv X ${selected_account_type} accounts`
           );
+
+    if (is_switching || is_logging_in) {
+        return (
+            <div className='asset-summary__container loader'>
+                <RegulationsSwitcherLoader />
+            </div>
+        );
+    }
 
     return (
         <div className='asset-summary'>

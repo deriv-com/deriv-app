@@ -59,6 +59,9 @@ $side-padding: 1.2em;
     &__route-selection {
         padding: 1.6rem;
     }
+    &__trade-types-selection {
+        padding: 0 1.6rem;
+    }
     &__content {
         width: 100%;
         display: flex;
@@ -820,6 +823,7 @@ $side-padding: 1.2em;
             minmax(150px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
         grid-auto-rows: 100%;
+        padding-left: 0;
 
         &_wrapper {
             display: flex;
@@ -999,4 +1003,8 @@ $side-padding: 1.2em;
             background: var(--button-secondary-hover);
         }
     }
+}
+
+.trade-types-container {
+    max-width: 224px;
 }

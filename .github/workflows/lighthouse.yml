@@ -1,5 +1,13 @@
 name: Generate Lighthouse report
 
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
+
 on:
   issue_comment:
     types: [edited]

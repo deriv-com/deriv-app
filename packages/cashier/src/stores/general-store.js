@@ -1,9 +1,6 @@
-import React from 'react';
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
 import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
-import CashierNotifications from 'Components/cashier-notifications';
 import BaseStore from './base-store';
 
 export default class GeneralStore extends BaseStore {
@@ -32,8 +29,6 @@ export default class GeneralStore extends BaseStore {
             is_p2p_enabled: computed,
             p2p_unseen_notifications: computed,
             showP2pInCashierOnboarding: action.bound,
-            attachCashierToMenu: action.bound,
-            replaceCashierMenuOnclick: action.bound,
             setHasSetCurrency: action.bound,
             changeSetCurrencyModalTitle: action.bound,
             onMountCashierOnboarding: action.bound,
@@ -68,7 +63,6 @@ export default class GeneralStore extends BaseStore {
             () => this.root_store.client.is_logged_in,
             () => {
                 this.setHasSetCurrency();
-                this.attachCashierToMenu();
             }
         );
 
@@ -154,41 +148,6 @@ export default class GeneralStore extends BaseStore {
         } else {
             this.show_p2p_in_cashier_onboarding = true;
         }
-    }
-
-    attachCashierToMenu() {
-        const { menu, ui } = this.root_store;
-
-        if (!this.has_set_currency) {
-            this.setHasSetCurrency();
-        }
-
-        menu.attach({
-            id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-            text: () => localize('Cashier'),
-            link_to: this.has_set_currency && routes.cashier,
-            onClick: !this.has_set_currency && ui.toggleSetCurrencyModal,
-            login_only: true,
-        });
-    }
-
-    replaceCashierMenuOnclick() {
-        const { menu, ui } = this.root_store;
-
-        this.setHasSetCurrency();
-
-        menu.update(
-            {
-                id: 'dt_cashier_tab',
-                icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-                text: () => localize('Cashier'),
-                link_to: this.has_set_currency && routes.cashier,
-                onClick: !this.has_set_currency ? ui.toggleSetCurrencyModal : false,
-                login_only: true,
-            },
-            1
-        );
     }
 
     setHasSetCurrency() {

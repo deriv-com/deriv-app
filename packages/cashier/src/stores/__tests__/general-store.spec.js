@@ -1,13 +1,11 @@
-import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import CashierNotifications from 'Components/cashier-notifications';
 import { configure } from 'mobx';
 
 configure({ safeDescriptors: false });
 
-let cashier_menu, general_store, root_store, WS;
+let general_store, root_store, WS;
 
 beforeEach(() => {
     root_store = {
@@ -85,23 +83,9 @@ beforeEach(() => {
         wait: jest.fn(),
     };
     general_store = new GeneralStore({ root_store, WS });
-
-    cashier_menu = {
-        id: 'dt_cashier_tab',
-        icon: <CashierNotifications p2p_notification_count={general_store.p2p_notification_count} />,
-        text: expect.any(Function),
-        link_to: routes.cashier,
-        onClick: false,
-        login_only: true,
-    };
 });
 
 describe('GeneralStore', () => {
-    it('should set has_set_currency equal to true and attach cashier menu with proper data, if "when" reaction was called in constructor', () => {
-        expect(general_store.has_set_currency).toBeTruthy();
-        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
-    });
-
     it('should set function on remount', () => {
         general_store.setOnRemount('function');
 
@@ -164,49 +148,6 @@ describe('GeneralStore', () => {
         general_store.showP2pInCashierOnboarding();
 
         expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
-    });
-
-    it('should call setHasSetCurrency method if has_set_currency is equal to false and attach cashier menu with proper properties', () => {
-        general_store.has_set_currency = false;
-        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        general_store.attachCashierToMenu();
-
-        expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
-    });
-
-    it('should attach cashier menu and set onClick property to ui.toggleSetCurrencyModal and link_to = false if the client did not set the currency', () => {
-        general_store.has_set_currency = false;
-        general_store.root_store.client.account_list = [{ is_virtual: 0, title: 'Real' }];
-        general_store.root_store.client.has_active_real_account = true;
-        general_store.attachCashierToMenu();
-
-        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith({
-            ...cashier_menu,
-            link_to: false,
-            onClick: general_store.root_store.ui.toggleSetCurrencyModal,
-        });
-    });
-
-    it('should replace cashier menu onClick to false if the client set the currency', () => {
-        general_store.replaceCashierMenuOnclick();
-
-        expect(general_store.root_store.menu.update).toHaveBeenCalledWith(cashier_menu, 1);
-    });
-
-    it('should replace cashier menu onClick to ui.toggleSetCurrencyModal if the client did not set the currency', () => {
-        general_store.root_store.client.account_list = [{ is_virtual: 0, title: 'Real' }];
-        general_store.root_store.client.has_active_real_account = true;
-        general_store.replaceCashierMenuOnclick();
-
-        expect(general_store.root_store.menu.update).toHaveBeenCalledWith(
-            {
-                ...cashier_menu,
-                link_to: false,
-                onClick: general_store.root_store.ui.toggleSetCurrencyModal,
-            },
-            1
-        );
     });
 
     it('should set has_set_currency equal to true if the client has real USD account', () => {

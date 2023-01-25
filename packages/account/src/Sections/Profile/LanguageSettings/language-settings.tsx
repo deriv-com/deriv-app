@@ -82,7 +82,6 @@ const LanguageSettings = ({
 export default connect(({ common, ui }: TCoreStore) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
     current_language: common.current_language,
-    toggleSettingsModal: ui.toggleSettingsModal,
     changeLanguage: common.changeLanguage,
     isCurrentLanguage: common.isCurrentLanguage,
 }))(LanguageSettings);

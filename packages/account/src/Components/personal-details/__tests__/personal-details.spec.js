@@ -704,7 +704,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 
@@ -720,7 +720,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 

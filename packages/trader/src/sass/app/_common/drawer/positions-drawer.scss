@@ -9,9 +9,7 @@ $header-height: 3.6em;
     $MARGIN_TOP: #{$POSITIONS_DRAWER_MARGIN * 2};
     $MARGIN_BOTTOM: #{$POSITIONS_DRAWER_MARGIN * 2};
 
-    min-width: $POSITIONS_DRAWER_WIDTH;
-    max-width: 260px;
-    width: auto;
+    width: 240px;
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$MARGIN_TOP} - #{$MARGIN_BOTTOM});
     margin-top: #{$MARGIN_TOP};
     position: fixed;

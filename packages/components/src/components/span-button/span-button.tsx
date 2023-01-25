@@ -1,6 +1,10 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv/components';
+import Text from '../text';
+import { TButtonCommonProps } from '../button/button';
+
+type TSpanButtonProps = TButtonCommonProps &
+    React.PropsWithChildren<React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>>;
 
 const SpanButton: React.FC<Partial<TSpanButtonProps>> = ({
     blue,
@@ -65,33 +69,6 @@ const SpanButton: React.FC<Partial<TSpanButtonProps>> = ({
             )}
         </span>
     );
-};
-
-type TSpanButtonProps = React.PropsWithChildren<
-    React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
-> & {
-    className?: string;
-    alternate: boolean;
-    blue: boolean;
-    green: boolean;
-    has_effect: boolean;
-    is_button_toggle: boolean;
-    is_circular: boolean;
-    is_circle: boolean;
-    is_disabled: boolean;
-    is_loading: boolean;
-    is_plus: boolean;
-    is_submit_success: boolean;
-    large: boolean;
-    medium: boolean;
-    primary: boolean;
-    primary_light: boolean;
-    rounded: boolean;
-    secondary: boolean;
-    small: boolean;
-    tertiary: boolean;
-    text: string;
-    transparent: boolean;
 };
 
 export default SpanButton;

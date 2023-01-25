@@ -1,9 +1,8 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, SpanButton } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
-import SpanButton from 'Components/elements/span-button';
 
 export const tour_step_config: Step[] = [
     {

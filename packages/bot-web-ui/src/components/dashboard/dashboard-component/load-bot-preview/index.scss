@@ -278,6 +278,7 @@
                 width: 10rem;
 
                 @include mobile {
+                    width: unset;
                     font-size: var(--text-size-xxs);
                 }
             }

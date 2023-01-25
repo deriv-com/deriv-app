@@ -52,9 +52,9 @@ const CFDsListing = () => {
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded } = client;
+    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
@@ -155,7 +155,9 @@ const CFDsListing = () => {
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
-                                        if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
+                                        if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
+                                            setShouldShowCooldownModal(true);
+                                        } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
                                             setAccountType({

@@ -7,8 +7,10 @@ import { useStores } from 'Stores';
 import { isMobile, ContentFlag } from '@deriv/shared';
 
 const AddOptions = () => {
-    const { traders_hub, ui } = useStores();
+    const { client, traders_hub, ui } = useStores();
     const { is_real, content_flag } = traders_hub;
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const { real_account_creation_unlock_date } = client;
 
     const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
     const add_deriv_account_btn = localize('Get a Deriv account');
@@ -29,9 +31,13 @@ const AddOptions = () => {
                     has_effect
                     onClick={() => {
                         if (is_real && eu_user) {
-                            ui.openRealAccountSignup('maltainvest');
+                            if (real_account_creation_unlock_date) {
+                                setShouldShowCooldownModal(true);
+                            } else {
+                                openRealAccountSignup('maltainvest');
+                            }
                         } else {
-                            ui.openRealAccountSignup();
+                            openRealAccountSignup();
                         }
                     }}
                     is_disabled={false}

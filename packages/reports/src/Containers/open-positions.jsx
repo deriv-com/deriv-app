@@ -6,12 +6,13 @@ import {
     DesktopWrapper,
     MobileWrapper,
     ProgressBar,
-    Tabs,
     DataList,
     DataTable,
     ContractCard,
     usePrevious,
     PositionsDrawerCard,
+    Dropdown,
+    SelectNative,
 } from '@deriv/components';
 import {
     urlFor,
@@ -309,10 +310,28 @@ const OpenPositions = ({
     server_time,
     ...props
 }) => {
-    const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
+    const [trade_type_value, setTradeTypeValue] = React.useState('Options');
     const previous_active_positions = usePrevious(active_positions);
+    const trade_types = [
+        {
+            text: 'Options',
+            value: 'Options',
+        },
+        {
+            text: localize('Multipliers'),
+            value: 'Multipliers',
+        },
+        {
+            text: localize('Vanilla'),
+            value: 'Vanilla',
+        },
+        {
+            text: localize('Accumulators'),
+            value: 'Accumulators',
+        },
+    ];
 
     React.useEffect(() => {
         /*
@@ -337,11 +356,9 @@ const OpenPositions = ({
         }
     };
 
-    const setActiveTabIndex = index => setActiveIndex(index);
-
     if (error) return <p>{error}</p>;
 
-    const is_multiplier_selected = has_multiplier_contract && active_index === 1;
+    const is_multiplier_selected = has_multiplier_contract && trade_type_value === 'Multipliers';
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
@@ -390,35 +407,45 @@ const OpenPositions = ({
         totals: active_positions_filtered_totals,
     };
 
+    const handleChange = e => {
+        setTradeTypeValue(e.target.value);
+    };
+
     return (
         <React.Fragment>
             <NotificationMessages />
-            {has_multiplier_contract ? (
-                <Tabs
-                    active_index={active_index}
-                    className='open-positions'
-                    onTabItemClick={setActiveTabIndex}
-                    top
-                    header_fit_content={!isMobile()}
-                >
-                    <div label={localize('Options')}>
-                        <OpenPositionsTable
-                            className='open-positions'
-                            columns={columns}
-                            {...shared_props}
-                            row_size={isMobile() ? 5 : 63}
-                        />
-                    </div>
-                    <div label={localize('Multipliers')}>
-                        <OpenPositionsTable
-                            className='open-positions-multiplier open-positions'
-                            is_multiplier_tab
-                            columns={columns}
-                            row_size={isMobile() ? 3 : 68}
-                            {...shared_props}
-                        />
-                    </div>
-                </Tabs>
+            <DesktopWrapper>
+                <div className='trade-types-container'>
+                    <Dropdown
+                        is_align_text_left
+                        name='trade_types'
+                        list={trade_types}
+                        value={trade_type_value}
+                        onChange={handleChange}
+                    />
+                </div>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <SelectNative
+                    className='reports__trade-types-selection'
+                    list_items={trade_types.map(option => ({
+                        text: option.text,
+                        value: option.value,
+                    }))}
+                    value={trade_type_value}
+                    should_show_empty_option={false}
+                    onChange={handleChange}
+                />
+            </MobileWrapper>
+
+            {is_multiplier_selected ? (
+                <OpenPositionsTable
+                    className='open-positions-multiplier open-positions'
+                    is_multiplier_tab
+                    columns={columns}
+                    row_size={isMobile() ? 3 : 68}
+                    {...shared_props}
+                />
             ) : (
                 <OpenPositionsTable
                     className='open-positions'

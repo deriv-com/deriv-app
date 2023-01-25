@@ -6,16 +6,24 @@ import CashierProviders from '../../../../cashier-providers';
 
 describe('<OnRampProviderCard />', () => {
     const provider = {
-        name: 'Changelly',
+        name: 'Banxa',
         icon: {
-            dark: 'IcCashierChangellyDark',
-            light: 'IcCashierChangellyLight',
+            dark: 'IcCashierBanxaDark',
+            light: 'IcCashierBanxaLight',
         },
         getDescription: jest.fn(
             () =>
-                'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
+                'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
         ),
-        getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' }]),
+        getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFlexepinDark', light: 'IcCashierFlexepinLight' }]),
+        getAllowedResidencies: jest.fn(() => []),
+        getScriptDependencies: jest.fn(() => []),
+        getDefaultFromCurrency: jest.fn(() => ''),
+        getFromCurrencies: jest.fn(() => ''),
+        getToCurrencies: jest.fn(() => ''),
+        getWidgetHtml: jest.fn(() => Promise.resolve()),
+        onMountWidgetContainer: jest.fn(),
+        should_show_deposit_address: false,
     };
 
     it('should show proper messages and button', () => {
@@ -39,10 +47,10 @@ describe('<OnRampProviderCard />', () => {
             ),
         });
 
-        expect(screen.getByText('Changelly')).toBeInTheDocument();
+        expect(screen.getByText('Banxa')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
+                'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Select' })).toBeInTheDocument();
@@ -97,6 +105,6 @@ describe('<OnRampProviderCard />', () => {
         const btn = screen.getByRole('button', { name: 'Select' });
         fireEvent.click(btn);
 
-        expect(mockRootStore.modules!.cashier!.onramp.setSelectedProvider).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules!.cashier!.onramp!.setSelectedProvider).toHaveBeenCalledTimes(1);
     });
 });

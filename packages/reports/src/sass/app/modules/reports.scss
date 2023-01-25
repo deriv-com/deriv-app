@@ -59,7 +59,7 @@ $side-padding: 1.2em;
     &__route-selection {
         padding: 1.6rem;
     }
-    &__contract-types-selection {
+    &__contract-types-selector {
         padding: 0 1.6rem;
     }
     &__content {
@@ -1005,6 +1005,6 @@ $side-padding: 1.2em;
     }
 }
 
-.contract-types-container {
+.contract-types-selector-container {
     max-width: 224px;
 }

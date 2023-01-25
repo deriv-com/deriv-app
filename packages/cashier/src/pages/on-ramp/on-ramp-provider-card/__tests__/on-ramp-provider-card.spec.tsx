@@ -5,11 +5,28 @@ import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
 
 describe('<OnRampProviderCard />', () => {
-    const provider = {
-        name: 'Changelly',
-        icon: {
-            dark: 'IcCashierChangellyDark',
-            light: 'IcCashierChangellyLight',
+    const props = {
+        is_dark_mode_on: false,
+        is_mobile: false,
+        provider: {
+            name: 'Banxa',
+            icon: {
+                dark: 'IcCashierBanxaDark',
+                light: 'IcCashierBanxaLight',
+            },
+            getDescription: jest.fn(
+                () =>
+                    'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
+            ),
+            getPaymentIcons: jest.fn(() => [{ dark: 'IcCashierFlexepinDark', light: 'IcCashierFlexepinLight' }]),
+            getAllowedResidencies: jest.fn(() => []),
+            getScriptDependencies: jest.fn(() => []),
+            getDefaultFromCurrency: jest.fn(() => ''),
+            getFromCurrencies: jest.fn(() => ''),
+            getToCurrencies: jest.fn(() => ''),
+            getWidgetHtml: jest.fn(() => Promise.resolve()),
+            onMountWidgetContainer: jest.fn(),
+            should_show_deposit_address: false,
         },
         getDescription: jest.fn(
             () =>
@@ -33,14 +50,14 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.getByText('Changelly')).toBeInTheDocument();
+        expect(screen.getByText('Banxa')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
+                'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.'
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Select' })).toBeInTheDocument();
@@ -61,7 +78,7 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
@@ -84,13 +101,13 @@ describe('<OnRampProviderCard />', () => {
             },
         };
 
-        render(<OnRampProviderCard provider={provider} />, {
+        render(<OnRampProviderCard provider={props.provider} />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const btn = screen.getByRole('button', { name: 'Select' });
         fireEvent.click(btn);
 
-        expect(mockRootStore.modules!.cashier!.onramp.setSelectedProvider).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules!.cashier!.onramp!.setSelectedProvider).toHaveBeenCalledTimes(1);
     });
 });

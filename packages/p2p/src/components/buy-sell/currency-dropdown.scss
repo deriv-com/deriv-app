@@ -16,6 +16,12 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
+
+            &-symbol {
+                @include desktop {
+                    padding-right: 1rem;
+                }
+            }
         }
 
         &--visible {

@@ -37,7 +37,7 @@ const LanguageLink = ({ lang }) => (
     </React.Fragment>
 );
 
-const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSettingsModal, changeLanguage }) => {
+const LanguageSettings = ({ changeCurrentLanguage, current_language, changeLanguage }) => {
     const { i18n } = useTranslation();
 
     return (
@@ -58,7 +58,6 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                             onClick={async () => {
                                 await changeLanguage(key, changeCurrentLanguage);
                                 await i18n.changeLanguage?.(key);
-                                toggleSettingsModal();
                             }}
                             className={classNames('settings-language__language-link', {
                                 'settings-language__language-link--active': isCurrentLanguage(key, current_language),
@@ -82,9 +81,8 @@ NonClickableLink.propTypes = {
     lang: PropTypes.string,
 };
 
-export default connect(({ common, ui }) => ({
+export default connect(({ common }) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
     current_language: common.current_language,
-    toggleSettingsModal: ui.toggleSettingsModal,
     changeLanguage: common.changeLanguage,
 }))(LanguageSettings);

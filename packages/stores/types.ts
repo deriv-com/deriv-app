@@ -75,6 +75,7 @@ type TClientStore = {
         title: string;
     }[];
     active_accounts: { is_virtual: number }[];
+    is_landing_company_loaded: boolean;
 };
 
 type TCommonStoreError = {

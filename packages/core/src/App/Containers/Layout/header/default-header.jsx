@@ -1,19 +1,19 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, platforms, PlatformContext } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
-import RealAccountSignup from 'App/Containers/RealAccountSignup';
-import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
-import { connect } from 'Stores/connect';
-import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { PlatformContext, getDecimalPlaces, isMobile, platforms, routes } from '@deriv/shared';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
+import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import platform_config from 'App/Constants/platform-config';
+import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -47,6 +47,7 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     is_trading_assessment_for_existing_user_enabled,
+    is_landing_company_loaded,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -82,6 +83,7 @@ const DefaultHeader = ({
     }, [removeUpdateNotification]);
 
     const onClickDeposit = () => history.push(routes.cashier_deposit);
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -142,6 +144,9 @@ const DefaultHeader = ({
                     <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
+                            is_landing_company_loaded={is_landing_company_loaded}
+                            is_logged_in={is_logged_in}
+                            is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
                         />
                     </DesktopWrapper>
@@ -231,7 +236,6 @@ DefaultHeader.propTypes = {
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -267,7 +271,6 @@ export default connect(({ client, common, ui, notifications }) => ({
     is_app_disabled: ui.is_app_disabled,
     is_bot_allowed: client.is_bot_allowed,
     is_eu: client.is_eu,
-    is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
@@ -282,4 +285,5 @@ export default connect(({ client, common, ui, notifications }) => ({
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
+    is_landing_company_loaded: client.is_landing_company_loaded,
 }))(withRouter(DefaultHeader));

@@ -103,11 +103,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         account_status,
         is_logged_in,
+        is_logging_in,
         is_virtual,
         logout: logoutClient,
         should_allow_authentication,
         is_risky_client,
         landing_company_shortcode: active_account_landing_company,
+        is_landing_company_loaded,
     } = client;
     const { cashier } = modules;
     const { onramp, general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
@@ -415,6 +417,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         <PlatformSwitcher
                                             app_routing_history={app_routing_history}
                                             is_mobile
+                                            is_landing_company_loaded={is_landing_company_loaded}
+                                            is_logged_in={is_logged_in}
+                                            is_logging_in={is_logging_in}
                                             platform_config={platform_config}
                                             toggleDrawer={toggleDrawer}
                                         />
@@ -581,6 +586,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}
                                         is_mobile
+                                        is_landing_company_loaded={is_landing_company_loaded}
+                                        is_logged_in={is_logged_in}
+                                        is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
                                     />

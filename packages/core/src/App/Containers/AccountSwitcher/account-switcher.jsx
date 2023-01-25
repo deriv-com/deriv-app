@@ -69,9 +69,11 @@ const AccountSwitcher = props => {
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (currency, setExchangeRate) => {
-            props.getExchangeRate(currency, account_total_balance_currency).then(res => {
-                setExchangeRate(res);
-            });
+            if (currency) {
+                props.getExchangeRate(currency, account_total_balance_currency).then(res => {
+                    setExchangeRate(res);
+                });
+            }
         };
         if (cfd_real_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);

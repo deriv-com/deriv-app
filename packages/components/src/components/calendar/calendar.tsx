@@ -158,7 +158,7 @@ const Calendar: React.MemoExoticComponent<
                 let date = '';
                 if (type) {
                     const selected_date_part = e?.currentTarget?.dataset?.[type]?.split?.('-')?.[0] || 0;
-                    date = getDate(toMoment(calendar_date), type, date_format, +selected_date_part) || '';
+                    date = getDate(toMoment(calendar_date), type, date_format, +selected_date_part);
                 }
                 if (isPeriodDisabled(date, type)) return;
 

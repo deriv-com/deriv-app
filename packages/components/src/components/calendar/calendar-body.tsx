@@ -13,8 +13,8 @@ type TBodyProps = CommonPropTypes & {
     }>;
     has_range_selection: boolean;
     hovered_date: string | null;
-    onMouseLeave: React.MouseEventHandler<HTMLSpanElement> | undefined;
-    onMouseOver: React.MouseEventHandler<HTMLSpanElement> | undefined;
+    onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
+    onMouseOver?: React.MouseEventHandler<HTMLSpanElement>;
     should_show_today: boolean;
 };
 

@@ -22,8 +22,8 @@ type TDaysProps = CommonPropTypes & {
         dates: string[];
         descrip: string;
     }>;
-    onMouseLeave: React.MouseEventHandler<HTMLSpanElement> | undefined;
-    onMouseOver: React.MouseEventHandler<HTMLSpanElement> | undefined;
+    onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
+    onMouseOver?: React.MouseEventHandler<HTMLSpanElement>;
     start_date: string;
     disabled_days?: number[];
     should_show_today: boolean;

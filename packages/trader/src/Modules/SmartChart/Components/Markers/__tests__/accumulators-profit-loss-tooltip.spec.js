@@ -14,6 +14,7 @@ describe('AccumulatorsProfitLossTooltip', () => {
         currency: 'USD',
         current_spot: 6468.95,
         current_spot_time: 1666091856,
+        high_barrier: '6469.10',
         is_sold: 0,
         profit: +0.15,
         alignment: 'right',

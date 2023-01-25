@@ -15,6 +15,7 @@ const AccumulatorsProfitLossTooltip = ({
     currency,
     exit_tick,
     exit_tick_time,
+    high_barrier,
     is_sold,
     profit,
 }) => {
@@ -67,7 +68,7 @@ const AccumulatorsProfitLossTooltip = ({
     };
 
     if (typeof profit !== 'number') return null;
-    if (!is_sold && current_spot_time)
+    if (!is_sold && current_spot_time && high_barrier)
         return (
             <AccumulatorsProfitLossText
                 currency={currency}
@@ -117,6 +118,7 @@ AccumulatorsProfitLossTooltip.propTypes = {
     currency: PropTypes.string,
     exit_tick: PropTypes.number,
     exit_tick_time: PropTypes.number,
+    high_barrier: PropTypes.string,
     is_sold: PropTypes.number,
     profit: PropTypes.number,
 };

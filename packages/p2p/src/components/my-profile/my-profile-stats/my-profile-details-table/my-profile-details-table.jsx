@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Money, Table, Text } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
@@ -7,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 const MyProfileDetailsTable = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const { daily_buy_limit, daily_sell_limit, upgradable_band_limit } = general_store.advertiser_info;
+    const { daily_buy_limit, daily_sell_limit, upgradable_daily_limits } = general_store.advertiser_info;
     const { advertiser_buy_limit, advertiser_sell_limit, client } = general_store;
 
     return (
@@ -68,10 +69,10 @@ const MyProfileDetailsTable = () => {
                     </Table.Row>
                 </Table>
             </div>
-            {upgradable_band_limit && (
+            {upgradable_daily_limits && (
                 <Text as='div' color='less-prominent' line-height='l' size='xxs'>
                     <Localize
-                        i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}}</0> for buy and <1>{{max_daily_sell}}</1> for sell? <2>Increase my limits<2>'
+                        i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}} {{currency}}</0> (buy) and <1>{{max_daily_sell}} {{currency}}</1> (sell)? <2>Increase my limits<2>'
                         components={[
                             <strong key={0} />,
                             <strong key={1} />,
@@ -85,8 +86,9 @@ const MyProfileDetailsTable = () => {
                             />,
                         ]}
                         values={{
-                            max_daily_buy: upgradable_band_limit.max_daily_buy,
-                            max_daily_sell: upgradable_band_limit.max_daily_sell,
+                            currency: client.currency,
+                            max_daily_buy: formatMoney(client.currency, upgradable_daily_limits.max_daily_buy, true),
+                            max_daily_sell: formatMoney(client.currency, upgradable_daily_limits.max_daily_sell, true),
                         }}
                     />
                 </Text>

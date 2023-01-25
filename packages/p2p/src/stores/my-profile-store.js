@@ -753,8 +753,19 @@ export default class MyProfileStore extends BaseStore {
     }
 
     upgradeDailyLimit() {
-        this.setIsLoadingModalOpen(true);
+        clearTimeout(delay);
+        const delay = setTimeout(() => this.setIsLoadingModalOpen(true), 250);
 
-        /* TODO: Implement daily limit upgrade once API is ready */
+        requestWS({ p2p_advertiser_update: 1, upgrade_limits: 1 }).then(response => {
+            if (response) {
+                this.setIsLoadingModalOpen(false);
+
+                if (response.error) {
+                    this.setIsErrorModalOpen(true);
+                } else {
+                    this.setIsDailyLimitSuccessModalOpen(true);
+                }
+            }
+        });
     }
 }

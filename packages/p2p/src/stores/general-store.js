@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
+import { formatMoney, isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -67,6 +67,7 @@ export default class GeneralStore extends BaseStore {
             active_index: observable,
             active_notification_count: observable,
             advertiser_id: observable,
+            advertiser_info: observable,
             advertiser_buy_limit: observable,
             advertiser_sell_limit: observable,
             block_unblock_user_error: observable,
@@ -380,8 +381,9 @@ export default class GeneralStore extends BaseStore {
     }
 
     showDailyLimitIncreaseNotification() {
-        const { id, upgradable_band_limit } = this.advertiser_info;
-        const { max_daily_buy, max_daily_sell } = upgradable_band_limit;
+        const { id, upgradable_daily_limits } = this.advertiser_info;
+        const { max_daily_buy, max_daily_sell } = upgradable_daily_limits;
+        const { currency } = this.client;
 
         this.props.addNotificationMessage({
             action: {
@@ -394,8 +396,12 @@ export default class GeneralStore extends BaseStore {
             key: `daily-limit-increase-${id}`,
             message: (
                 <Localize
-                    i18n_default_text='Want to increase your daily limits to {{max_daily_buy}} for buy and {{max_daily_sell}} for sell?'
-                    values={{ max_daily_buy, max_daily_sell }}
+                    i18n_default_text='Would you like to increase your daily limits to {{max_daily_buy}} {{currency}} (buy) and {{max_daily_sell}} {{currency}} (sell)?'
+                    values={{
+                        currency,
+                        max_daily_buy: formatMoney(currency, max_daily_buy, true),
+                        max_daily_sell: formatMoney(currency, max_daily_sell, true),
+                    }}
                 />
             ),
             platform: 'P2P',
@@ -803,7 +809,7 @@ export default class GeneralStore extends BaseStore {
             name,
             payment_info,
             show_name,
-            upgradable_band_limit,
+            upgradable_daily_limits,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
@@ -822,7 +828,7 @@ export default class GeneralStore extends BaseStore {
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
 
-            if (upgradable_band_limit) this.showDailyLimitIncreaseNotification();
+            if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

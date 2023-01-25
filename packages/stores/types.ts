@@ -67,6 +67,14 @@ type TClientStore = {
     is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
+    has_active_real_account: boolean;
+    account_list: {
+        loginid: string;
+        is_virtual: boolean;
+        icon: string;
+        title: string;
+    }[];
+    active_accounts: { is_virtual: number }[];
 };
 
 type TCommonStoreError = {

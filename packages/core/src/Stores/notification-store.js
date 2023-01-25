@@ -13,7 +13,6 @@ import {
     LocalStore,
     platform_name,
     routes,
-    unique,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
@@ -34,7 +33,6 @@ export default class NotificationStore extends BaseStore {
     notifications = [];
     notification_messages = [];
     marked_notifications = [];
-    push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
     p2p_order_props = {};
@@ -47,13 +45,11 @@ export default class NotificationStore extends BaseStore {
             notifications: observable,
             notification_messages: observable,
             marked_notifications: observable,
-            push_notifications: observable,
             client_notifications: observable,
             should_show_popups: observable,
             p2p_order_props: observable,
             custom_notifications: computed,
             filtered_notifications: computed,
-            addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
             showCompletedOrderNotification: action.bound,
@@ -144,11 +140,6 @@ export default class NotificationStore extends BaseStore {
 
     get filtered_notifications() {
         return this.notifications.filter(message => !['news', 'promotions'].includes(message.type));
-    }
-
-    addNotificationBar(message) {
-        this.push_notifications.push(message);
-        this.push_notifications = unique(this.push_notifications, 'msg_type');
     }
 
     addNotificationMessage(notification) {

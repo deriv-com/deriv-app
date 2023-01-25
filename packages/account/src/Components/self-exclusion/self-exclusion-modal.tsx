@@ -7,9 +7,9 @@ const SelfExclusionModal = () => {
     const { state, toggleArticle } = React.useContext(SelfExclusionContext);
 
     return (
-        <Modal className='self_exclusion__article-modal' is_open={state.show_article} toggleModal={toggleArticle}>
+        <Modal className='self_exclusion__article-modal' is_open={state?.show_article} toggleModal={toggleArticle}>
             <ThemedScrollbars>
-                <SelfExclusionArticleContent toggleModal={toggleArticle} />
+                <SelfExclusionArticleContent />
             </ThemedScrollbars>
         </Modal>
     );

@@ -47,7 +47,11 @@ const AssetSummary = () => {
               `Total assets in your Options & Multipliers, Deriv MT5 and Deriv X ${selected_account_type} accounts`
           );
 
-    if (is_switching || is_logging_in) {
+    const eu_account = is_eu_user && !no_MF_account;
+    const cr_account = !is_eu_user && !no_CR_account;
+
+    //dont show loader if user has no respective regional account
+    if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
         return (
             <div className='asset-summary__container loader'>
                 <RegulationsSwitcherLoader />

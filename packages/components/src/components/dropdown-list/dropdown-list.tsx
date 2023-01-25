@@ -5,10 +5,11 @@ import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import { ResidenceList } from '@deriv/api-types';
 
-type TItem = string & {
-    component?: React.ReactNode;
-    group?: string;
-} & ResidenceList[0];
+type TItem = string &
+    ResidenceList[0] & {
+        component?: React.ReactNode;
+        group?: string;
+    };
 
 type TListItem = {
     is_active: boolean;

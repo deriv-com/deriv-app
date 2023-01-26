@@ -1,7 +1,7 @@
-import OpenPositions from './open-positions.jsx';
-import ProfitTable from './profit-table.jsx';
-import Statement from './statement.jsx';
-import Reports from './reports.jsx';
+import OpenPositions from './open-positions';
+import ProfitTable from './profit-table';
+import Statement from './statement';
+import Reports from './reports';
 
 export default {
     OpenPositions,

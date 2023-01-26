@@ -13,6 +13,7 @@
         "@deriv/api-types": "^1.0.54",
         "@testing-library/react": "^12.0.0",
         "typescript": "^4.6.3",
-        "react-router": "^5.2.0"
+        "react-router": "^5.2.0",
+        "moment": "^2.29.2"
     }
 }

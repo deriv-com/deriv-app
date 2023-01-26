@@ -166,7 +166,7 @@
                     overflow: unset;
                     height: calc(100vh - 18rem);
                     @media (min-height: 400px) and (max-height: 750px) {
-                        height: calc(100vh - 12rem);
+                        padding-bottom: 10rem;
                     }
                 }
 

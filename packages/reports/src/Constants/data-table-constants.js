@@ -200,7 +200,7 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Payout limit'),
         col_index: 'payout',
-        renderHeader: (title, is_vanilla) => (is_vanilla ? localize('Strike') : title),
+        renderHeader: ({ title, is_vanilla }) => <span>{is_vanilla ? localize('Strike') : title}</span>,
         renderCellContent: ({ cell_value, row_obj, is_vanilla }) =>
             is_vanilla ? (
                 row_obj.barrier?.toFixed(2)

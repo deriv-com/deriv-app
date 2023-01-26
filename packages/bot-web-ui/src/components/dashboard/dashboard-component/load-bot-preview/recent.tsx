@@ -10,6 +10,7 @@ import './index.scss';
 import RecentWorkspace from './recent-workspace';
 import { isMobile } from '@deriv/shared';
 import SaveModal from '../../../save-modal';
+import classNames from 'classnames';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;
@@ -34,6 +35,8 @@ const RecentComponent = ({
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
 
+    const is_mobile = isMobile();
+
     if (!dashboard_strategies?.length) return null;
 
     return (
@@ -41,12 +44,16 @@ const RecentComponent = ({
             <div className='load-strategy__recent'>
                 <div className='load-strategy__recent__files'>
                     <div className='load-strategy__title'>
-                        <Text size={isMobile() ? 'xs' : 's'} weight='bold'>
+                        <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
                             <Localize i18n_default_text='Your Bots' />
                         </Text>
                     </div>
                     <div className='load-strategy__recent__files__list'>
-                        <div className='load-strategy__recent-item load-strategy__recent-item__loaded load-strategy__recent-item__loaded--first-child'>
+                        <div
+                            className={classNames('load-strategy__recent-item load-strategy__recent-item__loaded', {
+                                'load-strategy__recent-item__loaded--first-child': !is_mobile,
+                            })}
+                        >
                             {HEADERS.map(tab_name => {
                                 return (
                                     <Text size='xs' weight='bold' key={tab_name}>

@@ -278,6 +278,7 @@
                 width: 10rem;
 
                 @include mobile {
+                    width: unset;
                     font-size: var(--text-size-xxs);
                 }
             }
@@ -348,12 +349,6 @@
                     background: none;
                     background-color: none;
                     cursor: default;
-                }
-
-                @include mobile {
-                    span:last-child {
-                        padding-left: 1.5rem;
-                    }
                 }
             }
 

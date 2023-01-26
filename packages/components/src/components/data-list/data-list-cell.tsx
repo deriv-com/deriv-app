@@ -1,7 +1,27 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
+type renderCellContentProps = {
+    cell_value: object;
+    is_footer: boolean;
+    passthrough: unknown;
+    row_obj: object;
+};
+type DataListCellType = {
+    className: string;
+    column: {
+        col_index: number;
+        title: string;
+        renderCellContent: (props: renderCellContentProps) => React.ReactNode;
+        renderHeader: (prop: renderHeaderType) => React.ReactNode;
+    };
+    is_footer: boolean;
+    passthrough: unknown;
+    row: [];
+};
+
+type renderHeaderType = { title: string };
+const DataListCell = ({ className, column, is_footer, passthrough, row }: DataListCellType) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];

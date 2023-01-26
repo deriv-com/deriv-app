@@ -9,7 +9,7 @@ import _CellMeasurer, {
 import { AutoSizer as _AutoSizer, type AutoSizerProps, ScrollParams } from 'react-virtualized';
 import _List, { ListProps, ListRowProps } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
-import DataListCell from './data-list-cell.jsx';
+import DataListCell from './data-list-cell';
 import DataListRow from './data-list-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 

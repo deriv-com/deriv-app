@@ -80,14 +80,14 @@ describe('<Withdrawal />', () => {
         return is_rerender ? ui : render(ui);
     };
 
-    // it('should render <CashierLocked /> component', () => {
-    //     mockRootStore.client.current_currency_type = 'crypto';
-    //     mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
-    //     mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-    //     renderWithdrawal();
+    it('should render <CashierLocked /> component', () => {
+        mockRootStore.client.current_currency_type = 'crypto';
+        mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
+        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
+        renderWithdrawal();
 
-    //     expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('CashierLocked')).toBeInTheDocument();
+    });
 
     it('should render <Loading /> component', () => {
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = undefined;
@@ -122,82 +122,82 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
-    // it('should render <NoBalance /> component', () => {
-    //     mockRootStore.client.balance = '0';
-    //     renderWithdrawal();
+    it('should render <NoBalance /> component', () => {
+        mockRootStore.client.balance = '0';
+        renderWithdrawal();
 
-    //     expect(screen.getByText('NoBalance')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('NoBalance')).toBeInTheDocument();
+    });
 
-    // it('should render <Error /> component', () => {
-    //     mockRootStore.modules.cashier.withdraw.error = {
-    //         is_show_full_page: true,
-    //         message: 'Error message',
-    //         setErrorMessage: jest.fn(),
-    //     };
-    //     const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+    it('should render <Error /> component', () => {
+        mockRootStore.modules.cashier.withdraw.error = {
+            is_show_full_page: true,
+            message: 'Error message',
+            setErrorMessage: jest.fn(),
+        };
+        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
 
-    //     expect(screen.getByText('Error')).toBeInTheDocument();
+        expect(screen.getByText('Error')).toBeInTheDocument();
 
-    //     mockRootStore.modules.cashier.withdraw.verification.error = { message: 'Error message' };
-    //     rerender(renderWithdrawal(true) as JSX.Element);
+        mockRootStore.modules.cashier.withdraw.verification.error = { message: 'Error message' };
+        rerender(renderWithdrawal(true) as JSX.Element);
 
-    //     expect(screen.getByText('Error')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('Error')).toBeInTheDocument();
+    });
 
-    // it('should render <Withdraw /> component', () => {
-    //     mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
+    it('should render <Withdraw /> component', () => {
+        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
 
-    //     const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
-    //     expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
-    //     mockRootStore.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
-    //     rerender(renderWithdrawal(true) as JSX.Element);
+        mockRootStore.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
+        rerender(renderWithdrawal(true) as JSX.Element);
 
-    //     expect(screen.getByText('Withdraw')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+    });
 
-    // it('should render <CryptoWithdrawForm /> component', () => {
-    //     mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
-    //     mockRootStore.modules.cashier.general_store.is_crypto = true;
-    //     renderWithdrawal();
+    it('should render <CryptoWithdrawForm /> component', () => {
+        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
+        mockRootStore.modules.cashier.general_store.is_crypto = true;
+        renderWithdrawal();
 
-    //     expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
+    });
 
-    // it('should render <CryptoWithdrawReceipt /> component', () => {
-    //     mockRootStore.modules.cashier.withdraw.is_withdraw_confirmed = true;
-    //     renderWithdrawal();
+    it('should render <CryptoWithdrawReceipt /> component', () => {
+        mockRootStore.modules.cashier.withdraw.is_withdraw_confirmed = true;
+        renderWithdrawal();
 
-    //     expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
+    });
 
-    // it('should render <CryptoTransactionsHistory /> component', () => {
-    //     mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
-    //     renderWithdrawal();
+    it('should render <CryptoTransactionsHistory /> component', () => {
+        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
+        renderWithdrawal();
 
-    //     expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
+    });
 
-    // it('should render <WithdrawalVerificationEmail /> component', () => {
-    //     renderWithdrawal();
+    it('should render <WithdrawalVerificationEmail /> component', () => {
+        renderWithdrawal();
 
-    //     expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
+    });
 
-    // it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
-    //     isDesktop.mockReturnValueOnce(false);
+    it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
+        isDesktop.mockReturnValueOnce(false);
 
-    //     renderWithdrawal();
+        renderWithdrawal();
 
-    //     expect(setSideNotes).not.toHaveBeenCalled();
-    // });
+        expect(setSideNotes).not.toHaveBeenCalled();
+    });
 
-    // it('should trigger "setSideNotes" callback in Desktop mode', () => {
-    //     mockRootStore.client.currency = 'BTC';
-    //     mockRootStore.modules.cashier.transaction_history.crypto_transactions = [{}];
-    //     renderWithdrawal();
+    it('should trigger "setSideNotes" callback in Desktop mode', () => {
+        mockRootStore.client.currency = 'BTC';
+        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [{}];
+        renderWithdrawal();
 
-    //     expect(setSideNotes).toHaveBeenCalledTimes(1);
-    // });
+        expect(setSideNotes).toHaveBeenCalledTimes(1);
+    });
 });

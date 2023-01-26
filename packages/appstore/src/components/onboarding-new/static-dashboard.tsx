@@ -79,7 +79,7 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
     const toggle_options = [
-        { text: `${is_eu_user ? 'Multipliers' : 'Options and Multipliers'}`, value: 0 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options & Multipliers'}`, value: 0 },
         { text: 'CFDs', value: 1 },
     ];
 
@@ -96,7 +96,7 @@ const StaticDashboard = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = eu_user ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
     const is_eu_account_title = eu_user ? 'Multipliers account' : 'Deriv account';
     const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 

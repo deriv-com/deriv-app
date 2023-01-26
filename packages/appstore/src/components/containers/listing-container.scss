@@ -70,13 +70,12 @@
     display: grid;
     width: 100%;
     grid-column: 1 / span 3;
-}
-
-.divider {
-    width: 100%;
-    height: 1px;
-    background-color: var(--general-hover);
-    border: none;
+    .divider {
+        width: 100%;
+        height: 1px;
+        background-color: var(--general-hover);
+        border: none;
+    }
 }
 
 .options {

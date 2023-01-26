@@ -152,7 +152,7 @@ const Calendar: React.MemoExoticComponent<
                 const view_map: Record<string, string> = {
                     month: 'date',
                     year: 'month',
-                    decade: 'year',
+                    years: 'year',
                 };
 
                 let date = '';

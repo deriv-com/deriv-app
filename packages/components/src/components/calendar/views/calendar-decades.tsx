@@ -33,8 +33,8 @@ const Decades = ({ calendar_date, isPeriodDisabled, selected_date, updateSelecte
                             'dc-calendar__cell--disabled': is_disabled,
                             'dc-calendar__cell--other': is_other_century,
                         })}
-                        onClick={is_disabled ? undefined : e => updateSelected(e, 'year')}
-                        data-decade={decade}
+                        onClick={is_disabled ? undefined : e => updateSelected(e, 'years')}
+                        data-years={decade} // data-years attribute contains a range of years selected on the calendar control e.g. 2011-2020
                     >
                         {decade}
                     </span>

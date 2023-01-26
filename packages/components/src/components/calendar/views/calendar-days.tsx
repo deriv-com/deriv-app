@@ -139,7 +139,7 @@ const getDays = ({
                         icon='dot'
                         is_bubble_hover_enabled
                         message={message}
-                        zIndex={'9999'}
+                        zIndex='9999'
                         should_show_cursor
                     />
                 )}

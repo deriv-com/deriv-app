@@ -23,7 +23,7 @@ const Body = (props: TBodyProps) => {
         date: <Views.Days {...props} />,
         month: <Views.Months {...props} />,
         year: <Views.Years {...props} />,
-        decade: <Views.Decades {...props} />,
+        years: <Views.Decades {...props} />,
     };
 
     return <React.Fragment>{calendar_body[props.calendar_view]}</React.Fragment>;

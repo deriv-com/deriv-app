@@ -27,7 +27,7 @@ const Header = ({
     const is_date_view = calendar_view === 'date';
     const is_month_view = calendar_view === 'month';
     const is_year_view = calendar_view === 'year';
-    const is_decade_view = calendar_view === 'decade';
+    const is_decade_view = calendar_view === 'years';
     const moment_date = toMoment(calendar_date);
 
     let num_of_years = 1;
@@ -103,7 +103,7 @@ const Header = ({
                     <Button
                         className='dc-calendar__btn--select'
                         is_disabled={is_select_year_disabled}
-                        onClick={is_select_year_disabled ? undefined : () => switchView('decade')}
+                        onClick={is_select_year_disabled ? undefined : () => switchView('years')}
                     >
                         {is_year_view && `${decade}`}
                         {is_decade_view && `${century}`}

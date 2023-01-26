@@ -6,7 +6,7 @@ import { isMobile, ContentFlag } from '@deriv/shared';
 import BalanceText from 'Components/elements/text/balance-text';
 import { useStores } from 'Stores';
 import './asset-summary.scss';
-import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
+import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 
 const AssetSummary = () => {
     const { traders_hub, client } = useStores();
@@ -53,9 +53,11 @@ const AssetSummary = () => {
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
         return (
-            <div className='asset-summary__container loader'>
-                <RegulationsSwitcherLoader />
-            </div>
+            <React.Fragment>
+                <div className='asset-summary__container loader'>
+                    <TotalAssetsLoader />
+                </div>
+            </React.Fragment>
         );
     }
 
@@ -68,7 +70,12 @@ const AssetSummary = () => {
                             {localize('Total assets')}
                         </Text>
                     ) : null}
-                    <Popover alignment='left' message={is_eu_popover_text} zIndex={9999} is_bubble_hover_enabled>
+                    <Popover
+                        alignment={isMobile() ? 'top' : 'left'}
+                        message={is_eu_popover_text}
+                        zIndex={9999}
+                        is_bubble_hover_enabled
+                    >
                         <BalanceText
                             currency={getTotalBalance().currency}
                             balance={getTotalBalance().balance}

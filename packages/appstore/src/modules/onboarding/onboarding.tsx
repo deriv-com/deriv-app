@@ -56,6 +56,13 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         }
     };
 
+    const handleCloseButton = async () => {
+        toggleIsTourOpen(false);
+        history.push(routes.traders_hub);
+        await selectAccountType(prev_account_type);
+        setIsPreAppStore(true);
+    };
+
     const eu_user =
         content_flag === ContentFlag.LOW_RISK_CR_EU ||
         content_flag === ContentFlag.EU_REAL ||
@@ -86,13 +93,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
                     icon='IcCross'
                     custom_color='var(--general-main-1)'
                     className='onboarding-header__cross-icon'
-                    onClick={() => {
-                        setIsPreAppStore(true);
-                        toggleIsTourOpen(false);
-                        history.push(routes.traders_hub);
-                        selectAccountType(prev_account_type);
-                        setPrevAccountType(prev_account_type);
-                    }}
+                    onClick={handleCloseButton}
                 />
             </div>
             <div className='onboarding-body'>

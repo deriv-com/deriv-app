@@ -3,7 +3,6 @@ import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import _CellMeasurer, {
     CellMeasurerCache,
-    CellMeasurerCacheInterface,
     CellMeasurerProps,
     MeasuredCellParent,
 } from 'react-virtualized/dist/es/CellMeasurer';
@@ -23,7 +22,7 @@ type DataListProps = {
     data_source: [];
     footer?: React.ReactNode;
     getRowAction?: (row: never) => string;
-    getRowSize?: () => number;
+    getRowSize: () => number;
     keyMapper: (row: React.ReactNode) => string;
     onRowsRendered: () => void;
     onScroll: (ev: ScrollParams) => void;
@@ -49,13 +48,15 @@ const DataList = ({
     setListRef,
     overscanRowCount,
     rowRenderer: rowRendererProp,
-    ...other_props
+    row_gap,
+    getRowAction,
+    passthrough,
 }: DataListProps) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [scroll_top, setScrollTop] = React.useState(0);
 
-    const cache = React.useRef<CellMeasurerCacheInterface>();
+    const cache = React.useRef<CellMeasurerCache>();
     const list_ref = React.useRef<MeasuredCellParent | null>(null);
     const items_transition_map_ref = React.useRef<{ [key: string]: boolean }>({});
     const data_source_ref = React.useRef<[] | null>(null);
@@ -97,7 +98,6 @@ const DataList = ({
     };
 
     const rowRenderer = ({ style, index, key, parent }: ListRowProps) => {
-        const { getRowAction, passthrough, row_gap } = other_props;
         const row = data_source[index];
         const action = getRowAction && getRowAction(row);
         const destination_link = typeof action === 'string' ? action : undefined;
@@ -196,12 +196,10 @@ const DataList = ({
                                         overscanRowCount={overscanRowCount || 1}
                                         ref={(ref: MeasuredCellParent) => setRef(ref)}
                                         rowCount={data_source.length}
-                                        rowHeight={index =>
-                                            is_dynamic_height && cache?.current?.getHeight(+index)
-                                                ? cache?.current?.getHeight(+index)
-                                                : getRowSize
-                                                ? getRowSize()
-                                                : 0
+                                        rowHeight={
+                                            is_dynamic_height && cache?.current?.rowHeight
+                                                ? cache?.current?.rowHeight
+                                                : getRowSize()
                                         }
                                         rowRenderer={rowRenderer}
                                         scrollingResetTimeInterval={0}

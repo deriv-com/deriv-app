@@ -5,8 +5,8 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 const PlatformLoader = () => (
     <ContentLoader
         height={140}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
         viewBox='0 0 380 70'
     >
         <DesktopWrapper>

@@ -4,8 +4,8 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 const TitleCardLoader = () => (
     <ContentLoader
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
         style={{ width: '150px', height: '48px' }}
     >
         <DesktopWrapper>

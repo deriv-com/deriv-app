@@ -13,6 +13,7 @@ const P2PCashier = observer(({ history, location }) => {
     const { notifications, client, ui, common, modules } = useStore();
     const {
         addNotificationMessage,
+        client_notifications,
         filterNotificationMessages,
         refreshNotifications,
         removeNotificationByKey,
@@ -117,6 +118,7 @@ const P2PCashier = observer(({ history, location }) => {
             addNotificationMessage={addNotificationMessage}
             balance={balance}
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            client_notifications={client_notifications}
             current_focus={current_focus}
             filterNotificationMessages={filterNotificationMessages}
             history={history}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatMoney, isEmptyObject, isMobile, toMoment } from '@deriv/shared';
+import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -381,32 +381,12 @@ export default class GeneralStore extends BaseStore {
     }
 
     showDailyLimitIncreaseNotification() {
-        const { id, upgradable_daily_limits } = this.advertiser_info;
+        const { upgradable_daily_limits } = this.advertiser_info;
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits;
-        const { currency } = this.client;
 
-        this.props.addNotificationMessage({
-            action: {
-                onClick: () => {
-                    this.redirectTo('my_profile');
-                },
-                text: localize('Go to My profile'),
-            },
-            header: <Localize i18n_default_text='Enjoy higher daily limits' />,
-            key: `daily-limit-increase-${id}`,
-            message: (
-                <Localize
-                    i18n_default_text='Would you like to increase your daily limits to {{max_daily_buy}} {{currency}} (buy) and {{max_daily_sell}} {{currency}} (sell)?'
-                    values={{
-                        currency,
-                        max_daily_buy: formatMoney(currency, max_daily_buy, true),
-                        max_daily_sell: formatMoney(currency, max_daily_sell, true),
-                    }}
-                />
-            ),
-            platform: 'P2P',
-            type: 'announce',
-        });
+        this.props.addNotificationMessage(
+            this.props.client_notifications.p2p_daily_limit_increase(max_daily_buy, max_daily_sell)
+        );
     }
 
     handleTabClick(idx) {

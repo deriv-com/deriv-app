@@ -2,6 +2,7 @@ import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
     formatDate,
+    formatMoney,
     getPathname,
     getPlatformSettings,
     getStaticUrl,
@@ -265,7 +266,9 @@ export default class NotificationStore extends BaseStore {
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
         } = this.root_store.client;
-        const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
+        const { advertiser_info, is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
+        const { upgradable_daily_limits } = advertiser_info;
+        const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
@@ -497,6 +500,11 @@ export default class NotificationStore extends BaseStore {
                                 this.showCompletedOrderNotification(client_details.name, id);
                         }
                     });
+
+                    if (upgradable_daily_limits)
+                        this.addNotificationMessage(
+                            this.client_notifications.p2p_daily_limit_increase(max_daily_buy, max_daily_sell)
+                        );
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
                 }
@@ -832,6 +840,29 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Set my account currency'),
                 },
                 type: 'danger',
+            },
+            p2p_daily_limit_increase: (max_daily_buy, max_daily_sell) => {
+                return {
+                    action: {
+                        route: routes.cashier_p2p,
+                        text: localize('Go to My profile'),
+                    },
+                    header: <Localize i18n_default_text='Enjoy higher daily limits' />,
+                    key: 'p2p_daily_limit_increase',
+                    message: (
+                        <Localize
+                            i18n_default_text='Would you like to increase your daily limits to {{max_daily_buy}} {{currency}} (buy) and {{max_daily_sell}} {{currency}} (sell)?'
+                            values={{
+                                currency: client_data.currency,
+                                max_daily_buy: formatMoney(client_data.currency, max_daily_buy, true),
+                                max_daily_sell: formatMoney(client_data.currency, max_daily_sell, true),
+                            }}
+                        />
+                    ),
+                    platform: 'P2P',
+                    should_show_again: false,
+                    type: 'announce',
+                };
             },
             deriv_go: {
                 key: 'deriv_go',
@@ -1417,7 +1448,9 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            message.key.includes('svg') ? message : !excluded_notifications.includes(message.key)
+            message.key.includes('svg') || message.key === 'p2p_daily_limit_increase'
+                ? message
+                : !excluded_notifications.includes(message.key)
         );
     }
 

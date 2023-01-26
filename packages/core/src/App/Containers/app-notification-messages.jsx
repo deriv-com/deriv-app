@@ -109,6 +109,7 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'trustpilot',
                   'close_uk_account',
+                  'p2p_daily_limit_increase',
                   'document_needs_action',
                   'identity',
                   'poi_name_mismatch',

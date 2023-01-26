@@ -165,6 +165,7 @@ const Dashboard = ({
                 setTourActive(true);
                 setOnBoardTourRunState(true);
             } else {
+                setHasTourEnded(false);
                 setTourDialogVisibility(true);
             }
         }

@@ -118,6 +118,7 @@
                     @include mobile {
                         text-align: left;
                     }
+
                     padding-left: 1.5rem;
                 }
 
@@ -144,6 +145,7 @@
             .smartcharts {
                 height: calc(100% - 4rem);
                 z-index: 1;
+
                 &:has(.stxMenuActive) {
                     z-index: 99;
                     transition: all 1s ease-out;
@@ -212,9 +214,11 @@
         @include desktop {
             position: absolute;
         }
+
         &--padded {
             margin-top: 4rem;
         }
+
         right: 1.6rem;
         top: 1.6rem;
         z-index: 2;
@@ -366,24 +370,36 @@
 
         &__left {
             margin: 0.3rem 0 0 1.2rem;
+
+            @include mobile {
+                margin: 0;
+
+                svg {
+                    margin: 0;
+                }
+            }
         }
     }
 }
 
 .dbot-slider {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     position: fixed;
     left: 0;
     bottom: 0;
     z-index: 1000;
-    background-color: $color-white;
+    background-color: var(--general-section-1);
     width: 100%;
-    border-top: 1px solid $color-grey-4;
+    border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
+
+    &--tour-position {
+        top: 0;
+    }
 
     &--active {
         height: auto;
@@ -394,7 +410,9 @@
         justify-content: space-between;
         padding: 0 1.6rem;
         width: 100%;
+        margin-bottom: 1.8rem;
     }
+
     &__title {
         margin-bottom: 0.8rem;
     }
@@ -403,6 +421,10 @@
         text-align: center;
         padding: 0 1.6rem;
         margin-bottom: 1.6rem;
+
+        &:last-child {
+            margin-bottom: 3rem;
+        }
     }
 
     &__image {
@@ -410,6 +432,7 @@
         text-align: center;
         padding: 0.8rem;
         width: 100%;
+        margin-bottom: 0.8rem;
     }
 
     &__progress-bar {
@@ -434,6 +457,10 @@
             outline: none;
             cursor: pointer;
             margin-right: 0.8rem;
+
+            &.default {
+                background: transparent;
+            }
 
             &.danger {
                 background: $color-red;
@@ -489,12 +516,19 @@
                 height: 5rem;
                 display: flex;
                 @extend .position-center;
+                justify-content: flex-start;
             }
 
             &__progress-bar {
                 width: 50%;
                 margin-bottom: unset;
                 @extend .position-center;
+                align-items: center;
+                justify-content: flex-start;
+
+                .progress-bar-circle {
+                    opacity: 0.16;
+                }
             }
 
             &__button-group {
@@ -550,7 +584,7 @@
         max-height: 0;
         opacity: 0;
         color: $color-white;
-        padding: 1rem 1.6rem;
+        padding: 1rem 0;
         font-size: 1.2rem;
 
         &--open {
@@ -571,11 +605,33 @@
         position: absolute;
         top: -5rem;
         left: 20rem;
+
         @include mobile {
             top: -12rem;
             left: 10rem;
         }
     }
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        border: 1px solid $color-red;
+    }
+
+    50% {
+        border: 1px solid transparent;
+    }
+}
+
+.dbot-tour-blink {
+    -webkit-animation: blink 1.25s infinite;
+    -moz-animation: blink 1.25s ease-in infinite;
+    animation: blink 1.25s ease-in infinite;
+    border-radius: $BORDER-RADIUS * 12.5;
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    padding: 0.2rem 0;
 }
 
 .import-notification {

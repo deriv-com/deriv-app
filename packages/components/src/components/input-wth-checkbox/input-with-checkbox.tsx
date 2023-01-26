@@ -9,7 +9,7 @@ type Position = 'left' | 'right' | 'top' | 'bottom';
 type InputWithCheckboxProps = {
     addToast: (e: object) => void;
     removeToast: (e: object | string) => void;
-    checkbox_tooltip_label: any | object | string | ReactNode;
+    checkbox_tooltip_label: boolean;
     className: string;
     classNameInlinePrefix: string;
     classNameInput: string;
@@ -17,14 +17,14 @@ type InputWithCheckboxProps = {
     currency: string;
     current_focus: string;
     defaultChecked: boolean;
-    error_messages: Array<string> | string | any;
+    error_messages: any[];
     is_negative_disabled: boolean | undefined | null;
     is_single_currency: boolean;
     is_input_hidden: boolean;
     label: string;
     max_value: number;
     name: string;
-    onChange: (e: any) => void;
+    onChange: (e: object) => void;
     setCurrentFocus: () => void;
     tooltip_label: string;
     tooltip_alignment: Position;
@@ -58,7 +58,7 @@ const InputWithCheckbox = ({
     tooltip_label,
     value,
 }: InputWithCheckboxProps) => {
-    const checkboxRef: any = React.useRef();
+    const checkboxRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const input_wrapper_ref: any = React.useRef();
 
@@ -72,7 +72,7 @@ const InputWithCheckbox = ({
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (isMobile()) {
-            const showErrorToast = (e: any) => {
+            const showErrorToast = (e: object) => {
                 if (typeof addToast === 'function') {
                     addToast({
                         key: `${name}__error`,

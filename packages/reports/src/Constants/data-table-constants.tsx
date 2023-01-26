@@ -8,7 +8,7 @@ import ProgressSliderStream from '../Containers/progress-slider-stream.jsx';
 import { getCardLabels } from '_common/contract';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
-import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
+import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { ITransformer } from 'mobx-utils';

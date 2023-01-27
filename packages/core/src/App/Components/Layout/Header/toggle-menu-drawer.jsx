@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
+import { useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -112,12 +113,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
     } = client;
     const { cashier } = modules;
-    const { onramp, general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
+    const { onramp, general_store, payment_agent_transfer, payment_agent } = cashier;
     const { is_onramp_tab_visible } = onramp;
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
-    const { is_account_transfer_visible } = account_transfer;
+    const is_account_transfer_visible = useAccountTransferVisible();
 
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);

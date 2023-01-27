@@ -18,6 +18,7 @@ import ErrorDialog from 'Components/error-dialog';
 import { TRoute } from 'Types';
 import './cashier.scss';
 import { observer, useStore } from '@deriv/stores';
+import { useAccountTransferVisible } from '@deriv/hooks';
 
 type TCashierProps = RouteComponentProps & {
     routes: TRoute[];
@@ -39,7 +40,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const {
         withdraw,
         general_store,
-        account_transfer,
         transaction_history,
         onramp,
         payment_agent_transfer,
@@ -57,7 +57,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         setCashierTabIndex: setTabIndex,
         cashier_route_tab_index: tab_index,
     } = general_store;
-    const { is_account_transfer_visible } = account_transfer;
     const { is_crypto_transactions_visible } = transaction_history;
     const { is_onramp_tab_visible } = onramp;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
@@ -66,6 +65,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { routeBackInApp, is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
+    const is_account_transfer_visible = useAccountTransferVisible();
 
     React.useEffect(() => {
         toggleCashier();

@@ -77,9 +77,6 @@ describe('<Cashier />', () => {
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
                     },
-                    account_transfer: {
-                        is_account_transfer_visible: false,
-                    },
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                     },
@@ -133,9 +130,6 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
-                    },
-                    account_transfer: {
-                        is_account_transfer_visible: true,
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
@@ -200,9 +194,6 @@ describe('<Cashier />', () => {
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
                     },
-                    account_transfer: {
-                        is_account_transfer_visible: true,
-                    },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
@@ -260,9 +251,6 @@ describe('<Cashier />', () => {
     //                     setAccountSwitchListener: jest.fn(),
     //                     setCashierTabIndex: jest.fn(),
     //                     cashier_route_tab_index: 0,
-    //                 },
-    //                 account_transfer: {
-    //                     is_account_transfer_visible: true,
     //                 },
     //                 transaction_history: {
     //                     is_crypto_transactions_visible: false,
@@ -322,9 +310,6 @@ describe('<Cashier />', () => {
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
                     },
-                    account_transfer: {
-                        is_account_transfer_visible: true,
-                    },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
@@ -382,9 +367,6 @@ describe('<Cashier />', () => {
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
                     },
-                    account_transfer: {
-                        is_account_transfer_visible: true,
-                    },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
@@ -440,9 +422,6 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
-                    },
-                    account_transfer: {
-                        is_account_transfer_visible: true,
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,

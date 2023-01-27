@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Modal, Text } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
@@ -24,7 +25,11 @@ const DailyLimitSuccessModal = () => {
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='Your daily limits have been increased to {{daily_buy_limit}} {{currency}} (buy) and {{daily_sell_limit}} {{currency}} (sell).'
-                        values={{ daily_buy_limit, currency, daily_sell_limit }}
+                        values={{
+                            daily_buy_limit: formatMoney(currency, daily_buy_limit, true),
+                            currency,
+                            daily_sell_limit: formatMoney(currency, daily_sell_limit, true),
+                        }}
                     />
                 </Text>
             </Modal.Body>

@@ -211,7 +211,7 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
-        } else if (window.location.pathname !== routes.cashier_p2p) {
+        } else {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -843,10 +843,20 @@ export default class NotificationStore extends BaseStore {
             },
             p2p_daily_limit_increase: (max_daily_buy, max_daily_sell) => {
                 return {
-                    action: {
-                        route: routes.cashier_p2p,
-                        text: localize('Go to My profile'),
-                    },
+                    action:
+                        routes.cashier_p2p === window.location.pathname
+                            ? {
+                                  onClick: () => {
+                                      this.p2p_order_props.redirectTo('my_profile');
+                                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                                  },
+                                  text: localize('Go to My profile'),
+                              }
+                            : {
+                                  route: routes.cashier_p2p_profile,
+                                  text: localize('Go to My profile'),
+                              },
+
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (

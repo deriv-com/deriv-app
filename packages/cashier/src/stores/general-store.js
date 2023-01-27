@@ -11,7 +11,6 @@ export default class GeneralStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            should_redirect_to_profile: observable,
             advertiser_info: observable,
             is_loading: observable,
             is_p2p_visible: observable,
@@ -62,7 +61,6 @@ export default class GeneralStore extends BaseStore {
             is_system_maintenance: computed,
             setLoading: action.bound,
             setActiveTab: action.bound,
-            setShouldRedirectToProfile: action.bound,
         });
 
         this.WS = WS;
@@ -92,7 +90,6 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    should_redirect_to_profile = false;
     advertiser_info = {};
     is_loading = false;
     is_p2p_visible = false;
@@ -427,10 +424,6 @@ export default class GeneralStore extends BaseStore {
 
     setActiveTab(container) {
         this.active_container = container;
-    }
-
-    setShouldRedirectToProfile(should_redirect_to_profile) {
-        this.should_redirect_to_profile = should_redirect_to_profile;
     }
 
     accountSwitcherListener() {

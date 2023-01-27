@@ -16,7 +16,7 @@ describe('OpenPositionsTable', () => {
 
     it('should render "EmptyMessageComponent" when we have no "active_positions"', () => {
         render(<OpenPositionsTable currency='USD' active_positions={[]} component_icon='IcUnderlying' />);
-        expect(screen.getByText(/you have no open positions yet/i)).toBeVisible();
+        expect(screen.getByText(/You have no open positions yet/i)).toBeVisible();
         expect(screen.getByTestId('dt_empty_trade_history_icon')).toBeVisible();
     });
 

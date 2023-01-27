@@ -231,6 +231,17 @@ export default class GeneralStore extends BaseStore {
                     }
                 } else {
                     this.setBlockUnblockUserError(response.error.message);
+                    if (!general_store.is_barred) {
+                        general_store.showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                error_message: response.error.message,
+                                error_modal_title: 'Unable to block advertiser',
+                                has_close_icon: false,
+                                width: isMobile() ? '90rem' : '40rem',
+                            },
+                        });
+                    }
                 }
             }
             this.setIsBlockUnblockUserLoading(false);

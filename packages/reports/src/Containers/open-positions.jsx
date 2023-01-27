@@ -307,7 +307,6 @@ const OpenPositions = ({
 }) => {
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    // const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
     const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
@@ -456,16 +455,6 @@ const OpenPositions = ({
                     {...shared_props}
                 />
             )}
-
-            {/* {contract_type_value === 'Multipliers' && (
-                <OpenPositionsTable
-                    className='open-positions-multiplier open-positions'
-                    columns={columns}
-                    row_size={isMobile() ? 3 : 68}
-                    is_empty={!has_multiplier_contract}
-                    {...shared_props}
-                />
-            )}  */}
         </React.Fragment>
     );
 };

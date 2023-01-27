@@ -5,8 +5,8 @@ import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -42,7 +42,7 @@ describe('<Cashier />', () => {
         history = createBrowserHistory();
         return {
             ...render(<Router history={history}>{component}</Router>, {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }),
         };
     };

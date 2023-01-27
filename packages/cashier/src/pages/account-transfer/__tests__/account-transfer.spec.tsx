@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { StoreProvider } from '@deriv/stores';
 import { useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -89,7 +89,7 @@ describe('<AccountTransfer />', () => {
 
     const renderAccountTransfer = () => {
         render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
     };
 
@@ -115,9 +115,9 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </StoreProvider>
+                </CashierProviders>
             ),
         });
 
@@ -166,9 +166,9 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </StoreProvider>
+                </CashierProviders>
             ),
         });
 

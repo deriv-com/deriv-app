@@ -369,7 +369,7 @@ const DMT5CompareModalContent = ({
     const onButtonClick = (item: TCompareAccountFooterButtonData) => {
         const if_no_corresponding_real_account = is_pre_appstore_setting
             ? (no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)
-            : has_real_account;
+            : !has_real_account;
 
         const should_show_missing_real_account =
             is_logged_in &&

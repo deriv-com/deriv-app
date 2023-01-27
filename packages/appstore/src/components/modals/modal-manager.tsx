@@ -6,7 +6,6 @@ import {
     CFDPasswordModal,
     CFDDbviOnBoarding,
     CFDResetPasswordModal,
-    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
@@ -15,6 +14,7 @@ import {
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
+import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
@@ -130,7 +130,7 @@ const ModalManager = () => {
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog context={store} />
+            <CFDServerErrorDialog />
             <CFDTopUpDemoModal
                 context={store}
                 dxtrade_companies={dxtrade_companies}

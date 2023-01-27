@@ -2,6 +2,9 @@
     background-color: var(--general-main-1);
     border-radius: 1.6rem;
     padding: 3rem;
+    @include desktop {
+        min-width: 132rem;
+    }
 
     &--deposit-button-blurry {
         opacity: 0.2;

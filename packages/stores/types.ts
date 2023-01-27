@@ -68,6 +68,10 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_landing_company_loaded: boolean;
+    has_maltainvest_account: boolean;
+    active_accounts: {
+        landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    }[];
 };
 
 type TCommonStoreError = {

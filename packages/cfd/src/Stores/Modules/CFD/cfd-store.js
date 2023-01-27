@@ -24,7 +24,6 @@ export default class CFDStore extends BaseStore {
     is_cfd_success_dialog_enabled = false;
     is_mt5_financial_stp_modal_open = false;
     is_cfd_password_modal_enabled = false;
-    is_cfd_reset_password_modal_enabled = false;
 
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
@@ -57,7 +56,6 @@ export default class CFDStore extends BaseStore {
             is_cfd_success_dialog_enabled: observable,
             is_mt5_financial_stp_modal_open: observable,
             is_cfd_password_modal_enabled: observable,
-            is_cfd_reset_password_modal_enabled: observable,
             current_account: observable,
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
@@ -103,7 +101,6 @@ export default class CFDStore extends BaseStore {
             sendVerifyEmail: action.bound,
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
-            setCFDPasswordResetModal: action.bound,
             setDxtradeToken: action.bound,
             loadDxtradeTokens: action.bound,
         });
@@ -587,10 +584,6 @@ export default class CFDStore extends BaseStore {
 
     sendVerifyEmail() {
         return WS.verifyEmail(this.root_store.client.email, 'trading_platform_investor_password_reset');
-    }
-
-    setCFDPasswordResetModal(val) {
-        this.is_cfd_reset_password_modal_enabled = !!val;
     }
 
     setDxtradeToken(response, server) {

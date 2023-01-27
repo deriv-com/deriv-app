@@ -767,7 +767,7 @@ export default withRouter(
         has_dxtrade_demo_account_error: client.has_account_error_in_dxtrade_demo_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,
-        setCFDPasswordResetModal: modules.cfd.setCFDPasswordResetModal,
+        setCFDPasswordResetModal: ui.setCFDPasswordResetModal,
         setCurrentAccount: modules.cfd.setCurrentAccount,
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,

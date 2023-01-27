@@ -73,6 +73,10 @@
         }
     }
 
+    &__page-return {
+        margin: 2rem;
+    }
+
     &__table-header {
         display: grid;
         grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;

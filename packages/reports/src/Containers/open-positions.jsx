@@ -153,6 +153,7 @@ export const OpenPositionsTable = ({
     preloaderCheck,
     row_size,
     totals,
+    is_empty,
 }) => (
     <React.Fragment>
         {is_loading ? (
@@ -166,10 +167,7 @@ export const OpenPositionsTable = ({
             currency && (
                 <div className='reports__content'>
                     <DesktopWrapper>
-                        <EmptyPlaceholderWrapper
-                            component_icon={component_icon}
-                            is_empty={active_positions.length === 0}
-                        >
+                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
                             <DataTable
                                 className={className}
                                 columns={columns}
@@ -185,10 +183,7 @@ export const OpenPositionsTable = ({
                         </EmptyPlaceholderWrapper>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <EmptyPlaceholderWrapper
-                            component_icon={component_icon}
-                            is_empty={active_positions.length === 0}
-                        >
+                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
                             <DataList
                                 className={className}
                                 data_source={active_positions}
@@ -312,7 +307,8 @@ const OpenPositions = ({
 }) => {
     // Tabs should be visible only when there is at least one active multiplier contract
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [contract_type_value, setContractTypeValue] = React.useState('Options');
+    // const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
+    const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
         {
@@ -322,14 +318,6 @@ const OpenPositions = ({
         {
             text: localize('Multipliers'),
             value: 'Multipliers',
-        },
-        {
-            text: localize('Vanilla'),
-            value: 'Vanilla',
-        },
-        {
-            text: localize('Accumulators'),
-            value: 'Accumulators',
         },
     ];
 
@@ -359,6 +347,8 @@ const OpenPositions = ({
     if (error) return <p>{error}</p>;
 
     const is_multiplier_selected = has_multiplier_contract && contract_type_value === 'Multipliers';
+    const is_options_selected = contract_type_value === 'Options';
+
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
             return is_multiplier_selected
@@ -410,50 +400,72 @@ const OpenPositions = ({
     const handleChange = e => {
         setContractTypeValue(e.target.value);
     };
-
     return (
         <React.Fragment>
             <NotificationMessages />
-            <DesktopWrapper>
-                <div className='contract-types-selector-container'>
-                    <Dropdown
-                        is_align_text_left
-                        name='contract_types'
-                        list={contract_types}
-                        value={contract_type_value}
-                        onChange={handleChange}
-                    />
-                </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <SelectNative
-                    className='reports__contract-types-selector'
-                    list_items={contract_types.map(option => ({
-                        text: option.text,
-                        value: option.value,
-                    }))}
-                    value={contract_type_value}
-                    should_show_empty_option={false}
-                    onChange={handleChange}
-                />
-            </MobileWrapper>
-
-            {is_multiplier_selected ? (
-                <OpenPositionsTable
-                    className='open-positions-multiplier open-positions'
-                    is_multiplier_tab
-                    columns={columns}
-                    row_size={isMobile() ? 3 : 68}
-                    {...shared_props}
-                />
+            {active_positions.length !== 0 ? (
+                <>
+                    <DesktopWrapper>
+                        <div className='contract-types-selector-container'>
+                            <Dropdown
+                                is_align_text_left
+                                name='contract_types'
+                                list={contract_types}
+                                value={contract_type_value}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <SelectNative
+                            className='reports__contract-types-selector'
+                            list_items={contract_types.map(option => ({
+                                text: option.text,
+                                value: option.value,
+                            }))}
+                            value={contract_type_value}
+                            should_show_empty_option={false}
+                            onChange={handleChange}
+                        />
+                    </MobileWrapper>
+                </>
             ) : (
+                <PlaceholderComponent
+                    is_empty={!isMobile()}
+                    is_loading={is_loading}
+                    empty_message_component={EmptyTradeHistoryMessage}
+                    component_icon={component_icon}
+                    localized_message={localize('You have no open positions yet.')}
+                />
+            )}
+
+            {is_options_selected ? (
                 <OpenPositionsTable
+                    is_empty={active_positions_filtered.length === 0}
                     className='open-positions'
                     columns={columns}
                     {...shared_props}
                     row_size={isMobile() ? 5 : 63}
                 />
+            ) : (
+                <OpenPositionsTable
+                    className='open-positions-multiplier open-positions'
+                    columns={columns}
+                    row_size={isMobile() ? 3 : 68}
+                    is_empty={!has_multiplier_contract}
+                    {...shared_props}
+                />
             )}
+
+            {/* {contract_type_value === 'Multipliers' && (
+                <OpenPositionsTable
+                    className='open-positions-multiplier open-positions'
+                    columns={columns}
+                    row_size={isMobile() ? 3 : 68}
+                    is_empty={!has_multiplier_contract}
+                    {...shared_props}
+                />
+            )}  */}
         </React.Fragment>
     );
 };

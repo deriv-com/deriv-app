@@ -85,13 +85,14 @@ const StaticDashboard = ({
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
+            if (isMobile()) {
+                if (index === 0) {
+                    setIndex(1);
+                } else {
+                    setIndex(0);
+                }
             }
         }, 5000);
-
         return () => clearInterval(change_index_interval_id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);

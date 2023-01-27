@@ -1584,6 +1584,29 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        const unusedParams = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
+
+        const all_search_params = new URLSearchParams(search);
+        const filtered_queries = [...all_search_params].filter(kvp => !unusedParams.includes(kvp[0]));
+        const newParams = new URLSearchParams(filtered_queries || '').toString();
+
+        history.replaceState(null, null, window.location.href.replace(`${search}`, newParams));
+
         return true;
     }
 

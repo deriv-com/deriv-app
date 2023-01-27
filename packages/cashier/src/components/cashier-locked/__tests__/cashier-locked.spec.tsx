@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
-import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierLocked />', () => {
     it('should show the proper message if there is a cryptocashier maintenance', () => {
@@ -28,7 +28,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -61,7 +63,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -94,7 +98,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -127,7 +133,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -160,7 +168,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -193,7 +203,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -226,7 +238,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -259,7 +273,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -292,7 +308,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -323,7 +341,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -352,7 +372,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
@@ -384,7 +406,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -417,7 +441,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
@@ -446,7 +472,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -475,7 +503,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -508,7 +538,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -545,7 +577,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -578,7 +612,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText('Please contact us via live chat.')).toBeInTheDocument();
@@ -607,7 +643,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -640,7 +678,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -673,7 +713,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -704,7 +746,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -733,7 +777,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -766,7 +812,9 @@ describe('<CashierLocked />', () => {
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(

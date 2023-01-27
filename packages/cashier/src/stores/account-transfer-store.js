@@ -55,7 +55,6 @@ export default class AccountTransferStore {
             account_transfer_amount: observable,
             transfer_fee: observable,
             transfer_limit: observable,
-            is_account_transfer_visible: computed,
             is_transfer_locked: computed,
             setBalanceByLoginId: action.bound,
             setBalanceSelectedFrom: action.bound,
@@ -102,13 +101,6 @@ export default class AccountTransferStore {
     account_transfer_amount = '';
     transfer_fee = null;
     transfer_limit = {};
-
-    get is_account_transfer_visible() {
-        const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
-        // cashier Transfer account tab is hidden for iom clients
-        // check for residence to hide the tab before creating a real money account
-        return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
-    }
 
     get is_transfer_locked() {
         const {

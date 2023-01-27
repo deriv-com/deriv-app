@@ -678,7 +678,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
-                        <CFDServerErrorDialog context={props.context} />
+                        <CFDServerErrorDialog />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && (
                             <CFDDbviOnboarding openPasswordModal={openRealPasswordModal} />
                         )}

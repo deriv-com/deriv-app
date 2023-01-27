@@ -61,6 +61,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: false,
                 is_logged_in: false,
                 is_logging_in: true,
+                active_accounts: [],
             },
             modules: {
                 cashier: {
@@ -115,6 +116,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: true,
+                active_accounts: [],
             },
             modules: {
                 cashier: {
@@ -178,6 +180,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: true,
+                active_accounts: [],
             },
             modules: {
                 cashier: {
@@ -294,6 +297,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: true,
+                active_accounts: [],
             },
             modules: {
                 cashier: {
@@ -351,6 +355,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: true,
+                active_accounts: [],
             },
             modules: {
                 cashier: {
@@ -407,6 +412,7 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: false,
+                active_accounts: [],
             },
             modules: {
                 cashier: {

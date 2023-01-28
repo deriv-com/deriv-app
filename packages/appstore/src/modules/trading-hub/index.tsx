@@ -20,13 +20,12 @@ import {
     JurisdictionModal,
     CFDPasswordModal,
     CFDDbviOnBoarding,
-    CFDPersonalDetailsModal,
     CFDResetPasswordModal,
-    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
+import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import CFDAccounts from 'Components/CFDs';
 import OptionsAccounts from 'Components/options';
 import TotalAssets from 'Components/total-assets';
@@ -56,7 +55,8 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on } = ui;
+    const { notification_messages_ui: Notifications, is_dark_mode_on } = ui;
+
     const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = tradinghub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
@@ -200,6 +200,7 @@ const TradingHub: React.FC = () => {
 
     return (
         <div id='trading-hub' className='trading-hub'>
+            <Notifications />
             <div className='trading-hub_header'>
                 <div className='trading-hub_header--title'>
                     <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>
@@ -281,9 +282,8 @@ const TradingHub: React.FC = () => {
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
-            <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog context={store} />
+            <CFDServerErrorDialog />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}

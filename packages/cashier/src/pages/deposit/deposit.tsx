@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
+import { useDepositLocked } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -18,7 +18,8 @@ type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
-const Deposit = ({ setSideNotes }: TDeposit) => {
+const Deposit = observer(({ setSideNotes }: TDeposit) => {
+    const is_deposit_locked = useDepositLocked();
     const { client, modules } = useStore();
     const {
         can_change_fiat_currency,
@@ -32,7 +33,7 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
     const { cashier } = modules;
     const { iframe, deposit, transaction_history, general_store } = cashier;
     const { clearIframe, iframe_height, iframe_url } = iframe;
-    const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
+    const { container, error, onMountDeposit: onMount } = deposit;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -141,6 +142,6 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         );
     }
     return <CashierOnboarding setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(Deposit);
+export default Deposit;

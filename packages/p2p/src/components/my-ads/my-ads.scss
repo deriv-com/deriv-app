@@ -213,18 +213,28 @@
         }
     }
 
-    &__modal-body {
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 1.6rem 0;
-        width: 100vw;
+    &__modal {
+        &-body {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1.6rem 0;
+            width: 100vw;
 
-        &--scroll {
-            overflow: auto;
+            &--form {
+                padding: 1rem 0 0;
+            }
+
+            &--scroll {
+                overflow: auto;
+                padding: 1rem 0 0;
+            }
+
+            &--horizontal {
+                padding-right: 0rem;
+            }
         }
-
-        &--horizontal {
-            padding-right: 0rem;
+        &-form {
+            height: fit-content !important;
         }
     }
 
@@ -684,6 +694,9 @@
 }
 
 .p2p-my-ads__modal-error {
+    &--form {
+        height: fit-content !important;
+    }
     .dc-modal-header__title--p2p-my-ads__modal-error {
         padding: 2.4rem 2.4rem 0 !important;
     }

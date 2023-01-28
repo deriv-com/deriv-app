@@ -1,5 +1,9 @@
 .error-modal {
     &__body {
         padding: 0 2.4rem;
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
     }
 }

@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv/components';
 import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
-const AccountPromptDialog = () => {
+const AccountPromptDialog = observer(() => {
     const {
         client: { accounts },
         modules: {
@@ -46,7 +45,7 @@ const AccountPromptDialog = () => {
             />
         </Dialog>
     );
-};
+});
 
 AccountPromptDialog.propTypes = {
     accounts: PropTypes.object,
@@ -58,4 +57,4 @@ AccountPromptDialog.propTypes = {
     should_show: PropTypes.bool,
 };
 
-export default observer(AccountPromptDialog);
+export default AccountPromptDialog;

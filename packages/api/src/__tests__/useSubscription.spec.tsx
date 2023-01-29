@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWS as useWSShared } from '@deriv/shared';
 import useSubscription from '../useSubscription';
-import { TSocketRequestProps, TSocketSubscribableEndpointNames } from '../../types';
+import { TSocketSubscribableEndpointNames, TSocketAcceptableProps } from '../../types';
 
 jest.mock('@deriv/shared');
 
@@ -15,7 +15,7 @@ const UseSubscriptionExample = <T extends TSocketSubscribableEndpointNames>({
     request,
 }: {
     name: T;
-    request?: TSocketRequestProps<T>;
+    request?: TSocketAcceptableProps<T>;
 }) => {
     const WS = useSubscription(name);
 

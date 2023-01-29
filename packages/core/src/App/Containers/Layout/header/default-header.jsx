@@ -273,4 +273,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded: client.is_landing_company_loaded,
+    setIsPreAppStore: client.setIsPreAppStore,
 }))(withRouter(DefaultHeader));

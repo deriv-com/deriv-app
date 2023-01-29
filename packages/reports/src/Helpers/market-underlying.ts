@@ -1,6 +1,16 @@
 import { getMarketNamesMap, getContractConfig } from '_common/contract';
 import { localize } from '@deriv/translations';
 
+type TMarketInfo = {
+    category: string;
+    underlying: string;
+};
+
+type TTradeConfig = {
+    name: JSX.Element;
+    position: string;
+};
+
 /**
  * Fetch market information from shortcode
  * @param shortcode: string
@@ -8,8 +18,8 @@ import { localize } from '@deriv/translations';
  */
 
 // TODO: Combine with  extractInfoFromShortcode function in shared, both are currently used
-export const getMarketInformation = shortcode => {
-    const market_info = {
+export const getMarketInformation = (shortcode: string): TMarketInfo => {
+    const market_info: TMarketInfo = {
         category: '',
         underlying: '',
     };
@@ -26,11 +36,15 @@ export const getMarketInformation = shortcode => {
     return market_info;
 };
 
-export const getMarketName = underlying => (underlying ? getMarketNamesMap()[underlying.toUpperCase()] : null);
+export const getMarketName = (underlying: string) =>
+    underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
-export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
+export const getTradeTypeName = (category: string) =>
+    category
+        ? (getContractConfig()[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig).name
+        : null;
 
-export const getContractDurationType = (longcode, shortcode) => {
+export const getContractDurationType = (longcode: string, shortcode: string): string => {
     if (/^MULTUP|MULTDOWN/.test(shortcode)) return '';
 
     const duration_pattern = new RegExp('ticks|tick|seconds|minutes|minute|hour|hours');

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -21,7 +21,6 @@ const MemoizedMenuLinks = React.memo(MenuLinks);
 
 const DTraderHeader = ({
     acc_switcher_disabled_message,
-    account_status,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -37,38 +36,24 @@ const DTraderHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_bot_allowed,
-    is_dark_mode,
     is_dxtrade_allowed,
     is_eu,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_p2p_enabled,
     is_pre_appstore,
-    is_payment_agent_transfer_visible,
-    is_payment_agent_visible,
-    is_account_transfer_visible,
     is_route_modal_on,
     is_virtual,
-    location,
-    logoutClient,
     menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
     replaceCashierMenuOnclick,
     removeNotificationMessage,
-    setDarkMode,
-    setIsPreAppStore,
-    should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
-    changeCurrentLanguage,
-    is_social_signup,
 }) => {
-    const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -116,38 +101,8 @@ const DTraderHeader = ({
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ToggleMenuDrawer
-                            changeCurrentLanguage={changeCurrentLanguage}
-                            ref={toggle_menu_drawer_ref}
-                            should_allow_authentication={should_allow_authentication}
-                            account_status={account_status}
-                            enableApp={enableApp}
-                            disableApp={disableApp}
-                            location={location}
-                            logoutClient={logoutClient}
-                            is_dark_mode={is_dark_mode}
-                            is_logged_in={is_logged_in}
-                            is_p2p_enabled={is_p2p_enabled}
-                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                            is_onramp_tab_visible={is_onramp_tab_visible}
-                            is_payment_agent_visible={is_payment_agent_visible}
-                            is_account_transfer_visible={is_account_transfer_visible}
-                            is_virtual={is_virtual}
-                            is_pre_appstore={is_pre_appstore}
-                            toggleTheme={setDarkMode}
-                            platform_header={getPlatformInformation(app_routing_history).header}
-                            platform_switcher={
-                                <PlatformSwitcher
-                                    app_routing_history={app_routing_history}
-                                    is_mobile
-                                    platform_config={filterPlatformsForClients(platform_config)}
-                                    toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
-                                    is_pre_appstore={is_pre_appstore}
-                                />
-                            }
-                            is_social_signup={is_social_signup}
-                            setIsPreAppStore={setIsPreAppStore}
-                        />
+                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
@@ -213,100 +168,73 @@ const DTraderHeader = ({
 
 DTraderHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    account_status: PropTypes.object,
     account_type: PropTypes.string,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
-    changeCurrentLanguage: PropTypes.func,
     client_notifications: PropTypes.object,
-    country_standpoint: PropTypes.object,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     header_extension: PropTypes.any,
-    history: PropTypes.object,
     is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
-    is_account_transfer_visible: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
-    is_dxtrade_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
-    is_social_signup: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    location: PropTypes.object,
-    logoutClient: PropTypes.func,
-    menu_items: PropTypes.array,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
-    setDarkMode: PropTypes.func,
-    setIsPreAppStore: PropTypes.func,
-    should_allow_authentication: PropTypes.bool,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    country_standpoint: PropTypes.object,
+    history: PropTypes.object,
+    menu_items: PropTypes.array,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
-    account_status: client.account_status,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
-    changeCurrentLanguage: common.changeCurrentLanguage,
     client_notifications: notifications.client_notifications,
-    country_standpoint: client.country_standpoint,
     currency: client.currency,
+    country_standpoint: client.country_standpoint,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
-    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_app_disabled: ui.is_app_disabled,
     is_bot_allowed: client.is_bot_allowed,
-    is_dark_mode: ui.is_dark_mode_on,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
-    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
-    is_pre_appstore: client.is_pre_appstore,
     is_route_modal_on: ui.is_route_modal_on,
-    is_social_signup: client.is_social_signup,
     is_virtual: client.is_virtual,
-    logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    setDarkMode: ui.setDarkMode,
-    setIsPreAppStore: client.setIsPreAppStore,
-    should_allow_authentication: client.should_allow_authentication,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(DTraderHeader));

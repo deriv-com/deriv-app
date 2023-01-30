@@ -89,7 +89,7 @@ const MarkerSpotLabel = ({
                         <Text as='p' size='xxs'>
                             {localize('Total profit/loss:')}
                         </Text>
-                        <Text as='p' size='xs'>{`${spot_profit}`}</Text>
+                        <Text as='p' size='xs'>{`${parseFloat(spot_profit) > 0 ? '+' : ''}${spot_profit}`}</Text>
                     </div>
                 </div>
             )}

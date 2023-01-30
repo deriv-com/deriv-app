@@ -11,7 +11,6 @@ export default class GeneralStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            advertiser_info: observable,
             is_loading: observable,
             is_p2p_visible: observable,
             p2p_notification_count: observable,
@@ -50,7 +49,6 @@ export default class GeneralStore extends BaseStore {
             getAdvertizerError: action.bound,
             setP2pAdvertiserError: action.bound,
             checkP2pStatus: action.bound,
-            setAdvertiserInfo: action.bound,
             setP2pCompletedOrders: action.bound,
             getP2pCompletedOrders: action.bound,
             onMountCommon: action.bound,
@@ -90,7 +88,6 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    advertiser_info = {};
     is_loading = false;
     is_p2p_visible = false;
     p2p_notification_count = 0;
@@ -303,12 +300,7 @@ export default class GeneralStore extends BaseStore {
 
     async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        this.setAdvertiserInfo(advertiser_info.p2p_advertiser_info);
         this.setP2pAdvertiserError(getPropertyValue(advertiser_info, ['error', 'code']));
-    }
-
-    setAdvertiserInfo(advertiser_info) {
-        this.advertiser_info = advertiser_info;
     }
 
     setP2pAdvertiserError(value) {

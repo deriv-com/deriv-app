@@ -844,6 +844,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     upgradeDailyLimit() {
+        const { general_store } = this.root_store;
+
         requestWS({ p2p_advertiser_update: 1, upgrade_limits: 1 }).then(response => {
             if (response) {
                 this.setIsLoadingModalOpen(false);
@@ -855,6 +857,8 @@ export default class MyProfileStore extends BaseStore {
                     clearTimeout(wait);
                     const wait = setTimeout(() => this.setIsDailyLimitSuccessModalOpen(true), 250);
                 }
+
+                general_store.props.removeNotificationByKey({ key: 'p2p_daily_limit_increase' });
             }
         });
     }

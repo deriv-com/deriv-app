@@ -8,17 +8,20 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { ContentFlag } from '@deriv/shared';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 
 const TradingAppCard = ({
+    availability,
     name,
     icon,
     action_type,
+    clickable_icon = false,
     description,
     is_deriv_platform = false,
     onAction,
     sub_title,
     has_divider,
+    platform,
     short_code_and_region,
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
@@ -29,17 +32,30 @@ const TradingAppCard = ({
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
+    const app_platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
 
-    const { app_desc, link_to, is_external } = platform.find(config => config.name === name) || {
+    const { app_desc, link_to, is_external } = app_platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
 
+    const openStaticPage = () => {
+        if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
+            window.open(getStaticUrl(`/dmt5`, {}, false, true));
+        else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
+        else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+        else;
+    };
+
     return (
         <div className='trading-app-card'>
-            <div className='trading-app-card__icon--container'>
-                <TradigPlatformIconProps icon={icon} size={48} />
+            <div
+                className={classNames('trading-app-card__icon--container', {
+                    'trading-app-card__icon--container__clickable': clickable_icon,
+                })}
+            >
+                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>

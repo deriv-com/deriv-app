@@ -73,9 +73,11 @@ const AccountSwitcher = props => {
 
     React.useEffect(() => {
         const getCurrentExchangeRate = (currency, setExchangeRate) => {
-            props.getExchangeRate(currency, account_total_balance_currency).then(res => {
-                setExchangeRate(res);
-            });
+            if (currency) {
+                props.getExchangeRate(currency, account_total_balance_currency).then(res => {
+                    setExchangeRate(res);
+                });
+            }
         };
         if (cfd_real_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
@@ -1090,7 +1092,7 @@ const AccountSwitcher = props => {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
                                                 } else {
-                                                    props.openRealAccountSignup('manage');
+                                                    props.openRealAccountSignup(account);
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'

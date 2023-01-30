@@ -130,6 +130,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
+    is_pre_appstore: boolean;
     jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
@@ -183,7 +184,7 @@ const ReviewMessageForMT5 = ({
 }: TReviewMsgForMT5) => {
     if (is_selected_mt5_verified) {
         return (
-            <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+            <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
     } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
         if (manual_status === 'pending') {
@@ -585,7 +586,7 @@ const CFDPasswordModal = ({
     form_error,
     getAccountStatus,
     history,
-    is_eu,
+    is_pre_appstore,
     is_logged_in,
     context,
     is_cfd_password_modal_enabled,
@@ -754,7 +755,7 @@ const CFDPasswordModal = ({
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Transfer now') : localize('Ok');
+                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
             return localize('Transfer now');
         }
@@ -772,6 +773,7 @@ const CFDPasswordModal = ({
             ].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
+        const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
 
         if (category === 'real') {
             return (
@@ -781,7 +783,7 @@ const CFDPasswordModal = ({
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                            platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
+                            platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
@@ -806,7 +808,7 @@ const CFDPasswordModal = ({
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
                 values={{
                     type: type_label,
-                    platform: getCFDPlatformLabel(platform),
+                    platform: platform === CFD_PLATFORMS.MT5 && is_pre_appstore ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
@@ -903,7 +905,9 @@ const CFDPasswordModal = ({
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
                 has_cancel={
-                    platform === CFD_PLATFORMS.MT5 ? is_selected_mt5_verified : account_type.category === 'real'
+                    platform === CFD_PLATFORMS.MT5
+                        ? is_selected_mt5_verified && account_type.category === 'real'
+                        : account_type.category === 'real'
                 }
                 has_close_icon={false}
                 width={isMobile() ? '32.8rem' : 'auto'}
@@ -946,4 +950,5 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(CFDPasswordModal));

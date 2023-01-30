@@ -4,14 +4,18 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv/shared';
 
 const AddOptions = () => {
-    const { traders_hub, ui } = useStores();
-    const { is_real, is_eu_user } = traders_hub;
+    const { client, traders_hub, ui } = useStores();
+    const { is_real, content_flag } = traders_hub;
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const { real_account_creation_unlock_date } = client;
 
     const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
     const add_deriv_account_btn = localize('Get a Deriv account');
+
+    const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
     return (
         <React.Fragment>
@@ -26,10 +30,14 @@ const AddOptions = () => {
                     type='submit'
                     has_effect
                     onClick={() => {
-                        if (is_real && is_eu_user) {
-                            ui.openRealAccountSignup('maltainvest');
+                        if (is_real && eu_user) {
+                            if (real_account_creation_unlock_date) {
+                                setShouldShowCooldownModal(true);
+                            } else {
+                                openRealAccountSignup('maltainvest');
+                            }
                         } else {
-                            ui.openRealAccountSignup();
+                            openRealAccountSignup();
                         }
                     }}
                     is_disabled={false}

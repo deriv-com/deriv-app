@@ -33,7 +33,7 @@ export interface MfPlatformConfig extends PlatformConfig {
 export const platform_config: PlatformConfig[] = [
     {
         name: getPlatformSettingsAppstore('trader').name,
-        app_desc: localize('Options & multipliers trading platform.'),
+        app_desc: localize('Options and multipliers trading platform.'),
         link_to: routes.trade,
     },
     {

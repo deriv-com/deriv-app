@@ -16,30 +16,27 @@ import { routes, ContentFlag } from '@deriv/shared';
 import { Button } from '@deriv/components';
 
 const TourGuide = () => {
-    const { traders_hub, ui } = useStores();
+    const { traders_hub, ui, client } = useStores();
     const {
         is_tour_open,
         toggleIsTourOpen,
         setIsOnboardingVisited,
         content_flag,
-        selectAccountType,
         is_onboarding_visited,
+        selectAccountType,
     } = traders_hub;
     const { is_dark_mode_on } = ui;
+    const { prev_account_type } = client;
 
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
-
-    const eu_user =
-        content_flag === ContentFlag.LOW_RISK_CR_EU ||
-        content_flag === ContentFlag.EU_REAL ||
-        content_flag === ContentFlag.EU_DEMO;
 
     tour_step_locale.last = (
         <div
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
+                selectAccountType(prev_account_type);
             }}
         >
             <Localize i18n_default_text='OK' />
@@ -59,27 +56,19 @@ const TourGuide = () => {
 
     if (joyride_index === 0) {
         tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    selectAccountType('real');
-                }}
-            >
+            <div>
                 <Localize i18n_default_text='Next' />
             </div>
         );
 
         high_risk_tour_step_locale.next = (
-            <div
-                onClick={() => {
-                    selectAccountType('real');
-                }}
-            >
+            <div>
                 <Localize i18n_default_text='Next' />
             </div>
         );
     }
 
-    if (tour_step_config.length === joyride_index + 1 || high_risk_tour_step_config.length === joyride_index + 1) {
+    if (tour_step_config.length === joyride_index + 1) {
         tour_step_locale.back = (
             <Button
                 has_effect
@@ -94,7 +83,20 @@ const TourGuide = () => {
         );
     }
 
-    const high_risk_and_eu_check = content_flag === ContentFlag.HIGH_RISK_CR || content_flag === eu_user;
+    high_risk_tour_step_locale.back = (
+        <Button
+            has_effect
+            text={localize('Repeat tour')}
+            secondary
+            medium
+            onClick={() => {
+                history.push(routes.onboarding);
+                toggleIsTourOpen(true);
+            }}
+        />
+    );
+
+    const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     return (
         <Joyride
@@ -103,9 +105,9 @@ const TourGuide = () => {
             disableScrolling
             hideCloseButton
             disableCloseOnEsc
-            steps={high_risk_and_eu_check ? high_risk_tour_step_config : tour_step_config}
+            steps={low_risk ? tour_step_config : high_risk_tour_step_config}
             styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
-            locale={tour_step_locale}
+            locale={low_risk ? tour_step_locale : high_risk_tour_step_locale}
             floaterProps={{
                 disableAnimation: true,
             }}

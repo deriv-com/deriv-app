@@ -23,7 +23,7 @@ export const cfd_content: TRegulatorsContentProps[] = [
     },
     {
         id: 'regulators',
-        attribute: localize('Regulator/external dispute resolution'),
+        attribute: localize('Regulators/external dispute resolution'),
         content: {
             non_eu_regulator: [
                 { text: localize('Financial Commission') },
@@ -88,6 +88,10 @@ export const cfd_content: TRegulatorsContentProps[] = [
                     text: localize('*Boom 300 and Crash 300 Index'),
                     options: { color: 'loss-danger', weight: 'bold' },
                 },
+                {
+                    text: localize('*Volatility 150 Index and Volatility 250 Index'),
+                    options: { color: 'loss-danger', weight: 'bold' },
+                },
             ],
         },
     },
@@ -106,13 +110,13 @@ export const options_content: TRegulatorsContentProps[] = [
         id: 'options',
         attribute: localize('Options & Multipliers'),
         content: {
-            non_eu_regulator: { text: localize('Options & Multipliers') },
+            non_eu_regulator: { text: localize('Yes') },
             eu_regulator: { text: localize('Multipliers only'), options: { weight: 'bold' } },
         },
     },
     {
         id: 'regulator_in_options',
-        attribute: localize('Regulator/external dispute resolution'),
+        attribute: localize('Regulators/external dispute resolution'),
         content: {
             non_eu_regulator: { text: localize('Financial Commission') },
             eu_regulator: { text: localize('Malta Financial Services Authority') },
@@ -148,6 +152,10 @@ export const options_content: TRegulatorsContentProps[] = [
                 { text: localize('Cryptocurrencies') },
                 {
                     text: localize('*Boom 300 and Crash 300 Index'),
+                    options: { color: 'loss-danger', weight: 'bold' },
+                },
+                {
+                    text: localize('*Volatility 150 Index and Volatility 250 Index'),
                     options: { color: 'loss-danger', weight: 'bold' },
                 },
             ],

@@ -6,7 +6,6 @@ import {
     CFDPasswordModal,
     CFDDbviOnBoarding,
     CFDResetPasswordModal,
-    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
@@ -15,6 +14,7 @@ import {
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
+import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
@@ -27,7 +27,15 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 const ModalManager = () => {
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const { is_logged_in, is_eu, is_eu_country, has_active_real_account } = client;
+    const {
+        is_logged_in,
+        is_eu,
+        is_eu_country,
+        is_populating_mt5_account_list,
+        has_active_real_account,
+        real_account_creation_unlock_date,
+        verification_code,
+    } = client;
     const { platform } = common;
     const {
         current_list,
@@ -43,11 +51,16 @@ const ModalManager = () => {
         topUpVirtual,
     } = modules.cfd;
     const {
+        enableApp,
+        disableApp,
         is_top_up_virtual_open,
         is_top_up_virtual_in_progress,
         is_top_up_virtual_success,
         closeTopUpModal,
         closeSuccessTopUpModal,
+        setShouldShowCooldownModal,
+        is_reset_trading_password_modal_visible,
+        setResetTradingPasswordModalOpen,
     } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
@@ -105,6 +118,8 @@ const ModalManager = () => {
             : undefined;
         return acc;
     };
+    const trading_platform_dxtrade_password_reset = verification_code?.trading_platform_dxtrade_password_reset;
+    const trading_platform_mt5_password_reset = verification_code?.trading_platform_mt5_password_reset;
 
     getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
@@ -115,7 +130,7 @@ const ModalManager = () => {
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog context={store} />
+            <CFDServerErrorDialog />
             <CFDTopUpDemoModal
                 context={store}
                 dxtrade_companies={dxtrade_companies}
@@ -149,7 +164,16 @@ const ModalManager = () => {
                 platform={platform}
                 toggleModal={togglePasswordManagerModal}
             />
-            <ResetTradingPasswordModal context={store} />
+            <ResetTradingPasswordModal
+                context={store}
+                platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
+                enableApp={enableApp}
+                disableApp={disableApp}
+                toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
+                is_visible={is_reset_trading_password_modal_visible}
+                is_loading={is_populating_mt5_account_list}
+                verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
+            />
             <MT5AccountTypeModal />
             <RegulatorsCompareModal />
             <CompareAccountsModal
@@ -157,6 +181,8 @@ const ModalManager = () => {
                 is_demo_tab={is_demo}
                 openPasswordModal={openRealPasswordModal}
                 is_real_enabled={has_active_real_account || !is_demo}
+                real_account_creation_unlock_date={real_account_creation_unlock_date}
+                setShouldShowCooldownModal={setShouldShowCooldownModal}
             />
             <AccountTransferModal
                 is_modal_open={is_account_transfer_modal_open}

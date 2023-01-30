@@ -4,7 +4,7 @@
     line-height: 2rem;
     text-transform: capitalize;
     border: 2px solid;
-    height: 2.4em;
+    height: 1.8em;
 
     &--parent {
         padding: 0;
@@ -14,6 +14,10 @@
                 min-width: 8.2rem;
                 width: 8.2rem;
             }
+        }
+
+        &--demo {
+            width: 90%;
         }
     }
 
@@ -28,12 +32,14 @@
             line-height: 20px;
             letter-spacing: 0em;
             text-align: left;
+            padding-left: 0.6em;
         }
     }
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 2px solid var(--status-info);
+        border: 1px solid var(--status-info);
+        width: 87%;
         & > .dc-text {
             color: var(--status-info);
         }
@@ -42,9 +48,11 @@
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 2px solid var(--status-success);
+        border: 1px solid var(--status-success);
+        width: 90%;
         & > .dc-text {
             color: var(--status-success);
+            padding-left: 0.8em;
         }
     }
     &__icon {
@@ -54,9 +62,11 @@
         }
         &--real {
             --fill-color1: var(--status-info) !important;
+            right: 1.8rem;
         }
         &--demo {
             --fill-color1: var(--status-success) !important;
+            right: 1.5rem;
         }
     }
 }

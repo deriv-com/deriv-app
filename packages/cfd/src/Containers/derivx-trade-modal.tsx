@@ -219,7 +219,6 @@ const DerivXTradeModal = ({
             </div>
             <div className='cfd-trade-modal__download-center-app'>
                 <div className='cfd-trade-modal__download-center-app--option'>
-                    {!isMobile() && <Icon icon='IcMt5Logo' size={32} />}
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv X on your browser')}
                     </Text>

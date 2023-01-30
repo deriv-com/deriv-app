@@ -26,9 +26,7 @@ const StatusBadge = ({
             text: (
                 <Localize
                     i18n_default_text='<0>Pending verification</0>'
-                    components={[
-                        <Text key={0} weight='bold' size={isMobile() ? 'xxxxs' : 'xxxs'} color='var(--text-warning)' />,
-                    ]}
+                    components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-warning)' />]}
                 />
             ),
             icon: 'IcAlertWarning',
@@ -38,15 +36,10 @@ const StatusBadge = ({
                 <Localize
                     i18n_default_text='<0>Verification failed.</0> <1>Why?</1>'
                     components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={isMobile() ? 'xxxxs' : 'xxxs'}
-                            color='var(--status-danger)'
-                        />,
+                        <Text key={0} weight='bold' size='xxxs' color='var(--status-danger)' />,
                         <Text
                             key={1}
-                            className='link-failed'
+                            className='link-verification-failed'
                             onClick={() => {
                                 openFailedVerificationModal(selected_account_type);
                             }}
@@ -59,10 +52,10 @@ const StatusBadge = ({
         need_verification: {
             text: (
                 <Localize
-                    i18n_default_text='<0>Need verification.</0> <1>Verify now</1>'
+                    i18n_default_text='<0>Need verification.</0><1>Verify now</1>'
                     components={[
-                        <Text key={0} weight='bold' size='xxxs' color='var(--text-info-blue)' />,
-                        <Link key={1} className='link-default' to='/account/proof-of-identity' />,
+                        <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
+                        <Link key={1} className='link-need-verification' to='/account/proof-of-identity' />,
                     ]}
                 />
             ),
@@ -85,7 +78,7 @@ const StatusBadge = ({
                     `switcher-status-badge__container--icon${account_status || 'failed'}`
                 )}
             >
-                <Icon icon={icon} size={isMobile() ? 8 : 16} />
+                <Icon icon={icon} size='11' />
             </div>
             {text}
         </div>

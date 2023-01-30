@@ -147,6 +147,7 @@
 .cfd-trade-modal-container {
     width: inherit;
     overflow-y: scroll;
+    padding-left: 0.5rem;
 }
 
 .cfd-trade-modal {
@@ -158,6 +159,12 @@
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);
         line-height: 1.45;
+    }
+    &__mobile {
+        &-title {
+            text-align: left;
+            padding-left: 2.5rem;
+        }
     }
     &__desc {
         display: flex;
@@ -366,7 +373,7 @@
                     }
 
                     &--huawei {
-                        padding-left: 0.7rem;
+                        padding-left: 0.4rem;
 
                         @include mobile {
                             padding: 0;

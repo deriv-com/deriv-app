@@ -569,7 +569,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '904px'}
+                            width={!has_close_icon ? 'auto' : '955px'}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent

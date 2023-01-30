@@ -237,7 +237,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should show success dialog with buttons to transfer now or later when password has been updated successfully', async () => {
+    it('should show success dialog with buttons to Transfer now or later when password has been updated successfully', async () => {
         render(
             <Router history={history}>
                 <CFDPasswordModal

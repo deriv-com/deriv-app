@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -20,6 +20,7 @@ import PercentageSelector from '../../../components/percentage-selector';
 import RecentTransaction from '../../../components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from '../../../components/side-note';
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -29,20 +30,21 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const AccountOption = ({ account, idx }: TAccountsList) => {
+const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
-                    <Icon
-                        icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
-                        className='account-transfer-form__currency-icon'
-                    />
+                    <AccountPlatformIcon account={account} is_pre_appstore={is_pre_appstore} size={16} />
                 </div>
             )}
 
             <div className='account-transfer-form__currency-wrapper'>
-                <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
+                <Text
+                    size='xxs'
+                    line_height='xs'
+                    styles={{ color: is_pre_appstore ? 'prominent' : 'inherit', fontWeight: 'inherit' }}
+                >
                     {account.is_dxtrade || account.is_mt || account.is_derivez
                         ? account.text
                         : getCurrencyName(account.currency)}
@@ -197,7 +199,7 @@ const AccountTransferForm = observer(
             derivez_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
-                const text = <AccountOption idx={idx} account={account} />;
+                const text = <AccountOption idx={idx} account={account} is_pre_appstore={is_pre_appstore} />;
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;

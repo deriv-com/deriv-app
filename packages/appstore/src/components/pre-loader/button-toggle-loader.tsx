@@ -4,13 +4,13 @@ import { MobileWrapper } from '@deriv/components';
 
 const ButtonToggleLoader = () => (
     <ContentLoader
-        height={200}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
-        viewBox='0 0 380 70'
+        height={80}
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
+        width={500}
     >
         <MobileWrapper>
-            <rect x='5' y='40' rx='5' ry='5' width='400' height='500' />
+            <rect x='10' y='35' rx='5' ry='5' width='330' height='45' />
         </MobileWrapper>
     </ContentLoader>
 );

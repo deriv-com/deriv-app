@@ -1,16 +1,20 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import { DesktopWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 const RegulationsSwitcherLoader = () => (
     <ContentLoader
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
-        viewBox='0 0 200 50'
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
+        width={300}
+        height={60}
     >
         <DesktopWrapper>
-            <rect x='6' y='5' rx='6' ry='6' width='190' height='40' />
+            <rect x='10' y='10' rx='6' ry='6' width='190' height='40' />
         </DesktopWrapper>
+        <MobileWrapper>
+            <rect x='60' y='10' rx='6' ry='6' width='80' height='30' />
+        </MobileWrapper>
     </ContentLoader>
 );
 

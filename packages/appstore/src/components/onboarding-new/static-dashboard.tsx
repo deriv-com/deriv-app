@@ -79,29 +79,30 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
     const toggle_options = [
-        { text: `${is_eu_user ? 'Multipliers' : 'Options and Multipliers'}`, value: 0 },
+        { text: `${is_eu_user ? 'Multipliers' : 'Options & Multipliers'}`, value: 0 },
         { text: 'CFDs', value: 1 },
     ];
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
-            if (index === 0) {
-                setIndex(1);
-            } else {
-                setIndex(0);
+            if (isMobile()) {
+                if (index === 0) {
+                    setIndex(1);
+                } else {
+                    setIndex(0);
+                }
             }
         }, 5000);
-
         return () => clearInterval(change_index_interval_id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = eu_user ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
     const is_eu_account_title = eu_user ? 'Multipliers account' : 'Deriv account';
     const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
-        <ThemedScrollbars height={'61rem'} is_bypassed={isMobile()}>
+        <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
             <div
                 className={classNames('static-dashboard', {
                     'static-dashboard--eu': eu_user,
@@ -238,7 +239,7 @@ const StaticDashboard = ({
                                     type='all'
                                     platform='options'
                                     appname={is_eu_account_title}
-                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
+                                    description='Get a real Deriv account, start trading and manage your funds.'
                                     currency={currency}
                                     has_account={has_account}
                                     is_blurry={is_blurry}
@@ -258,10 +259,10 @@ const StaticDashboard = ({
                             {eu_user ? (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon={'DTrader'}
-                                        name={'DTrader'}
-                                        description={'Multipliers trading platform.'}
-                                        availability={'All'}
+                                        icon='DTrader'
+                                        name='DTrader'
+                                        description='Multipliers trading platform.'
+                                        availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                     />
@@ -269,10 +270,10 @@ const StaticDashboard = ({
                             ) : (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon={'DTrader'}
-                                        name={'DTrader'}
-                                        description={'Options and multipliers trading platform.'}
-                                        availability={'All'}
+                                        icon='DTrader'
+                                        name='DTrader'
+                                        description='Options and multipliers trading platform.'
+                                        availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider
@@ -284,10 +285,10 @@ const StaticDashboard = ({
                                 <React.Fragment>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'DBot'}
-                                            name={'DBot'}
-                                            description={`Automate your trading, no coding needed.`}
-                                            availability={'Non-EU'}
+                                            icon='DBot'
+                                            name='DBot'
+                                            description='Automate your trading, no coding needed.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                             has_divider
@@ -295,10 +296,10 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'SmartTrader'}
-                                            name={'SmartTrader'}
-                                            description={`Automate your trading, no coding needed.`}
-                                            availability={'Non-EU'}
+                                            icon='SmartTrader'
+                                            name='SmartTrader'
+                                            description='Automate your trading, no coding needed.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                             has_divider
@@ -306,20 +307,20 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'BinaryBot'}
-                                            name={'BinaryBot'}
-                                            description={`Our legacy automated trading platform.`}
-                                            availability={'Non-EU'}
+                                            icon='BinaryBot'
+                                            name='BinaryBot'
+                                            description='Our legacy automated trading platform.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                         />
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon={'DerivGo'}
-                                            name={'DerivGo'}
-                                            description={`Trade on the go with our mobile app.`}
-                                            availability={'Non-EU'}
+                                            icon='DerivGo'
+                                            name='DerivGo'
+                                            description='Trade on the go with our mobile app.'
+                                            availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
                                         />
@@ -364,7 +365,7 @@ const StaticDashboard = ({
                                         components={[
                                             <Text
                                                 key={0}
-                                                color={'red'}
+                                                color='red'
                                                 size='xxxs'
                                                 weight='bold'
                                                 className={classNames(
@@ -391,7 +392,7 @@ const StaticDashboard = ({
                                     components={[
                                         <Text
                                             key={0}
-                                            color={'red'}
+                                            color='red'
                                             size='xxs'
                                             line_height='xl'
                                             weight='bold'
@@ -435,7 +436,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
-                                    appname={has_account ? 'Derived SVG' : 'Derived'}
+                                    appname='Derived'
                                     description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
                                     loginid={loginid}
                                     currency={currency}
@@ -452,7 +453,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname={'CFDs'}
+                                    appname='CFDs'
                                     description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                                     loginid={loginid}
                                     currency={is_eu_user ? mf_currency : currency}
@@ -468,7 +469,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname={has_account ? 'Financial BVI' : 'Financial'}
+                                    appname='Financial'
                                     description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
                                     financial_amount={financial_amount}
                                     derived_amount={derived_amount}
@@ -478,7 +479,6 @@ const StaticDashboard = ({
                                     is_last_step={is_last_step}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
-                                    is_derivx_last_step={is_derivx_last_step}
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
                                 />

@@ -21,6 +21,7 @@ import {
     preappstore_cr_demo_content,
     preappstore_cr_demo_footer_buttons,
     preppstore_eu_demo_content,
+    eu_demo_footer_button,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
@@ -33,6 +34,7 @@ const Row = ({
     classname_for_demo_and_eu,
     is_pre_appstore_setting,
     content_flag,
+    is_high_risk_for_mt5,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -46,7 +48,7 @@ const Row = ({
     if (is_platform_row && !is_pre_appstore_setting) {
         return null;
     }
-    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR) {
+    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
         // needed to adjust the design for high risk
         values.financial_svg = { text: 'MT5' };
     }
@@ -187,6 +189,7 @@ const DMT5CompareModalContent = ({
             ? 4
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
+    const is_high_risk_for_mt5 = synthetic_accounts_count === 1 && financial_accounts_count === 1;
     const {
         poi_or_poa_not_submitted,
         poi_acknowledged_for_vanuatu_maltainvest,
@@ -332,7 +335,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+                if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
@@ -367,7 +370,7 @@ const DMT5CompareModalContent = ({
     const onButtonClick = (item: TCompareAccountFooterButtonData) => {
         const if_no_corresponding_real_account = is_pre_appstore_setting
             ? (no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)
-            : has_real_account;
+            : !has_real_account;
 
         const should_show_missing_real_account =
             is_logged_in &&
@@ -377,7 +380,7 @@ const DMT5CompareModalContent = ({
 
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
-            if (real_account_creation_unlock_date) {
+            if (real_account_creation_unlock_date && item.action === 'financial_maltainvest') {
                 setShouldShowCooldownModal(true);
             } else {
                 openDerivRealAccountNeededModal();
@@ -406,6 +409,7 @@ const DMT5CompareModalContent = ({
 
     const modal_footer = () => {
         if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
+        else if (is_demo_tab && show_eu_related_content) return eu_demo_footer_button;
         return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
     };
 
@@ -475,6 +479,7 @@ const DMT5CompareModalContent = ({
                                     classname_for_demo_and_eu={classname_for_demo_and_eu}
                                     is_pre_appstore_setting={is_pre_appstore_setting}
                                     content_flag={content_flag}
+                                    is_high_risk_for_mt5={is_high_risk_for_mt5}
                                 />
                             ))}
                         </Table.Body>

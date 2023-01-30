@@ -17,13 +17,7 @@ const EmptyTradeHistoryMessage = ({
                 color='disabled'
                 size={96}
             />
-            <Text
-                size='xs'
-                align='center'
-                color='disabled'
-                data_testid='dt_empty_trade_history_text'
-                className='empty-trade-history__text'
-            >
+            <Text size='xs' align='center' color='disabled' className='empty-trade-history__text'>
                 {!has_selected_date ? localized_message : localized_period_message}
             </Text>
         </div>

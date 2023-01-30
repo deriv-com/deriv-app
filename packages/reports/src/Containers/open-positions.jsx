@@ -430,7 +430,7 @@ const OpenPositions = ({
                 </>
             ) : (
                 <PlaceholderComponent
-                    is_empty={!isMobile()}
+                    is_empty={active_positions.length !== 0}
                     is_loading={is_loading}
                     empty_message_component={EmptyTradeHistoryMessage}
                     component_icon={component_icon}

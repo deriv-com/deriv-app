@@ -10,13 +10,18 @@ import { AutoSizer as _AutoSizer, type AutoSizerProps, ScrollParams } from 'reac
 import _List, { ListProps, ListRowProps } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell';
-import DataListRow from './data-list-row.jsx';
+import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 type CellType = { Cell: typeof DataListCell };
+export type RowRenderPropType = (params: {
+    row: React.ReactNode;
+    is_footer?: boolean;
+    measure?: (() => void) | undefined;
+}) => React.ReactNode;
 type DataListProps = {
     className?: string;
     data_source: [];
@@ -29,12 +34,12 @@ type DataListProps = {
     passthrough: unknown;
     row_gap: number;
     setListRef: (ref: MeasuredCellParent) => void;
-    rowRenderer: (params: { row: React.ReactNode; is_footer: boolean }) => React.ReactNode;
+    rowRenderer: RowRenderPropType;
     children?: React.ReactNode;
     overscanRowCount: number;
     Cell: CellType;
 };
-type GetContentType = { measure?: VoidFunction | undefined };
+type GetContentType = { measure?: () => void | undefined };
 
 const DataList = ({
     children,

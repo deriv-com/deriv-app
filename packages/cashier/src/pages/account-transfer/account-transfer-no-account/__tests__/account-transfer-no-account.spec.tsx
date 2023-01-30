@@ -1,13 +1,7 @@
 import React from 'react';
-import AccountTransferNoAccount from '../account-transfer-no-account';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { StoreProvider } from '../../../../hooks';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import AccountTransferNoAccount from '../account-transfer-no-account';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
@@ -24,7 +18,7 @@ describe('<AccountTransferNoAccount />', () => {
 
     const renderAccountTransferNoAccount = () => {
         render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
     };
 

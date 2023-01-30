@@ -67,10 +67,6 @@
 
     &__form {
         @include mobile {
-            &-element {
-                padding: 0 0 10rem;
-            }
-
             .dc-input__footer {
                 justify-content: space-between;
                 width: 86vw;
@@ -137,11 +133,17 @@
                 max-width: 67.2rem;
             }
 
+            &-container {
+                @include mobile {
+                    width: 90vw;
+                    margin: 0 1.6rem;
+                }
+            }
+
             @include mobile {
                 height: fit-content;
-                margin: 0 1.6rem;
                 position: unset;
-                width: 90vw;
+                width: 100%;
             }
         }
         &-container {
@@ -204,29 +206,35 @@
 
             @include mobile {
                 border-top: 2px solid var(--general-section-1);
-                bottom: 0;
                 flex-direction: row;
                 padding: 1.6rem;
-                position: fixed;
-                right: 0;
                 width: 100vw;
-                z-index: 4;
             }
         }
     }
 
-    &__modal-body {
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 1.6rem 0;
-        width: 100vw;
+    &__modal {
+        &-body {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1.6rem 0;
+            width: 100vw;
 
-        &--scroll {
-            overflow: auto;
+            &--form {
+                padding: 1rem 0 0;
+            }
+
+            &--scroll {
+                overflow: auto;
+                padding: 1rem 0 0;
+            }
+
+            &--horizontal {
+                padding-right: 0rem;
+            }
         }
-
-        &--horizontal {
-            padding-right: 0rem;
+        &-form {
+            height: fit-content !important;
         }
     }
 
@@ -686,6 +694,9 @@
 }
 
 .p2p-my-ads__modal-error {
+    &--form {
+        height: fit-content !important;
+    }
     .dc-modal-header__title--p2p-my-ads__modal-error {
         padding: 2.4rem 2.4rem 0 !important;
     }

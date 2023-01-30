@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Withdrawal from '../withdrawal';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { StoreProvider } from '../../../hooks';
+import Withdrawal from '../withdrawal';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -77,11 +77,11 @@ describe('<Withdrawal />', () => {
 
     const renderWithdrawal = (is_rerender = false) => {
         const ui = (
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Router history={history}>
                     <Withdrawal setSideNotes={setSideNotes} />
                 </Router>
-            </StoreProvider>
+            </CashierProviders>
         );
         return is_rerender ? ui : render(ui);
     };

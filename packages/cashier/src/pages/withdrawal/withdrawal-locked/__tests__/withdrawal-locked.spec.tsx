@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
-import { StoreProvider } from '../../../../hooks';
+import CashierProviders from '../../../../cashier-providers';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 
@@ -70,11 +70,11 @@ describe('WithdrawalLocked', () => {
 
     const renderWithdrawalLocked = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Router history={history}>
                     <WithdrawalLocked />
                 </Router>
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

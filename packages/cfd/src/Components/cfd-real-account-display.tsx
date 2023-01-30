@@ -204,7 +204,7 @@ const CFDRealAccountDisplay = ({
             platform={platform}
             descriptor={
                 platform === 'mt5'
-                    ? localize('Trade CFDs on our synthetics and basket indices.')
+                    ? localize('Trade CFDs on our synthetics, baskets, and derived FX.')
                     : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
             }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}

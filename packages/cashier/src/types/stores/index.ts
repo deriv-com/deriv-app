@@ -1,4 +1,8 @@
-export * from './client-store.types';
-export * from './common-store.types';
-export * from './root-store.types';
-export * from './ui-store.types';
+import type { TStores } from '@deriv/stores';
+import type CashierStore from '../../stores/cashier-store';
+
+export type TRootStore = TStores & {
+    modules: {
+        cashier: CashierStore;
+    };
+};

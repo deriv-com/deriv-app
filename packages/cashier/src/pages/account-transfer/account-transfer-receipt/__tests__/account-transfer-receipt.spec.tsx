@@ -1,16 +1,10 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AccountTransferReceipt from '../account-transfer-receipt';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '../../../../hooks';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import AccountTransferReceipt from '../account-transfer-receipt';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;
@@ -60,9 +54,9 @@ describe('<AccountTransferReceipt />', () => {
     const renderAccountTransferReceipt = () =>
         render(<AccountTransferReceipt />, {
             wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </StoreProvider>
+                </CashierProviders>
             ),
         });
 

@@ -25,7 +25,7 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
     );
 };
 
-const OrderRow = ({ style, row: order }) => {
+const OrderRow = ({ row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -115,6 +115,9 @@ const OrderRow = ({ style, row: order }) => {
                     order_store.setRatingValue(0);
                     general_store.props.removeNotificationMessage({ key: `order-${id}` });
                     general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    order_store.setIsLoading(true);
+                    order_store.setOrders([]);
+                    order_store.loadMoreOrders({ startIndex: 0 });
                 }}
                 onClickNotRecommended={() => order_store.setIsRecommended(0)}
                 onClickRecommended={() => order_store.setIsRecommended(1)}
@@ -175,7 +178,6 @@ const OrderRow = ({ style, row: order }) => {
                 </DesktopWrapper>
                 <MobileWrapper>
                     <Table.Row
-                        style={style}
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
                         })}
@@ -257,7 +259,6 @@ const OrderRow = ({ style, row: order }) => {
 
 OrderRow.propTypes = {
     order: PropTypes.object,
-    style: PropTypes.object,
     row: PropTypes.object,
     server_time: PropTypes.object,
 };

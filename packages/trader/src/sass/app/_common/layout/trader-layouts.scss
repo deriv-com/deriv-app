@@ -400,6 +400,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     flex-direction: column;
     height: 212px;
     position: relative;
+    z-index: 2;
 
     &__content-loader {
         position: absolute;

@@ -21,7 +21,7 @@ const mock_errors = {
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.js', () => ({
+jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', () => ({
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
     })),

@@ -30,6 +30,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         return `IcAlert${toTitleCase(type)}`;
     };
 
+    const getButtonSettings = item =>
+        ['action', 'secondary_btn', 'cta_btn', 'primary_btn'].find(obj_key => !isEmptyObject(item[obj_key]));
+
     return (
         <React.Fragment>
             {notifications.map(item => (
@@ -54,9 +57,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
-                        {!isEmptyObject(item.action) && (
+                        {!!getButtonSettings(item) && (
                             <React.Fragment>
-                                {item.action.route ? (
+                                {item[getButtonSettings(item)].route ? (
                                     <BinaryLink
                                         onClick={toggleDialog}
                                         active_class='notifications-item'
@@ -65,19 +68,19 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                                             'dc-btn--secondary',
                                             'notifications-item__cta-button'
                                         )}
-                                        to={item.action.route}
+                                        to={item[getButtonSettings(item)].route}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </BinaryLink>
                                 ) : (
                                     <Button
                                         className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
-                                        onClick={item.action.onClick}
+                                        onClick={item[getButtonSettings(item)].onClick}
                                     >
                                         <Text weight='bold' size='xxs'>
-                                            {item.action.text}
+                                            {item[getButtonSettings(item)].text}
                                         </Text>
                                     </Button>
                                 )}
@@ -89,9 +92,35 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
         </React.Fragment>
     );
 };
-const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog }, ref) => {
+
+const ClearAllFooter = ({ is_empty, clearNotifications }) => {
+    return (
+        <React.Fragment>
+            <div className='notifications-dialog__separator' />
+            <div
+                className={classNames('notifications-dialog__footer', {
+                    'notifications-dialog__content--empty': is_empty,
+                    'notifications-dialog__content--sticky': isMobile(),
+                })}
+            >
+                <Button
+                    className={classNames('dc-btn--secondary', 'notifications-dialog__clear')}
+                    disabled={is_empty}
+                    onClick={clearNotifications}
+                >
+                    <Text size='xxs' color='prominent' weight='bold'>
+                        {localize('Clear All')}
+                    </Text>
+                </Button>
+            </div>
+        </React.Fragment>
+    );
+};
+
+const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
     const is_empty = !notifications.length;
     const { is_pre_appstore } = React.useContext(PlatformContext);
+
     return (
         <div
             className={classNames('notifications-dialog', {
@@ -126,12 +155,20 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog 
                     )}
                 </ThemedScrollbars>
             </div>
+            <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
         </div>
     );
 });
 NotificationListWrapper.displayName = 'NotificationListWrapper';
 
-const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
+const NotificationsDialog = ({
+    is_visible,
+    notifications,
+    toggleDialog,
+    removeNotificationMessage,
+    removeNotificationMessageByKey,
+    removeNotifications,
+}) => {
     const wrapper_ref = React.useRef();
 
     const handleClickOutside = event => {
@@ -139,6 +176,17 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
         if (!wrapper_ref.current?.contains(event.target) && is_visible && notifications_toggle_btn) {
             toggleDialog();
         }
+    };
+
+    const clearNotifications = () => {
+        return notifications.map(item => {
+            removeNotificationMessageByKey(item.key);
+            removeNotificationMessage({
+                key: item.key,
+                should_show_again: false,
+            });
+            removeNotifications(true);
+        });
     };
 
     useOnClickOutside(wrapper_ref, handleClickOutside);
@@ -157,6 +205,7 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
+                        clearNotifications={clearNotifications}
                     />
                 </MobileDialog>
             </MobileWrapper>
@@ -175,6 +224,10 @@ const NotificationsDialog = ({ is_visible, notifications, toggleDialog }) => {
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
+                        removeNotificationMessage={removeNotificationMessage}
+                        removeNotifications={removeNotifications}
+                        removeNotificationMessageByKey={removeNotificationMessageByKey}
+                        clearNotifications={clearNotifications}
                     />
                 </CSSTransition>
             </DesktopWrapper>
@@ -186,11 +239,17 @@ NotificationsDialog.propTypes = {
     is_visible: PropTypes.bool,
     notifications: PropTypes.array,
     toggleDialog: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessageByKey: PropTypes.func,
+    removeNotifications: PropTypes.func,
 };
 
 export default connect(({ common, notifications }) => ({
-    notifications: notifications.filtered_notifications,
+    notifications: notifications.notifications,
     app_routing_history: common.app_routing_history,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotifications: notifications.removeNotifications,
+    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
 }))(NotificationsDialog);

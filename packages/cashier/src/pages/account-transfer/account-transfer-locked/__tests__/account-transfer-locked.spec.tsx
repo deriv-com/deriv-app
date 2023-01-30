@@ -4,8 +4,8 @@ import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import AccountTransferLocked from '../account-transfer-locked';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('AccountTransferLocked', () => {
     let mockRootStore;
@@ -24,7 +24,7 @@ describe('AccountTransferLocked', () => {
         mockRootStore.client.is_trading_experience_incomplete = true;
 
         render(<AccountTransferLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Transfers are locked')).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('AccountTransferLocked', () => {
         mockRootStore.client.is_trading_experience_incomplete = true;
 
         render(<AccountTransferLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Transfers are locked')).toBeInTheDocument();
@@ -69,9 +69,9 @@ describe('AccountTransferLocked', () => {
 
         render(<AccountTransferLocked />, {
             wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </StoreProvider>
+                </CashierProviders>
             ),
         });
         const btn = screen.getByTestId('dt_checklist_item_status_action');

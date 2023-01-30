@@ -9,6 +9,7 @@ import CryptoFiatConverter from 'Components/crypto-fiat-converter';
 import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import { TReactChangeEvent } from 'Types';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -47,22 +48,15 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const CryptoWithdrawForm = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { crypto_fiat_converter, general_store, transaction_history, withdraw },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const {
         balance,
         currency,
         current_fiat_currency,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-
+    const { crypto_fiat_converter, general_store, transaction_history, withdraw } = useCashierStore();
     const crypto_currency = currency;
-
     const {
         account_platform_icon,
         blockchain_address,
@@ -74,7 +68,6 @@ const CryptoWithdrawForm = observer(() => {
         validateWithdrawToAmount,
         resetWithrawForm,
     } = withdraw;
-
     const {
         converter_from_error,
         converter_to_error,
@@ -82,9 +75,7 @@ const CryptoWithdrawForm = observer(() => {
         onChangeConverterToAmount,
         resetConverter,
     } = crypto_fiat_converter;
-
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
-
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
 
     React.useEffect(() => {

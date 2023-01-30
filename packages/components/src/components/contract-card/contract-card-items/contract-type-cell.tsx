@@ -1,8 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import IconTradeTypes from '../../icon-trade-types';
 
-const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, type }) => (
+export type TContractTypeCellProps = {
+    getContractTypeDisplay: (type: string, is_high_low: boolean) => React.ReactNode; // Check this again
+    is_high_low: boolean;
+    multiplier?: number;
+    type?: string;
+};
+
+const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, type = '' }: TContractTypeCellProps) => (
     <div className='dc-contract-type'>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
@@ -13,16 +19,9 @@ const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, typ
         </div>
         <div className='dc-contract-type__type-label'>
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {multiplier && <div className='dc-contract-type__type-label-multiplier'>x{multiplier}</div>}
+            {!!multiplier && <div className='dc-contract-type__type-label-multiplier'>x{multiplier}</div>}
         </div>
     </div>
 );
-
-ContractTypeCell.propTypes = {
-    getContractTypeDisplay: PropTypes.func,
-    is_high_low: PropTypes.bool,
-    multiplier: PropTypes.number,
-    type: PropTypes.string,
-};
 
 export default ContractTypeCell;

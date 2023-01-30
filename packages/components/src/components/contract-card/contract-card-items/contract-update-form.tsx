@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
     getCancellationPrice,
     getContractUpdateConfig,
@@ -15,8 +14,24 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
+import { TGetCardLables, TToastConfig } from '../../types';
+import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 
-const ContractUpdateForm = props => {
+export type TContractUpdateFormProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    contract: TContractStore;
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string) => void;
+    status: string;
+    toggleDialog: (e: any) => void; // This function accomodates events for various HTML elements, which have no overlap, so typing it t6o any
+    getContractById: (contract_id: number) => TContractStore;
+};
+
+const ContractUpdateForm = (props: TContractUpdateFormProps) => {
     const {
         addToast,
         contract,
@@ -49,23 +64,25 @@ const ContractUpdateForm = props => {
         contract_update_stop_loss,
     });
 
-    const { buy_price, currency, is_valid_to_cancel, is_sold } = contract_info;
+    const { buy_price = 0, currency = '', is_valid_to_cancel, is_sold } = contract_info;
     const { stop_loss, take_profit } = getLimitOrderAmount(contract_info.limit_order);
     const { contract_update_stop_loss: stop_loss_error, contract_update_take_profit: take_profit_error } =
         validation_errors;
-    const error_messages = {
+    const error_messages: Record<string, string[] | undefined> = {
         take_profit: has_contract_update_take_profit ? take_profit_error : undefined,
         stop_loss: has_contract_update_stop_loss ? stop_loss_error : undefined,
     };
     const has_validation_errors = Object.keys(error_messages).some(field => error_messages[field]?.length);
 
-    const isValid = val => !(val === undefined || val === null);
+    const isValid = (val?: number | null) => !(val === undefined || val === null);
 
     const is_take_profit_valid = has_contract_update_take_profit ? contract_update_take_profit > 0 : isValid(stop_loss);
     const is_stop_loss_valid = has_contract_update_stop_loss ? contract_update_stop_loss > 0 : isValid(take_profit);
     const is_valid_contract_update = is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
 
-    const getStateToCompare = _state => {
+    const getStateToCompare = (
+        _state: Partial<ReturnType<typeof getContractUpdateConfig> & TContractUpdateFormProps>
+    ) => {
         const props_to_pick = [
             'has_contract_update_take_profit',
             'has_contract_update_stop_loss',
@@ -80,21 +97,20 @@ const ContractUpdateForm = props => {
         return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setContractProfitOrLoss({
             ...contract_profit_or_loss,
             [name]: value,
         });
-        if (typeof contract.onChange === 'function') {
-            contract.onChange({
-                name,
-                value,
-            });
-        }
+
+        contract.onChange?.({
+            name,
+            value,
+        });
     };
 
-    const onClick = e => {
+    const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         updateLimitOrder();
         toggleDialog(e);
         onMouseLeave?.();
@@ -187,19 +203,6 @@ const ContractUpdateForm = props => {
             </div>
         </React.Fragment>
     );
-};
-
-ContractUpdateForm.propTypes = {
-    addToast: PropTypes.func,
-    contract: PropTypes.object,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    status: PropTypes.string,
-    toggleDialog: PropTypes.func,
 };
 
 export default ContractUpdateForm;

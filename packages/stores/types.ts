@@ -1,4 +1,4 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, ProposalOpenContract } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -99,9 +99,22 @@ type TUiStore = {
     toggleCashier: () => void;
 };
 
+export type TContractStore = {
+    contract_info: ProposalOpenContract;
+    contract_update_take_profit: number & string;
+    contract_update_stop_loss: number & string;
+    clearContractUpdateConfigValues: () => void;
+    has_contract_update_take_profit: false;
+    has_contract_update_stop_loss: false;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
+    onChange: (param: { name: string; value: React.ReactNode }) => void;
+};
+
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
     ui: TUiStore;
     modules: Record<string, any>;
+    contract_store: TContractStore;
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 
 type TMoneyProps = {
-    amount: number | string;
+    amount?: number | string | null;
     className: string;
     currency: string;
     has_sign: boolean;
@@ -19,12 +19,12 @@ const Money = ({
     show_currency = false,
 }: Partial<TMoneyProps>) => {
     let sign = '';
-    if (+amount && (amount < 0 || has_sign)) {
+    if (amount && (amount < 0 || has_sign)) {
         sign = amount > 0 ? '+' : '-';
     }
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
-    const value = has_sign || should_format ? Math.abs(Number(amount)) : amount;
+    const value = has_sign || should_format ? Math.abs(Number(amount)) : amount || 0;
     const final_amount = should_format ? formatMoney(currency, value, true, 0, 0) : value;
 
     return (

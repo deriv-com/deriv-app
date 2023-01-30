@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
     isCryptocurrency,
@@ -13,15 +12,45 @@ import {
     isValidToSell,
     shouldShowCancellation,
 } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import ProgressSliderMobile from '../../progress-slider-mobile';
+import { TGetCardLables, TToastConfig } from '../../types';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { ContractUpdate } from '@deriv/api-types';
+
+export type TGeneralContractCardBodyProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    contract_info: TContractInfo;
+    contract_update: ContractUpdate;
+    connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
+    currency: string;
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    getContractById: (contract_id?: number) => void;
+    should_show_cancellation_warning: boolean;
+    has_progress_slider: boolean;
+    is_mobile: boolean;
+    is_sold: boolean;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string) => void;
+    status: string;
+    toggleCancellationWarning: () => void;
+    progress_slider: React.ReactNode;
+};
+
+export type TContractCardBodyProps = {
+    is_multiplier: boolean;
+    server_time: moment.Moment;
+} & TGeneralContractCardBodyProps;
 
 const MultiplierCardBody = ({
     addToast,
@@ -43,8 +72,8 @@ const MultiplierCardBody = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-}) => {
-    const { buy_price, bid_price, profit, limit_order, underlying } = contract_info;
+}: TGeneralContractCardBodyProps) => {
+    const { buy_price = 0, bid_price, profit = 0, limit_order, underlying } = contract_info;
 
     const total_profit = getTotalProfit(contract_info);
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -168,9 +197,9 @@ const ContractCardBody = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-}) => {
+}: TContractCardBodyProps) => {
     const indicative = getIndicativePrice(contract_info);
-    const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
+    const { buy_price, sell_price, payout, profit = 0, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
 
     const progress_slider_mobile_el = (
@@ -265,41 +294,15 @@ const ContractCardBody = ({
             <DesktopWrapper>{card_body}</DesktopWrapper>
             <MobileWrapper>
                 <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
+                    className={classNames('dc-contract-card__separatorclass', {
+                        'dc-contract-card__body-wrapper': !is_multiplier,
+                    })}
                 >
                     {card_body}
                 </div>
             </MobileWrapper>
         </React.Fragment>
     );
-};
-
-ContractCardBody.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    is_mobile: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_sold: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    server_time: PropTypes.object,
-    setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    status: PropTypes.string,
-    toggleCancellationWarning: PropTypes.func,
-    has_progress_slider: PropTypes.bool,
 };
 
 export default ContractCardBody;

@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { isDesktop, isMobile } from '@deriv/shared';
-import ContractCardDialog from './contract-card-dialog.jsx';
-import ContractUpdateForm from './contract-update-form.jsx';
+import ContractCardDialog from './contract-card-dialog';
+import ContractUpdateForm from './contract-update-form';
 import PopoverMessageCheckbox from '../../popover-message-checkbox';
 import Icon from '../../icon';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -11,8 +10,27 @@ import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
+import { TGetCardLables, TToastConfig } from '../../types';
+import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 
-let ContractUpdateFormWrapper;
+let ContractUpdateFormWrapper: React.ElementType;
+
+export type TToggleCardDialogProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
+    contract_id?: number;
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    getContractById: (contract_id?: number) => TContractStore;
+    is_valid_to_cancel: boolean;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string) => void;
+    should_show_cancellation_warning: boolean;
+    status: string;
+    toggleCancellationWarning: () => void;
+};
 
 const ToggleCardDialog = ({
     addToast,
@@ -29,14 +47,14 @@ const ToggleCardDialog = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-}) => {
+}: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
     const [is_do_not_show_selected, setIsDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
 
-    const toggle_ref = React.useRef();
-    const dialog_ref = React.useRef();
+    const toggle_ref = React.useRef<HTMLDivElement>(null);
+    const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(contract_id);
 
     React.useEffect(() => {
@@ -65,7 +83,7 @@ const ToggleCardDialog = ({
         }
     }, [is_visible]);
 
-    const handleClick = e => {
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
     };
 
@@ -79,7 +97,7 @@ const ToggleCardDialog = ({
         setIsDoNotShowSelected(!is_do_not_show_selected);
     };
 
-    const toggleDialog = e => {
+    const toggleDialog = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
@@ -101,7 +119,7 @@ const ToggleCardDialog = ({
         <Icon
             className='dc-contract-card-dialog-toggle__icon'
             icon='IcEdit'
-            color={is_valid_to_cancel && 'disabled'}
+            color={is_valid_to_cancel ? 'disabled' : ''}
             size={12}
         />
     );
@@ -113,7 +131,7 @@ const ToggleCardDialog = ({
                 classNameBubble='dc-contract-card-dialog__popover'
                 is_bubble_hover_enabled
                 margin={2}
-                zIndex={2}
+                zIndex={'2'}
                 message={
                     <PopoverMessageCheckbox
                         defaultChecked={is_do_not_show_selected}
@@ -193,22 +211,5 @@ const ToggleCardDialog = ({
 };
 
 ToggleCardDialog.displayName = 'ToggleCardDialog';
-
-ToggleCardDialog.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    is_valid_to_cancel: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    status: PropTypes.string,
-    toggleCancellationWarning: PropTypes.func,
-};
 
 export default React.memo(ToggleCardDialog);

@@ -1,9 +1,20 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isValidToCancel } from '@deriv/shared';
 import Button from '../../button';
 import RemainingTime from '../../remaining-time';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGetCardLables } from '../../types';
+
+export type TMultiplierCloseActionsProps = {
+    className?: string;
+    contract_info: TContractInfo;
+    getCardLabels: TGetCardLables;
+    is_sell_requested: boolean;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    server_time: moment.Moment;
+};
 
 const MultiplierCloseActions = ({
     className,
@@ -13,8 +24,8 @@ const MultiplierCloseActions = ({
     onClickCancel,
     onClickSell,
     server_time,
-}) => {
-    const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;
+}: TMultiplierCloseActionsProps) => {
+    const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit = 0 } = contract_info;
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
 
@@ -59,16 +70,6 @@ const MultiplierCloseActions = ({
             )}
         </React.Fragment>
     );
-};
-
-MultiplierCloseActions.propTypes = {
-    className: PropTypes.string,
-    contract_info: PropTypes.object,
-    getCardLabels: PropTypes.func,
-    is_sell_requested: PropTypes.bool,
-    onClickCancel: PropTypes.func,
-    onClickSell: PropTypes.func,
-    server_time: PropTypes.object,
 };
 
 export default MultiplierCloseActions;

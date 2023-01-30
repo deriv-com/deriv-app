@@ -1,13 +1,5 @@
 import * as ContractUtils from '../contract';
-import {
-    TContractInfo,
-    TDigitsInfo,
-    TTickItem,
-    TGetFinalPrice,
-    TIsEnded,
-    TGetDisplayStatus,
-    TIsValidToSell,
-} from '../contract-types';
+import { TContractInfo, TDigitsInfo, TTickItem } from '../contract-types';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
@@ -42,7 +34,7 @@ describe('getFinalPrice', () => {
 
 describe('getIndicativePrice', () => {
     it('should return getFinalPrice if it has final price and contract is ended', () => {
-        const contract_info: TGetFinalPrice & TIsEnded = {
+        const contract_info: TContractInfo = {
             sell_price: 12345,
             bid_price: 0,
             status: 'sold',
@@ -50,7 +42,7 @@ describe('getIndicativePrice', () => {
         expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(12345);
     });
     it("should return null if it doesn't have final price, bid_price and contract is not ended", () => {
-        const contract_info: TGetFinalPrice & TIsEnded = {
+        const contract_info: TContractInfo = {
             status: 'open',
             sell_price: 0,
             bid_price: 0,
@@ -58,7 +50,7 @@ describe('getIndicativePrice', () => {
         expect(ContractUtils.getIndicativePrice(contract_info)).toEqual(null);
     });
     it("should return bid_price if it doesn't have final price, has bid_price and contract is not ended", () => {
-        const contract_info: TGetFinalPrice & TIsEnded = {
+        const contract_info: TContractInfo = {
             status: 'open',
             bid_price: 12345,
             sell_price: 0,
@@ -125,42 +117,42 @@ describe('isUserSold', () => {
 
 describe('isValidToSell', () => {
     it('should return true if contract is not ended and is not sold and contract is valid to_sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'open',
             is_valid_to_sell: 1,
         };
         expect(ContractUtils.isValidToSell(contract_info)).toEqual(true);
     });
     it('should return false if contract is ended and is sold and contract is valid to sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'sold',
             is_valid_to_sell: 1,
         };
         expect(ContractUtils.isValidToSell(contract_info)).toEqual(false);
     });
     it('should return false if contract is ended and is not sold and contract is valid to sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'won',
             is_valid_to_sell: 1,
         };
         expect(ContractUtils.isValidToSell(contract_info)).toEqual(false);
     });
     it('should return false if contract is ended and is sold and contract is not valid to sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'sold',
             is_valid_to_sell: 0,
         };
         expect(ContractUtils.isValidToSell(contract_info)).toEqual(false);
     });
     it('should return false if contract is ended and is not sold and contract is not valid to sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'won',
             is_valid_to_sell: 0,
         };
         expect(ContractUtils.isValidToSell(contract_info)).toEqual(false);
     });
     it('should return false if contract is not ended and is not sold and contract is not valid to sell', () => {
-        const contract_info: TIsValidToSell = {
+        const contract_info: TContractInfo = {
             status: 'open',
             is_valid_to_sell: 0,
         };
@@ -258,7 +250,7 @@ describe('getDigitInfo', () => {
 
 describe('getDisplayStatus', () => {
     it('should return won if contract is ended and profit is more than zero', () => {
-        const contract_info: TGetDisplayStatus = {
+        const contract_info: TContractInfo = {
             status: 'sold',
             buy_price: 0,
             bid_price: 100,
@@ -266,7 +258,7 @@ describe('getDisplayStatus', () => {
         expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('won');
     });
     it('should return lost if contract is ended and profit is less than zero', () => {
-        const contract_info: TGetDisplayStatus = {
+        const contract_info: TContractInfo = {
             status: 'sold',
             buy_price: 100,
             bid_price: 0,
@@ -274,7 +266,7 @@ describe('getDisplayStatus', () => {
         expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('loss');
     });
     it('should return won if contract is ended and profit is zero', () => {
-        const contract_info: TGetDisplayStatus = {
+        const contract_info: TContractInfo = {
             status: 'sold',
             buy_price: 100,
             bid_price: 100,
@@ -282,7 +274,7 @@ describe('getDisplayStatus', () => {
         expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('won');
     });
     it('should return purchased if contract is not ended', () => {
-        const contract_info: TGetDisplayStatus = {
+        const contract_info: TContractInfo = {
             status: 'open',
             buy_price: 0,
             bid_price: 100,

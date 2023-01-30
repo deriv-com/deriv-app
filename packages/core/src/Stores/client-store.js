@@ -1,37 +1,39 @@
+import * as SocketCache from '_common/base/socket_cache';
+
 import {
+    CFD_PLATFORMS,
+    LocalStore,
+    State,
+    deriv_urls,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
-    LocalStore,
-    redirectToLogin,
-    setCurrencies,
-    State,
-    toMoment,
-    deriv_urls,
-    urlForLanguage,
-    filterUrlQuery,
-    CFD_PLATFORMS,
-    routes,
-    isTestLink,
-    isProduction,
     isLocal,
+    isProduction,
     isStaging,
+    isTestLink,
+    redirectToLogin,
+    routes,
+    setCurrencies,
+    toMoment,
+    urlForLanguage,
 } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable } from 'mobx';
-import moment from 'moment';
-import { requestLogout, WS } from 'Services';
-import BinarySocketGeneral from 'Services/socket-general';
-import BinarySocket from '_common/base/socket_base';
-import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
-import BaseStore from './base-store';
+import { WS, requestLogout } from 'Services';
+import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
-import { setDeviceDataCookie } from './Helpers/device';
+import { getLanguage, localize } from '@deriv/translations';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import BinarySocketGeneral from 'Services/socket-general';
+import Cookies from 'js-cookie';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import moment from 'moment';
+import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -264,6 +266,7 @@ export default class ClientStore extends BaseStore {
             is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
+            has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
@@ -372,6 +375,7 @@ export default class ClientStore extends BaseStore {
             setTwoFAStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
+            updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
@@ -770,6 +774,10 @@ export default class ClientStore extends BaseStore {
 
     get has_restricted_mt5_account() {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
+    }
+
+    get has_mt5_account_with_rejected_poa() {
+        return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_rejected')).length;
     }
 
     get should_restrict_bvi_account_creation() {
@@ -1601,8 +1609,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responseLandingCompany(response) {
-        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
     }
@@ -2485,6 +2493,11 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    async updateMT5Status() {
+        this.updateAccountStatus();
+        await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
     }
 
     setPrevRealAccountLoginid = logind => {

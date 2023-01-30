@@ -12,7 +12,7 @@ export default Engine =>
                 if (data.msg_type === 'proposal_open_contract') {
                     const contract = data.proposal_open_contract;
 
-                    if (!contract && !this.expectedContractId(contract?.contract_id)) {
+                    if (!contract || !this.expectedContractId(contract?.contract_id)) {
                         return;
                     }
 
@@ -20,7 +20,7 @@ export default Engine =>
 
                     this.data.contract = contract;
 
-                    broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
+                    broadcastContract({ accountID: api_base.account_info.loginid, ...contract });
 
                     if (this.isSold) {
                         this.contractId = '';

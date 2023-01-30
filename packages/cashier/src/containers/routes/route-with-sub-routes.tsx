@@ -9,12 +9,13 @@ import {
     removeBranchName,
     default_title,
 } from '@deriv/shared';
+import { TStores } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { TRootStore, TRouteConfig, TRoute } from 'Types';
+import { TRouteConfig, TRoute } from 'Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
-    is_logged_in: TRootStore['client']['is_logged_in'];
-    is_logging_in: TRootStore['client']['is_logging_in'];
+    is_logged_in: TStores['client']['is_logged_in'];
+    is_logging_in: TStores['client']['is_logging_in'];
 };
 
 type TDefaultSubroute = TRoute | undefined;

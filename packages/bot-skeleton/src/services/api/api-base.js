@@ -1,4 +1,5 @@
 import { observer as globalObserver } from '../../utils/observer';
+import { doUntilDone } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
 class APIBase {
@@ -10,6 +11,7 @@ class APIBase {
     is_running = false;
     subscriptions = [];
     time_interval = null;
+    has_activeSymbols = false;
 
     init(force_update = false) {
         if (getLoginId()) {
@@ -58,10 +60,14 @@ class APIBase {
         if (token) {
             this.token = token;
             this.account_id = account_id;
-            this.getActiveSymbols();
             this.api
                 .authorize(this.token)
                 .then(({ authorize }) => {
+                    if (this.has_activeSymbols) {
+                        this.toggleRunButton(false);
+                    } else {
+                        this.getActiveSymbols();
+                    }
                     this.subscribe();
                     this.account_info = authorize;
                 })
@@ -72,24 +78,20 @@ class APIBase {
     }
 
     subscribe() {
-        this.api.send({ balance: 1, subscribe: 1 }).catch(e => {
-            globalObserver.emit('Error', e);
-        });
-        this.api.send({ transaction: 1, subscribe: 1 }).catch(e => {
-            globalObserver.emit('Error', e);
-        });
+        doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 }));
+        doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
     }
 
     getActiveSymbols = async () => {
-        const { active_symbols = [] } = await this.api.send({ active_symbols: 'brief' }).catch(e => {
-            globalObserver.emit('Error', e);
+        doUntilDone(() => this.api.send({ active_symbols: 'brief' })).then(({ active_symbols = [] }) => {
+            const pip_sizes = {};
+            if (active_symbols.length) this.has_activeSymbols = true;
+            active_symbols.forEach(({ symbol, pip }) => {
+                pip_sizes[symbol] = +(+pip).toExponential().substring(3);
+            });
+            this.pip_sizes = pip_sizes;
+            this.toggleRunButton(false);
         });
-        const pip_sizes = {};
-        active_symbols.forEach(({ symbol, pip }) => {
-            pip_sizes[symbol] = +(+pip).toExponential().substring(3);
-        });
-        this.pip_sizes = pip_sizes;
-        this.toggleRunButton(false);
     };
 
     toggleRunButton = toggle => {
@@ -109,6 +111,13 @@ class APIBase {
     clearSubscriptions() {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions = [];
+
+        // Resetting timeout resolvers
+        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+
+        global_timeouts.forEach((_, i) => {
+            clearTimeout(i);
+        });
     }
 
     getTime() {

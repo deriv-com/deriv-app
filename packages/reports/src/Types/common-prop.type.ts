@@ -23,3 +23,9 @@ export type TRoute = {
     to?: string;
     exact?: boolean;
 };
+
+export type TRouteConfig = TRoute & {
+    is_modal?: boolean;
+    is_authenticated?: boolean;
+    routes?: TRoute[];
+};

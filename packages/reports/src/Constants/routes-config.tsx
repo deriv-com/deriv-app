@@ -2,7 +2,7 @@ import React from 'react';
 import { routes, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import type { TRoute } from '../Types';
+import type { TRoute, TRouteConfig } from '../Types';
 
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -12,7 +12,7 @@ const lazyLoadReportComponent = makeLazyLoader(
 );
 
 // Order matters
-const initRoutesConfig = (): TRoute[] => {
+const initRoutesConfig = (): TRouteConfig[] => {
     return [
         {
             path: routes.reports,
@@ -45,12 +45,12 @@ const initRoutesConfig = (): TRoute[] => {
     ];
 };
 
-let routesConfig: TRoute[];
+let routesConfig: TRouteConfig[];
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = (): TRoute[] => {
+const getRoutesConfig = (): TRouteConfig[] => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);

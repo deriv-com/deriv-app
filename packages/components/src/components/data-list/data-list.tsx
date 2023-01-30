@@ -5,14 +5,16 @@ import {
     CellMeasurer as _CellMeasurer,
     CellMeasurerCache,
     CellMeasurerProps,
-    MeasuredCellParent,
-} from 'react-virtualized/dist/es/CellMeasurer';
-import { AutoSizer as _AutoSizer, type AutoSizerProps, ScrollParams } from 'react-virtualized';
+    AutoSizer as _AutoSizer,
+    type AutoSizerProps,
+    ScrollParams,
+} from 'react-virtualized';
 import _List, { ListProps, ListRowProps } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell';
 import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
+import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
 
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;

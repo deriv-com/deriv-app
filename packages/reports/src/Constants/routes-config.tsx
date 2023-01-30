@@ -2,6 +2,7 @@ import React from 'react';
 import { routes, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import type { TRoute } from '../Types';
 
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -9,16 +10,6 @@ const lazyLoadReportComponent = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "reports-routes" */ '../Containers')),
     () => <Loading />
 );
-
-type TRoute = {
-    path?: string;
-    component: React.ComponentType;
-    is_authenticated?: boolean;
-    getTitle: () => string;
-    icon_component?: string;
-    routes?: TRoute[];
-    default?: boolean;
-};
 
 // Order matters
 const initRoutesConfig = (): TRoute[] => {

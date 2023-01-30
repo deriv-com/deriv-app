@@ -1,10 +1,14 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
+import type { TBinaryRoutes, TRoute } from '../../Types';
 
-const RouteWithSubRoutes = route => {
-    const renderFactory = props => {
+type TRouteWithSubRoutes = TRoute & TBinaryRoutes;
+
+const RouteWithSubRoutes = (route: TRouteWithSubRoutes) => {
+    const renderFactory = (props: RouteComponentProps) => {
         let result = null;
         if (route.component === Redirect) {
             let to = route.to;
@@ -18,13 +22,16 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
-            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : { path: '' };
             const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
+
+            const RouteComponent = route.component as React.ElementType;
+
             result = (
                 <React.Fragment>
-                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    <route.component {...props} routes={route.routes} />
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute?.path} />}
+                    <RouteComponent {...props} routes={route.routes} />
                 </React.Fragment>
             );
         }

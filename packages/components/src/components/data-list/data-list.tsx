@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import {
+import _List, {
     CellMeasurer as _CellMeasurer,
     CellMeasurerCache,
     CellMeasurerProps,
     AutoSizer as _AutoSizer,
     type AutoSizerProps,
     ScrollParams,
+    ListProps,
+    ListRowProps,
 } from 'react-virtualized';
-import _List, { ListProps, ListRowProps } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell';
 import DataListRow from './data-list-row';

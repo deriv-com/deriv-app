@@ -59,9 +59,6 @@ $side-padding: 1.2em;
     &__route-selection {
         padding: 1.6rem;
     }
-    &__contract-types-selector {
-        padding: 0 1.6rem;
-    }
     &__content {
         width: 100%;
         display: flex;
@@ -719,6 +716,13 @@ $side-padding: 1.2em;
         }
     }
 
+    &__contract-types-selector {
+        padding: 0 1.6rem;
+    }
+    &__contract-types-selector__container {
+        max-width: 22.4rem;
+    }
+
     &__content {
         width: fit-content;
         max-height: 100%;
@@ -1003,8 +1007,4 @@ $side-padding: 1.2em;
             background: var(--button-secondary-hover);
         }
     }
-}
-
-.contract-types-selector-container {
-    max-width: 22.4rem;
 }

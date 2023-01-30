@@ -403,9 +403,9 @@ const OpenPositions = ({
         <React.Fragment>
             <NotificationMessages />
             {active_positions.length !== 0 && (
-                <>
+                <React.Fragment>
                     <DesktopWrapper>
-                        <div className='contract-types-selector-container'>
+                        <div className='open-positions__contract-types-selector__container'>
                             <Dropdown
                                 is_align_text_left
                                 name='contract_types'
@@ -417,7 +417,7 @@ const OpenPositions = ({
                     </DesktopWrapper>
                     <MobileWrapper>
                         <SelectNative
-                            className='reports__contract-types-selector'
+                            className='open-positions__contract-types-selector'
                             list_items={contract_types.map(option => ({
                                 text: option.text,
                                 value: option.value,
@@ -427,7 +427,7 @@ const OpenPositions = ({
                             onChange={handleChange}
                         />
                     </MobileWrapper>
-                </>
+                </React.Fragment>
             )}
 
             {is_options_selected ? (

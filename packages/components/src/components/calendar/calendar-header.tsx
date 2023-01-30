@@ -1,8 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv/shared';
-import Button from './calendar-button.jsx';
+import Button from './calendar-button';
 import { getCentury, getDecade } from './helpers';
+
+type THeaderProps = {
+    calendar_date: moment.MomentInput;
+    calendar_view: string;
+    disable_month_selector?: boolean;
+    disable_year_selector?: boolean;
+    hide_disabled_periods?: boolean;
+    isPeriodDisabled: (date: moment.MomentInput, unit: moment.unitOfTime.StartOf) => boolean;
+    navigateTo: (new_date: moment.MomentInput) => void;
+    switchView: (new_view: string) => void;
+};
 
 const Header = ({
     calendar_date,
@@ -13,11 +23,11 @@ const Header = ({
     isPeriodDisabled,
     navigateTo,
     switchView,
-}) => {
+}: THeaderProps) => {
     const is_date_view = calendar_view === 'date';
     const is_month_view = calendar_view === 'month';
     const is_year_view = calendar_view === 'year';
-    const is_decade_view = calendar_view === 'decade';
+    const is_decade_view = calendar_view === 'years';
     const moment_date = toMoment(calendar_date);
 
     let num_of_years = 1;
@@ -26,7 +36,7 @@ const Header = ({
 
     const century = getCentury(moment_date.clone());
     const decade = getDecade(moment_date.clone());
-    const end_of_decade = (is_year_view ? decade : century).split('-')[1];
+    const end_of_decade = +(is_year_view ? decade : century).split('-')[1];
 
     const is_prev_month_disabled = isPeriodDisabled(subMonths(moment_date, 1), 'month');
     const is_prev_year_disabled = isPeriodDisabled(subYears(moment_date, num_of_years), 'month');
@@ -93,7 +103,7 @@ const Header = ({
                     <Button
                         className='dc-calendar__btn--select'
                         is_disabled={is_select_year_disabled}
-                        onClick={is_select_year_disabled ? undefined : () => switchView('decade')}
+                        onClick={is_select_year_disabled ? undefined : () => switchView('years')}
                     >
                         {is_year_view && `${decade}`}
                         {is_decade_view && `${century}`}
@@ -117,17 +127,6 @@ const Header = ({
             />
         </div>
     );
-};
-
-Header.propTypes = {
-    calendar_date: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]),
-    calendar_view: PropTypes.string,
-    disable_month_selector: PropTypes.bool,
-    disable_year_selector: PropTypes.bool,
-    hide_disabled_periods: PropTypes.bool,
-    isPeriodDisabled: PropTypes.func,
-    navigateTo: PropTypes.func,
-    switchView: PropTypes.func,
 };
 
 export default Header;

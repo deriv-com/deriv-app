@@ -4,7 +4,7 @@ import { toMoment } from '@deriv/shared';
 import { CommonPropTypes } from './types';
 import { getDecade } from '../helpers';
 
-const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }) => {
+const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }: CommonPropTypes) => {
     const moment_selected = toMoment(selected_date);
     const moment_date = toMoment(calendar_date);
     const [start_of_decade, end_of_decade] = getDecade(moment_date).split('-');
@@ -17,7 +17,7 @@ const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected 
         <div className='dc-calendar__body dc-calendar__body--year'>
             {years.map((year, idx) => {
                 const is_other_decade = idx === 0 || idx === 11;
-                const is_disabled = isPeriodDisabled(moment_date.clone().year(year), 'year', 'body');
+                const is_disabled = isPeriodDisabled(moment_date.clone().year(year), 'year');
                 return (
                     <span
                         key={idx}
@@ -36,7 +36,5 @@ const Years = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected 
         </div>
     );
 };
-
-Years.propTypes = { ...CommonPropTypes };
 
 export default Years;

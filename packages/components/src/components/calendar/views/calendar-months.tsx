@@ -3,7 +3,7 @@ import React from 'react';
 import { toMoment } from '@deriv/shared';
 import { CommonPropTypes } from './types';
 
-const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }) => {
+const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }: CommonPropTypes) => {
     const moment_date = toMoment(calendar_date);
     const moment_selected_date = toMoment(selected_date);
     const is_same_year = moment_selected_date.isSame(moment_date, 'year');
@@ -34,7 +34,5 @@ const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected
         </div>
     );
 };
-
-Months.propTypes = { ...CommonPropTypes };
 
 export default Months;

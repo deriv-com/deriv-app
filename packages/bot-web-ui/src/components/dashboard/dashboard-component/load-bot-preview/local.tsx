@@ -120,10 +120,7 @@ const LocalComponent = ({
                                     accept='.xml'
                                     style={{ display: 'none' }}
                                     onChange={e => {
-                                        clearInjectionDiv(
-                                            'component',
-                                            document.getElementById('load-strategy__blockly-container')
-                                        );
+                                        clearInjectionDiv('component', el_ref);
                                         onConfirmSave();
                                         setIsFileSupported(handleFileChange(e, false));
                                     }}

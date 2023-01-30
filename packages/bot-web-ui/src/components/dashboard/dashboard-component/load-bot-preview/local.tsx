@@ -7,6 +7,7 @@ import { Text, Icon, MobileWrapper, Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { isMobile } from '@deriv/shared';
 import './index.scss';
+import { clearInjectionDiv } from 'Constants/load-modal';
 
 type TWorkspace = {
     id: string;
@@ -53,10 +54,6 @@ const LocalComponent = ({
             el_ref?.current?.removeChild(el_ref?.current?.children[1]);
         }
     }, [el_ref.current?.children.length]);
-
-    const clearInjectionDiv = () => {
-        el_ref?.current?.removeChild(el_ref?.current?.children[0]);
-    };
 
     const renderOpenButton = () => (
         <button
@@ -123,7 +120,10 @@ const LocalComponent = ({
                                     accept='.xml'
                                     style={{ display: 'none' }}
                                     onChange={e => {
-                                        clearInjectionDiv();
+                                        clearInjectionDiv(
+                                            'component',
+                                            document.getElementById('load-strategy__blockly-container')
+                                        );
                                         onConfirmSave();
                                         setIsFileSupported(handleFileChange(e, false));
                                     }}

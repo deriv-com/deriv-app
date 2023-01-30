@@ -1,13 +1,8 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
 import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
+import { clearInjectionDiv } from 'Constants/load-modal';
 
-const clearInjectionDiv = () => {
-    const el_ref = document.getElementById('load-strategy__blockly-container');
-    if (el_ref && el_ref.getElementsByClassName('injectionDiv').length > 1) {
-        el_ref.removeChild(el_ref.getElementsByClassName('injectionDiv')[0]);
-    }
-};
 export interface IDashboardStore {
     active_tab: number;
     dialog_options: { [key: string]: string };
@@ -188,7 +183,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setFileLoaded = (has_file_loaded: boolean): void => {
         this.has_file_loaded = has_file_loaded;
-        clearInjectionDiv();
+        clearInjectionDiv('store', document.getElementById('load-strategy__blockly-container'));
     };
 
     onCloseDialog = (): void => {

@@ -260,43 +260,43 @@ export const getTradingAssessmentFormConfig = financial_assessment => {
     return {
         risk_tolerance: {
             ...default_form_config,
-            default_value: financial_assessment.risk_tolerance,
+            default_value: financial_assessment?.risk_tolerance ?? '',
         },
         source_of_experience: {
             ...default_form_config,
-            default_value: financial_assessment.source_of_experience,
+            default_value: financial_assessment?.source_of_experience ?? '',
         },
         cfd_experience: {
             ...default_form_config,
-            default_value: financial_assessment.cfd_experience,
+            default_value: financial_assessment?.cfd_experience ?? '',
         },
         cfd_frequency: {
             ...default_form_config,
-            default_value: financial_assessment.cfd_frequency,
+            default_value: financial_assessment?.cfd_frequency ?? '',
         },
         trading_experience_financial_instruments: {
             ...default_form_config,
-            default_value: financial_assessment.trading_experience_financial_instruments,
+            default_value: financial_assessment?.trading_experience_financial_instruments ?? '',
         },
         trading_frequency_financial_instruments: {
             ...default_form_config,
-            default_value: financial_assessment.trading_frequency_financial_instruments,
+            default_value: financial_assessment?.trading_frequency_financial_instruments ?? '',
         },
         cfd_trading_definition: {
             ...default_form_config,
-            default_value: financial_assessment.cfd_trading_definition,
+            default_value: financial_assessment?.cfd_trading_definition ?? '',
         },
         leverage_impact_trading: {
             ...default_form_config,
-            default_value: financial_assessment.leverage_impact_trading,
+            default_value: financial_assessment?.leverage_impact_trading ?? '',
         },
         leverage_trading_high_risk_stop_loss: {
             ...default_form_config,
-            default_value: financial_assessment.leverage_trading_high_risk_stop_loss,
+            default_value: financial_assessment?.leverage_trading_high_risk_stop_loss ?? '',
         },
         required_initial_margin: {
             ...default_form_config,
-            default_value: financial_assessment.required_initial_margin,
+            default_value: financial_assessment?.required_initial_margin ?? '',
         },
     };
 };

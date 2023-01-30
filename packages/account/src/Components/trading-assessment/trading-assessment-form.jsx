@@ -10,10 +10,11 @@ import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 const TradingAssessmentForm = ({
     assessment_questions,
     class_name,
+    disabled_items,
     form_value,
-    onSubmit,
-    onCancel,
     is_header_navigation,
+    onCancel,
+    onSubmit,
     should_move_to_next,
 }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
@@ -146,6 +147,7 @@ const TradingAssessmentForm = ({
                                             values={values}
                                             setFieldValue={setFieldValue}
                                             setEnableNextSection={setIsNextButtonEnabled}
+                                            disabled_items={disabled_items ?? []}
                                         />
                                     ) : (
                                         <TradingAssessmentRadioButton
@@ -155,6 +157,7 @@ const TradingAssessmentForm = ({
                                             values={values}
                                             form_control={form_control}
                                             setEnableNextSection={setIsNextButtonEnabled}
+                                            disabled_items={disabled_items ?? []}
                                         />
                                     )}
                                 </div>

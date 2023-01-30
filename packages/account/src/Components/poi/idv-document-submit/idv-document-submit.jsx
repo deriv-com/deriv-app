@@ -37,6 +37,19 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
 
+                if (document_data[key].additional) {
+                    return {
+                        id: key,
+                        text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
+                        value: format,
+                        sample_image,
+                        example_format,
+                    };
+                }
                 return {
                     id: key,
                     text: new_display_name || display_name,
@@ -78,12 +91,25 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     const validateFields = values => {
         const errors = {};
-        const { document_type, document_number } = values;
+        const { document_type, document_number, additional_document_number } = values;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
             setInputDisable(false);
+        }
+
+        if (!additional_document_number) {
+            errors.additional_document_number =
+                localize('Please enter your document number. ') +
+                getExampleFormat(document_type.additional?.example_format);
+        } else {
+            const format_regex = getRegex(document_type.additional?.format);
+            if (!format_regex.test(additional_document_number)) {
+                errors.additional_document_number =
+                    localize('Please enter the correct format. ') +
+                    getExampleFormat(document_type.additional?.example_format);
+            }
         }
 
         if (!document_number) {
@@ -214,33 +240,78 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                             <fieldset className='proof-of-identity__fieldset-input'>
                                 <Field name='document_number'>
                                     {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            name='document_number'
-                                            bottom_label={
-                                                values.document_type &&
-                                                getExampleFormat(values.document_type.example_format)
-                                            }
-                                            disabled={is_input_disable}
-                                            error={
-                                                (touched.document_number && errors.document_number) ||
-                                                errors.error_message
-                                            }
-                                            autoComplete='off'
-                                            placeholder='Enter your document number'
-                                            value={values.document_number}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            onKeyUp={e => {
-                                                const { example_format } = values.document_type;
-                                                const current_input = example_format.includes('-')
-                                                    ? formatInput(example_format, current_input || e.target.value, '-')
-                                                    : e.target.value;
-                                                setFieldValue('document_number', current_input, true);
-                                                validateFields(values);
-                                            }}
-                                            required
-                                        />
+                                        <>
+                                            <Input
+                                                {...field}
+                                                name='document_number'
+                                                bottom_label={
+                                                    values.document_type &&
+                                                    getExampleFormat(values.document_type.example_format)
+                                                }
+                                                disabled={is_input_disable}
+                                                error={
+                                                    (touched.document_number && errors.document_number) ||
+                                                    errors.error_message
+                                                }
+                                                autoComplete='off'
+                                                placeholder='Enter your document number'
+                                                value={values.document_number}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                onKeyUp={e => {
+                                                    const { example_format } = values.document_type;
+                                                    const current_input = example_format.includes('-')
+                                                        ? formatInput(
+                                                              example_format,
+                                                              current_input || e.target.value,
+                                                              '-'
+                                                          )
+                                                        : e.target.value;
+                                                    setFieldValue('document_number', current_input, true);
+                                                    validateFields(values);
+                                                }}
+                                                required
+                                            />
+                                            {values.document_type.additional?.display_name && (
+                                                <Input
+                                                    {...field}
+                                                    name='additional_document_number'
+                                                    bottom_label={
+                                                        values.document_type.additional &&
+                                                        getExampleFormat(
+                                                            values.document_type.additional?.example_format
+                                                        )
+                                                    }
+                                                    disabled={is_input_disable}
+                                                    error={
+                                                        (touched.additional_document_number &&
+                                                            errors.additional_document_number) ||
+                                                        errors.error_message
+                                                    }
+                                                    autoComplete='off'
+                                                    placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                    value={values.additional_document_number}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    onKeyUp={e => {
+                                                        const { format } = values.document_type.additional;
+                                                        const current_addition_input = format.includes('-')
+                                                            ? formatInput(
+                                                                  format,
+                                                                  current_addition_input || e.target.value,
+                                                                  '-'
+                                                              )
+                                                            : e.target.value;
+                                                        setFieldValue(
+                                                            'additional_document_number',
+                                                            current_addition_input,
+                                                            true
+                                                        );
+                                                        validateFields(values);
+                                                    }}
+                                                />
+                                            )}
+                                        </>
                                     )}
                                 </Field>
                             </fieldset>

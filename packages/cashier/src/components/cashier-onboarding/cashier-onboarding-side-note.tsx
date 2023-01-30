@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-onboarding.scss';
 
 type TCashierOnboardingSideNoteProps = {
@@ -10,13 +11,8 @@ type TCashierOnboardingSideNoteProps = {
 };
 
 const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSideNoteProps) => {
-    const {
-        client,
-        ui,
-        modules: {
-            cashier: { general_store },
-        },
-    } = useStore();
+    const { client, ui } = useStore();
+    const { general_store } = useCashierStore();
     const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;

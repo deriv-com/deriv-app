@@ -232,10 +232,16 @@ export default class NotificationStore extends BaseStore {
     // check for the already added keys in the notification_messages and don't display those notifications
     checkNotificationMessages() {
         const notifications_list = LocalStore.getObject('notification_messages');
-        const refined_list = Object.values(notifications_list)?.[0];
+        const { loginid } = this.root_store.client;
+        const refined_list = Object.values(notifications_list)
+            ? Object.values(notifications_list)
+            : Object.values(notifications_list?.[loginid]);
+
         if (refined_list?.length) {
-            refined_list.map(refined => {
-                this.removeNotificationByKey({ key: refined });
+            refined_list?.map(refined => {
+                refined.map(r => {
+                    this.removeNotificationByKey({ key: r });
+                });
             });
         }
     }

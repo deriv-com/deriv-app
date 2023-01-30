@@ -52,7 +52,7 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
-    } else if (my_profile_store.active_tab === my_profile_tabs.BLOCKED_ADVERTISERS) {
+    } else if (my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES) {
         return <BlockUser />;
     }
     return <MyProfileStats />;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
     let mockRootStore, verification_code;
@@ -43,9 +43,9 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
 
     const renderPaymentAgentWithdrawConfirm = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <PaymentAgentWithdrawConfirm verification_code={verification_code} />
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

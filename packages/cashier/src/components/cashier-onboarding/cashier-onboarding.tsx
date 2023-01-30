@@ -9,20 +9,15 @@ import CashierOnboardingDetails from './cashier-onboarding-details';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
 import type { TCashierOnboardingProvider } from './cashier-onboarding-providers';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCashierOnboardingProps = {
     setSideNotes?: (component: React.ReactElement[]) => void;
 };
 
 const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) => {
-    const {
-        client,
-        ui,
-        common,
-        modules: {
-            cashier: { general_store, payment_agent, account_prompt_dialog },
-        },
-    } = useStore();
+    const { client, ui, common } = useStore();
+    const { general_store, payment_agent, account_prompt_dialog } = useCashierStore();
     const {
         accounts,
         available_crypto_currencies,

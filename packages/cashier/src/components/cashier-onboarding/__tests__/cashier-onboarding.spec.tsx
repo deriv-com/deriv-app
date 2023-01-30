@@ -4,8 +4,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import type { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboarding />', () => {
     let mockRootStore: DeepPartial<TRootStore>;
@@ -66,7 +66,7 @@ describe('<CashierOnboarding />', () => {
 
     const renderCashierOnboarding = () =>
         render(<CashierOnboarding {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
     const renderCashierOnboardingWithRouter = () =>
@@ -75,7 +75,7 @@ describe('<CashierOnboarding />', () => {
                 <CashierOnboarding {...props} />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 

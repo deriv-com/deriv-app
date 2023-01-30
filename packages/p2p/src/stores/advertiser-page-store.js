@@ -43,6 +43,7 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
+            getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onCancel: action.bound,
             onCancelClick: action.bound,
@@ -126,15 +127,44 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     setAdvertiserInfo(response) {
+        const { general_store } = this.root_store;
+
         if (response.error) {
             this.setErrorMessage(response.error);
         } else {
             const { p2p_advertiser_info } = response;
             this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
-            this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+
+            // TODO: uncomment this when BE has fixed is_blocked flag issue for block user overlay
+            // this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+
+            // TODO: remove this when above issue is fixed
+            this.setIsCounterpartyAdvertiserBlocked(
+                general_store.advertiser_relations_response.some(
+                    advertiser => p2p_advertiser_info.id === advertiser.id
+                ) || !!p2p_advertiser_info.is_blocked
+            );
         }
 
         this.setIsLoading(false);
+    }
+
+    getCounterpartyAdvertiserList(advertiser_id) {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advert_list: 1,
+            advertiser_id,
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    const { list } = response.p2p_advert_list;
+                    this.setAdverts(list.filter(advert => advert.counterparty_type === this.counterparty_type));
+                } else {
+                    this.setErrorMessage(response.error);
+                }
+            }
+            this.setIsLoading(false);
+        });
     }
 
     handleTabItemClick(idx) {
@@ -178,6 +208,7 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked,
             this.advertiser_details_id
         );
+        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 

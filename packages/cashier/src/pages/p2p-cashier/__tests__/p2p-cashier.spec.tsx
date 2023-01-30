@@ -4,8 +4,8 @@ import P2PCashier from '../p2p-cashier';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -60,7 +60,7 @@ describe('<P2PCashier />', () => {
             <Router history={history}>
                 <P2PCashier />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
+            { wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders> }
         );
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('<P2PCashier />', () => {
             <Router history={history}>
                 <P2PCashier />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
+            { wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders> }
         );
 
         expect(screen.getByText('P2P')).toBeInTheDocument();
@@ -159,7 +159,7 @@ describe('<P2PCashier />', () => {
             <Router history={history_copy}>
                 <P2PCashier />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
+            { wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders> }
         );
 
         expect(history.location.pathname).toBe(routes.cashier_p2p);

@@ -19,7 +19,7 @@ const BlockUserEmpty = () => {
                         width={128}
                     />
                     <Text className='block-user-empty__text' line_height='m' size='s' weight='bold'>
-                        <Localize i18n_default_text='You have no blocked advertisers' />
+                        <Localize i18n_default_text='No users to show here.' />
                     </Text>
                 </div>
             </DesktopWrapper>
@@ -28,7 +28,7 @@ const BlockUserEmpty = () => {
                     body_className='block-user-empty'
                     height_offset='80px'
                     is_modal_open
-                    page_header_text={localize('Blocked advertisers')}
+                    page_header_text={localize('My counterparties')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
                 >
                     <Icon
@@ -38,7 +38,7 @@ const BlockUserEmpty = () => {
                         width={128}
                     />
                     <Text className='block-user-empty__text' line_height='m' size='s' weight='bold'>
-                        <Localize i18n_default_text='You have no blocked advertisers' />
+                        <Localize i18n_default_text='No users to show here.' />
                     </Text>
                 </MobileFullPageModal>
             </MobileWrapper>

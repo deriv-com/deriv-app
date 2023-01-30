@@ -7,6 +7,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import P2P from '@deriv/p2p';
 import { get, init, timePromise } from 'Utils/server_time';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TP2PCashierProps = RouteComponentProps & {
     history: History;
@@ -18,7 +19,7 @@ type TP2PCashierProps = RouteComponentProps & {
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
-    const { notifications, client, ui, common, modules } = useStore();
+    const { notifications, client, ui, common } = useStore();
     const {
         addNotificationMessage,
         filterNotificationMessages,
@@ -30,8 +31,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const { balance, currency, local_currency_config, loginid, is_logging_in, is_virtual, residence } = client;
     const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
-    const { cashier } = modules;
-    const { general_store } = cashier;
+    const { general_store } = useCashierStore();
     const { setNotificationCount, setOnRemount } = general_store;
     const [order_id, setOrderId] = React.useState<string | null>(null);
     const [action_param, setActionParam] = React.useState<string | null>(null);

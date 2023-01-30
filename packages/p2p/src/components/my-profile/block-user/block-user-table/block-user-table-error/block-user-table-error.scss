@@ -1,0 +1,17 @@
+.block-user-table-error {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    &__icon {
+        margin-top: 2.2rem;
+    }
+
+    &__text {
+        margin: 3rem 11rem;
+
+        @include mobile {
+            margin: 3rem 2rem;
+        }
+    }
+}

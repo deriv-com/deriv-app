@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWS as useWSShared } from '@deriv/shared';
 import useWS from '../useWS';
-import { TSocketEndpointNames, TSocketRequestProps, TSocketResponse } from '../../types';
+import { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponse } from '../../types';
 
 jest.mock('@deriv/shared');
 
@@ -15,7 +15,7 @@ const UseWSExample = <T extends TSocketEndpointNames>({
     request,
 }: {
     name: T;
-    request?: TSocketRequestProps<T>;
+    request?: TSocketAcceptableProps<T>;
 }) => {
     const WS = useWS(name);
 

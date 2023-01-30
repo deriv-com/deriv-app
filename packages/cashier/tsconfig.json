@@ -15,5 +15,5 @@
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "include": ["src", "@deriv-stores.d.ts", "../../utils.d.ts"]
+    "include": ["src", "../../utils.d.ts"]
 }

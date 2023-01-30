@@ -1,4 +1,4 @@
-import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
+import { AutoSizer } from 'react-virtualized';
 import './autosizer.scss';
 
 export default AutoSizer;

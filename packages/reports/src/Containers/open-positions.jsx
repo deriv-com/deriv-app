@@ -402,7 +402,7 @@ const OpenPositions = ({
     return (
         <React.Fragment>
             <NotificationMessages />
-            {active_positions.length !== 0 ? (
+            {active_positions.length !== 0 && (
                 <>
                     <DesktopWrapper>
                         <div className='contract-types-selector-container'>
@@ -428,14 +428,6 @@ const OpenPositions = ({
                         />
                     </MobileWrapper>
                 </>
-            ) : (
-                <PlaceholderComponent
-                    is_empty={active_positions.length !== 0}
-                    is_loading={is_loading}
-                    empty_message_component={EmptyTradeHistoryMessage}
-                    component_icon={component_icon}
-                    localized_message={localize('You have no open positions yet.')}
-                />
             )}
 
             {is_options_selected ? (

@@ -286,6 +286,13 @@
 
             &--minimized {
                 grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
+
+                .load-strategy__recent-item--minimized > div:last-child {
+                    //iphone 14 specific
+                    @media (min-height: 450px) and (max-height: 750px) {
+                        padding-bottom: 10rem;
+                    }
+                }
             }
 
             &__mobile {

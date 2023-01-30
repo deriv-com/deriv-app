@@ -1,15 +1,11 @@
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { tabs_title } from 'Constants/load-modal';
+import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
 import RootStore from './root-store';
 
-const clearInjectionDiv = () => {
-    const el_ref = document.getElementById('load-strategy__blockly-container');
-    el_ref?.current?.removeChild(el_ref?.current?.children[0]);
-};
 export type TWorkspace = {
     id: string;
     xml: string;
@@ -276,7 +272,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
-        this.toggleLoadModal();
+        const { active_tab } = this.root_store.dashboard;
+        if (active_tab === 1) this.toggleLoadModal();
     }
 
     onEntered = (): void => {
@@ -317,7 +314,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         //to load the bot on first load
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv();
+            clearInjectionDiv('store', document.getElementById('load-strategy__blockly-container'));
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
@@ -422,7 +419,6 @@ export default class LoadModalStore implements ILoadModalStore {
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
-
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
             if (is_preview) {

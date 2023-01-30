@@ -1,8 +1,7 @@
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import SideNote from 'Components/side-note';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
@@ -12,6 +11,7 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-container.scss';
 
 const PaymentAgentSearchWarning = () => {
@@ -29,15 +29,9 @@ const PaymentAgentSearchWarning = () => {
 };
 
 const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
-    const {
-        ui,
-        modules: {
-            cashier: { payment_agent: payment_agent_store },
-        },
-    } = useStore();
-
+    const { ui } = useStore();
     const { app_contents_scroll_ref, is_dark_mode_on } = ui;
-
+    const { payment_agent: payment_agent_store } = useCashierStore();
     const {
         has_payment_agent_search_warning,
         is_search_loading,

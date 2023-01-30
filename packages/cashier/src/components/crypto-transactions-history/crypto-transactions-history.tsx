@@ -7,6 +7,7 @@ import { TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -19,12 +20,8 @@ const getHeaders = () => [
 ];
 
 const CryptoTransactionsHistory = observer(() => {
-    const {
-        modules: {
-            cashier: { transaction_history, general_store },
-        },
-        client,
-    } = useStore();
+    const { client } = useStore();
+    const { transaction_history, general_store } = useCashierStore();
     const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
     const { setIsDeposit } = general_store;
     const { currency } = client;

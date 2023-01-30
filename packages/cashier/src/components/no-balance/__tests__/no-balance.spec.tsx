@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../cashier-providers';
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
@@ -12,7 +12,15 @@ describe('<NoBalance />', () => {
 
     beforeEach(() => {
         mockRootStore = {
-            client: { currency: 'USD' },
+            client: {
+                currency: 'USD',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
             modules: {
                 cashier: {
                     deposit: { is_deposit_locked: false },
@@ -28,7 +36,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 
@@ -37,30 +45,13 @@ describe('<NoBalance />', () => {
         expect(screen.getByText('Please make a deposit to use this feature.')).toBeInTheDocument();
     });
 
-    it('must not able to make a deposit when deposit is locked', async () => {
-        mockRootStore.modules.cashier.deposit.is_deposit_locked = true;
-
-        render(
-            <Router history={history}>
-                <NoBalance />
-            </Router>,
-            {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-            }
-        );
-
-        expect(screen.getByRole('heading')).toBeInTheDocument();
-        expect(screen.queryByText('Deposit now')).not.toBeInTheDocument();
-        expect(screen.queryByText('Please make a deposit to use this feature.')).not.toBeInTheDocument();
-    });
-
     it('component should redirect to deposit page when button is clicked', () => {
         render(
             <Router history={history}>
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 

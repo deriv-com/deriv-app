@@ -86,8 +86,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
     },
     bvi: {
-        over_header: localize('Better spreads'),
-        is_over_header_available: true,
+        is_over_header_available: false,
         header: localize('British Virgin Islands'),
         synthetic_contents: [
             `${localize(

@@ -4,6 +4,7 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -12,20 +13,12 @@ type TSwitch = {
 };
 
 const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
-    const {
-        ui,
-        common,
-        client,
-        modules: {
-            cashier: { account_transfer },
-        },
-    } = useStore();
-
+    const { ui, common, client } = useStore();
+    const { account_transfer } = useCashierStore();
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
     const { loginid, switchAccount } = client;
     const { receipt, resetAccountTransfer, selected_from, selected_to } = account_transfer;
-
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
 
@@ -93,9 +86,11 @@ const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_from.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_from.value}
+                        </Text>
+                    )}
                 </div>
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
@@ -108,9 +103,11 @@ const AccountTransferReceipt = observer(({ history }: RouteComponentProps) => {
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_to.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_to.value}
+                        </Text>
+                    )}
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>

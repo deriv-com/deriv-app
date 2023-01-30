@@ -28,7 +28,8 @@ export const getMarketInformation = shortcode => {
 
 export const getMarketName = underlying => (underlying ? getMarketNamesMap()[underlying.toUpperCase()] : null);
 
-export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
+export const getTradeTypeName = (category, is_high_low = false) =>
+    category ? getContractConfig(is_high_low)[category.toUpperCase()].name : null;
 
 export const getContractDurationType = (longcode, shortcode) => {
     if (/^MULTUP|MULTDOWN/.test(shortcode)) return '';

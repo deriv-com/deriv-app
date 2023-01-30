@@ -5,6 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from 'Components/cashier-locked';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TItem = {
     content: string;
@@ -13,20 +14,13 @@ type TItem = {
 };
 
 const WithdrawalLocked = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { withdraw },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { account_status } = client;
-
+    const { withdraw } = useCashierStore();
     const {
         is_10k_withdrawal_limit_reached: is_10K_limit,
         error: { is_ask_financial_risk_approval },
     } = withdraw;
-
     const document = account_status.authentication?.document;
     const identity = account_status.authentication?.identity;
     const needs_verification = account_status.authentication?.needs_verification;

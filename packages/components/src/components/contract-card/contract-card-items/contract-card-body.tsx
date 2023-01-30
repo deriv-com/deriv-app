@@ -22,7 +22,7 @@ import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import { TGetCardLables, TToastConfig } from '../../types';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { ContractUpdate } from '@deriv/api-types';
 
 export type TGeneralContractCardBodyProps = {
@@ -34,7 +34,7 @@ export type TGeneralContractCardBodyProps = {
     current_focus?: string;
     error_message_alignment: string;
     getCardLabels: TGetCardLables;
-    getContractById: (contract_id?: number) => void;
+    getContractById: (contract_id?: number) => TContractStore;
     should_show_cancellation_warning: boolean;
     has_progress_slider: boolean;
     is_mobile: boolean;

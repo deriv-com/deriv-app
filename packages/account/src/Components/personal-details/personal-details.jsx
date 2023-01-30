@@ -554,7 +554,6 @@ const PersonalDetails = ({
                                                 {warning_items?.tax_identification_number && (
                                                     <div className='details-form__tin-warn-divider' />
                                                 )}
-                                                {/* {    console.log(values)} */}
                                                 {'employment_status' in props.value && (
                                                     <fieldset
                                                         className={classNames('account-form__fieldset', 'emp-status')}

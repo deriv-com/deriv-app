@@ -5,7 +5,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
 import useCountdown, { TCountdownOptions } from '../useCountdown';
 
-// jest.setTimeout(30000);
+jest.setTimeout(30000);
 
 const UseCountdownExample = (props: TCountdownOptions) => {
     const counter = useCountdown(props);
@@ -33,15 +33,16 @@ const UseCountdownExample = (props: TCountdownOptions) => {
 describe('useCountdown', () => {
     test('should use counter', () => {
         const { result } = renderHook(() => useCountdown({ from: 60 }));
+        const hook = result.current;
 
-        expect(result.current.count).toBe(60);
-        expect(result.current.is_running).toBe(false);
+        expect(hook.count).toBe(60);
+        expect(hook.is_running).toBe(false);
     });
 
-    test('should count down from 5 to 0 after start is called and stop once finished', async () => {
-        // render(<UseCountdownExample from={5} />);
-        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 5 }));
-        expect(result.current.count).toBe(5);
+    test('should count down from 2 to 0 after start is called and stop once finished', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 2 }));
+
+        expect(result.current.count).toBe(2);
         expect(result.current.is_running).toBe(false);
 
         act(() => {
@@ -50,64 +51,78 @@ describe('useCountdown', () => {
 
         expect(result.current.is_running).toBe(true);
         await waitForNextUpdate();
-        expect(result.current.count).toBe(4);
+        expect(result.current.count).toBe(1);
         await waitForNextUpdate();
+        expect(result.current.count).toBe(0);
+        await waitForNextUpdate();
+        expect(result.current.is_running).toBe(false);
+    });
+
+    test('should count down from 1 to -1 after start is called and stop once finished', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 1, to: -1 }));
+        expect(result.current.count).toBe(1);
+        expect(result.current.is_running).toBe(false);
+
+        act(() => {
+            result.current.start();
+        });
+
+        expect(result.current.is_running).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(0);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(-1);
+        await waitForNextUpdate();
+        expect(result.current.is_running).toBe(false);
+    });
+
+    test('should count down from -1 to 1 after start is called and stop once finished', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: -1, to: 1, increment: true }));
+        expect(result.current.count).toBe(-1);
+        expect(result.current.is_running).toBe(false);
+
+        act(() => {
+            result.current.start();
+        });
+
+        expect(result.current.is_running).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(0);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(1);
+        await waitForNextUpdate();
+        expect(result.current.is_running).toBe(false);
+    });
+
+    test('should count down from 3 to 0 after start is called and reset the counter at 1 and stop once finished', async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 3 }));
+        expect(result.current.count).toBe(3);
+        expect(result.current.is_running).toBe(false);
+
+        act(() => {
+            result.current.start();
+        });
+
+        expect(result.current.is_running).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(2);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(1);
+
+        act(() => {
+            result.current.reset();
+        });
+
         expect(result.current.count).toBe(3);
         await waitForNextUpdate();
         expect(result.current.count).toBe(2);
         await waitForNextUpdate();
         expect(result.current.count).toBe(1);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(0);
+        await waitForNextUpdate();
         expect(result.current.is_running).toBe(false);
-
-        // const count = screen.getByTestId('dt_count');
-        // const is_running = screen.getByTestId('dt_is_running');
-        // const start = screen.getByTestId('dt_start');
-
-        // userEvent.click(result.current.start);
-        // await waitFor(() => expect(is_running).toHaveTextContent('true'));
-        // await waitFor(() => expect(count).toHaveTextContent('4'));
-        // await waitFor(() => expect(count).toHaveTextContent('3'));
-        // await waitFor(() => expect(count).toHaveTextContent('2'));
-        // await waitFor(() => expect(count).toHaveTextContent('1'));
-        // await waitFor(() => expect(count).toHaveTextContent('0'));
-        // await waitFor(() => expect(is_running).toHaveTextContent('false'));
     });
-
-    // test('should count down from 2 to -2 after start is called and stop once finished', async () => {
-    //     render(<UseCountdownExample from={2} to={-2} />);
-
-    //     const count = screen.getByTestId('dt_count');
-    //     const is_running = screen.getByTestId('dt_is_running');
-    //     const start = screen.getByTestId('dt_start');
-
-    //     expect(count).toHaveTextContent('2');
-    //     expect(is_running).toHaveTextContent('false');
-    //     userEvent.click(start);
-    //     await waitFor(() => expect(is_running).toHaveTextContent('true'));
-    //     await waitFor(() => expect(count).toHaveTextContent('1'));
-    //     await waitFor(() => expect(count).toHaveTextContent('0'));
-    //     await waitFor(() => expect(count).toHaveTextContent('-1'));
-    //     await waitFor(() => expect(count).toHaveTextContent('-2'));
-    //     await waitFor(() => expect(is_running).toHaveTextContent('false'));
-    // });
-
-    // test('should count down from -2 to 2 after start is called and stop once finished', async () => {
-    //     render(<UseCountdownExample from={-2} to={2} increment />);
-
-    //     const count = screen.getByTestId('dt_count');
-    //     const is_running = screen.getByTestId('dt_is_running');
-    //     const start = screen.getByTestId('dt_start');
-
-    //     expect(count).toHaveTextContent('-2');
-    //     expect(is_running).toHaveTextContent('false');
-    //     userEvent.click(start);
-    //     await waitFor(() => expect(is_running).toHaveTextContent('true'));
-    //     await waitFor(() => expect(count).toHaveTextContent('-1'));
-    //     await waitFor(() => expect(count).toHaveTextContent('0'));
-    //     await waitFor(() => expect(count).toHaveTextContent('1'));
-    //     await waitFor(() => expect(count).toHaveTextContent('2'));
-    //     await waitFor(() => expect(is_running).toHaveTextContent('false'));
-    // });
 
     // test('should count down from 3 to 0 after start is called and reset the counter at 1 and stop once finished', async () => {
     //     render(<UseCountdownExample from={3} />);

@@ -265,7 +265,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                             <fieldset className='proof-of-identity__fieldset-input'>
                                 <Field name='document_number'>
                                     {({ field }) => (
-                                        <>
+                                        <React.Fragment>
                                             <Input
                                                 {...field}
                                                 name='document_number'
@@ -338,7 +338,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     }}
                                                 />
                                             )}
-                                        </>
+                                        </React.Fragment>
                                     )}
                                 </Field>
                             </fieldset>

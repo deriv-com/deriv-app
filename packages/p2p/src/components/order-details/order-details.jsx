@@ -29,10 +29,8 @@ const OrderDetails = observer(() => {
     const {
         account_currency,
         advert_details,
-        advertiser_details,
         amount_display,
         chat_channel_url: order_channel_url,
-        client_details,
         completion_time,
         contact_info,
         has_timer_expired,
@@ -43,10 +41,12 @@ const OrderDetails = observer(() => {
         is_completed_order,
         is_pending_order,
         is_reviewable,
+        is_user_recommended_previously,
         labels,
         local_currency,
         other_user_details,
         payment_info,
+        previous_recommendation,
         purchase_time,
         rate,
         review_details,
@@ -117,7 +117,7 @@ const OrderDetails = observer(() => {
         key: 'RatingModal',
         props: {
             is_buy_order_for_user,
-            is_user_recommended_previously: is_recommended_by_user,
+            is_user_recommended_previously,
             onClickDone: () => {
                 order_store.setOrderRating(id);
                 general_store.props.removeNotificationMessage({
@@ -131,6 +131,7 @@ const OrderDetails = observer(() => {
                 order_store.setRatingValue(0);
                 hideModal();
             },
+            previous_recommendation,
         },
     });
 
@@ -142,11 +143,6 @@ const OrderDetails = observer(() => {
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
     const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
-
-    const is_recommended_by_user =
-        general_store.client?.loginid === client_details?.loginid
-            ? advertiser_details?.is_recommended
-            : client_details?.is_recommended;
 
     return (
         <OrderDetailsWrapper page_title={page_title}>

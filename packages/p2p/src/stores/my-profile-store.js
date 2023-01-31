@@ -564,7 +564,7 @@ export default class MyProfileStore extends BaseStore {
 
         general_store.showModal({
             key: 'BlockUserModal',
-            props: { advertiser_name: advertiser.name },
+            props: { advertiser_name: advertiser.name, is_advertiser_blocked: advertiser.is_blocked },
         });
         this.setSelectedTradePartner(advertiser);
     }

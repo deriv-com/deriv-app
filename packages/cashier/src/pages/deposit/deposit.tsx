@@ -2,17 +2,17 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { Real, Virtual } from 'Components/cashier-container';
-import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
-import CashierLocked from 'Components/cashier-locked';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import Error from 'Components/error';
-import FundsProtection from 'Components/funds-protection';
-import USDTSideNote from 'Components/usdt-side-note';
-import RecentTransaction from 'Components/recent-transaction';
+import { Real, Virtual } from '../../components/cashier-container';
+import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
+import CashierLocked from '../../components/cashier-locked';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import Error from '../../components/error';
+import FundsProtection from '../../components/funds-protection';
+import USDTSideNote from '../../components/usdt-side-note';
+import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
-import SideNote from 'Components/side-note';
+import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
@@ -29,6 +29,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_switching,
         is_virtual,
         landing_company_shortcode,
+        is_pre_appstore,
     } = client;
     const { iframe, deposit, transaction_history, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url } = iframe;

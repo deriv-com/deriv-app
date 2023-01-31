@@ -20,6 +20,11 @@
             display: none;
         }
     }
+    &__dialog {
+        .dc-dialog__content {
+            margin-bottom: 0;
+        }
+    }
     &__error-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -103,7 +108,7 @@
         }
     }
     &__heading {
-        margin-bottom: 0.8rem;
+        margin-bottom: 2.4rem;
         &-citizen {
             margin-bottom: 1.6rem;
         }
@@ -116,12 +121,13 @@
         margin-bottom: 2.4rem;
     }
     &__subtext {
-        margin: 1rem 0 0.8rem;
+        margin: 0;
         @include mobile {
             margin-bottom: 3.4rem;
         }
 
         &--error {
+            margin-bottom: 1rem;
             @include mobile {
                 margin-top: -1.4rem;
                 margin-bottom: 0.8rem;

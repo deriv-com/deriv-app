@@ -12,7 +12,7 @@ type TPageOverlay = {
     is_open?: boolean;
     onClickClose: (event: MouseEvent) => void;
     portal_id?: string;
-    header_classname: string;
+    header_classname?: string;
 };
 
 const PageOverlay = ({

@@ -431,6 +431,7 @@ import './common/ic-neteller-dark.svg';
 import './common/ic-neteller-light.svg';
 import './common/ic-new-file.svg';
 import './common/ic-no-ad.svg';
+import './common/ic-no-data.svg';
 import './common/ic-no-order.svg';
 import './common/ic-notification-clear.svg';
 import './common/ic-notification.svg';

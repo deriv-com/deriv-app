@@ -4,21 +4,21 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import classNames from 'classnames';
-import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 import { isMobile } from '@deriv/shared';
+import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 
 type TTourTriggrerDialog = {
     active_tab: number;
-    is_tour_dialog_visible: boolean;
     has_tour_ended: boolean;
+    is_tour_dialog_visible: boolean;
     setTourDialogVisibility: (param: boolean) => void;
     toggleOnConfirm: (active_tab: number, value: boolean) => void;
 };
 
 const TourTriggrerDialog = ({
     active_tab,
-    is_tour_dialog_visible,
     has_tour_ended,
+    is_tour_dialog_visible,
     setTourDialogVisibility,
     toggleOnConfirm,
 }: TTourTriggrerDialog) => {
@@ -43,33 +43,38 @@ const TourTriggrerDialog = ({
         setTourDialogVisibility(false);
     };
 
+    const dashboardTourContent = () => {
+        if (!has_tour_ended) {
+            return (
+                <Localize
+                    key={0}
+                    i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
+                    components={[<strong key={0} />]}
+                />
+            );
+        }
+        return (
+            <Localize key={0} i18n_default_text={'If yes, go to <0>Tutorials</0>.'} components={[<strong key={0} />]} />
+        );
+    };
+
+    const getTourHeaders = (type: string, tour_check: boolean, tab_id: number) => {
+        let text;
+        if (!tour_check && type === 'header') {
+            if (tab_id === 1) text = localize("Let's build a Bot!");
+            else text = localize('Get started on DBot');
+        } else if (type === 'header') {
+            if (tab_id === 1) text = localize('Congratulations');
+            else text = localize('Want to retake the tour?');
+        }
+        return text;
+    };
+
     const getTourContent = (type: string) => {
         return (
             <>
-                {type === 'content' && active_tab === 0 ? (
-                    !has_tour_ended ? (
-                        <Localize
-                            key={0}
-                            i18n_default_text={'Hi! Hit <0>Start</0> for a quick tour to help you get started.'}
-                            components={[<strong key={0} />]}
-                        />
-                    ) : (
-                        <Localize
-                            key={0}
-                            i18n_default_text={'If yes, go to <0>Tutorials</0>.'}
-                            components={[<strong key={0} />]}
-                        />
-                    )
-                ) : (
-                    <>
-                        {type === 'header' &&
-                            !has_tour_ended &&
-                            (active_tab === 1 ? localize("Let's build a Bot!") : localize('Get started on DBot'))}
-                        {type === 'header' &&
-                            has_tour_ended &&
-                            (active_tab === 1 ? localize('Congratulations!') : localize('Want to retake the tour?'))}
-                    </>
-                )}
+                {type === 'header' && getTourHeaders(type, has_tour_ended, active_tab)}
+                {type === 'content' && active_tab === 0 && dashboardTourContent()}
                 {type === 'content' &&
                     active_tab === 1 &&
                     (!has_tour_ended ? (
@@ -171,8 +176,8 @@ const TourTriggrerDialog = ({
 
 export default connect(({ dashboard }: RootStore) => ({
     active_tab: dashboard.active_tab,
-    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     has_tour_ended: dashboard.has_tour_ended,
+    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
     setTourDialogVisibility: dashboard.setTourDialogVisibility,
     toggleOnConfirm: dashboard.toggleOnConfirm,
 }))(TourTriggrerDialog);

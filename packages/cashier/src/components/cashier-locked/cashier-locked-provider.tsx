@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
-import { TEmptyStateProps } from 'Components/empty-state/empty-state';
+import { TEmptyStateProps } from '../empty-state/empty-state';
 
 type TProps = {
     cashier_validation: string[] | undefined;

@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { StoreProvider } from '@deriv/stores';
-import { TRootStore } from '../../../types';
-import type { DeepPartial } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 
 describe('<CashierLocked />', () => {
     it('should show the proper message if there is a cryptocashier maintenance', () => {
@@ -18,6 +17,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
@@ -45,6 +50,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
@@ -72,6 +83,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: true,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
@@ -99,6 +116,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
@@ -126,6 +149,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -153,6 +182,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -180,6 +215,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -207,6 +248,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -234,6 +281,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -259,6 +312,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -282,6 +341,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -308,6 +373,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -335,6 +406,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -358,6 +435,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -381,6 +464,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -408,6 +497,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -439,6 +534,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: true,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
@@ -466,6 +567,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: true,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
@@ -489,6 +596,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
@@ -516,6 +629,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
@@ -543,6 +662,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
@@ -568,6 +693,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -591,6 +722,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
@@ -618,6 +755,12 @@ describe('<CashierLocked />', () => {
                 is_deposit_lock: false,
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };

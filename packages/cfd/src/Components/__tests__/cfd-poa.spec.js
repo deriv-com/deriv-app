@@ -178,7 +178,6 @@ describe('<CFDPOA />', () => {
                 address_state: 'alabama',
             },
         };
-
         renderwithRouter(<CFDPOA {...new_props} />);
 
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();

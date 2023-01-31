@@ -1,13 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboardingSideNote />', () => {
     let mockRootStore;
@@ -35,7 +29,7 @@ describe('<CashierOnboardingSideNote />', () => {
 
     const renderCashierOnboardingSideNote = () =>
         render(<CashierOnboardingSideNote {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
     it('should show the proper messages, with fiat currency and can_change_fiat_currency={false} property', () => {

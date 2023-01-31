@@ -3,8 +3,9 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { TReactChangeEvent, TReactChildren } from 'Types';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -74,11 +75,7 @@ const CryptoFiatConverter = observer(
         validateFromAmount,
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
-        const {
-            modules: {
-                cashier: { crypto_fiat_converter },
-            },
-        } = useStore();
+        const { crypto_fiat_converter } = useCashierStore();
 
         const {
             converter_from_amount,

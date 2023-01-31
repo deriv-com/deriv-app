@@ -1,13 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
-import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoTransactionsHistory />', () => {
     let mockRootStore;
@@ -34,7 +28,7 @@ describe('<CryptoTransactionsHistory />', () => {
 
     const renderCryptoTransactionsHistory = () =>
         render(<CryptoTransactionsHistory />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
     it('should show "USD recent transactions" and "No current transactions available" messages', () => {

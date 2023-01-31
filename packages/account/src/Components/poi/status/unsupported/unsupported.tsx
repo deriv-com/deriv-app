@@ -9,6 +9,9 @@ import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';
 import { FormikValues } from 'formik';
+import Verified from 'Components/poi/status/verified';
+import Limited from 'Components/poi/status/limited';
+import Expired from 'Components/poi/status/expired';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -26,9 +29,22 @@ type TUnsupported = {
     manual: {
         status: string;
     };
+    redirect_button: React.ReactElement;
+    needs_poa: boolean;
+    handleRequireSubmission: () => void;
+    allow_poi_resubmission: boolean;
 };
 
-const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }: Partial<TUnsupported>) => {
+const Unsupported = ({
+    country_code,
+    handlePOIforMT5Complete,
+    manual,
+    redirect_button,
+    needs_poa,
+    handleRequireSubmission,
+    allow_poi_resubmission,
+    ...props
+}: Partial<TUnsupported>) => {
     const [detail, setDetail] = React.useState<number | null>(null);
     const toggleDetail = (index: number) => setDetail(index);
 
@@ -36,7 +52,16 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }: Partia
         country_code,
     });
 
-    if (props?.manual?.status === identity_status_codes.pending) return <UploadComplete />;
+    if (manual) {
+        if (manual.status === identity_status_codes.pending) return <UploadComplete is_manual_upload />;
+        else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(manual.status)) {
+            if (!allow_poi_resubmission) return <Limited />;
+        } else if (manual.status === identity_status_codes.verified) {
+            return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
+        } else if (manual.status === identity_status_codes.expired) {
+            return <Expired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
+        }
+    }
 
     if (detail !== null) {
         return (

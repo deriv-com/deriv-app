@@ -8,14 +8,23 @@ import IconMessageContent from 'Components/icon-message-content';
 import { TPlatformContext, TPOIStatus } from 'Types';
 import classNames from 'classnames';
 
-export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }: TPOIStatus) => {
+export const UploadComplete = ({
+    needs_poa,
+    redirect_button,
+    is_from_external,
+    is_manual_upload = false,
+}: TPOIStatus) => {
     const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
-    const message = localize('Your proof of identity was submitted successfully');
+    const message = localize('Your documents were submitted successfully');
+    const description = is_manual_upload
+        ? localize('We’ll review your documents and notify you of its status within 1 - 3 working days.')
+        : localize('We’ll review your documents and notify you of its status within 5 minutes.');
+
     if (!needs_poa) {
         return (
             <IconMessageContent
                 message={message}
-                text={localize('We’ll review your document and notify you of its status within 1-3 days.')}
+                text={description}
                 icon={
                     is_appstore ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
@@ -44,7 +53,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }:
             <React.Fragment>
                 <div className='account-management__text-container'>
                     <Text align='center' size='xs' as={is_appstore ? 'span' : 'p'}>
-                        {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                        {description}
                     </Text>
                     <Text align='center' size='xs' as={is_appstore ? 'span' : 'p'}>
                         {localize('You must also submit a proof of address.')}

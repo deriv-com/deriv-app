@@ -23,6 +23,7 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
 
     return to && !href ? (
         <span
+            data-testid='dt_span'
             className={classNames({
                 [`${active_class}__link-wrapper`]: !!active_class,
             })}
@@ -35,7 +36,9 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
             </NavLink>
         </span>
     ) : (
-        <a {...props}>{children}</a>
+        <a data-testid='dt_link' {...props}>
+            {children}
+        </a>
     );
 };
 

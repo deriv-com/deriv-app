@@ -59,6 +59,8 @@ const PageOverlayWrapper = ({
     subroutes,
     history,
 }) => {
+    const is_from_traders_hub = () => (is_pre_appstore ? history.push(shared_routes.traders_hub) : onClickClose());
+
     if (isMobile() && selected_route) {
         return (
             <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
@@ -87,7 +89,7 @@ const PageOverlayWrapper = ({
     }
 
     return (
-        <PageOverlay header={localize('Settings')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+        <PageOverlay header={localize('Settings')} onClickClose={is_from_traders_hub} is_from_app={is_from_derivgo}>
             <VerticalTab
                 alignment='center'
                 is_floating
@@ -110,6 +112,7 @@ const Account = ({
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
+    is_pre_appstore,
     is_risky_client,
     is_virtual,
     is_visible,
@@ -121,7 +124,7 @@ const Account = ({
     should_allow_authentication,
     toggleAccount,
 }) => {
-    const { is_appstore, is_pre_appstore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -138,10 +141,15 @@ const Account = ({
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
+            if (route.path === shared_routes.languages) {
+                route.is_hidden = !is_pre_appstore;
+            }
+
             if (route.path === shared_routes.financial_assessment) {
                 route.is_disabled =
                     is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
             }
+
             if (route.path === shared_routes.trading_assessment) {
                 route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
             }
@@ -211,9 +219,10 @@ Account.propTypes = {
     active_account_landing_company: PropTypes.string,
     currency: PropTypes.string,
     history: PropTypes.object,
+    is_from_derivgo: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -229,9 +238,10 @@ Account.propTypes = {
 export default connect(({ client, common, ui }) => ({
     active_account_landing_company: client.landing_company_shortcode,
     currency: client.currency,
+    is_from_derivgo: common.is_from_derivgo,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_from_derivgo: common.is_from_derivgo,
+    is_pre_appstore: client.is_pre_appstore,
     is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,

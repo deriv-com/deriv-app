@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Routes from 'Containers/routes.jsx';
+import Routes from 'Containers/routes';
 import { MobxContentProvider } from 'Stores/connect';
 import 'Sass/app.scss';
 import initStore from './init-store'; // eslint-disable-line import/extensions

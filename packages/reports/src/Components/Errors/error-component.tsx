@@ -2,16 +2,7 @@ import React from 'react';
 import { PageError, Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
-type TErrorComponent = {
-    header: string;
-    is_dialog: boolean;
-    message: React.ReactElement | string;
-    redirect_label: string;
-    redirectOnClick: () => void;
-    should_show_refresh: boolean;
-    type: string;
-};
+import { TErrorComponent } from '../../Types';
 
 const ErrorComponent = ({
     header,

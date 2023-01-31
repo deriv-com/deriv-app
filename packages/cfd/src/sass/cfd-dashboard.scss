@@ -366,6 +366,7 @@
             line-height: 1.5;
         }
     }
+   
     &__footnote {
         &-title {
             padding-bottom: 0.8rem;
@@ -523,6 +524,8 @@
         @include mobile {
             flex-direction: column;
             align-items: center;
+            overflow-y: scroll;
+            height: 60%;
         }
     }
     &--selected {
@@ -572,6 +575,17 @@
     }
     &__h2-header {
         margin: 1.4rem 0 2.4rem;
+    }
+    &__footer-wrapper{
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100%;
+            height: 100%;
+            position: sticky;
+            bottom: 0;
+            max-height: 20rem;
+            z-index:12;
+        }
     }
     &__footnote {
         display: flex;

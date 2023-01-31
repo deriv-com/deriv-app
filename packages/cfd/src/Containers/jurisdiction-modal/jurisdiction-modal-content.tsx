@@ -55,22 +55,7 @@ const JurisdictionModalContent = ({
                         )
                 )}
             </div>
-            <JurisdictionModalFootNote
-                account_status={account_status}
-                account_type={account_type}
-                card_classname={card_classname}
-                context={context}
-                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-            />
-            <JurisdictionCheckBox
-                is_checked={checked}
-                context={context}
-                onCheck={() => setChecked(!checked)}
-                class_name={`${card_classname}__jurisdiction-checkbox`}
-                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-            />
+            {/*  */}
         </React.Fragment>
     );
 };

@@ -6,6 +6,8 @@ import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
+import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
+import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
 const JurisdictionModal = ({
     account_status,
@@ -144,7 +146,6 @@ const JurisdictionModal = ({
             }
         }
     };
-
     const ModalContent = () => (
         <React.Fragment>
             <JurisdictionModalContent
@@ -162,21 +163,40 @@ const JurisdictionModal = ({
                 synthetic_available_accounts={synthetic_available_accounts}
                 should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
-            <Modal.Footer has_separator>
-                <Button
-                    disabled={isNextButtonDisabled()}
-                    primary
-                    style={{ width: isMobile() ? '100%' : 'unset' }}
-                    onClick={() => {
-                        toggleJurisdictionModal();
-                        onSelectRealAccount();
-                    }}
-                >
-                    {localize('Next')}
-                </Button>
-            </Modal.Footer>
+            <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
+                <JurisdictionModalFootNote
+                    account_status={account_status}
+                    account_type={account_type.type}
+                    card_classname={`cfd-jurisdiction-card--${account_type.type}`}
+                    context={context}
+                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                    should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                />
+                <JurisdictionCheckBox
+                    is_checked={checked}
+                    context={context}
+                    onCheck={() => setChecked(!checked)}
+                    class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
+                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                    should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                />
+                <Modal.Footer has_separator>
+                    <Button
+                        disabled={isNextButtonDisabled()}
+                        primary
+                        style={{ width: isMobile() ? '100%' : 'unset' }}
+                        onClick={() => {
+                            toggleJurisdictionModal();
+                            onSelectRealAccount();
+                        }}
+                    >
+                        {localize('Next')}
+                    </Button>
+                </Modal.Footer>
+            </div>
         </React.Fragment>
     );
+    const ModalFooter=()=>()
 
     return (
         <div>

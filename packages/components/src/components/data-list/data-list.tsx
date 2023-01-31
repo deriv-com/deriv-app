@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import _List, {
+import {
+    List as _List,
     CellMeasurer as _CellMeasurer,
     CellMeasurerCache,
     CellMeasurerProps,

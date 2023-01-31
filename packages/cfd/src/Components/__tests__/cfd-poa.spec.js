@@ -160,7 +160,6 @@ describe('<CFDPOA />', () => {
 
     it('should disable the next button if there are no values', async () => {
         renderwithRouter(<CFDPOA {...props} />);
-
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();
 
         const next_btn = screen.getByRole('button', { name: /Next/i });

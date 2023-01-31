@@ -6,6 +6,7 @@ import {
     State,
     deriv_urls,
     filterUrlQuery,
+    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -1462,6 +1463,21 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const unused_params = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1585,27 +1601,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
 
-        const unusedParams = [
-            'type',
-            'acp',
-            'label',
-            'server',
-            'interface',
-            'cid',
-            'age',
-            'utm_source',
-            'first_name',
-            'second_name',
-            'email',
-            'phone',
-            '_filteredParams',
-        ];
-
-        const all_search_params = new URLSearchParams(search);
-        const filtered_queries = [...all_search_params].filter(kvp => !unusedParams.includes(kvp[0]));
-        const newParams = new URLSearchParams(filtered_queries || '').toString();
-
-        history.replaceState(null, null, window.location.href.replace(`${search}`, newParams));
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search_params, unused_params))
+        );
 
         return true;
     }

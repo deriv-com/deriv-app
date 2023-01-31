@@ -7,7 +7,7 @@ import Popover from '../popover';
 type TPosition = 'left' | 'right' | 'top' | 'bottom';
 type TInputWithCheckbox = {
     addToast: (e: object) => void;
-    removeToast: (e: object | string) => void;
+    removeToast: (e: string) => void;
     checkbox_tooltip_label: boolean;
     className: string;
     classNameInlinePrefix: string;
@@ -16,7 +16,7 @@ type TInputWithCheckbox = {
     currency: string;
     current_focus: string;
     defaultChecked: boolean;
-    error_messages: object[];
+    error_messages: string[];
     is_negative_disabled: boolean | undefined | null;
     is_single_currency: boolean;
     is_input_hidden: boolean;
@@ -71,7 +71,7 @@ const InputWithCheckbox = ({
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (isMobile()) {
-            const showErrorToast = (e: object) => {
+            const showErrorToast = () => {
                 if (typeof addToast === 'function') {
                     addToast({
                         key: `${name}__error`,
@@ -86,7 +86,7 @@ const InputWithCheckbox = ({
                 }
             };
             if (error_messages?.length > 0) {
-                showErrorToast(error_messages[0]);
+                showErrorToast();
                 return () => {
                     removeErrorToast();
                 };

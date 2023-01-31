@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile, tour_type } from './joyride-config';
+import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import classNames from 'classnames';
@@ -117,6 +117,10 @@ const TourSlider = ({
         onTourEnd(step, has_started_onboarding_tour);
     }, [step]);
 
+    const bot_tour_text = !has_started_onboarding_tour && step === 3 ? localize('Finish') : localize('Next');
+
+    const tour_button_text = has_started_onboarding_tour && step_key === 0 ? localize('Start') : bot_tour_text;
+
     return (
         <>
             <div
@@ -212,17 +216,7 @@ const TourSlider = ({
                                 label={localize('Previous')}
                             />
                         )}
-                        <TourButton
-                            type='danger'
-                            onClick={onClickNext}
-                            label={
-                                has_started_onboarding_tour && step_key === 0
-                                    ? localize('Start')
-                                    : !has_started_onboarding_tour && step === 3
-                                    ? localize('Finish')
-                                    : localize('Next')
-                            }
-                        />
+                        <TourButton type='danger' onClick={onClickNext} label={tour_button_text} />
                     </div>
                 </div>
             </div>

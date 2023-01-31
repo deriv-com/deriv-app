@@ -46,7 +46,7 @@ const Card = ({
     showVideoDialog,
 }: TCardProps) => {
     /* eslint-disable no-unused-expressions */
-    const [file_supported, setIsFileSupported] = React.useState<boolean>(true);
+    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
 
     const openGoogleDriveDialog = () => {

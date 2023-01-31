@@ -58,22 +58,20 @@ const TourTriggrerDialog = ({
         );
     };
 
-    const getTourHeaders = (type: string, tour_check: boolean, tab_id: number) => {
+    const getTourHeaders = (tour_check: boolean, tab_id: number) => {
         let text;
-        if (!tour_check && type === 'header') {
+        if (!tour_check) {
             if (tab_id === 1) text = localize("Let's build a Bot!");
             else text = localize('Get started on DBot');
-        } else if (type === 'header') {
-            if (tab_id === 1) text = localize('Congratulations');
-            else text = localize('Want to retake the tour?');
-        }
+        } else if (tab_id === 1) text = localize('Congratulations');
+        else text = localize('Want to retake the tour?');
         return text;
     };
 
     const getTourContent = (type: string) => {
         return (
             <>
-                {type === 'header' && getTourHeaders(type, has_tour_ended, active_tab)}
+                {type === 'header' && getTourHeaders(has_tour_ended, active_tab)}
                 {type === 'content' && active_tab === 0 && dashboardTourContent()}
                 {type === 'content' &&
                     active_tab === 1 &&

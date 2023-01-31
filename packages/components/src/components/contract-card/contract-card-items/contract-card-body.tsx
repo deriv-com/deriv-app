@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
     isCryptocurrency,
@@ -13,15 +12,45 @@ import {
     isValidToSell,
     shouldShowCancellation,
 } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import ProgressSliderMobile from '../../progress-slider-mobile';
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGetCardLables, TToastConfig } from '../../types';
+import { ContractUpdate } from '@deriv/api-types';
+
+export type TGeneralContractCardBodyProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    contract_info: TContractInfo;
+    contract_update: ContractUpdate;
+    connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
+    currency: string;
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    getContractById: (contract_id?: number) => TContractStore;
+    should_show_cancellation_warning: boolean;
+    has_progress_slider: boolean;
+    is_mobile: boolean;
+    is_sold: boolean;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string) => void;
+    status: string;
+    toggleCancellationWarning: () => void;
+    progress_slider: React.ReactNode;
+};
+
+export type TContractCardBodyProps = {
+    is_multiplier: boolean;
+    server_time: moment.Moment;
+} & TGeneralContractCardBodyProps;
 
 const MultiplierCardBody = ({
     addToast,
@@ -43,7 +72,7 @@ const MultiplierCardBody = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-}) => {
+}: TGeneralContractCardBodyProps) => {
     const { buy_price, bid_price, profit, limit_order, underlying } = contract_info;
 
     const total_profit = getTotalProfit(contract_info);
@@ -62,13 +91,13 @@ const MultiplierCardBody = ({
                 })}
             >
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
-                    <Money amount={buy_price - cancellation_price} currency={currency} />
+                    <Money amount={Number(buy_price) - cancellation_price} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem header={getCardLabels().CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
-                            'dc-contract-card--profit': +profit > 0,
-                            'dc-contract-card--loss': +profit < 0,
+                            'dc-contract-card--profit': Number(profit) > 0,
+                            'dc-contract-card--loss': Number(profit) < 0,
                         })}
                     >
                         <Money amount={bid_price} currency={currency} />
@@ -168,7 +197,7 @@ const ContractCardBody = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-}) => {
+}: TContractCardBodyProps) => {
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
@@ -213,8 +242,8 @@ const ContractCardBody = ({
                 <ContractCardItem
                     header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
+                    is_loss={Number(profit) < 0}
+                    is_won={Number(profit) > 0}
                 >
                     <Money amount={profit} currency={currency} />
                     <div
@@ -227,7 +256,7 @@ const ContractCardBody = ({
                     </div>
                 </ContractCardItem>
                 <ContractCardItem header={is_sold ? getCardLabels().PAYOUT : getCardLabels().INDICATIVE_PRICE}>
-                    <Money currency={currency} amount={sell_price || indicative} />
+                    <Money currency={currency} amount={Number(sell_price || indicative)} />
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,
@@ -265,41 +294,15 @@ const ContractCardBody = ({
             <DesktopWrapper>{card_body}</DesktopWrapper>
             <MobileWrapper>
                 <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
+                    className={classNames('dc-contract-card__separatorclass', {
+                        'dc-contract-card__body-wrapper': !is_multiplier,
+                    })}
                 >
                     {card_body}
                 </div>
             </MobileWrapper>
         </React.Fragment>
     );
-};
-
-ContractCardBody.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    is_mobile: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_sold: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    server_time: PropTypes.object,
-    setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    status: PropTypes.string,
-    toggleCancellationWarning: PropTypes.func,
-    has_progress_slider: PropTypes.bool,
 };
 
 export default ContractCardBody;

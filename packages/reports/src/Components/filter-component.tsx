@@ -1,9 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FilterDropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CompositeCalendar from './Form/CompositeCalendar';
+import { TRootStore } from 'Stores/index';
+
+type TFilterComponent = {
+    action_type: string;
+    date_from: number;
+    date_to: number;
+    filtered_date_range: {
+        duration: number;
+        label: string;
+        onClick?: () => void;
+        value?: string;
+    };
+    handleDateChange: () => void;
+    handleFilterChange: () => void;
+    suffix_icon: string;
+};
 
 const FilterComponent = ({
     action_type,
@@ -12,7 +27,7 @@ const FilterComponent = ({
     handleFilterChange,
     handleDateChange,
     filtered_date_range,
-}) => {
+}: TFilterComponent) => {
     const filter_list = [
         {
             text: localize('All transactions'),
@@ -58,17 +73,7 @@ const FilterComponent = ({
     );
 };
 
-FilterComponent.propTypes = {
-    action_type: PropTypes.string,
-    date_from: PropTypes.number,
-    date_to: PropTypes.number,
-    filtered_date_range: PropTypes.object,
-    handleDateChange: PropTypes.func,
-    handleFilterChange: PropTypes.func,
-    suffix_icon: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: TRootStore) => ({
     action_type: modules.statement.action_type,
     data: modules.statement.data,
     date_from: modules.statement.date_from,

@@ -186,7 +186,7 @@ describe('<IdvDocumentSubmit/>', () => {
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-            expect(verifyBtn).toBeDisabled();
+            expect(verifyBtn).not.toBeDisabled();
         });
 
         fireEvent.click(verifyBtn);

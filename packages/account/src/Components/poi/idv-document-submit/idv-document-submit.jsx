@@ -41,8 +41,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const needs_additional = !!document_data[key].additional;
 
-                if (document_data[key].additional) {
+                if (needs_additional) {
                     return {
                         id: key,
                         text: new_display_name || display_name,
@@ -99,6 +100,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const { document_type, document_number, additional_document_number } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
+        const needs_additional = !!document_type.additional;
 
         // QA can manually toggle this regex now through this feature flag.
         // Otherwise it blocks their test suite.
@@ -110,16 +112,18 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             setInputDisable(false);
         }
 
-        if (!additional_document_number) {
-            errors.additional_document_number =
-                localize('Please enter your document number. ') +
-                getExampleFormat(document_type.additional?.example_format);
-        } else {
-            const format_regex = getRegex(document_type.additional?.format);
-            if (!format_regex.test(additional_document_number)) {
+        if (needs_additional) {
+            if (!additional_document_number) {
                 errors.additional_document_number =
-                    localize('Please enter the correct format. ') +
+                    localize('Please enter your document number. ') +
                     getExampleFormat(document_type.additional?.example_format);
+            } else {
+                const format_regex = getRegex(document_type.additional?.format);
+                if (!format_regex.test(additional_document_number)) {
+                    errors.additional_document_number =
+                        localize('Please enter the correct format. ') +
+                        getExampleFormat(document_type.additional?.example_format);
+                }
             }
         }
 
@@ -141,13 +145,21 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     const submitHandler = (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-        const { document_number, document_type } = values;
-        const submit_data = {
-            identity_verification_document_add: 1,
-            document_number,
-            document_type: document_type.id,
-            issuing_country: country_code,
-        };
+        const { document_number, document_type, additional_document_number } = values;
+        const submit_data = additional_document_number
+            ? {
+                  identity_verification_document_add: 1,
+                  document_number,
+                  document_additional: additional_document_number,
+                  document_type: document_type.id,
+                  issuing_country: country_code,
+              }
+            : {
+                  identity_verification_document_add: 1,
+                  document_number,
+                  document_type: document_type.id,
+                  issuing_country: country_code,
+              };
 
         WS.send(submit_data).then(response => {
             setSubmitting(false);

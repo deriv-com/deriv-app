@@ -333,8 +333,6 @@ export default class WithdrawStore {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
-                min: 0,
-                max: 0,
             });
             if (!is_ok) error_message = message || '';
             else if (Number(balance) < Number(converter_from_amount)) error_message = localize('Insufficient funds');

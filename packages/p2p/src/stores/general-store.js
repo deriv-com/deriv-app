@@ -156,6 +156,7 @@ export default class GeneralStore extends BaseStore {
             setUserBlockedCount: action.bound,
             setUserBlockedUntil: action.bound,
             setWebsocketInit: action.bound,
+            showDailyLimitIncreaseNotification: action.bound,
             toggleNicknamePopup: action.bound,
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,

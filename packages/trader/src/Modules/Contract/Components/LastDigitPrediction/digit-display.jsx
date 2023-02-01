@@ -92,7 +92,7 @@ DigitDisplay.propTypes = {
     latest_digit: PropTypes.object,
     onLastDigitSpot: PropTypes.func,
     onSelect: PropTypes.func,
-    selected_digit: PropTypes.number,
+    selected_digit: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     stats: PropTypes.number,
     status: PropTypes.string,
     value: PropTypes.number,

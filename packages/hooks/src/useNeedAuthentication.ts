@@ -7,6 +7,7 @@ const useNeedAuthentication = () => {
     const { content_flag } = traders_hub;
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
     const is_need_authentication = is_authentication_needed && is_eu;
+
     return is_need_authentication;
 };
 

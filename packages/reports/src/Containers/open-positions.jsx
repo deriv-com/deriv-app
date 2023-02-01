@@ -191,6 +191,7 @@ export const OpenPositionsTable = ({
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
                                 row_gap={8}
+                                keyMapper={item => item?.id}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>

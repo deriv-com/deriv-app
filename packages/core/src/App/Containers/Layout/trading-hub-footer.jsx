@@ -16,7 +16,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
-import { isBot, routes } from '@deriv/shared';
+import { isBot, routes, ContentFlag } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
@@ -38,7 +38,7 @@ const TradingHubFooter = ({
     enableApp,
     footer_extensions,
     is_app_disabled,
-    is_eu,
+    content_flag,
     is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
@@ -65,6 +65,10 @@ const TradingHubFooter = ({
 
     const location = window.location.pathname;
 
+    const is_eu_user =
+        content_flag === ContentFlag.EU_REAL ||
+        content_flag === ContentFlag.EU_DEMO ||
+        content_flag === ContentFlag.LOW_RISK_CR_EU;
     return (
         <footer
             className={classNames('footer', {
@@ -89,7 +93,7 @@ const TradingHubFooter = ({
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
                 {is_logged_in && !is_virtual && (
-                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu_user} />
                 )}
                 <div className='footer__links--dark-mode'>
                     <Popover alignment='top' message='Change theme'>
@@ -128,24 +132,24 @@ TradingHubFooter.propTypes = {
     toggleSettingsModal: PropTypes.func,
     settings_extension: PropTypes.array,
     is_virtual: PropTypes.bool,
-    is_eu: PropTypes.bool,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
     is_pre_appstore: PropTypes.bool,
+    content_flag: PropTypes.string,
 };
 
 export default withRouter(
-    connect(({ client, ui }) => ({
+    connect(({ client, ui, traders_hub }) => ({
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
-        is_eu: client.is_eu,
+        content_flag: traders_hub.content_flag,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
         is_virtual: client.is_virtual,

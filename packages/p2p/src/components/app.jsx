@@ -59,10 +59,6 @@ const App = props => {
     }, []);
 
     React.useEffect(() => {
-        setLanguage(lang);
-    }, [lang]);
-
-    React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);

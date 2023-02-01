@@ -208,6 +208,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
     };
 
     const onConfirmClick = order_info => {
+        order_store.setIsOrderDetailsLoading(true);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
         order_store.setOrderId(order_info.id);
         setShouldShowPopup(false);

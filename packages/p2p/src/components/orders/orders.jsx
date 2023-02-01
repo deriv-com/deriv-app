@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSafeState } from '@deriv/components';
+import { Loading, useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import OrderDetails from 'Components/order-details/order-details.jsx';
@@ -40,6 +40,10 @@ const Orders = observer(() => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (order_store.is_order_details_loading) {
+        return <Loading is_fullscreen />;
+    }
 
     if (order_store.order_information) {
         return (

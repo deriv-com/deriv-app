@@ -21,6 +21,7 @@ export default class OrderStore {
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
             is_loading_modal_open: observable,
+            is_order_details_loading: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
             orders: observable,
@@ -60,6 +61,7 @@ export default class OrderStore {
             setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsLoadingModalOpen: action.bound,
+            setIsOrderDetailsLoading: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
             setOrderPaymentMethodDetails: action.bound,
@@ -103,6 +105,7 @@ export default class OrderStore {
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
     is_loading_modal_open = false;
+    is_order_details_loading = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
     orders = [];
@@ -406,6 +409,8 @@ export default class OrderStore {
                 }, (remaining_seconds + 1) * 1000)
             );
         }
+
+        this.setIsOrderDetailsLoading(false);
     }
 
     subscribeToCurrentOrder() {
@@ -556,6 +561,10 @@ export default class OrderStore {
 
     setIsLoadingModalOpen(is_loading_modal_open) {
         this.is_loading_modal_open = is_loading_modal_open;
+    }
+
+    setIsOrderDetailsLoading(is_order_details_loading) {
+        this.is_order_details_loading = is_order_details_loading;
     }
 
     setIsRatingModalOpen(is_rating_modal_open) {

@@ -254,7 +254,7 @@ NotificationsDialog.propTypes = {
 export default connect(({ common, client, notifications }) => ({
     app_routing_history: common.app_routing_history,
     is_pre_appstore: client.is_pre_appstore,
-    notifications: notifications.filtered_notifications,
+    notifications: notifications.notifications,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,
     removeNotifications: notifications.removeNotifications,

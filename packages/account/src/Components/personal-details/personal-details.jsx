@@ -80,6 +80,7 @@ const PersonalDetails = ({
     validate,
     salutation_list,
     disabled_items,
+    is_mf,
     is_svg,
     residence_list,
     is_virtual,
@@ -141,7 +142,7 @@ const PersonalDetails = ({
 
     const getLastNameLabel = () => {
         if (is_appstore) return localize('Family name*');
-        return is_svg ? localize('Last name*') : localize('Last name');
+        return is_svg || is_mf ? localize('Last name*') : localize('Last name');
     };
 
     const getFieldHint = field_name => {
@@ -152,7 +153,6 @@ const PersonalDetails = ({
             />
         );
     };
-
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -248,7 +248,9 @@ const PersonalDetails = ({
                                                         key={item.value}
                                                         label={item.label}
                                                         value={item.value}
-                                                        disabled={disabled_items.includes('salutation')}
+                                                        disabled={
+                                                            !!values.salutation && disabled_items.includes('salutation')
+                                                        }
                                                     />
                                                 ))}
                                             </RadioGroup>
@@ -258,7 +260,7 @@ const PersonalDetails = ({
                                                 name='first_name'
                                                 required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_appstore
+                                                    is_svg || is_appstore || is_mf
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
@@ -285,7 +287,7 @@ const PersonalDetails = ({
                                                 name='date_of_birth'
                                                 required={is_svg || is_appstore}
                                                 label={
-                                                    is_svg || is_appstore
+                                                    is_svg || is_appstore || is_mf
                                                         ? localize('Date of birth*')
                                                         : localize('Date of birth')
                                                 }
@@ -303,11 +305,18 @@ const PersonalDetails = ({
                                                         <DesktopWrapper>
                                                             <Autocomplete
                                                                 {...field}
-                                                                disabled={disabled_items.includes('place_of_birth')}
+                                                                disabled={
+                                                                    !!props.value.place_of_birth &&
+                                                                    disabled_items.includes('place_of_birth')
+                                                                }
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Place of birth')}
+                                                                label={
+                                                                    is_mf
+                                                                        ? localize('Place of birth*')
+                                                                        : localize('Place of birth')
+                                                                }
                                                                 error={touched.place_of_birth && errors.place_of_birth}
                                                                 list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -325,8 +334,15 @@ const PersonalDetails = ({
                                                             <SelectNative
                                                                 placeholder={localize('Place of birth')}
                                                                 name={field.name}
-                                                                disabled={disabled_items.includes('place_of_birth')}
-                                                                label={localize('Place of birth')}
+                                                                disabled={
+                                                                    !!props.value.place_of_birth &&
+                                                                    disabled_items.includes('place_of_birth')
+                                                                }
+                                                                label={
+                                                                    is_mf
+                                                                        ? localize('Place of birth*')
+                                                                        : localize('Place of birth')
+                                                                }
                                                                 list_items={residence_list}
                                                                 value={values.place_of_birth}
                                                                 use_text={true}
@@ -360,11 +376,16 @@ const PersonalDetails = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Citizenship')}
+                                                                label={
+                                                                    is_mf
+                                                                        ? localize('Citizenship*')
+                                                                        : localize('Citizenship')
+                                                                }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen')
+                                                                    (!!props.value.citizen &&
+                                                                        disabled_items.includes('citizen'))
                                                                 }
                                                                 list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -381,9 +402,14 @@ const PersonalDetails = ({
                                                                 name={field.name}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen')
+                                                                    (!!props.value.citizen &&
+                                                                        disabled_items.includes('citizen'))
                                                                 }
-                                                                label={localize('Citizenship')}
+                                                                label={
+                                                                    is_mf
+                                                                        ? localize('Citizenship*')
+                                                                        : localize('Citizenship')
+                                                                }
                                                                 list_items={residence_list}
                                                                 value={values.citizen}
                                                                 use_text={true}
@@ -406,12 +432,12 @@ const PersonalDetails = ({
                                             <FormInputField
                                                 name='phone'
                                                 label={
-                                                    is_svg || is_appstore
+                                                    is_svg || is_appstore || is_mf
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }
                                                 placeholder={
-                                                    is_svg || is_appstore
+                                                    is_svg || is_appstore || is_mf
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }
@@ -433,7 +459,11 @@ const PersonalDetails = ({
                                                                         data-lpignore='true'
                                                                         autoComplete='off' // prevent chrome autocomplete
                                                                         type='text'
-                                                                        label={localize('Tax residence')}
+                                                                        label={
+                                                                            is_mf
+                                                                                ? localize('Tax residence*')
+                                                                                : localize('Tax residence')
+                                                                        }
                                                                         error={
                                                                             touched.tax_residence &&
                                                                             errors.tax_residence
@@ -454,7 +484,11 @@ const PersonalDetails = ({
                                                                     <SelectNative
                                                                         placeholder={localize('Tax residence')}
                                                                         name={field.name}
-                                                                        label={localize('Tax residence')}
+                                                                        label={
+                                                                            is_mf
+                                                                                ? localize('Tax residence*')
+                                                                                : localize('Tax residence')
+                                                                        }
                                                                         list_items={residence_list}
                                                                         value={values.tax_residence}
                                                                         use_text={true}
@@ -502,7 +536,11 @@ const PersonalDetails = ({
                                                     <div className='details-form__tax'>
                                                         <FormInputField
                                                             name='tax_identification_number'
-                                                            label={localize('Tax Identification Number')}
+                                                            label={
+                                                                is_mf
+                                                                    ? localize('Tax Identification Number*')
+                                                                    : localize('Tax Identification Number')
+                                                            }
                                                             placeholder={localize('Tax Identification Number')}
                                                             warn={warning_items?.tax_identification_number}
                                                             data-testid='tax_identification_number'
@@ -550,7 +588,11 @@ const PersonalDetails = ({
                                                     >
                                                         <DesktopWrapper>
                                                             <Dropdown
-                                                                placeholder={localize('Employment status')}
+                                                                placeholder={
+                                                                    is_mf
+                                                                        ? localize('Employment status*')
+                                                                        : localize('Employment status')
+                                                                }
                                                                 is_align_text_left
                                                                 name='employment_status'
                                                                 list={getEmploymentStatusList()}
@@ -567,7 +609,11 @@ const PersonalDetails = ({
                                                             <SelectNative
                                                                 placeholder={localize('Please select')}
                                                                 name='employment_status'
-                                                                label={localize('Employment status')}
+                                                                label={
+                                                                    is_mf
+                                                                        ? localize('Employment status*')
+                                                                        : localize('Employment status')
+                                                                }
                                                                 list_items={getEmploymentStatusList()}
                                                                 value={values.employment_status}
                                                                 error={
@@ -620,7 +666,11 @@ const PersonalDetails = ({
                                                         <React.Fragment>
                                                             <DesktopWrapper>
                                                                 <Dropdown
-                                                                    placeholder={localize('Account opening reason')}
+                                                                    placeholder={
+                                                                        is_mf
+                                                                            ? localize('Account opening reason*')
+                                                                            : localize('Account opening reason')
+                                                                    }
                                                                     name={field.name}
                                                                     disabled={disabled_items.includes(
                                                                         'account_opening_reason'
@@ -643,7 +693,11 @@ const PersonalDetails = ({
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     name={field.name}
-                                                                    label={localize('Account opening reason')}
+                                                                    label={
+                                                                        is_mf
+                                                                            ? localize('Account opening reason*')
+                                                                            : localize('Account opening reason')
+                                                                    }
                                                                     list_items={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
                                                                     error={

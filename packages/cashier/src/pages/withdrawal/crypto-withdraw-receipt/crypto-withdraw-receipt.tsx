@@ -3,9 +3,9 @@ import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TAccount } from 'Types';
-import { getAccountText } from 'Utils/utility';
-import RecentTransaction from 'Components/recent-transaction';
+import { TAccount } from '../../../types';
+import { getAccountText } from '../../../utils/utility';
+import RecentTransaction from '../../../components/recent-transaction';
 import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {

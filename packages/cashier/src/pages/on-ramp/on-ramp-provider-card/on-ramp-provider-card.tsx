@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TProviderDetails } from 'Types';
+import { TProviderDetails } from '../../../types';
 import { observer, useStore } from '@deriv/stores';
 
 type TOnRampProviderCardProps = {

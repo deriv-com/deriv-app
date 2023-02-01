@@ -50,9 +50,11 @@ const TotalAssets = ({ category }: TTotalAssets) => {
             currency: string,
             setExchangeRate: React.Dispatch<React.SetStateAction<number>>
         ) => {
-            getExchangeRate(currency, account_total_balance_currency).then((res: number) => {
-                setExchangeRate(res);
-            });
+            if (currency) {
+                getExchangeRate(currency, account_total_balance_currency).then((res: number) => {
+                    setExchangeRate(res);
+                });
+            }
         };
         if (category === 'real') {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);

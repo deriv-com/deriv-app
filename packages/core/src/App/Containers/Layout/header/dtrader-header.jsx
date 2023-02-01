@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms, PlatformContext } from '@deriv/shared';
+import { withRouter } from 'react-router-dom';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -12,54 +12,15 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import { connect } from 'Stores/connect';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { BinaryLink } from 'App/Components/Routes';
-import { Localize } from '@deriv/translations';
 
-const TradingHubMenuHomepage = () => {
-    const redirect = useHistory();
-    return (
-        <div
-            className='trading-hub-header__tradinghub'
-            onClick={() => {
-                redirect.push(routes.trading_hub);
-            }}
-        >
-            <Icon icon='IcAppstoreMenuHomepage' size={30} />
-        </div>
-    );
-};
+import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
-const RedirectToOldInterface = () => {
-    const platform_store = React.useContext(PlatformContext);
-    const disablePreAppstore = () => {
-        platform_store.setIsPreAppStore(false);
-    };
-    return (
-        <div className='trading-hub-header__dtrader--redirect'>
-            <BinaryLink
-                to={routes.trade}
-                className='trading-hub-header__dtrader--redirect--link'
-                onClick={disablePreAppstore}
-            >
-                <Text as='p' size='xs'>
-                    <Localize i18n_default_text="Exit Trader's hub" />
-                </Text>
-                <Icon
-                    className='trading-hub-header__dtrader--redirect--beta'
-                    icon='IcAppstoreTradingHubBeta'
-                    size={45}
-                />
-                <Icon icon='IcArrowRight' size={18} color='red' />
-            </BinaryLink>
-        </div>
-    );
-};
 const MemoizedMenuLinks = React.memo(MenuLinks);
+
 const DTraderHeader = ({
     acc_switcher_disabled_message,
-    account_status,
     account_type,
     addNotificationMessage,
     app_routing_history,
@@ -75,36 +36,24 @@ const DTraderHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_bot_allowed,
-    is_dark_mode,
     is_dxtrade_allowed,
     is_eu,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_p2p_enabled,
-    is_payment_agent_transfer_visible,
-    is_payment_agent_visible,
-    is_account_transfer_visible,
+    is_pre_appstore,
     is_route_modal_on,
     is_virtual,
-    location,
-    logoutClient,
     menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
     replaceCashierMenuOnclick,
     removeNotificationMessage,
-    setDarkMode,
-    should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
-    changeCurrentLanguage,
-    is_social_signup,
 }) => {
-    const toggle_menu_drawer_ref = React.useRef(null);
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -145,50 +94,22 @@ const DTraderHeader = ({
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
                     <DesktopWrapper>
-                        <TradingHubMenuHomepage />
-                        <Divider />
-                    </DesktopWrapper>
-
-                    <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ToggleMenuDrawer
-                            changeCurrentLanguage={changeCurrentLanguage}
-                            ref={toggle_menu_drawer_ref}
-                            should_allow_authentication={should_allow_authentication}
-                            account_status={account_status}
-                            enableApp={enableApp}
-                            disableApp={disableApp}
-                            location={location}
-                            logoutClient={logoutClient}
-                            is_dark_mode={is_dark_mode}
-                            is_logged_in={is_logged_in}
-                            is_p2p_enabled={is_p2p_enabled}
-                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                            is_onramp_tab_visible={is_onramp_tab_visible}
-                            is_payment_agent_visible={is_payment_agent_visible}
-                            is_account_transfer_visible={is_account_transfer_visible}
-                            is_virtual={is_virtual}
-                            toggleTheme={setDarkMode}
-                            platform_header={getPlatformInformation(app_routing_history).header}
-                            platform_switcher={
-                                <PlatformSwitcher
-                                    app_routing_history={app_routing_history}
-                                    is_mobile
-                                    platform_config={filterPlatformsForClients(platform_config)}
-                                    toggleDrawer={toggle_menu_drawer_ref.current?.toggleDrawer}
-                                />
-                            }
-                            is_social_signup={is_social_signup}
-                        />
+                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
+                    <DesktopWrapper>
+                        <TradersHubHomeButton />
+                    </DesktopWrapper>
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
@@ -199,7 +120,6 @@ const DTraderHeader = ({
                     })}
                 >
                     <DesktopWrapper>
-                        <RedirectToOldInterface />
                         <div className='header__menu--dtrader--separator--account'>
                             <Divider />
                         </div>
@@ -249,8 +169,6 @@ const DTraderHeader = ({
 DTraderHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
-    should_allow_authentication: PropTypes.bool,
-    account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
@@ -263,7 +181,6 @@ DTraderHeader.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -271,36 +188,24 @@ DTraderHeader.propTypes = {
     is_mt5_allowed: PropTypes.bool,
     is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_account_transfer_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
     replaceCashierMenuOnclick: PropTypes.func,
-    setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    is_social_signup: PropTypes.bool,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
-    location: PropTypes.object,
     menu_items: PropTypes.array,
-    changeCurrentLanguage: PropTypes.func,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
-    account_status: client.account_status,
     account_type: client.account_type,
-    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: notifications.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -314,7 +219,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_bot_allowed: client.is_bot_allowed,
-    is_dark_mode: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
@@ -322,22 +226,15 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_mt5_allowed: client.is_mt5_allowed,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_p2p_enabled: modules.cashier.general_store.is_p2p_enabled,
-    is_payment_agent_transfer_visible: modules.cashier.payment_agent_transfer.is_payment_agent_transfer_visible,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
-    is_payment_agent_visible: modules.cashier.payment_agent.is_payment_agent_visible,
-    is_account_transfer_visible: modules.cashier.account_transfer.is_account_transfer_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    logoutClient: client.logout,
     menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
-    setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_social_signup: client.is_social_signup,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(DTraderHeader));

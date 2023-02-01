@@ -6,7 +6,7 @@ import Popover from '../popover';
 
 type TPosition = 'left' | 'right' | 'top' | 'bottom';
 type TInputWithCheckbox = {
-    addToast: (e: object) => void;
+    addToast: (e: object) => void; // TODO: update the type for the e parameter when contract-card is merged
     removeToast: (e: string) => void;
     checkbox_tooltip_label: boolean;
     className: string;

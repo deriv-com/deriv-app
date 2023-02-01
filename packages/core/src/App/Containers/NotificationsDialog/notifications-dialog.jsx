@@ -105,6 +105,7 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
             >
                 <Button
                     className={classNames('dc-btn--secondary', 'notifications-dialog__clear')}
+                    disabled={is_empty}
                     onClick={clearNotifications}
                 >
                     <Text size='xxs' color='prominent' weight='bold'>

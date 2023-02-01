@@ -12,7 +12,7 @@ import PortfolioStore from './portfolio-store';
 import ContractReplayStore from './contract-replay-store';
 import ContractTradeStore from './contract-trade-store';
 import { ChartBarrierStore } from './chart-barrier-store';
-import TradingHubStore from './tradinghub-store';
+import TradersHubStore from './traders-hub-store';
 
 export default class RootStore {
     constructor() {
@@ -30,6 +30,6 @@ export default class RootStore {
         this.contract_replay = new ContractReplayStore(this);
         this.contract_trade = new ContractTradeStore(this);
         this.chart_barrier_store = new ChartBarrierStore(this);
-        this.tradinghub = new TradingHubStore(this);
+        this.traders_hub = new TradersHubStore(this);
     }
 }

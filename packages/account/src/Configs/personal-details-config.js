@@ -6,9 +6,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         return {};
     }
 
-    const disabled_items = [
-        ...Object.keys(account_settings).filter(field_name => field_name !== 'account_opening_reason' && !!field_name),
-    ];
+    const disabled_items = account_settings.immutable_fields; // immutable fields set by BE
 
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;
@@ -181,6 +179,7 @@ const personalDetailsConfig = (
                 transformConfig(config, { real_account_signup_target })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
+            is_mf: real_account_signup_target === 'maltainvest',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

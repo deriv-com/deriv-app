@@ -16,7 +16,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
-import { isBot, routes, ContentFlag } from '@deriv/shared';
+import { isBot, routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
@@ -38,7 +38,6 @@ const TradingHubFooter = ({
     enableApp,
     footer_extensions,
     is_app_disabled,
-    content_flag,
     is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
@@ -50,6 +49,7 @@ const TradingHubFooter = ({
     setDarkMode,
     is_dark_mode,
     is_pre_appstore,
+    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -65,10 +65,6 @@ const TradingHubFooter = ({
 
     const location = window.location.pathname;
 
-    const is_eu_user =
-        content_flag === ContentFlag.EU_REAL ||
-        content_flag === ContentFlag.EU_DEMO ||
-        content_flag === ContentFlag.LOW_RISK_CR_EU;
     return (
         <footer
             className={classNames('footer', {
@@ -93,7 +89,10 @@ const TradingHubFooter = ({
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
                 {is_logged_in && !is_virtual && (
-                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu_user} />
+                    <RegulatoryInformation
+                        landing_company={landing_company_shortcode}
+                        is_eu={show_eu_related_content}
+                    />
                 )}
                 <div className='footer__links--dark-mode'>
                     <Popover alignment='top' message='Change theme'>
@@ -138,7 +137,7 @@ TradingHubFooter.propTypes = {
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
     is_pre_appstore: PropTypes.bool,
-    content_flag: PropTypes.string,
+    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
@@ -149,7 +148,6 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
-        content_flag: traders_hub.content_flag,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
         is_virtual: client.is_virtual,
@@ -159,5 +157,6 @@ export default withRouter(
         is_dark_mode: ui.is_dark_mode_on,
         setDarkMode: ui.setDarkMode,
         is_pre_appstore: client.is_pre_appstore,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(TradingHubFooter)
 );

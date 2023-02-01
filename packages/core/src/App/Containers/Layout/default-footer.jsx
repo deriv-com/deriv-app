@@ -14,7 +14,6 @@ import NetworkStatus, {
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
-import { ContentFlag } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -45,7 +44,7 @@ const Footer = ({
     settings_extension,
     landing_company_shortcode,
     is_pre_appstore,
-    content_flag,
+    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -54,11 +53,7 @@ const Footer = ({
         footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
     }
 
-    const is_eu_user = is_pre_appstore
-        ? content_flag === ContentFlag.EU_REAL ||
-          content_flag === ContentFlag.EU_DEMO ||
-          content_flag === ContentFlag.LOW_RISK_CR_EU
-        : is_eu;
+    const is_eu_user = is_pre_appstore ? show_eu_related_content : is_eu;
     return (
         <footer
             className={classNames('footer', {
@@ -115,7 +110,7 @@ Footer.propTypes = {
     enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
-    content_flag: PropTypes.string,
+    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
@@ -134,6 +129,6 @@ export default withRouter(
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
         is_pre_appstore: client.is_pre_appstore,
-        content_flag: traders_hub.content_flag,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(Footer)
 );

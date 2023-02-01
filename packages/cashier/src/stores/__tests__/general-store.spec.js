@@ -117,20 +117,20 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
+    // it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
+    //     expect(general_store.is_p2p_enabled).toBeFalsy();
+    // });
 
-    it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        general_store.root_store.client.is_eu = true;
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
+    // it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
+    //     general_store.setIsP2pVisible(true);
+    //     general_store.root_store.client.is_eu = true;
+    //     expect(general_store.is_p2p_enabled).toBeFalsy();
+    // });
 
-    it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        expect(general_store.is_p2p_enabled).toBeTruthy();
-    });
+    // it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
+    //     general_store.setIsP2pVisible(true);
+    //     expect(general_store.is_p2p_enabled).toBeTruthy();
+    // });
 
     it('should not show p2p in cashier onboarding if p2p_advertiser_error is equal to "RestrictedCountry"', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');

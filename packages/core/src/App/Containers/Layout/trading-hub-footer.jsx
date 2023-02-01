@@ -92,6 +92,7 @@ const TradingHubFooter = ({
                     <RegulatoryInformation
                         landing_company={landing_company_shortcode}
                         is_eu={show_eu_related_content}
+                        show_eu_related_content={show_eu_related_content}
                     />
                 )}
                 <div className='footer__links--dark-mode'>

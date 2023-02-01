@@ -91,12 +91,12 @@ const MFRegulatoryInformation = () => (
     </div>
 );
 
-export const RegulatoryInformation = ({ landing_company, is_eu }) => {
+export const RegulatoryInformation = ({ landing_company, is_eu, show_eu_related_content }) => {
     const [should_show_modal, showModal] = React.useState(false);
     if (!is_eu) return null;
     const is_mx = landing_company === 'iom';
     const is_mlt = landing_company === 'malta';
-    const is_mf = landing_company === 'maltainvest';
+    const is_mf = show_eu_related_content;
 
     return (
         <div className='footer__link'>

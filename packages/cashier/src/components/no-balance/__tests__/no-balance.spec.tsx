@@ -3,8 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
+import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
 import { StoreProvider } from '@deriv/stores';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
@@ -23,7 +29,7 @@ describe('<NoBalance />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: false },
+                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(false) },
                     general_store: { setCashierTabIndex: jest.fn() },
                 },
             },

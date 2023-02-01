@@ -103,7 +103,13 @@ const MenuLink = observer(
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
     const { app_routing_history } = common;
-    const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
+    const {
+        disableApp,
+        enableApp,
+        is_dark_mode_on: is_dark_mode,
+        setDarkMode: toggleTheme,
+        toggleExitTradersHubModal,
+    } = ui;
     const {
         account_status,
         is_logged_in,
@@ -124,7 +130,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { is_account_transfer_visible } = account_transfer;
-    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, toggleExitTradersHubModal } = traders_hub;
+    const { content_flag, should_show_exit_traders_modal, switchToCRAccount } = traders_hub;
 
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);

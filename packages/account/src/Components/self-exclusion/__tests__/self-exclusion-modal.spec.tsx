@@ -16,7 +16,7 @@ describe('<SelfExclusionModal />', () => {
     it('should be shown on the page', () => {
         render(
             <SelfExclusionContext.Provider
-                value={{ state: { show_article: true }, overlay_ref: document.createElement('div') }}
+                value={{ state: { show_article: true }, overlay_ref: document.createElement('div'), currency: '' }}
             >
                 <SelfExclusionModal />
             </SelfExclusionContext.Provider>

@@ -25,7 +25,8 @@ describe('<SelfExclusionArticle />', () => {
         is_app_settings: false,
         is_eu: false,
         is_uk: false,
-        overlay_ref: {},
+        currency: '',
+        overlay_ref: document.createElement('div'),
         toggleArticle: jest.fn(),
     };
 
@@ -43,7 +44,8 @@ describe('<SelfExclusionArticle />', () => {
             is_app_settings: false,
             is_eu: false,
             is_uk: false,
-            overlay_ref: {},
+            currency: '',
+            overlay_ref: document.createElement('div'),
             toggleArticle: jest.fn(),
         };
     });

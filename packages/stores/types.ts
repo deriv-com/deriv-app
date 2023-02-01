@@ -109,6 +109,7 @@ type TUiStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
+    content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
 };
 

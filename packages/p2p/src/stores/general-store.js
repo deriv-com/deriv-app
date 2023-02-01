@@ -808,6 +808,7 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

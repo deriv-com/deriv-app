@@ -1,8 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
+import { useDepositLocked } from '@deriv/hooks';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 describe('<CashierLocked />', () => {
     it('should show the proper message if there is a cryptocashier maintenance', () => {
@@ -14,7 +20,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -49,7 +55,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -84,7 +90,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -119,7 +125,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -154,7 +160,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -189,7 +195,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -224,7 +230,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -259,7 +265,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -294,7 +300,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -327,7 +333,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -358,7 +364,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -392,7 +398,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -427,7 +433,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -458,7 +464,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -489,7 +495,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -524,7 +530,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -563,7 +569,7 @@ describe('<CashierLocked />', () => {
                 },
                 loginid: 'CR9000000',
                 current_currency_type: 'fiat',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -598,7 +604,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -629,7 +635,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -664,7 +670,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -699,7 +705,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -732,7 +738,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -763,7 +769,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -798,7 +804,7 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [

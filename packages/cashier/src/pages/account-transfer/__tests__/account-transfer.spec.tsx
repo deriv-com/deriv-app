@@ -1,9 +1,15 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
+import { useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -41,7 +47,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: true },
+                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(true) },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,

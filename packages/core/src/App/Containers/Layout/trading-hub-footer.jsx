@@ -91,8 +91,7 @@ const TradingHubFooter = ({
                 {is_logged_in && !is_virtual && (
                     <RegulatoryInformation
                         landing_company={landing_company_shortcode}
-                        is_eu={show_eu_related_content}
-                        show_eu_related_content={show_eu_related_content}
+                        is_eu_user={show_eu_related_content}
                     />
                 )}
                 <div className='footer__links--dark-mode'>

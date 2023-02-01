@@ -29,7 +29,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_switching,
         is_virtual,
         landing_company_shortcode,
-        is_pre_appstore,
     } = client;
     const { cashier } = modules;
     const { iframe, deposit, transaction_history, general_store } = cashier;

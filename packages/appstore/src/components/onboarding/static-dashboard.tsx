@@ -88,7 +88,7 @@ const StaticDashboard = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options and Multipliers');
+    const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options & Multipliers');
     const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
     const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
@@ -445,7 +445,7 @@ const StaticDashboard = ({
                                 app_desc={
                                     is_eu_user
                                         ? 'Multipliers trading platform.'
-                                        : 'Options & multipliers trading platform.'
+                                        : 'Options and multipliers trading platform.'
                                 }
                                 is_item_blurry={is_blurry.platformlauncher}
                                 has_applauncher_account={has_applauncher_account}

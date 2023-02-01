@@ -112,7 +112,7 @@ type TUiStore = {
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
 };
 
-export type TContractStore = {
+type TContractStore = {
     contract_info: ProposalOpenContract;
     contract_update_take_profit: number | string;
     contract_update_stop_loss: number | string;

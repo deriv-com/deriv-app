@@ -114,8 +114,8 @@ type TUiStore = {
 
 export type TContractStore = {
     contract_info: ProposalOpenContract;
-    contract_update_take_profit: number & string;
-    contract_update_stop_loss: number & string;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
     clearContractUpdateConfigValues: () => void;
     has_contract_update_take_profit: false;
     has_contract_update_stop_loss: false;

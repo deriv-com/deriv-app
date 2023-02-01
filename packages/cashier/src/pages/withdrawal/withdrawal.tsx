@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -17,6 +16,7 @@ import RecentTransaction from 'Components/recent-transaction';
 import SideNote from 'Components/side-note';
 import USDTSideNote from 'Components/usdt-side-note';
 import { Virtual } from 'Components/cashier-container';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -48,14 +48,8 @@ const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) =
     return <SideNote has_bullets is_mobile={is_mobile} side_notes={notes} className='outside-wrapper' />;
 };
 
-const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
-    const {
-        client,
-        modules: {
-            cashier: { iframe, general_store, transaction_history, withdraw },
-        },
-    } = useStore();
-
+const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
+    const { client } = useStore();
     const {
         balance,
         currency,
@@ -64,7 +58,7 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
         is_virtual,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-
+    const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
     const {
         is_cashier_locked,
         is_crypto,
@@ -72,15 +66,12 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
         setActiveTab,
         cashier_route_tab_index: tab_index,
     } = general_store;
-
     const { iframe_url } = iframe;
-
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
         onMount: recentTransactionOnMount,
     } = transaction_history;
-
     const {
         check10kLimit,
         container,
@@ -196,6 +187,6 @@ const Withdrawal = ({ setSideNotes }: TWithdrawalProps) => {
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );
-};
+});
 
-export default observer(Withdrawal);
+export default Withdrawal;

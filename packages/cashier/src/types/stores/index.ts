@@ -1,12 +1,8 @@
-import { TRootStore as TRootStoreBase } from '@deriv/stores/types';
+import type { TStores } from '@deriv/stores';
 import type CashierStore from '../../stores/cashier-store';
 
-export type TRootStore = TRootStoreBase & {
+export type TRootStore = TStores & {
     modules: {
         cashier: CashierStore;
     };
 };
-
-export type TClientStore = TRootStore['client'];
-export type TCommonStore = TRootStore['common'];
-export type TUiStore = TRootStore['ui'];

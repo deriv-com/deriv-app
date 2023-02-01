@@ -1,8 +1,7 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { TSideNotesProps } from 'Types';
 import Error from 'Components/error';
 import NoBalance from 'Components/no-balance';
@@ -13,19 +12,15 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TAccountTransferProps = {
     setSideNotes: (notes: TSideNotesProps) => void;
 };
 
-const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
-    const {
-        modules: {
-            cashier: { account_transfer, general_store, transaction_history },
-        },
-        client,
-    } = useStore();
-
+const AccountTransfer = observer(({ setSideNotes }: TAccountTransferProps) => {
+    const { client } = useStore();
+    const { account_transfer, general_store, transaction_history } = useCashierStore();
     const {
         accounts_list,
         container,
@@ -38,13 +33,9 @@ const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
         setAccountTransferAmount,
         setIsTransferConfirm,
     } = account_transfer;
-
     const { is_cashier_locked, is_loading, setActiveTab } = general_store;
-
     const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
-
     const { is_switching, is_virtual } = client;
-
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
 
     React.useEffect(() => {
@@ -107,6 +98,6 @@ const AccountTransfer = ({ setSideNotes }: TAccountTransferProps) => {
     }
 
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(AccountTransfer);
+export default AccountTransfer;

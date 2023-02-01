@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
+import { useDepositLocked } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from 'Components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
 import CashierLocked from 'Components/cashier-locked';
@@ -13,13 +13,14 @@ import RecentTransaction from 'Components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
-const Deposit = ({ setSideNotes }: TDeposit) => {
-    const { client, modules } = useStore();
+const Deposit = observer(({ setSideNotes }: TDeposit) => {
+    const { client } = useStore();
     const {
         can_change_fiat_currency,
         currency,
@@ -29,10 +30,9 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         is_virtual,
         landing_company_shortcode,
     } = client;
-    const { cashier } = modules;
-    const { iframe, deposit, transaction_history, general_store } = cashier;
+    const { iframe, deposit, transaction_history, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url } = iframe;
-    const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
+    const { container, error, onMountDeposit: onMount } = deposit;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -49,6 +49,7 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
@@ -141,6 +142,6 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         );
     }
     return <CashierOnboarding setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(Deposit);
+export default Deposit;

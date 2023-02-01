@@ -20,6 +20,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -235,6 +236,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
+            is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
             is_risky_client: computed,
@@ -633,6 +635,10 @@ export default class ClientStore extends BaseStore {
         }
 
         return this.default_currency;
+    }
+
+    get is_crypto() {
+        return isCryptocurrency(this.currency);
     }
 
     get default_currency() {

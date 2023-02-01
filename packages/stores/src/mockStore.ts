@@ -163,9 +163,14 @@ const mock = (): TRootStore => {
                 identity_status: '',
             },
             mt5_login_list: [],
+            is_risky_client: false,
+            logout: jest.fn(),
+            should_allow_authentication: false,
+            is_landing_company_loaded: false,
         },
         common: {
             error: {
+                app_routing_history: [],
                 header: '',
                 message: '',
                 type: '',
@@ -181,6 +186,7 @@ const mock = (): TRootStore => {
             platform: '',
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),
+            changeCurrentLanguage: jest.fn(),
         },
         ui: {
             current_focus: null,
@@ -192,6 +198,7 @@ const mock = (): TRootStore => {
             setCurrentFocus: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
+            setDarkMode: jest.fn(),
         },
         modules: {},
     };

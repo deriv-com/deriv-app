@@ -37,6 +37,7 @@ const Trade = ({
     is_chart_loading,
     is_dark_theme,
     is_eu,
+    is_logging_in,
     is_market_closed,
     is_market_unavailable_visible,
     is_trade_enabled,
@@ -224,7 +225,10 @@ const Trade = ({
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
-                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                        is_trade_enabled &&
+                        form_components.length > 0 &&
+                        network_status.class === 'online' &&
+                        !is_logging_in
                     }
                 />
             </div>
@@ -236,6 +240,7 @@ export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_accumulator: modules.trade.is_accumulator,
     is_eu: client.is_eu,
+    is_logging_in: client.is_logging_in,
     is_synthetics_available: modules.trade.is_synthetics_available,
     is_synthetics_trading_market_available: modules.trade.is_synthetics_trading_market_available,
     network_status: common.network_status,

@@ -29,7 +29,7 @@ export const AccumulatorTradeDescription = () => {
                 'We’ve limited the maximum payout for every contract, and it differs for every asset. Your contract will be closed automatically when the maximum payout is reached.'
             ),
         },
-        { type: 'heading', text: localize('Maximum duration') },
+        { type: 'heading', text: localize('Maximum ticks') },
         {
             type: 'paragraph',
             text: localize(

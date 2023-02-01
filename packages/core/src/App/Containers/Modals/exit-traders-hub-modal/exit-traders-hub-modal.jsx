@@ -11,8 +11,10 @@ const ExitTradersHubModal = ({
     is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal,
     setIsPreAppStore,
-    switchToCRAccount,
     content_flag,
+    switchAccount,
+    account_list,
+    active_accounts,
 }) => {
     const history = useHistory();
 
@@ -40,14 +42,19 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
+        const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
-        setIsPreAppStore(false);
         if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+            if (!cr_account) {
+                await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
+            }
             //if eu is currently selected , switch to non-eu on exiting tradershub
-            await switchToCRAccount();
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
+        setIsPreAppStore(false);
         history.push(routes.root);
     };
+
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -88,5 +95,7 @@ export default connect(({ ui, client, traders_hub }) => ({
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     content_flag: traders_hub.content_flag,
-    switchToCRAccount: traders_hub.switchToCRAccount,
+    switchAccount: client.switchAccount,
+    account_list: client.account_list,
+    active_accounts: client.active_accounts,
 }))(ExitTradersHubModal);

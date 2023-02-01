@@ -33,6 +33,7 @@ type TClientStore = {
     is_identity_verification_needed: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_virtual: boolean;
@@ -106,9 +107,15 @@ type TUiStore = {
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
 };
 
+type TTradersHubStore = {
+    closeModal: () => void;
+    openModal: (modal_id: string, props?: any) => void;
+};
+
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
     ui: TUiStore;
     modules: Record<string, any>;
+    traders_hub: TTradersHubStore;
 };

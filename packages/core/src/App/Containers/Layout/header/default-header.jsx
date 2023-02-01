@@ -1,16 +1,16 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { PlatformContext, getDecimalPlaces, isMobile, platforms, routes } from '@deriv/shared';
+import { getDecimalPlaces, isMobile, platforms, routes } from '@deriv/shared';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import { BinaryLink } from 'App/Components/Routes';
 import { Localize } from '@deriv/translations';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
-import PropTypes from 'prop-types';
-import React from 'react';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import platform_config from 'App/Constants/platform-config';
 import { withRouter } from 'react-router-dom';
@@ -22,8 +22,8 @@ const DefaultHeader = ({
     app_routing_history,
     balance,
     client_notifications,
-    currency,
     country_standpoint,
+    currency,
     disableApp,
     enableApp,
     header_extension,
@@ -39,16 +39,17 @@ const DefaultHeader = ({
     is_mt5_allowed,
     is_notifications_visible,
     is_route_modal_on,
+    is_trading_assessment_for_existing_user_enabled,
     is_virtual,
     menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
-    replaceCashierMenuOnclick,
     removeNotificationMessage,
+    replaceCashierMenuOnclick,
+    setIsPreAppStore,
     toggleAccountsDialog,
     toggleNotifications,
-    is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -56,28 +57,6 @@ const DefaultHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
-
-    const RedirectToOldInterface = () => {
-        const platform_store = React.useContext(PlatformContext);
-        const disablePreAppstore = () => {
-            platform_store.setIsPreAppStore(false);
-        };
-        return (
-            <div className='trading-hub-header__redirect'>
-                <BinaryLink
-                    to={routes.trade}
-                    className='trading-hub-header__redirect--link'
-                    onClick={disablePreAppstore}
-                >
-                    <Text as='p' size='xs' color='general'>
-                        <Localize i18n_default_text="Exit Trader's hub" />
-                    </Text>
-                    <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
-                    <Icon icon='IcArrowRight' size={18} color='red' />
-                </BinaryLink>
-            </div>
-        );
-    };
 
     React.useEffect(() => {
         if (is_logged_in) replaceCashierMenuOnclick();
@@ -113,16 +92,14 @@ const DefaultHeader = ({
     };
 
     const ExploreTradingHub = () => {
-        const platform_store = React.useContext(PlatformContext);
-        const EnablePreAppstore = () => {
-            platform_store.setIsPreAppStore(true);
-        };
+        const enablePreAppstore = () => setIsPreAppStore(true);
+
         return (
             <div className='header__menu__redirect'>
                 <BinaryLink
-                    to={routes.trading_hub}
+                    to={routes.traders_hub}
                     className='header__menu__redirect--link'
-                    onClick={EnablePreAppstore}
+                    onClick={enablePreAppstore}
                 >
                     <Text as='p' size='xs'>
                         <Localize i18n_default_text="Explore Trader's hub" />
@@ -164,16 +141,14 @@ const DefaultHeader = ({
                     </MobileWrapper>
                     <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
-                {is_logged_in && (
-                    <DesktopWrapper>
-                        {window.location.pathname.startsWith(routes.appstore) ? (
-                            <RedirectToOldInterface />
-                        ) : (
-                            <ExploreTradingHub />
-                        )}
-                        <Divider />
-                    </DesktopWrapper>
-                )}
+                {is_logging_in
+                    ? null
+                    : is_logged_in && (
+                          <DesktopWrapper>
+                              <ExploreTradingHub />
+                              <Divider />
+                          </DesktopWrapper>
+                      )}
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
@@ -260,6 +235,8 @@ DefaultHeader.propTypes = {
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
     menu_items: PropTypes.array,
+    setIsPreAppStore: PropTypes.func,
+    is_landing_company_loaded: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -296,4 +273,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded: client.is_landing_company_loaded,
+    setIsPreAppStore: client.setIsPreAppStore,
 }))(withRouter(DefaultHeader));

@@ -1,5 +1,5 @@
 import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
@@ -237,9 +237,13 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
+        const { content_flag } = this.root_store.core.traders_hub;
+
+        const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+
         if (
             (!client.is_logged_in && client.is_eu_country) ||
-            client.has_maltainvest_account ||
+            (client.has_maltainvest_account && !low_risk_non_eu) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {

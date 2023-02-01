@@ -1,5 +1,5 @@
 import { Redirect } from 'react-router-dom';
-import { TPage404 } from 'Constants/routes-config';
+import { TPage404 } from '../../constants/routes-config';
 
 export type TRoute = {
     default?: boolean;

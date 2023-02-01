@@ -113,12 +113,8 @@ export default class OnboardingFlow {
         await this.signupPage.locator('input[name=email]#dm-email-input').isVisible();
         await this.signupPage.locator('input[name=email]#dm-email-input').type(this.email);
         process.env.email = this.email;
-        await this.signupPage.waitForSelector(
-            '.signup__Form-sc-1bdbun8-1 > ._signup-new__SignupContent-sc-1f1r3le-0 > label > .checkbox__CheckboxContainer-sc-r1zf4m-0 > .checkbox__StyledCheckbox-sc-r1zf4m-3'
-        );
-        await this.signupPage.click(
-            '.signup__Form-sc-1bdbun8-1 > ._signup-new__SignupContent-sc-1f1r3le-0 > label > .checkbox__CheckboxContainer-sc-r1zf4m-0 > .checkbox__StyledCheckbox-sc-r1zf4m-3'
-        );
+        await this.signupPage.waitForSelector('text=I agree to the');
+        await this.signupPage.click('text=I agree to the');
         await this.signupPage.waitForSelector('#dm-new-signup');
         await this.signupPage.click('#dm-new-signup');
         const browser = await chromium.launch();

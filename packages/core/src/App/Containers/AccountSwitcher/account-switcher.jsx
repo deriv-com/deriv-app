@@ -424,6 +424,7 @@ const AccountSwitcher = props => {
             props.show_eu_related_content ||
             props.is_virtual ||
             !canOpenMulti() ||
+            props.is_pre_appstore ||
             is_regulated_able_to_change_currency
         ) {
             return props.upgradeable_landing_companies;

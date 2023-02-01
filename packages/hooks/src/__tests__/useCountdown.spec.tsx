@@ -6,10 +6,9 @@ jest.setTimeout(30000);
 describe('useCountdown', () => {
     test('should use counter', () => {
         const { result } = renderHook(() => useCountdown({ from: 60 }));
-        const hook = result.current;
 
-        expect(hook.count).toBe(60);
-        expect(hook.is_running).toBe(false);
+        expect(result.current.count).toBe(60);
+        expect(result.current.is_running).toBe(false);
     });
 
     test('should count down from 2 to 0 after start is called and stop once finished', async () => {

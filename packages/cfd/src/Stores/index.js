@@ -10,5 +10,6 @@ export default class RootStore {
         this.rudderstack = core_store.rudderstack;
         this.pushwoosh = core_store.pushwoosh;
         this.notifications = core_store.notifications;
+        this.traders_hub = core_store.traders_hub;
     }
 }

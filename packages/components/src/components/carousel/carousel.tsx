@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 import Card from './carousel-card';
 import Nav from './carousel-nav';
 import Icon from '../icon';
@@ -79,8 +79,13 @@ const Carousel = ({
         if (onItemSelect) onItemSelect(active_index);
     }, [active_index, onItemSelect]);
 
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: handleNextClick,
+        onSwipedRight: handlePrevClick,
+    });
+
     return (
-        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
+        <div {...swipe_handlers} className={className}>
             <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
                 {sliced_list_length > 1 && (
                     <Nav
@@ -160,7 +165,7 @@ const Carousel = ({
                     />
                 )}
             </div>
-        </Swipeable>
+        </div>
     );
 };
 

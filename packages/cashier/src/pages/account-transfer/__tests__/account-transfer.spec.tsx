@@ -18,6 +18,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
+jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
 jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
@@ -28,6 +29,12 @@ describe('<AccountTransfer />', () => {
             client: {
                 is_switching: false,
                 is_virtual: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             ui: {
                 is_dark_mode_on: false,
@@ -134,7 +141,7 @@ describe('<AccountTransfer />', () => {
 
         renderAccountTransfer();
 
-        expect(await screen.findByText('You need at least two accounts')).toBeInTheDocument();
+        expect(await screen.findByText('mockedAccountTransferNoAccount')).toBeInTheDocument();
     });
 
     it('should render the no balance component if the account has no balance', async () => {

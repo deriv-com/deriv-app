@@ -1351,7 +1351,7 @@ AccountSwitcher.propTypes = {
     updateMt5LoginList: PropTypes.func,
     real_account_creation_unlock_date: PropTypes.number,
     setShouldShowCooldownModal: PropTypes.func,
-    content_flag: PropTypes.func,
+    content_flag: PropTypes.string,
 };
 
 const account_switcher = withRouter(

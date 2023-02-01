@@ -21,6 +21,7 @@ import {
     getAccountTypeFields,
     getPlatformSettings,
     CFD_PLATFORMS,
+    ContentFlag,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -369,6 +370,12 @@ const AccountSwitcher = props => {
     };
 
     const getRealMT5 = () => {
+        const low_risk_non_eu = props.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+        if (low_risk_non_eu) {
+            return getSortedCFDList(props.mt5_login_list).filter(
+                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
+            );
+        }
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
@@ -1344,6 +1351,7 @@ AccountSwitcher.propTypes = {
     updateMt5LoginList: PropTypes.func,
     real_account_creation_unlock_date: PropTypes.number,
     setShouldShowCooldownModal: PropTypes.func,
+    content_flag: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1409,6 +1417,7 @@ const account_switcher = withRouter(
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
         show_eu_related_content: traders_hub.show_eu_related_content,
+        content_flag: traders_hub.content_flag,
     }))(AccountSwitcher)
 );
 

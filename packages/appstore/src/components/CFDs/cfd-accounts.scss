@@ -1855,6 +1855,7 @@
             grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }
     }
+
     @for $financial_accounts_count from 0 through 6 {
         @for $synthetic_accounts_count from 0 through 2 {
             .cfd-accounts-compare-modal__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {

@@ -2373,32 +2373,7 @@ export default class ClientStore extends BaseStore {
 
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
-            const vanuatu = {
-                linkable_landing_companies: ['svg'],
-                market_type: 'gaming',
-                name: 'Deriv (V) Ltd',
-                requirements: {
-                    after_first_deposit: {
-                        financial_assessment: ['financial_information'],
-                    },
-                    compliance: {
-                        mt5: ['fully_authenticated', 'expiration_check'],
-                    },
-                    signup: [
-                        'citizen',
-                        'place_of_birth',
-                        'tax_residence',
-                        'tax_identification_number',
-                        'account_opening_reason',
-                    ],
-                },
-                shortcode: 'vanuatu',
-                sub_account_type: 'standard',
-            };
-
-            const new_response = [...response.trading_platform_available_accounts, vanuatu];
-            this.trading_platform_available_accounts = new_response;
-            console.log(this.trading_platform_available_accounts);
+            this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

@@ -3,16 +3,24 @@
         margin-right: 0.8rem;
     }
 
+    &__modal {
+        &-body {
+            padding: 1rem 2.4rem;
+        }
+    }
+
     &--column {
         flex-direction: column;
     }
 
     &--icon {
-        margin-left: 0.4rem;
+        cursor: pointer;
+        margin-left: 0.5rem;
     }
 
     &--row {
         display: flex;
         flex-direction: row;
+        align-items: center;
     }
 }

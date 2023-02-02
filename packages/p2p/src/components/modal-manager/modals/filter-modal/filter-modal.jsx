@@ -12,8 +12,14 @@ const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
 
-    const [selected_methods, setSelectedMethods] = useSavedState('selected_methods', []);
-    const [selected_methods_text, setSelectedMethodsText] = useSavedState('selected_methods_text', []);
+    const [selected_methods, setSelectedMethods] = useSavedState(
+        'selected_methods',
+        buy_sell_store.selected_payment_method_value ?? []
+    );
+    const [selected_methods_text, setSelectedMethodsText] = useSavedState(
+        'selected_methods_text',
+        buy_sell_store.selected_payment_method_text ?? []
+    );
 
     const onChange = payment_method => {
         if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
@@ -40,8 +46,7 @@ const FilterModal = () => {
     };
 
     const onClickOutside = () => {
-        if (buy_sell_store.show_filter_payment_methods && selected_methods.length > 0) {
-            console.log('selected', selected_methods);
+        if (buy_sell_store.show_filter_payment_methods && has_selected_payment_methods) {
             showModal({
                 key: 'LeavePageModal',
             });
@@ -50,22 +55,17 @@ const FilterModal = () => {
             hideModal();
         }
     };
-    let diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
-    let union = (arr1, arr2) => [...new Set([...arr1, ...arr2])];
+    const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
 
     const has_already_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length &&
         diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0;
     const has_recently_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
+    const has_selected_payment_methods = has_already_selected_payment_methods || has_recently_selected_payment_methods;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
-        console.log('AAAAH 2', selected_methods);
-        if (buy_sell_store.selected_payment_method_value.length) {
-            setSelectedMethods(buy_sell_store.selected_payment_method_value);
-            setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
-        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -177,11 +177,11 @@ const FilterModal = () => {
             <Modal.Footer has_separator>
                 {buy_sell_store.show_filter_payment_methods ? (
                     <Button.Group>
-                        <Button disabled={selected_methods.length > 0} large secondary onClick={onClickClear}>
+                        <Button disabled={!has_selected_payment_methods} large secondary onClick={onClickClear}>
                             <Localize i18n_default_text='Clear' />
                         </Button>
                         <Button
-                            disabled={!(has_already_selected_payment_methods || has_recently_selected_payment_methods)}
+                            disabled={!has_selected_payment_methods}
                             large
                             primary
                             onClick={() => {

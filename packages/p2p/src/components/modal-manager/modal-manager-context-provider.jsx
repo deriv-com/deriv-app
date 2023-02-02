@@ -30,9 +30,7 @@ const ModalManagerContextProvider = props => {
 
             if (persisted_state) {
                 if (persisted_state[key]) {
-                    console.log('AAAAH', saved_state);
                     setSavedState(persisted_state[key]);
-                    console.log('after AAAAH', saved_state);
                 }
             } else {
                 persisted_states.current[active_modal.key] = {
@@ -41,7 +39,6 @@ const ModalManagerContextProvider = props => {
             }
 
             return () => {
-                console.log('saveed', persisted_states);
                 persisted_states.current[active_modal.key][key] = saved_state_ref.current;
             };
         }, []);

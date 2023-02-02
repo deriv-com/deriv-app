@@ -134,40 +134,51 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.restore();
 };
 
-const draw_shaded_barriers = ({ ctx, start_left, top, bottom, stroke_color, fill_color, scale }) => {
+const draw_shaded_barriers = ({
+    ctx,
+    start_left,
+    top,
+    bottom,
+    stroke_color,
+    fill_color,
+    has_persistent_borders,
+    scale,
+}) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
-    const is_top_visible = top < end_top;
+    const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
     const is_bottom_visible = bottom < end_top;
-    const displayed_top = is_top_visible ? top : end_top;
+    // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible:
+    const persistent_top = top < 0 && has_persistent_borders ? 2 : end_top;
+    const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
 
-    if (is_top_visible) {
+    if (is_top_visible || has_persistent_borders) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start_left, top, 1.5, 0, Math.PI * 2);
+        ctx.arc(start_left, displayed_top, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, top);
-        ctx.lineTo(end_left, top);
+        ctx.moveTo(start_left + 1.5 * scale, displayed_top);
+        ctx.lineTo(end_left, displayed_top);
         ctx.stroke();
     }
-    if (is_bottom_visible) {
+    if (is_bottom_visible || has_persistent_borders) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start_left, bottom, 1.5, 0, Math.PI * 2);
+        ctx.arc(start_left, displayed_bottom, 1.5, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, bottom);
-        ctx.lineTo(end_left, bottom);
+        ctx.moveTo(start_left + 1.5 * scale, displayed_bottom);
+        ctx.lineTo(end_left, displayed_bottom);
         ctx.stroke();
     }
 
@@ -262,20 +273,23 @@ const TickContract = RawMarkerMaker(
             return;
         }
 
-        if (is_accumulators_contract) {
-            // draw custom barrier shadows with borders and labels for accumulators:
-            if (barrier && barrier_2 && previous_tick && (status === 'open' || is_in_contract_details)) {
-                // draw 2 barriers with a shade between them for an open ACCU contract
-                draw_shaded_barriers({
-                    ctx,
-                    start_left: previous_tick.left,
-                    fill_color: 'rgba(0, 167, 158, 0.08)',
-                    stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                    top: barrier,
-                    bottom: barrier_2,
-                    scale,
-                });
-            }
+        if (
+            barrier &&
+            barrier_2 &&
+            ((previous_tick && is_accumulators_contract && is_in_contract_details) || (!contract_type && start))
+        ) {
+            // draw 2 barriers with a shade between them for an ongoing ACCU contract:
+            draw_shaded_barriers({
+                ctx,
+                start_left: is_in_contract_details ? previous_tick.left : start.left,
+                fill_color: 'rgba(0, 167, 158, 0.08)',
+                // we should show barrier lines in contract details even when they are outside of the chart:
+                has_persistent_borders: is_in_contract_details,
+                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                top: barrier,
+                bottom: barrier_2,
+                scale,
+            });
 
             if (is_in_contract_details) return;
         }

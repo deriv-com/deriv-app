@@ -310,7 +310,6 @@ const Chart = props => {
         chartStateChange,
         current_symbol_spot,
         current_symbol_spot_time,
-        ticks_history_stats,
         exportLayout,
         extra_barriers = [],
         end_epoch,
@@ -324,6 +323,7 @@ const Chart = props => {
         setChartStatus,
         settings,
         show_digits_stats,
+        should_highlight_current_spot,
         symbol,
         wsForget,
         wsForgetStream,
@@ -417,7 +417,7 @@ const Chart = props => {
                     all_positions={all_positions}
                     current_symbol_spot={current_symbol_spot}
                     current_symbol_spot_time={current_symbol_spot_time}
-                    is_stats_highlighted={ticks_history_stats?.ticks_stayed_in?.[0] === 0}
+                    should_highlight_current_spot={should_highlight_current_spot}
                     symbol={symbol}
                 />
             )}
@@ -446,8 +446,8 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
+    should_highlight_current_spot: PropTypes.bool,
     symbol: PropTypes.string,
-    ticks_history_stats: PropTypes.array,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
@@ -480,11 +480,11 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, portfolio }) 
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
+    should_highlight_current_spot: contract_trade.should_highlight_current_spot,
     contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,
     setChartStatus: modules.trade.setChartStatus,
-    ticks_history_stats: modules.trade.ticks_history_stats,
     chart_layout: modules.trade.chart_layout,
     wsForget: modules.trade.wsForget,
     wsForgetStream: modules.trade.wsForgetStream,

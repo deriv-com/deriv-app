@@ -188,7 +188,10 @@ export default class ContractStore extends BaseStore {
         if (contract_info) {
             const { contract_type, barrier, entry_spot, high_barrier, low_barrier } = contract_info;
 
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier || entry_spot)) {
+            if (
+                isBarrierSupported(contract_type) &&
+                (barrier || high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
+            ) {
                 // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(barrier || high_barrier || entry_spot, low_barrier, null, {
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,

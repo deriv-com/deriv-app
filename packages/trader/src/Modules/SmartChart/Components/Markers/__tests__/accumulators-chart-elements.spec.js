@@ -11,11 +11,19 @@ jest.mock('../current-spot-emphasizer.jsx', () => () => <div>CurrentSpotEmphasiz
 describe('AccumulatorsChartElements', () => {
     const mock_props = {
         all_positions: [
-            { contract_info: { underlying: 'test symbol', contract_type: 'ACCU', entry_spot: 9722, contract_id: 1 } },
-            { contract_info: { underlying: 'test symbol', contract_type: 'ACCU', entry_spot: 9721, contract_id: 2 } },
+            { contract_info: { underlying: 'test symbol', contract_type: 'ACCU', entry_spot: 9454.1, contract_id: 1 } },
+            {
+                contract_info: {
+                    underlying: 'test symbol',
+                    contract_type: 'ACCU',
+                    entry_spot: 9467.78,
+                    contract_id: 2,
+                },
+            },
         ],
-        current_symbol_spot_time: 9724,
-        is_stats_highlighted: false,
+        current_symbol_spot: 9478.34,
+        current_symbol_spot_time: 1234567890,
+        should_highlight_current_spot: false,
         symbol: 'test symbol',
     };
 
@@ -28,7 +36,7 @@ describe('AccumulatorsChartElements', () => {
     });
 
     it('should render AccumulatorsChartElements with CurrentSpotEmphasizer', () => {
-        mock_props.is_stats_highlighted = true;
+        mock_props.should_highlight_current_spot = true;
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');

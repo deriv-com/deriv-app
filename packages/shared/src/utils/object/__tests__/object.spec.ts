@@ -32,21 +32,28 @@ describe('Utility', () => {
         };
 
         it('returns correct values with correct type', () => {
-            expect(typeof Utility.getPropertyValue(obj, 'str')).toBe('string').and.toBe('abc');
+            expect(typeof Utility.getPropertyValue(obj, 'str'))
+                .toBe('string')
+                .and.toBe('abc');
             expect(Utility.getPropertyValue(obj, 'num')).toBeInstanceOf(Number).and.toBe(123);
-            expect(typeof Utility.getPropertyValue(obj, 'empty')).toBe('string').and.toBe('');
+            expect(typeof Utility.getPropertyValue(obj, 'empty'))
+                .toBe('string')
+                .and.toBe('');
             expect(Utility.getPropertyValue(obj, 'nul')).toBeNull().and.toBe(null);
             expect(Utility.getPropertyValue(obj, 'undef')).toBeUndefined().and.toBeUndefined();
             expect(Utility.getPropertyValue(obj, 'promise')).toBeInstanceOf(Promise);
         });
 
         it('handles arrays correctly', () => {
-            expect(Array.isArray(Utility.getPropertyValue(obj, 'array'))).toBe(true).and.toEqual(obj.array);
+            expect(Array.isArray(Utility.getPropertyValue(obj, 'array')))
+                .toBe(true)
+                .and.toEqual(obj.array);
         });
 
         it('handles nested objects correctly', () => {
             expect(Utility.getPropertyValue(obj, 'nested')).toBeInstanceOf(Object).and.toEqual(obj.nested);
-            expect(typeof Utility.getPropertyValue(obj, ['nested', 'level_2', 'level_3'])).toBe('string')
+            expect(typeof Utility.getPropertyValue(obj, ['nested', 'level_2', 'level_3']))
+                .toBe('string')
                 .and.toEqual(obj.nested.level_2.level_3);
         });
 

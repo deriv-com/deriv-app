@@ -17,6 +17,7 @@ export default class GeneralStore extends BaseStore {
     advertiser_id = null;
     advertiser_info = {};
     advertiser_sell_limit = null;
+    advertiser_relations_response = []; //TODO: Remove this when backend has fixed is_blocked flag issue
     block_unblock_user_error = '';
     balance;
     cancels_remaining = null;
@@ -69,6 +70,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_id: observable,
             advertiser_buy_limit: observable,
             advertiser_sell_limit: observable,
+            advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
             feature_level: observable,
@@ -124,6 +126,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
             setFeatureLevel: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
@@ -202,6 +205,10 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlockUserModalOpen(false);
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
+
+                        //TODO: Remove this when backend has fixed is_blocked flag issue
+                        this.setAdvertiserRelationsResponse(p2p_advertiser_relations.blocked_advertisers);
+
                         advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
                             p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
                         );
@@ -585,6 +592,11 @@ export default class GeneralStore extends BaseStore {
         this.props = props;
     }
 
+    //TODO: Remove this when backend has fixed is_blocked flag issue
+    setAdvertiserRelationsResponse(advertiser_relations_response) {
+        this.advertiser_relations_response = advertiser_relations_response;
+    }
+
     setBlockUnblockUserError(block_unblock_user_error) {
         this.block_unblock_user_error = block_unblock_user_error;
     }
@@ -796,6 +808,7 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

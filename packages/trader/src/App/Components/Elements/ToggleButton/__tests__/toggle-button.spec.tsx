@@ -1,103 +1,64 @@
-// TODO refactor old tests in this component
 import React from 'react';
-// import { fake } from 'sinon';
-import { Button } from '@deriv/components';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ToggleButton from '../toggle-button.jsx';
-import { beforeEach } from '@jest/globals';
 
-describe('<ToggleButton />', () => {
-    it('should render a <Button /> element', () => {
-        // const wrapper = shallow(<ToggleButton value='test'>Test</ToggleButton>);
-        // expect(wrapper.type()).toBe(Button);
+type TMockToggleButton = {
+    className?: string;
+    is_disabled?: boolean;
+    is_selected?: boolean;
+    onClick?: () => void;
+    onChange?: () => void;
+};
+
+const MockToggleButton = ({ className, is_disabled, is_selected, onClick, onChange }: TMockToggleButton) => (
+    <ToggleButton
+        value='test value'
+        is_selected={is_selected}
+        className={className}
+        is_disabled={is_disabled}
+        onClick={onClick}
+        onChange={onChange}
+    >
+        <div data-testid='dt_child' />
+    </ToggleButton>
+);
+
+describe('ToggleButton', () => {
+    it('should render <Button />', () => {
+        render(<MockToggleButton />);
+        expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    // it('should render a <Button /> element with selected class name', () => {
-    //     const wrapper = shallow(
-    //         <ToggleButton value='test' is_selected>
-    //             Test
-    //         </ToggleButton>
-    //     );
-    //     expect(wrapper.hasClass('toggle-button--selected')).toBe(true);
-    // });
+    it('should have "toggle-button--selected" className when "is_selected" property passed', () => {
+        render(<MockToggleButton is_selected />);
+        expect(screen.getByRole('button')).toHaveClass('toggle-button--selected');
+    });
 
-    // describe('prop: onClick', () => {
-    //     let event;
+    it('should render "className" when is passed', () => {
+        render(<MockToggleButton className='test-class' />);
+        expect(screen.getByRole('button')).toHaveClass('test-class');
+    });
 
-    //     beforeEach(() => {
-    //         event = {
-    //             preventDefault: () => {},
-    //             isDefaultPrevented: () => true,
-    //         };
-    //     });
+    it('should not render the button as disabled by default', () => {
+        render(<MockToggleButton />);
+        expect(screen.getByRole('button')).toBeEnabled();
+    });
 
-    //     it('should be called when the button clicked', () => {
-    //         const callback = fake();
-    //         const wrapper = shallow(
-    //             <ToggleButton value='test' onClick={callback}>
-    //                 Test
-    //             </ToggleButton>
-    //         );
-    //         wrapper.simulate('click', event);
-    //         expect(callback.toBeCalled()).toBe(true);
-    //     });
+    it('should render the button as disabled when "is_disabled" property passed', () => {
+        render(<MockToggleButton is_disabled />);
+        expect(screen.getByRole('button')).toBeDisabled();
+    });
 
-    //     it('should be called with the button value when the button clicked', () => {
-    //         const callback = fake();
-    //         const wrapper = shallow(
-    //             <ToggleButton value='test' onClick={callback}>
-    //                 Test
-    //             </ToggleButton>
-    //         );
-    //         wrapper.simulate('click', event);
-    //         expect(callback.lastArg).toBe('test');
-    //     });
-    // });
+    it('should render the "children" properly', () => {
+        render(<MockToggleButton />);
+        expect(screen.getByTestId('dt_child')).toBeInTheDocument();
+    });
 
-    // describe('prop: onChange', () => {
-    //     let event;
-    //     let defaultPreventd = false;
-
-    //     beforeEach(() => {
-    //         event = {
-    //             preventDefault: () => {
-    //                 defaultPreventd = true;
-    //             },
-    //             isDefaultPrevented: () => defaultPreventd,
-    //         };
-    //     });
-
-    //     it('should be called when the button clicked', () => {
-    //         const callback = fake();
-    //         const wrapper = shallow(
-    //             <ToggleButton value='test' onChange={callback}>
-    //                 Test
-    //             </ToggleButton>
-    //         );
-    //         wrapper.simulate('click', event);
-    //         expect(callback.toBeCalled()).toBe(true);
-    //     });
-
-    //     it('should be called with the button value when the button clicked', () => {
-    //         const callback = fake();
-    //         const wrapper = shallow(
-    //             <ToggleButton value='test' onChange={callback}>
-    //                 Test
-    //             </ToggleButton>
-    //         );
-    //         wrapper.simulate('click', event);
-    //         expect(callback.lastArg).toBe('test');
-    //     });
-
-    //     it('should not be called when the click is prevented', () => {
-    //         const callback = fake();
-    //         const wrapper = shallow(
-    //             <ToggleButton value='test' onChange={callback} onClick={event => event.preventDefault()}>
-    //                 Test
-    //             </ToggleButton>
-    //         );
-
-    //         wrapper.simulate('click', event);
-    //         expect(callback.callCount).toBe(0);
-    //     });
-    // });
+    it('should call "onClick" function by clicking on the button', () => {
+        const mock_onClick = jest.fn();
+        render(<MockToggleButton onClick={mock_onClick} />);
+        userEvent.click(screen.getByRole('button'));
+        expect(mock_onClick).toHaveBeenCalledTimes(1);
+    });
 });

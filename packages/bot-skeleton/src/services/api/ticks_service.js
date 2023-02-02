@@ -2,6 +2,7 @@ import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 import { observer as globalObserver } from '../../utils/observer';
+import { api_base } from './api-base';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -39,8 +40,7 @@ const updateCandles = (candles, ohlc) => {
 const getType = isCandle => (isCandle ? 'candles' : 'ticks');
 
 export default class TicksService {
-    constructor(api) {
-        this.api = api;
+    constructor() {
         this.ticks = new Map();
         this.candles = new Map();
         this.tickListeners = new Map();
@@ -60,22 +60,12 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                this.getActiveSymbols().then(active_symbols => {
-                    this.pipSizes = active_symbols
-                        .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                        .toObject();
-                    resolve(this.pipSizes);
-                });
+                this.pipSizes = api_base.pip_sizes;
+                resolve(this.pipSizes);
             });
         }
         return this.active_symbols_promise;
     }
-
-    getActiveSymbols = async () => {
-        await this.api.expectResponse('authorize');
-        const active_symbols = await this.api.send({ active_symbols: 'brief' });
-        return active_symbols.active_symbols;
-    };
 
     request(options) {
         const { symbol, granularity } = options;
@@ -89,7 +79,6 @@ export default class TicksService {
         if (style === 'candles' && this.candles.hasIn([symbol, Number(granularity)])) {
             return Promise.resolve(this.candles.getIn([symbol, Number(granularity)]));
         }
-
         return this.requestStream({ ...options, style });
     }
 
@@ -163,7 +152,7 @@ export default class TicksService {
             ...(tickSubscription || []),
         ];
 
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.forget(id))));
+        Promise.all(subscription.map(id => doUntilDone(() => api_base.api.forget(id))));
 
         this.subscriptions = new Map();
     }
@@ -195,7 +184,7 @@ export default class TicksService {
     }
 
     observe() {
-        this.api.onMessage().subscribe(({ data }) => {
+        const subscription = api_base.api.onMessage().subscribe(({ data }) => {
             if (data.msg_type === 'tick') {
                 const { tick } = data;
                 const { symbol, id } = tick;
@@ -218,6 +207,7 @@ export default class TicksService {
                 }
             }
         });
+        api_base.pushSubscription(subscription);
     }
 
     requestStream(options) {
@@ -260,7 +250,7 @@ export default class TicksService {
             style,
         };
         return new Promise((resolve, reject) => {
-            doUntilDone(() => this.api.send(request_object))
+            doUntilDone(() => api_base.api.send(request_object), [], api_base)
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);
@@ -277,5 +267,28 @@ export default class TicksService {
                 })
                 .catch(reject);
         });
+    }
+
+    forget = subscription_id => {
+        if (subscription_id) {
+            api_base.api.forget(subscription_id);
+        }
+    };
+
+    unsubscribeFromTicksService() {
+        if (this.ticks_history_promise) {
+            const { stringified_options } = this.ticks_history_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['tick', symbol]));
+            }
+        }
+        if (this.candles_promise) {
+            const { stringified_options } = this.candles_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['candle', symbol]));
+            }
+        }
     }
 }

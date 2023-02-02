@@ -120,7 +120,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return <CryptoTransactionsHistory />;
     }
 
-    if (is_deposit || is_eu) {
+    if (is_deposit) {
         if (error.message) {
             return <Error error={error} />;
         }

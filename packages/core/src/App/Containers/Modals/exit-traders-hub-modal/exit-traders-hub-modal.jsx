@@ -52,6 +52,7 @@ const ExitTradersHubModal = ({
             //if eu is currently selected , switch to non-eu on exiting tradershub
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
+
         history.push(routes.root);
     };
 

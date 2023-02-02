@@ -2556,7 +2556,7 @@ export default class ClientStore extends BaseStore {
         this.prev_account_type = acc_type;
     };
 
-    async setIsPreAppStore(is_pre_appstore) {
+    setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
         try {
             WS.setSettings({

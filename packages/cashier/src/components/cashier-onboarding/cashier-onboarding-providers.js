@@ -24,11 +24,7 @@ const crypto_contents = [
 
 const onramp_contents = [
     {
-        icons: [
-            { light: 'IcCashierChangellyRowLight', dark: 'IcCashierChangellyRowDark' },
-            { light: 'IcCashierXanpoolSmallLight', dark: 'IcCashierXanpoolSmallDark' },
-            { light: 'IcCashierBanxaLight', dark: 'IcCashierBanxaDark' },
-        ],
+        icons: [{ light: 'IcCashierBanxaLight', dark: 'IcCashierBanxaDark' }],
     },
 ];
 

@@ -13,6 +13,7 @@ import { api_error_codes } from '../constants/api-error-codes';
 
 export default class BuySellStore extends BaseStore {
     api_error_message = '';
+    create_sell_ad_from_no_ads = false;
     error_message = '';
     form_error_code = '';
     has_more_items_to_load = false;
@@ -59,6 +60,7 @@ export default class BuySellStore extends BaseStore {
 
         makeObservable(this, {
             api_error_message: observable,
+            create_sell_ad_from_no_ads: observable,
             error_message: observable,
             form_error_code: observable,
             has_more_items_to_load: observable,
@@ -114,6 +116,7 @@ export default class BuySellStore extends BaseStore {
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
+            setCreateSellAdFromNoAds: action.bound,
             setErrorMessage: action.bound,
             setFormErrorCode: action.bound,
             setFormProps: action.bound,
@@ -460,6 +463,10 @@ export default class BuySellStore extends BaseStore {
         this.api_error_message = api_error_message;
     }
 
+    setCreateSellAdFromNoAds(create_sell_ad_from_no_ads) {
+        this.create_sell_ad_from_no_ads = create_sell_ad_from_no_ads;
+    }
+
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -522,7 +529,7 @@ export default class BuySellStore extends BaseStore {
             currency_list.push({
                 component: (
                     <div className='currency-dropdown__list-item'>
-                        <div>{symbol}</div>
+                        <div className='currency-dropdown__list-item-symbol'>{symbol}</div>
                         <Text as='div' align='right' size='xs' line_height='xxs'>
                             {display_name}
                         </Text>

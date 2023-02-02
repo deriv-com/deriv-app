@@ -20,6 +20,7 @@ import PercentageSelector from 'Components/percentage-selector';
 import RecentTransaction from 'Components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -78,12 +79,10 @@ const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferF
     const {
         client,
         common: { is_from_derivgo },
-        modules: { cashier },
     } = useStore();
 
     const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
-    const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = cashier;
-
+    const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
     const {
         account_transfer_amount,
         accounts_list,
@@ -112,21 +111,17 @@ const AccountTransferForm = observer(({ error, setSideNotes }: TAccountTransferF
         resetConverter,
     } = crypto_fiat_converter;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
-
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState<string>();
-
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5;
     const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
     const derivez_remaining_transfers = daily_transfers?.derivez;
     const internal_remaining_transfers = daily_transfers?.internal;
-
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
     const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
-
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
     React.useEffect(() => {

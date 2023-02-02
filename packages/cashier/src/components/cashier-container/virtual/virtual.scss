@@ -19,10 +19,10 @@
         }
 
         &--light {
-            background-image: url('~Images/cashier-demo-light.svg');
+            background-image: url('../../../public/images/cashier-demo-light.svg');
         }
         &--dark {
-            background-image: url('~Images/cashier-demo-dark.svg');
+            background-image: url('../../../public/images/cashier-demo-dark.svg');
         }
     }
     &__account-switch-text {

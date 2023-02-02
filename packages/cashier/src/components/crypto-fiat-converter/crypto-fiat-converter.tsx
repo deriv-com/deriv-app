@@ -3,8 +3,8 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TReactChangeEvent, TReactChildren } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TReactChangeEvent, TReactChildren } from '../../types';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -17,14 +17,13 @@ type TInputGroupProps = {
 };
 
 type TCryptoFiatConverterProps = {
-    converter_from_amount: string;
-    converter_from_error: string;
-    converter_to_error: string;
-    converter_to_amount: string;
     from_currency: string;
     hint: string | TReactChildren;
-    is_timer_visible: boolean;
-    onChangeConverterFromAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterFromAmount: (
+        event: { target: { value: string } },
+        from_currency: string,
+        to_currency: string
+    ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
     resetConverter: () => void;
     to_currency: string;
@@ -64,112 +63,121 @@ const InputGroup = ({ children, className }: TInputGroupProps) => {
     );
 };
 
-const CryptoFiatConverter = ({
-    converter_from_amount,
-    converter_from_error,
-    converter_to_error,
-    converter_to_amount,
-    from_currency,
-    hint,
-    is_timer_visible,
-    onChangeConverterFromAmount,
-    onChangeConverterToAmount,
-    resetConverter,
-    to_currency,
-    validateFromAmount,
-    validateToAmount,
-}: TCryptoFiatConverterProps) => {
-    const { handleChange } = useFormikContext();
-    const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
+const CryptoFiatConverter = observer(
+    ({
+        from_currency,
+        hint,
+        onChangeConverterFromAmount,
+        onChangeConverterToAmount,
+        resetConverter,
+        to_currency,
+        validateFromAmount,
+        validateToAmount,
+    }: TCryptoFiatConverterProps) => {
+        const {
+            modules: {
+                cashier: { crypto_fiat_converter },
+            },
+        } = useStore();
 
-    React.useEffect(() => {
-        return () => resetConverter();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        const {
+            converter_from_amount,
+            converter_from_error,
+            converter_to_error,
+            converter_to_amount,
+            is_timer_visible,
+        } = crypto_fiat_converter;
 
-    React.useEffect(() => {
-        setArrowIconDirection('right');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [from_currency]);
+        const { handleChange } = useFormikContext();
+        const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
 
-    return (
-        <div className='crypto-fiat-converter'>
-            <Field name='converter_from_amount' validate={validateFromAmount}>
-                {({ field }: FieldProps<string>) => (
-                    <Input
-                        {...field}
-                        onFocus={() => {
-                            setArrowIconDirection('right');
-                        }}
-                        onChange={(e: TReactChangeEvent) => {
-                            onChangeConverterFromAmount(e, from_currency, to_currency);
-                            handleChange(e);
-                        }}
-                        type='text'
-                        error={converter_from_error}
-                        label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(from_currency) })}
-                        value={converter_from_amount}
-                        autoComplete='off'
-                        required
-                        hint={hint}
-                        classNameHint='crypto-fiat-converter__hint'
-                        data-testid='dt_converter_from_amount_input'
-                    />
-                )}
-            </Field>
-            <MobileWrapper>
-                {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
-            </MobileWrapper>
-            <DesktopWrapper>
-                {arrow_icon_direction === 'right' ? (
-                    <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
-                ) : (
-                    <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
-                )}
-            </DesktopWrapper>
-            <Field name='converter_to_amount' validate={validateToAmount}>
-                {({ field }: FieldProps<string>) => (
-                    <InputGroup className='input-group'>
+        React.useEffect(() => {
+            return () => resetConverter();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        React.useEffect(() => {
+            setArrowIconDirection('right');
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [from_currency]);
+
+        return (
+            <div className='crypto-fiat-converter'>
+                <Field name='converter_from_amount' validate={validateFromAmount}>
+                    {({ field }: FieldProps<string>) => (
                         <Input
                             {...field}
                             onFocus={() => {
-                                setArrowIconDirection('left');
+                                setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                onChangeConverterToAmount(e, to_currency, from_currency);
+                                onChangeConverterFromAmount(e, from_currency, to_currency);
                                 handleChange(e);
                             }}
                             type='text'
-                            error={converter_to_error}
-                            label={localize('Amount ({{currency}})', { currency: getCurrencyDisplayCode(to_currency) })}
-                            value={converter_to_amount}
+                            error={converter_from_error}
+                            label={localize('Amount ({{currency}})', {
+                                currency: getCurrencyDisplayCode(from_currency),
+                            })}
+                            value={converter_from_amount}
                             autoComplete='off'
-                            hint={localize('Approximate value')}
+                            required
+                            hint={hint}
                             classNameHint='crypto-fiat-converter__hint'
-                            data-testid='dt_converter_to_amount_input'
+                            data-testid='dt_converter_from_amount_input'
                         />
-                        {is_timer_visible && (
-                            <Timer
-                                onComplete={() => {
-                                    onChangeConverterFromAmount(
-                                        { target: { value: converter_from_amount } },
-                                        from_currency,
-                                        to_currency
-                                    );
+                    )}
+                </Field>
+                <MobileWrapper>
+                    {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
+                </MobileWrapper>
+                <DesktopWrapper>
+                    {arrow_icon_direction === 'right' ? (
+                        <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
+                    ) : (
+                        <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
+                    )}
+                </DesktopWrapper>
+                <Field name='converter_to_amount' validate={validateToAmount}>
+                    {({ field }: FieldProps<string>) => (
+                        <InputGroup className='input-group'>
+                            <Input
+                                {...field}
+                                onFocus={() => {
+                                    setArrowIconDirection('left');
                                 }}
+                                onChange={(e: TReactChangeEvent) => {
+                                    onChangeConverterToAmount(e, to_currency, from_currency);
+                                    handleChange(e);
+                                }}
+                                type='text'
+                                error={converter_to_error}
+                                label={localize('Amount ({{currency}})', {
+                                    currency: getCurrencyDisplayCode(to_currency),
+                                })}
+                                value={converter_to_amount}
+                                autoComplete='off'
+                                hint={localize('Approximate value')}
+                                classNameHint='crypto-fiat-converter__hint'
+                                data-testid='dt_converter_to_amount_input'
                             />
-                        )}
-                    </InputGroup>
-                )}
-            </Field>
-        </div>
-    );
-};
+                            {is_timer_visible && (
+                                <Timer
+                                    onComplete={() => {
+                                        onChangeConverterFromAmount(
+                                            { target: { value: converter_from_amount } },
+                                            from_currency,
+                                            to_currency
+                                        );
+                                    }}
+                                />
+                            )}
+                        </InputGroup>
+                    )}
+                </Field>
+            </div>
+        );
+    }
+);
 
-export default connect(({ modules }: TRootStore) => ({
-    converter_from_amount: modules.cashier.crypto_fiat_converter.converter_from_amount,
-    converter_from_error: modules.cashier.crypto_fiat_converter.converter_from_error,
-    converter_to_error: modules.cashier.crypto_fiat_converter.converter_to_error,
-    converter_to_amount: modules.cashier.crypto_fiat_converter.converter_to_amount,
-    is_timer_visible: modules.cashier.crypto_fiat_converter.is_timer_visible,
-}))(CryptoFiatConverter);
+export default CryptoFiatConverter;

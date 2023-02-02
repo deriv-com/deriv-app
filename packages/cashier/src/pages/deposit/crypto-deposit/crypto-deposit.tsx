@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
-import { observer } from 'mobx-react-lite';
-import RecentTransaction from 'Components/recent-transaction';
+import RecentTransaction from '../../../components/recent-transaction';
 import './crypto-deposit.scss';
 
-const CryptoDeposit = () => {
+const CryptoDeposit = observer(() => {
     const { client, modules } = useStore();
     const { cashier } = modules;
     const { currency } = client;
@@ -242,6 +241,6 @@ const CryptoDeposit = () => {
             {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
-};
+});
 
-export default observer(CryptoDeposit);
+export default CryptoDeposit;

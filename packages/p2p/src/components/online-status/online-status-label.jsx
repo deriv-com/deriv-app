@@ -11,35 +11,52 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
             if (last_online_time) {
                 const start_time = epochToMoment(last_online_time).unix();
                 const end_time = toMoment().unix();
-
                 const diff = getDiffDuration(start_time, end_time);
-                const addPlural = duration => (duration !== 1 ? 's' : '');
 
                 if (diff.years()) return localize('Seen more than 6 months ago');
                 if (diff.months()) {
                     if (diff.months() > 6) {
                         return localize('Seen more than 6 months ago');
                     }
-                    return localize('Seen {{ duration }} month{{ prural }} ago', {
+                    if (diff.months === 1) {
+                        return localize('Seen {{ duration }} month ago', {
+                            duration: diff.months(),
+                        });
+                    }
+                    return localize('Seen {{ duration }} months ago', {
                         duration: diff.months(),
-                        prural: addPlural(diff.months()),
                     });
                 }
-                if (diff.days())
-                    return localize('Seen {{ duration }} day{{ plural }} ago', {
+                if (diff.days()) {
+                    if (diff.days() === 1) {
+                        return localize('Seen {{ duration }} day ago', {
+                            duration: diff.days(),
+                        });
+                    }
+                    return localize('Seen {{ duration }} days ago', {
                         duration: diff.days(),
-                        plural: addPlural(diff.days()),
                     });
-                if (diff.hours())
-                    return localize('Seen {{ duration }} hour{{ plural }} ago', {
+                }
+                if (diff.hours()) {
+                    if (diff.hours() === 1) {
+                        return localize('Seen {{ duration }} hour ago', {
+                            duration: diff.hours(),
+                        });
+                    }
+                    return localize('Seen {{ duration }} hours ago', {
                         duration: diff.hours(),
-                        plural: addPlural(diff.hours()),
                     });
-                if (diff.minutes())
-                    return localize('Seen {{ duration }} minute{{ plural }} ago', {
+                }
+                if (diff.minutes()) {
+                    if (diff.minutes() === 1) {
+                        return localize('Seen {{ duration }} minute ago', {
+                            duration: diff.minutes(),
+                        });
+                    }
+                    return localize('Seen {{ duration }} minutes ago', {
                         duration: diff.minutes(),
-                        plural: addPlural(diff.minutes()),
                     });
+                }
             } else {
                 return localize('Seen more than 6 months ago');
             }

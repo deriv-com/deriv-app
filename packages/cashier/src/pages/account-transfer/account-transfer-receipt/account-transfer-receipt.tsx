@@ -1,10 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import classNames from 'classnames';
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -12,7 +13,12 @@ type TSwitch = {
     currency?: string;
 };
 
-const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
+type TAccountTransferReceipt = {
+    onClose: () => void;
+    history: RouteComponentProps;
+};
+
+const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
     const {
         ui,
         common,
@@ -24,8 +30,10 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
 
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
-    const { loginid, switchAccount } = client;
-    const { receipt, resetAccountTransfer, selected_from, selected_to } = account_transfer;
+    const { is_pre_appstore, loginid, switchAccount } = client;
+    const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccout } = account_transfer;
+
+    const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
@@ -62,13 +70,20 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
+            setShouldSwitchAccout();
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
+        onClose();
     };
 
     return (
-        <div className='account-transfer-receipt__crypto'>
+        <div
+            className={classNames(
+                'account-transfer-receipt__crypto',
+                !is_from_pre_appstore && 'account-transfer-receipt__crypto-padding'
+            )}
+        >
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
@@ -86,32 +101,30 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
             <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
-                        <Icon
-                            icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
-                            size={32}
-                        />
+                        <AccountPlatformIcon account={selected_from} is_pre_appstore={is_pre_appstore} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_from.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_from.value}
+                        </Text>
+                    )}
                 </div>
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
-                        <Icon
-                            icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
-                            size={32}
-                        />
+                        <AccountPlatformIcon account={selected_to} is_pre_appstore={is_pre_appstore} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>
-                        {selected_to.value}
-                    </Text>
+                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                        <Text as='p' size='s' color='less-prominent' align='center'>
+                            {selected_to.value}
+                        </Text>
+                    )}
                 </div>
             </div>
             <div className='account-transfer-receipt__crypto--form-submit'>
@@ -128,8 +141,8 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
-                    text={localize('Make a new transfer')}
-                    onClick={resetAccountTransfer}
+                    text={is_from_pre_appstore ? localize('Close') : localize('Make a new transfer')}
+                    onClick={is_from_pre_appstore ? onClose : resetAccountTransfer}
                     primary
                     large
                 />
@@ -163,6 +176,6 @@ const AccountTransferReceipt = ({ history }: RouteComponentProps) => {
             </Modal>
         </div>
     );
-};
+});
 
-export default withRouter(observer(AccountTransferReceipt));
+export default withRouter(AccountTransferReceipt);

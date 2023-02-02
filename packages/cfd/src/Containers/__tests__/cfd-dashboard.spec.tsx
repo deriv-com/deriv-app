@@ -58,7 +58,7 @@ jest.mock('@deriv/account', () => ({
 jest.mock('../../Components/success-dialog.jsx', () => () => 'SuccessDialog');
 jest.mock('../cfd-password-modal.tsx', () => props => props.is_cfd_password_modal_enabled ? 'CFDPasswordModal' : '');
 jest.mock('../cfd-top-up-demo-modal', () => props => props.is_top_up_virtual_open ? 'CFDTopUpDemoModal' : '');
-jest.mock('../cfd-personal-details-modal', () => () => 'CFDPersonalDetailsModal');
+jest.mock('../cfd-server-error-dialog.tsx', () => () => 'CFDServerErrorDialog');
 jest.mock('../mt5-trade-modal', () => props => props.is_open ? 'MT5TradeModal' : '');
 jest.mock(
     '../jurisdiction-modal/jurisdiction-modal',
@@ -191,9 +191,7 @@ describe('<CFDDashboard />', () => {
             svg: true,
         },
         toggleAccountsDialog: jest.fn(),
-        toggleMT5TradeModal: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
-        toggleCFDPersonalDetailsModal: jest.fn(),
         toggleResetTradingPasswordModal: jest.fn(),
         upgradeable_landing_companies: ['svg'],
     };
@@ -477,13 +475,6 @@ describe('<CFDDashboard />', () => {
             }
         );
         expect(props.openTopUpModal).toHaveBeenCalledTimes(1);
-    });
-    it('Trade button should trigger MT5TradeModal when clicked', () => {
-        renderCFDDashboardWithRouter({ is_logged_in: true });
-
-        const dmt5_trade_button = screen.getByRole('button', { name: 'Trade' });
-        fireEvent.click(dmt5_trade_button);
-        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
     });
     it('Should trigger CFDResetPasswordModal when URL hash contains reset-password', () => {
         window.location.hash = 'reset-password';

@@ -2,7 +2,6 @@
     border-bottom: none;
     grid-template-columns: repeat(4, 1fr);
     margin: 1.4rem 0;
-    overflow: auto;
 
     &.dc-table__row {
         height: unset;
@@ -20,7 +19,7 @@
         }
 
         & + & {
-            padding-left: 2.4rem;
+            padding: 0 2.4rem;
 
             @include mobile {
                 padding: 0.4rem 1.6rem;

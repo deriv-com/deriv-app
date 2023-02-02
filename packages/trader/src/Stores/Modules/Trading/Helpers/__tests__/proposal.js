@@ -1,34 +1,27 @@
-import { expect } from 'chai';
-import React from 'react';
-import * as Proposal from '../proposal';
+import { getProposalInfo, createProposalRequests } from '../proposal';
 
 describe('Proposal', () => {
-    describe('getProposalInfo', () => {
-        const store = {
+    describe('getProposalInfo function', () => {
+        const fake_store = {
             currency: 'EUR',
             basis_list: [
-                {
-                    text: 'Payout',
-                    value: 'payout',
-                },
-                {
-                    text: 'Stake',
-                    value: 'stake',
-                },
+                { text: 'Payout', value: 'payout' },
+                { text: 'Stake', value: 'stake' },
             ],
             basis: 'payout',
         };
-        it('should return 0 as profit when proposal has error', () => {
-            const obj_prev_contract_basis = {
-                text: 'Payout',
-                value: 1234,
+
+        const fake_obj_prev_contract_basis = {
+            text: 'payout',
+            value: 1234,
+        };
+
+        it('should return 0 as profit when proposal has an error', () => {
+            const fake_response = {
+                error: { message: 'This is error' },
             };
-            const response = {
-                error: {
-                    message: 'This is error',
-                },
-            };
-            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
+
+            expect(getProposalInfo(fake_store, fake_response, fake_obj_prev_contract_basis)).toEqual({
                 profit: '0.00',
                 returns: '0.00%',
                 stake: undefined,
@@ -49,8 +42,9 @@ describe('Proposal', () => {
                 },
             });
         });
+
         it('should return profit and return calculated if proposal has no error', () => {
-            const response = {
+            const fake_response = {
                 proposal: {
                     proposal: 1,
                     ask_price: 50,
@@ -60,11 +54,8 @@ describe('Proposal', () => {
                     longcode: 'This is a longcode',
                 },
             };
-            const obj_prev_contract_basis = {
-                text: 'payout',
-                value: 1234,
-            };
-            expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
+
+            expect(getProposalInfo(fake_store, fake_response, fake_obj_prev_contract_basis)).toEqual({
                 cancellation: undefined,
                 commission: undefined,
                 error_code: undefined,
@@ -87,9 +78,9 @@ describe('Proposal', () => {
         });
     });
 
-    describe('createProposalRequests', () => {
-        it('should return request containing trade type which is not already in request', () => {
-            const store = {
+    describe('createProposalRequests function', () => {
+        it('should return the request containing trade type which is not already in the request', () => {
+            const fake_store = {
                 amount: '10',
                 basis: 'payout',
                 currency: 'USD',
@@ -97,17 +88,10 @@ describe('Proposal', () => {
                 start_time: '12:30',
                 duration: '5',
                 duration_unit: 't',
-                trade_types: {
-                    CALL: 'Higher',
-                    PUT: 'Lower',
-                },
+                trade_types: { CALL: 'Higher', PUT: 'Lower' },
                 expiry_type: 'duration',
                 form_components: ['duration', 'amount', 'start_date'],
-                root_store: {
-                    client: {
-                        currency: 'USD',
-                    },
-                },
+                root_store: { client: { currency: 'USD' } },
                 proposal_requests: {
                     CALL: {
                         amount: 10,
@@ -124,7 +108,7 @@ describe('Proposal', () => {
                 },
             };
 
-            expect(Proposal.createProposalRequests(store)).to.deep.eql({
+            expect(createProposalRequests(fake_store)).toEqual({
                 CALL: {
                     amount: 10,
                     basis: 'payout',
@@ -150,8 +134,8 @@ describe('Proposal', () => {
             });
         });
 
-        it('should return request as before if all trade types already exist in request', () => {
-            const store = {
+        it('should return the request as before if all trade types already exist in the request', () => {
+            const fake_store = {
                 amount: '10',
                 basis: 'payout',
                 currency: 'USD',
@@ -159,16 +143,10 @@ describe('Proposal', () => {
                 start_time: '12:30',
                 duration: '5',
                 duration_unit: 't',
-                trade_types: {
-                    CALL: 'Higher',
-                },
+                trade_types: { CALL: 'Higher' },
                 expiry_type: 'duration',
                 form_components: ['duration', 'amount', 'start_date'],
-                root_store: {
-                    client: {
-                        currency: 'USD',
-                    },
-                },
+                root_store: { client: { currency: 'USD' } },
                 proposal_requests: {
                     CALL: {
                         amount: 10,
@@ -185,7 +163,7 @@ describe('Proposal', () => {
                 },
             };
 
-            expect(Proposal.createProposalRequests(store)).to.deep.eql({
+            expect(createProposalRequests(fake_store)).toEqual({
                 CALL: {
                     amount: 10,
                     basis: 'payout',
@@ -200,13 +178,12 @@ describe('Proposal', () => {
             });
         });
 
-        it('should return empty if there is no trade type', () => {
-            const store = {
+        it('should return an empty object if there is no trade type', () => {
+            const fake_store = {
                 trade_types: {},
                 proposal_requests: {},
             };
-
-            expect(Proposal.createProposalRequests(store)).to.be.empty;
+            expect(createProposalRequests(fake_store)).toEqual({});
         });
     });
 });

@@ -3,25 +3,25 @@ import classNames from 'classnames';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getStatus } from 'Constants/transaction-status';
-import { connect } from 'Stores/connect';
-import { TRootStore, TCryptoTransactionDetails } from 'Types';
+import { getStatus } from '../../constants/transaction-status';
+import { TCryptoTransactionDetails } from '../../types';
+import { useStore, observer } from '@deriv/stores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
-    cancelCryptoTransaction: (id: string) => void;
-    currency: string;
-    showCryptoTransactionsCancelModal: (id: string) => void;
-    showCryptoTransactionsStatusModal: (description: string, name: string) => void;
 };
 
-const CryptoTransactionsRenderer = ({
-    row: crypto,
-    cancelCryptoTransaction,
-    currency,
-    showCryptoTransactionsCancelModal,
-    showCryptoTransactionsStatusModal,
-}: TCryptoTransactionsRendererProps) => {
+const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+        client,
+    } = useStore();
+    const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
+        transaction_history;
+    const { currency } = client;
+
     const {
         address_hash,
         address_url,
@@ -302,11 +302,6 @@ const CryptoTransactionsRenderer = ({
             </Table.Row>
         </div>
     );
-};
+});
 
-export default connect(({ client, modules }: TRootStore) => ({
-    currency: client.currency,
-    cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
-    showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,
-    showCryptoTransactionsStatusModal: modules.cashier.transaction_history.showCryptoTransactionsStatusModal,
-}))(CryptoTransactionsRenderer);
+export default CryptoTransactionsRenderer;

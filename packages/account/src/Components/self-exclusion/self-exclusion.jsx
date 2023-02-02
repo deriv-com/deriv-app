@@ -17,7 +17,7 @@ import SelfExclusionArticleContent from './self-exclusion-article-content';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionModal from './self-exclusion-modal';
 import SelfExclusionWrapper from './self-exclusion-wrapper';
-import SelfExclusionForm from './self-exclusion-form.jsx';
+import SelfExclusionForm from './self-exclusion-form';
 
 const SelfExclusion = ({
     currency,

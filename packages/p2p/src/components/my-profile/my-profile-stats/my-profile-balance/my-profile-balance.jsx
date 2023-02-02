@@ -24,7 +24,7 @@ const MyProfileBalance = () => {
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('OK')}
                         onClick={() => setIsBalanceTooltipOpen(false)}
                         primary
                         large

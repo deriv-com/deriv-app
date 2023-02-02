@@ -41,7 +41,7 @@ const MyProfileBalance = () => {
                         color='disabled'
                         icon='IcInfoOutline'
                         onClick={() => setIsBalanceTooltipOpen(true)}
-                        size={16}
+                        size={isMobile() ? 12 : 16}
                     />
                 </div>
                 <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='m' weight='bold'>

@@ -42,6 +42,7 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
+        await setIsPreAppStore(false);
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
         if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
@@ -51,7 +52,6 @@ const ExitTradersHubModal = ({
             //if eu is currently selected , switch to non-eu on exiting tradershub
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
-        setIsPreAppStore(false);
         history.push(routes.root);
     };
 

@@ -10,10 +10,10 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
 
-    const [selected_methods, setSelectedMethods] = React.useState([]);
-    const [selected_methods_text, setSelectedMethodsText] = React.useState([]);
+    const [selected_methods, setSelectedMethods] = useSavedState('selected_methods', []);
+    const [selected_methods_text, setSelectedMethodsText] = useSavedState('selected_methods_text', []);
 
     const onChange = payment_method => {
         if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
@@ -39,10 +39,29 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
-    React.useEffect(() => {
-        buy_sell_store.setShowFilterPaymentMethods(false);
-        my_profile_store.getPaymentMethodsList();
+    const onClickOutside = () => {
+        if (buy_sell_store.show_filter_payment_methods && selected_methods.length > 0) {
+            console.log('selected', selected_methods);
+            showModal({
+                key: 'LeavePageModal',
+            });
+        } else {
+            buy_sell_store.setShowFilterPaymentMethods(false);
+            hideModal();
+        }
+    };
+    let diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
+    let union = (arr1, arr2) => [...new Set([...arr1, ...arr2])];
 
+    const has_already_selected_payment_methods =
+        buy_sell_store.selected_payment_method_value?.length &&
+        diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0;
+    const has_recently_selected_payment_methods =
+        buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
+
+    React.useEffect(() => {
+        my_profile_store.getPaymentMethodsList();
+        console.log('AAAAH 2', selected_methods);
         if (buy_sell_store.selected_payment_method_value.length) {
             setSelectedMethods(buy_sell_store.selected_payment_method_value);
             setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
@@ -54,7 +73,7 @@ const FilterModal = () => {
     const FilterModalResult = observer(() => {
         if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
         else if (my_profile_store.search_term) {
-            if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
+            if (my_profile_store.search_results && my_profile_store.search_results.length > 0) {
                 return my_profile_store.search_results?.map((payment_method, key) => {
                     return (
                         <Checkbox
@@ -86,9 +105,15 @@ const FilterModal = () => {
             className={'payment-methods'}
             has_close_icon
             height={'56rem'}
-            title={<FilterModalHeader />}
+            title={
+                <FilterModalHeader
+                    has_selected_payment_methods={
+                        has_already_selected_payment_methods || has_recently_selected_payment_methods
+                    }
+                />
+            }
             is_open={is_modal_open}
-            toggleModal={hideModal}
+            toggleModal={onClickOutside}
             width='44rem'
         >
             <Modal.Body>
@@ -151,9 +176,22 @@ const FilterModal = () => {
             </Modal.Body>
             <Modal.Footer has_separator>
                 {buy_sell_store.show_filter_payment_methods ? (
-                    <Button className='filter-modal__footer-button' large secondary onClick={() => onClickClear()}>
-                        <Localize i18n_default_text='Clear' />
-                    </Button>
+                    <Button.Group>
+                        <Button disabled={selected_methods.length > 0} large secondary onClick={onClickClear}>
+                            <Localize i18n_default_text='Clear' />
+                        </Button>
+                        <Button
+                            disabled={!(has_already_selected_payment_methods || has_recently_selected_payment_methods)}
+                            large
+                            primary
+                            onClick={() => {
+                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                buy_sell_store.setShowFilterPaymentMethods(false);
+                            }}
+                        >
+                            {localize('Apply')}
+                        </Button>
+                    </Button.Group>
                 ) : (
                     <Button.Group>
                         <Button

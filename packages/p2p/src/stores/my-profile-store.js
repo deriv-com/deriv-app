@@ -390,6 +390,7 @@ export default class MyProfileStore extends BaseStore {
                 } else {
                     this.setSearchResults([]);
                 }
+                this.root_store.buy_sell_store.setIsFilterModalLoading(false);
             }
         });
     }

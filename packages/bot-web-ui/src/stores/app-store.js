@@ -147,7 +147,7 @@ export default class AppStore {
             () => client.landing_company_shortcode,
             () => {
                 if (
-                    (!client.is_logged_in && client.is_eu_country) ||
+                    (!client.is_logged_in && client.show_eu_related_content) ||
                     client.has_maltainvest_account ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
@@ -171,7 +171,7 @@ export default class AppStore {
             () => client.account_settings.country_code,
             () => {
                 if (
-                    (!client.is_logged_in && client.is_eu_country) ||
+                    (!client.is_logged_in && client.show_eu_related_content) ||
                     client.has_maltainvest_account ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
@@ -242,7 +242,7 @@ export default class AppStore {
         const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
         if (
-            (!client.is_logged_in && client.is_eu_country) ||
+            (!client.is_logged_in && client.show_eu_related_content) ||
             (client.has_maltainvest_account && !low_risk_non_eu) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked

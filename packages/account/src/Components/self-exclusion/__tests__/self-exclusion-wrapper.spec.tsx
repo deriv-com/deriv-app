@@ -21,6 +21,7 @@ describe('<SelfExclusionWrapper />', () => {
         currency: '',
         overlay_ref: document.createElement('div'),
         state: {},
+        handleSubmit: jest.fn(),
     };
 
     beforeEach(() => {
@@ -30,6 +31,7 @@ describe('<SelfExclusionWrapper />', () => {
             currency: '',
             overlay_ref: document.createElement('div'),
             state: {},
+            handleSubmit: jest.fn(),
         };
     });
 

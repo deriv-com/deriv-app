@@ -16,7 +16,12 @@ describe('<SelfExclusionModal />', () => {
     it('should be shown on the page', () => {
         render(
             <SelfExclusionContext.Provider
-                value={{ state: { show_article: true }, overlay_ref: document.createElement('div'), currency: '' }}
+                value={{
+                    state: { show_article: true },
+                    overlay_ref: document.createElement('div'),
+                    currency: '',
+                    handleSubmit: jest.fn(),
+                }}
             >
                 <SelfExclusionModal />
             </SelfExclusionContext.Provider>

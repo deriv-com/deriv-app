@@ -29,6 +29,8 @@ describe('<SelfExclusionConfirmPage />', () => {
         is_wrapper_bypassed: false,
         toggleArticle: jest.fn(),
         is_uk: false,
+        handleSubmit: jest.fn(),
+        validateFields: jest.fn(),
     };
 
     beforeEach(() => {
@@ -48,6 +50,8 @@ describe('<SelfExclusionConfirmPage />', () => {
             is_wrapper_bypassed: false,
             toggleArticle: jest.fn(),
             is_uk: false,
+            handleSubmit: jest.fn(),
+            validateFields: jest.fn(),
         };
         mockUseFormikContext.mockReturnValue({
             isSubmitting: false,

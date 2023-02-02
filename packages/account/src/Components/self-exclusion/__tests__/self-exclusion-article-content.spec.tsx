@@ -15,6 +15,7 @@ describe('<SelfExclusionArticleContent />', () => {
         currency: '',
         overlay_ref: document.createElement('div'),
         toggleArticle: jest.fn(),
+        handleSubmit: jest.fn(),
     };
     const descr_text = 'About trading limits and self-exclusion';
     const eu_item =
@@ -38,6 +39,7 @@ describe('<SelfExclusionArticleContent />', () => {
             currency: '',
             overlay_ref: document.createElement('div'),
             toggleArticle: jest.fn(),
+            handleSubmit: jest.fn(),
         };
     });
 

@@ -28,6 +28,7 @@ describe('<SelfExclusionArticle />', () => {
         currency: '',
         overlay_ref: document.createElement('div'),
         toggleArticle: jest.fn(),
+        handleSubmit: jest.fn(),
     };
 
     const eu_item =
@@ -47,6 +48,7 @@ describe('<SelfExclusionArticle />', () => {
             currency: '',
             overlay_ref: document.createElement('div'),
             toggleArticle: jest.fn(),
+            handleSubmit: jest.fn(),
         };
     });
 

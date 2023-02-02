@@ -8,9 +8,9 @@ const SelfExclusionForm = () => {
     const { handleSubmit, state, validateFields } = React.useContext(SelfExclusionContext);
 
     return (
-        <Formik initialValues={state.self_exclusions} onSubmit={handleSubmit} validate={validateFields}>
+        <Formik initialValues={state?.self_exclusions} onSubmit={handleSubmit} validate={validateFields}>
             <Form className='da-self-exclusion__form' noValidate>
-                {state.is_confirm_page ? <SelfExclusionConfirmPage /> : <SelfExclusionInputs />}
+                {state?.is_confirm_page ? <SelfExclusionConfirmPage /> : <SelfExclusionInputs />}
             </Form>
         </Formik>
     );

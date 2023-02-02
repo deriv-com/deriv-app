@@ -51,6 +51,7 @@ const DefaultHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     is_landing_company_loaded,
+    is_switching,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -154,7 +155,7 @@ const DefaultHeader = ({
                         'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
-                    {is_logging_in && (
+                    {(is_logging_in || is_switching) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {
@@ -237,6 +238,7 @@ DefaultHeader.propTypes = {
     menu_items: PropTypes.array,
     setIsPreAppStore: PropTypes.func,
     is_landing_company_loaded: PropTypes.bool,
+    is_switching: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -274,4 +276,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded: client.is_landing_company_loaded,
     setIsPreAppStore: client.setIsPreAppStore,
+    is_switching: client.is_switching,
 }))(withRouter(DefaultHeader));

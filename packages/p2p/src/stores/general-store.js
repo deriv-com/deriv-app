@@ -820,6 +820,7 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
 
             if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {

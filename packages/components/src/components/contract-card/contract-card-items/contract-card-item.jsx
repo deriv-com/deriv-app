@@ -2,16 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ContractCardItem = ({ className, children, header, is_crypto, is_loss, is_won, is_long }) => {
+const ContractCardItem = ({ className, children, header, is_crypto, is_loss, is_won }) => {
     return (
         <div className={classNames('dc-contract-card-item', className)}>
-            <div
-                className={classNames('dc-contract-card-item__header', {
-                    'dc-contract-card-item__header-long': is_long,
-                })}
-            >
-                {header}
-            </div>
+            <div className='dc-contract-card-item__header'>{header}</div>
             <div
                 className={classNames('dc-contract-card-item__body', {
                     'dc-contract-card-item__body--crypto': is_crypto,

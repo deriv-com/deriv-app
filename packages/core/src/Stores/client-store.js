@@ -2561,15 +2561,16 @@ export default class ClientStore extends BaseStore {
 
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
-        WS.setSettings({
-            set_settings: 1,
-            trading_hub,
-        }).then(response => {
-            if (!response.error) {
-                this.account_settings = { ...this.account_settings, trading_hub };
-                localStorage.setItem('is_pre_appstore', is_pre_appstore);
-            }
-        });
+        try {
+            WS.setSettings({
+                set_settings: 1,
+                trading_hub,
+            });
+        } catch (error) {
+            return;
+        }
+        this.account_settings = { ...this.account_settings, trading_hub };
+        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

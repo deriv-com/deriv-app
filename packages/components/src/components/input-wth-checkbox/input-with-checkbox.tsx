@@ -3,35 +3,31 @@ import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
 import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
+import { TToastConfig } from '../types';
 
 type TPosition = 'left' | 'right' | 'top' | 'bottom';
 type TInputWithCheckbox = {
-    addToast: (e: object) => void; // TODO: update the type for the e parameter when contract-card is merged
+    addToast: (toast_config: TToastConfig) => void;
     removeToast: (e: string) => void;
-    checkbox_tooltip_label: boolean;
-    className: string;
-    classNameInlinePrefix: string;
-    classNameInput: string;
-    classNamePrefix: string;
+    checkbox_tooltip_label?: boolean;
+    className?: string;
+    classNameInlinePrefix?: string;
+    classNameInput?: string;
+    classNamePrefix?: string;
     currency: string;
-    current_focus: string;
+    current_focus?: string;
     defaultChecked: boolean;
-    error_messages: string[];
+    error_messages?: string[];
     is_negative_disabled: boolean | undefined | null;
     is_single_currency: boolean;
-    is_input_hidden: boolean;
+    is_input_hidden?: boolean;
     label: string;
-    max_value: number;
+    max_value?: number;
     name: string;
-    onChange?: (
-        e:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.KeyboardEvent<HTMLSpanElement>
-            | { target: { name: string; value: boolean } }
-    ) => void;
-    setCurrentFocus: () => void;
-    tooltip_label: string;
-    tooltip_alignment: TPosition;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => void;
+    setCurrentFocus: (name: string) => void;
+    tooltip_label?: string;
+    tooltip_alignment?: TPosition;
     error_message_alignment: string;
     value: number | string;
     is_disabled: boolean;
@@ -75,7 +71,7 @@ const InputWithCheckbox = ({
                 if (typeof addToast === 'function') {
                     addToast({
                         key: `${name}__error`,
-                        content: error_messages,
+                        content: String(error_messages),
                         type: 'error',
                     });
                 }
@@ -85,7 +81,7 @@ const InputWithCheckbox = ({
                     removeToast(`${name}__error`);
                 }
             };
-            if (error_messages?.length > 0) {
+            if (error_messages?.length !== undefined && error_messages?.length > 0) {
                 showErrorToast();
                 return () => {
                     removeErrorToast();

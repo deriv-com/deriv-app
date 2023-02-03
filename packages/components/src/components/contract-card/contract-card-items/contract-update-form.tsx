@@ -97,7 +97,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => {
         const { name, value } = e.target;
         setContractProfitOrLoss({
             ...contract_profit_or_loss,

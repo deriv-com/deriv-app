@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({
@@ -56,7 +56,7 @@ const FooterNote = ({
         );
     else if (jurisdiction_selected_shortcode === 'maltainvest')
         return (
-            <Localize i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).' />
+            <Localize i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).' />
         );
 
     return null;
@@ -65,7 +65,14 @@ const FooterNote = ({
 const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
     return (
         <div className={`${props.card_classname}__footnote`}>
-            <Text as='p' color='prominent' align='center' size='xs' weight='bold' line_height='xs'>
+            <Text
+                as='p'
+                color='prominent'
+                align='center'
+                size={isMobile() ? 'xxs' : 'xs'}
+                weight='bold'
+                line_height='xs'
+            >
                 <FooterNote {...props} />
             </Text>
         </div>

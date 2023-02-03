@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { observer } from 'mobx-react-lite';
 import { setWebsocket, routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, observer } from '@deriv/stores';
 import Routes from 'Components/routes/routes';
 import { useStores, initContext } from 'Stores';
 import { TRootStore } from 'Types';
@@ -15,8 +14,7 @@ type TAppProps = {
     };
 };
 
-const App: React.FC<TAppProps> = ({ passthrough }: TAppProps) => {
-    const { root_store, WS } = passthrough;
+const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     initContext(root_store, WS);
     setWebsocket(WS);
     const { ui }: TRootStore = useStores();

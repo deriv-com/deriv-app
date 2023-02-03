@@ -15,6 +15,7 @@ const ExitTradersHubModal = ({
     switchAccount,
     account_list,
     active_accounts,
+    setIsLoggingIn,
 }) => {
     const history = useHistory();
 
@@ -42,9 +43,11 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
-        await setIsPreAppStore(false);
+        setIsPreAppStore(false);
+        setIsLoggingIn(true);
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
+
         if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
             if (!cr_account) {
                 await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
@@ -53,6 +56,7 @@ const ExitTradersHubModal = ({
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
         history.push(routes.root);
+        setIsLoggingIn(false);
     };
 
     return (
@@ -98,4 +102,5 @@ export default connect(({ ui, client, traders_hub }) => ({
     switchAccount: client.switchAccount,
     account_list: client.account_list,
     active_accounts: client.active_accounts,
+    setIsLoggingIn: client.setIsLoggingIn,
 }))(ExitTradersHubModal);

@@ -1,18 +1,72 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect, getPosition } from '@deriv/shared';
-import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
-import Items from './items.jsx';
-import DisplayText from './display-text.jsx';
+import { TList, findNextFocusableNode, findPreviousFocusableNode, TListItem } from './utility';
+import Items from './items';
+import DisplayText from './display-text';
 import Text from '../text/text';
-import { useBlockScroll, useOnClickOutside } from '../../hooks';
+import { IClickEvent, useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Icon from '../icon/icon';
 
-const DropdownList = React.forwardRef((props, list_ref) => {
+type TDropdown = {
+    className?: string;
+    classNameDisplay?: string;
+    classNameHint?: string;
+    classNameItems?: string;
+    classNameLabel?: string;
+    disabled?: boolean;
+    error?: string;
+    handleBlur?: {
+        (e: React.FocusEvent<HTMLElement>): void;
+        <T = string | Event>(fieldOrEvent: T): T extends string ? (e: Event) => void : void;
+    };
+    has_symbol?: boolean;
+    hint?: string;
+    initial_offset?: number;
+    is_align_text_left?: boolean;
+    is_alignment_left?: boolean;
+    is_alignment_top?: boolean;
+    is_large?: boolean;
+    is_nativepicker_visible?: boolean;
+    is_nativepicker?: boolean;
+    label?: string;
+    list_height?: string;
+    list_portal_id?: string;
+    list: TList;
+    name?: string;
+    no_border?: boolean;
+    onChange?: (e: { target: { name: string; value: string } }) => void;
+    onClick?: () => void;
+    placeholder?: string;
+    suffix_icon?: string;
+    test_id?: string;
+    value?: string | number;
+};
+
+type TDropdownList = {
+    classNameItems?: string;
+    classNameLabel?: string;
+    handleSelect: (item: TListItem) => void;
+    has_symbol?: boolean;
+    initial_offset?: number;
+    is_align_text_left?: boolean;
+    is_alignment_left?: boolean;
+    is_alignment_top?: boolean;
+    is_large?: boolean;
+    is_list_visible: boolean;
+    list: TList;
+    nodes: any;
+    onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
+    parent_ref: React.RefObject<HTMLElement>;
+    portal_id?: string;
+    suffix_icon?: string;
+    value?: string | number;
+};
+
+const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, list_ref) => {
     const {
         classNameItems,
         classNameLabel,
@@ -42,7 +96,8 @@ const DropdownList = React.forwardRef((props, list_ref) => {
             const position_style = getPosition({
                 preferred_alignment: is_alignment_top ? 'top' : 'bottom',
                 parent_el: parent_ref.current,
-                child_el: list_ref.current,
+                child_el: (list_ref as React.MutableRefObject<HTMLElement>).current,
+                should_consider_parent_height: true,
             });
             setStyle(position_style.style);
         }
@@ -98,15 +153,18 @@ const DropdownList = React.forwardRef((props, list_ref) => {
 
     // Upon render via css transition group, we use this as a callback to set the width/height of the dropdown list in the state
     const setListDimension = () =>
-        setListDimensions([initial_offset || list_ref.current.offsetWidth, list_ref.current.offsetHeight]);
+        setListDimensions([
+            initial_offset || (list_ref as React.MutableRefObject<HTMLElement>).current.offsetWidth,
+            (list_ref as React.MutableRefObject<HTMLElement>).current.offsetHeight,
+        ]);
 
     const getDropDownAlignment = () => {
-        if (is_portal) return null;
+        if (is_portal) return undefined;
 
         if (is_alignment_left) return computed_offset_left();
         else if (is_alignment_top) return computed_offset_top();
 
-        return null;
+        return undefined;
     };
 
     const el_dropdown_list = (
@@ -125,7 +183,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                     role='list'
                     ref={list_ref}
                 >
-                    <ThemedScrollbars height={list_dimensions[1] || '200px'}>
+                    <ThemedScrollbars height={`${list_dimensions[1]}px` || '200px'}>
                         {Array.isArray(list) ? (
                             <Items
                                 onKeyPressed={onKeyPressed}
@@ -133,7 +191,6 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                                 handleSelect={handleSelect}
                                 has_symbol={has_symbol}
                                 items={list}
-                                name={name}
                                 is_align_text_left={is_align_text_left}
                                 value={value}
                                 nodes={nodes.current}
@@ -148,7 +205,6 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                                         handleSelect={handleSelect}
                                         has_symbol={has_symbol}
                                         items={list[key]}
-                                        name={name}
                                         is_align_text_left={is_align_text_left}
                                         value={value}
                                         nodes={nodes.current}
@@ -164,7 +220,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
     );
 
     if (portal_id) {
-        return ReactDOM.createPortal(el_dropdown_list, document.getElementById(portal_id));
+        return ReactDOM.createPortal(el_dropdown_list, document.getElementById(portal_id) as HTMLElement);
     }
 
     return el_dropdown_list;
@@ -201,20 +257,21 @@ const Dropdown = ({
     suffix_icon,
     test_id,
     value,
-}) => {
-    const dropdown_ref = React.useRef();
-    const native_select_ref = React.useRef();
-    const wrapper_ref = React.useRef();
+}: TDropdown) => {
+    const dropdown_ref = React.useRef<HTMLDivElement>(null);
+    const native_select_ref = React.useRef<HTMLDivElement>(null);
+    const wrapper_ref = React.useRef<HTMLDivElement>(null);
     const nodes = React.useRef(new Map());
-    const list_ref = React.useRef();
+    const list_ref = React.useRef<HTMLDivElement>(null);
     const is_portal = !!list_portal_id;
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const initial_render = React.useRef(true);
-    useBlockScroll(list_portal_id && is_list_visible ? dropdown_ref : false);
 
-    const onClickOutSide = event => {
-        if (is_portal && list_ref.current?.contains(event.target)) return;
+    useBlockScroll(list_portal_id && is_list_visible ? dropdown_ref : undefined);
+
+    const onClickOutSide = (event?: IClickEvent) => {
+        if (is_portal && list_ref.current?.contains(event?.target as Node)) return;
 
         if (typeof handleBlur === 'function') handleBlur({ target: { name } });
         setIsListVisible(false);
@@ -222,12 +279,7 @@ const Dropdown = ({
 
     useOnClickOutside(wrapper_ref, onClickOutSide, () => is_list_visible);
 
-    const isSingleOption = () => {
-        return Array.isArray(list)
-            ? list.length < 2
-            : // object has less than two props or inner object has less than two props
-              Object.keys(list).length && Object.keys(list).length < 2 && list[Object.keys(list)[0]].length < 2;
-    };
+    const isSingleOption = () => list.length < 2;
 
     const containerClassName = () => {
         return classNames('dc-dropdown-container', className, {
@@ -256,11 +308,12 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible, is_list_visible]);
 
     React.useEffect(() => {
-        if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
+        if (!initial_render.current && !is_list_visible && value) dropdown_ref?.current?.focus();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_list_visible]);
-    const handleSelect = item => {
-        if (item.value !== value) onChange({ target: { name, value: item.value } });
+
+    const handleSelect = (item: TListItem) => {
+        if (item.value !== value && onChange) onChange({ target: { name: name || '', value: item.value } });
 
         handleVisibility();
     };
@@ -268,7 +321,6 @@ const Dropdown = ({
     const handleVisibility = () => {
         if (typeof onClick === 'function') {
             onClick();
-
             return;
         }
 
@@ -278,7 +330,7 @@ const Dropdown = ({
                  * so we use a CSS hack - refer to L237 in dropdown.scss
                  * [TODO]: find alternative solution to trigger open <select /> with JS
                  */
-                native_select_ref.current.focus();
+                native_select_ref?.current?.focus();
             }
             setIsListVisible(true);
         } else {
@@ -286,7 +338,7 @@ const Dropdown = ({
         }
     };
 
-    const onKeyPressed = (event, item) => {
+    const onKeyPressed = (event: KeyboardEvent, item: TListItem) => {
         if (isSingleOption()) return;
 
         // Tab -> before preventDefault() to be able to go to the next tabIndex
@@ -331,16 +383,16 @@ const Dropdown = ({
         }
     };
 
-    const focusNextListItem = direction => {
+    const focusNextListItem = (direction: number) => {
         const { activeElement } = document;
 
-        if (activeElement.id === 'dropdown-display') {
+        if (activeElement?.id === 'dropdown-display') {
             const el = Array.from(nodes.current.values())[0];
             if (el && el.focus instanceof Function) {
                 el.focus();
             }
         } else {
-            const active_node = nodes.current.get(activeElement.id);
+            const active_node = nodes.current.get(activeElement?.id);
             if (active_node) {
                 if (direction === 40) {
                     const next_node = findNextFocusableNode(active_node.nextSibling);
@@ -366,7 +418,7 @@ const Dropdown = ({
                 className='dc-dropdown__inner'
                 autoComplete='off'
                 name={name}
-                readOnly='readonly'
+                readOnly
                 type='hidden'
                 data-testid={test_id}
                 value={value || 0}
@@ -390,13 +442,13 @@ const Dropdown = ({
                     <div
                         className={dropdownDisplayClassName()}
                         data-testid='dti_dropdown_display'
-                        tabIndex={isSingleOption() ? '-1' : '0'}
+                        tabIndex={isSingleOption() ? -1 : 0}
                         onClick={handleVisibility}
-                        onKeyDown={onKeyPressed}
+                        onKeyDown={onKeyPressed as unknown as React.KeyboardEventHandler}
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                        {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} />}
                         <DisplayText
                             className={classNames({
                                 'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
@@ -404,7 +456,6 @@ const Dropdown = ({
                             has_symbol={has_symbol}
                             name={name}
                             is_align_text_left={is_align_text_left}
-                            is_title={is_list_visible}
                             placeholder={placeholder}
                             value={value ?? 0}
                             list={list}
@@ -459,38 +510,6 @@ const Dropdown = ({
             </div>
         </React.Fragment>
     );
-};
-
-Dropdown.propTypes = {
-    className: PropTypes.string,
-    classNameDisplay: PropTypes.string,
-    classNameHint: PropTypes.string,
-    classNameItems: PropTypes.string,
-    classNameLabel: PropTypes.string,
-    disabled: PropTypes.bool,
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    handleBlur: PropTypes.func,
-    has_symbol: PropTypes.bool,
-    hint: PropTypes.string,
-    initial_offset: PropTypes.number,
-    is_align_text_left: PropTypes.bool,
-    is_alignment_left: PropTypes.bool,
-    is_alignment_top: PropTypes.bool,
-    is_large: PropTypes.bool,
-    is_nativepicker_visible: PropTypes.bool,
-    is_nativepicker: PropTypes.bool,
-    label: PropTypes.string,
-    list_height: PropTypes.string,
-    list_portal_id: PropTypes.string,
-    list: listPropType(),
-    name: PropTypes.string,
-    no_border: PropTypes.bool,
-    onChange: PropTypes.func,
-    onClick: PropTypes.func,
-    placeholder: PropTypes.string,
-    suffix_icon: PropTypes.string,
-    test_id: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Dropdown;

@@ -1,30 +1,50 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import Popover from '../popover';
 import Text from '../text';
+import { TListItem } from './utility';
 
-const Items = ({ items, ...props }) =>
-    items.map((item, idx) => {
-        return <Item key={idx} item={item} {...props} />;
-    });
+type TItem = {
+    className?: string;
+    handleSelect: (item: TListItem) => void;
+    has_symbol?: boolean;
+    onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
+    value?: string | number;
+    is_align_text_left?: boolean;
+    nodes?: any;
+    item: TListItem;
+};
 
-const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_align_text_left, className }) => {
-    const item_ref = React.useRef(null);
+type TItems = Omit<TItem, 'item'> & {
+    items: TListItem[];
+};
+
+const Items = ({ items, ...props }: TItems) => {
+    return (
+        <>
+            {items.map((item, idx) => {
+                return <Item key={idx} item={item} {...props} />;
+            })}
+        </>
+    );
+};
+
+const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_align_text_left, className }: TItem) => {
+    const item_ref = React.useRef<HTMLDivElement>(null);
     const symbol_type_class_name =
         item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
 
     React.useEffect(() => {
         const removeListeners = () => {
             nodes.delete(item.value, item_ref.current);
-            item_ref.current.removeEventListener('keydown', onKeyPressed);
+            item_ref?.current?.removeEventListener('keydown', onKeyPressed as (event: KeyboardEvent) => void);
         };
 
         if (item.disabled) removeListeners();
         else {
-            const handleKeyPress = e => onKeyPressed(e, item);
-            item_ref.current.addEventListener('keydown', handleKeyPress);
+            const handleKeyPress = (e: KeyboardEvent) => onKeyPressed(e, item);
+            item_ref?.current?.addEventListener('keydown', handleKeyPress);
             nodes.set(item.value.toString(), item_ref.current);
         }
 
@@ -39,11 +59,9 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
                 { 'dc-list__item--disabled': item.disabled }
             )}
             data-testid='dti_list_item'
-            name={name}
-            value={item.value}
-            onClick={item.disabled ? null : handleSelect.bind(null, item)}
+            onClick={item.disabled ? undefined : handleSelect.bind(null, item)}
             ref={item_ref}
-            tabIndex={item.disabled ? null : 0}
+            tabIndex={item.disabled ? undefined : 0}
             id={item.value}
         >
             {!!has_symbol && item.has_tooltip && (
@@ -76,15 +94,6 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
             )}
         </div>
     );
-};
-
-Items.propTypes = {
-    className: PropTypes.string,
-    handleSelect: PropTypes.func,
-    has_symbol: PropTypes.bool,
-    onKeyPressed: PropTypes.func,
-    name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Items;

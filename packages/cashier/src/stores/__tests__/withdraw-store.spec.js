@@ -154,7 +154,7 @@ describe('WithdrawStore', () => {
         const { setConverterFromAmount, setConverterToAmount } =
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        withdraw_store.resetWithrawForm();
+        withdraw_store.resetWithdrawForm();
         expect(setConverterFromAmount).toHaveBeenCalledWith('');
         expect(setConverterToAmount).toHaveBeenCalledWith('');
         expect(withdraw_store.blockchain_address).toBe('');

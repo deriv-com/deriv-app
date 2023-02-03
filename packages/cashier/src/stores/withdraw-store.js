@@ -21,7 +21,7 @@ export default class WithdrawStore {
             setWithdrawAmount: action.bound,
             requestWithdraw: action.bound,
             saveWithdraw: action.bound,
-            resetWithrawForm: action.bound,
+            resetWithdrawForm: action.bound,
             setBlockchainAddress: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
@@ -112,14 +112,14 @@ export default class WithdrawStore {
 
                     client.setVerificationCode('', container);
                 }
-                this.resetWithrawForm();
+                this.resetWithdrawForm();
             } else {
                 this.setIsWithdrawConfirmed(true);
             }
         });
     }
 
-    resetWithrawForm() {
+    resetWithdrawForm() {
         const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
         const { client, modules } = this.root_store;
         const { active_container } = modules.cashier.general_store;

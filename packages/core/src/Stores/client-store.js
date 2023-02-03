@@ -832,11 +832,14 @@ export default class ClientStore extends BaseStore {
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
-        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) ||
-                  eu_shortcode_regex.test(gaming_shortcode) ||
-                  eu_shortcode_regex.test(mt_gaming_shortcode)
-            : eu_excluded_regex.test(this.residence);
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (
+            is_current_mf || //is_currently logged in mf account via trdaershub
+            (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
+                  eu_shortcode_regex.test(gaming_shortcode)
+                : eu_excluded_regex.test(this.residence))
+        );
     }
 
     get is_brazil() {

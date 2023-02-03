@@ -49,7 +49,7 @@ const FAQContent = ({ faq_list, faq_search_value, hide_header = false }: TFAQCon
                     {title}
                 </Text>
             ),
-            content: description.map((item, index) => <FAQ {...item} key={`faq-description-item-${index}`} />),
+            content: description.map(item => <FAQ {...item} key={`faq-description-item-${item}`} />),
         }));
     };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { DesktopWrapper, Icon, Text, Modal, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { SIDEBAR_INTRO } from './constants';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import classNames from 'classnames';
+import { SIDEBAR_INTRO } from './constants';
 
 type TInfoPanel = {
     has_started_onboarding_tour: boolean;
@@ -42,16 +42,16 @@ const InfoPanel = ({
                 <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
             </div>
 
-            {SIDEBAR_INTRO.map((sidebar_item, index) => {
+            {SIDEBAR_INTRO.map(sidebar_item => {
                 const { label, content, link } = sidebar_item;
                 return (
-                    <div key={`${label}-${index}`}>
+                    <div key={`${label}-${content}`}>
                         <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold' as='h1'>
                             {label}
                         </Text>
-                        {content.map((text, key) => (
+                        {content.map(text => (
                             <Text
-                                key={`info-panel-tour${key}`}
+                                key={`info-panel-tour${text}`}
                                 className={classNames('db-info-panel__card', {
                                     'db-info-panel__content': link,
                                 })}

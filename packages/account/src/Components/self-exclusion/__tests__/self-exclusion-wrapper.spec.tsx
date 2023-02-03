@@ -18,14 +18,20 @@ describe('<SelfExclusionWrapper />', () => {
     let mock_context = {
         is_app_settings: false,
         is_wrapper_bypassed: false,
+        currency: '',
+        overlay_ref: document.createElement('div'),
         state: {},
+        handleSubmit: jest.fn(),
     };
 
     beforeEach(() => {
         mock_context = {
             is_app_settings: false,
             is_wrapper_bypassed: false,
+            currency: '',
+            overlay_ref: document.createElement('div'),
             state: {},
+            handleSubmit: jest.fn(),
         };
     });
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
-import { useFormikContext } from 'formik';
+import { FormikValues, useFormikContext } from 'formik';
 import { formatMoney, toMoment } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import SelfExclusionContext from './self-exclusion-context';
@@ -9,9 +9,9 @@ import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits.jsx';
 const SelfExclusionConfirmPage = () => {
     const { backFromConfirmLimits, currency, currency_display, exclusion_texts, is_eu, state } =
         React.useContext(SelfExclusionContext);
-    const { isSubmitting, values } = useFormikContext();
+    const { isSubmitting, values } = useFormikContext<FormikValues>();
 
-    if (state.show_confirm) {
+    if (state?.show_confirm) {
         return <SelfExclusionConfirmLimits />;
     }
 
@@ -34,7 +34,7 @@ const SelfExclusionConfirmPage = () => {
                 >
                     <Localize i18n_default_text='You have set the following limits:' />
                 </Text>
-                {state.changed_attributes.map((key, idx) => {
+                {state?.changed_attributes.map((key: string, idx: number) => {
                     const need_date_format = ['exclude_until', 'timeout_until'];
                     const need_money_format = [
                         'max_deposit',
@@ -69,7 +69,7 @@ const SelfExclusionConfirmPage = () => {
                     return (
                         <div key={idx} className='da-self-exclusion__confirm-item'>
                             <Text as='p' size='xs'>
-                                {exclusion_texts[key]}
+                                {exclusion_texts ? exclusion_texts[key] : ''}
                             </Text>
                             <Text as='p' size='xs' align='right' weight='bold'>
                                 {checked_value}
@@ -94,7 +94,7 @@ const SelfExclusionConfirmPage = () => {
                     )}
                 </Text>
                 <Text as='p' size='xs' align='center' color='loss-danger' className='da-self-exclusion__error'>
-                    {state.submit_error_message}
+                    {state?.submit_error_message}
                 </Text>
                 {is_eu ? (
                     <Button is_loading={isSubmitting} is_disabled={isSubmitting} primary large type='submit'>

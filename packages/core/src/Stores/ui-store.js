@@ -164,8 +164,9 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
-
+    is_exit_traders_hub_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
+    is_cfd_reset_password_modal_enabled = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -223,12 +224,14 @@ export default class UIStore extends BaseStore {
             is_app_disabled: observable,
             is_cashier_visible: observable,
             is_cfd_page: observable,
+            is_cfd_reset_password_modal_enabled: observable,
             is_chart_countdown_visible: observable,
             is_chart_layout_default: observable,
             is_close_mx_mlt_account_modal_visible: observable,
             is_close_uk_account_modal_visible: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_exit_traders_hub_modal_visible: observable,
             is_history_tab_active: observable,
             is_landscape: observable,
             is_nativepicker_visible: observable,
@@ -317,6 +320,7 @@ export default class UIStore extends BaseStore {
             resetRealAccountSignupTarget: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
+            setCFDPasswordResetModal: action.bound,
             setChartCountdown: action.bound,
             setChartLayout: action.bound,
             setCurrentFocus: action.bound,
@@ -356,6 +360,7 @@ export default class UIStore extends BaseStore {
             toggleAccountSignupModal: action.bound,
             toggleCancellationWarning: action.bound,
             toggleCashier: action.bound,
+            toggleExitTradersHubModal: action.bound,
             toggleHistoryTab: action.bound,
             toggleOnScreenKeyboard: action.bound,
             togglePositionsDrawer: action.bound,
@@ -865,5 +870,13 @@ export default class UIStore extends BaseStore {
 
     openSwitchToRealAccountModal() {
         this.is_switch_to_deriv_account_modal_visible = !this.is_switch_to_deriv_account_modal_visible;
+    }
+
+    toggleExitTradersHubModal() {
+        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
+    }
+
+    setCFDPasswordResetModal(val) {
+        this.is_cfd_reset_password_modal_enabled = !!val;
     }
 }

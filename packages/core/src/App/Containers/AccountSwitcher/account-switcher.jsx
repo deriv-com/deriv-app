@@ -89,7 +89,7 @@ const AccountSwitcher = props => {
         if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
-        if (props.is_low_risk) {
+        if (props.is_low_risk || props.is_high_risk || props.is_eu) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('CR')
             );

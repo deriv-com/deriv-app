@@ -6,6 +6,7 @@ export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
+    turbos: localize('Turbos'),
 });
 
 /**
@@ -127,9 +128,16 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
+    turbos: {
+        title: localize('Turbos'),
+        trade_types: ['TURBOSLONG', 'TURBOSSHORT'],
+        basis: ['stake'],
+        components: ['take_profit'],
+    },
 });
 
 export const getContractCategoriesConfig = () => ({
+    Turbos: { name: localize('Turbos'), categories: ['turbos'] },
     Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
         name: localize('Ups & Downs'),
@@ -410,6 +418,14 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    TURBOSLONG: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        name: <Localize i18n_default_text='Buy' />,
         position: 'bottom',
     },
 });

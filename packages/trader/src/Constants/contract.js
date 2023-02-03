@@ -257,6 +257,14 @@ export const getSupportedContracts = is_high_low => ({
         name: <Localize i18n_default_text='Down' />,
         position: 'bottom',
     },
+    TURBOSLONG: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        name: <Localize i18n_default_text='Buy' />,
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({

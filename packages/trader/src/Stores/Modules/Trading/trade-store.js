@@ -130,6 +130,9 @@ export default class TradeStore extends BaseStore {
     cancellation_duration = '60m';
     cancellation_range_list = [];
 
+    // Turbos trade params
+    turbos_barrier_choices = [];
+
     // Mobile
     is_trade_params_expanded = true;
 
@@ -283,6 +286,7 @@ export default class TradeStore extends BaseStore {
             clientInitListener: action.bound,
             networkStatusChangeListener: action.bound,
             themeChangeListener: action.bound,
+            turbos_barrier_choices: observable,
             resetErrorServices: action.bound,
             onMount: action.bound,
             manageMxMltRemovalNotification: action.bound,

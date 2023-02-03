@@ -46,15 +46,11 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
 
     React.useEffect(() => {
         document.addEventListener('click', onClickExternalLink);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_logged_in, is_eu]);
-
-    React.useEffect(() => {
         return () => {
             document.removeEventListener('click', onClickExternalLink);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_logged_in, is_eu]);
 
     return ReactDOM.createPortal(
         dialog_status ? (

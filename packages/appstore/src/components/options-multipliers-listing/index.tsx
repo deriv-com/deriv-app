@@ -12,16 +12,8 @@ import { getHasDivider } from 'Constants/utils';
 
 const OptionsAndMultipliersListing = () => {
     const { traders_hub, client, ui } = useStores();
-    const {
-        available_platforms,
-        has_any_real_account,
-        is_eu_user,
-        is_real,
-        no_MF_account,
-        no_CR_account,
-        is_demo,
-        content_flag,
-    } = traders_hub;
+    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, content_flag } =
+        traders_hub;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
@@ -107,7 +99,7 @@ const OptionsAndMultipliersListing = () => {
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
                         action_type={
-                            is_demo || (has_any_real_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
                                 ? 'trade'
                                 : 'none'
                         }

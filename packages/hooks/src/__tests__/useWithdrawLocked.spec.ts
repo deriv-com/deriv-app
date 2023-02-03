@@ -3,6 +3,7 @@
 import useWithdrawLocked from '../useWithdrawLocked';
 
 describe('useNeedTNC', () => {
+    // TODO: update the test after test PR is merged
     //  it('should return is_withdrawal_locked equal to false if there is no account status', () => {
     //         withdraw_store.root_store.client.account_status = {};
     //         expect(withdraw_store.is_withdrawal_locked).toBeFalsy();

@@ -167,6 +167,7 @@ const StaticCFDAccountManager = ({
                 ) : (
                     <Text
                         size='xxs'
+                        line_height='s'
                         color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'}
                     >
                         {`${description}`}

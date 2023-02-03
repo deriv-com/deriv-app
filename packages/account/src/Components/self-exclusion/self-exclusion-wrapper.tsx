@@ -28,7 +28,7 @@ const SelfExclusionWrapper = ({ children }: { children?: React.ReactNode }) => {
     return (
         <Div100vhContainer
             className={classNames('da-self-exclusion__wrapper', {
-                'da-self-exclusion__wrapper--show-article': state.show_article,
+                'da-self-exclusion__wrapper--show-article': state?.show_article,
             })}
             is_disabled={isDesktop()}
             height_offset='80px'

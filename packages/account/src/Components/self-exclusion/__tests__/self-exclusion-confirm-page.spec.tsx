@@ -2,13 +2,36 @@ import React from 'react';
 import * as formik from 'formik';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionConfirmPage from '../self-exclusion-confirm-page';
-import SelfExclusionContext from '../self-exclusion-context';
+import SelfExclusionContext, { TSelfExclusionContext } from '../self-exclusion-context';
+import { FormikValues } from 'formik';
 
-jest.mock('../self-exclusion-confirm-limits', () => () => <div>SelfExclusionConfirmLimits</div>);
-const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext');
+jest.mock('../self-exclusion-confirm-limits', () => {
+    const MockConfirmLimits = () => <div>SelfExclusionConfirmLimits</div>;
+    return MockConfirmLimits;
+});
+
+const mockUseFormikContext: FormikValues = jest.spyOn(formik, 'useFormikContext');
 
 describe('<SelfExclusionConfirmPage />', () => {
-    let mock_context = {};
+    let mock_context: Required<TSelfExclusionContext> = {
+        backFromConfirmLimits: jest.fn(),
+        currency: '',
+        currency_display: '',
+        exclusion_texts: {},
+        is_eu: false,
+        state: {
+            changed_attributes: [],
+            show_confirm: false,
+            submit_error_message: '',
+        },
+        overlay_ref: document.createElement('div'),
+        is_app_settings: false,
+        is_wrapper_bypassed: false,
+        toggleArticle: jest.fn(),
+        is_uk: false,
+        handleSubmit: jest.fn(),
+        validateFields: jest.fn(),
+    };
 
     beforeEach(() => {
         mock_context = {
@@ -22,6 +45,13 @@ describe('<SelfExclusionConfirmPage />', () => {
                 show_confirm: false,
                 submit_error_message: 'Submit error message',
             },
+            overlay_ref: document.createElement('div'),
+            is_app_settings: false,
+            is_wrapper_bypassed: false,
+            toggleArticle: jest.fn(),
+            is_uk: false,
+            handleSubmit: jest.fn(),
+            validateFields: jest.fn(),
         };
         mockUseFormikContext.mockReturnValue({
             isSubmitting: false,

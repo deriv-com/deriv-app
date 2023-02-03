@@ -50,7 +50,6 @@ DerivRealAccountRequiredModal.propTypes = {
     enableApp: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     is_eu_user: PropTypes.string,
-    is_traders_hub: PropTypes.bool,
     is_pre_appstore: PropTypes.bool,
 };
 

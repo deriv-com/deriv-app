@@ -1,8 +1,7 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const ContractCardLoader = ({ speed }) => (
+const ContractCardLoader = ({ speed }: { speed: number }) => (
     <ContentLoader height={173} width={218} speed={speed}>
         <rect x='43' y='19' rx='0' ry='0' width='56' height='8' />
         <rect x='147' y='19' rx='0' ry='0' width='56' height='8' />
@@ -21,9 +20,5 @@ const ContractCardLoader = ({ speed }) => (
         <rect x='116' y='153' rx='0' ry='0' width='88' height='8' />
     </ContentLoader>
 );
-
-ContractCardLoader.propTypes = {
-    speed: PropTypes.number,
-};
 
 export default ContractCardLoader;

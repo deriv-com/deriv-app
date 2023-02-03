@@ -1,14 +1,29 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ContractCardLoader from './contract-card-loader';
-import ContractCardHeader from './contract-card-items/contract-card-header.jsx';
-import ContractCardBody from './contract-card-items/contract-card-body.jsx';
-import ContractCardFooter from './contract-card-items/contract-card-footer.jsx';
-import ContractTypeCell from './contract-card-items/contract-type-cell.jsx';
-import ContractCardSell from './contract-card-items/contract-card-sell.jsx';
-import MultiplierCloseActions from './contract-card-items/multiplier-close-actions.jsx';
+import ContractCardHeader from './contract-card-items/contract-card-header';
+import ContractCardBody from './contract-card-items/contract-card-body';
+import ContractCardFooter from './contract-card-items/contract-card-footer';
+import ContractTypeCell from './contract-card-items/contract-type-cell';
+import ContractCardSell from './contract-card-items/contract-card-sell';
+import MultiplierCloseActions from './contract-card-items/multiplier-close-actions';
 import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGetCardLables, TGetContractPath } from '../types';
+
+type TContractCardProps = {
+    contract_info: TContractInfo;
+    getCardLabels: TGetCardLables;
+    getContractPath: TGetContractPath;
+    is_multiplier: boolean;
+    is_positions: boolean;
+    is_unsupported: boolean;
+    onClickRemove: () => void;
+    profit_loss: number;
+    result: string;
+    should_show_result_overlay: boolean;
+    toggleUnsupportedContractModal: (is_unsupported_contract_modal_visible: boolean) => void;
+};
 
 const ContractCard = ({
     children,
@@ -23,7 +38,7 @@ const ContractCard = ({
     result,
     should_show_result_overlay,
     toggleUnsupportedContractModal,
-}) => {
+}: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
     return (
@@ -56,20 +71,5 @@ ContractCard.Loader = ContractCardLoader;
 ContractCard.ContractTypeCell = ContractTypeCell;
 ContractCard.MultiplierCloseActions = MultiplierCloseActions;
 ContractCard.Sell = ContractCardSell;
-
-ContractCard.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    contract_info: PropTypes.object,
-    getCardLabels: PropTypes.func,
-    getContractPath: PropTypes.func,
-    is_multiplier: PropTypes.bool,
-    is_positions: PropTypes.bool,
-    is_unsupported: PropTypes.bool,
-    onClickRemove: PropTypes.func,
-    profit_loss: PropTypes.number,
-    result: PropTypes.string,
-    should_show_result_overlay: PropTypes.bool,
-    toggleUnsupportedContractModal: PropTypes.func,
-};
 
 export default ContractCard;

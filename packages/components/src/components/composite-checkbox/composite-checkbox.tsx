@@ -6,7 +6,7 @@ import Text from '../text';
 type TCompositeCheckbox = {
     name: string;
     value: boolean;
-    onChange: (e: React.SyntheticEvent) => void;
+    onChange: (e?: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => void;
     className?: string;
     label: string;
     id?: string;

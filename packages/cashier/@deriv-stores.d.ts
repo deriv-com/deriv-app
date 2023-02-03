@@ -1,8 +1,8 @@
-import type { TRootStore } from '@deriv/stores/types';
+import type { TStores } from '@deriv/stores';
 import type CashierStore from './src/stores/cashier-store';
 
 declare module '@deriv/stores' {
-    export function useStore(): TRootStore & {
+    export function useStore(): TStores & {
         modules: {
             cashier: CashierStore;
         };

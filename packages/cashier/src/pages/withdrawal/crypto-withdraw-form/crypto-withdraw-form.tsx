@@ -1,15 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
-import CryptoFiatConverter from 'Components/crypto-fiat-converter';
-import PercentageSelector from 'Components/percentage-selector';
-import RecentTransaction from 'Components/recent-transaction';
-import { TReactChangeEvent } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
+import PercentageSelector from '../../../components/percentage-selector';
+import RecentTransaction from '../../../components/recent-transaction';
+import { TReactChangeEvent } from '../../../types';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -47,7 +46,7 @@ const Header = ({ currency }: THeaderProps) => {
     );
 };
 
-const CryptoWithdrawForm = () => {
+const CryptoWithdrawForm = observer(() => {
     const {
         client,
         modules: {
@@ -73,6 +72,7 @@ const CryptoWithdrawForm = () => {
         setWithdrawPercentageSelectorResult,
         validateWithdrawFromAmount,
         validateWithdrawToAmount,
+        resetWithrawForm,
     } = withdraw;
 
     const {
@@ -93,7 +93,11 @@ const CryptoWithdrawForm = () => {
 
     React.useEffect(() => {
         onMountWithdraw(verification_code);
-        return () => percentageSelectorSelectionStatus(false);
+
+        return () => {
+            percentageSelectorSelectionStatus(false);
+            resetWithrawForm();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -203,6 +207,6 @@ const CryptoWithdrawForm = () => {
             </MobileWrapper>
         </div>
     );
-};
+});
 
-export default observer(CryptoWithdrawForm);
+export default CryptoWithdrawForm;

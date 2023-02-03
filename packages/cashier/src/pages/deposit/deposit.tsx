@@ -1,30 +1,31 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
-import { Real, Virtual } from 'Components/cashier-container';
-import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
-import CashierLocked from 'Components/cashier-locked';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import Error from 'Components/error';
-import FundsProtection from 'Components/funds-protection';
-import USDTSideNote from 'Components/usdt-side-note';
-import RecentTransaction from 'Components/recent-transaction';
+import { useDepositLocked } from '@deriv/hooks';
+import { ContentFlag } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
+import { Real, Virtual } from '../../components/cashier-container';
+import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
+import CashierLocked from '../../components/cashier-locked';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import Error from '../../components/error';
+import FundsProtection from '../../components/funds-protection';
+import USDTSideNote from '../../components/usdt-side-note';
+import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
-import SideNote from 'Components/side-note';
+import SideNote from '../../components/side-note';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
-const Deposit = ({ setSideNotes }: TDeposit) => {
-    const { client, modules } = useStore();
+const Deposit = observer(({ setSideNotes }: TDeposit) => {
+    const is_deposit_locked = useDepositLocked();
+    const { client, modules, traders_hub } = useStore();
     const {
         can_change_fiat_currency,
         currency,
         current_currency_type,
-        is_eu,
         is_switching,
         is_virtual,
         landing_company_shortcode,
@@ -32,7 +33,8 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
     const { cashier } = modules;
     const { iframe, deposit, transaction_history, general_store } = cashier;
     const { clearIframe, iframe_height, iframe_url } = iframe;
-    const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
+    const { container, error, onMountDeposit: onMount } = deposit;
+    const { content_flag } = traders_hub;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -49,6 +51,8 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+
+    const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
@@ -141,6 +145,6 @@ const Deposit = ({ setSideNotes }: TDeposit) => {
         );
     }
     return <CashierOnboarding setSideNotes={setSideNotes} />;
-};
+});
 
-export default observer(Deposit);
+export default Deposit;

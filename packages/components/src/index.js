@@ -74,7 +74,6 @@ export { default as PasswordInput } from './components/password-input';
 export { default as PasswordMeter } from './components/password-meter';
 export { default as PositionsDrawerCard } from './components/positions-drawer-card';
 export { default as Popover } from './components/popover';
-export { default as PopoverMobile } from './components/popover-mobile';
 export { default as Popup } from './components/popup';
 export { default as PopoverMessageCheckbox } from './components/popover-message-checkbox';
 export { default as ProgressBar } from './components/progress-bar';
@@ -88,6 +87,7 @@ export { default as RouteWithSubroutes } from './components/route-with-subroutes
 export { default as SelectNative } from './components/select-native';
 export { default as StaticUrl } from './components/static-url';
 export { default as SendEmailTemplate } from './components/send-email-template';
+export { default as StatusBadge } from './components/status-badge';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';
 export { default as RemainingTime } from './components/remaining-time';

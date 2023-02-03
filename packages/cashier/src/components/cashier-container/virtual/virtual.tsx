@@ -1,25 +1,19 @@
 import classNames from 'classnames';
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile, routes, PlatformContext } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
-
+import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
 
-type TVirtualProps = RouteComponentProps & {
-    is_dark_mode_on: boolean;
-    toggleAccountsDialog: () => void;
-    is_pre_appstore: boolean;
-};
-const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+const Virtual = observer(() => {
+    const {
+        ui: { is_dark_mode_on, toggleAccountsDialog },
+        client: { is_pre_appstore },
+    } = useStore();
     const history = useHistory();
+
     return (
         <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
             <React.Fragment>
@@ -66,9 +60,6 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
             </React.Fragment>
         </div>
     );
-};
+});
 
-export default connect(({ ui }: TRootStore) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-}))(withRouter(Virtual));
+export default withRouter(Virtual);

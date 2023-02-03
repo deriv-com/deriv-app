@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Drawer from 'react-drag-drawer';
 import Body from './mobile-drawer-body.jsx';
 import Footer from './mobile-drawer-footer.jsx';
 import SubHeader from './mobile-drawer-subheader.jsx';
@@ -18,57 +17,65 @@ const MobileDrawer = ({
     width,
     alignment,
     is_open,
+    transitionExit,
     title,
     toggle,
     children,
     livechat: LiveChat,
-}) => (
-    <Drawer
-        direction={alignment}
-        open={is_open}
-        onRequestClose={toggle}
-        containerElementClass='dc-mobile-drawer__wrapper'
-        modalElementClass='dc-mobile-drawer'
-    >
-        <div
-            id={id}
-            className={classNames('dc-mobile-drawer__container', {
-                [`dc-mobile-drawer__container_${className}`]: className,
-            })}
-            style={{
-                height: height || 'auto',
-                width: width || 'auto',
-            }}
-        >
-            <div
-                className={classNames('dc-mobile-drawer__header', {
-                    'dc-mobile-drawer__header--right': alignment === 'right',
-                    [`dc-mobile-drawer__header--${className}`]: className,
-                })}
-            >
-                <div onClick={toggle} className='dc-mobile-drawer__header-close'>
-                    <Icon icon='IcCross' />
-                </div>
-                <div className='dc-mobile-drawer__header-wrapper'>
-                    {title && (
-                        <Text
-                            as='h3'
-                            color='prominent'
-                            weight='bold'
-                            className={classNames('dc-mobile-drawer__header-title', {
-                                [`dc-mobile-drawer-header__title--${className}`]: className,
+}) => {
+    if (is_open)
+        return (
+            <>
+                <div
+                    className={`dc-mobile-drawer__overlay ${transitionExit ? 'exit' : ''}`}
+                    onClick={e => {
+                        e.stopPropagation();
+                        toggle();
+                    }}
+                />
+                <div className={`dc-mobile-drawer ${transitionExit ? 'exit' : ''}`}>
+                    <div
+                        id={id}
+                        className={classNames('dc-mobile-drawer__container', {
+                            [`dc-mobile-drawer__container_${className}`]: className,
+                        })}
+                        style={{
+                            height: height || 'auto',
+                            width: width || 'auto',
+                        }}
+                    >
+                        <div
+                            className={classNames('dc-mobile-drawer__header', {
+                                'dc-mobile-drawer__header--right': alignment === 'right',
+                                [`dc-mobile-drawer__header--${className}`]: className,
                             })}
                         >
-                            {title}
-                        </Text>
-                    )}
-                    {LiveChat}
+                            <div onClick={toggle} className='dc-mobile-drawer__header-close'>
+                                <Icon icon='IcCross' />
+                            </div>
+                            <div className='dc-mobile-drawer__header-wrapper'>
+                                {title && (
+                                    <Text
+                                        as='h3'
+                                        color='prominent'
+                                        weight='bold'
+                                        className={classNames('dc-mobile-drawer__header-title', {
+                                            [`dc-mobile-drawer-header__title--${className}`]: className,
+                                        })}
+                                    >
+                                        {title}
+                                    </Text>
+                                )}
+                                {LiveChat}
+                            </div>
+                        </div>
+                        {children}
+                    </div>
                 </div>
-            </div>
-            {children}
-        </div>
-    </Drawer>
-);
+            </>
+        );
+    return <></>;
+};
 
 MobileDrawer.defaultProps = {
     alignment: 'left',

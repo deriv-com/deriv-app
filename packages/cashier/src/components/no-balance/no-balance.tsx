@@ -1,18 +1,22 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
+import { useStore, observer } from '@deriv/stores';
 
-type TNoBalanceProps = RouteComponentProps & {
-    currency: string;
-    is_deposit_locked: boolean;
-    setTabIndex: (tab_index: number) => void;
-};
+const NoBalance = observer(({ history }: RouteComponentProps) => {
+    const is_deposit_locked = useDepositLocked();
+    const {
+        client: { currency },
+        modules: {
+            cashier: {
+                general_store: { setCashierTabIndex: setTabIndex },
+            },
+        },
+    } = useStore();
 
-const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }: TNoBalanceProps) => {
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);
@@ -34,6 +38,7 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }: TNoBal
                         <Localize i18n_default_text='Please make a deposit to use this feature.' />
                     </Text>
                     <Button
+                        style={{ marginTop: '2rem' }}
                         className='cashier__no-balance-button'
                         has_effect
                         text={localize('Deposit now')}
@@ -45,12 +50,6 @@ const NoBalance = ({ currency, history, is_deposit_locked, setTabIndex }: TNoBal
             )}
         </div>
     );
-};
+});
 
-export default withRouter(
-    connect(({ client, modules }: TRootStore) => ({
-        currency: client.currency,
-        is_deposit_locked: modules.cashier.deposit.is_deposit_locked,
-        setTabIndex: modules.cashier.general_store.setCashierTabIndex,
-    }))(NoBalance)
-);
+export default withRouter(NoBalance);

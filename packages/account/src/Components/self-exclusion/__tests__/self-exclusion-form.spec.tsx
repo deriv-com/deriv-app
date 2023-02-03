@@ -3,14 +3,32 @@ import { render, screen } from '@testing-library/react';
 import SelfExclusionContext from '../self-exclusion-context';
 import SelfExclusionForm from '../self-exclusion-form';
 
-jest.mock('../self-exclusion-confirm-page', () => () => <div>SelfExclusionConfirmPage</div>);
-jest.mock('../self-exclusion-inputs', () => () => <div>SelfExclusionInputs</div>);
+jest.mock('../self-exclusion-confirm-page', () => {
+    const MockConfirmPage = () => <div>SelfExclusionConfirmPage</div>;
+    return MockConfirmPage;
+});
+
+jest.mock('../self-exclusion-inputs', () => {
+    const MockSelfExclusionInputs = () => <div>SelfExclusionInputs</div>;
+    return MockSelfExclusionInputs;
+});
 
 describe('<SelfExclusionForm />', () => {
-    let mock_context = {};
+    let mock_context = {
+        currency: '',
+        overlay_ref: document.createElement('div'),
+        state: {
+            is_confirm_page: false,
+            self_exclusions: {},
+        },
+        handleSubmit: jest.fn(),
+        validateFields: jest.fn(),
+    };
 
     beforeEach(() => {
         mock_context = {
+            currency: '',
+            overlay_ref: document.createElement('div'),
             state: {
                 is_confirm_page: false,
                 self_exclusions: {},

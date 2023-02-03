@@ -491,7 +491,7 @@ export default class OrderStore {
                             });
                         }, 750);
                     } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.root_store.general_store.modal?.key === 'InvalidVerificationLinkModal') {
+                        if (this.root_store.general_store.isCurrentModal('InvalidVerificationLinkModal')) {
                             this.root_store.general_store.hideModal();
                         }
                         clearTimeout(wait);

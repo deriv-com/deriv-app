@@ -48,6 +48,13 @@ const ModalManagerContextProvider = props => {
         }, [modals]);
     };
 
+    /**
+     * Checks if the current visible modal matches the specified modal key passed to the argument.
+     *
+     * @param {string} key - the modal key to check if the current visible modal matches it
+     */
+    const isCurrentModal = key => active_modal.key === key;
+
     const showModal = modal => {
         if (isDesktop()) {
             setPreviousModal(active_modal);
@@ -104,9 +111,10 @@ const ModalManagerContextProvider = props => {
         }
     };
 
-    general_store.showModal = showModal;
     general_store.hideModal = hideModal;
+    general_store.isCurrentModal = isCurrentModal;
     general_store.modal = active_modal;
+    general_store.showModal = showModal;
 
     const state = {
         hideModal,

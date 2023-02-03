@@ -56,7 +56,6 @@ const FilterModal = () => {
         }
     };
     const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
-
     const has_already_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length &&
         diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0;

@@ -1,10 +1,24 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isValidToCancel, hasContractEntered, isOpen, useNewRowTransition } from '@deriv/shared';
-import ContractCardSell from './contract-card-sell.jsx';
-import MultiplierCloseActions from './multiplier-close-actions.jsx';
+import ContractCardSell from './contract-card-sell';
+import MultiplierCloseActions from './multiplier-close-actions';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGetCardLables } from '../../types';
+
+export type TCardFooterPropTypes = {
+    contract_info: TContractInfo;
+    getCardLabels: TGetCardLables;
+    is_multiplier?: boolean;
+    is_positions: boolean;
+    is_sell_requested: boolean;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    onFooterEntered: () => void;
+    server_time: moment.Moment;
+    should_show_transition: boolean;
+};
 
 const CardFooter = ({
     contract_info,
@@ -17,7 +31,7 @@ const CardFooter = ({
     onFooterEntered,
     server_time,
     should_show_transition,
-}) => {
+}: TCardFooterPropTypes) => {
     const { in_prop } = useNewRowTransition(should_show_transition);
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
@@ -77,19 +91,6 @@ const CardFooter = ({
             </div>
         </CSSTransition>
     );
-};
-
-CardFooter.propTypes = {
-    contract_info: PropTypes.object,
-    getCardLabels: PropTypes.func,
-    is_multiplier: PropTypes.bool,
-    is_positions: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    onClickCancel: PropTypes.func,
-    onClickSell: PropTypes.func,
-    onFooterEntered: PropTypes.func,
-    server_time: PropTypes.object,
-    should_show_transition: PropTypes.bool,
 };
 
 export default CardFooter;

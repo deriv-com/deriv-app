@@ -9,12 +9,12 @@ import { TGetCardLables } from '../types';
 
 type TProgressSliderMobileProps = {
     className?: string;
-    current_tick: number;
-    expiry_time: number;
+    current_tick: number | null;
+    expiry_time?: number;
     is_loading: boolean;
     server_time: moment.Moment;
-    start_time: number;
-    ticks_count: number;
+    start_time?: number;
+    ticks_count?: number;
     getCardLabels: TGetCardLables;
 };
 
@@ -28,7 +28,7 @@ const ProgressSliderMobile = ({
     server_time,
     ticks_count,
 }: TProgressSliderMobileProps) => {
-    const percentage = getTimePercentage(server_time, start_time, expiry_time);
+    const percentage = getTimePercentage(server_time, Number(start_time), Number(expiry_time));
     return (
         <div className={classNames('dc-progress-slider-mobile', className)}>
             {ticks_count ? (

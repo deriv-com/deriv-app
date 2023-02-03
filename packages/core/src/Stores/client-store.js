@@ -580,7 +580,7 @@ export default class ClientStore extends BaseStore {
 
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual) {
+            if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
                 acc.push(item.currency);
             }
             return acc;

@@ -26,6 +26,7 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
     React.useEffect(() => {
         return () => {
             setSelectedAccount({});
+            toggleModal();
             closeModal();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

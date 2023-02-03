@@ -132,6 +132,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         title: localize('Turbos'),
         trade_types: ['TURBOSLONG', 'TURBOSSHORT'],
         basis: ['stake'],
+        barrier_count: 1,
         components: ['take_profit'],
     },
 });

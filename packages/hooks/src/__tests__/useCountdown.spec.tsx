@@ -4,7 +4,7 @@ import useCountdown from '../useCountdown';
 jest.setTimeout(30000);
 
 describe('useCountdown', () => {
-    test('should use counter', () => {
+    test('should have initial count of 60 and is_running of false', () => {
         const { result } = renderHook(() => useCountdown({ from: 60 }));
 
         expect(result.current.count).toBe(60);
@@ -114,12 +114,14 @@ describe('useCountdown', () => {
         act(() => {
             result.current.pause();
         });
+
         expect(result.current.count).toBe(1);
         expect(result.current.is_running).toBe(false);
     });
 
     test('should count down from 3 to 0 after start is called and stop the counter at 1', async () => {
         const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 3 }));
+
         expect(result.current.count).toBe(3);
         expect(result.current.is_running).toBe(false);
 
@@ -136,6 +138,7 @@ describe('useCountdown', () => {
         act(() => {
             result.current.stop();
         });
+
         expect(result.current.count).toBe(3);
         expect(result.current.is_running).toBe(false);
     });

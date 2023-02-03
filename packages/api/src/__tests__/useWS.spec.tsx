@@ -95,11 +95,10 @@ describe('useWS', () => {
         act(() => {
             result.current.send({ cashier: 'deposit' });
         });
-        // userEvent.click(send);
+
         expect(result.current.is_loading).toBe(true);
         await waitForNextUpdate();
         expect(result.current.data).toBe(undefined);
-        // await waitForNextUpdate();
         expect(result.current.error).toStrictEqual({ code: 'ASK_TNC_APPROVAL', message: 'Error message' });
         expect(result.current.is_loading).toBe(false);
     });

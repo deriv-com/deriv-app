@@ -18,6 +18,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -34,6 +35,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -50,6 +52,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -66,6 +69,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -82,6 +86,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -98,6 +103,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -114,6 +120,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -130,6 +137,7 @@ describe('useNeedFinancialAssessment', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedFinancialAssessment(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 });

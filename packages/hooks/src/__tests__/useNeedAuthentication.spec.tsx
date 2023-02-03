@@ -17,6 +17,7 @@ describe('useNeedAuthentication', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -32,6 +33,7 @@ describe('useNeedAuthentication', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -47,6 +49,7 @@ describe('useNeedAuthentication', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -62,6 +65,7 @@ describe('useNeedAuthentication', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 });

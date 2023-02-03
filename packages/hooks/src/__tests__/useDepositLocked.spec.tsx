@@ -29,6 +29,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -56,6 +57,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -83,6 +85,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -110,6 +113,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -137,6 +141,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -164,6 +169,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -191,6 +197,7 @@ describe('useDepositLocked', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useDepositLocked(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 });

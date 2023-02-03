@@ -25,6 +25,7 @@ describe('useRealSTPAccount', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useRealSTPAccount(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -48,6 +49,7 @@ describe('useRealSTPAccount', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useRealSTPAccount(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 });

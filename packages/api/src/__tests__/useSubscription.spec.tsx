@@ -33,8 +33,6 @@ describe('useSubscription', () => {
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);
-        expect(result.current.error).toBe(undefined);
-        expect(result.current.error).toBe(undefined);
         expect(result.current.data).toBe(undefined);
 
         act(() => {

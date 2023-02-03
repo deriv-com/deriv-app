@@ -23,6 +23,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -44,6 +45,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -65,6 +67,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(false);
     });
 
@@ -86,6 +89,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -107,6 +111,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 
@@ -128,6 +133,7 @@ describe('useNeedTNC', () => {
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useNeedTNC(), { wrapper });
+
         expect(result.current).toBe(true);
     });
 });

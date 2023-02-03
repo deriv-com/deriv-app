@@ -1,13 +1,13 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { moduleLoader } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
-import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
+import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
+import React from 'react';
+import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import { connect } from 'Stores/connect';
+import { moduleLoader } from '@deriv/shared';
+import { useLocation } from 'react-router-dom';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -63,21 +63,13 @@ const AppModals = ({
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
     is_trading_assessment_for_new_user_enabled,
-    fetchFinancialAssessment,
-    setCFDScore,
-    cfd_score,
+
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
-
-    React.useEffect(() => {
-        if (is_logged_in) {
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
-        }
-    }, [is_logged_in]);
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -106,51 +98,42 @@ const AppModals = ({
             break;
     }
 
-    if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
-    }
-
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
-
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
     }
-
     if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     }
-
     if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     }
-
     if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     }
-
     if (is_reality_check_visible) {
         ComponentToLoad = <RealityCheckModal />;
     }
-
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
-        !is_trading_assessment_for_new_user_enabled &&
-        cfd_score === 0
+        !is_trading_assessment_for_new_user_enabled
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
+    }
+
+    if (is_acuity_modal_open) {
+        ComponentToLoad = <AcuityDownloadModal />;
     }
 
     if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
     }
-
     if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     }
-
     if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
     }
@@ -176,8 +159,6 @@ export default connect(({ client, ui }) => ({
     is_reality_check_visible: client.is_reality_check_visible,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
-    setCFDScore: client.setCFDScore,
-    cfd_score: client.cfd_score,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,

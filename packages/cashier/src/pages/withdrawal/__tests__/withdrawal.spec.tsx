@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
+import { useWithdrawLocked } from '@deriv/hooks';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 
@@ -26,10 +27,14 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     isDesktop: jest.fn(() => true),
 }));
 
+jest.mock('@deriv/hooks');
+const mockUseWithdrawLocked = useWithdrawLocked as jest.MockedFunction<typeof useWithdrawLocked>;
+
 describe('<Withdrawal />', () => {
     let history, mockRootStore, setSideNotes;
     beforeEach(() => {
         history = createBrowserHistory();
+        mockUseWithdrawLocked.mockReturnValue(false);
         mockRootStore = {
             client: {
                 balance: '1000',
@@ -60,7 +65,6 @@ describe('<Withdrawal />', () => {
                         check10kLimit: jest.fn(),
                         is_10k_withdrawal_limit_reached: false,
                         is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
                         error: {
                             setErrorMessage: jest.fn(),
                         },
@@ -87,9 +91,9 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
+        mockUseWithdrawLocked.mockReturnValue(true);
         mockRootStore.client.current_currency_type = 'crypto';
         mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
         renderWithdrawal();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
@@ -117,7 +121,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
+        mockUseWithdrawLocked.mockReturnValue(true);
         const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();

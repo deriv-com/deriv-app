@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, observable, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ReadMore } from '@deriv/components';
 import Constants from 'Constants/constants';
@@ -12,10 +12,8 @@ export default class WithdrawStore {
             blockchain_address: observable,
             container: observable,
             error: observable,
-            is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
             withdraw_amount: observable,
-            max_withdraw_amount: observable,
             crypto_config: observable,
             setIsWithdrawConfirmed: action.bound,
             setWithdrawAmount: action.bound,
@@ -25,9 +23,6 @@ export default class WithdrawStore {
             setBlockchainAddress: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
-            setMaxWithdrawAmount: action.bound,
-            check10kLimit: action.bound,
-            set10kLimitation: action.bound,
             setCryptoConfig: action.bound,
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
@@ -41,10 +36,8 @@ export default class WithdrawStore {
     blockchain_address = '';
     container = Constants.containers.withdraw;
     error = new ErrorStore();
-    is_10k_withdrawal_limit_reached = undefined;
     is_withdraw_confirmed = false;
     withdraw_amount = '';
-    max_withdraw_amount = 0;
     crypto_config = {};
 
     setIsWithdrawConfirmed(is_withdraw_confirmed) {
@@ -251,24 +244,6 @@ export default class WithdrawStore {
 
     async setCryptoConfig() {
         this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
-    }
-
-    setMaxWithdrawAmount(amount) {
-        this.max_withdraw_amount = amount;
-    }
-
-    async check10kLimit() {
-        const { client } = this.root_store;
-
-        const remainder = (await client.getLimits())?.get_limits?.remainder;
-        this.setMaxWithdrawAmount(remainder);
-        const min_withdrawal = getMinWithdrawal(client.currency);
-        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
-        this.set10kLimitation(is_limit_reached);
-    }
-
-    set10kLimitation(is_limit_reached) {
-        this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
     setWithdrawPercentageSelectorResult(amount) {

@@ -1,4 +1,4 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse } from '@deriv/api-types';
+import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
@@ -25,7 +25,7 @@ type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => void;
+    getLimits: () => { get_limits?: GetLimits };
     is_account_setting_loaded: boolean;
     is_eu: boolean;
     is_deposit_lock: boolean;
@@ -71,6 +71,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_landing_company_loaded: boolean;
+    min_withdrawal: number;
 };
 
 type TCommonStoreError = {

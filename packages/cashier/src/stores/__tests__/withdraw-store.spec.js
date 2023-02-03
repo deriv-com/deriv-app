@@ -1,4 +1,5 @@
 import { isMobile, validNumber } from '@deriv/shared';
+import { useCheck10kLimit } from '@deriv/hooks';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
 
@@ -13,9 +14,11 @@ jest.mock('@deriv/shared', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks');
+
 describe('WithdrawStore', () => {
     let withdraw_store;
-
+    useCheck10kLimit.mockReturnValue(false);
     beforeEach(() => {
         const root_store = {
             client: {
@@ -99,11 +102,6 @@ describe('WithdrawStore', () => {
     //     expect(withdraw_store.withdraw_amount).toBe(100);
 
     // });
-
-    it('should set withdraw_amount', () => {
-        withdraw_store.setWithdrawAmount(200);
-        expect(withdraw_store.withdraw_amount).toBe(200);
-    });
 
     it('should request for withdrawal', async () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
@@ -229,22 +227,6 @@ describe('WithdrawStore', () => {
         await withdraw_store.onMountCryptoWithdraw('aBcDefXa');
         expect(spyHandleCashierError).not.toHaveBeenCalled();
         expect(setLoading).toHaveBeenCalledWith(false);
-    });
-
-    it('should set max_withdraw_amount', () => {
-        withdraw_store.setMaxWithdrawAmount(100);
-        expect(withdraw_store.max_withdraw_amount).toBe(100);
-    });
-
-    it('should check 10k limit', async () => {
-        await withdraw_store.check10kLimit();
-        expect(withdraw_store.max_withdraw_amount).toBe(80);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
-    });
-
-    it('should set is_10k_withdrawal_limit_reached', () => {
-        withdraw_store.set10kLimitation(true);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
     });
 
     it('should set crypto_config', () => {

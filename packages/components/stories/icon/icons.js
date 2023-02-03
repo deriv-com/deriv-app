@@ -439,6 +439,7 @@ export const icons =
         'IcNetellerLight',
         'IcNewFile',
         'IcNoAd',
+        'IcNoData',
         'IcNoOrder',
         'IcNotificationClear',
         'IcNotification',
@@ -604,6 +605,9 @@ export const icons =
         'IcCurrencyUsdk',
         'IcCurrencyUst',
         'IcCurrencyVirtual',
+    ],
+    'derivez': [
+        'IcDerivez',
     ],
     'dxtrade': [
         'IcDxtradeDerivX',

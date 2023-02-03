@@ -20,6 +20,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    getMinWithdrawal,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -380,6 +381,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             switchAccountHandlerForAppstore: action.bound,
             setIsPreAppStore: action.bound,
+            min_withdrawal: computed,
         });
 
         reaction(
@@ -1031,6 +1033,10 @@ export default class ClientStore extends BaseStore {
 
     get is_multipliers_only() {
         return isMultipliersOnly(this.residence);
+    }
+
+    get min_withdrawal() {
+        return getMinWithdrawal(this.currency);
     }
 
     /**

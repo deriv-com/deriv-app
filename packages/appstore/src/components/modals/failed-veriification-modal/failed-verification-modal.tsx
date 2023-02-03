@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
-import { isMobile, getAuthenticationStatusInfo } from '@deriv/shared';
+import { isMobile, getAuthenticationStatusInfo, routes } from '@deriv/shared';
 
 type TFailedVerificationModal = {
     should_resubmit_poi: boolean;
@@ -63,9 +64,11 @@ const FailedVerificationModal = () => {
     const { account_status } = client;
     const { toggleCFDVerificationModal } = cfd;
     const { disableApp, enableApp } = ui;
-    const is_from_multipliers = open_failed_verification_for === 'multipiliers';
+    const is_from_multipliers = open_failed_verification_for === 'multipliers';
+
     const { poi_resubmit_for_vanuatu_maltainvest, poi_resubmit_for_bvi_labuan, need_poa_resubmission } =
         getAuthenticationStatusInfo(account_status);
+    const history = useHistory();
 
     const closeModal = () => {
         toggleFailedVerificationModalVisibility();
@@ -73,7 +76,15 @@ const FailedVerificationModal = () => {
 
     const onConfirmModal = () => {
         toggleFailedVerificationModalVisibility();
-        toggleCFDVerificationModal();
+        if (is_from_multipliers) {
+            if (should_resubmit_poi()) {
+                history.push(routes.proof_of_identity);
+            } else {
+                history.push(routes.proof_of_address);
+            }
+        } else {
+            toggleCFDVerificationModal();
+        }
     };
 
     const should_resubmit_poi = () => {

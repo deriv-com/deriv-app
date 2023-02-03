@@ -158,6 +158,7 @@ const CFDsListing = () => {
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
+                                            // here it is
                                             openDerivRealAccountNeededModal();
                                         } else {
                                             setAccountType({
@@ -253,6 +254,7 @@ const CFDsListing = () => {
                             description={account.description}
                             onAction={() => {
                                 if ((has_no_real_account || no_CR_account) && is_real) {
+                                    // here
                                     openDerivRealAccountNeededModal();
                                 } else {
                                     setAccountType({

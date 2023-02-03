@@ -50,10 +50,11 @@ const ModalManagerContextProvider = props => {
 
     /**
      * Checks if the current visible modal matches the specified modal key passed to the argument.
+     * Can also be used to check for multiple modal keys.
      *
-     * @param {string} key - the modal key to check if the current visible modal matches it
+     * @param {...string} keys - the modal keys to check if the current visible modal matches it
      */
-    const isCurrentModal = key => active_modal.key === key;
+    const isCurrentModal = (...keys) => keys.includes(active_modal.key);
 
     const showModal = modal => {
         if (isDesktop()) {

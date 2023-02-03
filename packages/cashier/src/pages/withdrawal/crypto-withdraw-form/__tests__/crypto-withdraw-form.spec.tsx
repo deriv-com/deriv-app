@@ -3,8 +3,15 @@ import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
 import CashierProviders from '../../../../cashier-providers';
+import { useAccountPlatformDetails } from '@deriv/hooks';
+
+jest.mock('@deriv/hooks');
+const mockUseAccountPlatformDetails = useAccountPlatformDetails as jest.MockedFunction<
+    typeof useAccountPlatformDetails
+>;
 
 describe('<CryptoWithdrawForm />', () => {
+    mockUseAccountPlatformDetails.mockReturnValue({ icon: 'icon' });
     let mockRootStore;
     beforeEach(() => {
         mockRootStore = {
@@ -26,7 +33,6 @@ describe('<CryptoWithdrawForm />', () => {
                         onMount: jest.fn(),
                     },
                     withdraw: {
-                        account_platform_icon: 'icon',
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                         onMountCryptoWithdraw: jest.fn(),
                         requestWithdraw: jest.fn(),

@@ -1,7 +1,9 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    icon?: string;
+};
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -16,6 +18,7 @@ type TClientStore = {
             };
         };
     };
+    account_list: TAccount[];
     account_status: GetAccountStatus;
     balance?: string;
     can_change_fiat_currency: boolean;

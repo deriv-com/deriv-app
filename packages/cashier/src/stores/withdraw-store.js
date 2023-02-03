@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ReadMore } from '@deriv/components';
@@ -32,7 +32,6 @@ export default class WithdrawStore {
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
-            account_platform_icon: computed,
         });
 
         this.root_store = root_store;
@@ -359,12 +358,5 @@ export default class WithdrawStore {
         }
 
         setConverterToError(error_message);
-    }
-
-    get account_platform_icon() {
-        const { account_list, loginid } = this.root_store.client;
-        const platform_icon = account_list.find(acc => loginid === acc.loginid).icon;
-
-        return platform_icon;
     }
 }

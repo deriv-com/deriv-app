@@ -42,7 +42,6 @@ type DataListProps = {
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
     overscanRowCount: number;
-    Cell: CellType;
 };
 type GetContentType = { measure?: () => void | undefined };
 
@@ -61,7 +60,7 @@ const DataList = ({
     row_gap,
     getRowAction,
     passthrough,
-}: DataListProps) => {
+}: DataListProps & CellType) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [scroll_top, setScrollTop] = React.useState(0);

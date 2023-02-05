@@ -128,17 +128,24 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
-    turbos: {
-        title: localize('Turbos'),
-        trade_types: ['TURBOSLONG', 'TURBOSSHORT'],
+    turboslong: {
+        title: localize('Long'),
+        trade_types: ['TURBOSLONG'],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['take_profit'],
+        components: ['barrier', 'take_profit'],
+    },
+    turbosshort: {
+        title: localize('Short'),
+        trade_types: ['TURBOSSHORT'],
+        basis: ['stake'],
+        barrier_count: 1,
+        components: ['barrier', 'take_profit'],
     },
 });
 
 export const getContractCategoriesConfig = () => ({
-    Turbos: { name: localize('Turbos'), categories: ['turbos'] },
+    Turbos: { name: localize('Turbos'), categories: ['turboslong', 'turbosshort'] },
     Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
         name: localize('Ups & Downs'),

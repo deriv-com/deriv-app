@@ -18,6 +18,7 @@ const Purchase = ({
     purchased_states_arr,
     // is_purchase_locked,
     is_trade_enabled,
+    is_turbos,
     onClickPurchase,
     onHoverPurchase,
     // togglePurchaseLock,
@@ -62,6 +63,7 @@ const Purchase = ({
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
+                is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
                 // is_purchase_locked={is_purchase_locked}
                 // togglePurchaseLock={togglePurchaseLock}
@@ -96,6 +98,7 @@ Purchase.propTypes = {
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     onHoverPurchase: PropTypes.func,
     proposal_info: PropTypes.object,
@@ -115,6 +118,7 @@ export default connect(({ modules, ui }) => ({
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
     is_multiplier: modules.trade.is_multiplier,
+    is_turbos: modules.trade.is_turbos,
     onClickPurchase: modules.trade.onPurchase,
     onHoverPurchase: modules.trade.onHoverPurchase,
     proposal_info: modules.trade.proposal_info,

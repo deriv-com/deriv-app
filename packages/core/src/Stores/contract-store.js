@@ -13,6 +13,7 @@ import {
     BARRIER_LINE_STYLES,
     isBarrierSupported,
     getEndTime,
+    isTurbosContract,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
@@ -122,8 +123,9 @@ export default class ContractStore extends BaseStore {
         }
 
         const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
+        const is_turbos = isTurbosContract(this.contract_info.contract_type);
 
-        if (is_multiplier && contract_info.contract_id && contract_info.limit_order) {
+        if ((is_multiplier || is_turbos) && contract_info.contract_id && contract_info.limit_order) {
             this.populateContractUpdateConfig(this.contract_info);
         }
     }
@@ -212,7 +214,9 @@ export default class ContractStore extends BaseStore {
     }
 
     updateLimitOrder() {
-        const limit_order = getLimitOrder(this);
+        const limit_order = isTurbosContract(this.contract_info.contract_type)
+            ? { take_profit: getLimitOrder(this).take_profit }
+            : getLimitOrder(this);
 
         WS.contractUpdate(this.contract_id, limit_order).then(response => {
             if (response.error) {

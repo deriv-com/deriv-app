@@ -50,6 +50,8 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 
+export const isTurbosContract = (contract_type: string) => /TURBOS/i.test(contract_type);
+
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 
 type TGetCurrentTick = TContractInfo & {

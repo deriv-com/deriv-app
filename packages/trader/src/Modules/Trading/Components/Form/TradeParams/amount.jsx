@@ -64,6 +64,7 @@ const Amount = ({
     is_multiplier,
     is_nativepicker,
     is_single_currency,
+    is_turbos,
     has_equals_only,
     onChange,
     setCurrentFocus,
@@ -95,7 +96,7 @@ const Amount = ({
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
-            header={is_multiplier ? localize('Stake') : undefined}
+            header={is_multiplier || is_turbos ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
                     <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
@@ -191,6 +192,7 @@ Amount.propTypes = {
     is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     has_equals_only: PropTypes.bool,
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
@@ -212,6 +214,7 @@ export default connect(({ modules, client, ui }) => ({
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
+    is_turbos: modules.trade.is_turbos,
     has_equals_only: modules.trade.has_equals_only,
     stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,

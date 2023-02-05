@@ -13,6 +13,8 @@ export const CONTRACT_SHADES = {
     ASIAND: 'BELOW',
     MULTUP: 'ABOVE',
     MULTDOWN: 'BELOW',
+    TURBOSLONG: 'ABOVE',
+    TURBOSSHORT: 'BELOW',
 };
 
 // Default non-shade according to number of barriers

@@ -1,4 +1,4 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import { getDecimalPlaces, getPropertyValue, convertToUnix, isTurbosContract, toMoment } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -41,6 +41,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
+    const turbos_details = {
+        barrier_choices: proposal.barrier_choices || response?.error?.details?.barrier_choices,
+        number_of_contracts: proposal.number_of_contracts,
+    };
 
     return {
         commission,
@@ -58,6 +62,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
+        ...turbos_details,
     };
 };
 
@@ -90,6 +95,7 @@ const setProposalMultiplier = (store, obj_multiplier) => {
 const createProposalRequestForContract = (store, type_of_contract) => {
     const obj_expiry = {};
     const obj_multiplier = {};
+    let limit_order;
 
     if (store.expiry_type === 'endtime') {
         const expiry_date = toMoment(store.expiry_date);
@@ -98,6 +104,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
 
     if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
+    }
+
+    if (isTurbosContract(store.contract_type) && store.has_take_profit && store.take_profit) {
+        limit_order = { take_profit: +store.take_profit || 0 };
     }
 
     return {
@@ -120,5 +130,6 @@ const createProposalRequestForContract = (store, type_of_contract) => {
         }),
         ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
         ...obj_multiplier,
+        limit_order,
     };
 };

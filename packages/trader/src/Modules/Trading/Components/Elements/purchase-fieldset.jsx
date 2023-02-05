@@ -21,6 +21,7 @@ const PurchaseFieldset = ({
     is_multiplier,
     is_proposal_empty,
     is_proposal_error,
+    is_turbos,
     purchased_states_arr,
     onClickPurchase,
     onHoverPurchase,
@@ -38,7 +39,7 @@ const PurchaseFieldset = ({
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
-                info={info}
+                info={!is_turbos && info}
                 index={index}
                 has_deal_cancellation={is_multiplier && has_cancellation}
                 is_disabled={is_disabled}
@@ -154,6 +155,7 @@ PurchaseFieldset.propTypes = {
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     onHoverPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,

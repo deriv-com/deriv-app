@@ -22,6 +22,7 @@ import {
     getBarrierPipSize,
     isBarrierSupported,
     removeBarrier,
+    isTurbosContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -131,6 +132,7 @@ export default class TradeStore extends BaseStore {
     cancellation_range_list = [];
 
     // Turbos trade params
+    number_of_contracts = 0;
     turbos_barrier_choices = [];
 
     // Mobile
@@ -275,6 +277,7 @@ export default class TradeStore extends BaseStore {
             requestProposal: action.bound,
             forgetAllProposal: action.bound,
             setMarketStatus: action.bound,
+            number_of_contracts: observable,
             onProposalResponse: action.bound,
             onChartBarrierChange: action.bound,
             onAllowEqualsChange: action.bound,
@@ -297,6 +300,7 @@ export default class TradeStore extends BaseStore {
             chartStateChange: action.bound,
             has_alternative_source: computed,
             is_multiplier: computed,
+            is_turbos: computed,
             getFirstOpenMarket: action.bound,
         });
 
@@ -343,7 +347,7 @@ export default class TradeStore extends BaseStore {
             () => [this.contract_type],
             () => {
                 this.root_store.portfolio.setContractType(this.contract_type);
-                if (this.contract_type === 'multiplier') {
+                if (this.contract_type === 'multiplier' || this.is_turbos) {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
                 } else {
@@ -680,6 +684,7 @@ export default class TradeStore extends BaseStore {
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
                 color,
+                not_draggable: isTurbosContract(contract_type),
             });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
@@ -1039,6 +1044,23 @@ export default class TradeStore extends BaseStore {
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
+        if (this.is_turbos && this.proposal_info) {
+            const contract_key = this.contract_type.toUpperCase();
+            if (this.proposal_info[contract_key]) {
+                const { barrier_choices, number_of_contracts } = this.proposal_info[contract_key];
+                this.turbos_barrier_choices = barrier_choices || [];
+                this.number_of_contracts = number_of_contracts ?? 0;
+                if (barrier_choices && !barrier_choices.includes(this.barrier_1)) {
+                    this.onChange({
+                        target: {
+                            name: 'barrier_1',
+                            value: barrier_choices[0],
+                        },
+                    });
+                }
+            }
+        }
+
         if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
             this.setMainBarrier(response.echo_req);
         }
@@ -1359,6 +1381,10 @@ export default class TradeStore extends BaseStore {
 
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    get is_turbos() {
+        return isTurbosContract(this.contract_type);
     }
 
     async getFirstOpenMarket(markets_to_search) {

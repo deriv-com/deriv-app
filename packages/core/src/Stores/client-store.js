@@ -505,13 +505,32 @@ export default class ClientStore extends BaseStore {
     }
 
     get can_change_fiat_currency() {
-        const has_no_mt5 = !this.has_real_mt5_login;
-        const has_no_dxtrade = !this.has_real_dxtrade_login;
+        const eu_user = this.root_store.traders_hub.is_eu_user;
+
+        const has_maltainvest_mt5_account = this.mt5_login_list.some(
+            acc => acc.landing_company_short === 'maltainvest'
+        );
+        const has_svg_and_financial_mt5_account = this.mt5_login_list.some(
+            acc => acc.landing_company_short === 'svg' || acc.landing_company_short === 'financial'
+        );
+
+        const no_mt5_non_eu = !eu_user && !has_svg_and_financial_mt5_account;
+
+        const no_eu_mt5 = eu_user && !has_maltainvest_mt5_account;
+
+        const has_no_dxtrade = this.dxtrade_accounts_list.some(acc => acc.landing_company_short === 'svg') && !eu_user;
+
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_no_deposit_attempt_account_status = !this.account_status?.status?.includes('deposit_attempt');
-        const has_account_criteria =
-            has_no_transaction && has_no_mt5 && has_no_dxtrade && has_no_deposit_attempt_account_status;
-        return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
+
+        const has_account_criteria = has_no_transaction && has_no_deposit_attempt_account_status;
+
+        return (
+            !this.is_virtual &&
+            has_account_criteria &&
+            ((no_mt5_non_eu && has_no_dxtrade) || no_eu_mt5) &&
+            this.current_currency_type === 'fiat'
+        );
     }
 
     get legal_allowed_currencies() {

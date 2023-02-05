@@ -4,24 +4,25 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { isMobile, ContentFlag } from '@deriv/shared';
+import { TRootStore } from 'Types';
+import { isMobile } from '@deriv/shared';
 
-const AddOptions = () => {
-    const { client, traders_hub, ui } = useStores();
-    const { is_real, content_flag } = traders_hub;
-    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { real_account_creation_unlock_date } = client;
+const AddOptions = ({ ui }: Pick<TRootStore, 'ui'>) => {
+    const { client } = useStores();
+    const { is_eu } = client;
+    const is_eu_country_text = is_eu
+        ? 'You need to create a Multipliers account before you can add a CFD account.'
+        : 'You need to create an Options and Multipliers account to create a CFD account.';
 
-    const add_deriv_account_text = localize('You need a Deriv account to create a CFD account.');
-    const add_deriv_account_btn = localize('Get a Deriv account');
-
-    const eu_user = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
+    const is_eu_country_btn = is_eu
+        ? localize('Get a Multipliers account')
+        : localize('Get an Options and Multipliers account');
 
     return (
         <React.Fragment>
             <div className='add-options-account__title'>
                 <Text size={isMobile() ? 'xxs' : 's'} weight='bold'>
-                    <Localize i18n_default_text={add_deriv_account_text} />
+                    <Localize i18n_default_text={is_eu_country_text} />
                 </Text>
             </div>
             <div className='add-options-account__button'>
@@ -30,19 +31,11 @@ const AddOptions = () => {
                     type='submit'
                     has_effect
                     onClick={() => {
-                        if (is_real && eu_user) {
-                            if (real_account_creation_unlock_date) {
-                                setShouldShowCooldownModal(true);
-                            } else {
-                                openRealAccountSignup('maltainvest');
-                            }
-                        } else {
-                            openRealAccountSignup();
-                        }
+                        ui.openRealAccountSignup();
                     }}
                     is_disabled={false}
                     is_loading={false}
-                    text={add_deriv_account_btn}
+                    text={is_eu_country_btn}
                     medium
                     primary
                 />
@@ -51,15 +44,16 @@ const AddOptions = () => {
     );
 };
 
-const AddOptionsAccount = () => {
+const AddOptionsAccount: React.FC = () => {
+    const { ui } = useStores();
     return (
         <React.Fragment>
             <div className='add-options-account'>
                 <DesktopWrapper>
-                    <AddOptions />
+                    <AddOptions ui={ui} />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <AddOptions />
+                    <AddOptions ui={ui} />
                 </MobileWrapper>
             </div>
         </React.Fragment>

@@ -2,7 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            "Assets/*": ["src/assets/*"],
             "Components/*": ["src/components/*"],
             "Config/*": ["src/config/*"],
             "Constants/*": ["src/constants/*"],
@@ -16,5 +15,5 @@
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "include": ["src", "globals.d.ts", "@deriv-stores.d.ts", "../../utils.d.ts"]
+    "include": ["src", "../../utils.d.ts"]
 }

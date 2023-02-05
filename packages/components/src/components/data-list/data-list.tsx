@@ -25,7 +25,7 @@ type CellType = { Cell: typeof DataListCell };
 export type TRowRenderer = (params: {
     row: React.ReactNode;
     is_footer?: boolean;
-    measure?: (() => void) | undefined;
+    measure?: () => void;
 }) => React.ReactNode;
 type DataListProps = {
     className?: string;

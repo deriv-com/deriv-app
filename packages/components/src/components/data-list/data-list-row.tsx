@@ -8,7 +8,7 @@ type TDataListRow = {
     action_desc?: {
         component: React.ReactNode;
     };
-    destination_link: string | undefined;
+    destination_link?: string;
     row_gap: number;
     row_key: string | number;
     rowRenderer: TRowRenderer;

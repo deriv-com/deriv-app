@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type renderCellContentProps = {
+type TRenderCellContent = {
     cell_value: object;
     is_footer: boolean;
     passthrough: unknown;

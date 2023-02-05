@@ -201,7 +201,6 @@ const Dropdown = ({
     suffix_icon,
     test_id,
     value,
-    classNameIcon,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -414,7 +413,7 @@ const Dropdown = ({
                     {!(isSingleOption() || !!suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                            className={classNames('dc-dropdown__select-arrow', classNameIcon, {
+                            className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
                                 'dc-dropdown__select-arrow--error': error || hint,
@@ -468,7 +467,6 @@ Dropdown.propTypes = {
     classNameHint: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
-    classNameIcon: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     handleBlur: PropTypes.func,

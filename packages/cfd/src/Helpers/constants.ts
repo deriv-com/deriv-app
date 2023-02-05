@@ -71,8 +71,6 @@ const getMT5WebTerminalLink = ({
 };
 
 export {
-    REAL_DXTRADE_URL,
-    DEMO_DXTRADE_URL,
     getBrokerName,
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,

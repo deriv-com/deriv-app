@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
-import Constants from '../constants/constants';
-import { TRootStore } from '../types';
+import Constants from 'Constants/constants';
+import { TRootStore } from 'Types';
 
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 

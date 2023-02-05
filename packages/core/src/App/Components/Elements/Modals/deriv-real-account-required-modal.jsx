@@ -4,22 +4,10 @@ import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const DerivRealAccountRequiredModal = ({
-    is_open,
-    onClose,
-    disableApp,
-    enableApp,
-    openRealAccountSignup,
-    is_eu_user,
-}) => {
+const DerivRealAccountRequiredModal = ({ is_open, onClose, disableApp, enableApp, openRealAccountSignup }) => {
     const createAccount = () => {
-        if (is_eu_user) {
-            onClose();
-            openRealAccountSignup('maltainvest');
-        } else {
-            onClose();
-            openRealAccountSignup();
-        }
+        onClose();
+        openRealAccountSignup();
     };
 
     return (
@@ -46,14 +34,12 @@ DerivRealAccountRequiredModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
-    is_eu_user: PropTypes.string,
 };
 
-export default connect(({ ui, traders_hub }) => ({
+export default connect(({ ui }) => ({
     is_open: ui.is_deriv_account_needed_modal_visible,
     onClose: ui.openDerivRealAccountNeededModal,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     openRealAccountSignup: ui.openRealAccountSignup,
-    is_eu_user: traders_hub.is_eu_user,
 }))(DerivRealAccountRequiredModal);

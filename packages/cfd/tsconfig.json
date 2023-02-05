@@ -2,7 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            "Assets/*": ["./src/Assets/*"],
             "_common/*": ["./src/_common/*"],
             "Constants/*": ["./src/Constants/*"],
             "Components/*": ["./src/Components/*"],

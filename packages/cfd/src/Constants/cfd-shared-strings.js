@@ -18,11 +18,11 @@ export const general_messages = {
             return localize('Run MT5 from your browser or download the MT5 app for your devices');
         return '';
     },
-    getFinancialAccountDescriptor: (platform, show_eu_related_content) => {
+    getFinancialAccountDescriptor: (platform, is_eu) => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
             return localize('Trade forex, basket indices, commodities, and cryptocurrencies with high leverage.');
         } else if (platform === CFD_PLATFORMS.MT5) {
-            if (show_eu_related_content) {
+            if (is_eu) {
                 return localize(
                     'Trade CFDs on forex, stocks, stock indices, synthetic indices, cryptocurrencies, and commodities with leverage.'
                 );

@@ -4,7 +4,7 @@ import BaseStore from './base-store';
 export default class ConfigStore extends BaseStore {
     public has_router = true;
     public routes = {
-        traders_hub: '/appstore/traders-hub',
+        trading_hub: '/appstore/traders-hub',
         onboarding: '/appstore/onboarding',
 
         my_apps: '/my-apps',

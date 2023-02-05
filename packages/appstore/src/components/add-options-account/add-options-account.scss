@@ -5,18 +5,16 @@
     padding: 0.7rem 1.1rem;
     background: var(--general-section-1);
     border-radius: $BORDER_RADIUS;
-    margin: 2rem auto 0;
-    width: 100%;
+    margin: 1.6rem auto 0;
 
     @include mobile {
         flex-direction: column;
-        width: 100%;
+        width: 90%;
         padding-bottom: 1.5rem;
     }
 
     &__title {
         padding: 1.5rem;
-        margin-right: 0.5rem;
 
         @include mobile {
             margin-bottom: 1rem;

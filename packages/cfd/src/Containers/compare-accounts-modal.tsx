@@ -3,7 +3,7 @@ import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } 
 import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
-import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag } from '@deriv/shared';
+import { CFD_PLATFORMS, PlatformContext, isLandingCompanyEnabled } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
@@ -27,8 +27,8 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_compare_accounts_visible: boolean;
     is_loading: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_real_enabled: boolean;
-    is_pre_appstore: boolean;
     residence: string;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
@@ -37,18 +37,12 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     openDerivRealAccountNeededModal: () => void;
     context: RootStore;
     real_account_creation_unlock_date: string;
-    show_eu_related_content: boolean;
     setShouldShowCooldownModal: (value: boolean) => void;
-    is_eu_user: string;
-    is_cr_demo_account: boolean;
-    upgradeable_landing_companies: unknown[];
-    landing_company_shortcode: string;
-    content_flag: string;
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
     is_demo_tab: boolean;
-    is_eu_client: boolean;
+    show_eu_related: boolean;
     has_unmerged_account: boolean;
     residence: string;
     is_eu: boolean;
@@ -60,7 +54,7 @@ const DxtradeCompareAccountContent = ({
     is_logged_in,
     landing_companies,
     platform,
-    is_eu_client,
+    show_eu_related,
     has_unmerged_account,
     residence,
     is_eu,
@@ -72,7 +66,7 @@ const DxtradeCompareAccountContent = ({
                 is_logged_in={is_logged_in}
                 landing_companies={landing_companies}
                 platform={platform}
-                is_eu_client={is_eu_client}
+                show_eu_related={show_eu_related}
                 residence={residence}
                 is_eu={is_eu}
                 is_uk={is_uk}
@@ -85,7 +79,7 @@ const DxtradeCompareAccountContent = ({
             is_logged_in={is_logged_in}
             landing_companies={landing_companies}
             platform={platform}
-            is_eu_client={is_eu_client}
+            show_eu_related={show_eu_related}
             residence={residence}
             is_eu={is_eu}
             is_uk={is_uk}
@@ -94,30 +88,32 @@ const DxtradeCompareAccountContent = ({
 };
 
 const CompareAccountsModal = ({
-    context,
     disableApp,
     enableApp,
-    has_unmerged_account,
     is_compare_accounts_visible,
-    is_demo_tab,
-    is_eu,
+    landing_companies,
     is_loading,
     is_logged_in,
-    is_real_enabled,
+    is_eu,
     is_uk,
-    landing_companies,
-    openDerivRealAccountNeededModal,
-    openPasswordModal,
+    is_eu_country,
+    is_real_enabled,
+    has_unmerged_account,
     platform,
-    real_account_creation_unlock_date,
     residence,
-    setShouldShowCooldownModal,
+    is_demo_tab,
     toggleCompareAccounts,
-    content_flag,
-    show_eu_related_content,
+    openPasswordModal,
+    openDerivRealAccountNeededModal,
+    context,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
 }: TCompareAccountsModalProps) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore // TODO: remove this after PlatformContext is converted to TS
+    const { is_pre_appstore } = React.useContext(PlatformContext);
     const location = window.location.pathname;
-    const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
+    const is_pre_appstore_setting = is_pre_appstore && location.startsWith('/appstore/traders-hub');
 
     // TODO : should change the type to all after changing derivx api
     const has_derivx =
@@ -130,18 +126,10 @@ const CompareAccountsModal = ({
             landing_companies,
             platform: CFD_PLATFORMS.DXTRADE,
             type: 'gaming',
-        }) ||
-        isLandingCompanyEnabled({
-            landing_companies,
-            platform: CFD_PLATFORMS.DXTRADE,
-            type: 'all',
         });
 
-    const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related_content;
-
-    const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related_content && is_demo_tab;
-    const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
-
+    const should_show_derivx = is_pre_appstore_setting && has_derivx;
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
         landing_companies?.mt_gaming_company?.financial,
@@ -156,46 +144,23 @@ const CompareAccountsModal = ({
             ? localize('Account Information')
             : localize('Compare accounts');
 
-    const getCFDModalTitle = () => {
-        if (is_pre_appstore_setting && show_eu_related_content) {
-            return is_demo_tab ? localize('Deriv MT5 CFDs demo account') : localize('Deriv MT5 CFDs real account');
-        } else if (should_show_derivx) {
-            return is_demo_tab ? localize('Compare CFDs demo accounts') : localize('Compare CFDs real accounts');
-        }
-        return is_dxtrade ? cfd_account_button_label : localize('Compare available accounts');
-    };
+    const getCFDModalTitle = () => (is_dxtrade ? cfd_account_button_label : localize('Compare available accounts'));
+
     const getModalStyle = () => {
-        if (is_dxtrade) {
+        if (should_show_derivx) {
+            return {
+                height: '506px',
+                width: '1200px',
+            };
+        } else if (is_dxtrade) {
             return {
                 height: '696px',
                 width: '903px',
             };
-        } else if (is_preappstore_cr_demo_account) {
+        } else if (show_eu_related) {
             return {
-                height: '404px',
-                width: '610px',
-            };
-        } else if (show_eu_related_content) {
-            if (is_pre_appstore_setting) {
-                if (content_flag === ContentFlag.EU_DEMO) {
-                    return {
-                        height: '350px',
-                        width: '483px',
-                    };
-                }
-                return {
-                    height: '560px',
-                    width: '483px',
-                };
-            }
-            return {
-                height: '525px',
+                height: '506px',
                 width: '300px',
-            };
-        } else if (is_pre_appstore_setting && should_show_derivx) {
-            return {
-                height: '574px',
-                width: '1131px',
             };
         }
         return {
@@ -204,44 +169,10 @@ const CompareAccountsModal = ({
         };
     };
 
-    const getModalContent = () => {
-        return is_dxtrade ? (
-            <DxtradeCompareAccountContent
-                is_demo_tab={is_demo_tab}
-                is_logged_in={is_logged_in}
-                landing_companies={landing_companies}
-                platform={platform}
-                is_eu_client={!!show_eu_related_content}
-                residence={residence}
-                has_unmerged_account={has_unmerged_account}
-                is_eu={is_eu}
-                is_uk={is_uk}
-            />
-        ) : (
-            <DMT5CompareModalContent
-                content_flag={content_flag}
-                context={context}
-                is_demo_tab={is_demo_tab}
-                is_logged_in={is_logged_in}
-                is_pre_appstore_setting={is_pre_appstore_setting}
-                is_preappstore_cr_demo_account={is_preappstore_cr_demo_account}
-                is_real_enabled={is_real_enabled}
-                openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
-                openPasswordModal={openPasswordModal}
-                real_account_creation_unlock_date={real_account_creation_unlock_date}
-                setShouldShowCooldownModal={setShouldShowCooldownModal}
-                should_show_derivx={should_show_derivx}
-                show_eu_related_content={show_eu_related_content}
-                show_preappstore_eu_demo={show_preappstore_eu_demo}
-                toggleCompareAccounts={toggleCompareAccounts}
-            />
-        );
-    };
-
     return (
         <>
             <div className='cfd-compare-accounts-modal__wrapper' style={{ marginTop: is_dxtrade ? '5rem' : '2.4rem' }}>
-                {!(is_demo_tab && platform === 'mt5') && !is_pre_appstore_setting && (
+                {!(is_demo_tab && platform === 'mt5' && !is_pre_appstore_setting) && (
                     <Button
                         className='cfd-dashboard__welcome-message--button'
                         has_effect
@@ -254,7 +185,7 @@ const CompareAccountsModal = ({
                 <React.Suspense fallback={<UILoader />}>
                     <DesktopWrapper>
                         <Modal
-                            className={is_dxtrade ? 'cfd-dashboard__compare-accounts' : 'cfd-accounts-compare-modal'}
+                            className={is_dxtrade ? 'cfd-dashboard__compare-accounts' : 'cfd-real-compare-accounts'}
                             disableApp={disableApp}
                             enableApp={enableApp}
                             is_open={is_compare_accounts_visible}
@@ -265,7 +196,33 @@ const CompareAccountsModal = ({
                             width={getModalStyle().width}
                             exit_classname={is_dxtrade ? '' : 'cfd-modal--custom-exit'}
                         >
-                            {getModalContent()}
+                            {is_dxtrade ? (
+                                <DxtradeCompareAccountContent
+                                    is_demo_tab={is_demo_tab}
+                                    is_logged_in={is_logged_in}
+                                    landing_companies={landing_companies}
+                                    platform={platform}
+                                    show_eu_related={show_eu_related}
+                                    residence={residence}
+                                    has_unmerged_account={has_unmerged_account}
+                                    is_eu={is_eu}
+                                    is_uk={is_uk}
+                                />
+                            ) : (
+                                <DMT5CompareModalContent
+                                    context={context}
+                                    is_logged_in={is_logged_in}
+                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
+                                    openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
+                                    show_eu_related={show_eu_related}
+                                    is_real_enabled={is_real_enabled}
+                                    toggleCompareAccounts={toggleCompareAccounts}
+                                    should_show_derivx={should_show_derivx}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                />
+                            )}
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -275,10 +232,35 @@ const CompareAccountsModal = ({
                             wrapper_classname='cfd-dashboard__compare-accounts'
                             visible={is_compare_accounts_visible}
                             onClose={toggleCompareAccounts}
-                            header_classname={is_dxtrade ? '' : 'cfd-accounts-compare-modal-mobile-header'}
-                            has_full_height
+                            header_classname={is_dxtrade ? '' : 'cfd-real-compare-accounts-mobile-header'}
                         >
-                            {getModalContent()}
+                            {is_dxtrade && !should_show_derivx ? (
+                                <DxtradeCompareAccountContent
+                                    is_demo_tab={is_demo_tab}
+                                    is_logged_in={is_logged_in}
+                                    landing_companies={landing_companies}
+                                    platform={platform}
+                                    show_eu_related={show_eu_related}
+                                    has_unmerged_account={has_unmerged_account}
+                                    residence={residence}
+                                    is_eu={is_eu}
+                                    is_uk={is_uk}
+                                />
+                            ) : (
+                                <DMT5CompareModalContent
+                                    context={context}
+                                    is_logged_in={is_logged_in}
+                                    openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
+                                    openPasswordModal={openPasswordModal}
+                                    is_demo_tab={is_demo_tab}
+                                    show_eu_related={show_eu_related}
+                                    is_real_enabled={is_real_enabled}
+                                    toggleCompareAccounts={toggleCompareAccounts}
+                                    should_show_derivx={should_show_derivx}
+                                    real_account_creation_unlock_date={real_account_creation_unlock_date}
+                                    setShouldShowCooldownModal={setShouldShowCooldownModal}
+                                />
+                            )}
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Suspense>
@@ -287,7 +269,7 @@ const CompareAccountsModal = ({
     );
 };
 
-export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
+export default connect(({ modules, ui, client }: RootStore) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
@@ -296,13 +278,8 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     is_uk: client.is_uk,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
-    is_pre_appstore: client.is_pre_appstore,
     landing_companies: client.landing_companies,
     residence: client.residence,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
     openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
-    selected_region: traders_hub.selected_region,
-    is_eu_user: traders_hub.is_eu_user,
-    content_flag: traders_hub.content_flag,
-    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(CompareAccountsModal);

@@ -314,9 +314,3 @@ export const getMinPayout = (currency: string) => {
 export const getCurrencies = () => {
     return currencies_config;
 };
-
-export type TAccount = {
-    account_type: 'real' | 'demo';
-    balance: number;
-    currency: string;
-};

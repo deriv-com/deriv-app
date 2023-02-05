@@ -191,6 +191,7 @@ describe('<CFDDashboard />', () => {
             svg: true,
         },
         toggleAccountsDialog: jest.fn(),
+        toggleMT5TradeModal: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
         toggleResetTradingPasswordModal: jest.fn(),
         upgradeable_landing_companies: ['svg'],
@@ -475,6 +476,13 @@ describe('<CFDDashboard />', () => {
             }
         );
         expect(props.openTopUpModal).toHaveBeenCalledTimes(1);
+    });
+    it('Trade button should trigger MT5TradeModal when clicked', () => {
+        renderCFDDashboardWithRouter({ is_logged_in: true });
+
+        const dmt5_trade_button = screen.getByRole('button', { name: 'Trade' });
+        fireEvent.click(dmt5_trade_button);
+        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
     });
     it('Should trigger CFDResetPasswordModal when URL hash contains reset-password', () => {
         window.location.hash = 'reset-password';

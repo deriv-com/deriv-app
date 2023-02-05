@@ -9,7 +9,6 @@ type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     styles?: CSSProperties;
     size?: string;
 };
-
 const Text = ({
     children,
     size = 's',

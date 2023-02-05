@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// TODO: To be removed after refactor
 import React from 'react';
 import type { Meta, Story } from '@storybook/react';
 import PlatformLauncher from '../index';
@@ -17,7 +14,7 @@ export const PlatformLauncherDTrader = Template.bind({});
 PlatformLauncherDTrader.args = {
     app_icon: 'DTrader',
     app_title: 'DTrader',
-    app_desc: 'Options and multipliers trading platform.',
+    app_desc: 'Options & multipliers trading platform.',
 };
 export const PlatformLauncherDBot = Template.bind({});
 PlatformLauncherDBot.args = {

@@ -1,20 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// TODO: To be removed after refactor
 import React from 'react';
 import { Text, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import WalletIcon, { Icons } from 'Assets/svgs/wallet';
 import { isMobile } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
-import { PlatformConfig } from 'Constants/platform-config';
 
-interface PlatformLauncherProps extends Omit<PlatformConfig, 'name'> {
+type TPlatformLauncherProps = {
+    app_icon: keyof typeof Icons;
+    app_title?: string;
+    app_desc?: string;
+    link_to?: string;
+    href?: string;
     has_real_account: boolean;
     account_type: string;
-}
+};
 
 const PlatformLauncher = ({
     app_icon,
@@ -24,7 +25,7 @@ const PlatformLauncher = ({
     href,
     has_real_account,
     account_type,
-}: PlatformLauncherProps) => {
+}: TPlatformLauncherProps) => {
     const { client } = useStores();
 
     const { is_eu } = client;
@@ -32,7 +33,7 @@ const PlatformLauncher = ({
     const is_eu_description = 'Multipliers trading platform.';
 
     const app_description =
-        app_desc === 'Options and multipliers trading platform.' && is_eu ? is_eu_description : app_desc;
+        app_desc === 'Options & multipliers trading platform.' && is_eu ? is_eu_description : app_desc;
 
     const TradeButton = (
         <Button primary className='platform-launcher__trade-button'>
@@ -46,7 +47,7 @@ const PlatformLauncher = ({
         <div className={`platform-launcher${has_real_account ? '' : '-applauncher'}`}>
             <div className='platform-launcher__container'>
                 <div className='platform-launcher__container--icon'>
-                    <TradigPlatformIconProps icon={app_icon} />
+                    <WalletIcon icon={app_icon} />
                 </div>
                 <div className='platform-launcher__container--title-desc-wrapper'>
                     <Text

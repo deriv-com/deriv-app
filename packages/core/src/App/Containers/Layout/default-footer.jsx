@@ -43,7 +43,6 @@ const Footer = ({
     toggleSettingsModal,
     settings_extension,
     landing_company_shortcode,
-    is_pre_appstore,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -85,7 +84,6 @@ const Footer = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     settings_extension={settings_extension}
-                    is_pre_appstore={is_pre_appstore}
                 />
                 <ToggleFullScreen />
             </div>
@@ -107,7 +105,6 @@ Footer.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
-    is_pre_appstore: PropTypes.bool,
 };
 
 export default withRouter(
@@ -125,6 +122,5 @@ export default withRouter(
         landing_company_shortcode: client.landing_company_shortcode,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
-        is_pre_appstore: client.is_pre_appstore,
     }))(Footer)
 );

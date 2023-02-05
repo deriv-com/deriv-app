@@ -12,15 +12,7 @@
     transition: opacity 0.3s;
     display: flex;
 
-    @media screen and (max-width: 380px) {
-        &__cashier-button {
-            display: none;
-        }
-    }
-
     @include mobile {
-        display: flex;
-        justify-content: space-between;
         height: 4rem;
     }
 
@@ -41,8 +33,8 @@
 
     &__mobile-parent {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 1rem;
     }
 
     &__menu-right {
@@ -50,26 +42,6 @@
         display: inline-flex;
         flex: 1;
         align-items: center;
-
-        &--items {
-            display: flex;
-            align-items: center;
-
-            &--onboarding {
-                padding: 2.5rem;
-                cursor: pointer;
-
-                @include mobile {
-                    padding: 1rem;
-                }
-            }
-
-            &--notifications {
-                @include mobile {
-                    padding: 0 2rem 0 1rem;
-                }
-            }
-        }
     }
 
     &__menu-middle {
@@ -80,39 +52,19 @@
     }
 
     &__logo {
-        width: 8.5rem;
+        width: 8rem;
         height: 3rem;
-        margin: 0 0.5rem 0 1.5rem;
 
         @include mobile {
             margin-left: 0.7rem;
         }
     }
 
-    &__tradershub {
+    &__tradinghub {
         display: flex;
-        height: 100%;
         justify-content: center;
         align-items: center;
-        padding: 0 1rem 0 1.6rem;
-        cursor: pointer;
-
-        &:hover:not(&--active) {
-            background-color: var(--general-hover);
-        }
-
-        &--active > &--text {
-            font-weight: bold;
-            color: var(--text-prominent);
-        }
-
-        &--home-logo {
-            padding-right: 0.8rem;
-        }
-
-        &--text {
-            font-size: 1.6rem;
-        }
+        width: 6rem;
 
         > * {
             cursor: pointer;
@@ -138,7 +90,6 @@
 
     &__redirect {
         display: flex;
-        cursor: pointer;
 
         &--link {
             display: flex;
@@ -185,9 +136,9 @@
     &__setting {
         margin-right: 2.2rem;
 
-        // @include mobile {
-        //     margin-left: 2.2rem;
-        // }
+        @include mobile {
+            margin-left: 2.2rem;
+        }
 
         &--icon {
             cursor: pointer;

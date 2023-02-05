@@ -61,6 +61,6 @@ export const routes = {
 
     // Appstore
     appstore: '/appstore',
-    traders_hub: '/appstore/traders-hub',
+    trading_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
 };

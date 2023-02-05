@@ -3,15 +3,11 @@ import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/comp
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TCryptoTransactionDetails } from '../../types';
+import { TCryptoTransactionDetails } from 'Types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-
-type TCryptoTransactionDetailsRow = {
-    row: TCryptoTransactionDetails;
-};
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -78,7 +74,7 @@ const CryptoTransactionsHistory = observer(() => {
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
                                     data_source={crypto_transactions}
-                                    rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
+                                    rowRenderer={(row_props: TCryptoTransactionDetails) => (
                                         <CryptoTransactionsRenderer {...row_props} />
                                     )}
                                     keyMapper={(row: TCryptoTransactionDetails) => row.id}

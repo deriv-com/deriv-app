@@ -297,8 +297,10 @@ const CFDPasswordManagerModal = ({
     disableApp,
     is_visible,
     platform,
+    is_eu,
     context,
     selected_login,
+    selected_account,
     toggleModal,
     selected_account_type,
     selected_account_group,
@@ -312,7 +314,7 @@ const CFDPasswordManagerModal = ({
 
     if (!selected_login) return null;
 
-    const getTitle = () => {
+    const getTitle = (i: number) => {
         return localize('Manage {{platform}} password', {
             platform: getCFDPlatformLabel(platform),
         });
@@ -369,7 +371,7 @@ const CFDPasswordManagerModal = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_visible}
-                    title={getTitle()}
+                    title={getTitle(index)}
                     toggleModal={toggleModal}
                     height='688px'
                     width='904px'

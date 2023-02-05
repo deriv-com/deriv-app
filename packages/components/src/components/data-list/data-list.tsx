@@ -22,7 +22,7 @@ const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 type CellType = { Cell: typeof DataListCell };
-export type RowRenderPropType = (params: {
+export type TRowRenderer = (params: {
     row: React.ReactNode;
     is_footer?: boolean;
     measure?: (() => void) | undefined;
@@ -39,7 +39,7 @@ type DataListProps = {
     passthrough: unknown;
     row_gap: number;
     setListRef: (ref: MeasuredCellParent) => void;
-    rowRenderer: RowRenderPropType;
+    rowRenderer: TRowRenderer;
     children?: React.ReactNode;
     overscanRowCount: number;
     Cell: CellType;

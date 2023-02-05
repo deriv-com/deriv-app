@@ -7,12 +7,12 @@ type TRenderCellContent = {
     passthrough: unknown;
     row_obj: object;
 };
-type DataListCellType = {
+type TDataListCell = {
     className: string;
     column: {
         col_index: number;
         title: string;
-        renderCellContent: (props: renderCellContentProps) => React.ReactNode;
+        renderCellContent: (props: TRenderCellContent) => React.ReactNode;
         renderHeader: (prop: renderHeaderType) => React.ReactNode;
     };
     is_footer: boolean;
@@ -21,7 +21,7 @@ type DataListCellType = {
 };
 
 type renderHeaderType = { title: string };
-const DataListCell = ({ className, column, is_footer, passthrough, row }: DataListCellType) => {
+const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];

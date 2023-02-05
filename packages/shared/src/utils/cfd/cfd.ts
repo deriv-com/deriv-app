@@ -13,6 +13,7 @@ const CFD_text: { [key: string]: string } = {
     synthetic: 'Derived',
     synthetic_bvi: 'Derived BVI',
     synthetic_svg: 'Derived SVG',
+    synthetic_v: 'Derived Vanuatu',
     financial: 'Financial',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
@@ -49,6 +50,8 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'synthetic_svg';
                 case 'bvi':
                     return 'synthetic_bvi';
+                case 'vanuatu':
+                    return 'synthetic_v';
                 default:
                     return 'synthetic';
             }
@@ -140,6 +143,7 @@ export const getCFDAccountDisplay = ({
     is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
+
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {

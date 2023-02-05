@@ -55,7 +55,6 @@ const JurisdictionModalContent = ({
                         )
                 )}
             </div>
-            {/*  */}
         </React.Fragment>
     );
 };

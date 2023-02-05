@@ -91,9 +91,10 @@ const MFRegulatoryInformation = () => (
     </div>
 );
 
-export const RegulatoryInformation = ({ landing_company, is_eu }) => {
+export const RegulatoryInformation = ({ landing_company, is_eu, is_eu_selected }) => {
     const [should_show_modal, showModal] = React.useState(false);
-    if (!is_eu) return null;
+    if (!is_eu && !is_eu_selected) return null;
+
     const is_mx = landing_company === 'iom';
     const is_mlt = landing_company === 'malta';
     const is_mf = landing_company === 'maltainvest';
@@ -114,7 +115,7 @@ export const RegulatoryInformation = ({ landing_company, is_eu }) => {
             >
                 {is_mx && <MXRegulatoryInformation />}
                 {is_mlt && <MLTRegulatoryInformation />}
-                {is_mf && <MFRegulatoryInformation />}
+                {(is_mf || is_eu_selected) && <MFRegulatoryInformation />}
             </Modal>
         </div>
     );

@@ -12,7 +12,7 @@ type TDataListRow = {
     row_gap: number;
     row_key: string | number;
     rowRenderer: TRowRenderer;
-    measure: (() => void) | undefined;
+    measure?: () => void;
     is_dynamic_height: boolean;
     is_new_row: boolean;
     is_scrolling: boolean;

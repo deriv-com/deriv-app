@@ -37,6 +37,7 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from './props.types';
+import secureLocalStorage from 'react-secure-storage';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -74,7 +75,7 @@ const CFDPasswordReset = ({
 
     React.useEffect(() => {
         localStorage.setItem('cfd_reset_password_intent', [server, account_group, account_type].join('.'));
-        localStorage.setItem('cfd_reset_password_type', password_type);
+        secureLocalStorage.setItem('cfd_reset_password_type', password_type);
         sendVerifyEmail();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

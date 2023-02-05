@@ -17,10 +17,11 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
+import secureLocalStorage from 'react-secure-storage';
 
 const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
-    const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
+    const reset_password_type = secureLocalStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent &&
         /(real|demo)\.(financial_stp|financial|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v)/.test(
@@ -88,7 +89,7 @@ const CFDResetPasswordModal = ({
     };
     const clearAddressBar = () => {
         localStorage.removeItem('cfd_reset_password_intent');
-        localStorage.removeItem('cfd_reset_password_type');
+        secureLocalStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
         if (history.location.pathname !== routes.mt5 && !is_pre_appstore) {
             history.push(`${routes.mt5}`);

@@ -9,6 +9,7 @@ import SideNote from 'Components/side-note';
 import { TReactFormEvent } from 'Types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 
 type TMenuOption = {
@@ -56,9 +57,8 @@ const OnRampInfo = () => (
 );
 
 const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
-    const is_deposit_locked = useDepositLocked();
-    const { modules, common, client } = useStore();
-    const { onramp, general_store } = modules.cashier;
+    const { common, client } = useStore();
+    const { onramp, general_store } = useCashierStore();
     const {
         filtered_onramp_providers,
         is_onramp_modal_open,
@@ -72,6 +72,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     const { is_cashier_onboarding, is_cashier_locked, is_loading, cashier_route_tab_index } = general_store;
     const { is_switching } = client;
     const { routeTo } = common;
+    const is_deposit_locked = useDepositLocked();
 
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 

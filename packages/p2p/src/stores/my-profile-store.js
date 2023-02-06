@@ -858,7 +858,12 @@ export default class MyProfileStore extends BaseStore {
                     const wait = setTimeout(() => this.setIsDailyLimitSuccessModalOpen(true), 250);
                 }
 
-                general_store.props.removeNotificationByKey({ key: 'p2p_daily_limit_increase' });
+                general_store.props.removeNotificationByKey({
+                    key: 'p2p_daily_limit_increase',
+                    should_show_again: false,
+                });
+
+                general_store.client.setP2pAdvertiserInfo(false);
             }
         });
     }

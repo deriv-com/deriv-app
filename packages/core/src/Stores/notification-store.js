@@ -92,6 +92,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 this.p2p_order_props.order_id,
+                root_store.client.p2p_advertiser_info,
             ],
             async () => {
                 if (
@@ -167,7 +168,11 @@ export default class NotificationStore extends BaseStore {
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
-                if (notification.key.includes('svg') || !excluded_notifications.includes(notification.key)) {
+                if (
+                    notification.key.includes('svg') ||
+                    notification.key === 'p2p_daily_limit_increase' ||
+                    !excluded_notifications.includes(notification.key)
+                ) {
                     this.updateNotifications(this.notification_messages);
                 }
             }

@@ -17,6 +17,11 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
 jest.mock('@deriv/components', () => {
     return {
         ...(jest.requireActual('@deriv/components') as any),

@@ -12,6 +12,11 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
     let mockRootStore;

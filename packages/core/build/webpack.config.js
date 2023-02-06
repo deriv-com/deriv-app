@@ -15,7 +15,7 @@ module.exports = function (env) {
             openPage: sub_path,
             host: is_qawolf ? 'localhost' : 'localhost.binary.sx',
             https: !is_qawolf,
-            port: 3000,
+            port: is_qawolf ? 3000 : 443,
             historyApiFallback: true,
             stats: {
                 colors: true,

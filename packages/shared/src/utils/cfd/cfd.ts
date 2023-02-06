@@ -143,7 +143,6 @@ export const getCFDAccountDisplay = ({
     is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
-
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {

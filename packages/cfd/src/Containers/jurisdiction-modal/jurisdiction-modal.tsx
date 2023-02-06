@@ -39,6 +39,7 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan,
         poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
+        need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -96,7 +97,11 @@ const JurisdictionModal = ({
                       );
 
             if (!is_account_created) {
-                if (is_svg_selected) {
+                if (
+                    is_svg_selected ||
+                    (is_bvi_selected && should_restrict_bvi_account_creation && need_poa_resubmission) ||
+                    (is_vanuatu_selected && should_restrict_vanuatu_account_creation && need_poa_resubmission)
+                ) {
                     return false;
                 }
                 return !checked;

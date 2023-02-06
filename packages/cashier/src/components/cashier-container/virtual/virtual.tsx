@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile, routes, PlatformContext } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
@@ -10,8 +10,8 @@ import './virtual.scss';
 const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
+        client: { is_pre_appstore },
     } = useStore();
-    const { is_pre_appstore } = React.useContext(PlatformContext);
     const history = useHistory();
 
     return (

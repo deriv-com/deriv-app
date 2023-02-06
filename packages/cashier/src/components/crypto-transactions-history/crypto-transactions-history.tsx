@@ -12,6 +12,10 @@ type TCryptoTransactionDetailsRow = {
     row: TCryptoTransactionDetails;
 };
 
+type TCryptoTransactionDetailsRow = {
+    row: TCryptoTransactionDetails;
+};
+
 const getHeaders = () => [
     { text: localize('Transaction') },
     { text: localize('Amount') },

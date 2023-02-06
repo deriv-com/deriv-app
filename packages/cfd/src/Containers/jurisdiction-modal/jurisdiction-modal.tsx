@@ -153,19 +153,15 @@ const JurisdictionModal = ({
     const ModalContent = () => (
         <React.Fragment>
             <JurisdictionModalContent
-                account_status={account_status}
                 account_type={account_type.type}
-                checked={checked}
                 financial_available_accounts={financial_available_accounts}
                 is_virtual={is_virtual}
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                setChecked={setChecked}
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
-                should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote

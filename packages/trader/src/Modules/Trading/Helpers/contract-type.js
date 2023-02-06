@@ -14,6 +14,7 @@ export const getContractTypeCategoryIcons = () => ({
     All: 'IcCatAll',
     Options: 'IcCatOptions',
     Multipliers: 'IcCatMultiplier',
+    Turbos: 'IcCatTurbos',
 });
 
 /**

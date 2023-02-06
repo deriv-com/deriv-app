@@ -134,7 +134,7 @@ MobileDialog.propTypes = {
     has_close_icon: PropTypes.bool,
     portal_element_id: PropTypes.string.isRequired,
     renderTitle: PropTypes.func,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     visible: PropTypes.bool,
     wrapper_classname: PropTypes.string,
     header_classname: PropTypes.string,

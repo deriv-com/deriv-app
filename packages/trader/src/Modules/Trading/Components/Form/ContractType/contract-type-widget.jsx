@@ -85,6 +85,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             contract_category => contract_category.label === localize('Multipliers')
         );
         const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
+        const turbos_category = list.filter(contract_category => contract_category.label === localize('Turbos'));
 
         const categories = [];
 
@@ -110,6 +111,14 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 label: localize('Options'),
                 contract_categories: options_category,
                 key: 'Options',
+            });
+        }
+
+        if (turbos_category.length > 0) {
+            categories.push({
+                label: localize('Turbos'),
+                contract_categories: turbos_category,
+                key: 'Turbos',
             });
         }
 
@@ -152,6 +161,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             .filter(type => type.value !== 'rise_fall_equal')
             .findIndex(type => type.value === item?.value);
     };
+
     return (
         <div
             data-testid='dt_contract_widget'

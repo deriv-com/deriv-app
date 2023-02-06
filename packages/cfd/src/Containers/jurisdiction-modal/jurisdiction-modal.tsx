@@ -25,6 +25,7 @@ const JurisdictionModal = ({
     toggleJurisdictionModal,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
     show_eu_related_content,
     toggleCFDVerificationModal,
     updateMT5Status,
@@ -38,6 +39,7 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan,
         poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
+        need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -95,7 +97,11 @@ const JurisdictionModal = ({
                       );
 
             if (!is_account_created) {
-                if (is_svg_selected) {
+                if (
+                    is_svg_selected ||
+                    (is_bvi_selected && should_restrict_bvi_account_creation && need_poa_resubmission) ||
+                    (is_vanuatu_selected && should_restrict_vanuatu_account_creation && need_poa_resubmission)
+                ) {
                     return false;
                 }
                 return !checked;
@@ -117,6 +123,7 @@ const JurisdictionModal = ({
             if (
                 poi_acknowledged_for_vanuatu_maltainvest &&
                 !poi_or_poa_not_submitted &&
+                !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&
                 has_submitted_cfd_personal_details
             ) {
@@ -171,6 +178,7 @@ const JurisdictionModal = ({
                     context={context}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                     should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                    should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
                 />
                 <JurisdictionCheckBox
                     is_checked={checked}
@@ -179,6 +187,7 @@ const JurisdictionModal = ({
                     class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                     should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                    should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
                 />
                 <Modal.Footer has_separator>
                     <Button
@@ -247,6 +256,7 @@ export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore
     setAccountSettings: client.setAccountSettings,
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     show_eu_related_content: traders_hub.show_eu_related_content,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,

@@ -34,6 +34,7 @@ const PurchaseButton = ({
     is_loading,
     is_multiplier,
     is_proposal_empty,
+    is_turbos,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
@@ -87,9 +88,11 @@ const PurchaseButton = ({
                                 <Money amount={info.stake} currency={currency} show_currency />
                             </Text>
                         ) : (
-                            <Text size='xs' weight='bold' color='colored-background'>
-                                {!(is_loading || is_disabled) ? info.returns : ''}
-                            </Text>
+                            !is_turbos && (
+                                <Text size='xs' weight='bold' color='colored-background'>
+                                    {!(is_loading || is_disabled) ? info.returns : ''}
+                                </Text>
+                            )
                         )}
                     </div>
                 </div>
@@ -133,6 +136,7 @@ PurchaseButton.propTypes = {
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
     should_fade: PropTypes.bool,

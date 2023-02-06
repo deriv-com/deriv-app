@@ -39,7 +39,7 @@ const PurchaseFieldset = ({
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
-                info={!is_turbos && info}
+                info={info}
                 index={index}
                 has_deal_cancellation={is_multiplier && has_cancellation}
                 is_disabled={is_disabled}
@@ -47,6 +47,7 @@ const PurchaseFieldset = ({
                 is_loading={is_loading}
                 is_multiplier={is_multiplier}
                 is_proposal_empty={is_proposal_empty}
+                is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
                 setPurchaseState={setPurchaseState}

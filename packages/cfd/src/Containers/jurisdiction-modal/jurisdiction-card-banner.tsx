@@ -107,23 +107,6 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_bvi && should_restrict_bvi_account_creation) {
-        if (poa_pending) {
-            return (
-                <div className={`${card_classname}__verification-status--pending`}>
-                    <Text size='xxs' color='prominent'>
-                        <Localize i18n_default_text='Pending proof of address review' />
-                    </Text>
-                </div>
-            );
-        }
-        return (
-            <div className={`${card_classname}__verification-status--failed`}>
-                <Text size='xxs' color='colored-background'>
-                    <Localize i18n_default_text='Resubmit proof of address' />
-                </Text>
-            </div>
-        );
     } else if (is_vanuatu && poi_not_submitted_for_vanuatu_maltainvest) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
@@ -132,7 +115,10 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_vanuatu && should_restrict_vanuatu_account_creation) {
+    } else if (
+        (is_bvi && should_restrict_bvi_account_creation) ||
+        (is_vanuatu && should_restrict_vanuatu_account_creation)
+    ) {
         if (poa_pending) {
             return (
                 <div className={`${card_classname}__verification-status--pending`}>

@@ -15,6 +15,7 @@ const VerificationStatusBanner = ({
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
@@ -131,6 +132,23 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
+    } else if (is_vanuatu && should_restrict_vanuatu_account_creation) {
+        if (poa_pending) {
+            return (
+                <div className={`${card_classname}__verification-status--pending`}>
+                    <Text size='xxs' color='prominent'>
+                        <Localize i18n_default_text='Pending proof of address review' />
+                    </Text>
+                </div>
+            );
+        }
+        return (
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Resubmit proof of address' />
+                </Text>
+            </div>
+        );
     } else if (
         ((is_bvi || is_labuan) && poi_acknowledged_for_vanuatu_maltainvest && poa_not_submitted) ||
         ((is_vanuatu || is_maltainvest) && poi_acknowledged_for_bvi_labuan && poa_not_submitted)
@@ -188,6 +206,7 @@ export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
 }))(JurisdictionCardBanner);

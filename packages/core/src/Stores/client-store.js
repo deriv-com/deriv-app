@@ -580,7 +580,7 @@ export default class ClientStore extends BaseStore {
 
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual) {
+            if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
                 acc.push(item.currency);
             }
             return acc;
@@ -832,11 +832,14 @@ export default class ClientStore extends BaseStore {
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
-        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) ||
-                  eu_shortcode_regex.test(gaming_shortcode) ||
-                  eu_shortcode_regex.test(mt_gaming_shortcode)
-            : eu_excluded_regex.test(this.residence);
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (
+            is_current_mf || //is_currently logged in mf account via trdaershub
+            (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
+                  eu_shortcode_regex.test(gaming_shortcode)
+                : eu_excluded_regex.test(this.residence))
+        );
     }
 
     get is_brazil() {
@@ -2558,15 +2561,16 @@ export default class ClientStore extends BaseStore {
 
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
-        WS.setSettings({
-            set_settings: 1,
-            trading_hub,
-        }).then(response => {
-            if (!response.error) {
-                this.account_settings = { ...this.account_settings, trading_hub };
-                localStorage.setItem('is_pre_appstore', is_pre_appstore);
-            }
-        });
+        try {
+            WS.setSettings({
+                set_settings: 1,
+                trading_hub,
+            });
+        } catch (error) {
+            return;
+        }
+        this.account_settings = { ...this.account_settings, trading_hub };
+        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

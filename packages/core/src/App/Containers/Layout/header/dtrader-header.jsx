@@ -53,6 +53,7 @@ const DTraderHeader = ({
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
+    is_switching,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -124,7 +125,7 @@ const DTraderHeader = ({
                             <Divider />
                         </div>
                     </DesktopWrapper>
-                    {is_logging_in && (
+                    {(is_logging_in || is_switching) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader__dtrader', {
@@ -201,6 +202,7 @@ DTraderHeader.propTypes = {
     history: PropTypes.object,
     menu_items: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
+    is_switching: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -237,4 +239,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
     is_pre_appstore: client.is_pre_appstore,
+    is_switching: client.is_switching,
 }))(withRouter(DTraderHeader));

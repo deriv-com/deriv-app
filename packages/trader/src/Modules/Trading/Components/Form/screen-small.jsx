@@ -22,8 +22,9 @@ const CollapsibleTradeParams = ({
     has_allow_equals,
     previous_symbol,
     is_allow_equal,
-    is_trade_params_expanded,
     is_multiplier,
+    is_trade_params_expanded,
+    is_turbos,
     setIsTradeParamsExpanded,
 }) => {
     React.useEffect(() => {
@@ -55,13 +56,13 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {isVisible('barrier') && (
-                <div collapsible={'true'}>
+                <div collapsible='true'>
                     <BarrierMobile />
                 </div>
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
-            {is_multiplier && (
+            {(is_multiplier || is_turbos) && (
                 <div collapsible='true'>
                     <RiskManagementInfo />
                 </div>
@@ -113,6 +114,7 @@ ScreenSmall.propTypes = {
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
     is_multiplier: modules.trade.is_multiplier,
+    is_turbos: modules.trade.is_turbos,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

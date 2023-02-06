@@ -10,6 +10,7 @@ import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-de
 
 const RiskManagementDialog = ({
     is_open,
+    is_turbos,
     onClose,
     take_profit,
     stop_loss,
@@ -104,13 +105,15 @@ const RiskManagementDialog = ({
                         onChangeMultiple={onChangeMultipleLocal}
                         validation_errors={validation_errors}
                     />
-                    <StopLoss
-                        stop_loss={state.stop_loss}
-                        has_stop_loss={state.has_stop_loss}
-                        onChange={onChange}
-                        onChangeMultiple={onChangeMultipleLocal}
-                        validation_errors={validation_errors}
-                    />
+                    {!is_turbos && (
+                        <StopLoss
+                            stop_loss={state.stop_loss}
+                            has_stop_loss={state.has_stop_loss}
+                            onChange={onChange}
+                            onChangeMultiple={onChangeMultipleLocal}
+                            validation_errors={validation_errors}
+                        />
+                    )}
                     {should_show_deal_cancellation && (
                         <CancelDeal
                             has_take_profit={state.has_take_profit}
@@ -140,6 +143,7 @@ const RiskManagementDialog = ({
 };
 
 export default connect(({ modules }) => ({
+    is_turbos: modules.trade.is_turbos,
     take_profit: modules.trade.take_profit,
     has_take_profit: modules.trade.has_take_profit,
     stop_loss: modules.trade.stop_loss,

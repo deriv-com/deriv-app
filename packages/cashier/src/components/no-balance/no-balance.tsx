@@ -35,6 +35,7 @@ const NoBalance = observer(({ history }: RouteComponentProps) => {
                         <Localize i18n_default_text='Please make a deposit to use this feature.' />
                     </Text>
                     <Button
+                        style={{ marginTop: '2rem' }}
                         className='cashier__no-balance-button'
                         has_effect
                         text={localize('Deposit now')}

@@ -12,7 +12,7 @@ type TItem = {
     onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
     value?: string | number;
     is_align_text_left?: boolean;
-    nodes?: any;
+    nodes: Map<string, HTMLDivElement | null> | null;
     item: TListItem;
 };
 
@@ -37,7 +37,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
 
     React.useEffect(() => {
         const removeListeners = () => {
-            nodes.delete(item.value, item_ref.current);
+            nodes?.delete(item.value);
             item_ref?.current?.removeEventListener('keydown', onKeyPressed as (event: KeyboardEvent) => void);
         };
 
@@ -45,7 +45,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         else {
             const handleKeyPress = (e: KeyboardEvent) => onKeyPressed(e, item);
             item_ref?.current?.addEventListener('keydown', handleKeyPress);
-            nodes.set(item.value.toString(), item_ref.current);
+            nodes?.set(item.value.toString(), item_ref.current);
         }
 
         return () => removeListeners();

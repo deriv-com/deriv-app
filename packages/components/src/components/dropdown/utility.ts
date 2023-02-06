@@ -8,7 +8,7 @@ export type TListItem = {
 
 export type TList = TListItem[];
 
-type TActiveNode = {
+type TActiveNode = HTMLElement & {
     attributes: {
         tabIndex: number;
     };
@@ -16,7 +16,7 @@ type TActiveNode = {
     previousSibling: TActiveNode;
 };
 
-type TFocusableNode = (active_node: TActiveNode) => any;
+type TFocusableNode = (active_node: TActiveNode) => TActiveNode | null;
 
 export const getDisplayText = (list: TList, value: string | number) => {
     const findInArray = (arr_list: TList) => (arr_list.find(item => item.value === value) || {}).text;

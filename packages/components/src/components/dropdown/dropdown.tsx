@@ -58,7 +58,7 @@ type TDropdownList = {
     is_large?: boolean;
     is_list_visible: boolean;
     list: TList;
-    nodes: any;
+    nodes: React.RefObject<Map<string, HTMLDivElement | null>>;
     onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
     parent_ref: React.RefObject<HTMLElement>;
     portal_id?: string;

@@ -15,6 +15,11 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
 describe('<CashierLocked />', () => {
     it('should show the proper message if there is a cryptocashier maintenance', () => {
         const mockRootStore: DeepPartial<TRootStore> = {

@@ -16,6 +16,11 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',

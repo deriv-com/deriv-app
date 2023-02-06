@@ -1,9 +1,10 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+//TODO: Uncomment this line when type script migrations on all packages done
+//const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -76,10 +77,13 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
+                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.ts',
                         },
                         {
                             loader: '@deriv/shared/src/loaders/deriv-account-loader.ts',
+                        },
+                        {
+                            loader: '@deriv/shared/src/loaders/deriv-cashier-loader.ts',
                         },
                         {
                             loader: '@deriv/shared/src/loaders/deriv-cfd-loader.ts',
@@ -165,9 +169,11 @@ module.exports = function (env) {
                 '@deriv/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,
+                '@deriv/cashier': true,
                 '@deriv/cfd': true,
             },
         ],
-        plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        //TODO: Uncomment this line when type script migrations on all packages done
+        // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
     };
 };

@@ -38,8 +38,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('Vanuatu'),
         synthetic_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
-            `${localize('Registered with the Financial Commission')}`,
-            `${localize('90+ assets: forex, stock indices, commodities and cryptocurrencies')}`,
+            `${localize('30+ assets: synthetics, basket indices and derived FX')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
         financial_contents: [

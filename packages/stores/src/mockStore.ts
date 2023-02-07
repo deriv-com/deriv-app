@@ -207,7 +207,17 @@ const mock = (): TRootStore => {
             openModal: jest.fn(),
             content_flag: '',
         },
-        contract_store: {},
+        contract_store: {
+            contract_info: {},
+            contract_update_take_profit: '',
+            contract_update_stop_loss: '',
+            clearContractUpdateConfigValues: jest.fn(),
+            has_contract_update_take_profit: false,
+            has_contract_update_stop_loss: false,
+            updateLimitOrder: jest.fn(),
+            validation_errors: { contract_update_stop_loss: [], contract_update_take_profit: [] },
+            onChange: jest.fn(),
+        },
         modules: {},
     };
 };

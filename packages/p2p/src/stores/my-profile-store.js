@@ -361,6 +361,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     getPaymentMethodsList() {
+        const { buy_sell_store } = this.root_store;
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
@@ -390,6 +391,7 @@ export default class MyProfileStore extends BaseStore {
                     this.setSearchResults([]);
                 }
             }
+            buy_sell_store.setIsFilterModalLoading(false);
         });
     }
 

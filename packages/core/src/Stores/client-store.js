@@ -6,6 +6,7 @@ import {
     State,
     deriv_urls,
     filterUrlQuery,
+    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -1504,6 +1505,21 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const unused_params = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1626,6 +1642,13 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
+        );
+
         return true;
     }
 

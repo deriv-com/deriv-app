@@ -13,6 +13,7 @@ const NoBalance = observer(({ history }: RouteComponentProps) => {
     const { general_store } = useCashierStore();
     const { setCashierTabIndex: setTabIndex } = general_store;
     const is_deposit_locked = useDepositLocked();
+
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);

@@ -131,7 +131,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { is_account_transfer_visible } = account_transfer;
-    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, is_eu_selected } = traders_hub;
+    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, show_eu_related_content } = traders_hub;
 
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);
@@ -550,7 +550,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
-                                            {(is_eu || is_eu_selected) && (
+                                            {is_eu && show_eu_related_content && !is_virtual && (
                                                 <MobileDrawer.Item>
                                                     <MenuLink
                                                         link_to={getStaticUrl('/regulatory')}

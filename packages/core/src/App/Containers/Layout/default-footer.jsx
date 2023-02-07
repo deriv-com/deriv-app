@@ -44,7 +44,7 @@ const Footer = ({
     settings_extension,
     landing_company_shortcode,
     is_pre_appstore,
-    is_eu_selected,
+    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -79,7 +79,7 @@ const Footer = ({
                     <RegulatoryInformation
                         landing_company={landing_company_shortcode}
                         is_eu={is_eu}
-                        is_eu_selected={is_eu_selected}
+                        show_eu_related_content={show_eu_related_content}
                     />
                 )}
                 <FooterIconSeparator />
@@ -113,7 +113,7 @@ Footer.propTypes = {
     enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
-    is_eu_selected: PropTypes.bool,
+    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
@@ -133,5 +133,6 @@ export default withRouter(
         toggleSettingsModal: ui.toggleSettingsModal,
         is_pre_appstore: client.is_pre_appstore,
         is_eu_selected: traders_hub.is_eu_selected,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(Footer)
 );

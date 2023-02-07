@@ -50,7 +50,7 @@ const TradingHubFooter = ({
     setDarkMode,
     is_dark_mode,
     is_pre_appstore,
-    is_eu_selected,
+    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -93,7 +93,7 @@ const TradingHubFooter = ({
                     <RegulatoryInformation
                         landing_company={landing_company_shortcode}
                         is_eu={is_eu}
-                        is_eu_selected={is_eu_selected}
+                        show_eu_related_content={show_eu_related_content}
                     />
                 )}
                 <div className='footer__links--dark-mode'>
@@ -141,6 +141,7 @@ TradingHubFooter.propTypes = {
     setDarkMode: PropTypes.func,
     is_pre_appstore: PropTypes.bool,
     is_eu_selected: PropTypes.bool,
+    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
@@ -162,5 +163,6 @@ export default withRouter(
         setDarkMode: ui.setDarkMode,
         is_pre_appstore: client.is_pre_appstore,
         is_eu_selected: traders_hub.is_eu_selected,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(TradingHubFooter)
 );

@@ -6,7 +6,7 @@ import { AccountTransfer, Deposit, OnRamp, P2PCashier, PaymentAgent, PaymentAgen
 import { TRouteConfig, TRoute } from 'Types';
 
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Components/page-404')));
+const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ '../components/page-404')));
 export type TPage404 = typeof Page404;
 
 // Order matters

@@ -1,5 +1,5 @@
 import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
@@ -148,7 +148,7 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    client.has_maltainvest_account ||
+                    (client.is_eu && window.location.pathname === routes.bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
@@ -172,7 +172,7 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    client.has_maltainvest_account ||
+                    (client.is_eu && window.location.pathname === routes.bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
@@ -239,7 +239,7 @@ export default class AppStore {
     showDigitalOptionsMaltainvestError = (client, common) => {
         if (
             (!client.is_logged_in && client.is_eu_country) ||
-            client.has_maltainvest_account ||
+            (client.is_eu && window.location.pathname === routes.bot) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {
